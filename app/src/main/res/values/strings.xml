@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">android</string>
+    <string name="don_t_use_your_phone_while_driving">Don\'t use your phone while driving!</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="password">Password</string>
+</resources>
