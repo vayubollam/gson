@@ -2,11 +2,10 @@ package suncor.com.android.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +27,11 @@ import java.net.URISyntaxException;
 import suncor.com.android.R;
 import suncor.com.android.constants.GeneralConstants;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private BroadcastReceiver logoutReceiver, loginReceiver, loginRequiredReceiver;
     private MainActivity _this;
     private Button btnLoginLogOut;
+    private Button btn_open_Splash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnGetToken).setOnClickListener(btnGetToken_click);
         findViewById(R.id.btnGetStations).setOnClickListener(btnGetStations_click);
         findViewById(R.id.btnCallProtectedAPI).setOnClickListener(btnProtectedAPI_click);
+        btn_open_Splash=findViewById(R.id.btn_splash);
+        btn_open_Splash.setOnClickListener(this);
+
         btnLoginLogOut = findViewById(R.id.btnLoginOut);
         btnLoginLogOut.setOnClickListener(btnLogInOut_click);
 
@@ -229,5 +232,15 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-    //endregion
+
+    @Override
+    public void onClick(View v) {
+        if (v==btn_open_Splash)
+            openSplashLogoActivity();
+    }//endregion
+
+    private void openSplashLogoActivity() {
+        Intent splashlogoActivity =new Intent(this,SplashLogoActivity.class);
+        startActivity(splashlogoActivity);
+    }
 }

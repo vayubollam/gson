@@ -4,4 +4,7 @@
     <string name="sign_in">SIGN IN</string>
     <string name="forgot_password">FORGOT PASSWORD</string>
     <string name="password">Password</string>
+    <string name="discover_your_next_adventure">DISCOVER YOUR NEXT ADVENTURE</string>
+    <string name="home">Home</string>
+    <string name="stations">Stations</string>
 </resources>
