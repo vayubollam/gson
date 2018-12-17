@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".SuncorApplication"
@@ -29,7 +31,21 @@
             android:name=".ui.SplashActivity"
             android:theme="@style/CustomAppThemeForSplash" />
         <activity android:name=".ui.SafeDriveActivity" />
-        <activity android:name=".ui.HomeActivity"></activity>
+        <activity android:name=".ui.HomeActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAtC2AuQA0e-jJYbMrteC06unYKysCa1tA" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name=".dialogs.LocationDialog"
+            android:theme="@style/Theme.MaterialComponents.Light.BottomSheetDialog"></activity>
     </application>
 
 </manifest>
