@@ -2,17 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="suncor.com.android">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".SuncorApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".SuncorApplication">
+        android:theme="@style/CustomAppTheme">
         <activity android:name="com.worklight.wlclient.ui.UIActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
@@ -21,7 +23,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.LoginActivity" />
+        <activity
+            android:name=".ui.SplashLogoActivity"
+            android:theme="@style/CustomAppThemeForSplash" />
+        <activity
+            android:name=".ui.SplashActivity"
+            android:theme="@style/CustomAppThemeForSplash" />
+        <activity android:name=".ui.SafeDriveActivity" />
+        <activity android:name=".ui.HomeActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAtC2AuQA0e-jJYbMrteC06unYKysCa1tA" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name=".dialogs.LocationDialog"
+            android:theme="@style/Theme.MaterialComponents.Light.BottomSheetDialog"></activity>
     </application>
 
 </manifest>
