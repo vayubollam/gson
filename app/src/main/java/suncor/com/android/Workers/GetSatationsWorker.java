@@ -1,5 +1,8 @@
-package suncor.com.android.fragments;
+package suncor.com.android.Workers;
+
+import android.content.Context;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
@@ -13,19 +16,31 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.work.Data;
+import androidx.work.ListenableWorker;
+import androidx.work.Operation;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 import suncor.com.android.dataObjects.Station;
+import suncor.com.android.ui.MainActivity;
 
-public class StationsViewModel extends ViewModel {
+public class GetSatationsWorker  extends Worker {
+    List<Station> stations;
     private String result="ALL_STATIONS";
-    private static final int RSS_JOB_ID = 1000;
+    private String jsonText;
+    private boolean jobCompleted=false;
+    private Data stationsOutPut;
 
-    public  MutableLiveData<ArrayList<Station>> stations_arround =new MutableLiveData<>();
+    public GetSatationsWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
 
+    @Override
+    public Result doWork() {
 
-
-    public MutableLiveData<ArrayList<Station>> getStations() {
         URI adapterPath = null;
 
 
@@ -39,26 +54,12 @@ public class StationsViewModel extends ViewModel {
         request.send(new WLResponseListener() {
             @Override
             public void onSuccess(WLResponse wlResponse) {
-               String  jsonText = wlResponse.getResponseText();
-                try {
-                    final JSONArray jsonArray = new JSONArray(jsonText);
-                    Gson gson=new Gson();
-                    ArrayList<Station> stations=new ArrayList<>();
-                    for(int i=0;i<jsonArray.length();i++)
-                    {
-                        JSONObject jo=jsonArray.getJSONObject(i);
-                        Station station=gson.fromJson(String.valueOf(jo),Station.class);
-                        stations.add(station);
-                    }
-                   stations_arround.postValue(stations);
-                    for(Station station : stations)
-                        Log.d("json_fields",station.getAddress().getPrimaryCity());
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                 jsonText = wlResponse.getResponseText();
                 Log.d("worker_result","job completed");
+                 stationsOutPut =new Data.Builder()
+                        .putString(result,jsonText)
+                        .build();
+                jobCompleted=true;
 
             }
 
@@ -66,14 +67,10 @@ public class StationsViewModel extends ViewModel {
             public void onFailure(WLFailResponse wlFailResponse) {
                 Log.d("mfp_error",wlFailResponse.getErrorMsg());
 
+                jobCompleted=false;
             }
         });
-        return stations_arround;
+        return  jobCompleted ? Result.success(stationsOutPut) : Result.failure();
+
     }
-
-
-
-
 }
-
-

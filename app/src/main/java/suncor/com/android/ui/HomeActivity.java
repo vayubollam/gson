@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment;
 
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.constants.GeneralConstants;
 import suncor.com.android.fragments.HomeFragment;
 import suncor.com.android.fragments.StationsFragment;
+import suncor.com.android.fragments.StationsViewModel;
 //import suncor.com.android.fragments.HomeFragment;
 //import suncor.com.android.fragments.StationsFragment;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +47,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
                  checkforPermission();
     }
+
 
     private void checkforPermission() {
 
@@ -76,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         {
             case R.id.menu_home:{
                 Log.d("current_fragment","home");
-                selectedFragment=new HomeFragment();
+                 selectedFragment=new HomeFragment();
                   menuItem.setChecked(true);
                   break;
             }

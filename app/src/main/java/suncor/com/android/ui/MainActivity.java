@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -24,8 +26,12 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
 import suncor.com.android.R;
 import suncor.com.android.constants.GeneralConstants;
+import suncor.com.android.dataObjects.Station;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private BroadcastReceiver logoutReceiver, loginReceiver, loginRequiredReceiver;
@@ -151,12 +157,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
-                    String jsonText = wlResponse.getResponseText();
+                    final String jsonText = wlResponse.getResponseText();
                     try {
                         final JSONArray jsonArray = new JSONArray(jsonText);
+                        Gson gson=new Gson();
+                        List<Station> stations=new ArrayList<>();
+                        for(int i=0;i<jsonArray.length();i++)
+                        {
+                            JSONObject jo=jsonArray.getJSONObject(i);
+                            Station station=gson.fromJson(String.valueOf(jo),Station.class);
+                            stations.add(station);
+                        }
+
+                        for(Station station : stations)
+                            Log.d("json_fields",station.getAddress().getPrimaryCity());
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
+
+
+
+
+
+
                                 Toast.makeText(MainActivity.this, "Stations loaded (Total: " + jsonArray.length() + ")Cannot get stations",Toast.LENGTH_SHORT).show();                            }
                         });
                     } catch (JSONException e) {

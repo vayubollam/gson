@@ -21,8 +21,8 @@
         app:iconGravity="textStart"
         android:layout_height="44dp"
         app:iconPadding="0dp"
+        app:iconTint="@color/black_100"
 
-        app:iconTint="@color/black_60"
         android:minHeight="0dp"
         android:layout_alignParentRight="true"
         android:id="@+id/btn_my_location"
@@ -43,15 +43,21 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="16dp"
         app:cornerRadius="2dp"
-        app:iconTint="@color/black_60"
+        app:iconTint="@color/black_100"
         android:insetTop="0dp"
         android:layout_alignParentRight="true"
         android:insetBottom="0dp"
         android:id="@+id/btn_my_favorites"
         android:layout_marginBottom="182dp"
         android:backgroundTint="@color/white"
-        app:icon="@drawable/ic_favorite_border_black_24dp"/>
-
+        app:icon="@drawable/ic_favourites"/>
+    <ProgressBar
+        android:id="@+id/indeterminateBar"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
+        />
 
 
 

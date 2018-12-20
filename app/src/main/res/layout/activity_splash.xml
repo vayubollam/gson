@@ -11,8 +11,8 @@
         android:id="@+id/img_splash_full_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/logo_fullscreen"
-        android:scaleType="fitXY"
+        app:srcCompat="@drawable/lake"
+        android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_splash"
         app:layout_constraintVertical_bias="0.778"
-        app:srcCompat="@drawable/retail_canopy" />
+        app:srcCompat="@drawable/ic_retail_canopy" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
