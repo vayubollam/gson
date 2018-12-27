@@ -3,10 +3,14 @@ package suncor.com.android.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.adapters.StationAdapter;
 import suncor.com.android.constants.GeneralConstants;
 import suncor.com.android.fragments.HomeFragment;
 import suncor.com.android.fragments.StationsFragment;
@@ -22,16 +26,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, StationAdapter.OnDirClick {
     private BottomNavigationView bottom_navigation;
     private Fragment selectedFragment;
+
     //request code for requesting permissions
     private int requestCode=1;
     @Override
@@ -98,9 +106,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
 
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentManager fm=getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.frame_layout_home, selectedFragment);
         transaction.addToBackStack(null);
+        fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
         transaction.commit();
 
 
@@ -108,4 +118,23 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     }
 
 
+    public void hideBottomNavigation()
+    {
+        bottom_navigation.setVisibility(View.GONE);
+
+        /*estedScrollView cl=findViewById(R.id.nvbs);
+        BottomSheetBehavior bottomSheetBehavior=BottomSheetBehavior.from(cl);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);*/
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void onDirectionsClicked() {
+        hideBottomNavigation();
+    }
 }

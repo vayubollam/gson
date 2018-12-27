@@ -3,6 +3,7 @@ package suncor.com.android.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.IntentCompat;
 import androidx.core.widget.ImageViewCompat;
 import suncor.com.android.R;
 
@@ -57,6 +58,8 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
             @Override
             public void run() {
                 Intent safeDrive=new Intent(getApplicationContext(),SafeDriveActivity.class);
+                safeDrive.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(safeDrive);
                 finish();
             }

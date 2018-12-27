@@ -58,5 +58,6 @@ dependencies {
     implementation "android.arch.work:work-runtime:$work_version"
 
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
 }

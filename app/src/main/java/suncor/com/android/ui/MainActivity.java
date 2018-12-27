@@ -107,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LocalBroadcastManager.getInstance(this).unregisterReceiver(logoutReceiver);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     void openLoginActivity() {
         System.out.println("----------------> emailTxt:");
         Intent intent = new Intent(this,LoginActivity.class);

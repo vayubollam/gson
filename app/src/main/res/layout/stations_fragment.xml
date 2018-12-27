@@ -14,43 +14,7 @@
 
 </FrameLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:gravity="center"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="44dp"
-        app:iconGravity="textStart"
-        android:layout_height="44dp"
-        app:iconPadding="0dp"
-        app:iconTint="@color/black_100"
 
-        android:minHeight="0dp"
-        android:layout_alignParentRight="true"
-        android:id="@+id/btn_my_location"
-        android:layout_marginRight="16dp"
-        android:layout_above="@id/btn_my_favorites"
-        android:backgroundTint="@color/white"
-        app:icon="@drawable/ic_my_location_black_24dp"
-        android:insetBottom="1dp"
-        app:cornerRadius="2dp"
-        android:insetTop="0dp"
-        />
-    <com.google.android.material.button.MaterialButton
-        android:gravity="center"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="44dp"
-        app:iconGravity="textStart"
-        android:layout_height="44dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="16dp"
-        app:cornerRadius="2dp"
-        app:iconTint="@color/black_100"
-        android:insetTop="0dp"
-        android:layout_alignParentRight="true"
-        android:insetBottom="0dp"
-        android:id="@+id/btn_my_favorites"
-        android:layout_marginBottom="182dp"
-        android:backgroundTint="@color/white"
-        app:icon="@drawable/ic_favourites"/>
     <ProgressBar
         android:id="@+id/indeterminateBar"
         android:layout_width="wrap_content"
@@ -59,8 +23,80 @@
         android:layout_height="wrap_content"
         />
 
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:layout_width="match_parent"
+      android:layout_alignParentBottom="true"
+      android:id="@+id/coordinator"
+      android:layout_height="wrap_content">
 
 
+      <androidx.core.widget.NestedScrollView
+          android:layout_width="match_parent"
+          app:layout_behavior="@string/bottom_sheet_behavior"
+          app:behavior_peekHeight="130dp"
+          android:animateLayoutChanges="true"
+          android:fitsSystemWindows="true"
+          android:fillViewport="true"
+
+          android:layout_height="wrap_content">
+
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+
+          <com.google.android.material.button.MaterialButton
+              android:gravity="center"
+              style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+              android:layout_width="44dp"
+              app:iconGravity="textStart"
+              android:layout_height="44dp"
+              app:iconPadding="0dp"
+              app:iconTint="@color/black_100"
+              android:layout_gravity="right"
+              android:minHeight="0dp"
+              android:layout_alignParentRight="true"
+              android:id="@+id/btn_my_location"
+              android:layout_marginRight="16dp"
+              android:layout_above="@id/btn_my_favorites"
+              android:backgroundTint="@color/white"
+              app:icon="@drawable/ic_near_me"
+              android:insetBottom="1dp"
+              app:cornerRadius="2dp"
+              android:insetTop="0dp"
+              />
+          <com.google.android.material.button.MaterialButton
+              android:gravity="center"
+              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+              android:layout_width="44dp"
+              app:iconGravity="textStart"
+              android:layout_height="44dp"
+              android:layout_marginRight="16dp"
+              app:cornerRadius="2dp"
+              app:iconTint="@color/black_100"
+              android:insetTop="0dp"
+              android:layout_alignParentRight="true"
+              android:insetBottom="0dp"
+              android:layout_gravity="right"
+              android:id="@+id/btn_my_favorites"
+              android:layout_above="@+id/card_recycler"
+              android:layout_marginBottom="8dp"
+              android:backgroundTint="@color/white"
+              app:icon="@drawable/ic_favourites"/>
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/card_recycler"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+
+              app:layout_behavior="@string/appbar_scrolling_view_behavior"
+              android:layout_alignParentBottom="true"
+              android:orientation="horizontal"></androidx.recyclerview.widget.RecyclerView>
+
+          </LinearLayout>
+      </androidx.core.widget.NestedScrollView>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </RelativeLayout>

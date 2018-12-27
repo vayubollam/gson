@@ -17,6 +17,4 @@ public class GeneralConstants
     public static final String SHARED_PREF_SHOW_DONT_DRIVE = "com.ibm.suncor.dont_drive";
     public static final String SHARED_PREF_USER = "com.ibm.suncor.user";
 
-    public static final String ACTION_RESP = "com.ibm.suncor.stations_response";
-
 }

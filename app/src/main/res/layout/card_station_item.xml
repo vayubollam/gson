@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardCornerRadius="12dp"
+    android:theme="@style/Widget.MaterialComponents.CardView"
+    android:layout_width="328dp"
+    android:layout_margin="16dp"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="16dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_bottom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bottom_sheet_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_station_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Station Name"
+            android:layout_below="@id/img_bottom_sheet"
+            android:textColor="@color/black_100"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ProgressBar
+            android:layout_width="30dp"
+            android:id="@+id/br_km_card"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/txt_station_title"
+            android:layout_height="30dp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_car_station"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/txt_station_title"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_station_title"
+            app:srcCompat="@drawable/ic_car" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_km_station"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/img_car_station"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
+            android:layout_below="@id/txt_station_title"
+            android:text="0.5 Km away . 2 min drive"
+            android:textColor="@color/black_100"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@+id/img_car_station"
+            app:layout_constraintTop_toBottomOf="@+id/txt_station_title" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_clock_station"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/txt_km_station"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_car_station"
+            app:srcCompat="@drawable/ic_clock" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_station_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_below="@id/txt_km_station"
+            android:layout_toRightOf="@+id/img_clock_station"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Open . Closes at 10PM"
+            android:textColor="@color/black_100"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@+id/img_car_station"
+            app:layout_constraintTop_toBottomOf="@+id/txt_km_station" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_card_directions"
+            style="@style/Widget.MaterialComponents.Button"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_clock_station"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/red"
+            android:text="directions"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_clock_station" />
+
+
+    </RelativeLayout>
+
+
+
+
+
+</com.google.android.material.card.MaterialCardView>

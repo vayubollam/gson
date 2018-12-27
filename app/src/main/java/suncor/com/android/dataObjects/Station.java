@@ -1,14 +1,15 @@
 package suncor.com.android.dataObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Station {
      private int id;
-     private List<Hour> hours;
+     private ArrayList<Hour> hours;
      private List<String> amenities;
      private Address address;
 
-    public Station(int id, List<Hour> hours, List<String> amenities, Address address) {
+    public Station(int id, ArrayList<Hour> hours, List<String> amenities, Address address) {
         this.id = id;
         this.hours = hours;
         this.amenities = amenities;
@@ -20,7 +21,7 @@ public class Station {
     }
 
 
-    public void setHours(List<Hour> hours) {
+    public void setHours(ArrayList<Hour> hours) {
         this.hours = hours;
     }
 
@@ -31,13 +32,13 @@ public class Station {
     public void setAddress(Address address) {
         this.address = address;
     }
-
     public int getId() {
         return id;
     }
 
-    public List<Hour> getHours() {
-        return hours;
+    public ArrayList<Hour> getHours()
+    {
+        return this.hours;
     }
 
     public List<String> getAmenities() {

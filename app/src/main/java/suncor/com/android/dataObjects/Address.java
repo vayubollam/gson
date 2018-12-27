@@ -9,7 +9,7 @@ public class Address {
     private String subdivision;
     private String phone;
     private String countryRegion;
-    private String PostalCode;
+    private String postalCode;
     private Double latitude;
     private Double longitude;
     private String addressLine;
@@ -21,7 +21,7 @@ public class Address {
         this.subdivision = subdivision;
         this.phone = phone;
         this.countryRegion = countryRegion;
-        PostalCode = postalCode;
+        postalCode = postalCode;
         this.latitude = latitude;
         this.longitude = longitude;
         this.addressLine = addressLine;
@@ -41,8 +41,8 @@ public class Address {
         return countryRegion;
     }
 
-    public String getPostalCode() {
-        return PostalCode;
+    public String getpostalCode() {
+        return postalCode;
     }
 
     public Double getLatitude() {
@@ -78,8 +78,8 @@ public class Address {
         this.countryRegion = countryRegion;
     }
 
-    public void setPostalCode(String postalCode) {
-        PostalCode = postalCode;
+    public void setpostalCode(String postalCode) {
+        postalCode = postalCode;
     }
 
     public void setLatitude(Double latitude) {
