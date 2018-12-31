@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -62,6 +63,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -86,10 +88,10 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private RecyclerView recyclerView;
     private Marker myLocationMarker;
     private ArrayList<Station> allStations;
-    LocationListener locationListener;
-
-    LocationManager locationManager;
-
+    private LocationListener locationListener;
+    private LocationManager locationManager;
+    private BottomSheetBehavior bottomSheetBehavior;
+private NestedScrollView stations_bottom_sheet;
     public static StationsFragment newInstance() {
         return new StationsFragment();
     }
@@ -106,6 +108,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         indeterminateBar = getView().findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
         mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
+        stations_bottom_sheet=getView().findViewById(R.id.stations_bottom_sheet);
+        bottomSheetBehavior=BottomSheetBehavior.from(stations_bottom_sheet);
 
         stationsObserver = new Observer<ArrayList<Station>>(
         ) {
@@ -132,7 +136,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
                     }
                     if (recyclerView != null && myLocationMarker != null) {
-                        stationAdapter = new StationAdapter(stations, getContext(), myLocationMarker.getPosition(), getActivity());
+                        stationAdapter = new StationAdapter(stations, getContext(), myLocationMarker.getPosition(), getActivity(),bottomSheetBehavior);
                         recyclerView.setAdapter(stationAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
                         ViewCompat.setNestedScrollingEnabled(recyclerView, false);
@@ -393,7 +397,6 @@ public static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
 
 
     public LatLngBounds getRegion(){
-
         VisibleRegion vr = mGoogleMap.getProjection().getVisibleRegion();
         double left = vr.latLngBounds.southwest.longitude;
         double top = vr.latLngBounds.northeast.latitude;
@@ -409,10 +412,8 @@ public static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
 
         }else {
             if(last_bounds.contains(currentBounds.northeast) && last_bounds.contains(currentBounds.southwest)){
-               // Toast.makeText(getActivity(), "Still in the region", Toast.LENGTH_SHORT).show();
                 return true;
             }else{
-                //Toast.makeText(getActivity(), "left the region", Toast.LENGTH_SHORT).show();
                 last_bounds=currentBounds;
                 return false;
             }
