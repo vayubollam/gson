@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -28,6 +29,7 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
@@ -56,7 +58,7 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
     public static final String DEST_LNG = "dest_lng";
 
     private LatLng directionslatlng;
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
     public StationAdapter(ArrayList<Station> stations, Context context,LatLng userLocation,FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
         this.stations = stations;
@@ -261,14 +263,6 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
             time="";
         }
 
-   /*     try {
-            final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            final Date dateObj = sdf.parse(hour+":"+min);
-            time = new SimpleDateFormat("hh:mm aa").format(dateObj);
-        } catch (final ParseException e) {
-            e.printStackTrace();
-            time="";
-        }*/
        return time;
     }
 
@@ -291,11 +285,18 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
 
         public StationViewHolder(@NonNull View itemView) {
             super(itemView);
+            Typeface tfGibson_bold=ResourcesCompat.getFont(context,R.font.gibson_bold);
+            Typeface tfGibson_regular=ResourcesCompat.getFont(context,R.font.gibson_regular);
+            Typeface tfGibson_semibold=ResourcesCompat.getFont(context,R.font.gibson_semibold);
             txt_title=itemView.findViewById(R.id.txt_station_title);
+            txt_title.setTypeface(tfGibson_bold);
             txt_km=itemView.findViewById(R.id.txt_km_station);
+            txt_km.setTypeface(tfGibson_regular);
             txt_open=itemView.findViewById(R.id.txt_station_open);
+            txt_open.setTypeface(tfGibson_regular);
             img_bottom_sheet=itemView.findViewById(R.id.img_bottom_sheet);
             btn_card_directions=itemView.findViewById(R.id.btn_card_directions);
+            btn_card_directions.setTypeface(tfGibson_semibold);
             br=itemView.findViewById(R.id.br_km_card);
             img_car_station=itemView.findViewById(R.id.img_car_station);
             img_car_station.setVisibility(View.INVISIBLE);
