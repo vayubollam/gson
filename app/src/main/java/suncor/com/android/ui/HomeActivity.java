@@ -1,33 +1,25 @@
 package suncor.com.android.ui;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
 import suncor.com.android.fragments.HomeFragment;
 import suncor.com.android.fragments.StationsFragment;
-//import suncor.com.android.fragments.HomeFragment;
-//import suncor.com.android.fragments.StationsFragment;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
-
+import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView bottom_navigation;
     private Fragment selectedFragment;
+
     //request code for requesting permissions
     private int requestCode=1;
     @Override
@@ -43,6 +35,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
                  checkforPermission();
     }
+
 
     private void checkforPermission() {
 
@@ -75,15 +68,32 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         switch (menuItem.getItemId())
         {
             case R.id.menu_home:{
-                Log.d("current_fragment","home");
-                selectedFragment=new HomeFragment();
-                  menuItem.setChecked(true);
-                  break;
+                if(!(selectedFragment instanceof HomeFragment)){
+                    selectedFragment=new HomeFragment();
+                    menuItem.setChecked(true);
+                    FragmentManager fm=getSupportFragmentManager();
+                    FragmentTransaction transaction = fm.beginTransaction();
+                    transaction.replace(R.id.frame_layout_home, selectedFragment);
+                    transaction.addToBackStack(null);
+                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    transaction.commit();
+                }
+                break;
+
             }
             case R.id.menu_stations:{
-                Log.d("current_fragment","stations");
-                selectedFragment=new StationsFragment();
-                menuItem.setChecked(true);
+                if(!(selectedFragment instanceof StationsFragment))
+                {
+                    selectedFragment=new StationsFragment();
+                    menuItem.setChecked(true);
+                    FragmentManager fm=getSupportFragmentManager();
+                    FragmentTransaction transaction = fm.beginTransaction();
+                    transaction.replace(R.id.frame_layout_home, selectedFragment);
+                    transaction.addToBackStack(null);
+                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    transaction.commit();
+
+                }
                 break;
 
             }
@@ -93,14 +103,20 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
 
 
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout_home, selectedFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
 
         return true;
     }
 
+
+    public void hideBottomNavigation()
+    {
+        bottom_navigation.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
 }

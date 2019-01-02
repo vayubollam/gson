@@ -13,4 +13,6 @@
     <color name="Black_4">#F4F4F4</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#FF0076FF</color>
+    <color name="red_location">#EC1C2F</color>
+    <color name="choose_back">#14000000</color>
 </resources>

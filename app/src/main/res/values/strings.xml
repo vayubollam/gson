@@ -14,4 +14,6 @@
     <string name="location_alert_message">Petro-Canada uses location services to show stations around you.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="open_with">Open With</string>
+    <string name="always">ALWAYS</string>
 </resources>
