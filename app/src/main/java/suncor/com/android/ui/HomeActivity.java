@@ -34,6 +34,14 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         //check for runtime permission
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
                  checkforPermission();
+
+        selectedFragment=new HomeFragment();
+        FragmentManager fm=getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.frame_layout_home, selectedFragment);
+        transaction.addToBackStack(null);
+        fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        transaction.commit();
     }
 
 

@@ -45,8 +45,6 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".dialogs.LocationDialog"
-            android:theme="@style/Theme.MaterialComponents.Light.BottomSheetDialog"></activity>
 
     </application>
 

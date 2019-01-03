@@ -276,8 +276,12 @@ private NestedScrollView stations_bottom_sheet;
     }
 
     private void alertUser() {
-     if(isAdded())
-          startActivity(new Intent(getActivity(),LocationDialog.class));
+     if(isAdded()){
+         FragmentManager fm = getFragmentManager();
+         LocationDialog dialogFragment = new LocationDialog ();
+         dialogFragment.show(fm, "location dialog");
+     }
+
 
     }
 //checking weather the user's gps is enabled or not
