@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="station_services">
+        <item>Accessible fueling service</item>
+        <item>ATM</item>
+        <item>A&amp;W</item>
+        <item>open24Hours</item>
+        <item>Beer and wine (only available in QC)</item>
+        <item>Convenience store</item>
+        <item>Full serve</item>
+        <item>Lottery</item>
+        <item>Restaurant</item>
+        <item>Propane tank exchange</item>
+    </string-array>
+    <string-array name="station_fuel_options">
+        <item>Diesel</item>
+        <item>Electric charging station</item>
+        <item>SuperClean 94</item>
+        <item>Ultra 94</item>
+    </string-array>
+    <string-array name="station_wash_options">
+        <item>Touchless (subset of Car Wash results)</item>
+    </string-array>
+</resources>

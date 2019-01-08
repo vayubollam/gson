@@ -3,8 +3,10 @@ package suncor.com.android.dialogs;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -14,43 +16,49 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import suncor.com.android.R;
 import suncor.com.android.dataObjects.Station;
+import suncor.com.android.dataObjects.StationMatrix;
+import suncor.com.android.databinding.CardStationItemBinding;
 
 public class StationDetailsDialog extends BottomSheetDialogFragment {
 
 
+    public static final String TAG = StationDetailsDialog.class.getSimpleName();
     private int intialHeight;
     private int intialPosition;
     private int fullHeight;
-    private int fullWidth;
 
-    private CardView cardView;
     private BottomSheetBehavior behavior;
-    private View rootView;
 
     private int cardMarginInPixels;
+    private CardStationItemBinding binding;
+    private Station station;
+
+    private StationMatrix distance;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.StationDetailsDialogStyle);
-        cardMarginInPixels = getResources().getDimensionPixelSize(R.dimen.stationDetailsMargin);
+        cardMarginInPixels = getResources().getDimensionPixelSize(R.dimen.stationCardMargin);
     }
 
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
-        rootView = View.inflate(getContext(), R.layout.station_details_dialog, null);
+        binding = CardStationItemBinding.inflate(LayoutInflater.from(getContext()));
+        binding.setStation(station);
+        binding.setDistance(distance);
+        binding.getRoot().setPadding(0, getResources().getDimensionPixelOffset(R.dimen.stationCardMargin), 0, 0);
         DisplayMetrics dp = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
         fullHeight = dp.heightPixels - getStatusBarHeight();
-        fullWidth = dp.widthPixels;
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight);
-        rootView.setLayoutParams(params);
-        //rootView.getLayoutParams().height = dp.heightPixels;
-        cardView = rootView.findViewById(R.id.cardView);
-        cardView.getLayoutParams().height = intialHeight;
-        dialog.setContentView(rootView);
 
-        behavior = BottomSheetBehavior.from(((View) rootView.getParent()));
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight);
+        binding.getRoot().setLayoutParams(params);
+
+        binding.cardView.getLayoutParams().height = intialHeight;
+        dialog.setContentView(binding.getRoot());
+
+        behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
         if (behavior != null) {
             behavior.setPeekHeight(fullHeight - intialPosition + 2 * cardMarginInPixels);
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -63,11 +71,12 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                 @Override
                 public void onSlide(@NonNull View view, float v) {
                     if (v > 0.01) {
-                        cardView.getLayoutParams().height = (int) (((fullHeight - 2 * cardMarginInPixels) * v) + (1 - v) * intialHeight);
-                        //cardView.getLayoutParams().width = (int) (((fullWidth - 2 * cardMarginInPixels) * v) + (1 - v) * getResources().getDimensionPixelSize(R.dimen.stationCardWidth));
-                        cardView.requestLayout();
+                        binding.addressLayout.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
+                        binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);
+                        binding.cardView.getLayoutParams().height = (int) (((fullHeight - 2 * cardMarginInPixels) * v) + (1 - v) * intialHeight);
+                        binding.cardView.requestLayout();
                     } else if (v > 0) {
-                        cardView.setVisibility(View.GONE);
+                        binding.cardView.setVisibility(View.GONE);
                     } else {
                         dismiss();
                     }
@@ -103,5 +112,10 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     }
 
     public void setStation(Station station) {
+        this.station = station;
+    }
+
+    public void setDistance(StationMatrix distance) {
+        this.distance = distance;
     }
 }

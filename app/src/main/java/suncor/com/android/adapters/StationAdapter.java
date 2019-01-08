@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -49,13 +50,13 @@ import suncor.com.android.constants.GeneralConstants;
 import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
 import suncor.com.android.dataObjects.StationMatrix;
+import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.dialogs.StationDetailsDialog;
 import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
-    private final LayoutInflater layoutInflater;
     private final ArrayList<Station> stations;
     private final Context context;
     private final FragmentActivity activity;
@@ -73,7 +74,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     public StationAdapter(ArrayList<Station> stations, Context context, LatLng userLocation, FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
         this.stations = stations;
         this.context = context;
-        layoutInflater = LayoutInflater.from(context);
         this.userLocation = userLocation;
         this.activity = activity;
         this.bottomSheetBehavior = bottomSheetBehavior;
@@ -110,8 +110,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @NonNull
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = layoutInflater.inflate(R.layout.card_station_item, parent, false);
-        return new StationViewHolder(rootView);
+        CardStationItemBinding binding = CardStationItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new StationViewHolder(binding);
     }
 
 
@@ -119,26 +119,15 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
 
+        final Station station = stations.get(position);
+        holder.binding.setStation(station);
+        holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
 
-        holder.txt_title.setText(stations.get(position).getAddress().getAddressLine());
-
-
-        Hour workHour = stations.get(position).getHours().get(getDayofWeek() - 1);
-        int currenthour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        int openHour = Integer.parseInt(workHour.getOpen().substring(0, 2));
-        int closeHour = Integer.parseInt(workHour.getClose().substring(0, 2));
-
-        int openmin = Integer.parseInt(workHour.getOpen().substring(2, 4));
-        int closemin = Integer.parseInt(workHour.getClose().substring(2, 4));
-        if (currenthour > openHour && currenthour < closeHour) {
-            holder.txt_open.setText("Open. closes at " + getTiming(closeHour, closemin));
-        } else {
-            holder.txt_open.setText("Close. opens at " + getTiming(openHour, openmin));
-        }
-        if (stationMatrixHashMap.get(stations.get(position)) == null) {
+        if (stationMatrixHashMap.get(station) == null) {
+            holder.binding.setDistance(null);
             Data locationData = new Data.Builder()
-                    .putDouble(DEST_LAT, stations.get(position).getAddress().getLatitude())
-                    .putDouble(DEST_LNG, stations.get(position).getAddress().getLongitude())
+                    .putDouble(DEST_LAT, station.getAddress().getLatitude())
+                    .putDouble(DEST_LNG, station.getAddress().getLongitude())
                     .putDouble(ORIGIN_LAT, userLocation.latitude)
                     .putDouble(ORIGIN_LNG, userLocation.longitude)
                     .build();
@@ -155,21 +144,18 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                         if (workInfo != null && workInfo.getState().isFinished()) {
                             String distance = workInfo.getOutputData().getString("distance");
                             String duration = workInfo.getOutputData().getString("duration");
-                            holder.br.setVisibility(View.INVISIBLE);
-                            holder.txt_km.setText(distance + " away . " + duration);
-                            holder.img_car_station.setVisibility(View.VISIBLE);
-                            stationMatrixHashMap.put(stations.get(position), new StationMatrix(distance, duration));
+                            StationMatrix distanceDuration = new StationMatrix(distance, duration);
+                            stationMatrixHashMap.put(station, distanceDuration);
+                            notifyItemChanged(position);
                         }
                     });
         } else {
-            holder.br.setVisibility(View.INVISIBLE);
-            holder.txt_km.setText(stationMatrixHashMap.get(stations.get(position)).getDistance() + " away . " + stationMatrixHashMap.get(stations.get(position)).getDuration());
-            holder.img_car_station.setVisibility(View.VISIBLE);
+            holder.binding.setDistance(stationMatrixHashMap.get(station));
         }
 
 
-        holder.btn_card_directions.setOnClickListener(v -> {
-            directionslatlng = new LatLng(stations.get(position).getAddress().getLatitude(), stations.get(position).getAddress().getLongitude());
+        holder.binding.btnCardDirections.setOnClickListener(v -> {
+            directionslatlng = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             Boolean always = prefs.getBoolean("always", false);
             if (always) {
                 int choice = prefs.getInt("choice", 0);
@@ -181,8 +167,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                 }
                 if (choice == 0) {
                     Bundle bundle = new Bundle();
-                    bundle.putDouble("lat", stations.get(position).getAddress().getLatitude());
-                    bundle.putDouble("lng", stations.get(position).getAddress().getLongitude());
+                    bundle.putDouble("lat", station.getAddress().getLatitude());
+                    bundle.putDouble("lng", station.getAddress().getLongitude());
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     OpenWithDialog openWithDialog = new OpenWithDialog();
                     openWithDialog.setArguments(bundle);
@@ -190,8 +176,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                 }
             } else {
                 Bundle bundle = new Bundle();
-                bundle.putDouble("lat", stations.get(position).getAddress().getLatitude());
-                bundle.putDouble("lng", stations.get(position).getAddress().getLongitude());
+                bundle.putDouble("lat", station.getAddress().getLatitude());
+                bundle.putDouble("lng", station.getAddress().getLongitude());
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 OpenWithDialog openWithDialog = new OpenWithDialog();
                 openWithDialog.setArguments(bundle);
@@ -199,17 +185,19 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             }
         });
 
-        holder.img_bottom_sheet.setOnClickListener((v) -> {
-            showStationDetails(stations.get(position), holder.itemView);
+        holder.binding.imgBottomSheet.setOnClickListener((v) -> {
+            showStationDetails(station, holder.itemView);
         });
-        holder.itemView.setOnTouchListener((view, event) -> {
+        holder.binding.getRoot().setOnTouchListener((view, event) -> {
             boolean eventHandled = swipeUpDetector.onTouchEvent(event);
             boolean isSwipeUp = eventHandled && event.getAction() != MotionEvent.ACTION_DOWN;
             if (isSwipeUp) {
-                showStationDetails(stations.get(position), holder.itemView);
+                showStationDetails(station, holder.itemView);
             }
             return eventHandled;
         });
+
+        holder.binding.executePendingBindings();
     }
 
     private void showStationDetails(Station station, View itemView) {
@@ -222,7 +210,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         itemView.getLocationInWindow(position);
         dialog.setIntialPosition(position[1]);
         dialog.setStation(station);
-        dialog.show(activity.getSupportFragmentManager(), "details");
+        dialog.setDistance(stationMatrixHashMap.get(station));
+        dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
     }
 
 
@@ -276,27 +265,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         }
     }
 
-    private int getDayofWeek() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.DAY_OF_WEEK);
-    }
-
-    private String getTiming(int hour, int min) {
-
-        String time;
-        try {
-            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-            final Date dateObj = sdf.parse(hour + ":" + min);
-            System.out.println(dateObj);
-            time = new SimpleDateFormat("hh:mm a").format(dateObj);
-        } catch (final ParseException e) {
-            e.printStackTrace();
-            time = "";
-        }
-
-        return time;
-    }
-
 
     @Override
     public int getItemCount() {
@@ -306,49 +274,16 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
     public class StationViewHolder extends RecyclerView.ViewHolder {
 
-        final AppCompatTextView txt_title;
-        final AppCompatTextView txt_km;
-        final AppCompatTextView txt_open;
-        final AppCompatImageView img_bottom_sheet;
-        final AppCompatImageView img_car_station;
-        final MaterialButton btn_card_directions;
-        final ProgressBar br;
+        final CardStationItemBinding binding;
         final int screenWidth = getScreenWidth();
 
 
-        StationViewHolder(@NonNull View itemView) {
-            super(itemView);
-            Typeface tfGibson_bold = ResourcesCompat.getFont(context, R.font.gibson_bold);
-            Typeface tfGibson_regular = ResourcesCompat.getFont(context, R.font.gibson_regular);
-            Typeface tfGibson_semibold = ResourcesCompat.getFont(context, R.font.gibson_semibold);
-            txt_title = itemView.findViewById(R.id.txt_station_title);
-            txt_title.setTypeface(tfGibson_bold);
-            txt_km = itemView.findViewById(R.id.txt_km_station);
-            txt_km.setTypeface(tfGibson_regular);
-            txt_open = itemView.findViewById(R.id.txt_station_open);
-            txt_open.setTypeface(tfGibson_regular);
-            img_bottom_sheet = itemView.findViewById(R.id.img_bottom_sheet);
-            btn_card_directions = itemView.findViewById(R.id.btn_card_directions);
-            btn_card_directions.setTypeface(tfGibson_semibold);
-            br = itemView.findViewById(R.id.br_km_card);
-            img_car_station = itemView.findViewById(R.id.img_car_station);
-            txt_km.setText("");
-
-            int marginLeftDp = 8;
-            int marginLeft = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, marginLeftDp, context.getResources()
-                            .getDisplayMetrics());
-            int marginRightDp = 8;
-            int marginRight = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, marginRightDp, context.getResources()
-                            .getDisplayMetrics());
-            int marginBottomDp = 8;
-            int marginBottom = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, marginBottomDp, context.getResources()
-                            .getDisplayMetrics());
-
-            setMargins(itemView, marginLeft, 0, marginRight, marginBottom);
-            itemView.getLayoutParams().width = screenWidth - ((int) (32 * Resources.getSystem().getDisplayMetrics().density));
+        StationViewHolder(CardStationItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+//            this.binding.getRoot().getLayoutParams().width = screenWidth - 2 * context.getResources().getDimensionPixelSize(R.dimen.stationCardMargin);
+//            FrameLayout.LayoutParams cardViewParams = (FrameLayout.LayoutParams) binding.cardView.getLayoutParams();
+//            cardViewParams.setMargins(0, 0, 0, 0);
         }
 
         private int getScreenWidth() {
@@ -357,16 +292,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
             return displayMetrics.widthPixels;
         }
-
-        private void setMargins(View view, int left, int top, int right, int bottom) {
-            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                p.setMargins(left, top, right, bottom);
-                view.requestLayout();
-            }
-        }
-
-
     }
 
 

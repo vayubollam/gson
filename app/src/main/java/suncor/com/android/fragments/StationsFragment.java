@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 import suncor.com.android.R;
 import suncor.com.android.adapters.StationAdapter;
 import suncor.com.android.dataObjects.Station;
@@ -77,6 +78,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private LocationManager locationManager;
     private BottomSheetBehavior bottomSheetBehavior;
     private LinearLayout stations_bottom_sheet;
+
     public static StationsFragment newInstance() {
         return new StationsFragment();
     }
@@ -92,13 +94,13 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         super.onActivityCreated(savedInstanceState);
         indeterminateBar = Objects.requireNonNull(getView()).findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
-
         mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
         stations_bottom_sheet=getView().findViewById(R.id.stations_bottom_sheet);
         bottomSheetBehavior=BottomSheetBehavior.from(stations_bottom_sheet);
         recyclerView = getView().findViewById(R.id.card_recycler);
         LinearSnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
     }
 
@@ -179,12 +181,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             if(position!=null)
                 recyclerView.scrollToPosition(position);
         });
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     //Map is ready
