@@ -19,7 +19,7 @@
             android:id="@+id/img_bottom_sheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:padding="4dp"
             android:layout_centerHorizontal="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

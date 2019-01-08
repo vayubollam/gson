@@ -76,7 +76,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private LocationListener locationListener;
     private LocationManager locationManager;
     private BottomSheetBehavior bottomSheetBehavior;
-    private NestedScrollView stations_bottom_sheet;
+    private LinearLayout stations_bottom_sheet;
     public static StationsFragment newInstance() {
         return new StationsFragment();
     }
