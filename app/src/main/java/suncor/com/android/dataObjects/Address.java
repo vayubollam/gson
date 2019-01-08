@@ -1,9 +1,5 @@
 package suncor.com.android.dataObjects;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.math.BigDecimal;
-
 public class Address {
 
     private String subdivision;
@@ -21,7 +17,7 @@ public class Address {
         this.subdivision = subdivision;
         this.phone = phone;
         this.countryRegion = countryRegion;
-        postalCode = postalCode;
+        this.postalCode = postalCode;
         this.latitude = latitude;
         this.longitude = longitude;
         this.addressLine = addressLine;
@@ -79,7 +75,7 @@ public class Address {
     }
 
     public void setpostalCode(String postalCode) {
-        postalCode = postalCode;
+        this.postalCode = postalCode;
     }
 
     public void setLatitude(Double latitude) {

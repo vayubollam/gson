@@ -3,22 +3,21 @@ package suncor.com.android.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.IntentCompat;
-import androidx.core.widget.ImageViewCompat;
+import androidx.core.content.res.ResourcesCompat;
 import suncor.com.android.R;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
     // Animation
     private Animation animZoomOut;
 
-    private AppCompatImageView img_splash;
     private AppCompatImageView img_retail;
 
     private  AppCompatTextView txt_splash;
@@ -29,10 +28,12 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        img_splash=findViewById(R.id.img_splash_full_screen);
+        AppCompatImageView img_splash = findViewById(R.id.img_splash_full_screen);
         img_retail=findViewById(R.id.img_retail);
-        txt_splash=findViewById(R.id.txt_splash);
 
+        txt_splash=findViewById(R.id.txt_splash);
+        Typeface tfGibsonBold=ResourcesCompat.getFont(this,R.font.gibson_semibold);
+        txt_splash.setTypeface(tfGibsonBold);
         // load the animation
         animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.zoomout);
@@ -54,15 +55,12 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     @Override
     public void onAnimationEnd(Animation animation) {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent safeDrive=new Intent(getApplicationContext(),SafeDriveActivity.class);
-                safeDrive.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(safeDrive);
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent safeDrive=new Intent(getApplicationContext(),SafeDriveActivity.class);
+            safeDrive.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(safeDrive);
+            finish();
         },delay);
 
     }

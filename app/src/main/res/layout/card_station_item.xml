@@ -4,15 +4,14 @@
     android:orientation="vertical"
     app:cardCornerRadius="12dp"
     android:theme="@style/Widget.MaterialComponents.CardView"
-    android:layout_width="328dp"
-    android:layout_margin="16dp"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="8dp"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="16dp">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_bottom_sheet"
@@ -42,6 +41,7 @@
             android:id="@+id/br_km_card"
             android:layout_marginLeft="10dp"
             android:layout_below="@id/txt_station_title"
+            android:layout_toRightOf="@+id/img_car_station"
             android:layout_height="30dp" />
 
         <androidx.appcompat.widget.AppCompatImageView

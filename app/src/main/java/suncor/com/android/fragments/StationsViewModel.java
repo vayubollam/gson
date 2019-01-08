@@ -1,5 +1,12 @@
 package suncor.com.android.fragments;
+
 import android.util.Log;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.VisibleRegion;
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
@@ -13,21 +20,38 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
+import suncor.com.android.dialogs.LocationDialog;
 
 public class StationsViewModel extends ViewModel {
 
-    public  MutableLiveData<ArrayList<Station>> stations_arround =new MutableLiveData<>();
+    public MutableLiveData<ArrayList<Station>> stationsAround = new MutableLiveData<>();
+    public MutableLiveData<Station> selectedStation = new MutableLiveData<>();
+    public MutableLiveData<Marker> selectedMarker=new MutableLiveData<>();
+    public MutableLiveData<Boolean> stillInRegion=new MutableLiveData<>();
+    public LatLngBounds lastLatLngBounds=null;
+    public MutableLiveData<HashMap<Marker,Station>> stationMarkers=new MutableLiveData<>();
+    public MutableLiveData<Marker> lastMarker=new MutableLiveData<>();
+    public MutableLiveData<Integer> stationPosition=new MutableLiveData<>();
 
 
+    public void refreshStations(GoogleMap googleMap) {
+         LatLngBounds latLngBounds=getRegion(googleMap);
+        double southWestLat=latLngBounds.southwest.latitude;
+        double southWestLong=latLngBounds.southwest.longitude;
+        double northEastLat=latLngBounds.northeast.latitude;
+        double northEastLong=latLngBounds.northeast.longitude;
 
-    public MutableLiveData<ArrayList<Station>> getStations(Double southWestLat,Double southWestLong,Double  northEastLat, Double northEastLong) {
+
         URI adapterPath = null;
         try {
-            adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat="+southWestLat+"&southWestLong="+southWestLong+"0&northEastLat="+northEastLat+"&northEastLong="+northEastLong+"&amenities=PayAtPump;ULTRA94;PAYPASS,PAYWAVE");
+            adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat=" + southWestLat + "&southWestLong=" + southWestLong + "0&northEastLat=" + northEastLat + "&northEastLong=" + northEastLong + "&amenities=PayAtPump;ULTRA94;PAYPASS,PAYWAVE");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -36,20 +60,22 @@ public class StationsViewModel extends ViewModel {
         request.send(new WLResponseListener() {
             @Override
             public void onSuccess(WLResponse wlResponse) {
-               String  jsonText = wlResponse.getResponseText();
+                String jsonText = wlResponse.getResponseText();
+               if(stationsAround.getValue()!=null)
+                stationsAround.getValue().clear();
 
                 try {
                     final JSONArray jsonArray = new JSONArray(jsonText);
-                    Gson gson=new Gson();
-                    ArrayList<Station> stations=new ArrayList<>();
+                    Gson gson = new Gson();
+                    ArrayList<Station> stations = new ArrayList<>();
                     stations.clear();
-                    for(int i=0;i<jsonArray.length();i++)
-                    {
-                        JSONObject jo=jsonArray.getJSONObject(i);
-                        Station station=gson.fromJson(String.valueOf(jo),Station.class);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Station station = gson.fromJson(String.valueOf(jo), Station.class);
                         stations.add(station);
                     }
-                   stations_arround.postValue(stations);
+                    stationsAround.postValue(stations);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -59,15 +85,59 @@ public class StationsViewModel extends ViewModel {
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
-                Log.d("mfp_error",wlFailResponse.getErrorMsg());
+                Log.d("mfp_error", wlFailResponse.getErrorMsg());
 
             }
         });
-        return stations_arround;
+    }
+
+    public void checkRegion(GoogleMap googleMap)
+    {
+        LatLngBounds currentBounds=getRegion(googleMap);
+        if(lastLatLngBounds==null){
+            lastLatLngBounds=currentBounds;
+            stillInRegion.setValue(false);
+
+        }else {
+            if(lastLatLngBounds.contains(currentBounds.northeast) && lastLatLngBounds.contains(currentBounds.southwest)){
+                stillInRegion.postValue(true);
+            }else{
+                lastLatLngBounds=currentBounds;
+                stillInRegion.setValue(false);
+                selectedMarker.setValue(null);
+                lastMarker.setValue(null);
+                stationPosition.setValue(null);
+            }
+        }
+    }
+
+    public void CheckMarker(Marker marker){
+         if(lastMarker.getValue()==null){
+             Objects.requireNonNull(lastMarker).setValue(marker);
+             selectedMarker.setValue(marker);
+         }else{
+             if(!marker.equals(selectedMarker.getValue())){
+                 lastMarker.setValue(selectedMarker.getValue());
+                 selectedMarker.setValue(marker);
+             }
+         }
+
+         stationPosition.setValue(stationsAround.getValue().indexOf(stationMarkers.getValue().get(marker)));
     }
 
 
-
+    private LatLngBounds getRegion(GoogleMap mGoogleMap){
+        VisibleRegion vr = mGoogleMap.getProjection().getVisibleRegion();
+        double left = vr.latLngBounds.southwest.longitude;
+        double top = vr.latLngBounds.northeast.latitude;
+        double right = vr.latLngBounds.northeast.longitude;
+        double bottom = vr.latLngBounds.southwest.latitude;
+        return new LatLngBounds(new LatLng(bottom,left),new LatLng(top,right));
+    }
+    public void alertUser(FragmentManager fragmentManager) {
+        LocationDialog dialogFragment = new LocationDialog ();
+            dialogFragment.show(fragmentManager, "location dialog");
+        }
 
 }
 

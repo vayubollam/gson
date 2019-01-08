@@ -1,5 +1,7 @@
 package suncor.com.android.dataObjects;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class Station {
      private ArrayList<Hour> hours;
      private List<String> amenities;
      private Address address;
+
 
     public Station(int id, ArrayList<Hour> hours, List<String> amenities, Address address) {
         this.id = id;

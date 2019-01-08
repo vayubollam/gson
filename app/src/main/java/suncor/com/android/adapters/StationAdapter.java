@@ -1,22 +1,23 @@
 package suncor.com.android.adapters;
 
-import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -25,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -41,24 +43,25 @@ import suncor.com.android.R;
 import suncor.com.android.constants.GeneralConstants;
 import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
+import suncor.com.android.dataObjects.StationMatrix;
 import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.StationViewHolder>   {
 
-    private LayoutInflater layoutInflater;
-    private ArrayList<Station> stations;
-    private Context context;
-    private LatLng userLocation;
-    private FragmentActivity activity;
-    private BottomSheetBehavior bottomSheetBehavior;
+    private final LayoutInflater layoutInflater;
+    private final ArrayList<Station> stations;
+    private final Context context;
+    private final FragmentActivity activity;
+    private final BottomSheetBehavior bottomSheetBehavior;
+    private LatLng directionslatlng;
+    private final SharedPreferences prefs;
     public static final String ORIGIN_LAT = "origin_lat";
     public static final String ORIGIN_LNG = "origin_lng";
     public static final String DEST_LAT = "dest_lat";
     public static final String DEST_LNG = "dest_lng";
-
-    private LatLng directionslatlng;
-    private SharedPreferences prefs;
+    private LatLng userLocation;
+    private HashMap<Station,StationMatrix> stationMatrixHashMap=new HashMap<>();
 
     public StationAdapter(ArrayList<Station> stations, Context context,LatLng userLocation,FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
         this.stations = stations;
@@ -74,14 +77,10 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rootView=layoutInflater.inflate(R.layout.card_station_item,parent,false);
-        StationViewHolder viewHolder=new StationViewHolder(rootView);
-        return viewHolder;
+        return new StationViewHolder(rootView);
     }
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
+
 
 
 
@@ -105,59 +104,55 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         }else{
             holder.txt_open.setText("Close. opens at "+ getTiming(openHour,openmin));
         }
-        Data locationData = new Data.Builder()
-                        .putDouble(DEST_LAT, stations.get(position).getAddress().getLatitude())
-                        .putDouble(DEST_LNG, stations.get(position).getAddress().getLongitude())
-                        .putDouble(ORIGIN_LAT, userLocation.latitude)
-                        .putDouble(ORIGIN_LNG,userLocation.longitude)
-                        .build();
-        Constraints myConstraints = new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build();
-        OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
-                       setConstraints(myConstraints)
-                        .setInputData(locationData)
-                        .build();
-        WorkManager.getInstance().enqueue(getDirectionsWork);
-        WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
-                        .observe(activity, workInfo -> {
-                            if (workInfo != null && workInfo.getState().isFinished()) {
-                                String distance=workInfo.getOutputData().getString("distance");
-                                String duration=workInfo.getOutputData().getString("duration");
-                                holder.br.setVisibility(View.INVISIBLE);
-                                holder.txt_km.setText(distance+" away . "+duration);
-                                holder.img_car_station.setVisibility(View.VISIBLE);
-                            }
-                        });
+        if(stationMatrixHashMap.get(stations.get(position))==null){
+            Data locationData = new Data.Builder()
+                    .putDouble(DEST_LAT, stations.get(position).getAddress().getLatitude())
+                    .putDouble(DEST_LNG, stations.get(position).getAddress().getLongitude())
+                    .putDouble(ORIGIN_LAT, userLocation.latitude)
+                    .putDouble(ORIGIN_LNG,userLocation.longitude)
+                    .build();
+            Constraints myConstraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
+            OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
+                    setConstraints(myConstraints)
+                    .setInputData(locationData)
+                    .build();
+            WorkManager.getInstance().enqueue(getDirectionsWork);
+            WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
+                    .observe(activity, workInfo -> {
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            String distance=workInfo.getOutputData().getString("distance");
+                            String duration=workInfo.getOutputData().getString("duration");
+                            holder.br.setVisibility(View.INVISIBLE);
+                            holder.txt_km.setText(distance+" away . "+duration);
+                            holder.img_car_station.setVisibility(View.VISIBLE);
+                            stationMatrixHashMap.put(stations.get(position),new StationMatrix(distance,duration));
+                        }
+                    });
+        }else{
+            holder.br.setVisibility(View.INVISIBLE);
+            holder.txt_km.setText(stationMatrixHashMap.get(stations.get(position)).getDistance()+" away . "+stationMatrixHashMap.get(stations.get(position)).getDuration());
+            holder.img_car_station.setVisibility(View.VISIBLE);
+        }
 
 
 
-        holder.btn_card_directions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                directionslatlng=new LatLng(stations.get(position).getAddress().getLatitude(),stations.get(position).getAddress().getLongitude());
-                Boolean always = prefs.getBoolean("always", false);
-                if (always) {
-                    int choice=prefs.getInt("choice",0);
-                    if(choice==1)
-                    {
-                        openGoogleMAps();
-                    }
-                    if(choice==2)
-                    {
-                        openWaze();
-                    }
-                    if(choice==0)
-                    {
-                        Bundle bundle=new Bundle();
-                        bundle.putDouble("lat",stations.get(position).getAddress().getLatitude());
-                        bundle.putDouble("lng",stations.get(position).getAddress().getLongitude());
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        OpenWithDialog openWithDialog=new OpenWithDialog();
-                        openWithDialog.setArguments(bundle);
-                        openWithDialog.show(activity.getSupportFragmentManager(),"choosing");
-                    }
-                }else{
+        holder.btn_card_directions.setOnClickListener(v -> {
+            directionslatlng=new LatLng(stations.get(position).getAddress().getLatitude(),stations.get(position).getAddress().getLongitude());
+            Boolean always = prefs.getBoolean("always", false);
+            if (always) {
+                int choice=prefs.getInt("choice",0);
+                if(choice==1)
+                {
+                    openGoogleMAps();
+                }
+                if(choice==2)
+                {
+                    openWaze();
+                }
+                if(choice==0)
+                {
                     Bundle bundle=new Bundle();
                     bundle.putDouble("lat",stations.get(position).getAddress().getLatitude());
                     bundle.putDouble("lng",stations.get(position).getAddress().getLongitude());
@@ -166,18 +161,26 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
                     openWithDialog.setArguments(bundle);
                     openWithDialog.show(activity.getSupportFragmentManager(),"choosing");
                 }
-
-
-
-
-
-
+            }else{
+                Bundle bundle=new Bundle();
+                bundle.putDouble("lat",stations.get(position).getAddress().getLatitude());
+                bundle.putDouble("lng",stations.get(position).getAddress().getLongitude());
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                OpenWithDialog openWithDialog=new OpenWithDialog();
+                openWithDialog.setArguments(bundle);
+                openWithDialog.show(activity.getSupportFragmentManager(),"choosing");
             }
+
+
+
+
+
+
         });
     }
 
 
-    public boolean isGoogleMapsInstalled()
+    private boolean isGoogleMapsInstalled()
     {
         try
         {
@@ -190,7 +193,7 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         }
     }
 
-    public void openGoogleMAps(){
+    private void openGoogleMAps(){
         if(isGoogleMapsInstalled()){
             Uri navigationIntentUri = Uri.parse("google.navigation:q=" + directionslatlng.latitude +"," + directionslatlng.longitude);//creating intent with latlng
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
@@ -206,7 +209,7 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         }
     }
 
-    public void openWaze(){
+    private void openWaze(){
         if(isWazeInstalled()){
             String url = "waze://?ll="+directionslatlng.latitude+","+directionslatlng.longitude+"&navigate=yes";
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -222,7 +225,7 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         }
     }
 
-    public boolean isWazeInstalled()
+    private boolean isWazeInstalled()
     {
         try
         {
@@ -235,21 +238,12 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         }
     }
 
-    public int getHeight()
-    {
-        WindowManager windowmanager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dimension = new DisplayMetrics();
-        windowmanager.getDefaultDisplay().getMetrics(dimension);
-        return  dimension.heightPixels;
-    }
-
-    public int getDayofWeek(){
+    private int getDayofWeek(){
         Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        return day;
+        return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
-    public String getTiming(int hour, int min)
+    private String getTiming(int hour, int min)
     {
 
         String time;
@@ -278,12 +272,17 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
 
     public class StationViewHolder extends RecyclerView.ViewHolder  {
 
-        AppCompatTextView txt_title,txt_km,txt_open;
-        AppCompatImageView img_bottom_sheet,img_car_station;
-        MaterialButton btn_card_directions;
-        ProgressBar br;
+        final AppCompatTextView txt_title;
+        final AppCompatTextView txt_km;
+        final AppCompatTextView txt_open;
+        final AppCompatImageView img_bottom_sheet;
+        final AppCompatImageView img_car_station;
+        final MaterialButton btn_card_directions;
+        final ProgressBar br;
+        final int screenWidth=getScreenWidth();
 
-        public StationViewHolder(@NonNull View itemView) {
+
+        StationViewHolder(@NonNull View itemView) {
             super(itemView);
             Typeface tfGibson_bold=ResourcesCompat.getFont(context,R.font.gibson_bold);
             Typeface tfGibson_regular=ResourcesCompat.getFont(context,R.font.gibson_regular);
@@ -299,10 +298,38 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
             btn_card_directions.setTypeface(tfGibson_semibold);
             br=itemView.findViewById(R.id.br_km_card);
             img_car_station=itemView.findViewById(R.id.img_car_station);
-            img_car_station.setVisibility(View.INVISIBLE);
-            txt_km.setText("...");
+            txt_km.setText("");
 
+            int marginLeftDp = 16;
+            int marginLeft = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, marginLeftDp, context.getResources()
+                            .getDisplayMetrics());
+            int marginRightDp = -8;
+            int marginRight = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, marginRightDp, context.getResources()
+                            .getDisplayMetrics());
+            int marginBottomDp = 8;
+            int marginBottom = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, marginBottomDp, context.getResources()
+                            .getDisplayMetrics());
+
+            setMargins(itemView,marginLeft,0,marginRight,marginBottom);
+            itemView.getLayoutParams().width=screenWidth-((int)(32 * Resources.getSystem().getDisplayMetrics().density));
         }
+        private int getScreenWidth() {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+            return displayMetrics.widthPixels;
+        }
+        private void setMargins (View view, int left, int top, int right, int bottom) {
+            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                p.setMargins(left, top, right, bottom);
+                view.requestLayout();
+            }
+        }
+
 
 
     }
