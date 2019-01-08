@@ -37,7 +37,14 @@
     <style name="alertLocation" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+    </style>
 
+    <style name="StationDetailsDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/StationDetailsSheetStyle</item>
+    </style>
+
+    <style name="StationDetailsSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

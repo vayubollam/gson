@@ -45,6 +45,7 @@ import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
 import suncor.com.android.dataObjects.StationMatrix;
 import suncor.com.android.dialogs.OpenWithDialog;
+import suncor.com.android.dialogs.StationDetailsDialog;
 import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.StationViewHolder>   {
@@ -170,13 +171,20 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
                 openWithDialog.setArguments(bundle);
                 openWithDialog.show(activity.getSupportFragmentManager(),"choosing");
             }
-
-
-
-
-
-
         });
+        
+        holder.img_bottom_sheet.setOnClickListener((v) -> {
+            showStationDetails(stations.get(position), holder.itemView);
+        });
+    }
+
+    private void showStationDetails(Station station, View itemView) {
+        StationDetailsDialog dialog = new StationDetailsDialog();
+        dialog.setIntialHeight(itemView.getHeight());
+        int[] position = new int[2];
+        itemView.getLocationInWindow(position);
+        dialog.setIntialPosition(position[1]);
+        dialog.show(activity.getSupportFragmentManager(), "details");
     }
 
 
@@ -279,6 +287,7 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         final AppCompatImageView img_car_station;
         final MaterialButton btn_card_directions;
         final ProgressBar br;
+        final int screenWidth=getScreenWidth();
 
 
         StationViewHolder(@NonNull View itemView) {
@@ -299,9 +308,35 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
             img_car_station=itemView.findViewById(R.id.img_car_station);
             txt_km.setText("");
 
+            int marginLeftDp = 8;
+            int marginLeft = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, marginLeftDp, context.getResources()
+                            .getDisplayMetrics());
+            int marginRightDp = 8;
+            int marginRight = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, marginRightDp, context.getResources()
+                            .getDisplayMetrics());
+            int marginBottomDp = 8;
+            int marginBottom = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, marginBottomDp, context.getResources()
+                            .getDisplayMetrics());
+
+            setMargins(itemView,marginLeft,0,marginRight,marginBottom);
+            itemView.getLayoutParams().width=screenWidth-((int)(32 * Resources.getSystem().getDisplayMetrics().density));
         }
+        private int getScreenWidth() {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-
+            return displayMetrics.widthPixels;
+        }
+        private void setMargins (View view, int left, int top, int right, int bottom) {
+            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                p.setMargins(left, top, right, bottom);
+                view.requestLayout();
+            }
+        }
 
 
 

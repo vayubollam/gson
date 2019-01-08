@@ -27,6 +27,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.adapters.StationAdapter;
@@ -95,7 +97,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         stations_bottom_sheet=getView().findViewById(R.id.stations_bottom_sheet);
         bottomSheetBehavior=BottomSheetBehavior.from(stations_bottom_sheet);
         recyclerView = getView().findViewById(R.id.card_recycler);
-
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
 
     }
 
@@ -136,8 +139,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             }
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
-
-
 
     }
 

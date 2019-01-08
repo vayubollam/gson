@@ -18,4 +18,8 @@
     <string name="always">ALWAYS</string>
     <string name="nearby">NearBy</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canda on The go!</string>
+    <string name="add_to_favourites_button">Add to favourites</string>
+    <string name="call_generic">Call . %s</string>
+    <string name="services_amenities">Services</string>
+    <string name="amenities">Amenities</string>
 </resources>
