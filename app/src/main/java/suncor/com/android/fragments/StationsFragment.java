@@ -90,6 +90,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         super.onActivityCreated(savedInstanceState);
         indeterminateBar = Objects.requireNonNull(getView()).findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
+
         mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
         stations_bottom_sheet=getView().findViewById(R.id.stations_bottom_sheet);
         bottomSheetBehavior=BottomSheetBehavior.from(stations_bottom_sheet);
@@ -152,17 +153,37 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         });
         mViewModel.selectedMarker.observe(getActivity(), marker -> {
             if(marker!=null)
-                marker.setIcon(getBitmapFromVector(getContext(),R.drawable.ic_place_black_24dp,getResources().getColor(R.color.red_location)));
+            {
+                try{
+                    marker.setIcon(getBitmapFromVector(getContext(),R.drawable.ic_place_black_24dp,getResources().getColor(R.color.red_location)));
+
+
+                }catch (Exception ex){
+                  ex.printStackTrace();
+                }
+                 }
         });
         mViewModel.lastMarker.observe(getActivity(), marker -> {
           if(marker!=null)
-             marker.setIcon(getBitmapFromVector(getContext(),R.drawable.ic_pin_filled,getResources().getColor(R.color.black_100)));
+          {
+              try{
+                  marker.setIcon(getBitmapFromVector(getContext(),R.drawable.ic_pin_filled,getResources().getColor(R.color.black_100)));
+              }catch (Exception ex){
+                  ex.printStackTrace();
+              }
+          }
         });
 
         mViewModel.stationPosition.observe(getActivity(), position -> {
             if(position!=null)
                 recyclerView.scrollToPosition(position);
         });
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     //Map is ready
@@ -318,6 +339,7 @@ private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
         if (isAdded() && mGoogleMap!=null) {
 
             mGoogleMap.clear();
+            stationsMarkers.clear();
             if(myLocationMarker!=null)
                 myLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(myLocationMarker.getPosition()).icon(getBitmapFromVector(getContext(),R.drawable.ic_my_location,getResources().getColor(R.color.red_location))));
 

@@ -32,7 +32,6 @@ import suncor.com.android.dialogs.LocationDialog;
 public class StationsViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<Station>> stationsAround = new MutableLiveData<>();
-    public MutableLiveData<Station> selectedStation = new MutableLiveData<>();
     public MutableLiveData<Marker> selectedMarker=new MutableLiveData<>();
     public MutableLiveData<Boolean> stillInRegion=new MutableLiveData<>();
     public LatLngBounds lastLatLngBounds=null;
@@ -61,8 +60,6 @@ public class StationsViewModel extends ViewModel {
             @Override
             public void onSuccess(WLResponse wlResponse) {
                 String jsonText = wlResponse.getResponseText();
-               if(stationsAround.getValue()!=null)
-                stationsAround.getValue().clear();
 
                 try {
                     final JSONArray jsonArray = new JSONArray(jsonText);
@@ -104,9 +101,8 @@ public class StationsViewModel extends ViewModel {
             }else{
                 lastLatLngBounds=currentBounds;
                 stillInRegion.setValue(false);
-                selectedMarker.setValue(null);
                 lastMarker.setValue(null);
-                stationPosition.setValue(null);
+                selectedMarker.setValue(null);
             }
         }
     }
@@ -116,10 +112,9 @@ public class StationsViewModel extends ViewModel {
              Objects.requireNonNull(lastMarker).setValue(marker);
              selectedMarker.setValue(marker);
          }else{
-             if(!marker.equals(selectedMarker.getValue())){
                  lastMarker.setValue(selectedMarker.getValue());
                  selectedMarker.setValue(marker);
-             }
+
          }
 
          stationPosition.setValue(stationsAround.getValue().indexOf(stationMarkers.getValue().get(marker)));

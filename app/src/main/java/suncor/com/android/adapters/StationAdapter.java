@@ -279,7 +279,6 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         final AppCompatImageView img_car_station;
         final MaterialButton btn_card_directions;
         final ProgressBar br;
-        final int screenWidth=getScreenWidth();
 
 
         StationViewHolder(@NonNull View itemView) {
@@ -300,35 +299,9 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
             img_car_station=itemView.findViewById(R.id.img_car_station);
             txt_km.setText("");
 
-            int marginLeftDp = 16;
-            int marginLeft = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, marginLeftDp, context.getResources()
-                            .getDisplayMetrics());
-            int marginRightDp = -8;
-            int marginRight = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, marginRightDp, context.getResources()
-                            .getDisplayMetrics());
-            int marginBottomDp = 8;
-            int marginBottom = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, marginBottomDp, context.getResources()
-                            .getDisplayMetrics());
+        }
 
-            setMargins(itemView,marginLeft,0,marginRight,marginBottom);
-            itemView.getLayoutParams().width=screenWidth-((int)(32 * Resources.getSystem().getDisplayMetrics().density));
-        }
-        private int getScreenWidth() {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-            return displayMetrics.widthPixels;
-        }
-        private void setMargins (View view, int left, int top, int right, int bottom) {
-            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                p.setMargins(left, top, right, bottom);
-                view.requestLayout();
-            }
-        }
 
 
 
