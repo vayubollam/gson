@@ -97,6 +97,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
         stations_bottom_sheet=getView().findViewById(R.id.stations_bottom_sheet);
         bottomSheetBehavior=BottomSheetBehavior.from(stations_bottom_sheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         recyclerView = getView().findViewById(R.id.card_recycler);
         LinearSnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
