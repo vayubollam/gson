@@ -22,4 +22,6 @@
     <string name="amenities">Amenities</string>
     <string name="open_generic">Open. closes at %s</string>
     <string name="close_generic">Close. opens at %s</string>
+    <string name="fuel_amenities">Fuel</string>
+    <string name="carwash_amenities">Car wash</string>
 </resources>

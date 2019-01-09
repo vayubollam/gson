@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="station_services">
-        <item>Accessible fueling service</item>
+    <string-array name="station_services_enum">
+        <item>handicapAccessible</item>
+        <item>bankMachine</item>
+        <item>aw</item>
+        <item>beerAndWine</item>
+        <item>open24Hours</item>
+        <item>convenienceStore</item>
+        <item>fullServe</item>
+        <item>lottery</item>
+        <item>restaurant</item>
+    </string-array>
+    <string-array name="station_services_values">
+        <item>Accessible fuelling service</item>
         <item>ATM</item>
         <item>A&amp;W</item>
-        <item>open24Hours</item>
-        <item>Beer and wine (only available in QC)</item>
+        <item>Beer and wine</item>
+        <item>Open 24hrs</item>
         <item>Convenience store</item>
         <item>Full serve</item>
         <item>Lottery</item>
         <item>Restaurant</item>
-        <item>Propane tank exchange</item>
     </string-array>
-    <string-array name="station_fuel_options">
+
+    <string-array name="station_fuel_enum">
+        <item>diesel</item>
+        <item>electricChargingStation</item>
+        <item>propaneBottleExchange</item>
+        <item>octane94Gasoline</item>
+        <item>ultra94</item>
+    </string-array>
+    <string-array name="station_fuel_values">
         <item>Diesel</item>
         <item>Electric charging station</item>
-        <item>SuperClean 94</item>
+        <item>Propane tank exchange</item>
+        <item>SuperClean™ 94 Gasoline</item>
         <item>Ultra 94</item>
     </string-array>
-    <string-array name="station_wash_options">
-        <item>Touchless (subset of Car Wash results)</item>
+
+    <string-array name="station_wash_enum">
+        <item>carWashBrushTypeTouchless</item>
+    </string-array>
+    <string-array name="station_wash_values">
+        <item>Touchless</item>
     </string-array>
 </resources>

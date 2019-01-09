@@ -281,9 +281,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         StationViewHolder(CardStationItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-//            this.binding.getRoot().getLayoutParams().width = screenWidth - 2 * context.getResources().getDimensionPixelSize(R.dimen.stationCardMargin);
-//            FrameLayout.LayoutParams cardViewParams = (FrameLayout.LayoutParams) binding.cardView.getLayoutParams();
-//            cardViewParams.setMargins(0, 0, 0, 0);
         }
 
         private int getScreenWidth() {
@@ -293,6 +290,5 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             return displayMetrics.widthPixels;
         }
     }
-
 
 }

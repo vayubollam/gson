@@ -1,7 +1,5 @@
 package suncor.com.android.utilities;
 
-import android.widget.TextView;
-
 import java.util.ArrayList;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -12,21 +10,26 @@ public class BindingAdapters {
     @BindingAdapter({"app:station", "app:amenitieType"})
     public static void setAmenities(AppCompatTextView view, Station station, int amenitieType) {
         StringBuffer buffer = new StringBuffer();
-        ArrayList allAmenities = new ArrayList();
+        ArrayList amenitiesEnum = new ArrayList();
+        ArrayList amenitiesValues = new ArrayList();
         switch (amenitieType) {
             case 0:
-                allAmenities = Station.SERVICE_AMENITIES;
+                amenitiesEnum = Station.SERVICE_AMENITIES_ENUM;
+                amenitiesValues = Station.SERVICE_AMENITIES_VALUES;
                 break;
             case 1:
-                allAmenities = Station.FUEL_AMENITIES;
+                amenitiesEnum = Station.FUEL_AMENITIES_ENUM;
+                amenitiesValues = Station.FUEL_AMENITIES_VALUES;
                 break;
             case 2:
-                allAmenities = Station.WASH_AMENITIES;
+                amenitiesEnum = Station.WASH_AMENITIES_ENUM;
+                amenitiesValues = Station.WASH_AMENITIES_VALUES;
                 break;
         }
         for (String amenitie : station.getAmenities()) {
-            if (allAmenities.contains(amenitie)) {
-                buffer.append(amenitie);
+            int index = amenitiesEnum.indexOf(amenitie);
+            if (index != -1) {
+                buffer.append(amenitiesValues.get(index));
                 buffer.append("\n");
             }
         }
