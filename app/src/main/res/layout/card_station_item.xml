@@ -8,15 +8,10 @@
 
         <import type="android.view.View" />
 
-        <import type="suncor.com.android.dataObjects.Station" />
-
         <variable
-            name="station"
-            type="suncor.com.android.dataObjects.Station" />
+            name="vm"
+            type="suncor.com.android.fragments.StationViewModel" />
 
-        <variable
-            name="distance"
-            type="suncor.com.android.dataObjects.StationMatrix" />
     </data>
 
     <FrameLayout
@@ -53,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@{station.address.addressLine}"
+                    android:text="@{vm.station.address.addressLine}"
                     android:textAppearance="@style/CardStationTitle"
                     tools:text="Station Name" />
 
@@ -76,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
-                        android:text="@{station.address.addressLine}"
+                        android:text="@{vm.station.address.addressLine}"
                         android:textAppearance="@style/NormalText"
                         tools:text="Station address" />
                 </LinearLayout>
@@ -91,13 +86,13 @@
                         android:id="@+id/br_km_card"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:visibility="@{distance != null? View.GONE : View.VISIBLE}" />
+                        android:visibility="@{vm.distanceDuration != null? View.GONE : View.VISIBLE}" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_car_station"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="@{distance != null? View.VISIBLE : View.GONE}"
+                        android:visibility="@{vm.distanceDuration != null? View.VISIBLE : View.GONE}"
                         app:srcCompat="@drawable/ic_car" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -106,9 +101,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
-                        android:text="@{@string/distance_generic(distance.distance, distance.duration)}"
+                        android:text="@{@string/distance_generic(vm.distanceDuration.distance, vm.distanceDuration.duration)}"
                         android:textAppearance="@style/NormalText"
-                        android:visibility="@{distance != null? View.VISIBLE : View.GONE}"
+                        android:visibility="@{vm.distanceDuration != null? View.VISIBLE : View.GONE}"
                         tools:text="0.5 Km away . 2 min drive" />
                 </LinearLayout>
 
@@ -131,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
-                        android:text="@{Station.isOpen(station)?@string/open_generic(station.getTodaysHours().formatCloseHour()) : @string/close_generic(station.getTodaysHours().formatOpenHour())}"
+                        android:text="@{vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/close_generic(vm.getOpenHour())}"
                         android:textAppearance="@style/NormalText" />
                 </LinearLayout>
 
@@ -188,7 +183,7 @@
                             android:drawableLeft="@drawable/ic_phone"
                             android:drawablePadding="16dp"
                             android:gravity="left|center_vertical"
-                            android:text="@{@string/call_generic(station.address.phone)}"
+                            android:text="@{@string/call_generic(vm.station.address.phone)}"
                             android:textAllCaps="false"
                             tools:text="Call . (123)456-7890" />
 
@@ -208,7 +203,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="8dp"
                             android:orientation="vertical"
-                            android:visibility="@{station.hasService()?View.VISIBLE:View.GONE}">
+                            android:visibility="@{vm.station.hasService()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
@@ -223,10 +218,11 @@
                                 style="@style/SecondaryText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:station="@{station}"
                                 app:amenitieType="@{0}"
+                                app:station="@{vm.station}"
                                 tools:text="Pay at pump\nContactless payment" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:id="@+id/fuel_amenities_list"
                             android:layout_width="match_parent"
@@ -234,7 +230,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="8dp"
                             android:orientation="vertical"
-                            android:visibility="@{station.hasFuelOptions()?View.VISIBLE:View.GONE}">
+                            android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
@@ -249,10 +245,11 @@
                                 style="@style/SecondaryText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:station="@{station}"
                                 app:amenitieType="@{1}"
+                                app:station="@{vm.station}"
                                 tools:text="Pay at pump\nContactless payment" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:id="@+id/wash_amenities_list"
                             android:layout_width="match_parent"
@@ -260,7 +257,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="8dp"
                             android:orientation="vertical"
-                            android:visibility="@{station.hasWashOptions()?View.VISIBLE:View.GONE}">
+                            android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
@@ -275,8 +272,8 @@
                                 style="@style/SecondaryText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:station="@{station}"
                                 app:amenitieType="@{2}"
+                                app:station="@{vm.station}"
                                 tools:text="Pay at pump\nContactless payment" />
                         </LinearLayout>
                     </LinearLayout>

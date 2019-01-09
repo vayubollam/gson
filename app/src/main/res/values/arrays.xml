@@ -32,7 +32,7 @@
     </string-array>
     <string-array name="station_fuel_values">
         <item>Diesel</item>
-        <item>Electric charging station</item>
+        <item>Electric charging stationViewModel</item>
         <item>Propane tank exchange</item>
         <item>SuperClean™ 94 Gasoline</item>
         <item>Ultra 94</item>

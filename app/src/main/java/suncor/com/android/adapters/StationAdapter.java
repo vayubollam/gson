@@ -6,37 +6,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,19 +29,18 @@ import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import suncor.com.android.R;
 import suncor.com.android.constants.GeneralConstants;
-import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
 import suncor.com.android.dataObjects.StationMatrix;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.dialogs.StationDetailsDialog;
+import suncor.com.android.fragments.StationViewModel;
 import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
-    private final ArrayList<Station> stations;
+    private final ArrayList<StationViewModel> stations;
     private final Context context;
     private final FragmentActivity activity;
     private final BottomSheetBehavior bottomSheetBehavior;
@@ -68,11 +51,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     public static final String DEST_LAT = "dest_lat";
     public static final String DEST_LNG = "dest_lng";
     private LatLng userLocation;
-    private HashMap<Station, StationMatrix> stationMatrixHashMap = new HashMap<>();
     private GestureDetectorCompat swipeUpDetector;
 
     public StationAdapter(ArrayList<Station> stations, Context context, LatLng userLocation, FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
-        this.stations = stations;
+        this.stations = convertToViewModel(stations);
         this.context = context;
         this.userLocation = userLocation;
         this.activity = activity;
@@ -107,6 +89,14 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         });
     }
 
+    private ArrayList<StationViewModel> convertToViewModel(ArrayList<Station> stations) {
+        ArrayList<StationViewModel> models = new ArrayList<>();
+        for (Station station : stations) {
+            models.add(new StationViewModel(station));
+        }
+        return models;
+    }
+
     @NonNull
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -119,12 +109,12 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
 
-        final Station station = stations.get(position);
-        holder.binding.setStation(station);
+        final StationViewModel stationViewModel = stations.get(position);
+        final Station station = stationViewModel.station.get();
+        holder.binding.setVm(stationViewModel);
         holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
 
-        if (stationMatrixHashMap.get(station) == null) {
-            holder.binding.setDistance(null);
+        if (stationViewModel.distanceDuration.get() == null) {
             Data locationData = new Data.Builder()
                     .putDouble(DEST_LAT, station.getAddress().getLatitude())
                     .putDouble(DEST_LNG, station.getAddress().getLongitude())
@@ -145,12 +135,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                             String distance = workInfo.getOutputData().getString("distance");
                             String duration = workInfo.getOutputData().getString("duration");
                             StationMatrix distanceDuration = new StationMatrix(distance, duration);
-                            stationMatrixHashMap.put(station, distanceDuration);
+                            stationViewModel.distanceDuration.set(distanceDuration);
                             notifyItemChanged(position);
                         }
                     });
-        } else {
-            holder.binding.setDistance(stationMatrixHashMap.get(station));
         }
 
 
@@ -186,13 +174,13 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
-            showStationDetails(station, holder.itemView);
+            showStationDetails(stationViewModel, holder.itemView);
         });
         holder.binding.getRoot().setOnTouchListener((view, event) -> {
             boolean eventHandled = swipeUpDetector.onTouchEvent(event);
             boolean isSwipeUp = eventHandled && event.getAction() != MotionEvent.ACTION_DOWN;
             if (isSwipeUp) {
-                showStationDetails(station, holder.itemView);
+                showStationDetails(stationViewModel, holder.itemView);
             }
             return eventHandled;
         });
@@ -200,7 +188,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         holder.binding.executePendingBindings();
     }
 
-    private void showStationDetails(Station station, View itemView) {
+    private void showStationDetails(StationViewModel stationViewModel, View itemView) {
         if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
             return;
         }
@@ -209,8 +197,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         int[] position = new int[2];
         itemView.getLocationInWindow(position);
         dialog.setIntialPosition(position[1]);
-        dialog.setStation(station);
-        dialog.setDistance(stationMatrixHashMap.get(station));
+        dialog.setStationViewModel(stationViewModel);
         dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
     }
 

@@ -74,12 +74,6 @@ public class Station {
         return address;
     }
 
-    public Hour getTodaysHours() {
-        Calendar calendar = Calendar.getInstance();
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        return getHours().get(dayOfWeek - 1);
-    }
-
     public boolean hasService()
     {
         for(String amenitie : amenities){
@@ -111,10 +105,5 @@ public class Station {
             }
         }
         return false;
-    }
-
-    public static boolean isOpen(Station station) {
-        Hour workHour = station.getTodaysHours();
-        return workHour.isInRange(Calendar.getInstance());
     }
 }
