@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -36,6 +37,7 @@ import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.dialogs.StationDetailsDialog;
 import suncor.com.android.fragments.StationViewModel;
+import suncor.com.android.fragments.StationsViewModel;
 import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
@@ -111,6 +113,9 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
         final StationViewModel stationViewModel = stations.get(position);
         final Station station = stationViewModel.station.get();
+        holder.binding.getRoot().setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        });
         holder.binding.setVm(stationViewModel);
         holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
 
@@ -174,7 +179,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
-            showStationDetails(stationViewModel, holder.itemView);
+            if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)
+                showStationDetails(stationViewModel, holder.itemView);
+            if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED)
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
         holder.binding.getRoot().setOnTouchListener((view, event) -> {
             boolean eventHandled = swipeUpDetector.onTouchEvent(event);
@@ -277,5 +285,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             return displayMetrics.widthPixels;
         }
     }
+
 
 }

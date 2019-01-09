@@ -7,6 +7,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
@@ -79,6 +81,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private BottomSheetBehavior bottomSheetBehavior;
     private LinearLayout stations_bottom_sheet;
 
+
     public static StationsFragment newInstance() {
         return new StationsFragment();
     }
@@ -96,6 +99,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         indeterminateBar.setVisibility(View.VISIBLE);
         mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
         stations_bottom_sheet=getView().findViewById(R.id.stations_bottom_sheet);
+        stations_bottom_sheet.setOnClickListener(this);
         bottomSheetBehavior=BottomSheetBehavior.from(stations_bottom_sheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         recyclerView = getView().findViewById(R.id.card_recycler);
@@ -148,11 +152,25 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     @Override
     public void onResume() {
         super.onResume();
+        mViewModel.shouldHideCards.setValue(false);
         mViewModel.stationsAround.observe(getActivity(), this::UpdateCards);
         mViewModel.stillInRegion.observe(getActivity(), aBoolean -> {
             if(!aBoolean){
                 indeterminateBar.setVisibility(View.VISIBLE);
                 mViewModel.refreshStations(mGoogleMap);
+            }
+        });
+
+        mViewModel.shouldHideCards.observe(getActivity(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean)
+                {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
             }
         });
         mViewModel.selectedMarker.observe(getActivity(), marker -> {
@@ -194,6 +212,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         mGoogleMap.setMinZoomPreference(zoomLevel);
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
+
         if (!haveNetworkConnection()) {
 
             indeterminateBar.setVisibility(View.INVISIBLE);
@@ -221,6 +240,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel);
                 mGoogleMap.animateCamera(cameraUpdate);
                 locationManager.removeUpdates(locationListener);
+                mViewModel.animatingToUserLocation=true;
 
             }
     }
@@ -247,6 +267,9 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             {
                 alertUser();
             }
+        }
+        if(v==stations_bottom_sheet){
+           // mViewModel.shouldHideCards.setValue(false);
         }
     }
 
@@ -311,6 +334,7 @@ private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
     @Override
     public boolean onMarkerClick(Marker marker) {
        mViewModel.CheckMarker(marker);
+       mViewModel.shouldHideCards.setValue(false);
         return true;
     }
 
@@ -319,9 +343,7 @@ private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
     @Override
     public void onCameraIdle() {
         mViewModel.checkRegion(mGoogleMap);
-
     }
-
 
 
     public static Marker getMarkerByStation(HashMap<Marker,Station> sa, Station station) {

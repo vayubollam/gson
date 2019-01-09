@@ -38,6 +38,8 @@ public class StationsViewModel extends ViewModel {
     public MutableLiveData<HashMap<Marker,Station>> stationMarkers=new MutableLiveData<>();
     public MutableLiveData<Marker> lastMarker=new MutableLiveData<>();
     public MutableLiveData<Integer> stationPosition=new MutableLiveData<>();
+    public MutableLiveData<Boolean> shouldHideCards=new MutableLiveData<>();
+    public Boolean animatingToUserLocation=false;
 
 
     public void refreshStations(GoogleMap googleMap) {
@@ -90,6 +92,7 @@ public class StationsViewModel extends ViewModel {
 
     public void checkRegion(GoogleMap googleMap)
     {
+
         LatLngBounds currentBounds=getRegion(googleMap);
         if(lastLatLngBounds==null){
             lastLatLngBounds=currentBounds;
@@ -97,15 +100,24 @@ public class StationsViewModel extends ViewModel {
 
         }else {
             if(lastLatLngBounds.contains(currentBounds.northeast) && lastLatLngBounds.contains(currentBounds.southwest)){
-                stillInRegion.postValue(true);
+                stillInRegion.setValue(true);
+
             }else{
                 lastLatLngBounds=currentBounds;
                 stillInRegion.setValue(false);
                 lastMarker.setValue(null);
                 selectedMarker.setValue(null);
             }
-        }
+            if(animatingToUserLocation)
+            {
+                shouldHideCards.setValue(false);
+                animatingToUserLocation=false;
+            }else {
+                shouldHideCards.setValue(true);
+            }
     }
+    }
+
 
     public void CheckMarker(Marker marker){
          if(lastMarker.getValue()==null){
