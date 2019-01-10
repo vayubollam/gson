@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.fragments.StationViewModel;
+import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationDetailsDialog extends BottomSheetDialogFragment {
 
@@ -64,6 +65,15 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         binding.cardView.getLayoutParams().height = intialHeight;
         dialog.setContentView(binding.getRoot());
 
+        binding.closeBtn.setOnClickListener((v) -> {
+            dismiss();
+        });
+
+        binding.btnCardDirections.setOnClickListener((v)->{
+            NavigationAppsHelper navigationAppsHelper = new NavigationAppsHelper(getActivity());
+            navigationAppsHelper.openNavigationApps(stationViewModel.station.get());
+        });
+
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
         if (behavior != null) {
             behavior.setPeekHeight(fullHeight - intialPosition + 2 * cardMarginInPixels);
@@ -77,6 +87,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                 @Override
                 public void onSlide(@NonNull View view, float v) {
                     if (v > 0.01) {
+                        binding.closeBtn.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
+                        binding.imgBottomSheet.setVisibility(v > 0.1 ? View.GONE : View.VISIBLE);
                         dialog.getWindow().setDimAmount(v * 0.6f);
                         binding.addressLayout.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
                         binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);

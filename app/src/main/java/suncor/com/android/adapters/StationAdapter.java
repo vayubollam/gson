@@ -36,6 +36,7 @@ import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.dialogs.StationDetailsDialog;
 import suncor.com.android.fragments.StationViewModel;
+import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
@@ -101,6 +102,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CardStationItemBinding binding = CardStationItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding.detailsLayout.setNestedScrollingEnabled(false);
         return new StationViewHolder(binding);
     }
 
@@ -124,8 +126,9 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             Constraints myConstraints = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build();
-            OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
-                    setConstraints(myConstraints)
+            OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest
+                    .Builder(DirectionsWorker.class)
+                    .setConstraints(myConstraints)
                     .setInputData(locationData)
                     .build();
             WorkManager.getInstance().enqueue(getDirectionsWork);
@@ -136,41 +139,15 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                             String duration = workInfo.getOutputData().getString("duration");
                             StationMatrix distanceDuration = new StationMatrix(distance, duration);
                             stationViewModel.distanceDuration.set(distanceDuration);
-                            notifyItemChanged(position);
                         }
                     });
         }
 
 
         holder.binding.btnCardDirections.setOnClickListener(v -> {
-            directionslatlng = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-            Boolean always = prefs.getBoolean("always", false);
-            if (always) {
-                int choice = prefs.getInt("choice", 0);
-                if (choice == 1) {
-                    openGoogleMAps();
-                }
-                if (choice == 2) {
-                    openWaze();
-                }
-                if (choice == 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putDouble("lat", station.getAddress().getLatitude());
-                    bundle.putDouble("lng", station.getAddress().getLongitude());
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    OpenWithDialog openWithDialog = new OpenWithDialog();
-                    openWithDialog.setArguments(bundle);
-                    openWithDialog.show(activity.getSupportFragmentManager(), "choosing");
-                }
-            } else {
-                Bundle bundle = new Bundle();
-                bundle.putDouble("lat", station.getAddress().getLatitude());
-                bundle.putDouble("lng", station.getAddress().getLongitude());
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                OpenWithDialog openWithDialog = new OpenWithDialog();
-                openWithDialog.setArguments(bundle);
-                openWithDialog.show(activity.getSupportFragmentManager(), "choosing");
-            }
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            NavigationAppsHelper helper = new NavigationAppsHelper(activity);
+            helper.openNavigationApps(station);
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
@@ -199,57 +176,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         dialog.setIntialPosition(position[1]);
         dialog.setStationViewModel(stationViewModel);
         dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
-    }
-
-
-    private boolean isGoogleMapsInstalled() {
-        try {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
-    private void openGoogleMAps() {
-        if (isGoogleMapsInstalled()) {
-            Uri navigationIntentUri = Uri.parse("google.navigation:q=" + directionslatlng.latitude + "," + directionslatlng.longitude);//creating intent with latlng
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
-            mapIntent.setPackage("com.google.android.apps.maps");
-            context.startActivity(mapIntent);
-        } else {
-            final String appPackageName = "com.google.android.apps.maps";
-            try {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-        }
-    }
-
-    private void openWaze() {
-        if (isWazeInstalled()) {
-            String url = "waze://?ll=" + directionslatlng.latitude + "," + directionslatlng.longitude + "&navigate=yes";
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            mapIntent.setPackage("com.waze");
-            context.startActivity(mapIntent);
-        } else {
-            final String appPackageName = "com.waze";
-            try {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-        }
-    }
-
-    private boolean isWazeInstalled() {
-        try {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.waze", 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
     }
 
 

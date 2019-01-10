@@ -43,14 +43,28 @@
                     android:padding="4dp"
                     app:srcCompat="@drawable/bottom_sheet_icon" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txt_station_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@{vm.station.address.addressLine}"
-                    android:textAppearance="@style/CardStationTitle"
-                    tools:text="Station Name" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txt_station_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_weight="1"
+                        android:text="@{vm.station.address.addressLine}"
+                        android:textAppearance="@style/TitleStyle"
+                        tools:text="Station Name" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/close_btn"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_clear" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/addressLayout"
@@ -78,7 +92,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="10dp">
 
@@ -117,7 +131,6 @@
                         android:id="@+id/img_clock_station"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/txt_km_station"
                         app:srcCompat="@drawable/ic_clock" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -126,8 +139,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
-                        android:text="@{vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/close_generic(vm.getOpenHour())}"
-                        android:textAppearance="@style/NormalText" />
+                        android:text="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/close_generic(vm.getOpenHour())}"
+                        android:textAppearance="@style/NormalText"
+                        tools:text="Open, closes at 12:00 AM" />
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -138,9 +152,14 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="10dp"
-                    android:text="directions" />
+                    android:text="@string/directions_button" />
 
-                <ScrollView
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/station_details_separator" />
+
+                <androidx.core.widget.NestedScrollView
                     android:id="@+id/detailsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -151,12 +170,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@drawable/station_details_separator" />
-
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:layout_width="match_parent"
@@ -187,21 +200,25 @@
                             android:textAllCaps="false"
                             tools:text="Call . (123)456-7890" />
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/station_details_separator" />
+
                         <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/SubtitleStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:text="@string/amenities"
-                            android:textColor="@color/black_100"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="16dp"
+                            android:text="@string/amenities_list_title" />
 
                         <LinearLayout
                             android:id="@+id/service_amenities_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasService()?View.VISIBLE:View.GONE}">
 
@@ -211,13 +228,15 @@
                                 android:text="@string/services_amenities"
                                 android:textColor="@color/black_100"
                                 android:textSize="14sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:layout_marginBottom="8dp"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/service_amenities_text"
                                 style="@style/SecondaryText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:lineSpacingExtra="6dp"
                                 app:amenitieType="@{0}"
                                 app:station="@{vm.station}"
                                 tools:text="Pay at pump\nContactless payment" />
@@ -228,7 +247,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}">
 
@@ -238,13 +257,15 @@
                                 android:text="@string/fuel_amenities"
                                 android:textColor="@color/black_100"
                                 android:textSize="14sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:layout_marginBottom="8dp"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/fuel_amenities_text"
                                 style="@style/SecondaryText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:lineSpacingExtra="6dp"
                                 app:amenitieType="@{1}"
                                 app:station="@{vm.station}"
                                 tools:text="Pay at pump\nContactless payment" />
@@ -255,7 +276,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}">
 
@@ -265,19 +286,78 @@
                                 android:text="@string/carwash_amenities"
                                 android:textColor="@color/black_100"
                                 android:textSize="14sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:layout_marginBottom="8dp"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/wash_amenities_text"
                                 style="@style/SecondaryText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:lineSpacingExtra="6dp"
                                 app:amenitieType="@{2}"
                                 app:station="@{vm.station}"
                                 tools:text="Pay at pump\nContactless payment" />
                         </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/station_details_separator" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingStart="16dp"
+                            android:paddingBottom="16dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/SubtitleStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:text="@string/hours_list_title" />
+
+                            <include
+                                layout="@layout/hour_line"
+                                app:dayName="@{vm.getDayName(1)}"
+                                app:workHour="@{vm.getWorkHours(1)}" />
+
+                            <include
+                                layout="@layout/hour_line"
+                                app:dayName="@{vm.getDayName(2)}"
+                                app:workHour="@{vm.getWorkHours(2)}" />
+
+                            <include
+                                layout="@layout/hour_line"
+                                app:dayName="@{vm.getDayName(3)}"
+                                app:workHour="@{vm.getWorkHours(3)}" />
+
+                            <include
+                                layout="@layout/hour_line"
+                                app:dayName="@{vm.getDayName(4)}"
+                                app:workHour="@{vm.getWorkHours(4)}" />
+
+                            <include
+                                layout="@layout/hour_line"
+                                app:dayName="@{vm.getDayName(5)}"
+                                app:workHour="@{vm.getWorkHours(5)}" />
+
+                            <include
+                                layout="@layout/hour_line"
+                                app:dayName="@{vm.getDayName(6)}"
+                                app:workHour="@{vm.getWorkHours(6)}" />
+
+                            <include
+                                layout="@layout/hour_line"
+                                app:dayName="@{vm.getDayName(0)}"
+                                app:workHour="@{vm.getWorkHours(0)}" />
+                        </LinearLayout>
                     </LinearLayout>
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

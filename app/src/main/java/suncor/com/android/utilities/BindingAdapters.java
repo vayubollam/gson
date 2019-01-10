@@ -9,7 +9,11 @@ import suncor.com.android.dataObjects.Station;
 public class BindingAdapters {
     @BindingAdapter({"app:station", "app:amenitieType"})
     public static void setAmenities(AppCompatTextView view, Station station, int amenitieType) {
-        StringBuffer buffer = new StringBuffer();
+        if(station == null)
+        {
+            return;
+        }
+        StringBuilder buffer = new StringBuilder();
         ArrayList amenitiesEnum = new ArrayList();
         ArrayList amenitiesValues = new ArrayList();
         switch (amenitieType) {
