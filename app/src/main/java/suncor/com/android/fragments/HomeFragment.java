@@ -50,6 +50,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -84,10 +85,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        prefs = getContext().getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        prefs = Objects.requireNonNull(getContext()).getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
         if(isAdded())
               mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationListener = new LocationListener() {
+              mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 userLocation = location;
@@ -116,52 +117,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, mLocationListener);
 
-        stationObserver=new Observer<Station>() {
-            @Override
-            public void onChanged(Station station) {
-            station_card.setVisibility(View.VISIBLE);
-                Hour workHour=station.getHours().get(getDayofWeek()-1);
-                int currenthour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                int openHour=Integer.parseInt(workHour.getOpen().substring(0,2));
-                int closeHour=Integer.parseInt(workHour.getClose().substring(0,2));
+        stationObserver= station -> {
+        station_card.setVisibility(View.VISIBLE);
+            Hour workHour=station.getHours().get(getDayofWeek()-1);
+            int currenthour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            int openHour=Integer.parseInt(workHour.getOpen().substring(0,2));
+            int closeHour=Integer.parseInt(workHour.getClose().substring(0,2));
 
-                int openmin=Integer.parseInt(workHour.getOpen().substring(2,4));
-                int closemin=Integer.parseInt(workHour.getClose().substring(2,4));
-                if(currenthour>openHour && currenthour<closeHour)
-                {
-                    txt_open.setText("Open. closes at "+ getTiming(closeHour,closemin));
-                }else{
-                    txt_open.setText("Close. opens at "+ getTiming(openHour,openmin));
-                }
+            int openmin=Integer.parseInt(workHour.getOpen().substring(2,4));
+            int closemin=Integer.parseInt(workHour.getClose().substring(2,4));
+            if(currenthour>openHour && currenthour<closeHour)
+            {
+                txt_open.setText("Open. closes at "+ getTiming(closeHour,closemin));
+            }else{
+                txt_open.setText("Close. opens at "+ getTiming(openHour,openmin));
+            }
 
-                if(userLocation!=null){
-                    Data locationData = new Data.Builder()
-                            .putDouble(DEST_LAT, station.getAddress().getLatitude())
-                            .putDouble(DEST_LNG, station.getAddress().getLongitude())
-                            .putDouble(ORIGIN_LAT, userLocation.getLatitude())
-                            .putDouble(ORIGIN_LNG,userLocation.getLongitude())
-                            .build();
-                    Constraints myConstraints = new Constraints.Builder()
-                            .setRequiredNetworkType(NetworkType.CONNECTED)
-                            .build();
-                    OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
-                            setConstraints(myConstraints)
-                            .setInputData(locationData)
-                            .build();
-                    WorkManager.getInstance().enqueue(getDirectionsWork);
+            if(userLocation!=null){
+                Data locationData = new Data.Builder()
+                        .putDouble(DEST_LAT, station.getAddress().getLatitude())
+                        .putDouble(DEST_LNG, station.getAddress().getLongitude())
+                        .putDouble(ORIGIN_LAT, userLocation.getLatitude())
+                        .putDouble(ORIGIN_LNG,userLocation.getLongitude())
+                        .build();
+                Constraints myConstraints = new Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build();
+                OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
+                        setConstraints(myConstraints)
+                        .setInputData(locationData)
+                        .build();
+                WorkManager.getInstance().enqueue(getDirectionsWork);
 
-                   if(isAdded())
-                            WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
-                            .observe(getActivity(), workInfo -> {
-                                if (workInfo != null && workInfo.getState().isFinished()) {
-                                    String distance=workInfo.getOutputData().getString("distance");
-                                    String duration=workInfo.getOutputData().getString("duration");
-                                    br.setVisibility(View.INVISIBLE);
-                                    txt_km.setText(distance+" away . "+duration);
-                                   img_car_station.setVisibility(View.VISIBLE);
-                                }
-                            });
-                }
+               if(isAdded())
+                        WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
+                        .observe(getActivity(), workInfo -> {
+                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                String distance=workInfo.getOutputData().getString("distance");
+                                String duration=workInfo.getOutputData().getString("duration");
+                                br.setVisibility(View.INVISIBLE);
+                                txt_km.setText(distance+" away . "+duration);
+                               img_car_station.setVisibility(View.VISIBLE);
+                            }
+                        });
             }
         };
 
@@ -174,7 +172,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         card_recycler=getView().findViewById(R.id.card_recycler);
-        DashboardAdapter dashboardAdapter=new DashboardAdapter(getContext(),getActivity());
+        DashboardAdapter dashboardAdapter=new DashboardAdapter(getContext());
         card_recycler.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
 
         final int speedScroll = 2500;
@@ -240,8 +238,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     public int getDayofWeek(){
         Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        return day;
+        return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     @Override

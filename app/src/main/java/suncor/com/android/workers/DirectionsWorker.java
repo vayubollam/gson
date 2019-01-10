@@ -13,16 +13,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 public class DirectionsWorker extends Worker {
-    public static final String ORIGIN_LAT = "origin_lat";
-    public static final String ORIGIN_LNG = "origin_lng";
-    public static final String DEST_LAT = "dest_lat";
-    public static final String DEST_LNG = "dest_lng";
+    private static final String ORIGIN_LAT = "origin_lat";
+    private static final String ORIGIN_LNG = "origin_lng";
+    private static final String DEST_LAT = "dest_lat";
+    private static final String DEST_LNG = "dest_lng";
     public static final String KEY_RESULT = "result";
 
 
@@ -38,7 +40,7 @@ public class DirectionsWorker extends Worker {
         double origin_lng = getInputData().getDouble(ORIGIN_LNG, 0);
         double dest_lat = getInputData().getDouble(DEST_LAT, 0);
         double dest_lng = getInputData().getDouble(DEST_LNG, 0);
-        HashMap<String,String> info=new HashMap<>();
+        HashMap<String,String> info;
        info = getDistanceDuration(new LatLng(origin_lat,origin_lng),new LatLng(dest_lat,dest_lng));
 
      if(info!=null) {
@@ -55,7 +57,7 @@ public class DirectionsWorker extends Worker {
     }
 
 
-    public HashMap<String,String> getDistanceDuration(LatLng origin, LatLng dest){
+    private HashMap<String,String> getDistanceDuration(LatLng origin, LatLng dest){
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
         String sensor = "sensor=false";
@@ -82,10 +84,7 @@ public class DirectionsWorker extends Worker {
 
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
             return null;
         }
@@ -109,7 +108,7 @@ public class DirectionsWorker extends Worker {
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
 
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
 
                     String line = "";
                     while ((line = br.readLine()) != null) {
@@ -124,7 +123,7 @@ public class DirectionsWorker extends Worker {
                     Log.d("Exception_from", e.toString());
                 } finally {
                     try {
-                        iStream.close();
+                        Objects.requireNonNull(iStream).close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -133,5 +132,8 @@ public class DirectionsWorker extends Worker {
 
         return data;
     }
+
+
+
 
 }

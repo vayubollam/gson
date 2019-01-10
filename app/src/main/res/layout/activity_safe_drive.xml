@@ -21,12 +21,13 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView"
-        style="@style/DriveSafely"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-
         android:text="Drive Safely"
+        android:textColor="#CC000000"
+        android:textSize="22sp"
+        app:fontFamily="@font/gibson_regular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,12 +35,14 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView2"
-        style="@style/DonTUseYourPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Don't use your phone while driving"
+        android:textColor="#99000000"
+        android:textSize="18sp"
+        app:fontFamily="@font/gibson_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -54,9 +57,9 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        app:backgroundTint="@color/red"
-        android:textColor="@color/white"
         android:text="OK"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

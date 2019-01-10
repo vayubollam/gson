@@ -3,11 +3,9 @@ package suncor.com.android.adapters;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -26,15 +24,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     private ArrayList<Drawable> images;
     private Context context;
-    private View rootView;
     private LayoutInflater layoutInflater;
-    private FragmentActivity activity;
 
 
-    public DashboardAdapter(Context context,FragmentActivity activity) {
+    public DashboardAdapter(Context context) {
         this.context=context;
         layoutInflater=LayoutInflater.from(context);
-        this.activity=activity;
         images=new ArrayList<>();
         images.add(context.getResources().getDrawable(R.drawable.car_trip));
         images.add(context.getResources().getDrawable(R.drawable.agriculture));
@@ -44,9 +39,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     @NonNull
     @Override
     public DashboardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        rootView=layoutInflater.inflate(R.layout.dashboard_card,parent,false);
-        DashboardHolder dashboardHolder=new DashboardHolder(rootView);
-        return dashboardHolder;
+        View rootView = layoutInflater.inflate(R.layout.dashboard_card, parent, false);
+        return new DashboardHolder(rootView);
     }
 
     @Override

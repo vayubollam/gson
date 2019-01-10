@@ -15,6 +15,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import suncor.com.android.R;
@@ -42,7 +44,7 @@ public class OpenWithDialog extends BottomSheetDialogFragment implements View.On
         btn_always=rootView.findViewById(R.id.btn_choose_always);
         btn_once.setOnClickListener(this);
         btn_always.setOnClickListener(this);
-        lat=getArguments().getDouble("lat");
+        lat=Objects.requireNonNull(getArguments()).getDouble("lat");
         lng=getArguments().getDouble("lng");
         return rootView;
     }
@@ -101,7 +103,7 @@ public class OpenWithDialog extends BottomSheetDialogFragment implements View.On
         editor.apply();
     }
 
-    public boolean isGoogleMapsInstalled()
+    private boolean isGoogleMapsInstalled()
     {
         try
         {

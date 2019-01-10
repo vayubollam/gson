@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

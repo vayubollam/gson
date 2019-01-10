@@ -2,9 +2,7 @@ package suncor.com.android.dialogs;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.DialogFragment;
 import suncor.com.android.R;
 
@@ -14,7 +12,6 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 public class LocationDialog extends DialogFragment implements View.OnClickListener {
       private AppCompatTextView btn_location_alert_cancel, btn_location_alert_ok;

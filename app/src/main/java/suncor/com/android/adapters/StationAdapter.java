@@ -1,203 +1,232 @@
 package suncor.com.android.adapters;
 
-import android.animation.ValueAnimator;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ProgressBar;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import suncor.com.android.R;
 import suncor.com.android.constants.GeneralConstants;
-import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
+import suncor.com.android.dataObjects.StationMatrix;
+import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.dialogs.OpenWithDialog;
+import suncor.com.android.dialogs.StationDetailsDialog;
+import suncor.com.android.fragments.StationViewModel;
+import suncor.com.android.fragments.StationsViewModel;
 import suncor.com.android.workers.DirectionsWorker;
 
-public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.StationViewHolder>   {
+public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
-    private LayoutInflater layoutInflater;
-    private ArrayList<Station> stations;
-    private Context context;
-    private LatLng userLocation;
-    private FragmentActivity activity;
-    private BottomSheetBehavior bottomSheetBehavior;
+    private final ArrayList<StationViewModel> stations;
+    private final Context context;
+    private final FragmentActivity activity;
+    private final BottomSheetBehavior bottomSheetBehavior;
+    private LatLng directionslatlng;
+    private final SharedPreferences prefs;
     public static final String ORIGIN_LAT = "origin_lat";
     public static final String ORIGIN_LNG = "origin_lng";
     public static final String DEST_LAT = "dest_lat";
     public static final String DEST_LNG = "dest_lng";
+    private LatLng userLocation;
+    private GestureDetectorCompat swipeUpDetector;
 
-    private LatLng directionslatlng;
-    private SharedPreferences prefs;
-
-    public StationAdapter(ArrayList<Station> stations, Context context,LatLng userLocation,FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
-        this.stations = stations;
+    public StationAdapter(ArrayList<Station> stations, Context context, LatLng userLocation, FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
+        this.stations = convertToViewModel(stations);
         this.context = context;
-        layoutInflater=LayoutInflater.from(context);
-        this.userLocation=userLocation;
-        this.activity=activity;
-        this.bottomSheetBehavior=bottomSheetBehavior;
+        this.userLocation = userLocation;
+        this.activity = activity;
+        this.bottomSheetBehavior = bottomSheetBehavior;
         prefs = context.getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        swipeUpDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
+            private boolean isSwipeUpDetected = false;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                isSwipeUpDetected = false;
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (!isSwipeUpDetected && velocityY > 0) {
+                    isSwipeUpDetected = true;
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (!isSwipeUpDetected && distanceY > 0) {
+                    isSwipeUpDetected = true;
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private ArrayList<StationViewModel> convertToViewModel(ArrayList<Station> stations) {
+        ArrayList<StationViewModel> models = new ArrayList<>();
+        for (Station station : stations) {
+            models.add(new StationViewModel(station));
+        }
+        return models;
     }
 
     @NonNull
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView=layoutInflater.inflate(R.layout.card_station_item,parent,false);
-        StationViewHolder viewHolder=new StationViewHolder(rootView);
-        return viewHolder;
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
+        CardStationItemBinding binding = CardStationItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new StationViewHolder(binding);
     }
 
 
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
 
+        final StationViewModel stationViewModel = stations.get(position);
+        final Station station = stationViewModel.station.get();
+        holder.binding.getRoot().setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        });
+        holder.binding.setVm(stationViewModel);
+        holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
 
-        holder.txt_title.setText(stations.get(position).getAddress().getAddressLine());
-
-
-        Hour workHour=stations.get(position).getHours().get(getDayofWeek()-1);
-        int currenthour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        int openHour=Integer.parseInt(workHour.getOpen().substring(0,2));
-        int closeHour=Integer.parseInt(workHour.getClose().substring(0,2));
-
-        int openmin=Integer.parseInt(workHour.getOpen().substring(2,4));
-        int closemin=Integer.parseInt(workHour.getClose().substring(2,4));
-        if(currenthour>openHour && currenthour<closeHour)
-        {
-            holder.txt_open.setText("Open. closes at "+ getTiming(closeHour,closemin));
-        }else{
-            holder.txt_open.setText("Close. opens at "+ getTiming(openHour,openmin));
+        if (stationViewModel.distanceDuration.get() == null) {
+            Data locationData = new Data.Builder()
+                    .putDouble(DEST_LAT, station.getAddress().getLatitude())
+                    .putDouble(DEST_LNG, station.getAddress().getLongitude())
+                    .putDouble(ORIGIN_LAT, userLocation.latitude)
+                    .putDouble(ORIGIN_LNG, userLocation.longitude)
+                    .build();
+            Constraints myConstraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
+            OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
+                    setConstraints(myConstraints)
+                    .setInputData(locationData)
+                    .build();
+            WorkManager.getInstance().enqueue(getDirectionsWork);
+            WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
+                    .observe(activity, workInfo -> {
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            String distance = workInfo.getOutputData().getString("distance");
+                            String duration = workInfo.getOutputData().getString("duration");
+                            StationMatrix distanceDuration = new StationMatrix(distance, duration);
+                            stationViewModel.distanceDuration.set(distanceDuration);
+                            notifyItemChanged(position);
+                        }
+                    });
         }
-        Data locationData = new Data.Builder()
-                        .putDouble(DEST_LAT, stations.get(position).getAddress().getLatitude())
-                        .putDouble(DEST_LNG, stations.get(position).getAddress().getLongitude())
-                        .putDouble(ORIGIN_LAT, userLocation.latitude)
-                        .putDouble(ORIGIN_LNG,userLocation.longitude)
-                        .build();
-        Constraints myConstraints = new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build();
-        OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
-                       setConstraints(myConstraints)
-                        .setInputData(locationData)
-                        .build();
-        WorkManager.getInstance().enqueue(getDirectionsWork);
-        WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
-                        .observe(activity, workInfo -> {
-                            if (workInfo != null && workInfo.getState().isFinished()) {
-                                String distance=workInfo.getOutputData().getString("distance");
-                                String duration=workInfo.getOutputData().getString("duration");
-                                holder.br.setVisibility(View.INVISIBLE);
-                                holder.txt_km.setText(distance+" away . "+duration);
-                                holder.img_car_station.setVisibility(View.VISIBLE);
-                            }
-                        });
 
 
-
-        holder.btn_card_directions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                directionslatlng=new LatLng(stations.get(position).getAddress().getLatitude(),stations.get(position).getAddress().getLongitude());
-                Boolean always = prefs.getBoolean("always", false);
-                if (always) {
-                    int choice=prefs.getInt("choice",0);
-                    if(choice==1)
-                    {
-                        openGoogleMAps();
-                    }
-                    if(choice==2)
-                    {
-                        openWaze();
-                    }
-                    if(choice==0)
-                    {
-                        Bundle bundle=new Bundle();
-                        bundle.putDouble("lat",stations.get(position).getAddress().getLatitude());
-                        bundle.putDouble("lng",stations.get(position).getAddress().getLongitude());
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        OpenWithDialog openWithDialog=new OpenWithDialog();
-                        openWithDialog.setArguments(bundle);
-                        openWithDialog.show(activity.getSupportFragmentManager(),"choosing");
-                    }
-                }else{
-                    Bundle bundle=new Bundle();
-                    bundle.putDouble("lat",stations.get(position).getAddress().getLatitude());
-                    bundle.putDouble("lng",stations.get(position).getAddress().getLongitude());
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    OpenWithDialog openWithDialog=new OpenWithDialog();
-                    openWithDialog.setArguments(bundle);
-                    openWithDialog.show(activity.getSupportFragmentManager(),"choosing");
+        holder.binding.btnCardDirections.setOnClickListener(v -> {
+            directionslatlng = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+            Boolean always = prefs.getBoolean("always", false);
+            if (always) {
+                int choice = prefs.getInt("choice", 0);
+                if (choice == 1) {
+                    openGoogleMAps();
                 }
-
-
-
-
-
-
+                if (choice == 2) {
+                    openWaze();
+                }
+                if (choice == 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putDouble("lat", station.getAddress().getLatitude());
+                    bundle.putDouble("lng", station.getAddress().getLongitude());
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    OpenWithDialog openWithDialog = new OpenWithDialog();
+                    openWithDialog.setArguments(bundle);
+                    openWithDialog.show(activity.getSupportFragmentManager(), "choosing");
+                }
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putDouble("lat", station.getAddress().getLatitude());
+                bundle.putDouble("lng", station.getAddress().getLongitude());
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                OpenWithDialog openWithDialog = new OpenWithDialog();
+                openWithDialog.setArguments(bundle);
+                openWithDialog.show(activity.getSupportFragmentManager(), "choosing");
             }
         });
+
+        holder.binding.imgBottomSheet.setOnClickListener((v) -> {
+            if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)
+                showStationDetails(stationViewModel, holder.itemView);
+            if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED)
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        });
+        holder.binding.getRoot().setOnTouchListener((view, event) -> {
+            boolean eventHandled = swipeUpDetector.onTouchEvent(event);
+            boolean isSwipeUp = eventHandled && event.getAction() != MotionEvent.ACTION_DOWN;
+            if (isSwipeUp) {
+                showStationDetails(stationViewModel, holder.itemView);
+            }
+            return eventHandled;
+        });
+
+        holder.binding.executePendingBindings();
+    }
+
+    private void showStationDetails(StationViewModel stationViewModel, View itemView) {
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            return;
+        }
+        StationDetailsDialog dialog = new StationDetailsDialog();
+        dialog.setIntialHeight(itemView.getHeight());
+        int[] position = new int[2];
+        itemView.getLocationInWindow(position);
+        dialog.setIntialPosition(position[1]);
+        dialog.setStationViewModel(stationViewModel);
+        dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
     }
 
 
-    public boolean isGoogleMapsInstalled()
-    {
-        try
-        {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
+    private boolean isGoogleMapsInstalled() {
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0);
             return true;
-        }
-        catch(PackageManager.NameNotFoundException e)
-        {
+        } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
     }
 
-    public void openGoogleMAps(){
-        if(isGoogleMapsInstalled()){
-            Uri navigationIntentUri = Uri.parse("google.navigation:q=" + directionslatlng.latitude +"," + directionslatlng.longitude);//creating intent with latlng
+    private void openGoogleMAps() {
+        if (isGoogleMapsInstalled()) {
+            Uri navigationIntentUri = Uri.parse("google.navigation:q=" + directionslatlng.latitude + "," + directionslatlng.longitude);//creating intent with latlng
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             context.startActivity(mapIntent);
-        }else{
-            final String appPackageName ="com.google.android.apps.maps";
+        } else {
+            final String appPackageName = "com.google.android.apps.maps";
             try {
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
             } catch (android.content.ActivityNotFoundException anfe) {
@@ -206,14 +235,14 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         }
     }
 
-    public void openWaze(){
-        if(isWazeInstalled()){
-            String url = "waze://?ll="+directionslatlng.latitude+","+directionslatlng.longitude+"&navigate=yes";
+    private void openWaze() {
+        if (isWazeInstalled()) {
+            String url = "waze://?ll=" + directionslatlng.latitude + "," + directionslatlng.longitude + "&navigate=yes";
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             mapIntent.setPackage("com.waze");
             context.startActivity(mapIntent);
-        }else{
-            final String appPackageName ="com.waze";
+        } else {
+            final String appPackageName = "com.waze";
             try {
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
             } catch (android.content.ActivityNotFoundException anfe) {
@@ -222,50 +251,14 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
         }
     }
 
-    public boolean isWazeInstalled()
-    {
-        try
-        {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.waze", 0 );
+    private boolean isWazeInstalled() {
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.waze", 0);
             return true;
-        }
-        catch(PackageManager.NameNotFoundException e)
-        {
+        } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
     }
-
-    public int getHeight()
-    {
-        WindowManager windowmanager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dimension = new DisplayMetrics();
-        windowmanager.getDefaultDisplay().getMetrics(dimension);
-        return  dimension.heightPixels;
-    }
-
-    public int getDayofWeek(){
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        return day;
-    }
-
-    public String getTiming(int hour, int min)
-    {
-
-        String time;
-        try {
-            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-            final Date dateObj = sdf.parse(hour+":"+min);
-            System.out.println(dateObj);
-            time=new SimpleDateFormat("hh:mm a").format(dateObj);
-        } catch (final ParseException e) {
-            e.printStackTrace();
-            time="";
-        }
-
-       return time;
-    }
-
 
 
     @Override
@@ -274,40 +267,24 @@ public class StationAdapter  extends RecyclerView.Adapter<StationAdapter.Station
     }
 
 
+    public class StationViewHolder extends RecyclerView.ViewHolder {
+
+        final CardStationItemBinding binding;
+        final int screenWidth = getScreenWidth();
 
 
-    public class StationViewHolder extends RecyclerView.ViewHolder  {
-
-        AppCompatTextView txt_title,txt_km,txt_open;
-        AppCompatImageView img_bottom_sheet,img_car_station;
-        MaterialButton btn_card_directions;
-        ProgressBar br;
-
-        public StationViewHolder(@NonNull View itemView) {
-            super(itemView);
-            Typeface tfGibson_bold=ResourcesCompat.getFont(context,R.font.gibson_bold);
-            Typeface tfGibson_regular=ResourcesCompat.getFont(context,R.font.gibson_regular);
-            Typeface tfGibson_semibold=ResourcesCompat.getFont(context,R.font.gibson_semibold);
-            txt_title=itemView.findViewById(R.id.txt_station_title);
-            txt_title.setTypeface(tfGibson_bold);
-            txt_km=itemView.findViewById(R.id.txt_km_station);
-            txt_km.setTypeface(tfGibson_regular);
-            txt_open=itemView.findViewById(R.id.txt_station_open);
-            txt_open.setTypeface(tfGibson_regular);
-            img_bottom_sheet=itemView.findViewById(R.id.img_bottom_sheet);
-            btn_card_directions=itemView.findViewById(R.id.btn_card_directions);
-            btn_card_directions.setTypeface(tfGibson_semibold);
-            br=itemView.findViewById(R.id.br_km_card);
-            img_car_station=itemView.findViewById(R.id.img_car_station);
-            img_car_station.setVisibility(View.INVISIBLE);
-            txt_km.setText("...");
-
+        StationViewHolder(CardStationItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
+        private int getScreenWidth() {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
+            return displayMetrics.widthPixels;
+        }
     }
-
-
 
 
 }

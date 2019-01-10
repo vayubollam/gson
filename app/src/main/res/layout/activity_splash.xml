@@ -21,17 +21,19 @@
         app:srcCompat="@drawable/lake" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/DiscoverYourNextA"
         android:id="@+id/txt_splash"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textAlignment="textStart"
         android:layout_marginStart="20dp"
         android:layout_marginTop="95dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="329dp"
         android:text="@string/discover_your_next_adventure"
+        android:textAlignment="textStart"
         android:textColor="@color/white"
+        android:textSize="48sp"
+        android:textStyle="italic"
+        app:fontFamily="@font/futurastd_condensedlightobl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
