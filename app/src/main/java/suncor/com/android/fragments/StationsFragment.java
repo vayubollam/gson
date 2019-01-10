@@ -94,7 +94,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        screenRatio = getResources().getDisplayMetrics().heightPixels / getResources().getDisplayMetrics().widthPixels;
+        screenRatio = (float) getResources().getDisplayMetrics().heightPixels / (float) getResources().getDisplayMetrics().widthPixels;
         mViewModel.setRegionRatio(screenRatio);
         indeterminateBar = view.findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
@@ -159,16 +159,20 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                 return;
             }
             ArrayList<StationViewModel> stations = mViewModel.stationsAround.getValue().data;
-            recyclerView.scrollToPosition(stations.indexOf(station));
 
             if (stations.contains(station)) {
-                recyclerView.scrollToPosition(mViewModel.stationsAround.getValue().data.indexOf(station));
-            }
-            if (lastSelectedMarker != null) {
+                recyclerView.scrollToPosition(stations.indexOf(station));
+                if (lastSelectedMarker != null) {
+                    lastSelectedMarker.setIcon(getDrawableForMarker(false, false));//TODO check if is favourite
+                }
+
+                lastSelectedMarker = findMarkerForStation(station);
+                lastSelectedMarker.setIcon(getDrawableForMarker(true, false));
+
+            } else if (lastSelectedMarker != null) {
                 lastSelectedMarker.setIcon(getDrawableForMarker(false, false));//TODO check if is favourite
             }
-            lastSelectedMarker = findMarkerForStation(station);
-            lastSelectedMarker.setIcon(getDrawableForMarker(true, false));
+
         });
     }
 
@@ -295,6 +299,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     @Override
     public void onCameraMoveStarted(int i) {
+        mViewModel.selectedStation.setValue(null);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 

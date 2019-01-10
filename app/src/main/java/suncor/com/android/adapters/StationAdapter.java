@@ -159,7 +159,11 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
-            showStationDetails(stationViewModel, holder.itemView);
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                showStationDetails(stationViewModel, holder.itemView);
+            } else {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
         });
         holder.binding.getRoot().setOnTouchListener((view, event) -> {
             boolean eventHandled = swipeUpDetector.onTouchEvent(event);
