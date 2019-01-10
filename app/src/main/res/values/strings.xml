@@ -20,8 +20,8 @@
     <string name="distance_generic">%1s away . %2s drive</string>
     <string name="services_amenities">Services</string>
     <string name="amenities_list_title">Amenities</string>
-    <string name="open_generic">Open. closes at %s</string>
-    <string name="close_generic">Close. opens at %s</string>
+    <string name="open_generic">Open until %s</string>
+    <string name="close_generic">Closed . Opens at %s</string>
     <string name="fuel_amenities">Fuel</string>
     <string name="carwash_amenities">Car wash</string>
     <string name="hours_list_title">Hours</string>
