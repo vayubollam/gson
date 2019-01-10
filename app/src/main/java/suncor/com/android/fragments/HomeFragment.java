@@ -57,7 +57,6 @@ import java.util.Objects;
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private HomeViewModel mViewModel;
-    private Observer<Station> stationObserver;
     private AppCompatTextView txt_title, txt_km, txt_open;
     private AppCompatImageView img_car_station;
     private MaterialButton btn_card_directions;
@@ -119,7 +118,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, mLocationListener);
 
-        stationObserver = station -> {
+        Observer<Station> stationObserver = station -> {
             station_card.setVisibility(View.VISIBLE);
             Hour workHour = station.getHours().get(getDayofWeek() - 1);
             int currenthour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -165,7 +164,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         };
 
         if (isAdded())
-            mViewModel.getNearestStation().observe(getActivity(), stationObserver);
+            mViewModel.getNearestStation().observe(this, stationObserver);
 
     }
 

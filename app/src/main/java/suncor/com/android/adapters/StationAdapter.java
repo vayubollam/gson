@@ -30,6 +30,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import suncor.com.android.constants.GeneralConstants;
+import suncor.com.android.dataObjects.Resource;
 import suncor.com.android.dataObjects.Station;
 import suncor.com.android.dataObjects.StationMatrix;
 import suncor.com.android.databinding.CardStationItemBinding;
@@ -41,11 +42,9 @@ import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
-    private final ArrayList<StationViewModel> stations;
-    private final Context context;
+    private final ArrayList<StationViewModel> stations = new ArrayList<>();
     private final FragmentActivity activity;
     private final BottomSheetBehavior bottomSheetBehavior;
-    private LatLng directionslatlng;
     private final SharedPreferences prefs;
     public static final String ORIGIN_LAT = "origin_lat";
     public static final String ORIGIN_LNG = "origin_lng";
@@ -54,14 +53,24 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private LatLng userLocation;
     private GestureDetectorCompat swipeUpDetector;
 
-    public StationAdapter(ArrayList<Station> stations, Context context, LatLng userLocation, FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
-        this.stations = convertToViewModel(stations);
-        this.context = context;
+    public ArrayList<StationViewModel> getStations() {
+        return stations;
+    }
+
+    public LatLng getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
+        notifyDataSetChanged();
+    }
+
+    public StationAdapter(FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
         this.activity = activity;
         this.bottomSheetBehavior = bottomSheetBehavior;
-        prefs = context.getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-        swipeUpDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
+        prefs = activity.getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        swipeUpDetector = new GestureDetectorCompat(activity, new GestureDetector.SimpleOnGestureListener() {
             private boolean isSwipeUpDetected = false;
 
             @Override
@@ -110,7 +119,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
-
         final StationViewModel stationViewModel = stations.get(position);
         final Station station = stationViewModel.station.get();
         holder.binding.setVm(stationViewModel);
@@ -178,14 +186,13 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
     }
 
-
     @Override
     public int getItemCount() {
         return stations.size();
     }
 
 
-    public class StationViewHolder extends RecyclerView.ViewHolder {
+    class StationViewHolder extends RecyclerView.ViewHolder {
 
         final CardStationItemBinding binding;
         final int screenWidth = getScreenWidth();

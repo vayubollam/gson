@@ -1,10 +1,8 @@
 package suncor.com.android.fragments;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,12 +26,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 import suncor.com.android.R;
 import suncor.com.android.adapters.StationAdapter;
-import suncor.com.android.dataObjects.Station;
+import suncor.com.android.dataObjects.Resource;
+import suncor.com.android.dialogs.LocationDialog;
+import suncor.com.android.utilities.LocationUtils;
 
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -59,17 +57,17 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Random;
 
 
-public class StationsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener {
+public class StationsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener {
+
+    private final static int MINIMUM_ZOOM_LEVEL = 10;
 
     private StationsViewModel mViewModel;
     private GoogleMap mGoogleMap;
-    private MaterialButton btn_my_location;
-    private int zoomLevel = 10;
-    private HashMap<Marker, Station> stationsMarkers = new HashMap<>();
+    private MaterialButton findMyLocationButton;
+    private HashMap<Marker, StationViewModel> stationsMarkers = new HashMap<>();
     private ProgressBar indeterminateBar;
     private StationAdapter stationAdapter;
     private RecyclerView recyclerView;
@@ -77,10 +75,14 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private LocationListener locationListener;
     private LocationManager locationManager;
     private BottomSheetBehavior bottomSheetBehavior;
-    private LinearLayout stations_bottom_sheet;
+    private Marker lastSelectedMarker;
+    private float screenRatio;
 
-    public static StationsFragment newInstance() {
-        return new StationsFragment();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
     }
 
     @Override
@@ -90,26 +92,26 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        indeterminateBar = Objects.requireNonNull(getView()).findViewById(R.id.indeterminateBar);
-        indeterminateBar.setVisibility(View.VISIBLE);
-        mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
-        stations_bottom_sheet=getView().findViewById(R.id.stations_bottom_sheet);
-        bottomSheetBehavior=BottomSheetBehavior.from(stations_bottom_sheet);
-        recyclerView = getView().findViewById(R.id.card_recycler);
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerView);
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btn_my_location = getView().findViewById(R.id.btn_my_location);
-        btn_my_location.setOnClickListener(this);
+        screenRatio = getResources().getDisplayMetrics().heightPixels / getResources().getDisplayMetrics().widthPixels;
+        mViewModel.setRegionRatio(screenRatio);
+        indeterminateBar = view.findViewById(R.id.indeterminateBar);
+        indeterminateBar.setVisibility(View.VISIBLE);
+
+        recyclerView = view.findViewById(R.id.card_recycler);
+        bottomSheetBehavior = BottomSheetBehavior.from(recyclerView);
+        stationAdapter = new StationAdapter(getActivity(), bottomSheetBehavior);
+        recyclerView.setAdapter(stationAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
+        ViewCompat.setNestedScrollingEnabled(recyclerView, false);
+        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(recyclerView);
+
+        findMyLocationButton = view.findViewById(R.id.btn_my_location);
+        findMyLocationButton.setOnClickListener(this);
         FragmentManager fm = getChildFragmentManager();
+
         SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentByTag("mapFragment");
         if (mapFragment == null) {
             mapFragment = new SupportMapFragment();
@@ -123,7 +125,10 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
-                gotoMyLocation(location);
+                if (location != null) {
+                    locationManager.removeUpdates(locationListener);
+                    gotoMyLocation(location);
+                }
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -135,6 +140,11 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             public void onProviderDisabled(String provider) {
             }
         };
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
@@ -142,44 +152,23 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         mViewModel.stationsAround.observe(getActivity(), this::UpdateCards);
-        mViewModel.stillInRegion.observe(getActivity(), aBoolean -> {
-            if(!aBoolean){
-                indeterminateBar.setVisibility(View.VISIBLE);
-                mViewModel.refreshStations(mGoogleMap);
+
+        mViewModel.selectedStation.observe(this, station -> {
+            if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null) {
+                return;
             }
-        });
-        mViewModel.selectedMarker.observe(getActivity(), marker -> {
-            if(marker!=null)
-            {
-                try{
-                    marker.setIcon(getBitmapFromVector(getContext(),R.drawable.ic_place_black_24dp,getResources().getColor(R.color.red_location)));
+            ArrayList<StationViewModel> stations = mViewModel.stationsAround.getValue().data;
+            recyclerView.scrollToPosition(stations.indexOf(station));
 
-
-                }catch (Exception ex){
-                  ex.printStackTrace();
-                }
-                 }
-        });
-        mViewModel.lastMarker.observe(getActivity(), marker -> {
-          if(marker!=null)
-          {
-              try{
-                  marker.setIcon(getBitmapFromVector(getContext(),R.drawable.ic_pin_filled,getResources().getColor(R.color.black_100)));
-              }catch (Exception ex){
-                  ex.printStackTrace();
-              }
-          }
-        });
-
-        mViewModel.stationPosition.observe(getActivity(), position -> {
-            if(position!=null)
-                recyclerView.scrollToPosition(position);
+            if (stations.contains(station)) {
+                recyclerView.scrollToPosition(mViewModel.stationsAround.getValue().data.indexOf(station));
+            }
+            if (lastSelectedMarker != null) {
+                lastSelectedMarker.setIcon(getDrawableForMarker(false, false));//TODO check if is favourite
+            }
+            lastSelectedMarker = findMarkerForStation(station);
+            lastSelectedMarker.setIcon(getDrawableForMarker(true, false));
         });
     }
 
@@ -190,48 +179,46 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         this.mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
-        mGoogleMap.setMinZoomPreference(zoomLevel);
+        mGoogleMap.setMinZoomPreference(MINIMUM_ZOOM_LEVEL);
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
+        mGoogleMap.setOnCameraMoveStartedListener(this);
         if (!haveNetworkConnection()) {
-
             indeterminateBar.setVisibility(View.INVISIBLE);
             Toast.makeText(getActivity(), "No Internet access ...", Toast.LENGTH_SHORT).show();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
                 return;
             }
         }
         mGoogleMap.setMyLocationEnabled(false);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-
-
     }
 
 
     private void gotoMyLocation(Location location) {
-        if (location != null)
-            if (mGoogleMap != null && isAdded()) {
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getBitmapFromVector(getActivity(), R.drawable.ic_my_location, getResources().getColor(R.color.red_location))));
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel);
-                mGoogleMap.animateCamera(cameraUpdate);
-                locationManager.removeUpdates(locationListener);
-
+        if (mGoogleMap != null && isAdded()) {
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            mViewModel.setUserLocation(latLng);
+            stationAdapter.setUserLocation(latLng);
+            myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getBitmapFromVector(getActivity(), R.drawable.ic_my_location)));
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(LocationUtils.calculateBounds(latLng, mViewModel.DEFAULT_MAP_ZOOM, screenRatio), 0);
+            mGoogleMap.animateCamera(cameraUpdate);
+            if (getView() != null) {
+                getView().postDelayed(() -> {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }, 1000);
             }
+        }
     }
-
-
 
 
     @Override
     public void onClick(View v) {
-        if (v == btn_my_location && isAdded()) {
-            if (isLocationEnabled(getActivity()))
-            { if (locationManager != null) {
+        if (v == findMyLocationButton && isAdded()) {
+            if (isLocationEnabled(getActivity())) {
+                if (locationManager != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -239,56 +226,35 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                         }
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
-                 }
+                }
             }
 
-            if(!isLocationEnabled(getContext()))
-            {
+            if (!isLocationEnabled(getContext())) {
                 alertUser();
             }
         }
     }
 
     private void alertUser() {
-     mViewModel.alertUser(getFragmentManager());
-
+        LocationDialog dialogFragment = new LocationDialog();
+        dialogFragment.show(getFragmentManager(), "location dialog");
     }
-//checking weather the user's gps is enabled or not
-    public static boolean isLocationEnabled(Context context) {
+
+    //checking weather the user's gps is enabled or not
+    private static boolean isLocationEnabled(Context context) {
         int locationMode;
-            try {
-                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+        try {
+            locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
 
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-                return false;
-            }
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
 
-            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-
-
-
-
+        return locationMode != Settings.Secure.LOCATION_MODE_OFF;
     }
-//convert vector images to bitmap in order to use as marker icons
-private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
-                                                    @DrawableRes int vectorResourceId,
-                                                    @ColorInt int tintColor) {
 
-    Drawable vectorDrawable = ResourcesCompat.getDrawable(
-            context.getResources(), vectorResourceId, null);
-    if (vectorDrawable == null) {
-        return BitmapDescriptorFactory.defaultMarker();
-    }
-    Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
-            vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-    Canvas canvas = new Canvas(bitmap);
-    vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-   // DrawableCompat.setTint(vectorDrawable);
-    vectorDrawable.draw(canvas);
-    return BitmapDescriptorFactory.fromBitmap(bitmap);
-}
-//checking the user connectivity
+    //checking the user connectivity
     private boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
         boolean haveConnectedMobile = false;
@@ -309,81 +275,115 @@ private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-       mViewModel.CheckMarker(marker);
-        return true;
+        if (stationsMarkers.containsKey(marker)) {
+            mViewModel.selectedStation.setValue(stationsMarkers.get(marker));
+            if (getView() != null) {
+                getView().postDelayed(() -> {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }, 200);
+            }
+            return true;
+        }
+        return false;
     }
-
 
 
     @Override
     public void onCameraIdle() {
-        mViewModel.checkRegion(mGoogleMap);
-
+        mViewModel.refreshStations(mGoogleMap.getCameraPosition().target, mGoogleMap.getProjection().getVisibleRegion().latLngBounds);
     }
 
+    @Override
+    public void onCameraMoveStarted(int i) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
 
+    private void UpdateCards(Resource<ArrayList<StationViewModel>> result) {
+        if (result.status == Resource.Status.LOADING) {
+            indeterminateBar.setVisibility(View.VISIBLE);
+        } else if (result.status == Resource.Status.SUCCESS) {
+            if (isAdded() && mGoogleMap != null) {
+                ArrayList<StationViewModel> stations = result.data;
+                mGoogleMap.clear();
+                stationsMarkers.clear();
+                lastSelectedMarker = null;
+                if (myLocationMarker != null)
+                    myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(myLocationMarker.getPosition()).icon(getBitmapFromVector(getContext(), R.drawable.ic_my_location)));
 
-    public static Marker getMarkerByStation(HashMap<Marker,Station> sa, Station station) {
-        for (Marker m : sa.keySet()) {
-            if (sa.get(m).equals(station)) {
+                Random fav = new Random();
+                for (StationViewModel station : stations) {
+                    LatLng latLng = new LatLng(station.station.get().getAddress().getLatitude(), station.station.get().getAddress().getLongitude());
+                    boolean isFavourite = station.isFavourite();
+                    boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue() == station;
+                    Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
+                    if (isSelected) {
+                        lastSelectedMarker = stationMarker;
+                    }
+                    stationsMarkers.put(stationMarker, station);
+                }
+                stationAdapter.getStations().clear();
+                stationAdapter.getStations().addAll(stations);
+                stationAdapter.notifyDataSetChanged();
+                recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                        int vi = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                        if (vi != RecyclerView.NO_POSITION) {
+                            mViewModel.selectedStation.setValue(mViewModel.stationsAround.getValue().data.get(vi));
+                        }
+                    }
+                });
+                indeterminateBar.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private BitmapDescriptor getDrawableForMarker(boolean isSelected, boolean isFavourite) {
+        int drawable;
+        if (isSelected) {
+            if (isFavourite) {
+                drawable = R.drawable.ic_pin_favourite;//TODO set it red
+            } else {
+                drawable = R.drawable.ic_pin_selected;
+            }
+        } else {
+            if (isFavourite) {
+                drawable = R.drawable.ic_pin_favourite;//TODO set it red
+            } else {
+                drawable = R.drawable.ic_pin;
+            }
+        }
+
+        return getBitmapFromVector(getActivity(), drawable);
+    }
+
+    private Marker findMarkerForStation(StationViewModel station) {
+        for (Marker m : stationsMarkers.keySet()) {
+            if (station.equals(stationsMarkers.get(m))) {
                 return m;
             }
         }
         return null;
     }
 
-    private void UpdateCards(ArrayList<Station> stations) {
-        if (isAdded() && mGoogleMap!=null) {
+    //convert vector images to bitmap in order to use as lastSelectedMarker icons
+    private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
+                                                        @DrawableRes int vectorResourceId) {
 
-            mGoogleMap.clear();
-            stationsMarkers.clear();
-            if(myLocationMarker!=null)
-                myLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(myLocationMarker.getPosition()).icon(getBitmapFromVector(getContext(),R.drawable.ic_my_location,getResources().getColor(R.color.red_location))));
-
-            Random fav = new Random();
-            for (Station station : stations) {
-                boolean favnor = fav.nextBoolean();
-                LatLng latLng = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                Marker stationMarker;
-                if (favnor) {
-                    stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getBitmapFromVector(getActivity(), R.drawable.ic_pin_favourite, getResources().getColor(R.color.black_100))));
-                    stationsMarkers.put(stationMarker, station);
-                } else {
-                    stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getBitmapFromVector(getActivity(), R.drawable.ic_pin_filled, getResources().getColor(R.color.black_80))).alpha(1));
-                    stationsMarkers.put(stationMarker, station);
-                }
-
-            }
-            mViewModel.stationMarkers.setValue(stationsMarkers);
-            if (recyclerView != null && myLocationMarker != null) {
-                stationAdapter = new StationAdapter(stations, getContext(),myLocationMarker.getPosition(), getActivity(),bottomSheetBehavior);
-                recyclerView.setAdapter(stationAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
-                ViewCompat.setNestedScrollingEnabled(recyclerView, false);
-                recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        LinearLayoutManager linearLayoutManager= (LinearLayoutManager) recyclerView.getLayoutManager();
-                        int vi=linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                        if(vi!=RecyclerView.NO_POSITION){
-                            Marker marker=getMarkerByStation(stationsMarkers,stations.get(vi));
-                            mViewModel.CheckMarker(marker);
-                        }
-
-
-                    }
-                });
-            }
-
-            indeterminateBar.setVisibility(View.INVISIBLE);
-
+        Drawable vectorDrawable = ResourcesCompat.getDrawable(
+                context.getResources(), vectorResourceId, null);
+        if (vectorDrawable == null) {
+            return BitmapDescriptorFactory.defaultMarker();
         }
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        // DrawableCompat.setTint(vectorDrawable);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
-
-
-
-
 }
 
