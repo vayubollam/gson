@@ -8,15 +8,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -35,7 +32,6 @@ import suncor.com.android.adapters.DashboardAdapter;
 import suncor.com.android.constants.GeneralConstants;
 import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
-import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.workers.DirectionsWorker;
 
@@ -252,8 +248,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == btn_card_directions && userLocation != null) {
-            NavigationAppsHelper navigationAppsHelper = new NavigationAppsHelper(getActivity());
-            navigationAppsHelper.openNavigationApps(mViewModel.nearest_station.getValue());
+            NavigationAppsHelper.openNavigationApps(getActivity(), mViewModel.nearest_station.getValue());
         }
     }
 }

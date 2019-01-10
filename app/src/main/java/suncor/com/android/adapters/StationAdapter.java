@@ -2,12 +2,7 @@ package suncor.com.android.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -30,11 +25,9 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import suncor.com.android.constants.GeneralConstants;
-import suncor.com.android.dataObjects.Resource;
 import suncor.com.android.dataObjects.Station;
 import suncor.com.android.dataObjects.StationMatrix;
 import suncor.com.android.databinding.CardStationItemBinding;
-import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.dialogs.StationDetailsDialog;
 import suncor.com.android.fragments.StationViewModel;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -154,8 +147,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
         holder.binding.btnCardDirections.setOnClickListener(v -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            NavigationAppsHelper helper = new NavigationAppsHelper(activity);
-            helper.openNavigationApps(station);
+            NavigationAppsHelper.openNavigationApps(activity, station);
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {

@@ -69,9 +69,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
             dismiss();
         });
 
-        binding.btnCardDirections.setOnClickListener((v)->{
-            NavigationAppsHelper navigationAppsHelper = new NavigationAppsHelper(getActivity());
-            navigationAppsHelper.openNavigationApps(stationViewModel.station.get());
+        binding.btnCardDirections.setOnClickListener((v) -> {
+            NavigationAppsHelper.openNavigationApps(getActivity(), stationViewModel.station.get());
         });
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
