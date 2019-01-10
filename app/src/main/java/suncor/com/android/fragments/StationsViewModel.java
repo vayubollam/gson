@@ -35,10 +35,11 @@ public class StationsViewModel extends ViewModel {
 
 
     private ArrayList<StationViewModel> cachedStations;
+    private LatLngBounds cachedStationsBounds;
+
     public MutableLiveData<Resource<ArrayList<StationViewModel>>> stationsAround = new MutableLiveData<>();
     public MutableLiveData<StationViewModel> selectedStation = new MutableLiveData<>();
     public LatLng userLocation;
-    public LatLngBounds cachedStationsBounds;
     public LatLngBounds visibleBounds;
     private float regionRatio = 1f;
 

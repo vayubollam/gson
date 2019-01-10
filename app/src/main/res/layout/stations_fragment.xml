@@ -26,8 +26,7 @@
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="8dp">
+        android:layout_alignParentBottom="true">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -80,6 +79,7 @@
             android:id="@+id/card_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             app:behavior_peekHeight="24dp"
             app:layout_behavior="@string/bottom_sheet_behavior"
             app:layout_insetEdge="bottom" />
