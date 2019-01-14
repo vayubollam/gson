@@ -1,6 +1,8 @@
 package suncor.com.android.ui.home.stationlocator;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.databinding.CardStationItemBinding;
+import suncor.com.android.model.Station;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationDetailsDialog extends BottomSheetDialogFragment {
@@ -68,6 +71,10 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
             dismiss();
         });
 
+        binding.callButton.setOnClickListener((v) -> {
+            callStation(stationItem.station.get());
+        });
+
         binding.btnCardDirections.setOnClickListener((v) -> {
             NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.station.get());
         });
@@ -103,6 +110,12 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         dialog.setOnShowListener((dialog1 -> {
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }));
+    }
+
+    private void callStation(Station station) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + station.getAddress().getPhone()));
+        startActivity(intent);
     }
 
     private int getStatusBarHeight() {
