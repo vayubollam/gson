@@ -2,12 +2,7 @@ package suncor.com.android.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -23,7 +18,6 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -34,19 +28,16 @@ import suncor.com.android.constants.GeneralConstants;
 import suncor.com.android.dataObjects.Station;
 import suncor.com.android.dataObjects.StationMatrix;
 import suncor.com.android.databinding.CardStationItemBinding;
-import suncor.com.android.dialogs.OpenWithDialog;
 import suncor.com.android.dialogs.StationDetailsDialog;
 import suncor.com.android.fragments.StationViewModel;
-import suncor.com.android.fragments.StationsViewModel;
+import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
-    private final ArrayList<StationViewModel> stations;
-    private final Context context;
+    private final ArrayList<StationViewModel> stations = new ArrayList<>();
     private final FragmentActivity activity;
     private final BottomSheetBehavior bottomSheetBehavior;
-    private LatLng directionslatlng;
     private final SharedPreferences prefs;
     public static final String ORIGIN_LAT = "origin_lat";
     public static final String ORIGIN_LNG = "origin_lng";
@@ -55,14 +46,24 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private LatLng userLocation;
     private GestureDetectorCompat swipeUpDetector;
 
-    public StationAdapter(ArrayList<Station> stations, Context context, LatLng userLocation, FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
-        this.stations = convertToViewModel(stations);
-        this.context = context;
+    public ArrayList<StationViewModel> getStations() {
+        return stations;
+    }
+
+    public LatLng getUserLocation() {
+        return userLocation;
+    }
+
+    public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
+        notifyDataSetChanged();
+    }
+
+    public StationAdapter(FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
         this.activity = activity;
         this.bottomSheetBehavior = bottomSheetBehavior;
-        prefs = context.getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-        swipeUpDetector = new GestureDetectorCompat(context, new GestureDetector.SimpleOnGestureListener() {
+        prefs = activity.getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
+        swipeUpDetector = new GestureDetectorCompat(activity, new GestureDetector.SimpleOnGestureListener() {
             private boolean isSwipeUpDetected = false;
 
             @Override
@@ -103,6 +104,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CardStationItemBinding binding = CardStationItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding.detailsLayout.setNestedScrollingEnabled(false);
         return new StationViewHolder(binding);
     }
 
@@ -110,12 +112,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
-
         final StationViewModel stationViewModel = stations.get(position);
         final Station station = stationViewModel.station.get();
-        holder.binding.getRoot().setOnClickListener(v -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        });
         holder.binding.setVm(stationViewModel);
         holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
 
@@ -129,8 +127,9 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             Constraints myConstraints = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build();
-            OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
-                    setConstraints(myConstraints)
+            OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest
+                    .Builder(DirectionsWorker.class)
+                    .setConstraints(myConstraints)
                     .setInputData(locationData)
                     .build();
             WorkManager.getInstance().enqueue(getDirectionsWork);
@@ -141,48 +140,22 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                             String duration = workInfo.getOutputData().getString("duration");
                             StationMatrix distanceDuration = new StationMatrix(distance, duration);
                             stationViewModel.distanceDuration.set(distanceDuration);
-                            notifyItemChanged(position);
                         }
                     });
         }
 
 
         holder.binding.btnCardDirections.setOnClickListener(v -> {
-            directionslatlng = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-            Boolean always = prefs.getBoolean("always", false);
-            if (always) {
-                int choice = prefs.getInt("choice", 0);
-                if (choice == 1) {
-                    openGoogleMAps();
-                }
-                if (choice == 2) {
-                    openWaze();
-                }
-                if (choice == 0) {
-                    Bundle bundle = new Bundle();
-                    bundle.putDouble("lat", station.getAddress().getLatitude());
-                    bundle.putDouble("lng", station.getAddress().getLongitude());
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    OpenWithDialog openWithDialog = new OpenWithDialog();
-                    openWithDialog.setArguments(bundle);
-                    openWithDialog.show(activity.getSupportFragmentManager(), "choosing");
-                }
-            } else {
-                Bundle bundle = new Bundle();
-                bundle.putDouble("lat", station.getAddress().getLatitude());
-                bundle.putDouble("lng", station.getAddress().getLongitude());
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                OpenWithDialog openWithDialog = new OpenWithDialog();
-                openWithDialog.setArguments(bundle);
-                openWithDialog.show(activity.getSupportFragmentManager(), "choosing");
-            }
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            NavigationAppsHelper.openNavigationApps(activity, station);
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
-            if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED)
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                 showStationDetails(stationViewModel, holder.itemView);
-            if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED)
+            } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
         });
         holder.binding.getRoot().setOnTouchListener((view, event) -> {
             boolean eventHandled = swipeUpDetector.onTouchEvent(event);
@@ -209,65 +182,13 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
     }
 
-
-    private boolean isGoogleMapsInstalled() {
-        try {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
-    private void openGoogleMAps() {
-        if (isGoogleMapsInstalled()) {
-            Uri navigationIntentUri = Uri.parse("google.navigation:q=" + directionslatlng.latitude + "," + directionslatlng.longitude);//creating intent with latlng
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
-            mapIntent.setPackage("com.google.android.apps.maps");
-            context.startActivity(mapIntent);
-        } else {
-            final String appPackageName = "com.google.android.apps.maps";
-            try {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-        }
-    }
-
-    private void openWaze() {
-        if (isWazeInstalled()) {
-            String url = "waze://?ll=" + directionslatlng.latitude + "," + directionslatlng.longitude + "&navigate=yes";
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            mapIntent.setPackage("com.waze");
-            context.startActivity(mapIntent);
-        } else {
-            final String appPackageName = "com.waze";
-            try {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-        }
-    }
-
-    private boolean isWazeInstalled() {
-        try {
-            ApplicationInfo info = context.getPackageManager().getApplicationInfo("com.waze", 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
-
     @Override
     public int getItemCount() {
         return stations.size();
     }
 
 
-    public class StationViewHolder extends RecyclerView.ViewHolder {
+    class StationViewHolder extends RecyclerView.ViewHolder {
 
         final CardStationItemBinding binding;
         final int screenWidth = getScreenWidth();
@@ -285,6 +206,5 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             return displayMetrics.widthPixels;
         }
     }
-
 
 }

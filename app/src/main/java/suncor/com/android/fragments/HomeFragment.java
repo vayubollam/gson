@@ -8,15 +8,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -35,7 +32,7 @@ import suncor.com.android.adapters.DashboardAdapter;
 import suncor.com.android.constants.GeneralConstants;
 import suncor.com.android.dataObjects.Hour;
 import suncor.com.android.dataObjects.Station;
-import suncor.com.android.dialogs.OpenWithDialog;
+import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.workers.DirectionsWorker;
 
 import android.os.Handler;
@@ -43,6 +40,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
@@ -55,7 +53,6 @@ import java.util.Objects;
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private HomeViewModel mViewModel;
-    private Observer<Station> stationObserver;
     private AppCompatTextView txt_title, txt_km, txt_open;
     private AppCompatImageView img_car_station;
     private MaterialButton btn_card_directions;
@@ -86,9 +83,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         prefs = Objects.requireNonNull(getContext()).getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-        if(isAdded())
-              mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-              mLocationListener = new LocationListener() {
+        if (isAdded())
+            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 userLocation = location;
@@ -117,28 +114,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, mLocationListener);
 
-        stationObserver= station -> {
-        station_card.setVisibility(View.VISIBLE);
-            Hour workHour=station.getHours().get(getDayofWeek()-1);
+        Observer<Station> stationObserver = station -> {
+            station_card.setVisibility(View.VISIBLE);
+            Hour workHour = station.getHours().get(getDayofWeek() - 1);
             int currenthour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            int openHour=Integer.parseInt(workHour.getOpen().substring(0,2));
-            int closeHour=Integer.parseInt(workHour.getClose().substring(0,2));
+            int openHour = Integer.parseInt(workHour.getOpen().substring(0, 2));
+            int closeHour = Integer.parseInt(workHour.getClose().substring(0, 2));
 
-            int openmin=Integer.parseInt(workHour.getOpen().substring(2,4));
-            int closemin=Integer.parseInt(workHour.getClose().substring(2,4));
-            if(currenthour>openHour && currenthour<closeHour)
-            {
-                txt_open.setText("Open. closes at "+ getTiming(closeHour,closemin));
-            }else{
-                txt_open.setText("Close. opens at "+ getTiming(openHour,openmin));
+            int openmin = Integer.parseInt(workHour.getOpen().substring(2, 4));
+            int closemin = Integer.parseInt(workHour.getClose().substring(2, 4));
+            if (currenthour > openHour && currenthour < closeHour) {
+                txt_open.setText(getString(R.string.open_generic, getTiming(closeHour, closemin)));
+            } else {
+                txt_open.setText(getString(R.string.close_generic, getTiming(openHour, openmin)));
             }
 
-            if(userLocation!=null){
+            if (userLocation != null) {
                 Data locationData = new Data.Builder()
                         .putDouble(DEST_LAT, station.getAddress().getLatitude())
                         .putDouble(DEST_LNG, station.getAddress().getLongitude())
                         .putDouble(ORIGIN_LAT, userLocation.getLatitude())
-                        .putDouble(ORIGIN_LNG,userLocation.getLongitude())
+                        .putDouble(ORIGIN_LNG, userLocation.getLongitude())
                         .build();
                 Constraints myConstraints = new Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -149,69 +145,70 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         .build();
                 WorkManager.getInstance().enqueue(getDirectionsWork);
 
-               if(isAdded())
-                        WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
-                        .observe(getActivity(), workInfo -> {
-                            if (workInfo != null && workInfo.getState().isFinished()) {
-                                String distance=workInfo.getOutputData().getString("distance");
-                                String duration=workInfo.getOutputData().getString("duration");
-                                br.setVisibility(View.INVISIBLE);
-                                txt_km.setText(distance+" away . "+duration);
-                               img_car_station.setVisibility(View.VISIBLE);
-                            }
-                        });
+                if (isAdded())
+                    WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
+                            .observe(getActivity(), workInfo -> {
+                                if (workInfo != null && workInfo.getState().isFinished()) {
+                                    String distance = workInfo.getOutputData().getString("distance");
+                                    String duration = workInfo.getOutputData().getString("duration");
+                                    br.setVisibility(View.INVISIBLE);
+                                    txt_km.setText(distance + " away . " + duration);
+                                    img_car_station.setVisibility(View.VISIBLE);
+                                }
+                            });
             }
         };
 
         if (isAdded())
-        mViewModel.getNearestStation().observe(getActivity(),stationObserver);
+            mViewModel.getNearestStation().observe(this, stationObserver);
 
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        card_recycler=getView().findViewById(R.id.card_recycler);
-        DashboardAdapter dashboardAdapter=new DashboardAdapter(getContext());
-        card_recycler.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
+        card_recycler = getView().findViewById(R.id.card_recycler);
+        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext());
+        card_recycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
         final int speedScroll = 2500;
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             int count = 0;
             boolean flag = true;
+
             @Override
             public void run() {
-                if(count < dashboardAdapter.getItemCount()){
-                    if(count==dashboardAdapter.getItemCount()-1){
+                if (count < dashboardAdapter.getItemCount()) {
+                    if (count == dashboardAdapter.getItemCount() - 1) {
                         flag = false;
-                    }else if(count == 0){
+                    } else if (count == 0) {
                         flag = true;
                     }
-                    if(flag) count++;
-                    else count=0;
+                    if (flag) count++;
+                    else count = 0;
 
                     card_recycler.smoothScrollToPosition(count);
-                    handler.postDelayed(this,speedScroll);
+                    handler.postDelayed(this, speedScroll);
                 }
             }
         };
 
-        handler.postDelayed(runnable,speedScroll);
+        handler.postDelayed(runnable, speedScroll);
 
         card_recycler.setAdapter(dashboardAdapter);
-        Typeface tfGibsonBold=ResourcesCompat.getFont(getContext(),R.font.gibson_semibold);
-        Typeface tfGibsonRegular=ResourcesCompat.getFont(getContext(),R.font.gibson_regular);
-        txt_title=getView().findViewById(R.id.txt_station_title);
+        Typeface tfGibsonBold = ResourcesCompat.getFont(getContext(), R.font.gibson_semibold);
+        Typeface tfGibsonRegular = ResourcesCompat.getFont(getContext(), R.font.gibson_regular);
+        txt_title = getView().findViewById(R.id.txt_station_title);
         txt_title.setTypeface(tfGibsonBold);
-        txt_km=getView().findViewById(R.id.txt_km_station);
+        txt_km = getView().findViewById(R.id.txt_km_station);
         txt_km.setTypeface(tfGibsonRegular);
-        txt_open=getView().findViewById(R.id.txt_station_open);
-        btn_card_directions=getView().findViewById(R.id.btn_card_directions);
+        txt_open = getView().findViewById(R.id.txt_station_open);
+        btn_card_directions = getView().findViewById(R.id.btn_card_directions);
         txt_open.setTypeface(tfGibsonRegular);
-        br=getView().findViewById(R.id.br_km_card);
-        img_car_station=getView().findViewById(R.id.img_car_station);
-        station_card=getView().findViewById(R.id.station_card);
+        br = getView().findViewById(R.id.br_km_card);
+        img_car_station = getView().findViewById(R.id.img_car_station);
+        station_card = getView().findViewById(R.id.station_card);
         img_car_station.setVisibility(View.INVISIBLE);
         txt_km.setText("...");
 
@@ -219,24 +216,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public String getTiming(int hour, int min)
-    {
+    public String getTiming(int hour, int min) {
 
         String time;
         try {
             final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-            final Date dateObj = sdf.parse(hour+":"+min);
+            final Date dateObj = sdf.parse(hour + ":" + min);
             System.out.println(dateObj);
-            time=new SimpleDateFormat("hh:mm a").format(dateObj);
+            time = new SimpleDateFormat("hh:mm a").format(dateObj);
         } catch (final ParseException e) {
             e.printStackTrace();
-            time="";
+            time = "";
         }
 
         return time;
     }
 
-    public int getDayofWeek(){
+    public int getDayofWeek() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
@@ -244,111 +240,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mLocationManager!=null)
-        {
+        if (mLocationManager != null) {
             mLocationManager.removeUpdates(mLocationListener);
         }
     }
 
     @Override
     public void onClick(View v) {
-        if(v==btn_card_directions && userLocation!=null)
-        {
-            Boolean always = prefs.getBoolean("always", false);
-            if (always) {
-                int choice=prefs.getInt("choice",0);
-                if(choice==1)
-                {
-                    openGoogleMAps();
-                }
-                if(choice==2)
-                {
-                    openWaze();
-                }
-                if(choice==0)
-                {
-                    Bundle bundle=new Bundle();
-                    bundle.putDouble("lat",userLocation.getLatitude());
-                    bundle.putDouble("lng",userLocation.getLongitude());
-                    OpenWithDialog openWithDialog=new OpenWithDialog();
-                    openWithDialog.setArguments(bundle);
-                    openWithDialog.show(getActivity().getSupportFragmentManager(),"choosing");
-                }
-            }else{
-
-                    Bundle bundle=new Bundle();
-                    bundle.putDouble("lat",userLocation.getLatitude());
-                    bundle.putDouble("lng",userLocation.getLongitude());
-                    OpenWithDialog openWithDialog=new OpenWithDialog();
-                    openWithDialog.setArguments(bundle);
-                    openWithDialog.show(getActivity().getSupportFragmentManager(),"choosing");
-
-            }
-
-
-
-
-
-
-        }
-        }
-
-    public boolean isGoogleMapsInstalled()
-    {
-        try
-        {
-            ApplicationInfo info = getContext().getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
-            return true;
-        }
-        catch(PackageManager.NameNotFoundException e)
-        {
-            return false;
+        if (v == btn_card_directions && userLocation != null) {
+            NavigationAppsHelper.openNavigationApps(getActivity(), mViewModel.nearest_station.getValue());
         }
     }
-
-    public void openGoogleMAps(){
-        if(isGoogleMapsInstalled()){
-            Uri navigationIntentUri = Uri.parse("google.navigation:q=" + userLocation.getLatitude() +"," + userLocation.getLongitude());//creating intent with latlng
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
-            mapIntent.setPackage("com.google.android.apps.maps");
-            getContext().startActivity(mapIntent);
-        }else{
-            final String appPackageName ="com.google.android.apps.maps";
-            try {
-                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-        }
-    }
-
-    public void openWaze(){
-        if(isWazeInstalled()){
-            String url = "waze://?ll="+userLocation.getLatitude()+","+userLocation.getLongitude()+"&navigate=yes";
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            mapIntent.setPackage("com.waze");
-            getContext().startActivity(mapIntent);
-        }else{
-            final String appPackageName ="com.waze";
-            try {
-                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-        }
-    }
-
-    public boolean isWazeInstalled()
-    {
-        try
-        {
-            ApplicationInfo info = getContext().getPackageManager().getApplicationInfo("com.waze", 0 );
-            return true;
-        }
-        catch(PackageManager.NameNotFoundException e)
-        {
-            return false;
-        }
-    }
-    }
+}
 
