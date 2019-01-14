@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -28,7 +27,9 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -36,6 +37,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.GeneralConstants;
+import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.model.Hour;
@@ -75,36 +77,22 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         prefs = Objects.requireNonNull(getContext()).getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-        if (isAdded())
-            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                userLocation = location;
-                mLocationManager.removeUpdates(mLocationListener);
-            }
+    }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            new LocationLiveData(getContext())
+                    .observe(this, (location -> {
+                        userLocation = location;
+                    }));
+        } else {
+            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+            adb.setMessage("Location Permission Not Granted");
+            adb.setPositiveButton("OK", null);
+            adb.show();
         }
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, mLocationListener);
 
         Observer<Station> stationObserver = station -> {
             station_card.setVisibility(View.VISIBLE);
@@ -137,9 +125,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             }
         };
 
-        if (isAdded())
-            mViewModel.getNearestStation().observe(this, stationObserver);
-
+        mViewModel.getNearestStation().observe(this, stationObserver);
     }
 
     @Override

@@ -7,11 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -42,6 +39,8 @@ import java.util.Random;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -51,6 +50,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.model.Resource;
 import suncor.com.android.utilities.LocationUtils;
@@ -68,8 +68,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private StationAdapter stationAdapter;
     private RecyclerView recyclerView;
     private Marker myLocationMarker;
-    private LocationListener locationListener;
-    private LocationManager locationManager;
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker lastSelectedMarker;
     private float screenRatio;
@@ -117,36 +115,11 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             fm.executePendingTransactions();
         }
         mapFragment.getMapAsync(this);
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                if (location != null) {
-                    locationManager.removeUpdates(locationListener);
-                    gotoMyLocation(location);
-                }
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            public void onProviderEnabled(String provider) {
-            }
-
-            public void onProviderDisabled(String provider) {
-            }
-        };
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
 
         mViewModel.stationsAround.observe(getActivity(), this::UpdateCards);
 
@@ -183,6 +156,17 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
             }
         });
+
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            new LocationLiveData(getContext())
+                    .observe(this, (this::gotoMyLocation));
+        }else {
+            //TODO remove this
+            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+            adb.setMessage("Location Permission Not Granted");
+            adb.setPositiveButton("OK", null);
+            adb.show();
+        }
     }
 
     //Map is ready
@@ -200,12 +184,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             indeterminateBar.setVisibility(View.INVISIBLE);
             Toast.makeText(getActivity(), "No Internet access ...", Toast.LENGTH_SHORT).show();
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-        }
-        mGoogleMap.setMyLocationEnabled(false);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
     }
 
@@ -231,14 +209,9 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     public void onClick(View v) {
         if (v == findMyLocationButton && isAdded()) {
             if (isLocationEnabled(getActivity())) {
-                if (locationManager != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                            return;
-                        }
-                    }
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    new LocationLiveData(getContext())
+                            .observe(this, (this::gotoMyLocation));
                 }
             }
 
@@ -351,7 +324,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     }
 
     private void refreshSelectedStation() {
-        if(mViewModel.stationsAround.getValue() == null){
+        if (mViewModel.stationsAround.getValue() == null) {
             return;
         }
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
