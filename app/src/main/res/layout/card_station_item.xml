@@ -63,7 +63,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
                         android:visibility="gone"
-                        app:srcCompat="@drawable/ic_clear" />
+                        app:srcCompat="@drawable/ic_close" />
                 </LinearLayout>
 
                 <LinearLayout
