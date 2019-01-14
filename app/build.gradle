@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+repositories {
+    jcenter()
+}
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    defaultConfig {
+        applicationId "com.suncor.android.SuncorApplication"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 3
+        versionName "3.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        pickFirst 'META-INF/ASL2.0'
+        pickFirst 'META-INF/LICENSE'
+        pickFirst 'META-INF/NOTICE'
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.legacyLibraryVersion"
+    implementation "com.google.android.material:material:$rootProject.materialLibraryVersion"
+
+    //Library for json Parsing
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+
+    //jetpack library for viewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+
+    //google map libraries
+    implementation "com.google.android.gms:play-services-maps:$rootProject.playServicesVersion"
+    implementation "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
+    implementation "com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:$rootProject.mfpVersion"
+
+    //library for workers
+    implementation "android.arch.work:work-runtime:$rootProject.workManagerVersion"
+
+
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+}

@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">SunCor</string>
+    <string name="don_t_use_your_phone_while_driving">Don\'t use your phone while driving!</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="password">Password</string>
+    <string name="discover_your_next_adventure">DISCOVER YOUR NEXT ADVENTURE</string>
+    <string name="home">Home</string>
+    <string name="stations">Stations</string>
+    <string name="enable_location_services">Enable Location Services</string>
+    <string name="location_alert_message">Petro-Canada uses location services to show stations around you.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="open_with">Open With</string>
+    <string name="always">ALWAYS</string>
+    <string name="nearby">NearBy</string>
+    <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canda on The go!</string>
+    <string name="add_to_favourites_button">Add to favourites</string>
+    <string name="call_generic">Call . %s</string>
+    <string name="distance_generic">%1s away . %2s drive</string>
+    <string name="services_amenities">Services</string>
+    <string name="amenities_list_title">Amenities</string>
+    <string name="open_generic">Open until %s</string>
+    <string name="close_generic">Closed . Opens at %s</string>
+    <string name="fuel_amenities">Fuel</string>
+    <string name="carwash_amenities">Car wash</string>
+    <string name="hours_list_title">Hours</string>
+    <string name="station_open_24hrs">Open 24h</string>
+    <string name="directions_button">directions</string>
+</resources>

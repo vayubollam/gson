@@ -1,0 +1,62 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- custom Base application theme. -->
+    <style name="CustomAppThemeForSplash" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="alertLocation" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="StationDetailsDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/StationDetailsSheetStyle</item>
+    </style>
+
+    <style name="StationDetailsSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TitleStyle" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/gibson_bold</item>
+        <item name="android:textColor">@color/black_100</item>
+    </style>
+
+    <style name="SubtitleStyle" parent="@style/TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/gibson_regular</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black_100</item>
+    </style>
+
+    <style name="NormalText" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/gibson_regular</item>
+        <item name="android:textColor">@color/black_100</item>
+    </style>
+
+    <style name="SecondaryText" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/gibson_regular</item>
+        <item name="android:textColor">@color/black_60</item>
+    </style>
+
+    <style name="DirectionsButtonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/red</item>
+        <item name="fontFamily">@font/gibson_semibold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+</resources>
