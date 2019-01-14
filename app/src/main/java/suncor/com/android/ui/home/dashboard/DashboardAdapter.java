@@ -1,4 +1,4 @@
-package suncor.com.android.adapters;
+package suncor.com.android.ui.home.dashboard;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 
@@ -28,9 +27,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
 
     public DashboardAdapter(Context context) {
-        this.context=context;
-        layoutInflater=LayoutInflater.from(context);
-        images=new ArrayList<>();
+        this.context = context;
+        layoutInflater = LayoutInflater.from(context);
+        images = new ArrayList<>();
         images.add(context.getResources().getDrawable(R.drawable.car_trip));
         images.add(context.getResources().getDrawable(R.drawable.agriculture));
         images.add(context.getResources().getDrawable(R.drawable.petro_card));
@@ -48,6 +47,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         holder.img_card.setImageDrawable(images.get(position));
 
     }
+
     @Override
     public int getItemCount() {
         return images.size();
@@ -57,16 +57,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
         private AppCompatImageView img_card;
         private AppCompatTextView card_welcome;
-        private MaterialButton join,sign_in;
+        private MaterialButton join, sign_in;
+
         public DashboardHolder(@NonNull View itemView) {
             super(itemView);
-            img_card=itemView.findViewById(R.id.img_dashboard);
-            card_welcome=itemView.findViewById(R.id.card_welcome);
-            Typeface tfGibsonGold=ResourcesCompat.getFont(context,R.font.gibson_bold);
-            Typeface tfGibsonSemiBold=ResourcesCompat.getFont(context,R.font.gibson_semibold);
+            img_card = itemView.findViewById(R.id.img_dashboard);
+            card_welcome = itemView.findViewById(R.id.card_welcome);
+            Typeface tfGibsonGold = ResourcesCompat.getFont(context, R.font.gibson_bold);
+            Typeface tfGibsonSemiBold = ResourcesCompat.getFont(context, R.font.gibson_semibold);
             card_welcome.setTypeface(tfGibsonGold);
-            join=itemView.findViewById(R.id.card_dashboard_join);
-            sign_in=itemView.findViewById(R.id.card_dashboard_Sign_In);
+            join = itemView.findViewById(R.id.card_dashboard_join);
+            sign_in = itemView.findViewById(R.id.card_dashboard_Sign_In);
             join.setTypeface(tfGibsonSemiBold);
             sign_in.setTypeface(tfGibsonSemiBold);
         }

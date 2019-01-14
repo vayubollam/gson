@@ -1,10 +1,9 @@
-package suncor.com.android.challengeHandlers;
+package suncor.com.android.mfp.challengeHandlers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -17,7 +16,8 @@ import com.worklight.wlclient.api.challengehandler.SecurityCheckChallengeHandler
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import suncor.com.android.constants.GeneralConstants;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import suncor.com.android.GeneralConstants;
 import suncor.com.android.utilities.UserLocalSettings;
 
 /**
@@ -25,7 +25,7 @@ import suncor.com.android.utilities.UserLocalSettings;
  */
 
 public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
-//    private static String securityCheckName = "UserLogin";
+    //    private static String securityCheckName = "UserLogin";
     private int remainingAttempts = -1;
     private String errorMsg = "";
     private Context context;
@@ -52,7 +52,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                     e.printStackTrace();
                 }
             }
-        },new IntentFilter(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER));
+        }, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER));
 
         //Cancel login process
         broadcastManager.registerReceiver(new BroadcastReceiver() {
@@ -72,7 +72,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         }, new IntentFilter(GeneralConstants.ACTION_LOGOUT));
     }
 
-    public static UserLoginChallengeHandler createAndRegister(){
+    public static UserLoginChallengeHandler createAndRegister() {
         UserLoginChallengeHandler challengeHandler = new UserLoginChallengeHandler(GeneralConstants.SECURITY_CHECK_NAME_LOGIN);
         WLClient.getInstance().registerChallengeHandler(challengeHandler);
         return challengeHandler;
@@ -84,10 +84,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Challenge Received");
         isChallenged = true;
         try {
-            if(jsonObject.isNull("errorMsg")){
+            if (jsonObject.isNull("errorMsg")) {
                 errorMsg = "";
-            }
-            else{
+            } else {
                 errorMsg = jsonObject.getString("errorMsg");
             }
 
@@ -100,7 +99,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         Intent intent = new Intent();
         intent.setAction(GeneralConstants.ACTION_LOGIN_REQUIRED);
         intent.putExtra("errorMsg", errorMsg);
-        intent.putExtra("remainingAttempts",remainingAttempts);
+        intent.putExtra("remainingAttempts", remainingAttempts);
         broadcastManager.sendBroadcast(intent);
     }
 
@@ -108,10 +107,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     public void handleFailure(JSONObject error) {
         super.handleFailure(error);
         isChallenged = false;
-        if(error.isNull("failure")){
+        if (error.isNull("failure")) {
             errorMsg = "Failed to login. Please try again later.";
-        }
-        else {
+        } else {
             try {
                 errorMsg = error.getString("failure");
             } catch (JSONException e) {
@@ -120,7 +118,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         }
         Intent intent = new Intent();
         intent.setAction(GeneralConstants.ACTION_LOGIN_FAILURE);
-        intent.putExtra("errorMsg",errorMsg);
+        intent.putExtra("errorMsg", errorMsg);
         broadcastManager.sendBroadcast(intent);
         Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "handleFailure");
     }
@@ -142,10 +140,10 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "handleSuccess");
     }
 
-    public void login(JSONObject credentials){
-        if(isChallenged){
+    public void login(JSONObject credentials) {
+        if (isChallenged) {
             submitChallengeAnswer(credentials);
-        } else{
+        } else {
             WLAuthorizationManager.getInstance().login(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
                 @Override
                 public void onSuccess() {
@@ -162,7 +160,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     }
 
 
-    public void logout(){
+    public void logout() {
         WLAuthorizationManager.getInstance().logout(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {

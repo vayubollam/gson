@@ -5,7 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 
-import suncor.com.android.dataObjects.Station;
+import suncor.com.android.model.Station;
 
 public class NavigationAppsHelper {
 

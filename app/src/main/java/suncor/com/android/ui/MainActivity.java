@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +18,7 @@ import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
 import com.worklight.wlclient.auth.AccessToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,9 +28,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
-import suncor.com.android.constants.GeneralConstants;
-import suncor.com.android.dataObjects.Station;
+import suncor.com.android.model.Station;
+import suncor.com.android.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private BroadcastReceiver logoutReceiver, loginReceiver, loginRequiredReceiver;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btnGetToken).setOnClickListener(btnGetToken_click);
         findViewById(R.id.btnGetStations).setOnClickListener(btnGetStations_click);
         findViewById(R.id.btnCallProtectedAPI).setOnClickListener(btnProtectedAPI_click);
-        btn_open_Splash=findViewById(R.id.btn_splash);
+        btn_open_Splash = findViewById(R.id.btn_splash);
         btn_open_Splash.setOnClickListener(this);
 
         btnLoginLogOut = findViewById(R.id.btnLoginOut);
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "You are logedout",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "You are logedout", Toast.LENGTH_SHORT).show();
                         btnLoginLogOut.setVisibility(View.INVISIBLE);
                     }
                 });
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "You are loggedin",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "You are loggedin", Toast.LENGTH_SHORT).show();
                         btnLoginLogOut.setVisibility(View.VISIBLE);
                     }
                 });
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     void openLoginActivity() {
         System.out.println("----------------> emailTxt:");
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "Yay, here is your token : " + token.getValue(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Yay, here is your token : " + token.getValue(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "Cannot get access token",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Cannot get access token", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -166,29 +168,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     final String jsonText = wlResponse.getResponseText();
                     try {
                         final JSONArray jsonArray = new JSONArray(jsonText);
-                        Gson gson=new Gson();
-                        List<Station> stations=new ArrayList<>();
-                        for(int i=0;i<jsonArray.length();i++)
-                        {
-                            JSONObject jo=jsonArray.getJSONObject(i);
-                            Station station=gson.fromJson(String.valueOf(jo),Station.class);
+                        Gson gson = new Gson();
+                        List<Station> stations = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jo = jsonArray.getJSONObject(i);
+                            Station station = gson.fromJson(String.valueOf(jo), Station.class);
                             stations.add(station);
                         }
 
-                        for(Station station : stations)
-                            Log.d("json_fields",station.getAddress().getPrimaryCity());
+                        for (Station station : stations)
+                            Log.d("json_fields", station.getAddress().getPrimaryCity());
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
 
-
-
-
-
-
-                                Toast.makeText(MainActivity.this, "Stations loaded (Total: " + jsonArray.length() + ")Cannot get stations",Toast.LENGTH_SHORT).show();                            }
+                                Toast.makeText(MainActivity.this, "Stations loaded (Total: " + jsonArray.length() + ")Cannot get stations", Toast.LENGTH_SHORT).show();
+                            }
                         });
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -197,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Toast.makeText(MainActivity.this, "Cannot get stations",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Cannot get stations", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -223,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d("Balance: ", wlResponse.getResponseText());
                     try {
                         final JSONObject balanceResult = wlResponse.getResponseJSON();
-                        System.out.println("INFO: ----------------> balanceResult: "+ balanceResult.toString(2));
+                        System.out.println("INFO: ----------------> balanceResult: " + balanceResult.toString(2));
                         balance = (String) balanceResult.get("balance");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -233,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "Here is your result : " + finalBalance,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Here is your result : " + finalBalance, Toast.LENGTH_SHORT).show();
                             Log.d("Balance: ", "stuff");
                         }
                     });
@@ -266,12 +263,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v==btn_open_Splash)
+        if (v == btn_open_Splash)
             openSplashLogoActivity();
     }//endregion
 
     private void openSplashLogoActivity() {
-        Intent splashlogoActivity =new Intent(this,SplashLogoActivity.class);
+        Intent splashlogoActivity = new Intent(this, SplashLogoActivity.class);
         startActivity(splashlogoActivity);
     }
 }

@@ -1,7 +1,6 @@
-package suncor.com.android.constants;
+package suncor.com.android;
 
-public class GeneralConstants
-{
+public class GeneralConstants {
     public static final String ACTION_LOGIN_SUBMIT_ANSWER = "com.ibm.userauthandroid.broadcast.login.answer";
     public static final String ACTION_LOGIN_SUCCESS = "com.ibm.userauthandroid.broadcast.login.success";
     public static final String ACTION_LOGIN_FAILURE = "com.ibm.userauthandroid.broadcast.login.failure";
@@ -17,6 +16,6 @@ public class GeneralConstants
     public static final String SHARED_PREF_SHOW_DONT_DRIVE = "com.ibm.suncor.dont_drive";
     public static final String SHARED_PREF_USER = "com.ibm.suncor.user";
 
-    public static final String USER_PREFS_NAME="user_preferences";
+    public static final String USER_PREFS_NAME = "user_preferences";
 
 }

@@ -1,16 +1,15 @@
-package suncor.com.android.utilities;
+package suncor.com.android.ui;
 
 import java.util.ArrayList;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
-import suncor.com.android.dataObjects.Station;
+import suncor.com.android.model.Station;
 
 public class BindingAdapters {
-    @BindingAdapter({"app:station", "app:amenitieType"})
+    @BindingAdapter({"station", "amenitieType"})
     public static void setAmenities(AppCompatTextView view, Station station, int amenitieType) {
-        if(station == null)
-        {
+        if (station == null) {
             return;
         }
         StringBuilder buffer = new StringBuilder();

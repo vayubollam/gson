@@ -1,4 +1,4 @@
-package suncor.com.android.fragments;
+package suncor.com.android.ui.home.dashboard;
 
 import android.util.Log;
 
@@ -17,18 +17,17 @@ import java.net.URISyntaxException;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.dataObjects.Station;
+import suncor.com.android.model.Station;
 
-public class HomeViewModel extends ViewModel {
+public class DashboardViewModel extends ViewModel {
 
-    public MutableLiveData<Station> nearest_station =new MutableLiveData<>();
-
+    public MutableLiveData<Station> nearest_station = new MutableLiveData<>();
 
 
     public MutableLiveData<Station> getNearestStation() {
         URI adapterPath = null;
         try {
-            adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat="+0+"&southWestLong="+0+"0&northEastLat="+0+"&northEastLong="+0+"&amenities=PayAtPump;ULTRA94;PAYPASS,PAYWAVE");
+            adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat=" + 0 + "&southWestLong=" + 0 + "0&northEastLat=" + 0 + "&northEastLong=" + 0 + "&amenities=PayAtPump;ULTRA94;PAYPASS,PAYWAVE");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -37,14 +36,14 @@ public class HomeViewModel extends ViewModel {
         request.send(new WLResponseListener() {
             @Override
             public void onSuccess(WLResponse wlResponse) {
-                String  jsonText = wlResponse.getResponseText();
+                String jsonText = wlResponse.getResponseText();
 
                 try {
                     final JSONArray jsonArray = new JSONArray(jsonText);
-                    Gson gson=new Gson();
+                    Gson gson = new Gson();
 
-                        JSONObject jo=jsonArray.getJSONObject(0);
-                        Station station=gson.fromJson(String.valueOf(jo),Station.class);
+                    JSONObject jo = jsonArray.getJSONObject(0);
+                    Station station = gson.fromJson(String.valueOf(jo), Station.class);
 
                     nearest_station.postValue(station);
 
@@ -56,7 +55,7 @@ public class HomeViewModel extends ViewModel {
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
-                Log.d("mfp_error",wlFailResponse.getErrorMsg());
+                Log.d("mfp_error", wlFailResponse.getErrorMsg());
 
             }
         });

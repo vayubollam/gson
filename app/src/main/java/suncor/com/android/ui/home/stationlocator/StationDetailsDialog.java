@@ -1,4 +1,4 @@
-package suncor.com.android.dialogs;
+package suncor.com.android.ui.home.stationlocator;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.databinding.CardStationItemBinding;
-import suncor.com.android.fragments.StationViewModel;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationDetailsDialog extends BottomSheetDialogFragment {
@@ -31,7 +30,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
     private int cardMarginInPixels;
     private CardStationItemBinding binding;
-    private StationViewModel stationViewModel;
+    private StationItem stationItem;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
         binding = CardStationItemBinding.inflate(LayoutInflater.from(getContext()));
-        binding.setVm(stationViewModel);
+        binding.setVm(stationItem);
         binding.getRoot().setPadding(0, getResources().getDimensionPixelOffset(R.dimen.stationCardMargin), 0, 0);
         DisplayMetrics dp = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
@@ -70,7 +69,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         });
 
         binding.btnCardDirections.setOnClickListener((v) -> {
-            NavigationAppsHelper.openNavigationApps(getActivity(), stationViewModel.station.get());
+            NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.station.get());
         });
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
@@ -129,7 +128,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         this.intialPosition = intialPosition;
     }
 
-    public void setStationViewModel(StationViewModel stationViewModel) {
-        this.stationViewModel = stationViewModel;
+    public void setStationItem(StationItem stationItem) {
+        this.stationItem = stationItem;
     }
 }

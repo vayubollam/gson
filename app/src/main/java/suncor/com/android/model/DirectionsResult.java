@@ -1,10 +1,10 @@
-package suncor.com.android.dataObjects;
+package suncor.com.android.model;
 
-public class StationMatrix {
+public class DirectionsResult {
     private String Distance;
     private String Duration;
 
-    public StationMatrix(String distance, String duration) {
+    public DirectionsResult(String distance, String duration) {
         Distance = distance;
         Duration = duration;
     }

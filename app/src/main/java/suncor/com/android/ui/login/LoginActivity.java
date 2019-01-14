@@ -1,4 +1,4 @@
-package suncor.com.android.ui;
+package suncor.com.android.ui.login;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -7,16 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-import suncor.com.android.R;
-import suncor.com.android.constants.GeneralConstants;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import suncor.com.android.GeneralConstants;
+import suncor.com.android.R;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText txtUserName, txtPassword;
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                         //lblErrorMessage.setText(intent.getStringExtra("errorMsg"));
 
                         //Display remaining attempts
-                        if(intent.getIntExtra("remainingAttempts",-1) > -1) {
+                        if (intent.getIntExtra("remainingAttempts", -1) > -1) {
                             //set number of atemp label
 //                            lblRemainingAttempts.setText(getString(R.string.remaining_attempts, intent.getIntExtra("remainingAttempts",-1)));
                         }
@@ -99,20 +99,19 @@ public class LoginActivity extends AppCompatActivity {
     View.OnClickListener btnSignIn_click = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()){
+            if (txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()) {
                 alertError("Username and password are required");
-            }
-            else{
+            } else {
                 JSONObject credentials = new JSONObject();
                 try {
-                    credentials.put("email",txtUserName.getText().toString());
-                    credentials.put("password",txtPassword.getText().toString());
+                    credentials.put("email", txtUserName.getText().toString());
+                    credentials.put("password", txtPassword.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 Intent intent = new Intent();
                 intent.setAction(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER);
-                intent.putExtra("credentials",credentials.toString());
+                intent.putExtra("credentials", credentials.toString());
                 LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
             }
         }

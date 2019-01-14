@@ -1,10 +1,4 @@
-package suncor.com.android.fragments;
-
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+package suncor.com.android.ui.home.dashboard;
 
 import android.Manifest;
 import android.content.Context;
@@ -16,31 +10,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import suncor.com.android.R;
-import suncor.com.android.adapters.DashboardAdapter;
-import suncor.com.android.constants.GeneralConstants;
-import suncor.com.android.dataObjects.Hour;
-import suncor.com.android.dataObjects.Station;
-import suncor.com.android.utilities.NavigationAppsHelper;
-import suncor.com.android.workers.DirectionsWorker;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
@@ -50,11 +26,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import suncor.com.android.GeneralConstants;
+import suncor.com.android.R;
+import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.model.Hour;
+import suncor.com.android.model.Resource;
+import suncor.com.android.model.Station;
+import suncor.com.android.utilities.NavigationAppsHelper;
 
-    private HomeViewModel mViewModel;
+public class DashboardFragment extends Fragment implements View.OnClickListener {
+
+    private DashboardViewModel mViewModel;
     private AppCompatTextView txt_title, txt_km, txt_open;
-    private AppCompatImageView img_car_station;
     private MaterialButton btn_card_directions;
     private ProgressBar br;
     private MaterialCardView station_card;
@@ -68,8 +60,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private RecyclerView card_recycler;
     private SharedPreferences prefs;
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static DashboardFragment newInstance() {
+        return new DashboardFragment();
     }
 
     @Override
@@ -81,7 +73,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         prefs = Objects.requireNonNull(getContext()).getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
         if (isAdded())
             mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -130,32 +122,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
 
             if (userLocation != null) {
-                Data locationData = new Data.Builder()
-                        .putDouble(DEST_LAT, station.getAddress().getLatitude())
-                        .putDouble(DEST_LNG, station.getAddress().getLongitude())
-                        .putDouble(ORIGIN_LAT, userLocation.getLatitude())
-                        .putDouble(ORIGIN_LNG, userLocation.getLongitude())
-                        .build();
-                Constraints myConstraints = new Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build();
-                OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest.Builder(DirectionsWorker.class).
-                        setConstraints(myConstraints)
-                        .setInputData(locationData)
-                        .build();
-                WorkManager.getInstance().enqueue(getDirectionsWork);
-
-                if (isAdded())
-                    WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
-                            .observe(getActivity(), workInfo -> {
-                                if (workInfo != null && workInfo.getState().isFinished()) {
-                                    String distance = workInfo.getOutputData().getString("distance");
-                                    String duration = workInfo.getOutputData().getString("duration");
-                                    br.setVisibility(View.INVISIBLE);
-                                    txt_km.setText(distance + " away . " + duration);
-                                    img_car_station.setVisibility(View.VISIBLE);
-                                }
-                            });
+                LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+                LatLng origin = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+                DirectionsApi.getInstance().enqueuJob(origin, dest)
+                        .observe(this, result -> { //TODO choose right lifecycle owner
+                            br.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
+                            txt_km.setVisibility(result.status == Resource.Status.LOADING ? View.GONE : View.VISIBLE);
+                            if (result.status == Resource.Status.SUCCESS) {
+                                br.setVisibility(View.INVISIBLE);
+                                txt_km.setText(getString(R.string.distance_generic, result.data.getDistance(), result.data.getDuration()));
+                            }
+                            //TODO handle error
+                        });
             }
         };
 
@@ -207,9 +185,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         btn_card_directions = getView().findViewById(R.id.btn_card_directions);
         txt_open.setTypeface(tfGibsonRegular);
         br = getView().findViewById(R.id.br_km_card);
-        img_car_station = getView().findViewById(R.id.img_car_station);
         station_card = getView().findViewById(R.id.station_card);
-        img_car_station.setVisibility(View.INVISIBLE);
         txt_km.setText("...");
 
         btn_card_directions.setOnClickListener(this);

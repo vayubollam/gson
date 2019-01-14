@@ -1,13 +1,8 @@
 package suncor.com.android.utilities;
 
-import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.SphericalUtil;
-
-import java.util.ArrayList;
-
-import suncor.com.android.dataObjects.Station;
 
 public class LocationUtils {
 

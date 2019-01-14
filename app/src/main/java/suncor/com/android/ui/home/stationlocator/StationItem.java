@@ -1,27 +1,26 @@
-package suncor.com.android.fragments;
+package suncor.com.android.ui.home.stationlocator;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
 
 import androidx.databinding.ObservableField;
-import suncor.com.android.dataObjects.Hour;
-import suncor.com.android.dataObjects.Station;
-import suncor.com.android.dataObjects.StationMatrix;
+import suncor.com.android.model.DirectionsResult;
+import suncor.com.android.model.Hour;
+import suncor.com.android.model.Station;
 
-public class StationViewModel {
+public class StationItem {
 
     public ObservableField<Station> station = new ObservableField<>();
-    public ObservableField<StationMatrix> distanceDuration = new ObservableField<>();
+    public ObservableField<DirectionsResult> distanceDuration = new ObservableField<>();
     public ObservableField<Boolean> isExpanded = new ObservableField<>(false);
     private boolean isFavourite = false;
 
-    public StationViewModel(Station station) {
+    public StationItem(Station station) {
         this.station.set(station);
     }
 
-    public StationViewModel(Station station, StationMatrix distanceDuration) {
+    public StationItem(Station station, DirectionsResult distanceDuration) {
         this.station.set(station);
         this.distanceDuration.set(distanceDuration);
     }

@@ -1,4 +1,4 @@
-package suncor.com.android.dataObjects;
+package suncor.com.android.model;
 
 public class Address {
 

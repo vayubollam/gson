@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.worklight.wlclient.api.WLClient;
+
 import java.util.Date;
 
-import suncor.com.android.constants.GeneralConstants;
+import suncor.com.android.GeneralConstants;
 
 /**
  * Created by bahramhaddadi on 2018-11-27.

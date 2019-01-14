@@ -1,4 +1,4 @@
-package suncor.com.android.dataObjects;
+package suncor.com.android.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

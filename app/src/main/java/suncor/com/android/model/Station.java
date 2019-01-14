@@ -1,10 +1,9 @@
-package suncor.com.android.dataObjects;
+package suncor.com.android.model;
 
 import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import suncor.com.android.R;
@@ -74,33 +73,27 @@ public class Station {
         return address;
     }
 
-    public boolean hasService()
-    {
-        for(String amenitie : amenities){
-            if(SERVICE_AMENITIES_ENUM.contains(amenitie))
-            {
+    public boolean hasService() {
+        for (String amenitie : amenities) {
+            if (SERVICE_AMENITIES_ENUM.contains(amenitie)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean hasFuelOptions()
-    {
-        for(String amenitie : amenities){
-            if(FUEL_AMENITIES_ENUM.contains(amenitie))
-            {
+    public boolean hasFuelOptions() {
+        for (String amenitie : amenities) {
+            if (FUEL_AMENITIES_ENUM.contains(amenitie)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean hasWashOptions()
-    {
-        for(String amenitie : amenities){
-            if(WASH_AMENITIES_ENUM.contains(amenitie))
-            {
+    public boolean hasWashOptions() {
+        for (String amenitie : amenities) {
+            if (WASH_AMENITIES_ENUM.contains(amenitie)) {
                 return true;
             }
         }

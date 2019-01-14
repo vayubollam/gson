@@ -1,10 +1,9 @@
-package suncor.com.android.fragments;
+package suncor.com.android.ui.home.stationlocator;
 
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
@@ -19,13 +18,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.dataObjects.Resource;
-import suncor.com.android.dataObjects.Station;
+import suncor.com.android.model.Resource;
+import suncor.com.android.model.Station;
 import suncor.com.android.utilities.LocationUtils;
 
 public class StationsViewModel extends ViewModel {
@@ -34,11 +31,11 @@ public class StationsViewModel extends ViewModel {
     public final static int DEFAULT_MAP_ZOOM = 5000;
 
 
-    private ArrayList<StationViewModel> cachedStations;
+    private ArrayList<StationItem> cachedStations;
     private LatLngBounds cachedStationsBounds;
 
-    public MutableLiveData<Resource<ArrayList<StationViewModel>>> stationsAround = new MutableLiveData<>();
-    public MutableLiveData<StationViewModel> selectedStation = new MutableLiveData<>();
+    public MutableLiveData<Resource<ArrayList<StationItem>>> stationsAround = new MutableLiveData<>();
+    public MutableLiveData<StationItem> selectedStation = new MutableLiveData<>();
     public LatLng userLocation;
     public LatLngBounds visibleBounds;
     private float regionRatio = 1f;
@@ -79,12 +76,12 @@ public class StationsViewModel extends ViewModel {
                     try {
                         final JSONArray jsonArray = new JSONArray(jsonText);
                         Gson gson = new Gson();
-                        ArrayList<StationViewModel> stations = new ArrayList<>();
+                        ArrayList<StationItem> stations = new ArrayList<>();
                         stations.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jo = jsonArray.getJSONObject(i);
                             Station station = gson.fromJson(jo.toString(), Station.class);
-                            stations.add(new StationViewModel(station));
+                            stations.add(new StationItem(station));
                         }
                         Collections.sort(stations, (o1, o2) -> {
                             double distance1 = LocationUtils.calculateDistance(userLocation, new LatLng(o1.station.get().getAddress().getLatitude(), o1.station.get().getAddress().getLongitude()));
@@ -107,14 +104,14 @@ public class StationsViewModel extends ViewModel {
         }
     }
 
-    private ArrayList<StationViewModel> filterStations(LatLngBounds bounds) {
+    private ArrayList<StationItem> filterStations(LatLngBounds bounds) {
         if (bounds.equals(cachedStationsBounds)) {
             return cachedStations;
         }
-        ArrayList<StationViewModel> stations = new ArrayList<>();
-        for (StationViewModel stationViewModel : cachedStations) {
-            if (bounds.contains(new LatLng(stationViewModel.station.get().getAddress().getLatitude(), stationViewModel.station.get().getAddress().getLongitude()))) {
-                stations.add(stationViewModel);
+        ArrayList<StationItem> stations = new ArrayList<>();
+        for (StationItem stationItem : cachedStations) {
+            if (bounds.contains(new LatLng(stationItem.station.get().getAddress().getLatitude(), stationItem.station.get().getAddress().getLongitude()))) {
+                stations.add(stationItem);
             }
         }
         return stations;

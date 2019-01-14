@@ -1,11 +1,4 @@
-package suncor.com.android.fragments;
-
-import androidx.annotation.DrawableRes;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
+package suncor.com.android.ui.home.stationlocator;
 
 import android.Manifest;
 import android.content.Context;
@@ -20,19 +13,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.R;
-import suncor.com.android.adapters.StationAdapter;
-import suncor.com.android.dataObjects.Resource;
-import suncor.com.android.dialogs.LocationDialog;
-import suncor.com.android.utilities.LocationUtils;
-
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +39,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import suncor.com.android.R;
+import suncor.com.android.model.Resource;
+import suncor.com.android.utilities.LocationUtils;
+
 
 public class StationsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener {
 
@@ -67,7 +63,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private StationsViewModel mViewModel;
     private GoogleMap mGoogleMap;
     private MaterialButton findMyLocationButton;
-    private HashMap<Marker, StationViewModel> stationsMarkers = new HashMap<>();
+    private HashMap<Marker, StationItem> stationsMarkers = new HashMap<>();
     private ProgressBar indeterminateBar;
     private StationAdapter stationAdapter;
     private RecyclerView recyclerView;
@@ -158,7 +154,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null) {
                 return;
             }
-            ArrayList<StationViewModel> stations = mViewModel.stationsAround.getValue().data;
+            ArrayList<StationItem> stations = mViewModel.stationsAround.getValue().data;
 
             if (stations.contains(station)) {
                 recyclerView.scrollToPosition(stations.indexOf(station));
@@ -207,7 +203,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             mViewModel.setUserLocation(latLng);
             stationAdapter.setUserLocation(latLng);
             myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getBitmapFromVector(getActivity(), R.drawable.ic_my_location)));
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(LocationUtils.calculateBounds(latLng, mViewModel.DEFAULT_MAP_ZOOM, screenRatio), 0);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(LocationUtils.calculateBounds(latLng, StationsViewModel.DEFAULT_MAP_ZOOM, screenRatio), 0);
             mGoogleMap.animateCamera(cameraUpdate);
             if (getView() != null) {
                 getView().postDelayed(() -> {
@@ -303,12 +299,12 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
-    private void UpdateCards(Resource<ArrayList<StationViewModel>> result) {
+    private void UpdateCards(Resource<ArrayList<StationItem>> result) {
         if (result.status == Resource.Status.LOADING) {
             indeterminateBar.setVisibility(View.VISIBLE);
         } else if (result.status == Resource.Status.SUCCESS) {
             if (isAdded() && mGoogleMap != null) {
-                ArrayList<StationViewModel> stations = result.data;
+                ArrayList<StationItem> stations = result.data;
                 mGoogleMap.clear();
                 stationsMarkers.clear();
                 lastSelectedMarker = null;
@@ -316,7 +312,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                     myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(myLocationMarker.getPosition()).icon(getBitmapFromVector(getContext(), R.drawable.ic_my_location)));
 
                 Random fav = new Random();
-                for (StationViewModel station : stations) {
+                for (StationItem station : stations) {
                     LatLng latLng = new LatLng(station.station.get().getAddress().getLatitude(), station.station.get().getAddress().getLongitude());
                     boolean isFavourite = station.isFavourite();
                     boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue() == station;
@@ -364,7 +360,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         return getBitmapFromVector(getActivity(), drawable);
     }
 
-    private Marker findMarkerForStation(StationViewModel station) {
+    private Marker findMarkerForStation(StationItem station) {
         for (Marker m : stationsMarkers.keySet()) {
             if (station.equals(stationsMarkers.get(m))) {
                 return m;

@@ -1,4 +1,4 @@
-package suncor.com.android.adapters;
+package suncor.com.android.ui.home.stationlocator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,23 +19,16 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import suncor.com.android.constants.GeneralConstants;
-import suncor.com.android.dataObjects.Station;
-import suncor.com.android.dataObjects.StationMatrix;
+import suncor.com.android.GeneralConstants;
+import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.CardStationItemBinding;
-import suncor.com.android.dialogs.StationDetailsDialog;
-import suncor.com.android.fragments.StationViewModel;
+import suncor.com.android.model.Resource;
+import suncor.com.android.model.Station;
 import suncor.com.android.utilities.NavigationAppsHelper;
-import suncor.com.android.workers.DirectionsWorker;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
-    private final ArrayList<StationViewModel> stations = new ArrayList<>();
+    private final ArrayList<StationItem> stations = new ArrayList<>();
     private final FragmentActivity activity;
     private final BottomSheetBehavior bottomSheetBehavior;
     private final SharedPreferences prefs;
@@ -46,7 +39,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private LatLng userLocation;
     private GestureDetectorCompat swipeUpDetector;
 
-    public ArrayList<StationViewModel> getStations() {
+    public ArrayList<StationItem> getStations() {
         return stations;
     }
 
@@ -92,10 +85,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         });
     }
 
-    private ArrayList<StationViewModel> convertToViewModel(ArrayList<Station> stations) {
-        ArrayList<StationViewModel> models = new ArrayList<>();
+    private ArrayList<StationItem> convertToViewModel(ArrayList<Station> stations) {
+        ArrayList<StationItem> models = new ArrayList<>();
         for (Station station : stations) {
-            models.add(new StationViewModel(station));
+            models.add(new StationItem(station));
         }
         return models;
     }
@@ -112,35 +105,21 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
-        final StationViewModel stationViewModel = stations.get(position);
-        final Station station = stationViewModel.station.get();
-        holder.binding.setVm(stationViewModel);
+        final StationItem stationItem = stations.get(position);
+        final Station station = stationItem.station.get();
+        holder.binding.setVm(stationItem);
         holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
 
-        if (stationViewModel.distanceDuration.get() == null) {
-            Data locationData = new Data.Builder()
-                    .putDouble(DEST_LAT, station.getAddress().getLatitude())
-                    .putDouble(DEST_LNG, station.getAddress().getLongitude())
-                    .putDouble(ORIGIN_LAT, userLocation.latitude)
-                    .putDouble(ORIGIN_LNG, userLocation.longitude)
-                    .build();
-            Constraints myConstraints = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build();
-            OneTimeWorkRequest getDirectionsWork = new OneTimeWorkRequest
-                    .Builder(DirectionsWorker.class)
-                    .setConstraints(myConstraints)
-                    .setInputData(locationData)
-                    .build();
-            WorkManager.getInstance().enqueue(getDirectionsWork);
-            WorkManager.getInstance().getWorkInfoByIdLiveData(getDirectionsWork.getId())
-                    .observe(activity, workInfo -> {
-                        if (workInfo != null && workInfo.getState().isFinished()) {
-                            String distance = workInfo.getOutputData().getString("distance");
-                            String duration = workInfo.getOutputData().getString("duration");
-                            StationMatrix distanceDuration = new StationMatrix(distance, duration);
-                            stationViewModel.distanceDuration.set(distanceDuration);
+        if (stationItem.distanceDuration.get() == null) {
+
+            LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+            DirectionsApi.getInstance().enqueuJob(userLocation, dest)
+                    .observe(activity, result -> { //TODO choose right lifecycle owner
+                        holder.binding.brKmCard.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
+                        if (result.status == Resource.Status.SUCCESS) {
+                            stationItem.distanceDuration.set(result.data);
                         }
+                        //TODO handle error
                     });
         }
 
@@ -152,7 +131,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                showStationDetails(stationViewModel, holder.itemView);
+                showStationDetails(stationItem, holder.itemView);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
@@ -161,7 +140,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             boolean eventHandled = swipeUpDetector.onTouchEvent(event);
             boolean isSwipeUp = eventHandled && event.getAction() != MotionEvent.ACTION_DOWN;
             if (isSwipeUp) {
-                showStationDetails(stationViewModel, holder.itemView);
+                showStationDetails(stationItem, holder.itemView);
             }
             return eventHandled;
         });
@@ -169,7 +148,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         holder.binding.executePendingBindings();
     }
 
-    private void showStationDetails(StationViewModel stationViewModel, View itemView) {
+    private void showStationDetails(StationItem stationItem, View itemView) {
         if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
             return;
         }
@@ -178,7 +157,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         int[] position = new int[2];
         itemView.getLocationInWindow(position);
         dialog.setIntialPosition(position[1]);
-        dialog.setStationViewModel(stationViewModel);
+        dialog.setStationItem(stationItem);
         dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
     }
 

@@ -1,4 +1,4 @@
-package suncor.com.android.dataObjects;
+package suncor.com.android.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
