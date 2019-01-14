@@ -168,7 +168,20 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             } else if (lastSelectedMarker != null) {
                 lastSelectedMarker.setIcon(getDrawableForMarker(false, false));//TODO check if is favourite
             }
+        });
 
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (i == BottomSheetBehavior.STATE_EXPANDED) {
+                    refreshSelectedStation();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
         });
     }
 
@@ -329,15 +342,22 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                     @Override
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
-                        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                        int vi = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                        if (vi != RecyclerView.NO_POSITION) {
-                            mViewModel.selectedStation.setValue(mViewModel.stationsAround.getValue().data.get(vi));
-                        }
+                        refreshSelectedStation();
                     }
                 });
                 indeterminateBar.setVisibility(View.GONE);
             }
+        }
+    }
+
+    private void refreshSelectedStation() {
+        if(mViewModel.stationsAround.getValue() == null){
+            return;
+        }
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int vi = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+        if (vi != RecyclerView.NO_POSITION) {
+            mViewModel.selectedStation.setValue(mViewModel.stationsAround.getValue().data.get(vi));
         }
     }
 
