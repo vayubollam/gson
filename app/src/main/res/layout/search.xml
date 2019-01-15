@@ -8,7 +8,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             app:cardCornerRadius="8dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="12dp"
             android:layout_marginRight="16dp"
             app:strokeColor="#29000000"
             app:strokeWidth="1dp"
@@ -52,7 +52,6 @@
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
         <include
-
             layout="@layout/nearby_in_search"></include>
 
 

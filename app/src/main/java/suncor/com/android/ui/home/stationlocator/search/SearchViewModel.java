@@ -40,9 +40,11 @@ public class SearchViewModel extends ViewModel {
     public LatLng userLocation;
     public LatLngBounds visibleBounds;
     private float regionRatio = 1f;
+    public MutableLiveData<Boolean> isBusy=new MutableLiveData<>();
 
 
     public void refreshStations(LatLng mapCenter, LatLngBounds bounds) {
+        isBusy.postValue(true);
         if (userLocation == null)
             return;
         if (bounds != null && cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
@@ -95,11 +97,13 @@ public class SearchViewModel extends ViewModel {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    isBusy.postValue(false);
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Log.d("mfp_error", wlFailResponse.getErrorMsg());
+                    isBusy.postValue(false);
                 }
             });
         }

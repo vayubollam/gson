@@ -22,6 +22,14 @@
         android:layout_width="match_parent"
         android:src="@drawable/horizontal_divider"
         android:layout_height="wrap_content" />
+    <ProgressBar
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:indeterminateTint="@color/red_pb"
+        android:visibility="visible"
+        android:id="@+id/pb_nearBY"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nearby_recycler"
         android:layout_width="match_parent"

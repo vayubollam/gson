@@ -30,8 +30,8 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:id="@+id/txt_nearby_distance_duration"
-                android:text="@{@string/distance_generic(stationItem.distanceDuration.distance, stationItem.distanceDuration.duration)}"
                 android:visibility="@{stationItem.distanceDuration==null ? View.INVISIBLE : View.VISIBLE}"
+                android:text="@{@string/distance_generic(stationItem.distanceDuration.distance, stationItem.distanceDuration.duration)}"
                 tools:text="12 km away . Open until 11:00 PM"
                 android:textSize="14sp"
                 android:layout_height="wrap_content" />
