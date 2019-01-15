@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,6 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight);
         binding.getRoot().setLayoutParams(params);
-
         binding.cardView.getLayoutParams().height = intialHeight;
         dialog.setContentView(binding.getRoot());
 
@@ -92,8 +92,9 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                 @Override
                 public void onSlide(@NonNull View view, float v) {
                     if (v > 0.01) {
+                        binding.txtStationTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, v * 4 + 18);
                         binding.closeBtn.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
-                        binding.imgBottomSheet.setVisibility(v > 0.1 ? View.GONE : View.VISIBLE);
+                        binding.imgBottomSheet.setVisibility(v > 0.1 ? View.INVISIBLE : View.VISIBLE);
                         dialog.getWindow().setDimAmount(v * 0.6f);
                         binding.addressLayout.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
                         binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);

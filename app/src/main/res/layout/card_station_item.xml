@@ -45,13 +45,15 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingStart="16dp"
+                    android:paddingBottom="16dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txt_station_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:layout_weight="1"
                         android:text="@{vm.station.address.addressLine}"
                         android:textAppearance="@style/TitleStyle"
@@ -75,8 +77,8 @@
                     tools:visibility="visible">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:srcCompat="@drawable/ic_locations" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -99,8 +101,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_car_station"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:srcCompat="@drawable/ic_car" />
 
 
@@ -131,8 +133,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_clock_station"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:srcCompat="@drawable/ic_clock" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -173,16 +175,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <ToggleButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:background="@android:color/transparent"
-                            android:drawableLeft="@drawable/ic_favorite_border_black_24dp"
+                            android:drawableLeft="@drawable/favourite_button"
                             android:drawablePadding="16dp"
                             android:gravity="left|center_vertical"
-                            android:text="@string/add_to_favourites_button"
-                            android:textAllCaps="false" />
+                            android:textOff="@string/add_to_favourites_button"
+                            android:textOn="@string/favourited"
+                            android:textAllCaps="false"
+                            android:checked="@{vm.isFavourite}"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -201,7 +205,7 @@
                             android:gravity="left|center_vertical"
                             android:text="@{@string/call_generic(vm.station.address.phone)}"
                             android:textAllCaps="false"
-                            tools:text="Call . (123)456-7890" />
+                            tools:text="Call \u00b7 (123)456-7890" />
 
                         <View
                             android:layout_width="match_parent"

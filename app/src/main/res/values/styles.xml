@@ -30,8 +30,9 @@
 
     <style name="TitleStyle" parent="@style/TextAppearance.AppCompat.Medium">
         <item name="android:textSize">18sp</item>
-        <item name="fontFamily">@font/gibson_bold</item>
+        <item name="fontFamily">@font/gibson_regular</item>
         <item name="android:textColor">@color/black_100</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="SubtitleStyle" parent="@style/TextAppearance.AppCompat.Headline">

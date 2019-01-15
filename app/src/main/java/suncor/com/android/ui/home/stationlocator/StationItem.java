@@ -4,6 +4,7 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
@@ -14,7 +15,7 @@ public class StationItem {
     public ObservableField<Station> station = new ObservableField<>();
     public ObservableField<DirectionsResult> distanceDuration = new ObservableField<>();
     public ObservableField<Boolean> isExpanded = new ObservableField<>(false);
-    private boolean isFavourite = false;
+    public ObservableBoolean isFavourite = new ObservableBoolean(false);
 
     public StationItem(Station station) {
         this.station.set(station);
@@ -62,9 +63,5 @@ public class StationItem {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         return station.get().getHours().get(dayOfWeek - 1);
-    }
-
-    public boolean isFavourite() {
-        return isFavourite;
     }
 }

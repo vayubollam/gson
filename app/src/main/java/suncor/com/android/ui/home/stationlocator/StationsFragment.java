@@ -160,7 +160,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             new LocationLiveData(getContext())
                     .observe(this, (this::gotoMyLocation));
-        }else {
+        } else {
             //TODO remove this
             AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
             adb.setMessage("Location Permission Not Granted");
@@ -300,7 +300,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                 Random fav = new Random();
                 for (StationItem station : stations) {
                     LatLng latLng = new LatLng(station.station.get().getAddress().getLatitude(), station.station.get().getAddress().getLongitude());
-                    boolean isFavourite = station.isFavourite();
+                    boolean isFavourite = station.isFavourite.get();
                     boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue() == station;
                     Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
                     if (isSelected) {
