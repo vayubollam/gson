@@ -39,10 +39,12 @@ import java.util.Random;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -53,6 +55,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.home.stationlocator.LocationDialog;
+import suncor.com.android.ui.home.stationlocator.StationAdapter;
+import suncor.com.android.ui.home.stationlocator.StationItem;
+import suncor.com.android.ui.home.stationlocator.StationsViewModel;
+import suncor.com.android.ui.home.stationlocator.search.SearchDialog;
 import suncor.com.android.utilities.LocationUtils;
 
 
@@ -71,6 +78,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker lastSelectedMarker;
     private float screenRatio;
+    AppCompatTextView txt_search_address;
+
 
 
     @Override
@@ -92,6 +101,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         mViewModel.setRegionRatio(screenRatio);
         indeterminateBar = view.findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
+         txt_search_address=getView().findViewById(R.id.txt_search_address);
+        txt_search_address.setOnClickListener(this);
 
         recyclerView = view.findViewById(R.id.card_recycler);
         bottomSheetBehavior = BottomSheetBehavior.from(recyclerView);
@@ -218,6 +229,15 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             if (!isLocationEnabled(getContext())) {
                 alertUser();
             }
+        }
+        if(v==txt_search_address){
+            SearchDialog searchFragment= new SearchDialog();
+            Bundle args = new Bundle();
+            args.putDouble("lat", mViewModel.userLocation.latitude);
+            args.putDouble("lng",mViewModel.userLocation.latitude);
+            searchFragment.setArguments(args);
+            searchFragment.show(getFragmentManager(),searchFragment.getTag());
+
         }
     }
 

@@ -39,6 +39,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private LatLng userLocation;
     private GestureDetectorCompat swipeUpDetector;
 
+
     public ArrayList<StationItem> getStations() {
         return stations;
     }
@@ -170,7 +171,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     class StationViewHolder extends RecyclerView.ViewHolder {
 
         final CardStationItemBinding binding;
-        final int screenWidth = getScreenWidth();
 
 
         StationViewHolder(CardStationItemBinding binding) {
@@ -178,12 +178,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             this.binding = binding;
         }
 
-        private int getScreenWidth() {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-            return displayMetrics.widthPixels;
-        }
     }
 
 }
