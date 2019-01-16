@@ -11,7 +11,6 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
@@ -55,6 +55,7 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.home.stationlocator.search.SearchDialog;
 import suncor.com.android.utilities.LocationUtils;
 
 
@@ -74,6 +75,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker lastSelectedMarker;
     private float screenRatio;
+    private AppCompatTextView txtSearchAddress;
 
 
     @Override
@@ -96,6 +98,9 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         mViewModel.setRegionRatio(screenRatio);
         indeterminateBar = view.findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
+        txtSearchAddress = getView().findViewById(R.id.txt_search_address);
+        txtSearchAddress.setOnClickListener(this);
+
         recyclerView = view.findViewById(R.id.card_recycler);
         bottomSheetBehavior = BottomSheetBehavior.from(recyclerView);
         stationAdapter = new StationAdapter(this, bottomSheetBehavior);
@@ -175,7 +180,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(!isAdded())
+        if (!isAdded())
             return;
         if (requestCode == STATION_DETAILS_REQUEST_CODE) {
             if (lastSelectedMarker != null) {
@@ -225,16 +230,19 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     @Override
     public void onClick(View v) {
         if (v == findMyLocationButton && isAdded()) {
-            if (isLocationEnabled(getActivity())) {
+            if (LocationUtils.isLocationEnabled()) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     new LocationLiveData(getContext())
                             .observe(this, (this::gotoMyLocation));
                 }
-            }
-
-            if (!isLocationEnabled(getContext())) {
+            } else {
                 alertUser();
             }
+        }
+        if (v == txtSearchAddress) {
+            SearchDialog searchFragment = new SearchDialog();
+            searchFragment.show(getFragmentManager(), searchFragment.getTag());
+
         }
     }
 
@@ -243,19 +251,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         dialogFragment.show(getFragmentManager(), "location dialog");
     }
 
-    //checking weather the user's gps is enabled or not
-    private static boolean isLocationEnabled(Context context) {
-        int locationMode;
-        try {
-            locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-    }
 
     //checking the user connectivity
     private boolean haveNetworkConnection() {

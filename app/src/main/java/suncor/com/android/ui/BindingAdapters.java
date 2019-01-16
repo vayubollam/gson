@@ -38,4 +38,6 @@ public class BindingAdapters {
         }
         view.setText(buffer.toString().trim());
     }
+
+
 }

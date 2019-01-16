@@ -33,7 +33,9 @@
             android:name=".ui.SplashActivity"
             android:theme="@style/CustomAppThemeForSplash" />
         <activity android:name=".ui.SafeDriveActivity" />
-        <activity android:name=".ui.home.HomeActivity" />
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

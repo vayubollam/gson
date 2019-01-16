@@ -69,6 +69,7 @@ public class StationItem {
     public StationItem(Station station, DirectionsResult distanceDuration) {
         this.station.set(station);
         this.distanceDuration.set(distanceDuration);
+
     }
 
     public boolean isOpen() {

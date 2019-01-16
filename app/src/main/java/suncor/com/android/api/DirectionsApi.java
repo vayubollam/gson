@@ -53,7 +53,7 @@ public class DirectionsApi {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                result.postValue(Resource.error(e.getMessage(), null));
+                result.postValue(Resource.error(e.toString(), null));
             }
 
             @Override
