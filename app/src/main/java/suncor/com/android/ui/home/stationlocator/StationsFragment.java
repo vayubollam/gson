@@ -2,6 +2,7 @@ package suncor.com.android.ui.home.stationlocator;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -48,16 +49,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
 import suncor.com.android.utilities.LocationUtils;
 
 
 public class StationsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener {
 
+    public static final int STATION_DETAILS_REQUEST_CODE = 1;
     private final static int MINIMUM_ZOOM_LEVEL = 10;
 
     private StationsViewModel mViewModel;
@@ -76,7 +79,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(StationsViewModel.class);
+        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
+        mViewModel = ViewModelProviders.of(this, factory).get(StationsViewModel.class);
     }
 
     @Override
@@ -92,14 +96,13 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         mViewModel.setRegionRatio(screenRatio);
         indeterminateBar = view.findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
-
         recyclerView = view.findViewById(R.id.card_recycler);
         bottomSheetBehavior = BottomSheetBehavior.from(recyclerView);
-        stationAdapter = new StationAdapter(getActivity(), bottomSheetBehavior);
+        stationAdapter = new StationAdapter(this, bottomSheetBehavior);
         recyclerView.setAdapter(stationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
         ViewCompat.setNestedScrollingEnabled(recyclerView, false);
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
 
         findMyLocationButton = view.findViewById(R.id.btn_my_location);
@@ -122,7 +125,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         super.onResume();
 
         mViewModel.stationsAround.observe(getActivity(), this::UpdateCards);
-
         mViewModel.selectedStation.observe(this, station -> {
             if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null) {
                 return;
@@ -132,14 +134,16 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             if (stations.contains(station)) {
                 recyclerView.scrollToPosition(stations.indexOf(station));
                 if (lastSelectedMarker != null) {
-                    lastSelectedMarker.setIcon(getDrawableForMarker(false, false));//TODO check if is favourite
+                    StationItem oldStation = stationsMarkers.get(lastSelectedMarker);
+                    lastSelectedMarker.setIcon(getDrawableForMarker(false, oldStation.isFavourite.get()));
                 }
 
                 lastSelectedMarker = findMarkerForStation(station);
-                lastSelectedMarker.setIcon(getDrawableForMarker(true, false));
+                lastSelectedMarker.setIcon(getDrawableForMarker(true, station.isFavourite.get()));
 
             } else if (lastSelectedMarker != null) {
-                lastSelectedMarker.setIcon(getDrawableForMarker(false, false));//TODO check if is favourite
+                StationItem oldStation = stationsMarkers.get(lastSelectedMarker);
+                lastSelectedMarker.setIcon(getDrawableForMarker(false, oldStation.isFavourite.get()));
             }
         });
 
@@ -167,6 +171,17 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             adb.setPositiveButton("OK", null);
             adb.show();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == STATION_DETAILS_REQUEST_CODE) {
+            if (lastSelectedMarker != null) {
+                StationItem item = stationsMarkers.get(lastSelectedMarker);
+                lastSelectedMarker.setIcon(getDrawableForMarker(true, item.isFavourite.get()));
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     //Map is ready
@@ -338,7 +353,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         int drawable;
         if (isSelected) {
             if (isFavourite) {
-                drawable = R.drawable.ic_pin_favourite;//TODO set it red
+                drawable = R.drawable.ic_pin_favourite_selected;//TODO set it red
             } else {
                 drawable = R.drawable.ic_pin_selected;
             }

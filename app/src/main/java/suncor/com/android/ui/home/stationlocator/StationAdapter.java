@@ -1,9 +1,6 @@
 package suncor.com.android.ui.home.stationlocator;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,9 +14,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.GeneralConstants;
 import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.model.Resource;
@@ -29,13 +24,8 @@ import suncor.com.android.utilities.NavigationAppsHelper;
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
     private final ArrayList<StationItem> stations = new ArrayList<>();
-    private final FragmentActivity activity;
+    private final StationsFragment fragment;
     private final BottomSheetBehavior bottomSheetBehavior;
-    private final SharedPreferences prefs;
-    public static final String ORIGIN_LAT = "origin_lat";
-    public static final String ORIGIN_LNG = "origin_lng";
-    public static final String DEST_LAT = "dest_lat";
-    public static final String DEST_LNG = "dest_lng";
     private LatLng userLocation;
     private GestureDetectorCompat swipeUpDetector;
 
@@ -52,11 +42,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         notifyDataSetChanged();
     }
 
-    public StationAdapter(FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
-        this.activity = activity;
+    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior) {
+        this.fragment = fragment;
         this.bottomSheetBehavior = bottomSheetBehavior;
-        prefs = activity.getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-        swipeUpDetector = new GestureDetectorCompat(activity, new GestureDetector.SimpleOnGestureListener() {
+        swipeUpDetector = new GestureDetectorCompat(fragment.getContext(), new GestureDetector.SimpleOnGestureListener() {
             private boolean isSwipeUpDetected = false;
 
             @Override
@@ -85,14 +74,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         });
     }
 
-    private ArrayList<StationItem> convertToViewModel(ArrayList<Station> stations) {
-        ArrayList<StationItem> models = new ArrayList<>();
-        for (Station station : stations) {
-            models.add(new StationItem(station));
-        }
-        return models;
-    }
-
     @NonNull
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -114,7 +95,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
-                    .observe(activity, result -> { //TODO choose right lifecycle owner
+                    .observe(fragment, result -> { //TODO choose right lifecycle owner
                         holder.binding.brKmCard.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.distanceDuration.set(result.data);
@@ -125,8 +106,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
 
         holder.binding.btnCardDirections.setOnClickListener(v -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            NavigationAppsHelper.openNavigationApps(activity, station);
+            if (fragment.getContext() != null) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                NavigationAppsHelper.openNavigationApps(fragment.getContext(), station);
+            }
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
@@ -158,7 +141,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         itemView.getLocationInWindow(position);
         dialog.setIntialPosition(position[1]);
         dialog.setStationItem(stationItem);
-        dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
+        dialog.setTargetFragment(fragment, StationsFragment.STATION_DETAILS_REQUEST_CODE);
+        dialog.show(fragment.getFragmentManager(), StationDetailsDialog.TAG);
     }
 
     @Override
@@ -170,19 +154,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     class StationViewHolder extends RecyclerView.ViewHolder {
 
         final CardStationItemBinding binding;
-        final int screenWidth = getScreenWidth();
-
 
         StationViewHolder(CardStationItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-        }
-
-        private int getScreenWidth() {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-            return displayMetrics.widthPixels;
         }
     }
 

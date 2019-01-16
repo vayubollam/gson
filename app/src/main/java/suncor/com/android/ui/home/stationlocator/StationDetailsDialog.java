@@ -1,6 +1,8 @@
 package suncor.com.android.ui.home.stationlocator;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -126,6 +128,12 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
     }
 
     private int dpToPixels(int dimension) {
