@@ -13,6 +13,7 @@
         android:layout_height="match_parent">
 
     </FrameLayout>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -20,45 +21,50 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:cardCornerRadius="8dp">
-      <RelativeLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-          <androidx.appcompat.widget.AppCompatImageView
-              android:id="@+id/btn_search"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingBottom="8dp"
-              android:paddingLeft="14dp"
-              android:paddingTop="8dp"
-              android:src="@drawable/ic_search"/>
-          <androidx.appcompat.widget.AppCompatTextView
-              android:layout_width="match_parent"
-              android:layout_toLeftOf="@+id/btn_filters"
-             android:id="@+id/txt_search_address"
-              android:paddingTop="4dp"
-              android:layout_marginLeft="16dp"
-              android:hint="@string/search_an_address"
-              style="@style/SearchTextNormal"
-              android:layout_toRightOf="@+id/btn_search"
-              android:layout_marginTop="7dp"
-              android:background="@android:color/transparent"
-              android:layout_height="wrap_content" />
-          <androidx.appcompat.widget.AppCompatImageView
-              android:layout_width="1dp"
-              android:id="@+id/vertical_divider"
-              android:layout_toLeftOf="@+id/btn_filters"
-              android:src="@drawable/vertical_divider"
-              android:layout_height="wrap_content" />
-          <androidx.appcompat.widget.AppCompatImageView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingLeft="14dp"
-              android:layout_gravity="right"
-              android:padding="8dp"
-              android:id="@+id/btn_filters"
-              android:layout_alignParentEnd="true"
-              android:src="@drawable/ic_filters"/>
-      </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingLeft="14dp"
+                android:paddingTop="8dp"
+                android:src="@drawable/ic_search" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_toLeftOf="@+id/btn_filters"
+                android:id="@+id/txt_search_address"
+                android:paddingTop="4dp"
+                android:layout_marginLeft="16dp"
+                android:hint="@string/search_an_address"
+                style="@style/SearchTextNormal"
+                android:layout_toRightOf="@+id/btn_search"
+                android:layout_marginTop="7dp"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="1dp"
+                android:id="@+id/vertical_divider"
+                android:layout_toLeftOf="@+id/btn_filters"
+                android:src="@drawable/vertical_divider"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="14dp"
+                android:layout_gravity="right"
+                android:padding="8dp"
+                android:id="@+id/btn_filters"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_filters" />
+        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
 

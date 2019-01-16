@@ -213,22 +213,19 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     @Override
     public void onClick(View v) {
         if (v == findMyLocationButton && isAdded()) {
-            if (isLocationEnabled(getActivity())) {
+            if (LocationUtils.isLocationEnabled()) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     new LocationLiveData(getContext())
                             .observe(this, (this::gotoMyLocation));
                 }
             }
 
-            if (!isLocationEnabled(getContext())) {
+            else{
                 alertUser();
             }
         }
         if (v == txt_search_address) {
             SearchDialog searchFragment = new SearchDialog();
-            Bundle args = new Bundle();
-            searchFragment.setUserLocation(mViewModel.userLocation);
-            searchFragment.setArguments(args);
             searchFragment.show(getFragmentManager(), searchFragment.getTag());
 
         }
@@ -239,19 +236,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         dialogFragment.show(getFragmentManager(), "location dialog");
     }
 
-    //checking weather the user's gps is enabled or not
-    private static boolean isLocationEnabled(Context context) {
-        int locationMode;
-        try {
-            locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
 
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-    }
 
     //checking the user connectivity
     private boolean haveNetworkConnection() {

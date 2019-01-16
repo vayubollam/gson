@@ -20,11 +20,11 @@ import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 
 public class SearchNearByAdapter extends RecyclerView.Adapter<SearchNearByAdapter.NearByHolder> {
-    private ArrayList<StationItem> stationItems;
+    private ArrayList<StationNearbyItem> stationItems;
     private LatLng userLocation;
     private FragmentActivity activity;
 
-    public SearchNearByAdapter(ArrayList<StationItem> stationItems, LatLng userLocation, FragmentActivity activity) {
+    public SearchNearByAdapter(ArrayList<StationNearbyItem> stationItems, LatLng userLocation, FragmentActivity activity) {
         this.stationItems = stationItems;
         this.userLocation = userLocation;
         this.activity = activity;
@@ -41,22 +41,8 @@ public class SearchNearByAdapter extends RecyclerView.Adapter<SearchNearByAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchNearByAdapter.NearByHolder holder, int position) {
-        final StationItem stationItem = stationItems.get(position);
-        final Station station = stationItem.station.get();
+        final StationNearbyItem stationItem = stationItems.get(position);
         holder.binding.setStationItem(stationItem);
-        if (stationItem.distanceDuration.get() == null) {
-
-            LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-            DirectionsApi.getInstance().enqueuJob(userLocation, dest)
-                    .observe(activity, result -> {
-                      //  holder.binding.txtNearbyDistanceDuration.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.INVISIBLE);
-                        if (result.status == Resource.Status.SUCCESS) {
-                            stationItem.distanceDuration.set(result.data);
-
-                        }
-
-                    });
-        }
         holder.binding.executePendingBindings();
 
     }

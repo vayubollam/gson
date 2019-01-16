@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -24,43 +25,27 @@ import androidx.lifecycle.ViewModel;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
+import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.LocationUtils;
 
 public class SearchViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
-    public final static int DEFAULT_MAP_ZOOM = 5000;
-
-
-    private ArrayList<StationItem> cachedStations;
-    private LatLngBounds cachedStationsBounds;
-
-    public MutableLiveData<Resource<ArrayList<StationItem>>> stationsAround = new MutableLiveData<>();
-    public MutableLiveData<StationItem> selectedStation = new MutableLiveData<>();
+    public MutableLiveData<Resource<ArrayList<StationNearbyItem>>> stationsAround = new MutableLiveData<>();
     public LatLng userLocation;
-    public LatLngBounds visibleBounds;
     private float regionRatio = 1f;
     public MutableLiveData<Boolean> isBusy=new MutableLiveData<>();
 
 
-    public void refreshStations(LatLng mapCenter, LatLngBounds bounds) {
-        isBusy.postValue(true);
+    public void refreshStations(LatLng mapCenter) {
+        isBusy.setValue(true);
         if (userLocation == null)
             return;
-        if (bounds != null && cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
-            visibleBounds = bounds;
-            stationsAround.postValue(Resource.success(filterStations(bounds)));
-        } else {
-            stationsAround.postValue(Resource.loading(null));
-            if (bounds != null) {
-                visibleBounds = bounds;
-            }
             LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
-            LatLngBounds apiBounds = LocationUtils.getLargerBounds(visibleBounds, _25KmBounds);
-            double southWestLat = apiBounds.southwest.latitude;
-            double southWestLong = apiBounds.southwest.longitude;
-            double northEastLat = apiBounds.northeast.latitude;
-            double northEastLong = apiBounds.northeast.longitude;
+            double southWestLat = _25KmBounds.southwest.latitude;
+            double southWestLong = _25KmBounds.southwest.longitude;
+            double northEastLat = _25KmBounds.northeast.latitude;
+            double northEastLong = _25KmBounds.northeast.longitude;
 
 
             URI adapterPath = null;
@@ -79,20 +64,19 @@ public class SearchViewModel extends ViewModel {
                     try {
                         final JSONArray jsonArray = new JSONArray(jsonText);
                         Gson gson = new Gson();
-                        ArrayList<StationItem> stations = new ArrayList<>();
+                        ArrayList<StationNearbyItem> stations = new ArrayList<>();
                         stations.clear();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jo = jsonArray.getJSONObject(i);
                             Station station = gson.fromJson(jo.toString(), Station.class);
-                            stations.add(new StationItem(station));
+                            LatLng stationLocation=new LatLng(station.getAddress().getLatitude(),station.getAddress().getLongitude());
+                            stations.add(new StationNearbyItem(station,getDistance(userLocation,stationLocation,1000)));
                         }
                         Collections.sort(stations, (o1, o2) -> {
                             double distance1 = LocationUtils.calculateDistance(userLocation, new LatLng(o1.station.get().getAddress().getLatitude(), o1.station.get().getAddress().getLongitude()));
                             double distance2 = LocationUtils.calculateDistance(userLocation, new LatLng(o2.station.get().getAddress().getLatitude(), o2.station.get().getAddress().getLongitude()));
                             return (int) (distance1 - distance2);
                         });
-                        cachedStationsBounds = apiBounds;
-                        cachedStations = stations;
                         stationsAround.postValue(Resource.success(stations));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -107,28 +91,21 @@ public class SearchViewModel extends ViewModel {
                 }
             });
         }
-    }
 
-    private ArrayList<StationItem> filterStations(LatLngBounds bounds) {
-        if (bounds.equals(cachedStationsBounds)) {
-            return cachedStations;
-        }
-        ArrayList<StationItem> stations = new ArrayList<>();
-        for (StationItem stationItem : cachedStations) {
-            if (bounds.contains(new LatLng(stationItem.station.get().getAddress().getLatitude(), stationItem.station.get().getAddress().getLongitude()))) {
-                stations.add(stationItem);
-            }
-        }
-        return stations;
-    }
 
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
-        visibleBounds = LocationUtils.calculateBounds(userLocation, DEFAULT_MAP_ZOOM, regionRatio);
-        refreshStations(userLocation, null);
+        refreshStations(userLocation);
     }
 
     public void setRegionRatio(float screenRatio) {
+
         this.regionRatio = screenRatio;
+    }
+
+    private Double getDistance(LatLng userLocation, LatLng des, int unit){
+        double distance=LocationUtils.calculateDistance(userLocation,new LatLng(des.latitude,des.longitude))/unit;
+        return  Double.parseDouble(new DecimalFormat("##.#").format(distance));
+
     }
 }

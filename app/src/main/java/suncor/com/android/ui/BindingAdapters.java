@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
 import suncor.com.android.model.Station;
+import suncor.com.android.utilities.LocationUtils;
 
 public class BindingAdapters {
     @BindingAdapter({"station", "amenitieType"})
@@ -37,5 +38,13 @@ public class BindingAdapters {
             }
         }
         view.setText(buffer.toString().trim());
+    }
+
+    @BindingAdapter({"station"})
+    public static void setNearByStation(AppCompatTextView view, Station station){
+        if(station==null){
+            return;
+        }
+
     }
 }
