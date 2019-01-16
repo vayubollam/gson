@@ -35,7 +35,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
     private BottomSheetBehavior behavior;
 
-    private int cardMarginInPixels;
+    private int layoutPadding;
     private CardStationItemBinding binding;
     private StationItem stationItem;
 
@@ -43,7 +43,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.StationDetailsDialogStyle);
-        cardMarginInPixels = getResources().getDimensionPixelSize(R.dimen.stationCardMargin);
+        layoutPadding = getResources().getDimensionPixelOffset(R.dimen.cards_padding_expanded);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void setupDialog(@NonNull Dialog dialog, int style) {
         binding = CardStationItemBinding.inflate(LayoutInflater.from(getContext()));
         binding.setVm(stationItem);
-        binding.getRoot().setPadding(0, getResources().getDimensionPixelOffset(R.dimen.stationCardMargin), 0, 0);
+        binding.getRoot().setPadding(layoutPadding, layoutPadding, layoutPadding, 0);
         DisplayMetrics dp = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
         fullHeight = dp.heightPixels - getStatusBarHeight();
@@ -84,7 +84,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
         if (behavior != null) {
-            behavior.setPeekHeight(fullHeight - intialPosition + 2 * cardMarginInPixels);
+            behavior.setPeekHeight(fullHeight - intialPosition + 2 * layoutPadding);
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
                 @Override
@@ -109,7 +109,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
                         binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);
 
-                        binding.cardView.getLayoutParams().height = (int) (((fullHeight - 2 * cardMarginInPixels) * v) + (1 - v) * intialHeight);
+                        binding.cardView.getLayoutParams().height = (int) (((fullHeight - 2 * layoutPadding) * v) + (1 - v) * intialHeight);
                         binding.cardView.requestLayout();
                     } else if (v > 0) {
                         binding.cardView.setVisibility(View.GONE);

@@ -16,15 +16,15 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/cards_padding_collapsed"
+        android:paddingStart="@dimen/cards_padding_collapsed">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_marginStart="@dimen/stationCardMargin"
-            android:layout_marginEnd="@dimen/stationCardMargin"
             android:theme="@style/Widget.MaterialComponents.CardView"
             app:cardCornerRadius="12dp">
 
@@ -46,9 +46,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:paddingTop="8dp"
-                    android:paddingBottom="16dp">
+                    android:layout_marginBottom="16dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txt_station_title"
@@ -75,6 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="10dp"
                     android:visibility="gone"
                     tools:visibility="visible">
 
@@ -98,9 +99,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical">
 
                     <androidx.appcompat.widget.AppCompatImageView
