@@ -11,7 +11,6 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +39,8 @@ import java.util.Random;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
@@ -76,7 +75,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker lastSelectedMarker;
     private float screenRatio;
-    AppCompatTextView txt_search_address;
+    private AppCompatTextView txtSearchAddress;
 
 
     @Override
@@ -99,8 +98,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         mViewModel.setRegionRatio(screenRatio);
         indeterminateBar = view.findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
-        txt_search_address = getView().findViewById(R.id.txt_search_address);
-        txt_search_address.setOnClickListener(this);
+        txtSearchAddress = getView().findViewById(R.id.txt_search_address);
+        txtSearchAddress.setOnClickListener(this);
 
         recyclerView = view.findViewById(R.id.card_recycler);
         bottomSheetBehavior = BottomSheetBehavior.from(recyclerView);
@@ -181,7 +180,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(!isAdded())
+        if (!isAdded())
             return;
         if (requestCode == STATION_DETAILS_REQUEST_CODE) {
             if (lastSelectedMarker != null) {
@@ -236,13 +235,11 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                     new LocationLiveData(getContext())
                             .observe(this, (this::gotoMyLocation));
                 }
-            }
-
-            else{
+            } else {
                 alertUser();
             }
         }
-        if (v == txt_search_address) {
+        if (v == txtSearchAddress) {
             SearchDialog searchFragment = new SearchDialog();
             searchFragment.show(getFragmentManager(), searchFragment.getTag());
 
@@ -253,7 +250,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         LocationDialog dialogFragment = new LocationDialog();
         dialogFragment.show(getFragmentManager(), "location dialog");
     }
-
 
 
     //checking the user connectivity

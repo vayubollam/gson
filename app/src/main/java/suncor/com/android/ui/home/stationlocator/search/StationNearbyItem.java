@@ -4,16 +4,14 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableField;
-import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
 import suncor.com.android.model.Station;
 
 public class StationNearbyItem {
 
     public ObservableField<Station> station = new ObservableField<>();
-    public ObservableField<Double> distance=new ObservableField<>();
+    public ObservableField<Double> distance = new ObservableField<>();
 
     public StationNearbyItem(Station station) {
         this.station.set(station);

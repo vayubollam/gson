@@ -1,7 +1,6 @@
 package suncor.com.android.ui.home.stationlocator.search;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -13,11 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
-import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.SearchNearbyItemBinding;
-import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
-import suncor.com.android.ui.home.stationlocator.StationItem;
 
 public class SearchNearByAdapter extends RecyclerView.Adapter<SearchNearByAdapter.NearByHolder> {
     private ArrayList<StationNearbyItem> stationItems;
