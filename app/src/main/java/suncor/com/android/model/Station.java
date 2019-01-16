@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import suncor.com.android.R;
 
 public class Station {
@@ -98,5 +99,13 @@ public class Station {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || !(obj instanceof Station)) {
+            return false;
+        }
+        return ((Station) obj).id == this.id;
     }
 }

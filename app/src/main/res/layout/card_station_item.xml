@@ -16,15 +16,15 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/cards_padding_collapsed"
+        android:paddingStart="@dimen/cards_padding_collapsed">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_marginStart="@dimen/stationCardMargin"
-            android:layout_marginEnd="@dimen/stationCardMargin"
             android:theme="@style/Widget.MaterialComponents.CardView"
             app:cardCornerRadius="12dp">
 
@@ -45,14 +45,18 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:layout_marginBottom="16dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txt_station_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:text="@{vm.station.address.addressLine}"
                         android:textAppearance="@style/TitleStyle"
                         tools:text="Station Name" />
@@ -71,12 +75,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="10dp"
                     android:visibility="gone"
                     tools:visibility="visible">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:srcCompat="@drawable/ic_locations" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -84,30 +89,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:ellipsize="end"
                         android:gravity="center"
-                        android:text="@{vm.station.address.addressLine}"
+                        android:maxLines="1"
+                        android:text="@{vm.station.address.addressLine + `, ` + vm.station.address.primaryCity + `, ` + vm.station.address.subdivision}"
                         android:textAppearance="@style/NormalText"
                         tools:text="Station address" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_car_station"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:srcCompat="@drawable/ic_car" />
 
 
                     <ProgressBar
                         android:id="@+id/br_km_card"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_marginLeft="8dp"
                         android:visibility="@{vm.distanceDuration != null? View.GONE : View.VISIBLE}" />
 
@@ -131,8 +137,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_clock_station"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         app:srcCompat="@drawable/ic_clock" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -173,16 +179,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <ToggleButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:background="@android:color/transparent"
-                            android:drawableLeft="@drawable/ic_favorite_border_black_24dp"
+                            android:paddingLeft="16dp"
+                            android:background="?selectableItemBackground"
+                            android:checked="@={vm.isFavourite}"
+                            android:drawableLeft="@drawable/favourite_button"
                             android:drawablePadding="16dp"
                             android:gravity="left|center_vertical"
-                            android:text="@string/add_to_favourites_button"
-                            android:textAllCaps="false" />
+                            android:textAllCaps="false"
+                            android:textOff="@string/add_to_favourites_button"
+                            android:textOn="@string/favourited" />
 
                         <View
                             android:layout_width="match_parent"
@@ -194,14 +202,14 @@
                             android:id="@+id/call_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:background="@android:color/transparent"
+                            android:paddingLeft="16dp"
+                            android:background="?selectableItemBackground"
                             android:drawableLeft="@drawable/ic_phone"
                             android:drawablePadding="16dp"
                             android:gravity="left|center_vertical"
                             android:text="@{@string/call_generic(vm.station.address.phone)}"
                             android:textAllCaps="false"
-                            tools:text="Call . (123)456-7890" />
+                            tools:text="Call \u00b7 (123)456-7890" />
 
                         <View
                             android:layout_width="match_parent"
@@ -228,11 +236,11 @@
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
                                 android:text="@string/services_amenities"
                                 android:textColor="@color/black_100"
                                 android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="8dp"/>
+                                android:textStyle="bold" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/service_amenities_text"
@@ -257,11 +265,11 @@
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
                                 android:text="@string/fuel_amenities"
                                 android:textColor="@color/black_100"
                                 android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="8dp"/>
+                                android:textStyle="bold" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/fuel_amenities_text"
@@ -286,11 +294,11 @@
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
                                 android:text="@string/carwash_amenities"
                                 android:textColor="@color/black_100"
                                 android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="8dp"/>
+                                android:textStyle="bold" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/wash_amenities_text"

@@ -16,17 +16,19 @@
     <string name="nearby">NearBy</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canda on The go!</string>
     <string name="add_to_favourites_button">Add to favourites</string>
-    <string name="call_generic">Call . %s</string>
-    <string name="distance_generic">%1s away . %2s drive</string>
+    <string name="call_generic">Call \u00b7 %s</string>
+    <string name="distance_generic">%1s away \u00b7 %2s drive</string>
     <string name="distance_nearby_generic">%1s km away ·</string>
     <string name="services_amenities">Services</string>
     <string name="amenities_list_title">Amenities</string>
     <string name="open_generic">Open until %s</string>
-    <string name="close_generic">Closed . Opens at %s</string>
+    <string name="close_generic">Closed \u00b7 Opens at %s</string>
     <string name="fuel_amenities">Fuel</string>
     <string name="carwash_amenities">Car wash</string>
     <string name="hours_list_title">Hours</string>
     <string name="station_open_24hrs">Open 24h</string>
     <string name="directions_button">directions</string>
+    <string name="favourited">Favourited</string>
+    <string name="added_to_favourites">Station added to favourites</string>
     <string name="search_an_address">Search an address</string>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="stationCardWidth">328dp</dimen>
-    <dimen name="stationCardMargin">16dp</dimen>
+    <dimen name="cards_padding_collapsed">4dp</dimen>
+    <dimen name="cards_padding_expanded">16dp</dimen>
+    <dimen name="stations_recycler_view_padding">12dp</dimen>
 </resources>

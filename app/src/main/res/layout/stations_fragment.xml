@@ -133,6 +133,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
+            android:paddingStart="@dimen/stations_recycler_view_padding"
+            android:paddingRight="@dimen/stations_recycler_view_padding"
+            android:clipToPadding="false"
             app:behavior_peekHeight="24dp"
             app:layout_behavior="@string/bottom_sheet_behavior"
             app:layout_insetEdge="bottom" />
