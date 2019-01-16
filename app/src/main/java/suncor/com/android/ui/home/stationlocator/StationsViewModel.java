@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.LocationUtils;
@@ -29,16 +30,19 @@ public class StationsViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
     public final static int DEFAULT_MAP_ZOOM = 5000;
-
+    private FavouriteRepository favouriteRepository;
 
     private ArrayList<StationItem> cachedStations;
     private LatLngBounds cachedStationsBounds;
-
     public MutableLiveData<Resource<ArrayList<StationItem>>> stationsAround = new MutableLiveData<>();
     public MutableLiveData<StationItem> selectedStation = new MutableLiveData<>();
     public LatLng userLocation;
     public LatLngBounds visibleBounds;
     private float regionRatio = 1f;
+
+    public StationsViewModel(FavouriteRepository favouriteRepository) {
+        this.favouriteRepository = favouriteRepository;
+    }
 
 
     public void refreshStations(LatLng mapCenter, LatLngBounds bounds) {
@@ -81,7 +85,12 @@ public class StationsViewModel extends ViewModel {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jo = jsonArray.getJSONObject(i);
                             Station station = gson.fromJson(jo.toString(), Station.class);
-                            stations.add(new StationItem(station));
+                            boolean isFavourite = false;
+                            if (favouriteRepository.isLoaded()) {
+                                isFavourite = favouriteRepository.isFavourite(station);
+                            }
+                            StationItem item = new StationItem(favouriteRepository, station, isFavourite);
+                            stations.add(item);
                         }
                         Collections.sort(stations, (o1, o2) -> {
                             double distance1 = LocationUtils.calculateDistance(userLocation, new LatLng(o1.station.get().getAddress().getLatitude(), o1.station.get().getAddress().getLongitude()));

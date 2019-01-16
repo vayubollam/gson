@@ -1,23 +1,69 @@
 package suncor.com.android.ui.home.stationlocator;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
+
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
+import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 
 public class StationItem {
 
+    private FavouriteRepository favouriteRepository;
+
     public ObservableField<Station> station = new ObservableField<>();
     public ObservableField<DirectionsResult> distanceDuration = new ObservableField<>();
-    public ObservableField<Boolean> isExpanded = new ObservableField<>(false);
-    private boolean isFavourite = false;
+    public ObservableBoolean isFavourite;
+    private Observable.OnPropertyChangedCallback favouriteToggleCallback = new Observable.OnPropertyChangedCallback() {
+        @Override
+        public void onPropertyChanged(Observable sender, int propertyId) {
+            new Handler(Looper.getMainLooper()).post(() -> favouriteToggled());
+        }
+    };
 
-    public StationItem(Station station) {
+    public StationItem(FavouriteRepository favouriteRepository, Station station, boolean isFavourite) {
+        this.favouriteRepository = favouriteRepository;
         this.station.set(station);
+        this.isFavourite = new ObservableBoolean(isFavourite);
+        this.isFavourite.addOnPropertyChangedCallback(favouriteToggleCallback);
+    }
+
+    private void favouriteToggled() {
+        if (isFavourite.get()) {
+            favouriteRepository.addFavourite(station.get()).observeForever((r) -> {
+                if (r.status == Resource.Status.SUCCESS) {
+                    Toast.makeText(SuncorApplication.getInstance(), SuncorApplication.getInstance().getString(R.string.added_to_favourites), Toast.LENGTH_SHORT).show();
+                } else if (r.status == Resource.Status.ERROR) {
+                    isFavourite.removeOnPropertyChangedCallback(favouriteToggleCallback);
+                    isFavourite.set(false);
+                    isFavourite.addOnPropertyChangedCallback(favouriteToggleCallback);
+                    //TODO handle error
+                    Toast.makeText(SuncorApplication.getInstance(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            favouriteRepository.removeFavourite(station.get()).observeForever((r) -> {
+                if (r.status == Resource.Status.ERROR) {
+                    isFavourite.removeOnPropertyChangedCallback(favouriteToggleCallback);
+                    isFavourite.set(true);
+                    isFavourite.addOnPropertyChangedCallback(favouriteToggleCallback);
+                    //TODO handle error
+                    Toast.makeText(SuncorApplication.getInstance(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     public StationItem(Station station, DirectionsResult distanceDuration) {
@@ -62,9 +108,5 @@ public class StationItem {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         return station.get().getHours().get(dayOfWeek - 1);
-    }
-
-    public boolean isFavourite() {
-        return isFavourite;
     }
 }
