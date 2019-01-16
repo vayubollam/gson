@@ -1,5 +1,6 @@
 package suncor.com.android.ui.home.stationlocator;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -7,7 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,13 +94,21 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
                 @Override
                 public void onSlide(@NonNull View view, float v) {
+                    Log.d("test", "Slide: " + v);
                     if (v > 0.01) {
-                        binding.txtStationTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, v * 4 + 18);
+                        dialog.getWindow().setDimAmount(v * 0.6f);
+
+                        float titleTextSize = v > 0.7 ? 22 : v * 4 + 18;
+                        ObjectAnimator.ofFloat(binding.txtStationTitle, "textSize", titleTextSize).setDuration(0).start();
+
+                        binding.addressLayout.animate().alpha(v).setDuration(0).start();
+                        binding.addressLayout.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
+
                         binding.closeBtn.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
                         binding.imgBottomSheet.setVisibility(v > 0.1 ? View.INVISIBLE : View.VISIBLE);
-                        dialog.getWindow().setDimAmount(v * 0.6f);
-                        binding.addressLayout.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
+
                         binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);
+
                         binding.cardView.getLayoutParams().height = (int) (((fullHeight - 2 * cardMarginInPixels) * v) + (1 - v) * intialHeight);
                         binding.cardView.requestLayout();
                     } else if (v > 0) {

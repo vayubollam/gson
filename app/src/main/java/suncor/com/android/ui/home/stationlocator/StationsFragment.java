@@ -175,6 +175,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(!isAdded())
+            return;
         if (requestCode == STATION_DETAILS_REQUEST_CODE) {
             if (lastSelectedMarker != null) {
                 StationItem item = stationsMarkers.get(lastSelectedMarker);
