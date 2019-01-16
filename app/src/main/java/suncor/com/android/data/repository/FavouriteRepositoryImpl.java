@@ -123,7 +123,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
     }
 
     @Override
-    public LiveData<Resource<Boolean>> removeStation(Station station) {
+    public LiveData<Resource<Boolean>> removeFavourite(Station station) {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
         WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.DELETE);

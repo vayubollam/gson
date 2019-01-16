@@ -28,4 +28,5 @@
     <string name="station_open_24hrs">Open 24h</string>
     <string name="directions_button">directions</string>
     <string name="favourited">Favourited</string>
+    <string name="added_to_favourites">Station added to favourites</string>
 </resources>

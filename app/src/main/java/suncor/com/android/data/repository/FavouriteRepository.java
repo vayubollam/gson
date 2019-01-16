@@ -17,5 +17,5 @@ public interface FavouriteRepository {
 
     LiveData<Resource<Boolean>> addFavourite(Station station);
 
-    LiveData<Resource<Boolean>> removeStation(Station station);
+    LiveData<Resource<Boolean>> removeFavourite(Station station);
 }

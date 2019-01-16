@@ -11,6 +11,7 @@ import java.util.Calendar;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
@@ -42,7 +43,9 @@ public class StationItem {
     private void favouriteToggled() {
         if (isFavourite.get()) {
             favouriteRepository.addFavourite(station.get()).observeForever((r) -> {
-                if (r.status == Resource.Status.ERROR) {
+                if (r.status == Resource.Status.SUCCESS) {
+                    Toast.makeText(SuncorApplication.getInstance(), SuncorApplication.getInstance().getString(R.string.added_to_favourites), Toast.LENGTH_SHORT).show();
+                } else if (r.status == Resource.Status.ERROR) {
                     isFavourite.removeOnPropertyChangedCallback(favouriteToggleCallback);
                     isFavourite.set(false);
                     isFavourite.addOnPropertyChangedCallback(favouriteToggleCallback);
@@ -51,7 +54,7 @@ public class StationItem {
                 }
             });
         } else {
-            favouriteRepository.removeStation(station.get()).observeForever((r) -> {
+            favouriteRepository.removeFavourite(station.get()).observeForever((r) -> {
                 if (r.status == Resource.Status.ERROR) {
                     isFavourite.removeOnPropertyChangedCallback(favouriteToggleCallback);
                     isFavourite.set(true);
