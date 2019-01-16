@@ -1,9 +1,11 @@
 package suncor.com.android.utilities;
 
 import android.provider.Settings;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.SphericalUtil;
+
 import suncor.com.android.SuncorApplication;
 
 public class LocationUtils {
@@ -28,6 +30,7 @@ public class LocationUtils {
     public static LatLngBounds getLargerBounds(LatLngBounds bounds1, LatLngBounds bounds2) {
         return bounds1.contains(bounds2.southwest) ? bounds1 : bounds2;
     }
+
     public static boolean isLocationEnabled() {
         int locationMode;
         try {
