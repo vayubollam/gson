@@ -14,7 +14,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
-        android:text="@string/nearby_title"
+        android:text="@string/sugestions"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="16dp"
@@ -38,10 +38,10 @@
         android:layout_marginTop="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/nearby_recycler"
+        android:id="@+id/sugestions_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/search_nearby_item"></androidx.recyclerview.widget.RecyclerView>
+        tools:listitem="@layout/place_suggestion_item"></androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>
