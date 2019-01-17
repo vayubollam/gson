@@ -31,4 +31,5 @@
     <string name="favourited">Favourited</string>
     <string name="added_to_favourites">Station added to favourites</string>
     <string name="search_an_address">Search an address</string>
+    <string name="filters_title">Filters</string>
 </resources>

@@ -1,137 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    tools:context="suncor.com.android.ui.home.stationlocator.StationsFragment">
-
-    <FrameLayout
-        android:id="@+id/mapFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </FrameLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="8dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btn_search"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_search" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_search_address"
-                style="@style/SearchTextNormal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:hint="@string/search_an_address" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/vertical_divider"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/vertical_divider" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btn_filters"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_filters" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-
-    <ProgressBar
-        android:id="@+id/indeterminateBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true">
+        tools:context="suncor.com.android.ui.home.stationlocator.StationsFragment">
 
+        <FrameLayout
+            android:id="@+id/mapFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/filters_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_4"
+            android:paddingTop="60dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:clipToPadding="false"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/filters_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/ChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open 24h" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+        </FrameLayout>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginRight="16dp"
-            app:cardCornerRadius="12dp"
-            app:layout_anchor="@id/card_recycler"
-            app:layout_anchorGravity="end|top"
-            app:layout_dodgeInsetEdges="bottom">
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/btn_my_location"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_gravity="center"
-                    android:background="?selectableItemBackground"
-                    android:foregroundGravity="center"
-                    android:src="@drawable/ic_near_me" />
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/horizontal_divider" />
+                    android:id="@+id/btn_search"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_search" />
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/btn_my_favorites"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_gravity="right"
-                    android:background="?selectableItemBackground"
-                    android:gravity="center"
-                    android:src="@drawable/ic_favourites" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_search_address"
+                    style="@style/SearchTextNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search_an_address" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/vertical_divider"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/vertical_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btn_filters"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_filters" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/card_recycler"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/indeterminateBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:padding="11dp"
-            android:paddingStart="@dimen/stations_recycler_view_padding"
-            android:paddingRight="@dimen/stations_recycler_view_padding"
-            android:paddingBottom="8dp"
-            app:behavior_peekHeight="32dp"
-            app:layout_behavior="@string/bottom_sheet_behavior"
-            app:layout_insetEdge="bottom" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true">
 
 
-</RelativeLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                app:cardCornerRadius="12dp"
+                app:layout_anchor="@id/card_recycler"
+                app:layout_anchorGravity="end|top"
+                app:layout_dodgeInsetEdges="bottom">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_my_location"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_gravity="center"
+                        android:background="?selectableItemBackground"
+                        android:foregroundGravity="center"
+                        android:src="@drawable/ic_near_me" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_my_favorites"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_gravity="right"
+                        android:background="?selectableItemBackground"
+                        android:gravity="center"
+                        android:src="@drawable/ic_favourites" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/card_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:padding="11dp"
+                android:paddingStart="@dimen/stations_recycler_view_padding"
+                android:paddingRight="@dimen/stations_recycler_view_padding"
+                android:paddingBottom="8dp"
+                app:behavior_peekHeight="32dp"
+                app:layout_behavior="@string/bottom_sheet_behavior"
+                app:layout_insetEdge="bottom" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    </RelativeLayout>
+</layout>

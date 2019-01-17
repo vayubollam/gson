@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -11,12 +12,10 @@ import suncor.com.android.R;
 
 public class Station {
 
-    public static ArrayList<String> SERVICE_AMENITIES_ENUM;
-    public static ArrayList<String> FUEL_AMENITIES_ENUM;
-    public static ArrayList<String> WASH_AMENITIES_ENUM;
-    public static ArrayList<String> SERVICE_AMENITIES_VALUES;
-    public static ArrayList<String> FUEL_AMENITIES_VALUES;
-    public static ArrayList<String> WASH_AMENITIES_VALUES;
+    public static HashMap<String, String> FULL_AMENITIES = new HashMap<>();
+    public static HashMap<String, String> SERVICE_AMENITIES = new HashMap<>();
+    public static HashMap<String, String> WASH_AMENITIES = new HashMap<>();
+    public static HashMap<String, String> FUEL_AMENITIES = new HashMap<>();
 
     private String id;
     private ArrayList<Hour> hours;
@@ -32,13 +31,26 @@ public class Station {
     }
 
     public static void initiateAmenities(Context Context) {
-        SERVICE_AMENITIES_ENUM = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_services_enum)));
-        FUEL_AMENITIES_ENUM = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_fuel_enum)));
-        WASH_AMENITIES_ENUM = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_wash_enum)));
+        ArrayList<String> serviceAmenitiesEnum = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_services_enum)));
+        ArrayList<String> fuelAmenitiesEnum = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_fuel_enum)));
+        ArrayList<String> washAmenitiesEnum = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_wash_enum)));
 
-        SERVICE_AMENITIES_VALUES = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_services_values)));
-        FUEL_AMENITIES_VALUES = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_fuel_values)));
-        WASH_AMENITIES_VALUES = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_wash_values)));
+        ArrayList<String> serviceAmenitiesValues = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_services_values)));
+        ArrayList<String> fuelAmenitiesValues = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_fuel_values)));
+        ArrayList<String> washAmenitiesValues = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_wash_values)));
+
+        for (int i = 0; i < serviceAmenitiesEnum.size(); i++) {
+            SERVICE_AMENITIES.put(serviceAmenitiesEnum.get(i), serviceAmenitiesValues.get(i));
+            FULL_AMENITIES.put(serviceAmenitiesEnum.get(i), serviceAmenitiesValues.get(i));
+        }
+        for (int i = 0; i < fuelAmenitiesEnum.size(); i++) {
+            SERVICE_AMENITIES.put(fuelAmenitiesEnum.get(i), fuelAmenitiesValues.get(i));
+            FULL_AMENITIES.put(fuelAmenitiesEnum.get(i), fuelAmenitiesValues.get(i));
+        }
+        for (int i = 0; i < washAmenitiesEnum.size(); i++) {
+            SERVICE_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
+            FULL_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
+        }
     }
 
     public void setId(String id) {
@@ -76,7 +88,7 @@ public class Station {
 
     public boolean hasService() {
         for (String amenitie : amenities) {
-            if (SERVICE_AMENITIES_ENUM.contains(amenitie)) {
+            if (SERVICE_AMENITIES.containsKey(amenitie)) {
                 return true;
             }
         }
@@ -85,7 +97,7 @@ public class Station {
 
     public boolean hasFuelOptions() {
         for (String amenitie : amenities) {
-            if (FUEL_AMENITIES_ENUM.contains(amenitie)) {
+            if (FUEL_AMENITIES.containsKey(amenitie)) {
                 return true;
             }
         }
@@ -94,7 +106,7 @@ public class Station {
 
     public boolean hasWashOptions() {
         for (String amenitie : amenities) {
-            if (WASH_AMENITIES_ENUM.contains(amenitie)) {
+            if (WASH_AMENITIES.containsKey(amenitie)) {
                 return true;
             }
         }
