@@ -4,7 +4,7 @@
     <data>
         <variable
             name="place"
-            type="suncor.com.android.model.PlaceSuggestion"></variable>
+            type="suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion"></variable>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

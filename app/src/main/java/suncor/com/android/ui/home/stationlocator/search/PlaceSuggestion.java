@@ -1,4 +1,4 @@
-package suncor.com.android.model;
+package suncor.com.android.ui.home.stationlocator.search;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -10,11 +10,6 @@ public class PlaceSuggestion extends BaseObservable {
     private String secondaryText;
     private String placeId;
 
-    public PlaceSuggestion( String primaryText, String secondaryText, String placeId) {
-        this.primaryText = primaryText;
-        this.secondaryText = secondaryText;
-        this.placeId = placeId;
-    }
 
 
 @Bindable
@@ -38,6 +33,7 @@ public class PlaceSuggestion extends BaseObservable {
 
     public void setSecondaryText(String secondaryText) {
         this.secondaryText = secondaryText;
+        notifyPropertyChanged(suncor.com.android.BR.secondaryText);
     }
 
     public void setPlaceId(String placeId) {

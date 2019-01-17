@@ -242,6 +242,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         }
         if (v == txtSearchAddress) {
             SearchDialog searchFragment = new SearchDialog();
+           // searchFragment.setTa
             searchFragment.show(getFragmentManager(), searchFragment.getTag());
 
         }
