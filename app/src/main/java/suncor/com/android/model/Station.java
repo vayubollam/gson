@@ -18,13 +18,13 @@ public class Station {
     public static ArrayList<String> FUEL_AMENITIES_VALUES;
     public static ArrayList<String> WASH_AMENITIES_VALUES;
 
-    private int id;
+    private String id;
     private ArrayList<Hour> hours;
     private List<String> amenities;
     private Address address;
 
 
-    public Station(int id, ArrayList<Hour> hours, List<String> amenities, Address address) {
+    public Station(String id, ArrayList<Hour> hours, List<String> amenities, Address address) {
         this.id = id;
         this.hours = hours;
         this.amenities = amenities;
@@ -41,7 +41,7 @@ public class Station {
         WASH_AMENITIES_VALUES = new ArrayList<>(Arrays.asList(Context.getResources().getStringArray(R.array.station_wash_values)));
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -58,7 +58,7 @@ public class Station {
         this.address = address;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
