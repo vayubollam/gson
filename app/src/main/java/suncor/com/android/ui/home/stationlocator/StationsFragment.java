@@ -40,6 +40,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -66,7 +67,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     private StationsViewModel mViewModel;
     private GoogleMap mGoogleMap;
-    private MaterialButton findMyLocationButton;
+    private AppCompatImageButton findMyLocationButton;
     private HashMap<Marker, StationItem> stationsMarkers = new HashMap<>();
     private ProgressBar indeterminateBar;
     private StationAdapter stationAdapter;
