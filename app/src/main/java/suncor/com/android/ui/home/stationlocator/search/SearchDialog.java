@@ -43,7 +43,6 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
         stationsViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         nearby_recycler = rootView.findViewById(R.id.nearby_recycler);
         nearby_recycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        //  userLocation = new LatLng(getArguments().getDouble("lat"), getArguments().getDouble("lng"));
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         pb_nearby = rootView.findViewById(R.id.pb_nearBY);
         img_back = rootView.findViewById(R.id.btn_back);

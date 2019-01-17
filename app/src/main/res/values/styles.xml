@@ -6,7 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    <!--    <item name="android:windowTranslucentStatus">true</item> -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
  </style>
 
  <!-- custom Base application theme. -->
@@ -16,12 +17,11 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="FullScreenDialog" parent="AppTheme">
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <!--  <item name="android:windowTranslucentStatus">true</item> -->
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
     </style>
 
     <style name="alertLocation" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
@@ -31,6 +31,7 @@
 
     <style name="StationDetailsDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/StationDetailsSheetStyle</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
     <style name="StationDetailsSheetStyle" parent="Widget.Design.BottomSheet.Modal">
@@ -39,9 +40,8 @@
 
     <style name="TitleStyle" parent="@style/TextAppearance.AppCompat.Medium">
         <item name="android:textSize">18sp</item>
-        <item name="fontFamily">@font/gibson_regular</item>
+        <item name="fontFamily">@font/gibson_semibold</item>
         <item name="android:textColor">@color/black_100</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="SubtitleStyle" parent="@style/TextAppearance.AppCompat.Headline">
@@ -63,8 +63,8 @@
         <item name="android:textColor">@color/black_60</item>
     </style>
 
-    <style name="DirectionsButtonStyle" parent="@style/Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/red</item>
+    <style name="DirectionsButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:backgroundTint">@color/red_pb</item>
         <item name="fontFamily">@font/gibson_semibold</item>
         <item name="android:textSize">14sp</item>
     </style>
