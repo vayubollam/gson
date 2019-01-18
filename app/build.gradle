@@ -51,6 +51,7 @@ dependencies {
     //google map libraries
     implementation "com.google.android.gms:play-services-maps:$rootProject.playServicesVersion"
     implementation "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
+    implementation "com.google.android.gms:play-services-places:$rootProject.playServicesVersion"
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
     implementation "com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:$rootProject.mfpVersion"

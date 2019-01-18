@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/black_4"
+    android:visibility="gone"
+    tools:visibility="visible"
+    android:layout_height="match_parent"
+    android:id="@+id/suggestions_linear_layout">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:src="@drawable/horizontal_divider"
+        android:layout_height="wrap_content" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:text="@string/sugestions"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        style="@style/SearchTextNormal"
+        android:textColor="@color/black_60"
+        android:layout_height="wrap_content" />
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <ProgressBar
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:indeterminateTint="@color/red_pb"
+        android:visibility="visible"
+
+        android:id="@+id/pb_suggestions"
+        android:layout_gravity="center" /></LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:src="@drawable/horizontal_divider"
+        android:layout_height="wrap_content" />
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sugestions_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/place_suggestion_item"></androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
+<androidx.appcompat.widget.AppCompatTextView
+    android:layout_width="wrap_content"
+    android:textSize="18sp"
+    android:text="@string/no_results"
+    android:textColor="@color/black_40"
+    android:id="@+id/txt_no_result"
+    tools:visibility="visible"
+    android:visibility="gone"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="32dp"
+    android:layout_height="wrap_content" />
+</RelativeLayout>

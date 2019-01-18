@@ -16,4 +16,5 @@
     <color name="red_location">#EC1C2F</color>
     <color name="choose_back">#14000000</color>
     <color name="red_pb">#FFEC1C2F</color>
+    <color name="black_result">#660000</color>
 </resources>

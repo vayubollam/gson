@@ -32,11 +32,10 @@ public class SearchViewModel extends ViewModel {
     public MutableLiveData<Resource<ArrayList<StationNearbyItem>>> stationsAround = new MutableLiveData<>();
     public LatLng userLocation;
     private float regionRatio = 1f;
-    public MutableLiveData<Boolean> isBusy = new MutableLiveData<>();
+
 
 
     public void refreshStations(LatLng mapCenter) {
-        isBusy.setValue(true);
         if (userLocation == null)
             return;
         LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
@@ -79,13 +78,11 @@ public class SearchViewModel extends ViewModel {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                isBusy.postValue(false);
             }
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
                 Log.d("mfp_error", wlFailResponse.getErrorMsg());
-                isBusy.postValue(false);
             }
         });
     }
