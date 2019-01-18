@@ -357,7 +357,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         }
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) binding.cardRecycler.getLayoutManager();
         int vi = linearLayoutManager.findFirstVisibleItemPosition();
-        if (vi != RecyclerView.NO_POSITION && mViewModel.stationsAround.getValue().data.size() > vi) {
+        Resource<ArrayList<StationItem>> stationsResource = mViewModel.stationsAround.getValue();
+        if (vi != RecyclerView.NO_POSITION && stationsResource.status == Resource.Status.SUCCESS && stationsResource.data.size() > vi) {
             mViewModel.selectedStation.setValue(mViewModel.stationsAround.getValue().data.get(vi));
         }
     }
@@ -403,7 +404,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                 vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        // DrawableCompat.setTint(vectorDrawable);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
