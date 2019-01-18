@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -55,6 +56,11 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.search_fragment, container, false);
+
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.SearchDialogAnimation;
+        getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getDialog().getWindow().setStatusBarColor(getResources().getColor(R.color.light_gray));
+
         //instantiating
         GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
         SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
@@ -74,7 +80,6 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
         //layout manager for recycler views
         suggestionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         nearbyRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.SearchDialogAnimation;
 
         //listener
         imgBack.setOnClickListener(this);

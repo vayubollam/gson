@@ -39,6 +39,7 @@ public class FiltersDialog extends FullScreenDialog {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FiltersFragmentBinding.inflate(inflater, container, false);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.FiltersDialogAnimation;
+
         StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
         parentViewModel = ViewModelProviders.of(getTargetFragment(), factory).get(StationsViewModel.class);
         initCheckBoxes();
