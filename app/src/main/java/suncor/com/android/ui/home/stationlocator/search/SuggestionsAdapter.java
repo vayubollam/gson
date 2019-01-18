@@ -24,6 +24,7 @@ public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.
 
     public void setSuggestions(ArrayList<PlaceSuggestion> suggestions) {
         this.suggestions = suggestions;
+        notifyDataSetChanged();
     }
 
     public SuggestionsAdapter(ArrayList<PlaceSuggestion> suggestions) {

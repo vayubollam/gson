@@ -20,8 +20,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import suncor.com.android.data.repository.PlaceSuggestionsProvider;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.LocationUtils;
@@ -29,11 +31,18 @@ import suncor.com.android.utilities.LocationUtils;
 public class SearchViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
+    private final PlaceSuggestionsProvider suggestionsProvider;
     public MutableLiveData<Resource<ArrayList<StationNearbyItem>>> stationsAround = new MutableLiveData<>();
     public LatLng userLocation;
     private float regionRatio = 1f;
 
+    public SearchViewModel(PlaceSuggestionsProvider suggestionsProvider) {
+        this.suggestionsProvider = suggestionsProvider;
+    }
 
+    public LiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestions() {
+        return suggestionsProvider.getSuggestionsObservable();
+    }
 
     public void refreshStations(LatLng mapCenter) {
         if (userLocation == null)
@@ -93,14 +102,12 @@ public class SearchViewModel extends ViewModel {
         refreshStations(userLocation);
     }
 
-    public void setRegionRatio(float screenRatio) {
-
-        this.regionRatio = screenRatio;
-    }
-
     private Double getDistance(LatLng userLocation, LatLng des, int unit) {
         double distance = LocationUtils.calculateDistance(userLocation, new LatLng(des.latitude, des.longitude)) / unit;
         return Double.parseDouble(new DecimalFormat("##.#").format(distance));
+    }
 
+    public void refreshPlaceSuggestions(String query) {
+        suggestionsProvider.refreshSuggestion(query);
     }
 }

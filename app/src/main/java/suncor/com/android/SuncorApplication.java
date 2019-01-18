@@ -23,11 +23,11 @@ public class SuncorApplication extends Application {
         client.registerChallengeHandler(suncorChallengeHandler);
         System.out.println("App Created");
 
-        favouriteRepository.loadFavourites().observeForever((r) -> {
-            if (r.status == Resource.Status.ERROR) {
-                //TODO handle or retry
-            }
-        });
+//        favouriteRepository.loadFavourites().observeForever((r) -> {
+//            if (r.status == Resource.Status.ERROR) {
+//                //TODO handle or retry
+//            }
+//        });
         Station.initiateAmenities(this);
     }
 

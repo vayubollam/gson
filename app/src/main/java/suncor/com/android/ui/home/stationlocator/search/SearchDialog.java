@@ -30,13 +30,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.PlaceSuggestionsLDImpl;
+import suncor.com.android.data.repository.PlaceSuggestionsProviderImpl;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.FullScreenDialog;
 import suncor.com.android.utilities.LocationUtils;
 
 public class SearchDialog extends FullScreenDialog implements View.OnClickListener, TextWatcher {
-    private SearchViewModel stationsViewModel;
+    private SearchViewModel viewModel;
     private LatLng userLocation;
     private RecyclerView nearbyRecycler;
     private RecyclerView suggestionsRecycler;
@@ -46,8 +46,6 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
     private LinearLayout nearByLinearLayout;
     private LinearLayout suggestionsLinearLayout;
     private AppCompatEditText txtSearchAddress;
-    private GeoDataClient geoDataClient;
-    private PlaceSuggestionsLDImpl placeSuggestionsLD;
     private SuggestionsAdapter suggestionsAdapter;
     private ProgressBar pbSuggestion;
     private AppCompatTextView txtNoResult;
@@ -57,7 +55,10 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.search_fragment, container, false);
-        stationsViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        //instantiating
+        GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
+        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
         //retrieving views
         nearbyRecycler = rootView.findViewById(R.id.nearby_recycler);
         suggestionsLinearLayout = rootView.findViewById(R.id.suggestions_linear_layout);
@@ -80,10 +81,6 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
         txtSearchAddress.addTextChangedListener(this);
         btnClear.setOnClickListener(this);
 
-        //instantiating
-        geoDataClient = Places.getGeoDataClient(getContext());
-        placeSuggestionsLD = new PlaceSuggestionsLDImpl(geoDataClient);
-
         return rootView;
     }
 
@@ -99,13 +96,13 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
             LocationLiveData locationLiveData = new LocationLiveData(getContext());
             locationLiveData.observe(this, location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                stationsViewModel.setUserLocation(userLocation);
-                stationsViewModel.refreshStations(userLocation);
+                viewModel.setUserLocation(userLocation);
+                viewModel.refreshStations(userLocation);
 
 
             });
 
-            stationsViewModel.stationsAround.observe(this, arrayListResource -> {
+            viewModel.stationsAround.observe(this, arrayListResource -> {
                 if (arrayListResource.status == Resource.Status.SUCCESS) {
                     pbNearby.setVisibility(View.GONE);
                     ArrayList<StationNearbyItem> stationItems = arrayListResource.data;
@@ -120,7 +117,7 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
             nearByLinearLayout.setVisibility(View.GONE);
 
         }
-        placeSuggestionsLD.getPredictions().observe(this, arrayListResource -> {
+        viewModel.getSuggestions().observe(this, arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
                 pbSuggestion.setVisibility(View.GONE);
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
@@ -131,8 +128,7 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
 
                 suggestionsAdapter.getSuggestions().clear();
                 suggestionsAdapter.setSuggestions(suggestions);
-                suggestionsAdapter.notifyDataSetChanged();
-                if (suggestions.size() == 0) {
+                if (suggestions.isEmpty()) {
                     suggestionsLinearLayout.setVisibility(View.GONE);
                     txtNoResult.setVisibility(View.VISIBLE);
                 } else {
@@ -188,7 +184,7 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
         } else {
             nearByLinearLayout.setVisibility(View.GONE);
             suggestionsLinearLayout.setVisibility(View.VISIBLE);
-            placeSuggestionsLD.getSuggestions(query);
+            viewModel.refreshPlaceSuggestions(query);
         }
 
     }

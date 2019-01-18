@@ -336,37 +336,37 @@
                                 android:text="@string/hours_list_title" />
 
                             <include
-                                layout="@layout/hour_line"
+                                layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(1)}"
                                 app:workHour="@{vm.getWorkHours(1)}" />
 
                             <include
-                                layout="@layout/hour_line"
+                                layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(2)}"
                                 app:workHour="@{vm.getWorkHours(2)}" />
 
                             <include
-                                layout="@layout/hour_line"
+                                layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(3)}"
                                 app:workHour="@{vm.getWorkHours(3)}" />
 
                             <include
-                                layout="@layout/hour_line"
+                                layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(4)}"
                                 app:workHour="@{vm.getWorkHours(4)}" />
 
                             <include
-                                layout="@layout/hour_line"
+                                layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(5)}"
                                 app:workHour="@{vm.getWorkHours(5)}" />
 
                             <include
-                                layout="@layout/hour_line"
+                                layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(6)}"
                                 app:workHour="@{vm.getWorkHours(6)}" />
 
                             <include
-                                layout="@layout/hour_line"
+                                layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(0)}"
                                 app:workHour="@{vm.getWorkHours(0)}" />
                         </LinearLayout>
