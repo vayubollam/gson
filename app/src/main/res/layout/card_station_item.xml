@@ -8,6 +8,8 @@
 
         <import type="android.view.View" />
 
+        <import type="android.telephony.PhoneNumberUtils" />
+
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.StationItem" />
@@ -17,8 +19,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/cards_padding_collapsed"
-        android:paddingStart="@dimen/cards_padding_collapsed">
+        android:paddingStart="@dimen/cards_padding_collapsed"
+        android:paddingEnd="@dimen/cards_padding_collapsed">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
@@ -48,8 +50,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:paddingTop="8dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txt_station_title"
@@ -155,18 +157,18 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_card_directions"
-                    style="@style/DirectionsButtonStyle"
+                    style="@style/ColoredButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/directions_button"/>
+                    android:text="@string/directions_button" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@drawable/station_details_separator" />
+                    android:background="@drawable/horizontal_divider" />
 
                 <androidx.core.widget.NestedScrollView
                     android:id="@+id/detailsLayout"
@@ -183,12 +185,12 @@
                         <ToggleButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="16dp"
                             android:background="?selectableItemBackground"
                             android:checked="@={vm.isFavourite}"
                             android:drawableLeft="@drawable/favourite_button"
                             android:drawablePadding="16dp"
                             android:gravity="left|center_vertical"
+                            android:paddingLeft="16dp"
                             android:textAllCaps="false"
                             android:textOff="@string/add_to_favourites_button"
                             android:textOn="@string/favourited" />
@@ -197,25 +199,25 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginLeft="56dp"
-                            android:background="@drawable/station_details_separator" />
+                            android:background="@drawable/horizontal_divider" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/call_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="16dp"
                             android:background="?selectableItemBackground"
                             android:drawableLeft="@drawable/ic_phone"
                             android:drawablePadding="16dp"
                             android:gravity="left|center_vertical"
-                            android:text="@{@string/call_generic(vm.station.address.phone)}"
+                            android:paddingLeft="16dp"
+                            android:text="@{@string/call_generic(PhoneNumberUtils.formatNumber(vm.station.address.phone, `CA`))}"
                             android:textAllCaps="false"
                             tools:text="Call \u00b7 (123)456-7890" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@drawable/station_details_separator" />
+                            android:background="@drawable/horizontal_divider" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/SubtitleStyle"
@@ -317,7 +319,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginBottom="16dp"
-                            android:background="@drawable/station_details_separator" />
+                            android:background="@drawable/horizontal_divider" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

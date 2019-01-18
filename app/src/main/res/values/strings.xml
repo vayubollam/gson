@@ -31,6 +31,11 @@
     <string name="favourited">Favourited</string>
     <string name="added_to_favourites">Station added to favourites</string>
     <string name="search_an_address">Search an address</string>
+    <string name="filters_title">Filters</string>
+    <string name="apply">Apply</string>
+    <string name="clear">Clear All</string>
+    <string name="no_stations_found">No stations found</string>
+    <string name="no_stations_filters_applied">Try removing filters or expand your search area</string>
     <string name="sugestions">SUGGESTIONS</string>
     <string name="nearby_title">NEARBY</string>
     <string name="no_results">No results</string>

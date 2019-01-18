@@ -38,10 +38,18 @@ public class StationsViewModel extends ViewModel {
     public MutableLiveData<StationItem> selectedStation = new MutableLiveData<>();
     public LatLng userLocation;
     public LatLngBounds visibleBounds;
+    public MutableLiveData<ArrayList<String>> filters = new MutableLiveData<>();
     private float regionRatio = 1f;
 
     public StationsViewModel(FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
+        filters.observeForever((l) -> {
+            if (stationsAround.getValue().status != Resource.Status.SUCCESS) {
+                return;
+            }
+            ArrayList<StationItem> filteredStations = filterStations();
+            stationsAround.postValue(Resource.success(filteredStations));
+        });
     }
 
 
@@ -50,7 +58,7 @@ public class StationsViewModel extends ViewModel {
             return;
         if (bounds != null && cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
             visibleBounds = bounds;
-            stationsAround.postValue(Resource.success(filterStations(bounds)));
+            stationsAround.postValue(Resource.success(filterStations()));
         } else {
             stationsAround.postValue(Resource.loading(null));
             if (bounds != null) {
@@ -99,7 +107,7 @@ public class StationsViewModel extends ViewModel {
                         });
                         cachedStationsBounds = apiBounds;
                         cachedStations = stations;
-                        stationsAround.postValue(Resource.success(filterStations(visibleBounds)));
+                        stationsAround.postValue(Resource.success(filterStations()));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -113,14 +121,31 @@ public class StationsViewModel extends ViewModel {
         }
     }
 
-    private ArrayList<StationItem> filterStations(LatLngBounds bounds) {
-        if (bounds.equals(cachedStationsBounds)) {
-            return cachedStations;
+    private ArrayList<StationItem> filterStations() {
+        ArrayList<StationItem> stationsInBound;
+        if (visibleBounds.equals(cachedStationsBounds)) {
+            stationsInBound = new ArrayList<>(cachedStations);
+        } else {
+            stationsInBound = new ArrayList<>();
+            for (StationItem stationItem : cachedStations) {
+                if (visibleBounds.contains(new LatLng(stationItem.station.get().getAddress().getLatitude(), stationItem.station.get().getAddress().getLongitude()))) {
+                    stationsInBound.add(stationItem);
+                }
+            }
         }
-        ArrayList<StationItem> stations = new ArrayList<>();
-        for (StationItem stationItem : cachedStations) {
-            if (bounds.contains(new LatLng(stationItem.station.get().getAddress().getLatitude(), stationItem.station.get().getAddress().getLongitude()))) {
-                stations.add(stationItem);
+        return applyAmenitiesFilter(stationsInBound, filters.getValue());
+    }
+
+    private ArrayList<StationItem> applyAmenitiesFilter(ArrayList<StationItem> stations, ArrayList<String> currentFilter) {
+        if (currentFilter == null || currentFilter.isEmpty()) {
+            return stations;
+        }
+        for (StationItem stationItem : new ArrayList<>(stations)) {
+            for (String filter : currentFilter) {
+                if (!stationItem.station.get().getAmenities().contains(filter)) {
+                    stations.remove(stationItem);
+                    break;
+                }
             }
         }
         return stations;
