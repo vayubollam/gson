@@ -8,8 +8,6 @@
 
         <import type="android.view.View" />
 
-        <import type="android.telephony.PhoneNumberUtils" />
-
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.StationItem" />
@@ -210,7 +208,7 @@
                             android:drawablePadding="16dp"
                             android:gravity="left|center_vertical"
                             android:paddingLeft="16dp"
-                            android:text="@{@string/call_generic(PhoneNumberUtils.formatNumber(vm.station.address.phone, `CA`))}"
+                            android:text="@{@string/call_generic(vm.station.address.phone)}"
                             android:textAllCaps="false"
                             tools:text="Call \u00b7 (123)456-7890" />
 
