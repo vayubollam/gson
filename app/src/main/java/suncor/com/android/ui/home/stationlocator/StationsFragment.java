@@ -11,8 +11,6 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,19 +30,15 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
@@ -74,11 +68,9 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     private StationsViewModel mViewModel;
     private GoogleMap mGoogleMap;
-    private AppCompatImageButton findMyLocationButton;
     private HashMap<Marker, StationItem> stationsMarkers = new HashMap<>();
     private ProgressBar indeterminateBar;
     private StationAdapter stationAdapter;
-    private RecyclerView recyclerView;
     private Marker myLocationMarker;
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker lastSelectedMarker;
@@ -131,8 +123,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(binding.cardRecycler);
 
-        findMyLocationButton = view.findViewById(R.id.btn_my_location);
-        findMyLocationButton.setOnClickListener(this);
         FragmentManager fm = getChildFragmentManager();
 
         SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentByTag("mapFragment");
@@ -199,6 +189,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         }
 
         mViewModel.filters.observe(this, this::filtersChanged);
+        binding.btnClear.setVisibility(binding.txtSearchAddress.getText().toString().isEmpty() ? View.INVISIBLE : View.VISIBLE);
     }
 
     @Override
@@ -267,10 +258,9 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
             searchFragment.show(getFragmentManager(), searchFragment.getTag());
 
         }
-        if(v==binding.btnClear)
-        {
+        if (v == binding.btnClear) {
             binding.txtSearchAddress.setText("");
-            binding.btnClearText.setVisibility(View.GONE);
+            binding.btnClear.setVisibility(View.GONE);
         }
     }
 
@@ -427,26 +417,6 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        if(s.toString().isEmpty()){
-            btnClearText.setVisibility(View.GONE);
-        }else{
-            btnClearText.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
     }
 
     private void filtersChanged(ArrayList<String> filterList) {
