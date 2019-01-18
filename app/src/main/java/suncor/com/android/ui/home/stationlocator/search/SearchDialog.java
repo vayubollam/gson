@@ -7,11 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -27,8 +25,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,9 +32,10 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.PlaceSuggestionsLDImpl;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.common.FullScreenDialog;
 import suncor.com.android.utilities.LocationUtils;
 
-public class SearchDialog extends DialogFragment implements View.OnClickListener, TextWatcher {
+public class SearchDialog extends FullScreenDialog implements View.OnClickListener, TextWatcher {
     private SearchViewModel stationsViewModel;
     private LatLng userLocation;
     private RecyclerView nearbyRecycler;
@@ -55,27 +52,28 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
     private ProgressBar pbSuggestion;
     private AppCompatTextView txtNoResult;
     private AppCompatImageButton btnClear;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.search, container, false);
+        View rootView = inflater.inflate(R.layout.search_fragment, container, false);
         stationsViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         //retrieving views
         nearbyRecycler = rootView.findViewById(R.id.nearby_recycler);
-        suggestionsLinearLayout=rootView.findViewById(R.id.suggestions_linear_layout);
-        suggestionsRecycler=rootView.findViewById(R.id.sugestions_recycler);
+        suggestionsLinearLayout = rootView.findViewById(R.id.suggestions_linear_layout);
+        suggestionsRecycler = rootView.findViewById(R.id.sugestions_recycler);
         pbNearby = rootView.findViewById(R.id.pb_nearBY);
         imgBack = rootView.findViewById(R.id.btn_back);
-        pbSuggestion=rootView.findViewById(R.id.pb_suggestions);
-        txtNoResult=rootView.findViewById(R.id.txt_no_result);
+        pbSuggestion = rootView.findViewById(R.id.pb_suggestions);
+        txtNoResult = rootView.findViewById(R.id.txt_no_result);
         nearByLinearLayout = rootView.findViewById(R.id.nearBy_linear_layout);
-        txtSearchAddress=rootView.findViewById(R.id.txt_search_address);
-        btnClear=rootView.findViewById(R.id.btn_clear);
+        txtSearchAddress = rootView.findViewById(R.id.txt_search_address);
+        btnClear = rootView.findViewById(R.id.btn_clear);
 
         //layout manager for recycler views
         suggestionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         nearbyRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.SearchDialogAnimation;
 
         //listener
         imgBack.setOnClickListener(this);
@@ -83,24 +81,10 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
         btnClear.setOnClickListener(this);
 
         //instantiating
-        geoDataClient=Places.getGeoDataClient(getContext());
-        placeSuggestionsLD=new PlaceSuggestionsLDImpl(geoDataClient);
+        geoDataClient = Places.getGeoDataClient(getContext());
+        placeSuggestionsLD = new PlaceSuggestionsLDImpl(geoDataClient);
 
         return rootView;
-    }
-
-
-    @Override
-    public int getTheme() {
-        return R.style.FullScreenDialog;
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
     }
 
     @Override
@@ -122,14 +106,12 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
             });
 
             stationsViewModel.stationsAround.observe(this, arrayListResource -> {
-                if (arrayListResource.status==Resource.Status.SUCCESS  ) {
+                if (arrayListResource.status == Resource.Status.SUCCESS) {
                     pbNearby.setVisibility(View.GONE);
                     ArrayList<StationNearbyItem> stationItems = arrayListResource.data;
                     searchNearByAdapter = new SearchNearByAdapter(stationItems, userLocation, getActivity());
                     nearbyRecycler.setAdapter(searchNearByAdapter);
-                }
-                else if(arrayListResource.status==Resource.Status.LOADING)
-                {
+                } else if (arrayListResource.status == Resource.Status.LOADING) {
                     pbNearby.setVisibility(View.VISIBLE);
                 }
             });
@@ -139,11 +121,10 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
 
         }
         placeSuggestionsLD.getPredictions().observe(this, arrayListResource -> {
-            if(arrayListResource.status==Resource.Status.SUCCESS)
-            {
+            if (arrayListResource.status == Resource.Status.SUCCESS) {
                 pbSuggestion.setVisibility(View.GONE);
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
-                if(suggestionsAdapter==null){
+                if (suggestionsAdapter == null) {
                     suggestionsAdapter = new SuggestionsAdapter(suggestions);
                     suggestionsRecycler.setAdapter(suggestionsAdapter);
                 }
@@ -151,23 +132,19 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
                 suggestionsAdapter.getSuggestions().clear();
                 suggestionsAdapter.setSuggestions(suggestions);
                 suggestionsAdapter.notifyDataSetChanged();
-                if(suggestions.size()==0)
-                {
+                if (suggestions.size() == 0) {
                     suggestionsLinearLayout.setVisibility(View.GONE);
                     txtNoResult.setVisibility(View.VISIBLE);
-                }else
-                {
+                } else {
                     nearbyRecycler.setVisibility(View.VISIBLE);
                     txtNoResult.setVisibility(View.GONE);
                 }
-            }
-            else if(arrayListResource.status==Resource.Status.LOADING){
-                  //nearbyRecycler.setVisibility(View.GONE);
-                  txtNoResult.setVisibility(View.GONE);
+            } else if (arrayListResource.status == Resource.Status.LOADING) {
+                //nearbyRecycler.setVisibility(View.GONE);
+                txtNoResult.setVisibility(View.GONE);
                 pbSuggestion.setVisibility(View.VISIBLE);
-            }else if(arrayListResource.status==Resource.Status.ERROR)
-            {
-              //TODO : handle error
+            } else if (arrayListResource.status == Resource.Status.ERROR) {
+                //TODO : handle error
             }
 
         });
@@ -191,9 +168,7 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
     public void onClick(View v) {
         if (v == imgBack) {
             dismiss();
-        }
-        else if(v==btnClear)
-        {
+        } else if (v == btnClear) {
             txtSearchAddress.getText().clear();
         }
     }
@@ -205,13 +180,12 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String query=txtSearchAddress.getText().toString();
-        if(query.isEmpty()){
+        String query = txtSearchAddress.getText().toString();
+        if (query.isEmpty()) {
             nearByLinearLayout.setVisibility(View.VISIBLE);
             suggestionsLinearLayout.setVisibility(View.GONE);
 
-        }else
-        {
+        } else {
             nearByLinearLayout.setVisibility(View.GONE);
             suggestionsLinearLayout.setVisibility(View.VISIBLE);
             placeSuggestionsLD.getSuggestions(query);
