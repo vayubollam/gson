@@ -151,6 +151,10 @@ public class StationsViewModel extends ViewModel {
         return stations;
     }
 
+    public void clearFilters() {
+        filters.postValue(new ArrayList<>());
+    }
+
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
         visibleBounds = LocationUtils.calculateBounds(userLocation, DEFAULT_MAP_ZOOM, regionRatio);

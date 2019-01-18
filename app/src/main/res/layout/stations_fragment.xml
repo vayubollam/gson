@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.home.stationlocator.StationsViewModel" />
+
+        <variable
+            name="eventHandler"
+            type="suncor.com.android.ui.home.stationlocator.StationsFragment" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +45,7 @@
                 android:scrollbars="none">
 
                 <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/filters_list"
+                    android:id="@+id/filters_chipgroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:singleLine="true">
@@ -64,34 +75,38 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btn_search"
+                    android:id="@+id/search_button"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
-                    android:src="@drawable/ic_search" />
+                    android:src="@drawable/ic_search"
+                    android:onClick="@{() -> eventHandler.launchSearchFragment()}"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txt_search_address"
-                style="@style/SearchTextNormal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:maxLines="1"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:hint="@string/search_an_address" />
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btn_clear"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_close" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/address_search_text"
+                    style="@style/SearchTextNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search_an_address"
+                    android:maxLines="1"
+                    android:onClick="@{() -> eventHandler.launchSearchFragment()}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/clear_search_button"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_close"
+                    android:visibility="gone"
+                    android:onClick="@{() -> eventHandler.clearSearchText()}"
+                    tools:visibility="visible" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/vertical_divider"
@@ -100,25 +115,27 @@
                     android:src="@drawable/vertical_divider" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btn_filters"
+                    android:id="@+id/launch_filters_button"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
+                    android:background="?selectableItemBackground"
+                    android:onClick="@{() -> eventHandler.launchFiltersFragment()}"
                     android:src="@drawable/ic_filters" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
 
         <ProgressBar
-            android:id="@+id/indeterminateBar"
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/status_card_view"
+            android:id="@+id/status_cardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -151,12 +168,13 @@
                     android:text="@string/no_stations_filters_applied" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/clear_button"
+                    android:id="@+id/clear_filters_button"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="cleare filters" />
+                    android:onClick="@{() -> vm.clearFilters()}"
+                    android:text="@string/cleare_filters_button" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -182,13 +200,14 @@
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btn_my_location"
+                        android:id="@+id/my_location_button"
                         android:layout_width="44dp"
                         android:layout_height="44dp"
                         android:layout_gravity="center"
                         android:background="?selectableItemBackground"
                         android:foregroundGravity="center"
-                        android:src="@drawable/ic_near_me" />
+                        android:src="@drawable/ic_near_me"
+                        android:onClick="@{() -> eventHandler.locateMe()}"/>
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="match_parent"
@@ -196,7 +215,7 @@
                         android:background="@drawable/horizontal_divider" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btn_my_favorites"
+                        android:id="@+id/my_favorites_button"
                         android:layout_width="44dp"
                         android:layout_height="44dp"
                         android:layout_gravity="right"
@@ -212,8 +231,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:paddingTop="12dp"
                 android:paddingStart="@dimen/stations_recycler_view_padding"
+                android:paddingTop="12dp"
                 android:paddingRight="@dimen/stations_recycler_view_padding"
                 android:paddingBottom="8dp"
                 app:behavior_peekHeight="32dp"

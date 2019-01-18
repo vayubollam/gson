@@ -74,8 +74,8 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
         pbSuggestion = rootView.findViewById(R.id.pb_suggestions);
         txtNoResult = rootView.findViewById(R.id.txt_no_result);
         nearByLinearLayout = rootView.findViewById(R.id.nearBy_linear_layout);
-        txtSearchAddress = rootView.findViewById(R.id.txt_search_address);
-        btnClear = rootView.findViewById(R.id.btn_clear);
+        txtSearchAddress = rootView.findViewById(R.id.address_search_text);
+        btnClear = rootView.findViewById(R.id.clear_filters_button);
 
         //layout manager for recycler views
         suggestionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
