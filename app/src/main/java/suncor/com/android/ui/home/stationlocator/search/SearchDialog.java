@@ -162,7 +162,7 @@ public class SearchDialog extends DialogFragment implements View.OnClickListener
                 }
             }
             else if(arrayListResource.status==Resource.Status.LOADING){
-                  nearbyRecycler.setVisibility(View.GONE);
+                  //nearbyRecycler.setVisibility(View.GONE);
                   txtNoResult.setVisibility(View.GONE);
                 pbSuggestion.setVisibility(View.VISIBLE);
             }else if(arrayListResource.status==Resource.Status.ERROR)

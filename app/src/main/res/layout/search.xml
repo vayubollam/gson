@@ -33,6 +33,8 @@
                 android:id="@+id/txt_search_address"
                 style="@style/SearchTextNormal"
                 android:layout_width="0dp"
+                android:maxLines="1"
+                android:inputType="text"
                 android:background="@android:color/transparent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"

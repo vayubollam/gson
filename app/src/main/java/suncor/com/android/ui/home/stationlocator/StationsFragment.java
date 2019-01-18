@@ -11,6 +11,8 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -60,7 +63,7 @@ import suncor.com.android.ui.home.stationlocator.search.SearchDialog;
 import suncor.com.android.utilities.LocationUtils;
 
 
-public class StationsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener {
+public class StationsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener, TextWatcher {
 
     public static final int STATION_DETAILS_REQUEST_CODE = 1;
     private final static int MINIMUM_ZOOM_LEVEL = 10;
@@ -77,6 +80,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private Marker lastSelectedMarker;
     private float screenRatio;
     private AppCompatTextView txtSearchAddress;
+    private AppCompatImageView btnOpenSearch;
+    private AppCompatImageView btnClearText;
 
 
     @Override
@@ -99,8 +104,14 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         mViewModel.setRegionRatio(screenRatio);
         indeterminateBar = view.findViewById(R.id.indeterminateBar);
         indeterminateBar.setVisibility(View.VISIBLE);
-        txtSearchAddress = getView().findViewById(R.id.txt_search_address);
+        txtSearchAddress = view.findViewById(R.id.txt_search_address);
+        btnOpenSearch=view.findViewById(R.id.btn_search);
+        btnOpenSearch.setOnClickListener(this);
         txtSearchAddress.setOnClickListener(this);
+        txtSearchAddress.addTextChangedListener(this);
+        btnClearText=view.findViewById(R.id.btn_clear);
+        btnClearText.setOnClickListener(this);
+        txtSearchAddress.setText("Test");
 
         recyclerView = view.findViewById(R.id.card_recycler);
         bottomSheetBehavior = BottomSheetBehavior.from(recyclerView);
@@ -240,11 +251,15 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                 alertUser();
             }
         }
-        if (v == txtSearchAddress) {
+        if (v == txtSearchAddress || v== btnOpenSearch) {
             SearchDialog searchFragment = new SearchDialog();
-           // searchFragment.setTa
             searchFragment.show(getFragmentManager(), searchFragment.getTag());
 
+        }
+        if(v==btnClearText)
+        {
+            txtSearchAddress.setText("");
+            btnClearText.setVisibility(View.GONE);
         }
     }
 
@@ -392,6 +407,26 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         // DrawableCompat.setTint(vectorDrawable);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        if(s.toString().isEmpty()){
+            btnClearText.setVisibility(View.GONE);
+        }else{
+            btnClearText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }
 
