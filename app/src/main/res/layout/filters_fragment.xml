@@ -1,76 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:paddingStart="16dp"
-    android:paddingTop="16dp">
+<layout>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="?selectableItemBackground"
-        android:src="@drawable/ic_back" />
-
-    <androidx.appcompat.widget.AppCompatTextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/filters_title"
-        android:textAppearance="@style/TitleStyle" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/services_amenities"
-        android:textAppearance="@style/SubtitleStyle" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/back_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_back" />
+x
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/filters_title"
+            android:textAppearance="@style/TitleStyle"
+            android:textSize="22sp"/>
 
-    <view
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/vertical_divider" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
-    <ListView
-        android:id="@+id/service_amenities_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="multipleChoice"
-        tools:listitem="@layout/filter_item"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true"
+                android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/fuel_amenities"
-        android:textAppearance="@style/SubtitleStyle" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/services_amenities"
+                    android:textAppearance="@style/SubtitleStyle" />
 
-    <view
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/vertical_divider" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider" />
 
-    <ListView
-        android:id="@+id/fuel_amenities_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/service_amenities_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/carwash_amenities"
-        android:textAppearance="@style/SubtitleStyle" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/fuel_amenities"
+                    android:textAppearance="@style/SubtitleStyle" />
 
-    <view
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/vertical_divider" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider" />
 
-    <ListView
-        android:id="@+id/carwash_amenities_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+                <LinearLayout
+                    android:id="@+id/fuel_amenities_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/carwash_amenities"
+                    android:textAppearance="@style/SubtitleStyle" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider" />
+
+                <LinearLayout
+                    android:id="@+id/carwash_amenities_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clear_button"
+                style="@style/BorderedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:text="@string/clear" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/apply_button"
+                style="@style/ColoredButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:text="@string/apply" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

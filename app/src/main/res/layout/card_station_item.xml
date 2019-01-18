@@ -155,7 +155,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_card_directions"
-                    style="@style/DirectionsButtonStyle"
+                    style="@style/ColoredButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -166,7 +166,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@drawable/station_details_separator" />
+                    android:background="@drawable/horizontal_divider" />
 
                 <androidx.core.widget.NestedScrollView
                     android:id="@+id/detailsLayout"
@@ -197,7 +197,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/station_details_separator" />
+                            android:background="@drawable/horizontal_divider" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/call_button"
@@ -215,7 +215,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@drawable/station_details_separator" />
+                            android:background="@drawable/horizontal_divider" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/SubtitleStyle"
@@ -317,7 +317,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginBottom="16dp"
-                            android:background="@drawable/station_details_separator" />
+                            android:background="@drawable/horizontal_divider" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

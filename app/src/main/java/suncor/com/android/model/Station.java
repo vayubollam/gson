@@ -44,11 +44,11 @@ public class Station {
             FULL_AMENITIES.put(serviceAmenitiesEnum.get(i), serviceAmenitiesValues.get(i));
         }
         for (int i = 0; i < fuelAmenitiesEnum.size(); i++) {
-            SERVICE_AMENITIES.put(fuelAmenitiesEnum.get(i), fuelAmenitiesValues.get(i));
+            FUEL_AMENITIES.put(fuelAmenitiesEnum.get(i), fuelAmenitiesValues.get(i));
             FULL_AMENITIES.put(fuelAmenitiesEnum.get(i), fuelAmenitiesValues.get(i));
         }
         for (int i = 0; i < washAmenitiesEnum.size(); i++) {
-            SERVICE_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
+            WASH_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
             FULL_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
         }
     }

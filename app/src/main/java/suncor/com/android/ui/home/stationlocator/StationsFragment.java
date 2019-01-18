@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -34,7 +33,6 @@ import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -63,6 +61,8 @@ import suncor.com.android.utilities.LocationUtils;
 public class StationsFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener {
 
     public static final int STATION_DETAILS_REQUEST_CODE = 1;
+    public static final int FILTERS_FRAGMENT_REQUEST_CODE = 1;
+
     private final static int MINIMUM_ZOOM_LEVEL = 10;
 
     private StationsViewModel mViewModel;
@@ -101,7 +101,12 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
         binding.btnFilters.setOnClickListener((v) -> {
             FiltersDialog filtersDialog = new FiltersDialog();
+            filtersDialog.setTargetFragment(this, FILTERS_FRAGMENT_REQUEST_CODE);
             filtersDialog.show(getFragmentManager(), filtersDialog.getTag());
+        });
+
+        binding.clearButton.setOnClickListener((v) -> {
+            mViewModel.filters.postValue(new ArrayList<>());
         });
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.cardRecycler);
@@ -303,39 +308,47 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         if (result.status == Resource.Status.LOADING) {
             binding.indeterminateBar.setVisibility(View.VISIBLE);
         } else if (result.status == Resource.Status.SUCCESS) {
+            binding.indeterminateBar.setVisibility(View.GONE);
+
             if (isAdded() && mGoogleMap != null) {
                 ArrayList<StationItem> stations = result.data;
                 mGoogleMap.clear();
                 stationsMarkers.clear();
                 lastSelectedMarker = null;
-                if (myLocationMarker != null)
+                if (myLocationMarker != null) {
                     myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(myLocationMarker.getPosition()).icon(getBitmapFromVector(getContext(), R.drawable.ic_my_location)));
-
-                Random fav = new Random();
-                for (StationItem station : stations) {
-                    LatLng latLng = new LatLng(station.station.get().getAddress().getLatitude(), station.station.get().getAddress().getLongitude());
-                    boolean isFavourite = station.isFavourite.get();
-                    boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue() == station;
-                    Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
-                    if (isSelected) {
-                        lastSelectedMarker = stationMarker;
-                    }
-                    stationsMarkers.put(stationMarker, station);
                 }
-                stationAdapter.getStations().clear();
-                stationAdapter.getStations().addAll(stations);
-                stationAdapter.notifyDataSetChanged();
-                binding.cardRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            refreshSelectedStation();
+                if (stations.isEmpty() && !mViewModel.filters.getValue().isEmpty()) {
+                    binding.coordinator.setVisibility(View.GONE);
+                    binding.statusCardView.setVisibility(View.VISIBLE);
+                } else {
+                    binding.coordinator.setVisibility(View.VISIBLE);
+                    binding.statusCardView.setVisibility(View.GONE);
+                    for (StationItem station : stations) {
+                        LatLng latLng = new LatLng(station.station.get().getAddress().getLatitude(), station.station.get().getAddress().getLongitude());
+                        boolean isFavourite = station.isFavourite.get();
+                        boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue() == station;
+                        Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
+                        if (isSelected) {
+                            lastSelectedMarker = stationMarker;
                         }
+                        stationsMarkers.put(stationMarker, station);
                     }
-                });
-                binding.indeterminateBar.setVisibility(View.GONE);
+                    stationAdapter.getStations().clear();
+                    stationAdapter.getStations().addAll(stations);
+                    stationAdapter.notifyDataSetChanged();
+                    binding.cardRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                refreshSelectedStation();
+                            }
+                        }
+                    });
+                }
             }
         }
+
     }
 
     private void refreshSelectedStation() {
