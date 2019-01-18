@@ -11,10 +11,13 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -29,15 +32,19 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.chip.Chip;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
@@ -67,8 +74,11 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     private StationsViewModel mViewModel;
     private GoogleMap mGoogleMap;
+    private AppCompatImageButton findMyLocationButton;
     private HashMap<Marker, StationItem> stationsMarkers = new HashMap<>();
+    private ProgressBar indeterminateBar;
     private StationAdapter stationAdapter;
+    private RecyclerView recyclerView;
     private Marker myLocationMarker;
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker lastSelectedMarker;
@@ -98,12 +108,16 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         binding.indeterminateBar.setVisibility(View.VISIBLE);
         binding.txtSearchAddress.setOnClickListener(this);
         binding.btnMyLocation.setOnClickListener(this);
+        binding.btnSearch.setOnClickListener(this);
+        binding.btnClear.setOnClickListener(this);
 
         binding.btnFilters.setOnClickListener((v) -> {
             FiltersDialog filtersDialog = new FiltersDialog();
             filtersDialog.setTargetFragment(this, FILTERS_FRAGMENT_REQUEST_CODE);
             filtersDialog.show(getFragmentManager(), filtersDialog.getTag());
         });
+        indeterminateBar = view.findViewById(R.id.indeterminateBar);
+        indeterminateBar.setVisibility(View.VISIBLE);
 
         binding.clearButton.setOnClickListener((v) -> {
             mViewModel.filters.postValue(new ArrayList<>());
@@ -117,6 +131,8 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(binding.cardRecycler);
 
+        findMyLocationButton = view.findViewById(R.id.btn_my_location);
+        findMyLocationButton.setOnClickListener(this);
         FragmentManager fm = getChildFragmentManager();
 
         SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentByTag("mapFragment");
@@ -246,10 +262,15 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                 alertUser();
             }
         }
-        if (v == binding.txtSearchAddress) {
+        if (v == binding.txtSearchAddress || v == binding.btnSearch) {
             SearchDialog searchFragment = new SearchDialog();
             searchFragment.show(getFragmentManager(), searchFragment.getTag());
 
+        }
+        if(v==binding.btnClear)
+        {
+            binding.txtSearchAddress.setText("");
+            binding.btnClearText.setVisibility(View.GONE);
         }
     }
 
@@ -306,7 +327,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
     private void UpdateCards(Resource<ArrayList<StationItem>> result) {
         if (result.status == Resource.Status.LOADING) {
-            binding.indeterminateBar.setVisibility(View.VISIBLE);
+            indeterminateBar.setVisibility(View.VISIBLE);
         } else if (result.status == Resource.Status.SUCCESS) {
             binding.indeterminateBar.setVisibility(View.GONE);
 
@@ -406,6 +427,26 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        if(s.toString().isEmpty()){
+            btnClearText.setVisibility(View.GONE);
+        }else{
+            btnClearText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 
     private void filtersChanged(ArrayList<String> filterList) {
