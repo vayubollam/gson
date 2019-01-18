@@ -7,12 +7,11 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBufferResponse;
 import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion;
@@ -20,21 +19,15 @@ import suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion;
 public class PlaceSuggestionsProviderImpl implements PlaceSuggestionsProvider {
 
     private GeoDataClient geoDataClient;
-    private MutableLiveData<Resource<ArrayList<PlaceSuggestion>>> predictions = new MutableLiveData<>();
 
     public PlaceSuggestionsProviderImpl(GeoDataClient geoDataClient) {
         this.geoDataClient = geoDataClient;
     }
 
-    @Override
-    public MutableLiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestionsObservable() {
-        return predictions;
-    }
 
     @Override
-    public void refreshSuggestion(String query) {
-
-
+    public LiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestions(String query) {
+        MutableLiveData<Resource<ArrayList<PlaceSuggestion>>> predictions = new MutableLiveData<>();
         predictions.postValue(Resource.loading(null));
         AutocompleteFilter.Builder builder = new AutocompleteFilter.Builder();
         builder.setCountry("ca");
@@ -60,5 +53,7 @@ public class PlaceSuggestionsProviderImpl implements PlaceSuggestionsProvider {
             predictions.postValue(Resource.error(e.getMessage(), null));
             Log.d("suggestions", e.getMessage());
         });
+
+        return predictions;
     }
 }

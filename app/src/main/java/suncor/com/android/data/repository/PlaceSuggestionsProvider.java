@@ -2,13 +2,11 @@ package suncor.com.android.data.repository;
 
 import java.util.ArrayList;
 
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion;
 
 public interface PlaceSuggestionsProvider {
 
-    MutableLiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestionsObservable();
-
-    void refreshSuggestion(String text);
+    LiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestions(String input);
 }

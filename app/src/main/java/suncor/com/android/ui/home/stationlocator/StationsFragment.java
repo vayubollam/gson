@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -83,6 +84,7 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
         super.onCreate(savedInstanceState);
         StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
         mViewModel = ViewModelProviders.of(this, factory).get(StationsViewModel.class);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
     }
 
     @Override
@@ -323,13 +325,14 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
 
             if (isAdded() && mGoogleMap != null) {
                 ArrayList<StationItem> stations = result.data;
+                ArrayList<String> currentFilter = mViewModel.filters.getValue();
                 mGoogleMap.clear();
                 stationsMarkers.clear();
                 lastSelectedMarker = null;
                 if (myLocationMarker != null) {
                     myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(myLocationMarker.getPosition()).icon(getBitmapFromVector(getContext(), R.drawable.ic_my_location)));
                 }
-                if (stations.isEmpty() && !mViewModel.filters.getValue().isEmpty()) {
+                if (stations.isEmpty() && currentFilter != null && !currentFilter.isEmpty()) {
                     binding.coordinator.setVisibility(View.GONE);
                     binding.statusCardView.setVisibility(View.VISIBLE);
                 } else {
@@ -422,8 +425,11 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
     private void filtersChanged(ArrayList<String> filterList) {
         if (filterList == null || filterList.isEmpty()) {
             binding.filtersLayout.setVisibility(View.GONE);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         } else {
             binding.filtersLayout.setVisibility(View.VISIBLE);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.light_gray));
+
             binding.filtersList.removeAllViews();
             for (String amenity : filterList) {
                 Chip chip = new Chip(getActivity());
@@ -437,6 +443,12 @@ public class StationsFragment extends Fragment implements OnMapReadyCallback, Vi
                 binding.filtersList.addView(chip);
             }
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
     }
 }
 

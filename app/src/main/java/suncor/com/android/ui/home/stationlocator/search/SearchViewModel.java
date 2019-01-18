@@ -22,6 +22,7 @@ import java.util.Collections;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.PlaceSuggestionsProvider;
 import suncor.com.android.model.Resource;
@@ -36,12 +37,14 @@ public class SearchViewModel extends ViewModel {
     public LatLng userLocation;
     private float regionRatio = 1f;
 
+    private MutableLiveData<String> query = new MutableLiveData<>();
+
     public SearchViewModel(PlaceSuggestionsProvider suggestionsProvider) {
         this.suggestionsProvider = suggestionsProvider;
     }
 
     public LiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestions() {
-        return suggestionsProvider.getSuggestionsObservable();
+        return Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
     }
 
     public void refreshStations(LatLng mapCenter) {
@@ -107,7 +110,7 @@ public class SearchViewModel extends ViewModel {
         return Double.parseDouble(new DecimalFormat("##.#").format(distance));
     }
 
-    public void refreshPlaceSuggestions(String query) {
-        suggestionsProvider.refreshSuggestion(query);
+    public void setSearchQuery(String input) {
+        query.setValue(input);
     }
 }

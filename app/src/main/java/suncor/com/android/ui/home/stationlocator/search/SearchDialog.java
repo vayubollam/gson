@@ -189,7 +189,7 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
         } else {
             nearByLinearLayout.setVisibility(View.GONE);
             suggestionsLinearLayout.setVisibility(View.VISIBLE);
-            viewModel.refreshPlaceSuggestions(query);
+            viewModel.setSearchQuery(query);
         }
 
     }
