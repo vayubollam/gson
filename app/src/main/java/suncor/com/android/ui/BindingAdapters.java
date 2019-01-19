@@ -1,5 +1,7 @@
 package suncor.com.android.ui;
 
+import android.view.View;
+
 import java.util.HashMap;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -34,5 +36,9 @@ public class BindingAdapters {
         view.setText(buffer.toString().trim());
     }
 
+    @BindingAdapter({"visibleGone"})
+    public static void showHide(View view, boolean show) {
+        view.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
 
 }

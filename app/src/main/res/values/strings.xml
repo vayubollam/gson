@@ -36,8 +36,8 @@
     <string name="clear">Clear All</string>
     <string name="no_stations_found">No stations found</string>
     <string name="no_stations_filters_applied">Try removing filters or expand your search area</string>
-    <string name="sugestions">SUGGESTIONS</string>
-    <string name="nearby_title">NEARBY</string>
+    <string name="sugestions">suggestions</string>
+    <string name="nearby_title">nearby</string>
     <string name="no_results">No results</string>
     <string name="cleare_filters_button">cleare filters</string>
 </resources>

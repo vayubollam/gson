@@ -32,24 +32,22 @@ import suncor.com.android.utilities.LocationUtils;
 public class SearchViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
-    private final PlaceSuggestionsProvider suggestionsProvider;
-    public MutableLiveData<Resource<ArrayList<StationNearbyItem>>> stationsAround = new MutableLiveData<>();
-    public LatLng userLocation;
+    public MutableLiveData<Resource<ArrayList<StationNearbyItem>>> nearbyStations = new MutableLiveData<>();
+    public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
+    private LatLng userLocation;
     private float regionRatio = 1f;
 
-    private MutableLiveData<String> query = new MutableLiveData<>();
+    public MutableLiveData<String> query = new MutableLiveData<>();
 
     public SearchViewModel(PlaceSuggestionsProvider suggestionsProvider) {
-        this.suggestionsProvider = suggestionsProvider;
-    }
-
-    public LiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestions() {
-        return Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
+        query.setValue("");
+        placeSuggestions = Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
     }
 
     public void refreshStations(LatLng mapCenter) {
         if (userLocation == null)
             return;
+        nearbyStations.postValue(Resource.loading(null));
         LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
         double southWestLat = _25KmBounds.southwest.latitude;
         double southWestLong = _25KmBounds.southwest.longitude;
@@ -86,7 +84,7 @@ public class SearchViewModel extends ViewModel {
                         double distance2 = LocationUtils.calculateDistance(userLocation, new LatLng(o2.station.get().getAddress().getLatitude(), o2.station.get().getAddress().getLongitude()));
                         return (int) (distance1 - distance2);
                     });
-                    stationsAround.postValue(Resource.success(stations));
+                    nearbyStations.postValue(Resource.success(stations));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

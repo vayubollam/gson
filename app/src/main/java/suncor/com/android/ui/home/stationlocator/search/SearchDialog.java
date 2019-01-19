@@ -1,18 +1,13 @@
 package suncor.com.android.ui.home.stationlocator.search;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Places;
@@ -22,71 +17,66 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.PlaceSuggestionsProviderImpl;
+import suncor.com.android.databinding.NearbyLayoutBinding;
+import suncor.com.android.databinding.SearchFragmentBinding;
+import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.FullScreenDialog;
 import suncor.com.android.utilities.LocationUtils;
 
-public class SearchDialog extends FullScreenDialog implements View.OnClickListener, TextWatcher {
+public class SearchDialog extends FullScreenDialog {
     private SearchViewModel viewModel;
+    private SearchFragmentBinding binding;
+    private NearbyLayoutBinding nearbySearchBinding;
+    private SuggestionsLayoutBinding suggestionsLayoutBinding;
     private LatLng userLocation;
-    private RecyclerView nearbyRecycler;
-    private RecyclerView suggestionsRecycler;
-    private SearchNearByAdapter searchNearByAdapter;
-    private AppCompatImageView imgBack;
-    private ProgressBar pbNearby;
-    private LinearLayout nearByLinearLayout;
-    private LinearLayout suggestionsLinearLayout;
-    private AppCompatEditText txtSearchAddress;
+    private SearchNearByAdapter nearbyStationsAdapter;
     private SuggestionsAdapter suggestionsAdapter;
-    private ProgressBar pbSuggestion;
-    private AppCompatTextView txtNoResult;
-    private AppCompatImageButton btnClear;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.search_fragment, container, false);
-
         getDialog().getWindow().getAttributes().windowAnimations = R.style.SearchDialogAnimation;
         getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getDialog().getWindow().setStatusBarColor(getResources().getColor(R.color.light_gray));
+
+        binding = SearchFragmentBinding.inflate(inflater, container, false);
+        nearbySearchBinding = binding.nearbyLayout;
+        suggestionsLayoutBinding = binding.suggestionsLayout;
 
         //instantiating
         GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
         SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
+        binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
+        suggestionsLayoutBinding.setLifecycleOwner(this);
+        nearbySearchBinding.setLifecycleOwner(this);
+
         //retrieving views
-        nearbyRecycler = rootView.findViewById(R.id.nearby_recycler);
-        suggestionsLinearLayout = rootView.findViewById(R.id.suggestions_linear_layout);
-        suggestionsRecycler = rootView.findViewById(R.id.sugestions_recycler);
-        pbNearby = rootView.findViewById(R.id.pb_nearBY);
-        imgBack = rootView.findViewById(R.id.btn_back);
-        pbSuggestion = rootView.findViewById(R.id.pb_suggestions);
-        txtNoResult = rootView.findViewById(R.id.txt_no_result);
-        nearByLinearLayout = rootView.findViewById(R.id.nearBy_linear_layout);
-        txtSearchAddress = rootView.findViewById(R.id.address_search_text);
-        btnClear = rootView.findViewById(R.id.clear_filters_button);
 
         //layout manager for recycler views
-        suggestionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        nearbyRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        suggestionsLayoutBinding.sugestionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        suggestionsAdapter = new SuggestionsAdapter();
+        suggestionsLayoutBinding.sugestionsRecycler.setAdapter(suggestionsAdapter);
+
+        nearbySearchBinding.nearbyRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         //listener
-        imgBack.setOnClickListener(this);
-        txtSearchAddress.addTextChangedListener(this);
-        btnClear.setOnClickListener(this);
+        binding.backButton.setOnClickListener((v) -> {
+            dismiss();
+        });
+        binding.clearButton.setOnClickListener((v) -> {
+            binding.addressSearchText.getText().clear();
+        });
 
-        return rootView;
+        return binding.getRoot();
     }
 
     @Override
@@ -103,99 +93,25 @@ public class SearchDialog extends FullScreenDialog implements View.OnClickListen
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);
                 viewModel.refreshStations(userLocation);
-
-
             });
 
-            viewModel.stationsAround.observe(this, arrayListResource -> {
+            viewModel.nearbyStations.observe(this, arrayListResource -> {
                 if (arrayListResource.status == Resource.Status.SUCCESS) {
-                    pbNearby.setVisibility(View.GONE);
                     ArrayList<StationNearbyItem> stationItems = arrayListResource.data;
-                    searchNearByAdapter = new SearchNearByAdapter(stationItems, userLocation, getActivity());
-                    nearbyRecycler.setAdapter(searchNearByAdapter);
-                } else if (arrayListResource.status == Resource.Status.LOADING) {
-                    pbNearby.setVisibility(View.VISIBLE);
+                    nearbyStationsAdapter = new SearchNearByAdapter(stationItems, userLocation, getActivity());
+                    nearbySearchBinding.nearbyRecycler.setAdapter(nearbyStationsAdapter);
                 }
             });
-
         } else {
-            nearByLinearLayout.setVisibility(View.GONE);
-
+            nearbySearchBinding.getRoot().setVisibility(View.GONE);
         }
-        viewModel.getSuggestions().observe(this, arrayListResource -> {
+        viewModel.placeSuggestions.observe(this, arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
-                pbSuggestion.setVisibility(View.GONE);
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
-                if (suggestionsAdapter == null) {
-                    suggestionsAdapter = new SuggestionsAdapter(suggestions);
-                    suggestionsRecycler.setAdapter(suggestionsAdapter);
-                }
-
-                suggestionsAdapter.getSuggestions().clear();
                 suggestionsAdapter.setSuggestions(suggestions);
-                if (suggestions.isEmpty()) {
-                    suggestionsLinearLayout.setVisibility(View.GONE);
-                    txtNoResult.setVisibility(View.VISIBLE);
-                } else {
-                    nearbyRecycler.setVisibility(View.VISIBLE);
-                    txtNoResult.setVisibility(View.GONE);
-                }
-            } else if (arrayListResource.status == Resource.Status.LOADING) {
-                //nearbyRecycler.setVisibility(View.GONE);
-                txtNoResult.setVisibility(View.GONE);
-                pbSuggestion.setVisibility(View.VISIBLE);
             } else if (arrayListResource.status == Resource.Status.ERROR) {
                 //TODO : handle error
             }
-
         });
-
-
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new Dialog(getActivity(), getTheme()) {
-            @Override
-            public void onBackPressed() {
-                super.onBackPressed();
-                dismiss();
-            }
-        };
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == imgBack) {
-            dismiss();
-        } else if (v == btnClear) {
-            txtSearchAddress.getText().clear();
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String query = txtSearchAddress.getText().toString();
-        if (query.isEmpty()) {
-            nearByLinearLayout.setVisibility(View.VISIBLE);
-            suggestionsLinearLayout.setVisibility(View.GONE);
-
-        } else {
-            nearByLinearLayout.setVisibility(View.GONE);
-            suggestionsLinearLayout.setVisibility(View.VISIBLE);
-            viewModel.setSearchQuery(query);
-        }
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
     }
 }

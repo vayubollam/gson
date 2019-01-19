@@ -31,7 +31,7 @@ public class PlaceSuggestionsProviderImpl implements PlaceSuggestionsProvider {
         predictions.postValue(Resource.loading(null));
         AutocompleteFilter.Builder builder = new AutocompleteFilter.Builder();
         builder.setCountry("ca");
-        builder.setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS | AutocompleteFilter.TYPE_FILTER_CITIES);
+        builder.setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS);
         AutocompleteFilter mPlaceFilter = builder.build();
 
         Task<AutocompletePredictionBufferResponse> results =
