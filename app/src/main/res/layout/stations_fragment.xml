@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
+
+        <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.StationsViewModel" />
 
@@ -80,8 +84,8 @@
                     android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
-                    android:src="@drawable/ic_search"
-                    android:onClick="@{() -> eventHandler.launchSearchFragment()}"/>
+                    android:onClick="@{() -> eventHandler.launchSearchFragment()}"
+                    android:src="@drawable/ic_search" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/address_search_text"
@@ -103,9 +107,9 @@
                     android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
+                    android:onClick="@{() -> eventHandler.clearSearchText()}"
                     android:src="@drawable/ic_close"
                     android:visibility="gone"
-                    android:onClick="@{() -> eventHandler.clearSearchText()}"
                     tools:visibility="visible" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -129,6 +133,7 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
+            visibleGone="@{isLoading}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -206,8 +211,8 @@
                         android:layout_gravity="center"
                         android:background="?selectableItemBackground"
                         android:foregroundGravity="center"
-                        android:src="@drawable/ic_near_me"
-                        android:onClick="@{() -> eventHandler.locateMe()}"/>
+                        android:onClick="@{() -> eventHandler.locateMe()}"
+                        android:src="@drawable/ic_near_me" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="match_parent"

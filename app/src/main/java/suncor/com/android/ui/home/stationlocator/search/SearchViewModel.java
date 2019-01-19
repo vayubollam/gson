@@ -44,10 +44,10 @@ public class SearchViewModel extends ViewModel {
         placeSuggestions = Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
     }
 
-    public void refreshStations(LatLng mapCenter) {
+    private void refreshNearbyStations(LatLng mapCenter) {
         if (userLocation == null)
             return;
-        nearbyStations.postValue(Resource.loading(null));
+        nearbyStations.setValue(Resource.loading(null));
         LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
         double southWestLat = _25KmBounds.southwest.latitude;
         double southWestLong = _25KmBounds.southwest.longitude;
@@ -100,7 +100,7 @@ public class SearchViewModel extends ViewModel {
 
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
-        refreshStations(userLocation);
+        refreshNearbyStations(userLocation);
     }
 
     private Double getDistance(LatLng userLocation, LatLng des, int unit) {

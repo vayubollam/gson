@@ -92,7 +92,6 @@ public class SearchDialog extends FullScreenDialog {
             locationLiveData.observe(this, location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);
-                viewModel.refreshStations(userLocation);
             });
 
             viewModel.nearbyStations.observe(this, arrayListResource -> {

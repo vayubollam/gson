@@ -19,7 +19,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.Resource;
@@ -30,15 +32,27 @@ public class StationsViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
     public final static int DEFAULT_MAP_ZOOM = 5000;
+
     private FavouriteRepository favouriteRepository;
 
     private ArrayList<StationItem> cachedStations;
     private LatLngBounds cachedStationsBounds;
-    public MutableLiveData<Resource<ArrayList<StationItem>>> stationsAround = new MutableLiveData<>();
-    public MutableLiveData<StationItem> selectedStation = new MutableLiveData<>();
-    public LatLng userLocation;
-    public LatLngBounds visibleBounds;
-    public MutableLiveData<ArrayList<String>> filters = new MutableLiveData<>();
+
+    private MutableLiveData<Resource<ArrayList<StationItem>>> _stationsAround = new MutableLiveData<>();
+    public LiveData<Resource<ArrayList<StationItem>>> stationsAround = _stationsAround;
+
+    private MutableLiveData<StationItem> _selectedStation = new MutableLiveData<>();
+    public LiveData<StationItem> selectedStation = _selectedStation;
+
+    private MutableLiveData<ArrayList<String>> _filters = new MutableLiveData<>();
+    public LiveData<ArrayList<String>> filters = _filters;
+
+    private MutableLiveData<LatLng> _userLocation = new MutableLiveData<>();
+    public LiveData<LatLng> userLocation = _userLocation;
+
+    private MutableLiveData<LatLngBounds> _mapBounds = new MutableLiveData<>();
+    public LiveData<LatLngBounds> mapBounds = _mapBounds;
+
     private float regionRatio = 1f;
 
     public StationsViewModel(FavouriteRepository favouriteRepository) {
@@ -48,24 +62,44 @@ public class StationsViewModel extends ViewModel {
                 return;
             }
             ArrayList<StationItem> filteredStations = filterStations();
-            stationsAround.postValue(Resource.success(filteredStations));
+            _stationsAround.setValue(Resource.success(filteredStations));
         });
+
+        userLocation.observeForever((location) -> {
+            Observer<Resource<ArrayList<StationItem>>> tempObserver = new Observer<Resource<ArrayList<StationItem>>>() {
+                @Override
+                public void onChanged(Resource<ArrayList<StationItem>> arrayListResource) {
+                    if (arrayListResource.status != Resource.Status.LOADING) {
+                        _stationsAround.removeObserver(this);
+                        if (arrayListResource.status == Resource.Status.SUCCESS && !arrayListResource.data.isEmpty()) {
+                            _selectedStation.setValue(arrayListResource.data.get(0));
+                        }
+                    }
+                }
+            };
+            _stationsAround.observeForever(tempObserver);
+            _mapBounds.setValue(LocationUtils.calculateBounds(location, DEFAULT_MAP_ZOOM, regionRatio));
+        });
+
+        _mapBounds.observeForever((bounds -> {
+            refreshStations();
+        }));
     }
 
 
-    public void refreshStations(LatLng mapCenter, LatLngBounds bounds) {
+    private void refreshStations() {
+        LatLng mapCenter = _mapBounds.getValue().getCenter();
+        LatLngBounds bounds = _mapBounds.getValue();
         if (userLocation == null)
             return;
-        if (bounds != null && cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
-            visibleBounds = bounds;
-            stationsAround.postValue(Resource.success(filterStations()));
+        if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
+            _stationsAround.setValue(Resource.success(filterStations()));
         } else {
-            stationsAround.postValue(Resource.loading(null));
-            if (bounds != null) {
-                visibleBounds = bounds;
-            }
+            _stationsAround.setValue(Resource.loading(null));
+
             LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
-            LatLngBounds apiBounds = LocationUtils.getLargerBounds(visibleBounds, _25KmBounds);
+            LatLngBounds apiBounds = _mapBounds.getValue() != null ? LocationUtils.getLargerBounds(_mapBounds.getValue(), _25KmBounds) : _25KmBounds;
+
             double southWestLat = apiBounds.southwest.latitude;
             double southWestLong = apiBounds.southwest.longitude;
             double northEastLat = apiBounds.northeast.latitude;
@@ -101,13 +135,13 @@ public class StationsViewModel extends ViewModel {
                             stations.add(item);
                         }
                         Collections.sort(stations, (o1, o2) -> {
-                            double distance1 = LocationUtils.calculateDistance(userLocation, new LatLng(o1.station.get().getAddress().getLatitude(), o1.station.get().getAddress().getLongitude()));
-                            double distance2 = LocationUtils.calculateDistance(userLocation, new LatLng(o2.station.get().getAddress().getLatitude(), o2.station.get().getAddress().getLongitude()));
+                            double distance1 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o1.station.get().getAddress().getLatitude(), o1.station.get().getAddress().getLongitude()));
+                            double distance2 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o2.station.get().getAddress().getLatitude(), o2.station.get().getAddress().getLongitude()));
                             return (int) (distance1 - distance2);
                         });
                         cachedStationsBounds = apiBounds;
                         cachedStations = stations;
-                        stationsAround.postValue(Resource.success(filterStations()));
+                        _stationsAround.postValue(Resource.success(filterStations()));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -123,12 +157,12 @@ public class StationsViewModel extends ViewModel {
 
     private ArrayList<StationItem> filterStations() {
         ArrayList<StationItem> stationsInBound;
-        if (visibleBounds.equals(cachedStationsBounds)) {
+        if (_mapBounds.getValue().equals(cachedStationsBounds)) {
             stationsInBound = new ArrayList<>(cachedStations);
         } else {
             stationsInBound = new ArrayList<>();
             for (StationItem stationItem : cachedStations) {
-                if (visibleBounds.contains(new LatLng(stationItem.station.get().getAddress().getLatitude(), stationItem.station.get().getAddress().getLongitude()))) {
+                if (_mapBounds.getValue().contains(new LatLng(stationItem.station.get().getAddress().getLatitude(), stationItem.station.get().getAddress().getLongitude()))) {
                     stationsInBound.add(stationItem);
                 }
             }
@@ -151,18 +185,29 @@ public class StationsViewModel extends ViewModel {
         return stations;
     }
 
+    public void setCurrentFilters(ArrayList<String> filter) {
+        _filters.setValue(filter);
+    }
+
     public void clearFilters() {
-        filters.postValue(new ArrayList<>());
+        setCurrentFilters(new ArrayList<>());
     }
 
     public void setUserLocation(LatLng userLocation) {
-        this.userLocation = userLocation;
-        visibleBounds = LocationUtils.calculateBounds(userLocation, DEFAULT_MAP_ZOOM, regionRatio);
-        refreshStations(userLocation, null);
+        _userLocation.setValue(userLocation);
     }
+
+    public void setMapBounds(LatLngBounds bounds) {
+        _mapBounds.setValue(bounds);
+    }
+
 
     public void setRegionRatio(float screenRatio) {
         this.regionRatio = screenRatio;
+    }
+
+    public void setSelectedStation(StationItem station) {
+        _selectedStation.setValue(station);
     }
 }
 

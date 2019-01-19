@@ -55,7 +55,7 @@ public class FiltersDialog extends FullScreenDialog {
                     filters.add(amenity);
                 }
             }
-            parentViewModel.filters.postValue(filters);
+            parentViewModel.setCurrentFilters(filters);
             dismiss();
         });
         binding.clearButton.setOnClickListener((v) -> {
