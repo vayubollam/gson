@@ -144,6 +144,7 @@ public class StationsViewModel extends ViewModel {
                         shouldUpdateSectedStation = false;
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        _stationsAround.postValue(Resource.error(e.getMessage(), null));
                     }
                 }
 

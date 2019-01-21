@@ -96,7 +96,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
                     .observe(fragment, result -> { //TODO choose right lifecycle owner
-                        holder.binding.distanceText.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.distanceDuration.set(result.data);
                         }

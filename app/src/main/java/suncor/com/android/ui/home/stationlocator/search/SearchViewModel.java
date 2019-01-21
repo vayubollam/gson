@@ -89,12 +89,15 @@ public class SearchViewModel extends ViewModel {
                     nearbyStations.postValue(Resource.success(stations));
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    nearbyStations.postValue(Resource.error(e.getMessage(), null));
                 }
             }
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
                 Log.d("mfp_error", wlFailResponse.getErrorMsg());
+                nearbyStations.postValue(Resource.error(wlFailResponse.getErrorMsg(), null));
+
             }
         });
     }
