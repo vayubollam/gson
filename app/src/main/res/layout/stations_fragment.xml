@@ -99,7 +99,8 @@
                     android:gravity="center_vertical"
                     android:hint="@string/search_an_address"
                     android:maxLines="1"
-                    android:onClick="@{() -> eventHandler.launchSearchFragment()}" />
+                    android:onClick="@{() -> eventHandler.launchSearchFragment()}"
+                    android:text="@{vm.queryText}" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/clear_search_button"
@@ -179,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"
                     android:onClick="@{() -> vm.clearFilters()}"
-                    android:text="@string/cleare_filters_button" />
+                    android:text="@string/clear_filters_button" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -211,7 +212,7 @@
                         android:layout_gravity="center"
                         android:background="?selectableItemBackground"
                         android:foregroundGravity="center"
-                        android:onClick="@{() -> eventHandler.locateMe()}"
+                        android:onClick="@{() -> eventHandler.locateMe(true)}"
                         android:src="@drawable/ic_near_me" />
 
                     <androidx.appcompat.widget.AppCompatImageView

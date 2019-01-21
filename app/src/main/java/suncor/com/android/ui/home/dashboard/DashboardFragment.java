@@ -22,7 +22,6 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -74,11 +73,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
                     .observe(this, (location -> {
                         userLocation = location;
                     }));
-        } else {
-            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-            adb.setMessage("Location Permission Not Granted");
-            adb.setPositiveButton("OK", null);
-            adb.show();
         }
 
         Observer<Station> stationObserver = station -> {

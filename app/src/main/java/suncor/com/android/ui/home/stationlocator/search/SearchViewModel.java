@@ -34,12 +34,14 @@ public class SearchViewModel extends ViewModel {
     private final static int DEFAULT_DISTANCE_API = 25000;
     public MutableLiveData<Resource<ArrayList<StationNearbyItem>>> nearbyStations = new MutableLiveData<>();
     public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
+    private PlaceSuggestionsProvider suggestionsProvider;
     private LatLng userLocation;
     private float regionRatio = 1f;
 
     public MutableLiveData<String> query = new MutableLiveData<>();
 
     public SearchViewModel(PlaceSuggestionsProvider suggestionsProvider) {
+        this.suggestionsProvider = suggestionsProvider;
         query.setValue("");
         placeSuggestions = Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
     }
@@ -87,20 +89,26 @@ public class SearchViewModel extends ViewModel {
                     nearbyStations.postValue(Resource.success(stations));
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    nearbyStations.postValue(Resource.error(e.getMessage(), null));
                 }
             }
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
                 Log.d("mfp_error", wlFailResponse.getErrorMsg());
+                nearbyStations.postValue(Resource.error(wlFailResponse.getErrorMsg(), null));
+
             }
         });
     }
 
-
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
         refreshNearbyStations(userLocation);
+    }
+
+    public LiveData<Resource<LatLng>> getCoordinatesOfPlace(PlaceSuggestion suggestion) {
+        return suggestionsProvider.getCoordinatesOfPlace(suggestion);
     }
 
     private Double getDistance(LatLng userLocation, LatLng des, int unit) {

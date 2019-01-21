@@ -3,26 +3,23 @@ package suncor.com.android.ui.home.stationlocator.search;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.SearchNearbyItemBinding;
+import suncor.com.android.model.Station;
+import suncor.com.android.utilities.Consumer;
 
 public class SearchNearByAdapter extends RecyclerView.Adapter<SearchNearByAdapter.NearByHolder> {
+    private final Consumer<Station> clickCallback;
     private ArrayList<StationNearbyItem> stationItems;
-    private LatLng userLocation;
-    private FragmentActivity activity;
 
-    public SearchNearByAdapter(ArrayList<StationNearbyItem> stationItems, LatLng userLocation, FragmentActivity activity) {
+    public SearchNearByAdapter(ArrayList<StationNearbyItem> stationItems, Consumer<Station> clickCallback) {
         this.stationItems = stationItems;
-        this.userLocation = userLocation;
-        this.activity = activity;
+        this.clickCallback = clickCallback;
     }
 
 
@@ -39,7 +36,9 @@ public class SearchNearByAdapter extends RecyclerView.Adapter<SearchNearByAdapte
         final StationNearbyItem stationItem = stationItems.get(position);
         holder.binding.setStationItem(stationItem);
         holder.binding.executePendingBindings();
-
+        holder.binding.getRoot().setOnClickListener((v) -> {
+            clickCallback.accept(stationItem.station.get());
+        });
     }
 
     @Override

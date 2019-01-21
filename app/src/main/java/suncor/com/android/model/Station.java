@@ -118,6 +118,6 @@ public class Station {
         if (obj == null || !(obj instanceof Station)) {
             return false;
         }
-        return ((Station) obj).id == this.id;
+        return ((Station) obj).id.equals(this.id);
     }
 }

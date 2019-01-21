@@ -70,7 +70,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 this.requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), requestCode);
             }
 
-
     }
 
 

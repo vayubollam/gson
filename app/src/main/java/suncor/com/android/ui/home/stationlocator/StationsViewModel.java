@@ -21,7 +21,6 @@ import java.util.Collections;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.Resource;
@@ -50,10 +49,17 @@ public class StationsViewModel extends ViewModel {
     private MutableLiveData<LatLng> _userLocation = new MutableLiveData<>();
     public LiveData<LatLng> userLocation = _userLocation;
 
+    private UserLocationType userLocationType;
+
     private MutableLiveData<LatLngBounds> _mapBounds = new MutableLiveData<>();
     public LiveData<LatLngBounds> mapBounds = _mapBounds;
 
+    private MutableLiveData<String> _queryText = new MutableLiveData<>();
+    public LiveData<String> queryText = _queryText;
+
     private float regionRatio = 1f;
+
+    private boolean shouldUpdateSectedStation;
 
     public StationsViewModel(FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
@@ -66,18 +72,7 @@ public class StationsViewModel extends ViewModel {
         });
 
         userLocation.observeForever((location) -> {
-            Observer<Resource<ArrayList<StationItem>>> tempObserver = new Observer<Resource<ArrayList<StationItem>>>() {
-                @Override
-                public void onChanged(Resource<ArrayList<StationItem>> arrayListResource) {
-                    if (arrayListResource.status != Resource.Status.LOADING) {
-                        _stationsAround.removeObserver(this);
-                        if (arrayListResource.status == Resource.Status.SUCCESS && !arrayListResource.data.isEmpty()) {
-                            _selectedStation.setValue(arrayListResource.data.get(0));
-                        }
-                    }
-                }
-            };
-            _stationsAround.observeForever(tempObserver);
+            shouldUpdateSectedStation = true;
             _mapBounds.setValue(LocationUtils.calculateBounds(location, DEFAULT_MAP_ZOOM, regionRatio));
         });
 
@@ -141,15 +136,23 @@ public class StationsViewModel extends ViewModel {
                         });
                         cachedStationsBounds = apiBounds;
                         cachedStations = stations;
-                        _stationsAround.postValue(Resource.success(filterStations()));
+                        ArrayList<StationItem> filteredStations = filterStations();
+                        _stationsAround.postValue(Resource.success(filteredStations));
+                        if (shouldUpdateSectedStation && !filteredStations.isEmpty()) {
+                            _selectedStation.postValue(filteredStations.get(0));
+                        }
+                        shouldUpdateSectedStation = false;
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        _stationsAround.postValue(Resource.error(e.getMessage(), null));
                     }
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Log.d("mfp_error", wlFailResponse.getErrorMsg());
+                    _stationsAround.postValue(Resource.error(wlFailResponse.getErrorMsg(), null));
+                    shouldUpdateSectedStation = false;
                 }
             });
         }
@@ -193,8 +196,12 @@ public class StationsViewModel extends ViewModel {
         setCurrentFilters(new ArrayList<>());
     }
 
-    public void setUserLocation(LatLng userLocation) {
-        _userLocation.setValue(userLocation);
+    public void setUserLocation(LatLng userLocation, UserLocationType userLocationType) {
+        this.userLocationType = userLocationType;
+        _userLocation.postValue(userLocation);
+        if (userLocationType == UserLocationType.GPS) {
+            _queryText.postValue("");
+        }
     }
 
     public void setMapBounds(LatLngBounds bounds) {
@@ -208,6 +215,18 @@ public class StationsViewModel extends ViewModel {
 
     public void setSelectedStation(StationItem station) {
         _selectedStation.setValue(station);
+    }
+
+    public UserLocationType getUserLocationType() {
+        return userLocationType;
+    }
+
+    public void setTextQuery(String query) {
+        _queryText.postValue(query);
+    }
+
+    public enum UserLocationType {
+        GPS, SEARCH
     }
 }
 

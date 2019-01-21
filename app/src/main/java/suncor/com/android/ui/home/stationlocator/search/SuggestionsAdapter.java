@@ -10,12 +10,15 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.PlaceSuggestionItemBinding;
+import suncor.com.android.utilities.Consumer;
 
 public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.SuggestionyHolder> {
     private ArrayList<PlaceSuggestion> suggestions;
+    private Consumer<PlaceSuggestion> callback;
 
-    public SuggestionsAdapter() {
+    public SuggestionsAdapter(Consumer<PlaceSuggestion> callback) {
         this.suggestions = new ArrayList<>();
+        this.callback = callback;
     }
 
     public void setSuggestions(ArrayList<PlaceSuggestion> suggestions) {
@@ -37,7 +40,7 @@ public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.
         holder.binding.setPlace(suggestion);
         holder.binding.executePendingBindings();
         holder.binding.getRoot().setOnClickListener(v -> {
-            // StationsViewModel stationsViewModel=ViewModelProviders.of(get).get(StationsViewModel.class);
+            callback.accept(suggestion);
         });
     }
 

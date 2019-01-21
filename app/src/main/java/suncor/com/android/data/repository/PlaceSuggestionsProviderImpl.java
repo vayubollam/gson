@@ -7,6 +7,8 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBufferResponse;
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlaceBufferResponse;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
@@ -23,7 +25,6 @@ public class PlaceSuggestionsProviderImpl implements PlaceSuggestionsProvider {
     public PlaceSuggestionsProviderImpl(GeoDataClient geoDataClient) {
         this.geoDataClient = geoDataClient;
     }
-
 
     @Override
     public LiveData<Resource<ArrayList<PlaceSuggestion>>> getSuggestions(String query) {
@@ -55,5 +56,22 @@ public class PlaceSuggestionsProviderImpl implements PlaceSuggestionsProvider {
         });
 
         return predictions;
+    }
+
+    @Override
+    public LiveData<Resource<LatLng>> getCoordinatesOfPlace(PlaceSuggestion suggestion) {
+        MutableLiveData<Resource<LatLng>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading(null));
+        Task<PlaceBufferResponse> task = geoDataClient.getPlaceById(suggestion.getPlaceId());
+        task.addOnSuccessListener((response) -> {
+            if (response.getCount() > 0) {
+                result.postValue(Resource.success(response.get(0).getLatLng()));
+            } else result.postValue(Resource.error("empty result", null));
+        });
+        task.addOnFailureListener((error) -> {
+            result.postValue(Resource.error(error.getMessage(), null));
+        });
+
+        return result;
     }
 }
