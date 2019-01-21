@@ -50,8 +50,13 @@ public class StationsViewModel extends ViewModel {
     private MutableLiveData<LatLng> _userLocation = new MutableLiveData<>();
     public LiveData<LatLng> userLocation = _userLocation;
 
+    private UserLocationType userLocationType;
+
     private MutableLiveData<LatLngBounds> _mapBounds = new MutableLiveData<>();
     public LiveData<LatLngBounds> mapBounds = _mapBounds;
+
+    private MutableLiveData<String> _queryText = new MutableLiveData<>();
+    public LiveData<String> queryText = _queryText;
 
     private float regionRatio = 1f;
 
@@ -150,6 +155,7 @@ public class StationsViewModel extends ViewModel {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Log.d("mfp_error", wlFailResponse.getErrorMsg());
+                    _stationsAround.postValue(Resource.error(wlFailResponse.getErrorMsg(), null));
                 }
             });
         }
@@ -193,8 +199,12 @@ public class StationsViewModel extends ViewModel {
         setCurrentFilters(new ArrayList<>());
     }
 
-    public void setUserLocation(LatLng userLocation) {
-        _userLocation.setValue(userLocation);
+    public void setUserLocation(LatLng userLocation, UserLocationType userLocationType) {
+        this.userLocationType = userLocationType;
+        _userLocation.postValue(userLocation);
+        if (userLocationType == UserLocationType.GPS) {
+            _queryText.postValue("");
+        }
     }
 
     public void setMapBounds(LatLngBounds bounds) {
@@ -208,6 +218,18 @@ public class StationsViewModel extends ViewModel {
 
     public void setSelectedStation(StationItem station) {
         _selectedStation.setValue(station);
+    }
+
+    public UserLocationType getUserLocationType() {
+        return userLocationType;
+    }
+
+    public void setTextQuery(String query) {
+        _queryText.postValue(query);
+    }
+
+    public enum UserLocationType {
+        GPS, SEARCH
     }
 }
 

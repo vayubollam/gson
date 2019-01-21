@@ -1,7 +1,7 @@
 package suncor.com.android.ui.home.stationlocator.search;
 
 import android.Manifest;
-import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,17 +25,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.PlaceSuggestionsProviderImpl;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.home.stationlocator.StationViewModelFactory;
+import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.utilities.LocationUtils;
 
 public class SearchFragment extends Fragment {
 
-    public static final String SEARCH_FRAGMENT_TAG ="Search_Fragment" ;
+    public static final String SEARCH_FRAGMENT_TAG = "Search_Fragment";
     private SearchViewModel viewModel;
+    private StationsViewModel parentViewModel;
     private SearchFragmentBinding binding;
     private NearbyLayoutBinding nearbySearchBinding;
     private SuggestionsLayoutBinding suggestionsLayoutBinding;
@@ -56,6 +60,10 @@ public class SearchFragment extends Fragment {
 
         //instantiating
         GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
+
+        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
+        parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
+
         SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
         binding.setVm(viewModel);
@@ -67,7 +75,16 @@ public class SearchFragment extends Fragment {
 
         //layout manager for recycler views
         suggestionsLayoutBinding.sugestionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        suggestionsAdapter = new SuggestionsAdapter();
+        suggestionsAdapter = new SuggestionsAdapter((placeSuggestion) -> {
+            viewModel.getCoordinatesOfPlace(placeSuggestion)
+                    .observe(SearchFragment.this, (resouce) -> {
+                        if (resouce.status == Resource.Status.SUCCESS) {
+                            parentViewModel.setUserLocation(resouce.data, StationsViewModel.UserLocationType.SEARCH);
+                            parentViewModel.setTextQuery(placeSuggestion.getPrimaryText());
+                            goBack();
+                        }
+                    });
+        });
         suggestionsLayoutBinding.sugestionsRecycler.setAdapter(suggestionsAdapter);
 
         nearbySearchBinding.nearbyRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -81,13 +98,6 @@ public class SearchFragment extends Fragment {
         });
 
         return binding.getRoot();
-    }
-
-    private void goBack() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
-                Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-        getFragmentManager().popBackStack();
     }
 
     @Override
@@ -123,6 +133,12 @@ public class SearchFragment extends Fragment {
                 //TODO : handle error
             }
         });
+    }
+
+    public void goBack() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        getFragmentManager().popBackStack();
     }
 
     @Override
