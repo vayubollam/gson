@@ -62,7 +62,11 @@ import suncor.com.android.utilities.LocationUtils;
 public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener {
 
     public static final int STATION_DETAILS_REQUEST_CODE = 1;
-    public static final int FILTERS_FRAGMENT_REQUEST_CODE = 1;
+    public static final int FILTERS_FRAGMENT_REQUEST_CODE = 2;
+    private static final int SEARCH_FRAGMENT_REQUEST_CODE = 3;
+
+    public static final String STATIONS_FRAGMENT_TAG = "stations-tag";
+
     private final static int MINIMUM_ZOOM_LEVEL = 10;
 
     private StationsViewModel mViewModel;
@@ -93,7 +97,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
         binding = StationsFragmentBinding.inflate(inflater, container, false);
 
         StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
-        mViewModel = ViewModelProviders.of(this, factory).get(StationsViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
         screenRatio = (float) getResources().getDisplayMetrics().heightPixels / (float) getResources().getDisplayMetrics().widthPixels;
         mViewModel.setRegionRatio(screenRatio);
 
@@ -172,7 +176,9 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                 }
 
                 lastSelectedMarker = findMarkerForStation(station);
-                lastSelectedMarker.setIcon(getDrawableForMarker(true, station.isFavourite.get()));
+                if (lastSelectedMarker != null) {
+                    lastSelectedMarker.setIcon(getDrawableForMarker(true, station.isFavourite.get()));
+                }
             } else {
                 if (getView() != null) {
                     getView().postDelayed(() -> {
@@ -422,13 +428,17 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
     }
 
     public void launchFiltersFragment() {
-        FiltersDialog filtersDialog = new FiltersDialog();
-        filtersDialog.setTargetFragment(this, FILTERS_FRAGMENT_REQUEST_CODE);
-        filtersDialog.show(getFragmentManager(), filtersDialog.getTag());
+        FiltersFragment filtersFragment = new FiltersFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
+        ft.add(android.R.id.content, filtersFragment, FiltersFragment.FILTERS_FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     public void launchSearchFragment() {
         SearchDialog searchFragment = new SearchDialog();
+        searchFragment.setTargetFragment(this, SEARCH_FRAGMENT_REQUEST_CODE);
         searchFragment.show(getFragmentManager(), searchFragment.getTag());
     }
 

@@ -41,6 +41,7 @@ import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class DashboardFragment extends Fragment implements View.OnClickListener {
 
+    public static final String DASHBOARD_FRAGMENT_TAG = "dashboard-tag";
     private DashboardViewModel mViewModel;
     private AppCompatTextView nearStationTitle, distanceText, openHoursText;
     private MaterialButton directionsButton;

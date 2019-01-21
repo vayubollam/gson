@@ -77,34 +77,41 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     //when user clicks on one of the bottom navigation items
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        selectedFragment = null;
+        FragmentManager fm = getSupportFragmentManager();
+
+        if (selectedFragment != null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.hide(selectedFragment);
+            ft.commit();
+        }
         switch (menuItem.getItemId()) {
             case R.id.menu_home: {
-                if (!(selectedFragment instanceof DashboardFragment)) {
+                menuItem.setChecked(true);
+                FragmentTransaction ft = fm.beginTransaction();
+                if (fm.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG) != null) {
+                    ft.show(fm.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG));
+                } else {
                     selectedFragment = new DashboardFragment();
-                    menuItem.setChecked(true);
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction transaction = fm.beginTransaction();
-                    transaction.replace(R.id.frame_layout_home, selectedFragment);
-                    transaction.addToBackStack(null);
-                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    transaction.commit();
+                    ft.add(R.id.frame_layout_home, selectedFragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                    ft.addToBackStack(null);
+                    //fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
+                ft.commit();
                 break;
 
             }
             case R.id.menu_stations: {
-                if (!(selectedFragment instanceof StationsFragment)) {
+                menuItem.setChecked(true);
+                FragmentTransaction ft = fm.beginTransaction();
+                if (fm.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG) != null) {
+                    ft.show(fm.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG));
+                } else {
                     selectedFragment = new StationsFragment();
-                    menuItem.setChecked(true);
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction transaction = fm.beginTransaction();
-                    transaction.replace(R.id.frame_layout_home, selectedFragment);
-                    transaction.addToBackStack(null);
-                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    transaction.commit();
-
+                    ft.add(R.id.frame_layout_home, selectedFragment, StationsFragment.STATIONS_FRAGMENT_TAG);
+                    ft.addToBackStack(null);
+                    //fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
+                ft.commit();
                 break;
 
             }

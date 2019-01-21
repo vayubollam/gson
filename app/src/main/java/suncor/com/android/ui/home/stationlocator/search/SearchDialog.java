@@ -31,6 +31,7 @@ import suncor.com.android.ui.common.FullScreenDialog;
 import suncor.com.android.utilities.LocationUtils;
 
 public class SearchDialog extends FullScreenDialog {
+
     private SearchViewModel viewModel;
     private SearchFragmentBinding binding;
     private NearbyLayoutBinding nearbySearchBinding;

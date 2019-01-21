@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:background="@color/light_gray"
             android:orientation="vertical"
-            app:visibleGone="@{vm.placeSuggestions.status == Status.SUCCESS &amp;&amp; !vm.placeSuggestions.data.isEmpty()}"
+            app:visibleGone="@{vm.placeSuggestions.data == null || !vm.placeSuggestions.data.isEmpty()}"
             tools:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatImageView

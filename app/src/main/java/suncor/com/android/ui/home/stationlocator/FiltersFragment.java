@@ -14,16 +14,16 @@ import java.util.HashMap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FiltersFragmentBinding;
 import suncor.com.android.model.Station;
-import suncor.com.android.ui.common.FullScreenDialog;
 
-public class FiltersDialog extends FullScreenDialog {
+public class FiltersFragment extends Fragment {
 
 
+    public static final String FILTERS_FRAGMENT_TAG = "filters-tag";
     private FiltersFragmentBinding binding;
     private HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private StationsViewModel parentViewModel;
@@ -38,10 +38,9 @@ public class FiltersDialog extends FullScreenDialog {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FiltersFragmentBinding.inflate(inflater, container, false);
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.FiltersDialogAnimation;
 
         StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
-        parentViewModel = ViewModelProviders.of(getTargetFragment(), factory).get(StationsViewModel.class);
+        parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
         initCheckBoxes();
         if (parentViewModel.filters.getValue() != null) {
             for (String filter : parentViewModel.filters.getValue()) {
@@ -56,7 +55,7 @@ public class FiltersDialog extends FullScreenDialog {
                 }
             }
             parentViewModel.setCurrentFilters(filters);
-            dismiss();
+            getFragmentManager().popBackStack();
         });
         binding.clearButton.setOnClickListener((v) -> {
             for (CheckBox checkBox : checkBoxes.values()) {
@@ -64,7 +63,7 @@ public class FiltersDialog extends FullScreenDialog {
             }
         });
         binding.backButton.setOnClickListener((v) -> {
-            dismiss();
+            getFragmentManager().popBackStack();
         });
         return binding.getRoot();
     }
