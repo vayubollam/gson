@@ -180,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"
                     android:onClick="@{() -> vm.clearFilters()}"
-                    android:text="@string/cleare_filters_button" />
+                    android:text="@string/clear_filters_button" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

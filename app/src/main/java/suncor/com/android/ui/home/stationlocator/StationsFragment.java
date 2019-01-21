@@ -380,6 +380,14 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                 });
                 binding.filtersChipgroup.addView(chip);
             }
+            Chip clearFiltersChip = new Chip(getActivity());
+            clearFiltersChip.setText(R.string.clear_all_filters_chip);
+            clearFiltersChip.setTextColor(getResources().getColor(R.color.red_pb));
+            clearFiltersChip.setCloseIconVisible(false);
+            clearFiltersChip.setOnClickListener((v) -> {
+                mViewModel.clearFilters();
+            });
+            binding.filtersChipgroup.addView(clearFiltersChip);
         }
     }
 
