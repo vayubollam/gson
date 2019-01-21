@@ -17,21 +17,21 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
-import suncor.com.android.R;
 import suncor.com.android.data.repository.PlaceSuggestionsProviderImpl;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.common.FullScreenDialog;
 import suncor.com.android.utilities.LocationUtils;
 
-public class SearchDialog extends FullScreenDialog {
+public class SearchFragment extends Fragment {
 
+    public static final String SEARCH_FRAGMENT_TAG ="Search_Fragment" ;
     private SearchViewModel viewModel;
     private SearchFragmentBinding binding;
     private NearbyLayoutBinding nearbySearchBinding;
@@ -43,9 +43,6 @@ public class SearchDialog extends FullScreenDialog {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getDialog().getWindow().getAttributes().windowAnimations = R.style.SearchDialogAnimation;
-        getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getDialog().getWindow().setStatusBarColor(getResources().getColor(R.color.light_gray));
 
         binding = SearchFragmentBinding.inflate(inflater, container, false);
         nearbySearchBinding = binding.nearbyLayout;
@@ -54,11 +51,11 @@ public class SearchDialog extends FullScreenDialog {
         //instantiating
         GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
         SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SearchViewModel.class);
         binding.setVm(viewModel);
-        binding.setLifecycleOwner(this);
-        suggestionsLayoutBinding.setLifecycleOwner(this);
-        nearbySearchBinding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getActivity());
+        suggestionsLayoutBinding.setLifecycleOwner(getActivity());
+        nearbySearchBinding.setLifecycleOwner(getActivity());
 
         //retrieving views
 
@@ -71,7 +68,7 @@ public class SearchDialog extends FullScreenDialog {
 
         //listener
         binding.backButton.setOnClickListener((v) -> {
-            dismiss();
+           getFragmentManager().popBackStack();
         });
         binding.clearButton.setOnClickListener((v) -> {
             binding.addressSearchText.getText().clear();
@@ -90,12 +87,12 @@ public class SearchDialog extends FullScreenDialog {
                 }
             }
             LocationLiveData locationLiveData = new LocationLiveData(getContext());
-            locationLiveData.observe(this, location -> {
+            locationLiveData.observe(getActivity(), location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);
             });
 
-            viewModel.nearbyStations.observe(this, arrayListResource -> {
+            viewModel.nearbyStations.observe(getActivity(), arrayListResource -> {
                 if (arrayListResource.status == Resource.Status.SUCCESS) {
                     ArrayList<StationNearbyItem> stationItems = arrayListResource.data;
                     nearbyStationsAdapter = new SearchNearByAdapter(stationItems, userLocation, getActivity());
@@ -105,7 +102,7 @@ public class SearchDialog extends FullScreenDialog {
         } else {
             nearbySearchBinding.getRoot().setVisibility(View.GONE);
         }
-        viewModel.placeSuggestions.observe(this, arrayListResource -> {
+        viewModel.placeSuggestions.observe(getActivity(), arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
                 suggestionsAdapter.setSuggestions(suggestions);

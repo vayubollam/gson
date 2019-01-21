@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -55,11 +56,12 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.StationsFragmentBinding;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
-import suncor.com.android.ui.home.stationlocator.search.SearchDialog;
+import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
 import suncor.com.android.utilities.LocationUtils;
 
 
-public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener {
+public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
+,OnMapReadyCallback {
 
     public static final int STATION_DETAILS_REQUEST_CODE = 1;
     public static final int FILTERS_FRAGMENT_REQUEST_CODE = 2;
@@ -121,19 +123,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
             ft.commit();
             fm.executePendingTransactions();
         }
-        mapFragment.getMapAsync((map) ->
-        {
-            this.mGoogleMap = map;
-            this.mGoogleMap.setOnCameraIdleListener(this);
-            mGoogleMap.getUiSettings().setCompassEnabled(true);
-            mGoogleMap.setMinZoomPreference(MINIMUM_ZOOM_LEVEL);
-            mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
-            mGoogleMap.setOnMarkerClickListener(this);
-            mGoogleMap.setOnCameraMoveStartedListener(this);
-            if (!haveNetworkConnection()) {
-                Toast.makeText(getActivity(), "No Internet access ...", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mapFragment.getMapAsync(this);
 
 
         return binding.getRoot();
@@ -154,6 +144,42 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
             adb.show();
         }
 
+
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (i == BottomSheetBehavior.STATE_EXPANDED) {
+                    updateSelectedStation();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.clearSearchButton.setVisibility(binding.addressSearchText.getText().toString().isEmpty() ? View.INVISIBLE : View.VISIBLE);
+    }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.mGoogleMap = googleMap;
+        this.mGoogleMap.setOnCameraIdleListener(this);
+        mGoogleMap.getUiSettings().setCompassEnabled(true);
+        mGoogleMap.setMinZoomPreference(MINIMUM_ZOOM_LEVEL);
+        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
+        mGoogleMap.setOnMarkerClickListener(this);
+        mGoogleMap.setOnCameraMoveStartedListener(this);
+        if (!haveNetworkConnection()) {
+            Toast.makeText(getActivity(), "No Internet access ...", Toast.LENGTH_SHORT).show();
+        }
         mViewModel.stationsAround.observe(this, this::UpdateCards);
         mViewModel.filters.observe(this, this::filtersChanged);
         mViewModel.selectedStation.observe(this, station -> {
@@ -192,21 +218,6 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                 }
             }
         });
-
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int i) {
-                if (i == BottomSheetBehavior.STATE_EXPANDED) {
-                    updateSelectedStation();
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View view, float v) {
-
-            }
-        });
-
         mViewModel.userLocation.observe(this, (location) -> {
             stationAdapter.setUserLocation(location);
             myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_my_location)));
@@ -219,13 +230,6 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
             }
         }));
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        binding.clearSearchButton.setVisibility(binding.addressSearchText.getText().toString().isEmpty() ? View.INVISIBLE : View.VISIBLE);
-    }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -437,9 +441,12 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
     }
 
     public void launchSearchFragment() {
-        SearchDialog searchFragment = new SearchDialog();
-        searchFragment.setTargetFragment(this, SEARCH_FRAGMENT_REQUEST_CODE);
-        searchFragment.show(getFragmentManager(), searchFragment.getTag());
+        SearchFragment searchFragment = new SearchFragment();
+        FragmentTransaction ft=getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.fade_in,R.anim.fade_out,R.anim.fade_in,R.anim.fade_out);
+        ft.add(android.R.id.content,searchFragment,SearchFragment.SEARCH_FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     public void clearSearchText() {
@@ -458,5 +465,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
             dialogFragment.show(getFragmentManager(), "location dialog");
         }
     }
+
+
 }
 
