@@ -328,7 +328,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                 stationsMarkers.clear();
                 lastSelectedMarker = null;
 
-                if (stations.isEmpty() && currentFilter != null && !currentFilter.isEmpty()) {
+                if (stations != null && stations.isEmpty() && currentFilter != null && !currentFilter.isEmpty()) {
                     binding.coordinator.setVisibility(View.GONE);
                     binding.statusCardview.setVisibility(View.VISIBLE);
                 } else {
@@ -337,7 +337,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                     for (StationItem station : stations) {
                         LatLng latLng = new LatLng(station.station.get().getAddress().getLatitude(), station.station.get().getAddress().getLongitude());
                         boolean isFavourite = station.isFavourite.get();
-                        boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue() == station;
+                        boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue().equals(station);
                         Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
                         if (isSelected) {
                             lastSelectedMarker = stationMarker;

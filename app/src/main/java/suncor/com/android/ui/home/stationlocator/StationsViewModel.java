@@ -21,7 +21,6 @@ import java.util.Collections;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.Resource;
@@ -60,6 +59,8 @@ public class StationsViewModel extends ViewModel {
 
     private float regionRatio = 1f;
 
+    private boolean shouldUpdateSectedStation;
+
     public StationsViewModel(FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
         filters.observeForever((l) -> {
@@ -71,18 +72,7 @@ public class StationsViewModel extends ViewModel {
         });
 
         userLocation.observeForever((location) -> {
-            Observer<Resource<ArrayList<StationItem>>> tempObserver = new Observer<Resource<ArrayList<StationItem>>>() {
-                @Override
-                public void onChanged(Resource<ArrayList<StationItem>> arrayListResource) {
-                    if (arrayListResource.status != Resource.Status.LOADING) {
-                        _stationsAround.removeObserver(this);
-                        if (arrayListResource.status == Resource.Status.SUCCESS && !arrayListResource.data.isEmpty()) {
-                            _selectedStation.setValue(arrayListResource.data.get(0));
-                        }
-                    }
-                }
-            };
-            _stationsAround.observeForever(tempObserver);
+            shouldUpdateSectedStation = true;
             _mapBounds.setValue(LocationUtils.calculateBounds(location, DEFAULT_MAP_ZOOM, regionRatio));
         });
 
@@ -146,7 +136,12 @@ public class StationsViewModel extends ViewModel {
                         });
                         cachedStationsBounds = apiBounds;
                         cachedStations = stations;
-                        _stationsAround.postValue(Resource.success(filterStations()));
+                        ArrayList<StationItem> filteredStations = filterStations();
+                        _stationsAround.postValue(Resource.success(filteredStations));
+                        if (shouldUpdateSectedStation && !filteredStations.isEmpty()) {
+                            _selectedStation.postValue(filteredStations.get(0));
+                        }
+                        shouldUpdateSectedStation = false;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -156,6 +151,7 @@ public class StationsViewModel extends ViewModel {
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Log.d("mfp_error", wlFailResponse.getErrorMsg());
                     _stationsAround.postValue(Resource.error(wlFailResponse.getErrorMsg(), null));
+                    shouldUpdateSectedStation = false;
                 }
             });
         }
