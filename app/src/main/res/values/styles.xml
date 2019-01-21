@@ -9,9 +9,9 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
- </style>
+    </style>
 
- <!-- custom Base application theme. -->
+    <!-- custom Base application theme. -->
     <style name="CustomAppThemeForSplash" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>

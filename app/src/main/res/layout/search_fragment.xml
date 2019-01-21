@@ -69,12 +69,12 @@
         <include
             android:id="@+id/nearby_layout"
             layout="@layout/nearby_layout"
-            app:vm="@{vm}"/>
+            app:vm="@{vm}" />
 
         <include
             android:id="@+id/suggestions_layout"
             layout="@layout/suggestions_layout"
-            app:vm="@{vm}"/>
+            app:vm="@{vm}" />
 
     </LinearLayout>
 </layout>

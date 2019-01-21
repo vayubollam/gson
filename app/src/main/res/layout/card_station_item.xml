@@ -52,7 +52,7 @@
                     android:paddingTop="8dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txt_station_title"
+                        android:id="@+id/station_title_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -63,7 +63,7 @@
                         tools:text="Station Name" />
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/close_btn"
+                        android:id="@+id/close_button"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center_vertical"
@@ -72,7 +72,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/addressLayout"
+                    android:id="@+id/address_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -86,7 +86,7 @@
                         app:srcCompat="@drawable/ic_locations" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txt_address"
+                        android:id="@+id/address_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
@@ -112,14 +112,14 @@
 
 
                     <ProgressBar
-                        android:id="@+id/br_km_card"
+                        android:id="@+id/progress_bar"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_marginLeft="8dp"
                         android:visibility="@{vm.distanceDuration != null? View.GONE : View.VISIBLE}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txt_km_station"
+                        android:id="@+id/distance_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
@@ -137,7 +137,7 @@
                     android:layout_marginTop="10dp">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/img_clock_station"
+                        android:id="@+id/open_hours_text"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         app:srcCompat="@drawable/ic_clock" />
@@ -154,7 +154,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_card_directions"
+                    android:id="@+id/directions_button"
                     style="@style/ColoredButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                     android:background="@drawable/horizontal_divider" />
 
                 <androidx.core.widget.NestedScrollView
-                    android:id="@+id/detailsLayout"
+                    android:id="@+id/details_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"

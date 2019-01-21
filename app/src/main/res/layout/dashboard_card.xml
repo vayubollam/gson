@@ -11,15 +11,18 @@
         android:layout_width="match_parent"
         app:cardCornerRadius="12dp"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_dashboard"
                 android:layout_width="match_parent"
                 app:srcCompat="@drawable/car_trip"
                 android:scaleType="fitXY"
                 android:layout_height="match_parent" />
+
             <LinearLayout
                 android:layout_margin="32dp"
                 android:layout_alignParentBottom="true"
@@ -27,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/card_dashboard_join"
                     android:layout_width="wrap_content"
@@ -41,6 +45,7 @@
                     android:layout_marginRight="8dp"
                     android:text="JOIN"
                     android:layout_height="wrap_content" />
+
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:height="44dp"
@@ -55,8 +60,9 @@
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:insetLeft="0dp"
-                    android:insetRight="0dp"/>
+                    android:insetRight="0dp" />
             </LinearLayout>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:textSize="34dp"

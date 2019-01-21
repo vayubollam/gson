@@ -70,7 +70,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         binding.cardView.getLayoutParams().height = intialHeight;
         dialog.setContentView(binding.getRoot());
 
-        binding.closeBtn.setOnClickListener((v) -> {
+        binding.closeButton.setOnClickListener((v) -> {
             dismiss();
         });
 
@@ -78,7 +78,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
             callStation(stationItem.station.get());
         });
 
-        binding.btnCardDirections.setOnClickListener((v) -> {
+        binding.directionsButton.setOnClickListener((v) -> {
             NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.station.get());
         });
 
@@ -99,12 +99,12 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                         dialog.getWindow().setDimAmount(v * 0.6f);
 
                         float titleTextSize = v > 0.7 ? 22 : v * 4 + 18;
-                        ObjectAnimator.ofFloat(binding.txtStationTitle, "textSize", titleTextSize).setDuration(0).start();
+                        ObjectAnimator.ofFloat(binding.stationTitleText, "textSize", titleTextSize).setDuration(0).start();
 
                         binding.addressLayout.animate().alpha(v).setDuration(0).start();
                         binding.addressLayout.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
 
-                        binding.closeBtn.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
+                        binding.closeButton.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
                         binding.imgBottomSheet.setVisibility(v > 0.1 ? View.INVISIBLE : View.VISIBLE);
 
                         binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);

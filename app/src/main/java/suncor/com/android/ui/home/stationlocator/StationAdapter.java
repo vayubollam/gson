@@ -89,14 +89,14 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         final StationItem stationItem = stations.get(position);
         final Station station = stationItem.station.get();
         holder.binding.setVm(stationItem);
-        holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
+        holder.binding.stationTitleText.setText(station.getAddress().getAddressLine());
 
         if (stationItem.distanceDuration.get() == null) {
 
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
                     .observe(fragment, result -> { //TODO choose right lifecycle owner
-                        holder.binding.brKmCard.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
+                        holder.binding.distanceText.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.distanceDuration.set(result.data);
                         }
@@ -105,7 +105,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         }
 
 
-        holder.binding.btnCardDirections.setOnClickListener(v -> {
+        holder.binding.directionsButton.setOnClickListener(v -> {
             if (fragment.getContext() != null) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 NavigationAppsHelper.openNavigationApps(fragment.getContext(), station);

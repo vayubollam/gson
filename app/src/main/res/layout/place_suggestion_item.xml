@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="place"
             type="suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion"></variable>

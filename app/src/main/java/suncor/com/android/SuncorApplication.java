@@ -7,7 +7,6 @@ import com.worklight.wlclient.api.WLClient;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.data.repository.FavouriteRepositoryImpl;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
-import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 
 public class SuncorApplication extends Application {
