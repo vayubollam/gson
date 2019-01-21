@@ -20,7 +20,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:id="@+id/txt_suggestion_title"
-            style="@style/SearchTextNormal"
+
+            style="@style/SearchPrimary"
             tools:text="22 Indian db"
             android:layout_height="wrap_content"
             android:text="@{place.primaryText}"
@@ -31,8 +32,10 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginTop="6dp"
                 android:layout_width="wrap_content"
                 android:id="@+id/txt_suggestion_subtitle"
+                style="@style/SearchSecondary"
                 android:text="@{place.secondaryText}"
                 tools:text="Toronto, On"
                 android:textSize="14sp"

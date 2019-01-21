@@ -24,7 +24,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="24dp"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
-                    android:hint="@string/search_an_address"
+                    android:hint="@string/search"
                     android:inputType="text"
                     android:maxLines="1"
                     android:onTextChanged="@{(q, s, b, c) -> vm.setSearchQuery(q.toString())}" />

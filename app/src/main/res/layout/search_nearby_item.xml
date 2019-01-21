@@ -22,13 +22,14 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:id="@+id/txt_nearby_title"
-            style="@style/SearchTextNormal"
+            style="@style/SearchPrimary"
             tools:text="22 Indian db"
             android:layout_height="wrap_content"
             android:text="@{stationItem.station.address.addressLine}"
             android:layout_marginTop="14dp" />
 
         <RelativeLayout
+            android:layout_marginTop="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,10 +39,12 @@
                 android:text="@{@string/distance_nearby_generic(stationItem.distance)}"
                 tools:text="12 km away"
                 android:textSize="14sp"
+                style="@style/SearchSecondary"
                 android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
+                style="@style/SearchSecondary"
                 android:layout_marginLeft="6dp"
                 android:layout_toRightOf="@+id/txt_nearby_distance_duration"
                 android:text="@{stationItem.isOpen24Hrs()?@string/station_open_24hrs:stationItem.isOpen()?@string/open_generic(stationItem.getCloseHour()) : @string/close_generic(stationItem.getOpenHour())}"

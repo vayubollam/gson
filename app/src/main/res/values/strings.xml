@@ -40,4 +40,5 @@
     <string name="nearby_title">nearby</string>
     <string name="no_results">No results</string>
     <string name="cleare_filters_button">cleare filters</string>
+    <string name="search">Search</string>
 </resources>

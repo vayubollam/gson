@@ -1,6 +1,7 @@
 package suncor.com.android.ui.home.stationlocator.search;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Places;
@@ -22,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
+import suncor.com.android.R;
 import suncor.com.android.data.repository.PlaceSuggestionsProviderImpl;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.SearchFragmentBinding;
@@ -44,6 +47,9 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.light_gray));
+
         binding = SearchFragmentBinding.inflate(inflater, container, false);
         nearbySearchBinding = binding.nearbyLayout;
         suggestionsLayoutBinding = binding.suggestionsLayout;
@@ -51,7 +57,7 @@ public class SearchFragment extends Fragment {
         //instantiating
         GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
         SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
-        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SearchViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(getActivity());
         suggestionsLayoutBinding.setLifecycleOwner(getActivity());
@@ -68,13 +74,20 @@ public class SearchFragment extends Fragment {
 
         //listener
         binding.backButton.setOnClickListener((v) -> {
-           getFragmentManager().popBackStack();
+            goBack();
         });
         binding.clearButton.setOnClickListener((v) -> {
             binding.addressSearchText.getText().clear();
         });
 
         return binding.getRoot();
+    }
+
+    private void goBack() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        getFragmentManager().popBackStack();
     }
 
     @Override
@@ -110,5 +123,13 @@ public class SearchFragment extends Fragment {
                 //TODO : handle error
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+
     }
 }
