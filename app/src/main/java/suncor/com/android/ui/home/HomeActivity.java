@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -44,9 +43,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         selectedFragment = new DashboardFragment();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.frame_layout_home, selectedFragment);
-        transaction.addToBackStack(null);
-        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        transaction.add(R.id.frame_layout_home, selectedFragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
         transaction.commit();
     }
 
@@ -92,8 +89,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 } else {
                     selectedFragment = new DashboardFragment();
                     ft.add(R.id.frame_layout_home, selectedFragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
-                    ft.addToBackStack(null);
-                    //fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
                 ft.commit();
                 break;
@@ -107,8 +102,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 } else {
                     selectedFragment = new StationsFragment();
                     ft.add(R.id.frame_layout_home, selectedFragment, StationsFragment.STATIONS_FRAGMENT_TAG);
-                    ft.addToBackStack(null);
-                    //fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
                 ft.commit();
                 break;
@@ -117,22 +110,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             default: {
 
             }
-
-
         }
-
         return true;
     }
 
-
-    public void hideBottomNavigation() {
-        bottom_navigation.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 
 }
