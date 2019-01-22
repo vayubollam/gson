@@ -184,12 +184,6 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
             ArrayList<StationItem> stations = mViewModel.stationsAround.getValue().data;
 
             if (stations.contains(station)) {
-                if (getView() != null) {
-                    getView().postDelayed(() -> {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    }, 200);
-                }
-
                 binding.cardRecycler.scrollToPosition(stations.indexOf(station));
                 if (lastSelectedMarker != null) {
                     StationItem oldStation = stationsMarkers.get(lastSelectedMarker);
@@ -200,17 +194,13 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                 if (lastSelectedMarker != null) {
                     lastSelectedMarker.setIcon(getDrawableForMarker(true, station.isFavourite.get()));
                 }
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
-                if (getView() != null) {
-                    getView().postDelayed(() -> {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }, 200);
-                }
-
                 if (lastSelectedMarker != null) {
                     StationItem oldStation = stationsMarkers.get(lastSelectedMarker);
                     lastSelectedMarker.setIcon(getDrawableForMarker(false, oldStation.isFavourite.get()));
                 }
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
         mViewModel.userLocation.observe(this, (location) -> {
@@ -352,7 +342,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                     binding.cardRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            if (newState == RecyclerView.SCROLL_STATE_IDLE && bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                                 updateSelectedStation();
                             }
                         }
