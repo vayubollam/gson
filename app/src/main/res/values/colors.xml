@@ -3,7 +3,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">@color/black_20</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="suncor_red">#FFEC1C2F</color>
     <color name="black_100">#000000</color>
     <color name="black_80">#323232</color>
     <color name="black_60">#666666</color>
