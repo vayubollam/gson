@@ -34,9 +34,10 @@ import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private BroadcastReceiver logoutReceiver, loginReceiver, loginRequiredReceiver;
+    private BroadcastReceiver logoutReceiver, loginReceiver, loginRequiredReceiver, errorReceiver;
     private MainActivity _this;
     private Button btnLoginLogOut;
     private Button btn_open_Splash;
@@ -56,6 +57,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLoginLogOut = findViewById(R.id.btnLoginOut);
         btnLoginLogOut.setOnClickListener(btnLogInOut_click);
 
+//        try to get token to find out if token is still valid , if yes then we can go ahead and use it and consider user as logged in
+        WLAuthorizationManager.getInstance().obtainAccessToken(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLAccessTokenListener() {
+            @Override
+            public void onSuccess(AccessToken accessToken) {
+                //update UI to show user is logged in
+                Log.d("","");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnLoginLogOut.setText("Log out");
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(WLFailResponse wlFailResponse) {
+                //do nothing
+            }
+        });
+
         loginRequiredReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -71,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         Toast.makeText(MainActivity.this, "You are logedout", Toast.LENGTH_SHORT).show();
-                        btnLoginLogOut.setVisibility(View.INVISIBLE);
+                        btnLoginLogOut.setText("Log in");
                     }
                 });
             }
@@ -90,6 +111,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         };
+
+        errorReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Petro-Canada app is locked\nretry in " + intent.getStringExtra("blocked") + " mins.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        };
     }
 
     @Override
@@ -98,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_REQUIRED));
         LocalBroadcastManager.getInstance(this).registerReceiver(loginReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUCCESS));
         LocalBroadcastManager.getInstance(this).registerReceiver(logoutReceiver, new IntentFilter(GeneralConstants.ACTION_LOGOUT_SUCCESS));
-//        LocalBroadcastManager.getInstance(this).registerReceiver(errorReceiver, new IntentFilter(GeneralConstants.ACTION_CHALLENGE_FAILURE));
+        LocalBroadcastManager.getInstance(this).registerReceiver(errorReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_FAILURE));
 
     }
 
@@ -108,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LocalBroadcastManager.getInstance(this).unregisterReceiver(loginRequiredReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(loginReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(logoutReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(errorReceiver);
     }
 
     @Override
@@ -254,10 +289,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     View.OnClickListener btnLogInOut_click = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent();
-            intent.setAction(GeneralConstants.ACTION_LOGOUT);
-            LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
+            int aa = UserLocalSettings.isAccountBlicked();
 
+            if(btnLoginLogOut.getText().toString().toLowerCase().equals("log out")) {
+                Intent intent = new Intent();
+                intent.setAction(GeneralConstants.ACTION_LOGOUT);
+                LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
+            } else {
+                WLAuthorizationManager.getInstance().obtainAccessToken(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLAccessTokenListener() {
+                    @Override
+                    public void onSuccess(AccessToken accessToken) {
+                        //update UI to show user is logged in
+                        Log.d("","");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                btnLoginLogOut.setText("Log out");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(WLFailResponse wlFailResponse) {
+                        //do nothing
+                    }
+                });
+            }
         }
     };
 
