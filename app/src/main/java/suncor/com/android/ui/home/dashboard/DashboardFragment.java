@@ -99,7 +99,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
                             distanceText.setVisibility(result.status == Resource.Status.LOADING ? View.GONE : View.VISIBLE);
                             if (result.status == Resource.Status.SUCCESS) {
                                 progressBar.setVisibility(View.INVISIBLE);
-                                distanceText.setText(getString(R.string.distance_generic, result.data.getDistance(), result.data.getDuration()));
+                                distanceText.setText(getString(R.string.distance_duration_generic, result.data.getDistance(), result.data.getDuration()));
                             }
                             //TODO handle error
                         });

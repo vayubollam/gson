@@ -366,7 +366,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
             getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         } else {
             binding.filtersLayout.setVisibility(View.VISIBLE);
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.light_gray));
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
 
             binding.filtersChipgroup.removeAllViews();
             for (String amenity : filterList) {
@@ -382,7 +382,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
             }
             Chip clearFiltersChip = new Chip(getActivity());
             clearFiltersChip.setText(R.string.clear_all_filters_chip);
-            clearFiltersChip.setTextColor(getResources().getColor(R.color.red_pb));
+            clearFiltersChip.setTextColor(getResources().getColor(R.color.red));
             clearFiltersChip.setCloseIconVisible(false);
             clearFiltersChip.setOnClickListener((v) -> {
                 mViewModel.clearFilters();

@@ -34,7 +34,7 @@
             android:id="@+id/filters_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_gray"
+            android:background="@color/black_4"
             android:paddingTop="60dp"
             android:paddingBottom="8dp"
             android:visibility="gone"
@@ -89,7 +89,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/address_search_text"
-                    style="@style/SearchTextNormal"
+                    style="@style/Body"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="4dp"
@@ -159,7 +159,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/status_card_title"
-                    style="@style/TitleStyle"
+                    style="@style/Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -167,7 +167,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/status_card_subtitle"
-                    style="@style/SecondaryText"
+                    style="@style/Caption1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"

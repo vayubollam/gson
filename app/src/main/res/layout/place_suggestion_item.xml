@@ -21,11 +21,12 @@
             android:layout_width="wrap_content"
             android:id="@+id/txt_suggestion_title"
 
-            style="@style/SearchPrimary"
+            style="@style/Body"
             tools:text="22 Indian db"
             android:layout_height="wrap_content"
             android:text="@{place.primaryText}"
-            android:layout_marginTop="14dp" />
+            android:layout_marginTop="14dp"
+            android:textColor="@color/black_80"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -35,11 +36,11 @@
                 android:layout_marginTop="6dp"
                 android:layout_width="wrap_content"
                 android:id="@+id/txt_suggestion_subtitle"
-                style="@style/SearchSecondary"
+                style="@style/Caption1"
                 android:text="@{place.secondaryText}"
                 tools:text="Toronto, On"
-                android:textSize="14sp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_60"/>
 
         </RelativeLayout>
 
