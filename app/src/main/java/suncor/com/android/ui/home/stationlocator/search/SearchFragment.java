@@ -88,8 +88,12 @@ public class SearchFragment extends Fragment {
             binding.addressSearchText.getText().clear();
         });
 
+        binding.addressSearchText.requestFocus();
+        showKeyBoard();
+
         return binding.getRoot();
     }
+
 
     @Override
     public void onResume() {
@@ -174,5 +178,10 @@ public class SearchFragment extends Fragment {
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
 
+    }
+
+    private void showKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 }
