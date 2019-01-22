@@ -10,12 +10,14 @@ public class GeneralConstants {
     public static final String ACTION_LOGOUT_SUCCESS = "com.ibm.userauthandroid.broadcast.logout.success";
     public static final String ACTION_LOGOUT_FAILURE = "com.ibm.userauthandroid.broadcast.logout.failure";
     public static final String SECURITY_CHECK_NAME_LOGIN = "UserLogin";
-
+    public static final String ACTION_USER_ACCOUNT_BLOCKED = "com.ibm.user.account.blocked";
 
     public static final String SHARED_PREF_NAME = "com.ibm.suncor";
     public static final String SHARED_PREF_SHOW_DONT_DRIVE = "com.ibm.suncor.dont_drive";
     public static final String SHARED_PREF_USER = "com.ibm.suncor.user";
 
     public static final String USER_PREFS_NAME = "user_preferences";
+    public static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
+    public static final int ACCOUNT_BLOCKED_TIME = 15;
 
 }

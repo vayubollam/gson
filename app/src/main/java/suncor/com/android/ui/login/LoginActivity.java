@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -17,8 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
+import suncor.com.android.utilities.UserLocalSettings;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity { //implements View.OnClickListener {
     private EditText txtUserName, txtPassword;
     private BroadcastReceiver loginErrorReceiver, loginRequiredReceiver, loginSuccessReceiver;
     private LoginActivity _this;
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         txtPassword = findViewById(R.id.txt_password);
 
         findViewById(R.id.btn_signin).setOnClickListener(btnSignIn_click);
+        findViewById(R.id.btnBack).setOnClickListener(btnBack_click);
+        findViewById(R.id.btnShowHide).setOnClickListener(btnShowHidePassword_click);
 
         //Login error
         loginErrorReceiver = new BroadcastReceiver() {
@@ -54,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         //Display remaining attempts
                         if (intent.getIntExtra("remainingAttempts", -1) > -1) {
                             //set number of atemp label
+                            alertError("Remaining attempts : " + Integer.toString(intent.getIntExtra("remainingAttempts", 0)));
 //                            lblRemainingAttempts.setText(getString(R.string.remaining_attempts, intent.getIntExtra("remainingAttempts",-1)));
                         }
                     }
@@ -102,17 +107,40 @@ public class LoginActivity extends AppCompatActivity {
             if (txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()) {
                 alertError("Username and password are required");
             } else {
-                JSONObject credentials = new JSONObject();
-                try {
-                    credentials.put("email", txtUserName.getText().toString());
-                    credentials.put("password", txtPassword.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                if(UserLocalSettings.isAccountBlicked() < GeneralConstants.ACCOUNT_BLOCKED_TIME) {
+                    alertError("Account is blocked try in " + String.valueOf(15 - UserLocalSettings.isAccountBlicked()) + " mins.");
+                } else {
+                    JSONObject credentials = new JSONObject();
+                    try {
+                        credentials.put("email", txtUserName.getText().toString());
+                        credentials.put("password", txtPassword.getText().toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent();
+                    intent.setAction(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER);
+                    intent.putExtra("credentials", credentials.toString());
+                    LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
                 }
-                Intent intent = new Intent();
-                intent.setAction(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER);
-                intent.putExtra("credentials", credentials.toString());
-                LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
+            }
+        }
+    };
+
+    View.OnClickListener btnBack_click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onBackPressed();
+        }
+    };
+
+    View.OnClickListener btnShowHidePassword_click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(txtPassword.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                txtPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            } else {
+                txtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             }
         }
     };

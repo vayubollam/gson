@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.worklight.wlclient.api.WLClient;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import suncor.com.android.GeneralConstants;
@@ -62,6 +63,24 @@ public class UserLocalSettings {
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(key);
         editor.commit();
+    }
+
+    public static void markAccountAsBlocked() {
+        Context context = WLClient.getInstance().getContext();
+        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(GeneralConstants.ACCOUNT_BLOCKED_DATE, Calendar.getInstance().getTime().getTime());
+        editor.commit();
+
+    }
+
+    public static int isAccountBlicked() {
+        Context context = WLClient.getInstance().getContext();
+        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        Date lastBlockedDate = new Date(preferences.getLong(GeneralConstants.ACCOUNT_BLOCKED_DATE, 0));
+        long diff = Calendar.getInstance().getTime().getTime() - lastBlockedDate.getTime();
+        long minutes = (diff / 1000) / 60;
+        return (int)minutes;
     }
 
 }

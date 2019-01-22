@@ -30,6 +30,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private String errorMsg = "";
     private Context context;
     private boolean isChallenged = false;
+    private boolean firstTry = true;
 
     private LocalBroadcastManager broadcastManager;
 
@@ -82,51 +83,71 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     @Override
     public void handleChallenge(JSONObject jsonObject) {
         Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Challenge Received");
-        isChallenged = true;
-        try {
-            if (jsonObject.isNull("errorMsg")) {
-                errorMsg = "";
-            } else {
-                errorMsg = jsonObject.getString("errorMsg");
+        if(firstTry) {
+            firstTry = false;
+            cancel();
+        } else {
+            isChallenged = true;
+            try {
+                if(UserLocalSettings.isAccountBlicked() < GeneralConstants.ACCOUNT_BLOCKED_TIME) {
+                    Intent intent = new Intent();
+                    intent.setAction(GeneralConstants.ACTION_USER_ACCOUNT_BLOCKED);
+                    intent.putExtra("Unblock_In", UserLocalSettings.isAccountBlicked());
+                    broadcastManager.sendBroadcast(intent);
+                } else {
+                    if (jsonObject.isNull("errorMsg")) {
+                        errorMsg = "";
+                    } else {
+                        errorMsg = jsonObject.getString("errorMsg");
+                    }
+
+                    remainingAttempts = jsonObject.getInt("remainingAttempts");
+                    Intent intent = new Intent();
+                    intent.setAction(GeneralConstants.ACTION_LOGIN_REQUIRED);
+                    intent.putExtra("errorMsg", errorMsg);
+                    intent.putExtra("remainingAttempts", remainingAttempts);
+                    broadcastManager.sendBroadcast(intent);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-            remainingAttempts = jsonObject.getInt("remainingAttempts");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
-        Intent intent = new Intent();
-        intent.setAction(GeneralConstants.ACTION_LOGIN_REQUIRED);
-        intent.putExtra("errorMsg", errorMsg);
-        intent.putExtra("remainingAttempts", remainingAttempts);
-        broadcastManager.sendBroadcast(intent);
     }
 
     @Override
     public void handleFailure(JSONObject error) {
         super.handleFailure(error);
         isChallenged = false;
+        Intent intent = new Intent();
+        intent.setAction(GeneralConstants.ACTION_LOGIN_FAILURE);
         if (error.isNull("failure")) {
             errorMsg = "Failed to login. Please try again later.";
         } else {
             try {
                 errorMsg = error.getString("failure");
+                if(errorMsg.equals("Account blocked") && !firstTry) {
+                    if(UserLocalSettings.isAccountBlicked() > GeneralConstants.ACCOUNT_BLOCKED_TIME) {
+                        UserLocalSettings.markAccountAsBlocked();
+                    }
+                    intent.putExtra("blocked", String.valueOf(GeneralConstants.ACCOUNT_BLOCKED_TIME - UserLocalSettings.isAccountBlicked()));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        Intent intent = new Intent();
-        intent.setAction(GeneralConstants.ACTION_LOGIN_FAILURE);
+
         intent.putExtra("errorMsg", errorMsg);
         broadcastManager.sendBroadcast(intent);
         Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "handleFailure");
+        firstTry = false;
     }
 
     @Override
     public void handleSuccess(JSONObject identity) {
         super.handleSuccess(identity);
         isChallenged = false;
+        firstTry = false;
         try {
             //Save the current user
             UserLocalSettings.setString(GeneralConstants.SHARED_PREF_USER, identity.getJSONObject("user").toString());
