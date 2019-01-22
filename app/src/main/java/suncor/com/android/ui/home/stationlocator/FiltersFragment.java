@@ -89,6 +89,7 @@ public class FiltersFragment extends Fragment {
     private AppCompatCheckBox getCheckbox(String amenityText) {
         AppCompatCheckBox checkbox = new AppCompatCheckBox(getContext());
         checkbox.setText(amenityText);
+        checkbox.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         int verticalMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());

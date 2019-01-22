@@ -16,7 +16,7 @@
         android:id="@+id/nearby_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_gray"
+        android:background="@color/black_4"
         android:orientation="vertical"
         app:visibleGone="@{vm.query.isEmpty()}">
 
@@ -26,16 +26,14 @@
             android:src="@drawable/horizontal_divider" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/SearchTitle"
+            style="@style/SectionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/nearby_title"
-            android:textAllCaps="true"
-            android:textColor="@color/black_60" />
+            android:text="@string/nearby_title"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
@@ -48,7 +46,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:indeterminateTint="@color/red_pb"
+            android:indeterminateTint="@color/red"
             app:visibleGone="@{vm.nearbyStations.status == Status.LOADING}" />
 
         <androidx.recyclerview.widget.RecyclerView

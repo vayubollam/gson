@@ -21,7 +21,7 @@
             android:id="@+id/suggestions_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/light_gray"
+            android:background="@color/black_4"
             android:orientation="vertical"
             app:visibleGone="@{vm.placeSuggestions.data == null || !vm.placeSuggestions.data.isEmpty()}"
             tools:visibility="visible">
@@ -33,15 +33,14 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/SearchTitle"
+                    style="@style/SectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/sugestions"
-                    android:layout_gravity="center"
-                    android:textAllCaps="true" />
+                    android:layout_gravity="center"/>
 
                 <Space
                     android:layout_width="0dp"
@@ -57,7 +56,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
-                    android:indeterminateTint="@color/red_pb"
+                    android:indeterminateTint="@color/red"
                     app:visibleGone="@{vm.placeSuggestions.status == Status.LOADING}" />
             </LinearLayout>
 

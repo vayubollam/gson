@@ -52,7 +52,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.light_gray));
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
 
         binding = SearchFragmentBinding.inflate(inflater, container, false);
         nearbySearchBinding = binding.nearbyLayout;
