@@ -46,6 +46,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -130,7 +131,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && mViewModel.userLocation.getValue() == null) {
             //TODO check if user searched for a location
             locateMe(false);
         } else {
@@ -166,6 +167,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
         this.mGoogleMap = googleMap;
         this.mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
+        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
         mGoogleMap.setMinZoomPreference(MINIMUM_ZOOM_LEVEL);
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
@@ -475,7 +477,14 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
         if (LocationUtils.isLocationEnabled()) {
             isLoading.set(true);
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationLiveData.observe(this, (this::gotoMyLocation));
+                Observer<Location> observer = new Observer<Location>() {
+                    @Override
+                    public void onChanged(Location location) {
+                        gotoMyLocation(location);
+                        locationLiveData.removeObserver(this);
+                    }
+                };
+                locationLiveData.observe(this, observer);
             }
         } else if (showDialog) {
             LocationDialog dialogFragment = new LocationDialog();

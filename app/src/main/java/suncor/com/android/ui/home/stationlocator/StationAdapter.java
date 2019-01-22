@@ -27,16 +27,11 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private final StationsFragment fragment;
     private final BottomSheetBehavior bottomSheetBehavior;
     private LatLng userLocation;
-    private GestureDetectorCompat swipeUpDetector;
 
     public ArrayList<StationItem> getStations() {
         return stations;
     }
-
-    public LatLng getUserLocation() {
-        return userLocation;
-    }
-
+    
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
         notifyDataSetChanged();
@@ -45,33 +40,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior) {
         this.fragment = fragment;
         this.bottomSheetBehavior = bottomSheetBehavior;
-        swipeUpDetector = new GestureDetectorCompat(fragment.getContext(), new GestureDetector.SimpleOnGestureListener() {
-            private boolean isSwipeUpDetected = false;
-
-            @Override
-            public boolean onDown(MotionEvent e) {
-                isSwipeUpDetected = false;
-                return true;
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (!isSwipeUpDetected && velocityY > 0) {
-                    isSwipeUpDetected = true;
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if (!isSwipeUpDetected && distanceY > 0) {
-                    isSwipeUpDetected = true;
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     @NonNull
@@ -118,14 +86,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
-        holder.binding.getRoot().setOnTouchListener((view, event) -> {
-            boolean eventHandled = swipeUpDetector.onTouchEvent(event);
-            boolean isSwipeUp = eventHandled && event.getAction() != MotionEvent.ACTION_DOWN;
-            if (isSwipeUp) {
-                showStationDetails(stationItem, holder.itemView);
-            }
-            return eventHandled;
-        });
+        holder.itemView.setOnTouchListener(new CardTouchListener(stationItem, holder.itemView));
 
         holder.binding.executePendingBindings();
     }
@@ -157,6 +118,63 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         StationViewHolder(CardStationItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+        }
+    }
+
+    private class CardTouchListener implements View.OnTouchListener {
+
+        StationItem item;
+        View view;
+
+        GestureDetectorCompat swipeUpDetector = new GestureDetectorCompat(fragment.getContext(), new GestureDetector.SimpleOnGestureListener() {
+            boolean isSwipeUpDetected;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                    return false;
+                }
+                isSwipeUpDetected = false;
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (!isSwipeUpDetected) {
+                    isSwipeUpDetected = true;
+                    if (velocityY > 0) {
+                        showStationDetails(item, view);
+                    } else if (velocityY < 0) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (!isSwipeUpDetected) {
+                    isSwipeUpDetected = true;
+                    if (distanceY > 0) {
+                        showStationDetails(item, view);
+                    } else if (distanceY < 0) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        CardTouchListener(StationItem item, View view) {
+            this.item = item;
+            this.view = view;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return swipeUpDetector.onTouchEvent(event);
         }
     }
 
