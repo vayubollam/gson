@@ -75,11 +75,11 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         });
 
         binding.callButton.setOnClickListener((v) -> {
-            callStation(stationItem.station.get());
+            callStation(stationItem.getStation());
         });
 
         binding.directionsButton.setOnClickListener((v) -> {
-            NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.station.get());
+            NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.getStation());
         });
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));

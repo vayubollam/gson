@@ -188,18 +188,18 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                 binding.cardRecycler.scrollToPosition(stations.indexOf(station));
                 if (lastSelectedMarker != null) {
                     StationItem oldStation = stationsMarkers.get(lastSelectedMarker);
-                    lastSelectedMarker.setIcon(getDrawableForMarker(false, oldStation.isFavourite.get()));
+                    lastSelectedMarker.setIcon(getDrawableForMarker(false, oldStation.isFavourite()));
                 }
 
                 lastSelectedMarker = findMarkerForStation(station);
                 if (lastSelectedMarker != null) {
-                    lastSelectedMarker.setIcon(getDrawableForMarker(true, station.isFavourite.get()));
+                    lastSelectedMarker.setIcon(getDrawableForMarker(true, station.isFavourite()));
                 }
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 if (lastSelectedMarker != null) {
                     StationItem oldStation = stationsMarkers.get(lastSelectedMarker);
-                    lastSelectedMarker.setIcon(getDrawableForMarker(false, oldStation.isFavourite.get()));
+                    lastSelectedMarker.setIcon(getDrawableForMarker(false, oldStation.isFavourite()));
                 }
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
@@ -244,7 +244,7 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
         if (requestCode == STATION_DETAILS_REQUEST_CODE) {
             if (lastSelectedMarker != null) {
                 StationItem item = stationsMarkers.get(lastSelectedMarker);
-                lastSelectedMarker.setIcon(getDrawableForMarker(true, item.isFavourite.get()));
+                lastSelectedMarker.setIcon(getDrawableForMarker(true, item.isFavourite()));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -328,8 +328,8 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
                     binding.coordinator.setVisibility(View.VISIBLE);
                     binding.statusCardview.setVisibility(View.GONE);
                     for (StationItem station : stations) {
-                        LatLng latLng = new LatLng(station.station.get().getAddress().getLatitude(), station.station.get().getAddress().getLongitude());
-                        boolean isFavourite = station.isFavourite.get();
+                        LatLng latLng = new LatLng(station.getStation().getAddress().getLatitude(), station.getStation().getAddress().getLongitude());
+                        boolean isFavourite = station.isFavourite();
                         boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue().equals(station);
                         Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
                         if (isSelected) {

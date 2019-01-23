@@ -130,8 +130,8 @@ public class StationsViewModel extends ViewModel {
                             stations.add(item);
                         }
                         Collections.sort(stations, (o1, o2) -> {
-                            double distance1 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o1.station.get().getAddress().getLatitude(), o1.station.get().getAddress().getLongitude()));
-                            double distance2 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o2.station.get().getAddress().getLatitude(), o2.station.get().getAddress().getLongitude()));
+                            double distance1 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
+                            double distance2 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
                             return (int) (distance1 - distance2);
                         });
                         cachedStationsBounds = apiBounds;
@@ -165,7 +165,7 @@ public class StationsViewModel extends ViewModel {
         } else {
             stationsInBound = new ArrayList<>();
             for (StationItem stationItem : cachedStations) {
-                if (_mapBounds.getValue().contains(new LatLng(stationItem.station.get().getAddress().getLatitude(), stationItem.station.get().getAddress().getLongitude()))) {
+                if (_mapBounds.getValue().contains(new LatLng(stationItem.getStation().getAddress().getLatitude(), stationItem.getStation().getAddress().getLongitude()))) {
                     stationsInBound.add(stationItem);
                 }
             }
@@ -179,7 +179,7 @@ public class StationsViewModel extends ViewModel {
         }
         for (StationItem stationItem : new ArrayList<>(stations)) {
             for (String filter : currentFilter) {
-                if (!stationItem.station.get().getAmenities().contains(filter)) {
+                if (!stationItem.getStation().getAmenities().contains(filter)) {
                     stations.remove(stationItem);
                     break;
                 }

@@ -31,7 +31,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     public ArrayList<StationItem> getStations() {
         return stations;
     }
-    
+
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
         notifyDataSetChanged();
@@ -55,17 +55,17 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
         final StationItem stationItem = stations.get(position);
-        final Station station = stationItem.station.get();
+        final Station station = stationItem.getStation();
         holder.binding.setVm(stationItem);
         holder.binding.stationTitleText.setText(station.getAddress().getAddressLine());
 
-        if (stationItem.distanceDuration.get() == null) {
+        if (stationItem.getDistanceDuration() == null) {
 
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
                     .observe(fragment, result -> { //TODO choose right lifecycle owner
                         if (result.status == Resource.Status.SUCCESS) {
-                            stationItem.distanceDuration.set(result.data);
+                            stationItem.setDistanceDuration(result.data);
                         }
                         //TODO handle error
                     });
