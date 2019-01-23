@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">SunCor</string>
     <string name="don_t_use_your_phone_while_driving">Don\'t use your phone while driving!</string>
-    <string name="sign_in">SIGN IN</string>
     <string name="forgot_password">FORGOT PASSWORD</string>
     <string name="password">Password</string>
     <string name="discover_your_next_adventure">DISCOVER YOUR NEXT ADVENTURE</string>
@@ -14,7 +13,7 @@
     <string name="open_with">Open With</string>
     <string name="always">ALWAYS</string>
     <string name="nearby">NearBy</string>
-    <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canda on The go!</string>
+    <string name="welcome_to_petro_canda_on_the_go">Welcome to \nPetro-Canda on The go!</string>
     <string name="add_to_favourites_button">Add to favourites</string>
     <string name="call_generic">Call \u00b7 %s</string>
     <string name="distance_generic">%.1f km away</string>
@@ -42,4 +41,6 @@
     <string name="clear_filters_button">clear filters</string>
     <string name="clear_all_filters_chip">Clear all</string>
     <string name="search">Search</string>
+    <string name="join">JOIN</string>
+    <string name="sign_in">SIGN IN</string>
 </resources>

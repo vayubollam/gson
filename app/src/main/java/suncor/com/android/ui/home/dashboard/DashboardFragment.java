@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
@@ -57,7 +58,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.home_fragment, container, false);
+        return inflater.inflate(R.layout.dashboard_fragment, container, false);
     }
 
     @Override
@@ -116,7 +117,8 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         carouselRecyclerView = getView().findViewById(R.id.card_recycler);
         DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext());
         carouselRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(carouselRecyclerView);
         final int speedScroll = 2500;
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
