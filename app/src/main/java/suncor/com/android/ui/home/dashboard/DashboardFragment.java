@@ -139,7 +139,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             }
         };
 
-        handler.postDelayed(runnable, speedScroll);
+        //handler.postDelayed(runnable, speedScroll);
 
         carouselRecyclerView.setAdapter(dashboardAdapter);
         Typeface tfGibsonBold = ResourcesCompat.getFont(getContext(), R.font.gibson_semibold);
