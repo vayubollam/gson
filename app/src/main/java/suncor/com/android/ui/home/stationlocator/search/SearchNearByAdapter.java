@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.SearchNearbyItemBinding;
 import suncor.com.android.model.Station;
+import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.Consumer;
 
 public class SearchNearByAdapter extends RecyclerView.Adapter<SearchNearByAdapter.NearByHolder> {
     private final Consumer<Station> clickCallback;
-    private ArrayList<StationNearbyItem> stationItems;
+    private ArrayList<StationItem> stationItems;
 
-    public SearchNearByAdapter(ArrayList<StationNearbyItem> stationItems, Consumer<Station> clickCallback) {
+    public SearchNearByAdapter(ArrayList<StationItem> stationItems, Consumer<Station> clickCallback) {
         this.stationItems = stationItems;
         this.clickCallback = clickCallback;
     }
@@ -33,11 +34,11 @@ public class SearchNearByAdapter extends RecyclerView.Adapter<SearchNearByAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchNearByAdapter.NearByHolder holder, int position) {
-        final StationNearbyItem stationItem = stationItems.get(position);
+        final StationItem stationItem = stationItems.get(position);
         holder.binding.setStationItem(stationItem);
         holder.binding.executePendingBindings();
         holder.binding.getRoot().setOnClickListener((v) -> {
-            clickCallback.accept(stationItem.station.get());
+            clickCallback.accept(stationItem.getStation());
         });
     }
 

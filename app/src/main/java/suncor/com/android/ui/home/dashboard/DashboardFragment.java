@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
@@ -99,7 +100,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
                             distanceText.setVisibility(result.status == Resource.Status.LOADING ? View.GONE : View.VISIBLE);
                             if (result.status == Resource.Status.SUCCESS) {
                                 progressBar.setVisibility(View.INVISIBLE);
-                                distanceText.setText(getString(R.string.distance_duration_generic, result.data.getDistance(), result.data.getDuration()));
+                                distanceText.setText(DirectionsResult.formatDistanceDuration(getContext(), result.data));
                             }
                             //TODO handle error
                         });

@@ -8,6 +8,8 @@
 
         <import type="android.view.View" />
 
+        <import type="suncor.com.android.model.DirectionsResult" />
+
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.StationItem" />
@@ -125,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
-                        android:text="@{@string/distance_duration_generic(vm.distanceDuration.distance, vm.distanceDuration.duration)}"
+                        android:text="@{DirectionsResult.formatDistanceDuration(context, vm.distanceDuration)}"
                         android:textAppearance="@style/Caption1"
                         android:visibility="@{vm.distanceDuration != null? View.VISIBLE : View.GONE}"
                         tools:text="0.5 Km away . 2 min drive" />

@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -25,14 +24,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.PlaceSuggestionsProvider;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 
 public class SearchViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
-    public MutableLiveData<Resource<ArrayList<StationNearbyItem>>> nearbyStations = new MutableLiveData<>();
+    public MutableLiveData<Resource<ArrayList<StationItem>>> nearbyStations = new MutableLiveData<>();
     public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
     private PlaceSuggestionsProvider suggestionsProvider;
     private LatLng userLocation;
@@ -73,17 +74,17 @@ public class SearchViewModel extends ViewModel {
                 try {
                     final JSONArray jsonArray = new JSONArray(jsonText);
                     Gson gson = new Gson();
-                    ArrayList<StationNearbyItem> stations = new ArrayList<>();
+                    ArrayList<StationItem> stations = new ArrayList<>();
                     stations.clear();
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jo = jsonArray.getJSONObject(i);
                         Station station = gson.fromJson(jo.toString(), Station.class);
                         LatLng stationLocation = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                        stations.add(new StationNearbyItem(station, getDistance(userLocation, stationLocation, 1000)));
+                        stations.add(new StationItem(station, getDistance(userLocation, stationLocation)));
                     }
                     Collections.sort(stations, (o1, o2) -> {
-                        double distance1 = LocationUtils.calculateDistance(userLocation, new LatLng(o1.station.get().getAddress().getLatitude(), o1.station.get().getAddress().getLongitude()));
-                        double distance2 = LocationUtils.calculateDistance(userLocation, new LatLng(o2.station.get().getAddress().getLatitude(), o2.station.get().getAddress().getLongitude()));
+                        double distance1 = LocationUtils.calculateDistance(userLocation, new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
+                        double distance2 = LocationUtils.calculateDistance(userLocation, new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
                         return (int) (distance1 - distance2);
                     });
                     nearbyStations.postValue(Resource.success(stations));
@@ -111,9 +112,8 @@ public class SearchViewModel extends ViewModel {
         return suggestionsProvider.getCoordinatesOfPlace(suggestion);
     }
 
-    private Double getDistance(LatLng userLocation, LatLng des, int unit) {
-        double distance = LocationUtils.calculateDistance(userLocation, new LatLng(des.latitude, des.longitude)) / unit;
-        return Double.parseDouble(new DecimalFormat("##.#").format(distance));
+    private DirectionsResult getDistance(LatLng userLocation, LatLng des) {
+        return new DirectionsResult((int) LocationUtils.calculateDistance(userLocation, new LatLng(des.latitude, des.longitude)), 0);
     }
 
     public void setSearchQuery(String input) {

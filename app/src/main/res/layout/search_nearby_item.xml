@@ -3,11 +3,13 @@
 
     <data>
 
-        <import type="android.view.View"></import>
+        <import type="android.view.View" />
+
+        <import type="suncor.com.android.model.DirectionsResult" />
 
         <variable
             name="stationItem"
-            type="suncor.com.android.ui.home.stationlocator.search.StationNearbyItem"></variable>
+            type="suncor.com.android.ui.home.stationlocator.StationItem" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,7 +41,7 @@
                 style="@style/Caption1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/distance_generic(stationItem.distance) + ` ·`}"
+                android:text="@{DirectionsResult.formatDistance(context, stationItem.distanceDuration) + ` ·`}"
                 android:textColor="@color/black_60"
                 tools:text="12 km away" />
 

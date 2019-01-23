@@ -32,6 +32,7 @@ import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.ui.home.stationlocator.StationViewModelFactory;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.utilities.LocationUtils;
@@ -112,7 +113,7 @@ public class SearchFragment extends Fragment {
 
             viewModel.nearbyStations.observe(getActivity(), arrayListResource -> {
                 if (arrayListResource.status == Resource.Status.SUCCESS) {
-                    ArrayList<StationNearbyItem> stationItems = arrayListResource.data;
+                    ArrayList<StationItem> stationItems = arrayListResource.data;
                     nearbyStationsAdapter = new SearchNearByAdapter(stationItems, (this::nearbyItemClicked));
                     nearbySearchBinding.nearbyRecycler.setAdapter(nearbyStationsAdapter);
                 }

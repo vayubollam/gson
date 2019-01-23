@@ -2,7 +2,6 @@ package suncor.com.android.api;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,8 +37,8 @@ public class DirectionsApi {
         MutableLiveData<Resource<DirectionsResult>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
 
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        String str_origin = "origins=" + origin.latitude + "," + origin.longitude;
+        String str_dest = "destinations=" + dest.latitude + "," + dest.longitude;
         String sensor = "sensor=false";
         String mode = "mode = driving";
         String mapKey = "key=AIzaSyAtC2AuQA0e-jJYbMrteC06unYKysCa1tA";
@@ -47,7 +46,7 @@ public class DirectionsApi {
 
 
         Request request = new Request.Builder()
-                .url("https://maps.googleapis.com/maps/api/directions/json?" + parameters)
+                .url("https://maps.googleapis.com/maps/api/distancematrix/json?" + parameters)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -61,11 +60,20 @@ public class DirectionsApi {
                 if (response.isSuccessful()) {
                     try {
                         JSONObject jsonObj = new JSONObject(response.body().string());
-                        JSONArray legs = jsonObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
-                        JSONObject jo = legs.getJSONObject(0);
-                        String distance = jo.getJSONObject("distance").getString("text");
-                        String duration = jo.getJSONObject("duration").getString("text");
-                        result.postValue(Resource.success(new DirectionsResult(distance, duration)));
+                        String status = jsonObj.getString("status");
+                        if (status.equals("OK")) {
+                            JSONObject distanceResult = jsonObj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
+                            if ("OK".equals(distanceResult.getString("status"))) {
+                                result.postValue(Resource.success(
+                                        new DirectionsResult(
+                                                distanceResult.getJSONObject("distance").getInt("value"),
+                                                distanceResult.getJSONObject("duration").getInt("value"))));
+                            } else {
+                                result.postValue(Resource.error(distanceResult.getString("status"), null));
+                            }
+                        } else {
+                            result.postValue(Resource.error(status, null));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         result.postValue(Resource.error(e.getMessage(), null));

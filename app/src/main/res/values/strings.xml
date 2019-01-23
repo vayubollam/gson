@@ -17,8 +17,8 @@
     <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canda on The go!</string>
     <string name="add_to_favourites_button">Add to favourites</string>
     <string name="call_generic">Call \u00b7 %s</string>
-    <string name="distance_duration_generic">%1s away \u00b7 %2s drive</string>
-    <string name="distance_generic">%1s km away</string>
+    <string name="distance_generic">%.1f km away</string>
+    <string name="duration_generic">%1s drive</string>
     <string name="services_amenities">Services</string>
     <string name="amenities_list_title">Amenities</string>
     <string name="open_generic">Open until %s</string>
