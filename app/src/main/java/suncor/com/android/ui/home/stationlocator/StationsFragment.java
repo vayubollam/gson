@@ -131,15 +131,16 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && mViewModel.userLocation.getValue() == null) {
-            //TODO check if user searched for a location
-            locateMe(false);
-        } else {
-            //TODO remove this
-            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-            adb.setMessage("Location Permission Not Granted");
-            adb.setPositiveButton("OK", null);
-            adb.show();
+        if (mViewModel.userLocation.getValue() == null) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locateMe(false);
+            } else {
+                //TODO remove this
+                AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+                adb.setMessage("Location Permission Not Granted");
+                adb.setPositiveButton("OK", null);
+                adb.show();
+            }
         }
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -441,8 +442,13 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
     }
 
     public void launchFiltersFragment() {
-        FiltersFragment filtersFragment = new FiltersFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment filtersFragment = fragmentManager.findFragmentByTag(FiltersFragment.FILTERS_FRAGMENT_TAG);
+        if (filtersFragment != null && filtersFragment.isAdded()) {
+            return;
+        }
+        filtersFragment = new FiltersFragment();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
         ft.add(android.R.id.content, filtersFragment, FiltersFragment.FILTERS_FRAGMENT_TAG);
         ft.addToBackStack(null);
@@ -450,7 +456,12 @@ public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClic
     }
 
     public void launchSearchFragment() {
-        SearchFragment searchFragment = new SearchFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment searchFragment = fragmentManager.findFragmentByTag(SearchFragment.SEARCH_FRAGMENT_TAG);
+        if (searchFragment != null && searchFragment.isAdded()) {
+            return;
+        }
+        searchFragment = new SearchFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
         ft.add(android.R.id.content, searchFragment, SearchFragment.SEARCH_FRAGMENT_TAG);

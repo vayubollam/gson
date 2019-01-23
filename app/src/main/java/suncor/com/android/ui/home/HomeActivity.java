@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -40,11 +41,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkforPermission();
 
-        selectedFragment = new DashboardFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.add(R.id.frame_layout_home, selectedFragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
-        transaction.commit();
+        openFragment(R.id.menu_home);
     }
 
 
@@ -73,46 +70,42 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     //when user clicks on one of the bottom navigation items
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        FragmentManager fm = getSupportFragmentManager();
-
-        if (selectedFragment != null) {
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.hide(selectedFragment);
-            ft.commit();
-        }
-        switch (menuItem.getItemId()) {
-            case R.id.menu_home: {
-                menuItem.setChecked(true);
-                FragmentTransaction ft = fm.beginTransaction();
-                if (fm.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG) != null) {
-                    ft.show(fm.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG));
-                } else {
-                    selectedFragment = new DashboardFragment();
-                    ft.add(R.id.frame_layout_home, selectedFragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
-                }
-                ft.commit();
-                break;
-
-            }
-            case R.id.menu_stations: {
-                menuItem.setChecked(true);
-                FragmentTransaction ft = fm.beginTransaction();
-                if (fm.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG) != null) {
-                    ft.show(fm.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG));
-                } else {
-                    selectedFragment = new StationsFragment();
-                    ft.add(R.id.frame_layout_home, selectedFragment, StationsFragment.STATIONS_FRAGMENT_TAG);
-                }
-                ft.commit();
-                break;
-
-            }
-            default: {
-
-            }
-        }
+        openFragment(menuItem.getItemId());
         return true;
     }
 
+    private void openFragment(@IdRes int menuItemId) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
+        if (fragment != null) {
+            fragmentTransaction.hide(fragment);
+        }
+
+        switch (menuItemId) {
+            case R.id.menu_home:
+                fragment = fragmentManager.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                if (fragment != null) {
+                    fragmentTransaction.show(fragment);
+                } else {
+                    fragment = new DashboardFragment();
+                    fragmentTransaction.add(R.id.frame_layout_home, fragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                }
+                break;
+            case R.id.menu_stations:
+                fragment = fragmentManager.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG);
+                if (fragment != null) {
+                    fragmentTransaction.show(fragment);
+                } else {
+                    fragment = new StationsFragment();
+                    fragmentTransaction.add(R.id.frame_layout_home, fragment, StationsFragment.STATIONS_FRAGMENT_TAG);
+                }
+                break;
+        }
+
+        fragmentTransaction.setPrimaryNavigationFragment(fragment);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.commit();
+    }
 
 }
