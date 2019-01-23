@@ -88,7 +88,13 @@ public class StationsViewModel extends ViewModel {
         if (userLocation == null)
             return;
         if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
-            _stationsAround.setValue(Resource.success(filterStations()));
+            ArrayList<StationItem> filteredStations = filterStations();
+            _stationsAround.setValue(Resource.success(filteredStations));
+
+            if (shouldUpdateSectedStation && !filteredStations.isEmpty()) {
+                _selectedStation.postValue(filteredStations.get(0));
+            }
+            shouldUpdateSectedStation = false;
         } else {
             _stationsAround.setValue(Resource.loading(null));
 
