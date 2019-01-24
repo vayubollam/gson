@@ -30,7 +30,7 @@
     <string name="favourited">Favourited</string>
     <string name="added_to_favourites">Station added to favourites</string>
     <string name="search_an_address">Search an address</string>
-    <string name="filters_title">Filters</string>
+    <string name="filters_fragment_title">Filter by</string>
     <string name="apply">Apply</string>
     <string name="clear">Clear All</string>
     <string name="no_stations_found">Sorry, we can\'t find any results</string>

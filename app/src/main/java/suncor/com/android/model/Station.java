@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -12,10 +13,10 @@ import suncor.com.android.R;
 
 public class Station {
 
-    public static HashMap<String, String> FULL_AMENITIES = new HashMap<>();
-    public static HashMap<String, String> SERVICE_AMENITIES = new HashMap<>();
-    public static HashMap<String, String> WASH_AMENITIES = new HashMap<>();
-    public static HashMap<String, String> FUEL_AMENITIES = new HashMap<>();
+    public static HashMap<String, String> FULL_AMENITIES = new LinkedHashMap<>();
+    public static HashMap<String, String> SERVICE_AMENITIES = new LinkedHashMap<>();
+    public static HashMap<String, String> WASH_AMENITIES = new LinkedHashMap<>();
+    public static HashMap<String, String> FUEL_AMENITIES = new LinkedHashMap<>();
 
     private String id;
     private ArrayList<Hour> hours;
