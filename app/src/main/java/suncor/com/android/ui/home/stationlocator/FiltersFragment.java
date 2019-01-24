@@ -14,8 +14,10 @@ import java.util.HashMap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FiltersFragmentBinding;
 import suncor.com.android.model.Station;
@@ -90,6 +92,8 @@ public class FiltersFragment extends Fragment {
         AppCompatCheckBox checkbox = new AppCompatCheckBox(getContext());
         checkbox.setText(amenityText);
         checkbox.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        checkbox.setTextColor(getResources().getColor(R.color.black_80));
+        checkbox.setTypeface(ResourcesCompat.getFont(getContext(), R.font.gibson_regular));
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         int verticalMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
