@@ -160,6 +160,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/status_card_title"
                     style="@style/Body"
+                    android:fontFamily="@font/gibson_semibold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -167,7 +168,8 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/status_card_subtitle"
-                    style="@style/Caption1"
+                    style="@style/Body"
+                    android:textColor="@color/black_60"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -178,6 +180,7 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:onClick="@{() -> vm.clearFilters()}"
                     android:text="@string/clear_filters_button" />
