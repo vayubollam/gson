@@ -1,6 +1,5 @@
 package suncor.com.android.ui.login;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import com.worklight.wlclient.api.WLClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.GeneralConstants;
@@ -50,7 +50,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 progressLayout.setVisibility(View.GONE);
-                alertError(intent.getStringExtra(UserLoginChallengeHandler.ERROR_MSG));
+                String title = getString(R.string.invalid_credentials_dialog_title);
+                String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                alertError(content, title);
             }
         };
 
@@ -61,7 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                 Runnable run = () -> {
                     progressLayout.setVisibility(View.GONE);
                     if (intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, -1) > -1) {
-                        alertError("Remaining attempts : " + Integer.toString(intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, 0)));
+                        String message = getString(R.string.invalid_credentials_dialog_message, intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, 0), SessionManager.LOCK_TIME_MINUTES);
+                        String title = getString(R.string.invalid_credentials_dialog_title);
+                        alertError(message, title);
                     }
                 };
                 runOnUiThread(run);
@@ -108,11 +112,13 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if (txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()) {
-                alertError("Username and password are required");
+                alertError("Username and password are required", getString(R.string.error));
             } else {
 
                 if (sessionManager.isAccountBlocked()) {
-                    alertError("Account is blocked try in " + String.valueOf(15 - sessionManager.remainingTimeToUnblock() / (60 * 1000)) + " mins.");
+                    String title = getString(R.string.invalid_credentials_dialog_title);
+                    String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                    alertError(content, title);
                 } else {
                     progressLayout.setVisibility(View.VISIBLE);
                     JSONObject credentials = new JSONObject();
@@ -130,11 +136,11 @@ public class LoginActivity extends AppCompatActivity {
 
     View.OnClickListener btnBack_click = v -> onBackPressed();
 
-    public void alertError(final String msg) {
+    public void alertError(final String msg, String title) {
         Runnable run = () -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(msg)
-                    .setTitle(R.string.error);
+                    .setTitle(title);
             builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
                 // User clicked OK button
                 dialog.dismiss();

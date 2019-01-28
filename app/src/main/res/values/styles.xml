@@ -10,6 +10,7 @@
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="android:textColorPrimary">@color/black_80</item>
         <item name="android:textColorSecondary">@color/black_60</item>
+        <item name="alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
@@ -157,5 +158,31 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
+
+    <!-- Dialog -->
+    <style name="AlertDialogStyle" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/blue</item>
+        <item name="android:background">@drawable/dialog_background</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/black_100</item>
+        <item name="android:textColorSecondary">@color/black_80</item>
+        <item name="buttonBarButtonStyle">@style/DialogButtonStyle</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitleStyle</item>
+    </style>
+
+    <style name="DialogWindowTitleStyle" parent="Base.DialogWindowTitle.AppCompat">
+        <item name="android:textAppearance">@style/Title2</item>
+        <item name="android:fontFamily">@font/gibson_semibold</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Subhead" parent="Body">
+        <item name="android:textColor">@color/black_80</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="fontFamily">@font/gibson_semibold</item>
+    </style>
+
+    <!-- end dialog -->
 
 </resources>

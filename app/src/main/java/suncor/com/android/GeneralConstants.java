@@ -18,6 +18,4 @@ public class GeneralConstants {
 
     public static final String USER_PREFS_NAME = "user_preferences";
     public static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
-    public static final int ACCOUNT_BLOCKED_TIME = 15;
-
 }

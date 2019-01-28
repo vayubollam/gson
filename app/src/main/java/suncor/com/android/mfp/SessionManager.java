@@ -5,6 +5,8 @@ import suncor.com.android.utilities.UserLocalSettings;
 
 public class SessionManager {
 
+    public static final int LOCK_TIME_MINUTES = 15;
+    public static final int LOGIN_ATTEMPTS = 5;
     private static SessionManager sInstance;
     private String userName;
 
@@ -41,7 +43,7 @@ public class SessionManager {
     }
 
     public boolean isAccountBlocked() {
-        return remainingTimeToUnblock() < GeneralConstants.ACCOUNT_BLOCKED_TIME * 60 * 1000;
+        return remainingTimeToUnblock() > 0;
     }
 
     /**
@@ -49,6 +51,6 @@ public class SessionManager {
      */
     public long remainingTimeToUnblock() {
         long lockTime = UserLocalSettings.getLong(GeneralConstants.ACCOUNT_BLOCKED_DATE);
-        return System.currentTimeMillis() - lockTime;
+        return (lockTime + (LOCK_TIME_MINUTES + 1) * 60 * 1000) - System.currentTimeMillis();
     }
 }

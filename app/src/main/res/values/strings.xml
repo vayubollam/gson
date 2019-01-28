@@ -48,4 +48,8 @@
     <string name="error">Error</string>
     <string name="email">Email</string>
     <string name="sign_in_progress">Signing in</string>
+    <string name="invalid_credentials_dialog_title">Invalid Email or Password</string>
+    <string name="invalid_credentials_dialog_message">%1d attempts left before the app gets locked for %2d mins</string>
+    <string name="sign_in_blocked_dialog_title">Sign-in disabled</string>
+    <string name="sign_in_blocked_dialog_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
 </resources>
