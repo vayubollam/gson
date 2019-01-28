@@ -18,19 +18,20 @@ import org.json.JSONObject;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.GeneralConstants;
-import suncor.com.android.utilities.UserLocalSettings;
+import suncor.com.android.mfp.SessionManager;
 
 /**
  * Created by bahramhaddadi on 2018-11-28.
  */
 
 public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
-    //    private static String securityCheckName = "UserLogin";
-    private int remainingAttempts = -1;
+    public static final String ERROR_MSG = "errorMsg";
+    public static final String REMAINING_ATTEMPTS = "remainingAttempts";
+    public static final String FAILURE = "failure";
     private String errorMsg = "";
     private Context context;
     private boolean isChallenged = false;
-    private boolean firstTry = true;
+    private SessionManager sessionManager;
 
     private LocalBroadcastManager broadcastManager;
 
@@ -38,31 +39,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         super(securityCheckName);
         context = WLClient.getInstance().getContext();
         broadcastManager = LocalBroadcastManager.getInstance(context);
-
-        //Reset the current user
-        UserLocalSettings.removeKey(GeneralConstants.SHARED_PREF_USER);
-
-        //Receive login requests
-        broadcastManager.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                try {
-                    JSONObject credentials = new JSONObject(intent.getStringExtra("credentials"));
-                    login(credentials);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER));
-
-        //Cancel login process
-        broadcastManager.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                cancel();
-            }
-        }, new IntentFilter(GeneralConstants.ACTION_LOGIN_CANCELLED));
-
+        sessionManager = SessionManager.getInstance();
 
         //Receive logout requests
         broadcastManager.registerReceiver(new BroadcastReceiver() {
@@ -83,29 +60,27 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     @Override
     public void handleChallenge(JSONObject jsonObject) {
         Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Challenge Received");
-        if(firstTry) {
-            firstTry = false;
-            cancel();
-        } else {
+        sessionManager.setUserName(null);
+        {
             isChallenged = true;
             try {
-                if(UserLocalSettings.isAccountBlicked() < GeneralConstants.ACCOUNT_BLOCKED_TIME) {
+                if (sessionManager.isAccountBlocked()) {
                     Intent intent = new Intent();
                     intent.setAction(GeneralConstants.ACTION_USER_ACCOUNT_BLOCKED);
-                    intent.putExtra("Unblock_In", UserLocalSettings.isAccountBlicked());
                     broadcastManager.sendBroadcast(intent);
                 } else {
-                    if (jsonObject.isNull("errorMsg")) {
+                    if (jsonObject.isNull(ERROR_MSG)) {
                         errorMsg = "";
                     } else {
-                        errorMsg = jsonObject.getString("errorMsg");
+                        errorMsg = jsonObject.getString(ERROR_MSG);
                     }
 
-                    remainingAttempts = jsonObject.getInt("remainingAttempts");
+                    //private static String securityCheckName = "UserLogin";
+                    int remainingAttempts = jsonObject.getInt(REMAINING_ATTEMPTS);
                     Intent intent = new Intent();
                     intent.setAction(GeneralConstants.ACTION_LOGIN_REQUIRED);
-                    intent.putExtra("errorMsg", errorMsg);
-                    intent.putExtra("remainingAttempts", remainingAttempts);
+                    intent.putExtra(ERROR_MSG, errorMsg);
+                    intent.putExtra(REMAINING_ATTEMPTS, remainingAttempts);
                     broadcastManager.sendBroadcast(intent);
                 }
 
@@ -117,40 +92,38 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     @Override
     public void handleFailure(JSONObject error) {
+        Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Handle failure");
         super.handleFailure(error);
         isChallenged = false;
         Intent intent = new Intent();
         intent.setAction(GeneralConstants.ACTION_LOGIN_FAILURE);
-        if (error.isNull("failure")) {
+        if (error.isNull(FAILURE)) {
             errorMsg = "Failed to login. Please try again later.";
         } else {
             try {
-                errorMsg = error.getString("failure");
-                if(errorMsg.equals("Account blocked") && !firstTry) {
-                    if(UserLocalSettings.isAccountBlicked() > GeneralConstants.ACCOUNT_BLOCKED_TIME) {
-                        UserLocalSettings.markAccountAsBlocked();
+                errorMsg = error.getString(FAILURE);
+                if (errorMsg.equals("Account blocked")) {
+                    if (!sessionManager.isAccountBlocked()) {
+                        sessionManager.markAccountAsBlocked();
                     }
-                    intent.putExtra("blocked", String.valueOf(GeneralConstants.ACCOUNT_BLOCKED_TIME - UserLocalSettings.isAccountBlicked()));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-        intent.putExtra("errorMsg", errorMsg);
+        intent.putExtra(ERROR_MSG, errorMsg);
         broadcastManager.sendBroadcast(intent);
         Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "handleFailure");
-        firstTry = false;
     }
 
     @Override
     public void handleSuccess(JSONObject identity) {
         super.handleSuccess(identity);
         isChallenged = false;
-        firstTry = false;
         try {
             //Save the current user
-            UserLocalSettings.setString(GeneralConstants.SHARED_PREF_USER, identity.getJSONObject("user").toString());
+            sessionManager.setUserName(identity.getJSONObject("user").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -185,6 +158,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         WLAuthorizationManager.getInstance().logout(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
+                sessionManager.setUserName(null);
                 Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Logout Success");
                 Intent intent = new Intent();
                 intent.setAction(GeneralConstants.ACTION_LOGOUT_SUCCESS);

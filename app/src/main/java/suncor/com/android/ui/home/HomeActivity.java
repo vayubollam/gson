@@ -13,20 +13,19 @@ import java.util.List;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.ui.home.common.SessionAwareActivity;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
 
-public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView bottom_navigation;
-    private Fragment selectedFragment;
 
     //request code for requesting permissions
-    private int requestCode = 1;
+    private final static int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +60,54 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         }
         if (!listPermissionsNeeded.isEmpty())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                this.requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), requestCode);
+                this.requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), PERMISSION_REQUEST_CODE);
             }
 
     }
 
-
-    //when user clicks on one of the bottom navigation items
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         openFragment(menuItem.getItemId());
         return true;
+    }
+
+    @Override
+    protected void requestLogin() {
+        super.requestLogin();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(fragment)
+                    .attach(fragment)
+                    .commit();
+        }
+    }
+
+    @Override
+    protected void onLogout() {
+        super.onLogout();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(fragment)
+                    .attach(fragment)
+                    .commit();
+        }
+    }
+
+    @Override
+    protected void onLoginSuccess() {
+        super.onLoginSuccess();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(fragment)
+                    .attach(fragment)
+                    .commit();
+        }
     }
 
     private void openFragment(@IdRes int menuItemId) {
