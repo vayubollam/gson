@@ -1,7 +1,6 @@
 package suncor.com.android.ui;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -10,8 +9,8 @@ import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
 import suncor.com.android.R;
+import suncor.com.android.ui.home.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
     // Animation
@@ -31,8 +30,6 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         img_retail = findViewById(R.id.img_retail);
 
         txt_splash = findViewById(R.id.txt_splash);
-        Typeface tfGibsonBold = ResourcesCompat.getFont(this, R.font.gibson_semibold);
-        txt_splash.setTypeface(tfGibsonBold);
         // load the animation
         animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.zoomout);
@@ -55,7 +52,7 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     public void onAnimationEnd(Animation animation) {
 
         new Handler().postDelayed(() -> {
-            Intent safeDrive = new Intent(getApplicationContext(), SafeDriveActivity.class);
+            Intent safeDrive = new Intent(getApplicationContext(), HomeActivity.class);
             safeDrive.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(safeDrive);

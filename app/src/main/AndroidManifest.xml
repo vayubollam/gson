@@ -32,7 +32,9 @@
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/CustomAppThemeForSplash" />
-        <activity android:name=".ui.SafeDriveActivity" />
+        <activity
+            android:name=".ui.SafeDriveActivity"
+            android:theme="@style/CustomAppThemeForSplash" />
         <activity
             android:name=".ui.home.HomeActivity"
             android:screenOrientation="portrait" />
