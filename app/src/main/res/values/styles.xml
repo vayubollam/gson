@@ -120,10 +120,16 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="alertLocation" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
+    <style name="LargeButtonWhite" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="fontFamily">@font/gibson_semibold</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="android:textSize">18sp</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
     </style>
+
 
     <!-- End Button styles -->
 
@@ -147,5 +153,9 @@
         <item name="closeIconEnabled">true</item>
     </style>
 
+    <style name="alertLocation" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
 
 </resources>

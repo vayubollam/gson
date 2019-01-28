@@ -1,6 +1,7 @@
 package suncor.com.android.ui.home.dashboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.ui.login.LoginActivity;
 
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DashboardHolder> {
@@ -24,6 +27,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     private ArrayList<Drawable> images;
     private Context context;
     private LayoutInflater layoutInflater;
+    private SessionManager sessionManager;
 
 
     public DashboardAdapter(Context context) {
@@ -33,6 +37,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         images.add(context.getResources().getDrawable(R.drawable.car_trip));
         images.add(context.getResources().getDrawable(R.drawable.agriculture));
         images.add(context.getResources().getDrawable(R.drawable.petro_card));
+        sessionManager = SessionManager.getInstance();
     }
 
     @NonNull
@@ -45,6 +50,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     @Override
     public void onBindViewHolder(@NonNull DashboardHolder holder, int position) {
         holder.img_card.setImageDrawable(images.get(position));
+        if (sessionManager.isUserLoggedIn()) {
+            holder.sign_in.setVisibility(View.GONE);
+            holder.join.setVisibility(View.GONE);
+        } else {
+            holder.sign_in.setVisibility(View.VISIBLE);
+            holder.join.setVisibility(View.VISIBLE);
+            holder.sign_in.setOnClickListener(v -> {
+                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), LoginActivity.class));
+            });
+        }
 
     }
 

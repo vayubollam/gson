@@ -3,13 +3,14 @@ package suncor.com.android.ui.login;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import com.worklight.wlclient.api.WLClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,31 +19,38 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
-import suncor.com.android.utilities.UserLocalSettings;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 
-public class LoginActivity extends AppCompatActivity { //implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity {
     private EditText txtUserName, txtPassword;
     private BroadcastReceiver loginErrorReceiver, loginRequiredReceiver, loginSuccessReceiver;
-    private LoginActivity _this;
+
+    private UserLoginChallengeHandler userLoginChallengeHandler;
+    private LinearLayout progressLayout;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        _this = this;
+        sessionManager = SessionManager.getInstance();
+        userLoginChallengeHandler = (UserLoginChallengeHandler) WLClient.getInstance().getSecurityCheckChallengeHandler(GeneralConstants.SECURITY_CHECK_NAME_LOGIN);
+
         txtUserName = findViewById(R.id.txt_email);
         txtPassword = findViewById(R.id.txt_password);
+        progressLayout = findViewById(R.id.progress_layout);
 
-        findViewById(R.id.btn_signin).setOnClickListener(btnSignIn_click);
-        findViewById(R.id.btnBack).setOnClickListener(btnBack_click);
-        findViewById(R.id.btnShowHide).setOnClickListener(btnShowHidePassword_click);
+        findViewById(R.id.signing_button).setOnClickListener(btnSignIn_click);
+        findViewById(R.id.back_button).setOnClickListener(btnBack_click);
 
         //Login error
         loginErrorReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                alertError(intent.getStringExtra("errorMsg"));
+                progressLayout.setVisibility(View.GONE);
+                alertError(intent.getStringExtra(UserLoginChallengeHandler.ERROR_MSG));
             }
         };
 
@@ -50,20 +58,13 @@ public class LoginActivity extends AppCompatActivity { //implements View.OnClick
         loginRequiredReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, final Intent intent) {
-                Runnable run = new Runnable() {
-                    public void run() {
-                        //Set error label on activity
-                        //lblErrorMessage.setText(intent.getStringExtra("errorMsg"));
-
-                        //Display remaining attempts
-                        if (intent.getIntExtra("remainingAttempts", -1) > -1) {
-                            //set number of atemp label
-                            alertError("Remaining attempts : " + Integer.toString(intent.getIntExtra("remainingAttempts", 0)));
-//                            lblRemainingAttempts.setText(getString(R.string.remaining_attempts, intent.getIntExtra("remainingAttempts",-1)));
-                        }
+                Runnable run = () -> {
+                    progressLayout.setVisibility(View.GONE);
+                    if (intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, -1) > -1) {
+                        alertError("Remaining attempts : " + Integer.toString(intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, 0)));
                     }
                 };
-                _this.runOnUiThread(run);
+                runOnUiThread(run);
             }
         };
 
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity { //implements View.OnClick
         loginSuccessReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                progressLayout.setVisibility(View.VISIBLE);
                 finish();
             }
         };
@@ -95,9 +97,10 @@ public class LoginActivity extends AppCompatActivity { //implements View.OnClick
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent();
-        intent.setAction(GeneralConstants.ACTION_LOGIN_CANCELLED);
-        LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
+        try {
+            userLoginChallengeHandler.cancel();
+        } catch (Exception ignored) {
+        }
     }
 
     //region  UI events
@@ -108,9 +111,10 @@ public class LoginActivity extends AppCompatActivity { //implements View.OnClick
                 alertError("Username and password are required");
             } else {
 
-                if(UserLocalSettings.isAccountBlicked() < GeneralConstants.ACCOUNT_BLOCKED_TIME) {
-                    alertError("Account is blocked try in " + String.valueOf(15 - UserLocalSettings.isAccountBlicked()) + " mins.");
+                if (sessionManager.isAccountBlocked()) {
+                    alertError("Account is blocked try in " + String.valueOf(15 - sessionManager.remainingTimeToUnblock() / (60 * 1000)) + " mins.");
                 } else {
+                    progressLayout.setVisibility(View.VISIBLE);
                     JSONObject credentials = new JSONObject();
                     try {
                         credentials.put("email", txtUserName.getText().toString());
@@ -118,53 +122,27 @@ public class LoginActivity extends AppCompatActivity { //implements View.OnClick
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Intent intent = new Intent();
-                    intent.setAction(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER);
-                    intent.putExtra("credentials", credentials.toString());
-                    LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
+                    userLoginChallengeHandler.login(credentials);
                 }
             }
         }
     };
 
-    View.OnClickListener btnBack_click = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            onBackPressed();
-        }
-    };
+    View.OnClickListener btnBack_click = v -> onBackPressed();
 
-    View.OnClickListener btnShowHidePassword_click = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(txtPassword.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                txtPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-            } else {
-                txtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            }
-        }
-    };
-    //endregion
-
-    //region custom methods
     public void alertError(final String msg) {
-        Runnable run = new Runnable() {
-            public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(_this);
-                builder.setMessage(msg)
-                        .setTitle("Error");
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
+        Runnable run = () -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(msg)
+                    .setTitle(R.string.error);
+            builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                // User clicked OK button
+                dialog.dismiss();
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         };
-        _this.runOnUiThread(run);
+        runOnUiThread(run);
     }
-    //endregion
 }
 

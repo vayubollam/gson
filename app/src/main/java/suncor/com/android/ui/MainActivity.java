@@ -34,7 +34,6 @@ import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.login.LoginActivity;
-import suncor.com.android.utilities.UserLocalSettings;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private BroadcastReceiver logoutReceiver, loginReceiver, loginRequiredReceiver, errorReceiver;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSuccess(AccessToken accessToken) {
                 //update UI to show user is logged in
-                Log.d("","");
+                Log.d("", "");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -289,9 +288,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     View.OnClickListener btnLogInOut_click = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            int aa = UserLocalSettings.isAccountBlicked();
+            int aa = 0;
 
-            if(btnLoginLogOut.getText().toString().toLowerCase().equals("log out")) {
+            if (btnLoginLogOut.getText().toString().toLowerCase().equals("log out")) {
                 Intent intent = new Intent();
                 intent.setAction(GeneralConstants.ACTION_LOGOUT);
                 LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
@@ -300,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(AccessToken accessToken) {
                         //update UI to show user is logged in
-                        Log.d("","");
+                        Log.d("", "");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
