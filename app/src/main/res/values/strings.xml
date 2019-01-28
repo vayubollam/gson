@@ -3,7 +3,7 @@
     <string name="don_t_use_your_phone_while_driving">Don\'t use your phone while driving!</string>
     <string name="forgot_password">FORGOT PASSWORD</string>
     <string name="password">Password</string>
-    <string name="discover_your_next_adventure">DISCOVER YOUR NEXT ADVENTURE</string>
+    <string name="discover_your_next_adventure">DISCOVER \nYOUR NEXT \nADVENTURE</string>
     <string name="home">Home</string>
     <string name="stations">Stations</string>
     <string name="enable_location_services">Enable Location Services</string>
@@ -43,6 +43,8 @@
     <string name="search">Search</string>
     <string name="join">JOIN</string>
     <string name="sign_in">SIGN IN</string>
+    <string name="drive_safely">Drive safely</string>
+    <string name="safety_message">Petro-Canada takes safety seriously. Please Don\'t use your phone while driving!</string>
     <string name="error">Error</string>
     <string name="email">Email</string>
     <string name="sign_in_progress">Signing in</string>
