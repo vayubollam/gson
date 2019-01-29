@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }//endregion
 
     private void openSplashLogoActivity() {
-        Intent splashlogoActivity = new Intent(this, SplashLogoActivity.class);
+        Intent splashlogoActivity = new Intent(this, SplashActivity.class);
         startActivity(splashlogoActivity);
     }
 }
