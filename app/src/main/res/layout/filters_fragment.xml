@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/services_amenities"
+                    android:text="@string/filters_services_header"
                     android:textAppearance="@style/Body" />
 
                 <View
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/fuel_amenities"
+                    android:text="@string/filter_fuel_header"
                     android:textAppearance="@style/Body" />
 
                 <View
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/carwash_amenities"
+                    android:text="@string/filter_carwash_header"
                     android:textAppearance="@style/Body" />
 
                 <View
