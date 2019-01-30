@@ -19,8 +19,10 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
         tools:context="suncor.com.android.ui.home.stationlocator.StationsFragment">
 
         <FrameLayout
@@ -30,47 +32,17 @@
 
         </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/filters_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black_4"
-            android:paddingTop="60dp"
-            android:paddingBottom="8dp"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:scrollbars="none">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/filters_chipgroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:singleLine="true">
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/ChipStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Open 24h" />
-                </com.google.android.material.chip.ChipGroup>
-            </HorizontalScrollView>
-        </FrameLayout>
-
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="4dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
+            android:elevation="4dp"
+            android:translationZ="4dp"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -131,6 +103,39 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <FrameLayout
+            android:id="@+id/filters_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_4"
+            android:elevation="4dp"
+            android:paddingTop="52dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/filters_chipgroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/ChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open 24h" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+        </FrameLayout>
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -160,20 +165,20 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/status_card_title"
                     style="@style/Body"
-                    android:fontFamily="@font/gibson_semibold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gibson_semibold"
                     android:text="@string/no_stations_found" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/status_card_subtitle"
                     style="@style/Body"
-                    android:textColor="@color/black_60"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/no_stations_filters_applied" />
+                    android:text="@string/no_stations_filters_applied"
+                    android:textColor="@color/black_60" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/clear_filters_button"

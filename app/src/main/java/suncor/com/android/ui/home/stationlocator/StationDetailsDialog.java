@@ -43,7 +43,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.StationDetailsDialogStyle);
-        layoutPadding = getResources().getDimensionPixelOffset(R.dimen.cards_padding_expanded);
+        layoutPadding = getResources().getDimensionPixelOffset(R.dimen.cards_padding_collapsed);
     }
 
     @Override
@@ -60,7 +60,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void setupDialog(@NonNull Dialog dialog, int style) {
         binding = CardStationItemBinding.inflate(LayoutInflater.from(getContext()));
         binding.setVm(stationItem);
-        binding.getRoot().setPadding(layoutPadding, layoutPadding, layoutPadding, 0);
+        int horizontalPadding = getResources().getDimensionPixelOffset(R.dimen.cards_padding_expanded);
+        binding.getRoot().setPadding(horizontalPadding, layoutPadding, horizontalPadding, 0);
         DisplayMetrics dp = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
         fullHeight = dp.heightPixels - getStatusBarHeight();

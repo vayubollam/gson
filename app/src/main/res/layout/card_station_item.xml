@@ -49,8 +49,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
                     android:paddingTop="8dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -129,6 +129,7 @@
                         android:gravity="center"
                         android:text="@{DirectionsResult.formatDistanceDuration(context, vm.distanceDuration)}"
                         android:textAppearance="@style/Caption1"
+                        android:textColor="@{vm.distanceDuration.distance == -1 ? @color/black_60 : @color/black_80}"
                         android:visibility="@{vm.distanceDuration != null? View.VISIBLE : View.GONE}"
                         tools:text="0.5 Km away . 2 min drive" />
                 </LinearLayout>
@@ -195,8 +196,8 @@
                             android:textAllCaps="false"
                             android:textAppearance="@style/Body"
                             android:textColor="@color/black_80"
-                            android:textOff="@string/add_to_favourites_button"
-                            android:textOn="@string/favourited" />
+                            android:textOff="@string/add_to_favourites_button_off"
+                            android:textOn="@string/add_to_favourites_button_on" />
 
                         <View
                             android:layout_width="match_parent"
@@ -224,35 +225,25 @@
                             android:layout_height="1dp"
                             android:background="@drawable/horizontal_divider" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/Body"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
-                            android:fontFamily="@font/gibson_semibold"
-                            android:text="@string/amenities_list_title" />
-
                         <LinearLayout
                             android:id="@+id/service_amenities_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_margin="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasService()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Caption1"
+                                style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/services_amenities" />
+                                android:text="@string/details_services_header" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/service_amenities_text"
-                                style="@style/Caption2"
+                                style="@style/Caption1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="6dp"
@@ -261,26 +252,31 @@
                                 tools:text="Pay at pump\nContactless payment" />
                         </LinearLayout>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/horizontal_divider"
+                            android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}" />
+
                         <LinearLayout
                             android:id="@+id/fuel_amenities_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_margin="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Caption1"
+                                style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/fuel_amenities" />
+                                android:text="@string/details_fuel_header" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/fuel_amenities_text"
-                                style="@style/Caption2"
+                                style="@style/Caption1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="6dp"
@@ -289,26 +285,31 @@
                                 tools:text="Pay at pump\nContactless payment" />
                         </LinearLayout>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@drawable/horizontal_divider"
+                            android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}" />
+
                         <LinearLayout
                             android:id="@+id/wash_amenities_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_margin="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Caption1"
+                                style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/carwash_amenities" />
+                                android:text="@string/details_carwash_header" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/wash_amenities_text"
-                                style="@style/Caption2"
+                                style="@style/Caption1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:lineSpacingExtra="6dp"
@@ -320,7 +321,6 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginTop="16dp"
                             android:layout_marginBottom="16dp"
                             android:background="@drawable/horizontal_divider" />
 
@@ -335,7 +335,7 @@
                                 style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="16dp"
+                                android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
                                 android:text="@string/hours_list_title" />
 

@@ -11,11 +11,14 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -42,6 +45,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -84,6 +88,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     private boolean userScrolledMap;
+    private boolean systemMarginsAlreadyApplied;
 
 
     @Override
@@ -124,7 +129,16 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             fm.executePendingTransactions();
         }
         mapFragment.getMapAsync(this);
-
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+            if (!systemMarginsAlreadyApplied) {
+                systemMarginsAlreadyApplied = true;
+                int systemsTopMargin = insets.getSystemWindowInsetTop();
+                ((RelativeLayout.LayoutParams) binding.searchBar.getLayoutParams()).topMargin += systemsTopMargin;
+                FrameLayout filtersLayout = binding.filtersLayout;
+                filtersLayout.setPadding(filtersLayout.getPaddingLeft(), filtersLayout.getPaddingTop() + systemsTopMargin, filtersLayout.getPaddingRight(), filtersLayout.getPaddingBottom());
+            }
+            return insets;
+        });
 
         return binding.getRoot();
     }
@@ -233,9 +247,8 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+    protected boolean isStatusBarTransparent() {
+        return true;
     }
 
     @Override
@@ -357,10 +370,8 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private void filtersChanged(ArrayList<String> filterList) {
         if (filterList == null || filterList.isEmpty()) {
             binding.filtersLayout.setVisibility(View.GONE);
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
         } else {
             binding.filtersLayout.setVisibility(View.VISIBLE);
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
 
             binding.filtersChipgroup.removeAllViews();
             for (String amenity : filterList) {
@@ -489,8 +500,15 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
                 locationLiveData.observe(this, observer);
             }
         } else if (showDialog) {
-            LocationDialog dialogFragment = new LocationDialog();
-            dialogFragment.show(getFragmentManager(), "location dialog");
+            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+            adb.setTitle(R.string.enable_location_dialog_title);
+            adb.setMessage(R.string.enable_location_dialog_message);
+            adb.setNegativeButton(R.string.cancel, null);
+            adb.setPositiveButton(R.string.ok, (dialog, which) -> {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                dialog.dismiss();
+            });
+            adb.show();
         }
     }
 }

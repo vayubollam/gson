@@ -17,6 +17,7 @@ import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.CardStationItemBinding;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -63,11 +64,12 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
-                    .observe(fragment, result -> { //TODO choose right lifecycle owner
+                    .observe(fragment, result -> {
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.setDistanceDuration(result.data);
+                        } else {
+                            stationItem.setDistanceDuration(new DirectionsResult(-1, -1));
                         }
-                        //TODO handle error
                     });
         }
 
