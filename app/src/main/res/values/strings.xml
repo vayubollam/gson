@@ -55,6 +55,10 @@
     <string name="invalid_credentials_dialog_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="sign_in_blocked_dialog_title">Sign-in disabled</string>
     <string name="sign_in_blocked_dialog_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
+    <string name="favourites">Favourites</string>
+    <string name="no_favourites">No favourite stations</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, graece molestiae in est. Posse feugiat delenit.</string>
+    <string name="add_station">Add a station</string>
     <string name="profile">Profile</string>
     <string name="sign_out">Sign out</string>
     <string name="distance_unavailable">Distance not available</string>

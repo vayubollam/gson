@@ -29,6 +29,7 @@ public class FavouriteMock implements FavouriteRepository {
             public void run() {
                 try {
                     Thread.sleep(500);
+                    FAVOURITES.clear();
                     FAVOURITES.addAll(mockFavourites());
                     result.postValue(Resource.success(true));
                     isLoaded = true;
@@ -166,31 +167,31 @@ public class FavouriteMock implements FavouriteRepository {
                 "    ],\n" +
                 "    \"hours\": [\n" +
                 "      {\n" +
-                "        \"close\": \"2400\",\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"close\": \"2400\",\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"close\": \"2400\",\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"close\": \"2400\",\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"close\": \"2400\",\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"close\": \"2400\",\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"close\": \"2400\",\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      }\n" +
                 "    ],\n" +

@@ -9,6 +9,7 @@ import com.worklight.wlclient.api.WLClient;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.auth.AccessToken;
 
+import suncor.com.android.data.repository.FavouriteMock;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.data.repository.FavouriteRepositoryImpl;
 import suncor.com.android.mfp.SessionManager;
@@ -18,7 +19,7 @@ import suncor.com.android.model.Station;
 public class SuncorApplication extends Application {
 
     private static SuncorApplication sInstance;
-    public static FavouriteRepository favouriteRepository = new FavouriteRepositoryImpl();
+    public static FavouriteRepository favouriteRepository = new FavouriteMock();
     public static boolean splashShown = false;
 
     public void onCreate() {

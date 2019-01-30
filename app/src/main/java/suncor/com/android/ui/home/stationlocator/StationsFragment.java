@@ -62,6 +62,7 @@ import suncor.com.android.databinding.StationsFragmentBinding;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.ui.home.stationlocator.favorites.FavouritesFragment;
 import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
 import suncor.com.android.utilities.LocationUtils;
 
@@ -141,6 +142,12 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
@@ -510,6 +517,20 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             });
             adb.show();
         }
+    }
+
+    public void showFavourites() {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment favouritesFragment = fragmentManager.findFragmentByTag(FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
+        if (favouritesFragment != null && favouritesFragment.isAdded()) {
+            return;
+        }
+        favouritesFragment = new FavouritesFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
+        ft.add(android.R.id.content, favouritesFragment, FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }
 
