@@ -1,5 +1,6 @@
 package suncor.com.android.ui.home.common;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +19,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.GeneralConstants;
 import suncor.com.android.mfp.SessionManager;
 
+@SuppressLint("Registered")
 public class SessionAwareActivity extends FragmentActivity {
 
-    SessionManager sessionManager;
+    private SessionManager sessionManager;
+    private boolean currentLoginStatus;
 
     private BroadcastReceiver loginRequiredReceiver = new BroadcastReceiver() {
         @Override
@@ -32,14 +35,20 @@ public class SessionAwareActivity extends FragmentActivity {
     private BroadcastReceiver loginReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            onLoginSuccess();
+            if (!currentLoginStatus) {
+                currentLoginStatus = true;
+                onLoginSuccess();
+            }
         }
     };
 
     private BroadcastReceiver logoutReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            onLogout();
+            if (currentLoginStatus) {
+                currentLoginStatus = false;
+                onLogout();
+            }
         }
     };
 
@@ -54,6 +63,7 @@ public class SessionAwareActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = SessionManager.getInstance();
+        currentLoginStatus = sessionManager.isUserLoggedIn();
     }
 
     @Override
@@ -76,6 +86,14 @@ public class SessionAwareActivity extends FragmentActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(loginReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUCCESS));
         LocalBroadcastManager.getInstance(this).registerReceiver(logoutReceiver, new IntentFilter(GeneralConstants.ACTION_LOGOUT_SUCCESS));
         LocalBroadcastManager.getInstance(this).registerReceiver(errorReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_FAILURE));
+        if (currentLoginStatus != sessionManager.isUserLoggedIn()) {
+            currentLoginStatus = sessionManager.isUserLoggedIn();
+            if (currentLoginStatus) {
+                onLoginSuccess();
+            } else {
+                onLogout();
+            }
+        }
     }
 
     @Override
@@ -85,6 +103,10 @@ public class SessionAwareActivity extends FragmentActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(loginReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(logoutReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(errorReceiver);
+    }
+
+    protected boolean isLoggedIn() {
+        return currentLoginStatus;
     }
 
     protected void requestLogin() {

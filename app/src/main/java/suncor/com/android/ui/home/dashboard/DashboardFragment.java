@@ -25,7 +25,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,9 +37,10 @@ import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
-public class DashboardFragment extends Fragment implements View.OnClickListener {
+public class DashboardFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String DASHBOARD_FRAGMENT_TAG = "dashboard-tag";
     private DashboardViewModel mViewModel;
@@ -50,6 +50,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     private MaterialCardView stationCard;
     private Location userLocation;
     private RecyclerView carouselRecyclerView;
+    private DashboardAdapter dashboardAdapter;
 
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
@@ -115,7 +116,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         carouselRecyclerView = getView().findViewById(R.id.card_recycler);
-        DashboardAdapter dashboardAdapter = new DashboardAdapter(getContext());
+        dashboardAdapter = new DashboardAdapter(getContext());
         carouselRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(carouselRecyclerView);
@@ -159,7 +160,11 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         distanceText.setText("...");
 
         directionsButton.setOnClickListener(this);
+    }
 
+    @Override
+    public void onLoginStatusChanged() {
+        dashboardAdapter.notifyDataSetChanged();
     }
 
     public String getTiming(int hour, int min) {

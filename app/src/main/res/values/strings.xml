@@ -52,4 +52,6 @@
     <string name="invalid_credentials_dialog_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="sign_in_blocked_dialog_title">Sign-in disabled</string>
     <string name="sign_in_blocked_dialog_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
+    <string name="profile">Profile</string>
+    <string name="sign_out">Sign out</string>
 </resources>

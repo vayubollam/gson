@@ -11,9 +11,6 @@ import android.widget.LinearLayout;
 
 import com.worklight.wlclient.api.WLClient;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -102,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         try {
-            userLoginChallengeHandler.cancel();
+            sessionManager.cancelLogin();
         } catch (Exception ignored) {
         }
     }
@@ -121,14 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                     alertError(content, title);
                 } else {
                     progressLayout.setVisibility(View.VISIBLE);
-                    JSONObject credentials = new JSONObject();
-                    try {
-                        credentials.put("email", txtUserName.getText().toString());
-                        credentials.put("password", txtPassword.getText().toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    userLoginChallengeHandler.login(credentials);
+                    sessionManager.login(txtUserName.getText().toString(), txtPassword.getText().toString());
                 }
             }
         }

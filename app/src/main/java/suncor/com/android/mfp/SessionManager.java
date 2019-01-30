@@ -1,6 +1,10 @@
 package suncor.com.android.mfp;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import suncor.com.android.GeneralConstants;
+import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.utilities.UserLocalSettings;
 
 public class SessionManager {
@@ -9,6 +13,7 @@ public class SessionManager {
     public static final int LOGIN_ATTEMPTS = 5;
     private static SessionManager sInstance;
     private String userName;
+    private UserLoginChallengeHandler challengeHandler;
 
     private SessionManager() {
     }
@@ -19,6 +24,34 @@ public class SessionManager {
             sInstance.userName = UserLocalSettings.getString(GeneralConstants.SHARED_PREF_USER);
         }
         return sInstance;
+    }
+
+    public void logout() {
+        if (challengeHandler == null) {
+            throw new IllegalStateException("Security Challenge Handler not initialized, did you forget to call setChallengeHandler()");
+        }
+        challengeHandler.logout();
+    }
+
+    public void login(String name, String password) {
+        if (challengeHandler == null) {
+            throw new IllegalStateException("Security Challenge Handler not initialized, did you forget to call setChallengeHandler()");
+        }
+        JSONObject credentials = new JSONObject();
+        try {
+            credentials.put("email", name);
+            credentials.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        challengeHandler.login(credentials);
+    }
+
+    public void cancelLogin() {
+        try {
+            challengeHandler.cancel();
+        } catch (Exception ignored) {
+        }
     }
 
     public boolean isUserLoggedIn() {
@@ -53,4 +86,10 @@ public class SessionManager {
         long lockTime = UserLocalSettings.getLong(GeneralConstants.ACCOUNT_BLOCKED_DATE);
         return (lockTime + (LOCK_TIME_MINUTES + 1) * 60 * 1000) - System.currentTimeMillis();
     }
+
+    public void setChallengeHandler(UserLoginChallengeHandler userLoginChallengeHandler) {
+        challengeHandler = userLoginChallengeHandler;
+    }
+
+
 }

@@ -40,6 +40,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         context = WLClient.getInstance().getContext();
         broadcastManager = LocalBroadcastManager.getInstance(context);
         sessionManager = SessionManager.getInstance();
+        sessionManager.setChallengeHandler(this);
 
         //Receive logout requests
         broadcastManager.registerReceiver(new BroadcastReceiver() {
