@@ -11,6 +11,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -489,8 +490,15 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
                 locationLiveData.observe(this, observer);
             }
         } else if (showDialog) {
-            LocationDialog dialogFragment = new LocationDialog();
-            dialogFragment.show(getFragmentManager(), "location dialog");
+            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+            adb.setTitle(R.string.enable_location_dialog_title);
+            adb.setMessage(R.string.enable_location_dialog_message);
+            adb.setNegativeButton(R.string.cancel, null);
+            adb.setPositiveButton(R.string.ok, (dialog, which) -> {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                dialog.dismiss();
+            });
+            adb.show();
         }
     }
 }

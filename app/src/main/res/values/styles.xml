@@ -168,6 +168,8 @@
         <item name="android:textColorSecondary">@color/black_80</item>
         <item name="buttonBarButtonStyle">@style/DialogButtonStyle</item>
         <item name="android:windowTitleStyle">@style/DialogWindowTitleStyle</item>
+        <item name="windowMinWidthMajor">360dp</item>
+        <item name="windowMinWidthMinor">360dp</item>
     </style>
 
     <style name="DialogWindowTitleStyle" parent="Base.DialogWindowTitle.AppCompat">

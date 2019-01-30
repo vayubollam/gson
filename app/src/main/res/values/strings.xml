@@ -1,19 +1,19 @@
 <resources>
-    <string name="app_name">SunCor</string>
+    <string name="app_name">Petro-Canada</string>
     <string name="don_t_use_your_phone_while_driving">Don\'t use your phone while driving!</string>
     <string name="forgot_password">FORGOT PASSWORD</string>
     <string name="password">Password</string>
     <string name="discover_your_next_adventure">DISCOVER \nYOUR NEXT \nADVENTURE</string>
     <string name="home">Home</string>
-    <string name="stations">Stations</string>
-    <string name="enable_location_services">Enable Location Services</string>
-    <string name="location_alert_message">Petro-Canada uses location services to show stations around you.</string>
+    <string name="stations">Locations</string>
+    <string name="enable_location_dialog_title">Enable Location Services</string>
+    <string name="enable_location_dialog_message">We use location services to show locations near you.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="open_with">Open With</string>
     <string name="always">ALWAYS</string>
     <string name="nearby">NearBy</string>
-    <string name="welcome_to_petro_canda_on_the_go">Welcome to \nPetro-Canda on The go!</string>
+    <string name="welcome_to_petro_canda_on_the_go">Welcome to \nPetro-Canada on The go!</string>
     <string name="add_to_favourites_button_off">Add as favourite location</string>
     <string name="add_to_favourites_button_on">Favourite</string>
     <string name="details_services_header">Products &amp; Services</string>
@@ -32,7 +32,7 @@
     <string name="station_open_24hrs">Open 24h</string>
     <string name="directions_button">Get directions</string>
     <string name="added_to_favourites">Station added to favourites</string>
-    <string name="search_an_address">Search an address</string>
+    <string name="search_an_address">Search</string>
     <string name="filters_fragment_title">Filter by</string>
     <string name="apply">Apply</string>
     <string name="clear">Clear All</string>
@@ -57,4 +57,5 @@
     <string name="sign_in_blocked_dialog_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
     <string name="profile">Profile</string>
     <string name="sign_out">Sign out</string>
+    <string name="distance_unavailable">Distance not available</string>
 </resources>
