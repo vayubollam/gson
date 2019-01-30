@@ -30,39 +30,6 @@
 
         </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/filters_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black_4"
-            android:paddingTop="60dp"
-            android:paddingBottom="8dp"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:scrollbars="none">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/filters_chipgroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:singleLine="true">
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/ChipStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Open 24h" />
-                </com.google.android.material.chip.ChipGroup>
-            </HorizontalScrollView>
-        </FrameLayout>
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -71,6 +38,8 @@
             android:layout_marginTop="12dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
+            android:elevation="4dp"
+            android:translationZ="4dp"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -131,6 +100,39 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <FrameLayout
+            android:id="@+id/filters_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_4"
+            android:paddingTop="60dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            android:elevation="4dp"
+            tools:visibility="visible">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/filters_chipgroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/ChipStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open 24h" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+        </FrameLayout>
 
         <ProgressBar
             android:id="@+id/progress_bar"
