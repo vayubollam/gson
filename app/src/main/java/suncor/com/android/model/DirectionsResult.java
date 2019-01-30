@@ -38,6 +38,8 @@ public class DirectionsResult {
     public static String formatDistanceDuration(Context context, DirectionsResult result) {
         if (result == null) {
             return "";
+        } else if (result.distance == -1) {
+            return context.getString(R.string.distance_unavailable);
         }
         String distanceText = context.getString(R.string.distance_generic, ((float) result.getDistance()) / 1000);
         String durationText = context.getString(R.string.duration_generic, secondsToString(result.duration));

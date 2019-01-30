@@ -85,7 +85,7 @@ public class StationsViewModel extends ViewModel {
     private void refreshStations() {
         LatLng mapCenter = _mapBounds.getValue().getCenter();
         LatLngBounds bounds = _mapBounds.getValue();
-        if (userLocation == null)
+        if (userLocation.getValue() == null)
             return;
         if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
             ArrayList<StationItem> filteredStations = filterStations();

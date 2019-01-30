@@ -49,8 +49,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
                     android:paddingTop="8dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -129,6 +129,7 @@
                         android:gravity="center"
                         android:text="@{DirectionsResult.formatDistanceDuration(context, vm.distanceDuration)}"
                         android:textAppearance="@style/Caption1"
+                        android:textColor="@{vm.distanceDuration.distance == -1 ? @color/black_60 : @color/black_80}"
                         android:visibility="@{vm.distanceDuration != null? View.VISIBLE : View.GONE}"
                         tools:text="0.5 Km away . 2 min drive" />
                 </LinearLayout>
@@ -255,7 +256,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@drawable/horizontal_divider"
-                            android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}"/>
+                            android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}" />
 
                         <LinearLayout
                             android:id="@+id/fuel_amenities_list"
@@ -288,7 +289,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@drawable/horizontal_divider"
-                            android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}"/>
+                            android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}" />
 
                         <LinearLayout
                             android:id="@+id/wash_amenities_list"
