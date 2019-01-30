@@ -57,11 +57,12 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.StationsFragmentBinding;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
 import suncor.com.android.utilities.LocationUtils;
 
 
-public class StationsFragment extends Fragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
+public class StationsFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
 
     public static final int STATION_DETAILS_REQUEST_CODE = 1;

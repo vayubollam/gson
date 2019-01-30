@@ -17,8 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.common.SessionAwareActivity;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
+import suncor.com.android.ui.home.profile.ProfileFragment;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
 
 public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +43,10 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             checkforPermission();
 
         openFragment(R.id.menu_home);
+
+        if (!isLoggedIn()) {
+            bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
+        }
     }
 
 
@@ -71,46 +77,32 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
         return true;
     }
 
-    @Override
-    protected void requestLogin() {
-        super.requestLogin();
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .detach(fragment)
-                    .attach(fragment)
-                    .commit();
-        }
-    }
 
     @Override
     protected void onLogout() {
         super.onLogout();
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .detach(fragment)
-                    .attach(fragment)
-                    .commit();
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof BaseFragment) {
+                ((BaseFragment) fragment).onLoginStatusChanged();
+            }
         }
+
+        bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
     }
 
     @Override
     protected void onLoginSuccess() {
         super.onLoginSuccess();
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .detach(fragment)
-                    .attach(fragment)
-                    .commit();
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof BaseFragment) {
+                ((BaseFragment) fragment).onLoginStatusChanged();
+            }
         }
+
+        bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(true);
     }
 
-    private void openFragment(@IdRes int menuItemId) {
+    public void openFragment(@IdRes int menuItemId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
@@ -137,11 +129,21 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
                     fragmentTransaction.add(R.id.frame_layout_home, fragment, StationsFragment.STATIONS_FRAGMENT_TAG);
                 }
                 break;
+            case R.id.menu_profile:
+                fragment = fragmentManager.findFragmentByTag(ProfileFragment.PROFILE_FRAGMENT_TAG);
+                if (fragment != null) {
+                    fragmentTransaction.show(fragment);
+                } else {
+                    fragment = new ProfileFragment();
+                    fragmentTransaction.add(R.id.frame_layout_home, fragment, ProfileFragment.PROFILE_FRAGMENT_TAG);
+                }
+                break;
         }
 
         fragmentTransaction.setPrimaryNavigationFragment(fragment);
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.commit();
+        bottom_navigation.getMenu().findItem(menuItemId).setChecked(true);
     }
 
 }
