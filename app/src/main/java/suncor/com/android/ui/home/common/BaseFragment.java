@@ -37,16 +37,9 @@ public class BaseFragment extends Fragment {
     public void onStart() {
         super.onStart();
         setStatusBarColor();
+        getView().requestApplyInsets();
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            setStatusBarColor();
-            getView().requestApplyInsets();
-        }
-    }
 
     protected boolean isStatusBarTransparent() {
         return false;

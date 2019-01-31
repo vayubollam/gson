@@ -50,7 +50,6 @@ import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -84,7 +83,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private Marker lastSelectedMarker;
     private float screenRatio;
     private StationsFragmentBinding binding;
-    private LocationLiveData locationLiveData;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     private boolean userScrolledMap;
@@ -95,7 +93,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        locationLiveData = new LocationLiveData(getContext());
     }
 
     @Override
@@ -129,6 +126,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             fm.executePendingTransactions();
         }
         mapFragment.getMapAsync(this);
+        systemMarginsAlreadyApplied = false;
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             if (!systemMarginsAlreadyApplied) {
                 systemMarginsAlreadyApplied = true;
@@ -171,11 +169,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
 
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -490,14 +483,8 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         if (LocationUtils.isLocationEnabled()) {
             isLoading.set(true);
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                Observer<Location> observer = new Observer<Location>() {
-                    @Override
-                    public void onChanged(Location location) {
-                        gotoMyLocation(location);
-                        locationLiveData.removeObserver(this);
-                    }
-                };
-                locationLiveData.observe(this, observer);
+                LocationLiveData liveData = new LocationLiveData(getContext());
+                liveData.observe(this, this::gotoMyLocation);
             }
         } else if (showDialog) {
             AlertDialog.Builder adb = new AlertDialog.Builder(getContext());

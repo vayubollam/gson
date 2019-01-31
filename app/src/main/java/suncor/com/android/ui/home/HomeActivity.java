@@ -107,14 +107,14 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
         if (fragment != null) {
-            fragmentTransaction.hide(fragment);
+            fragmentTransaction.detach(fragment);
         }
 
         switch (menuItemId) {
             case R.id.menu_home:
                 fragment = fragmentManager.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
                 if (fragment != null) {
-                    fragmentTransaction.show(fragment);
+                    fragmentTransaction.attach(fragment);
                 } else {
                     fragment = new DashboardFragment();
                     fragmentTransaction.add(R.id.frame_layout_home, fragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
@@ -123,7 +123,7 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             case R.id.menu_stations:
                 fragment = fragmentManager.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG);
                 if (fragment != null) {
-                    fragmentTransaction.show(fragment);
+                    fragmentTransaction.attach(fragment);
                 } else {
                     fragment = new StationsFragment();
                     fragmentTransaction.add(R.id.frame_layout_home, fragment, StationsFragment.STATIONS_FRAGMENT_TAG);
@@ -132,7 +132,7 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             case R.id.menu_profile:
                 fragment = fragmentManager.findFragmentByTag(ProfileFragment.PROFILE_FRAGMENT_TAG);
                 if (fragment != null) {
-                    fragmentTransaction.show(fragment);
+                    fragmentTransaction.attach(fragment);
                 } else {
                     fragment = new ProfileFragment();
                     fragmentTransaction.add(R.id.frame_layout_home, fragment, ProfileFragment.PROFILE_FRAGMENT_TAG);
