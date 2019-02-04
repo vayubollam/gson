@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.CardStationItemBinding;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
@@ -59,8 +60,9 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
         holder.binding.setVm(stationItem);
         holder.binding.stationTitleText.setText(station.getAddress().getAddressLine());
 
-        if (stationItem.getDistanceDuration() == null && userLocation != null) {
-
+        if (userLocation == null) {
+            stationItem.setDistanceDuration(new DirectionsResult(-1, -1));
+        } else if (stationItem.getDistanceDuration() == null) {
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
                     .observe(activity, result -> { //TODO choose right lifecycle owner

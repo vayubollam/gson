@@ -59,6 +59,7 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.StationsFragmentBinding;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.common.BaseFragment;
@@ -189,7 +190,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     public void onMapReady(GoogleMap googleMap) {
         this.mGoogleMap = googleMap;
         this.mGoogleMap.setOnCameraIdleListener(this);
-        mGoogleMap.getUiSettings().setCompassEnabled(true);
+        mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
         mGoogleMap.setMinZoomPreference(MINIMUM_ZOOM_LEVEL);
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
@@ -520,17 +521,26 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     }
 
     public void showFavourites() {
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment favouritesFragment = fragmentManager.findFragmentByTag(FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
-        if (favouritesFragment != null && favouritesFragment.isAdded()) {
-            return;
+        if (SessionManager.getInstance().isUserLoggedIn()) {
+            FragmentManager fragmentManager = getFragmentManager();
+            Fragment favouritesFragment = fragmentManager.findFragmentByTag(FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
+            if (favouritesFragment != null && favouritesFragment.isAdded()) {
+                return;
+            }
+            favouritesFragment = new FavouritesFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
+            ft.add(android.R.id.content, favouritesFragment, FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
+            ft.addToBackStack(null);
+            ft.commit();
+
+
+        } else {
+            PromptLoginDialog promptLoginDialog = new PromptLoginDialog();
+            promptLoginDialog.show(getFragmentManager(), PromptLoginDialog.TAG);
         }
-        favouritesFragment = new FavouritesFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
-        ft.add(android.R.id.content, favouritesFragment, FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
-        ft.addToBackStack(null);
-        ft.commit();
+
+    
     }
 }
 

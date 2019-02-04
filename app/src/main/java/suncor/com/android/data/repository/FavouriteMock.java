@@ -21,7 +21,8 @@ public class FavouriteMock implements FavouriteRepository {
     private static boolean isLoaded = false;
 
     @Override
-    public LiveData<Resource<Boolean>> loadFavourites() {
+
+    synchronized public LiveData<Resource<Boolean>> loadFavourites() {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
         Thread thread = new Thread() {
@@ -244,6 +245,58 @@ public class FavouriteMock implements FavouriteRepository {
                 "      },\n" +
                 "      {\n" +
                 "        \"close\": \"2400\",\n" +
+                "        \"open\": \"0000\"\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"address\": {\n" +
+                "      \"subdivision\": \"Ontario\",\n" +
+                "      \"phone\": \"4162983974\",\n" +
+                "      \"countryRegion\": \"Canada\",\n" +
+                "      \"postalCode\": \"V8C1V6\",\n" +
+                "      \"latitude\": 43.823675,\n" +
+                "      \"addressLine\": \"4575 Steeles Avenue East\",\n" +
+                "      \"crossStreet\": \"KENNEDY\",\n" +
+                "      \"primaryCity\": \"Scarborough\",\n" +
+                "      \"longitude\": -79.307007\n" +
+                "    },\n" +
+                "    \"id\": 445\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"amenities\": [\n" +
+                "      \"electricChargingStation\",\n" +
+                "      \"lottery\",\n" +
+                "      \"ultra94\",\n" +
+                "      \"diesel\",\n" +
+                "      \"open24Hours\",\n" +
+                "      \"convenienceStore\"\n" +
+                "    ],\n" +
+                "    \"hours\": [\n" +
+                "      {\n" +
+                "        \"close\": \"1400\",\n" +
+                "        \"open\": \"0000\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"close\": \"1400\",\n" +
+                "        \"open\": \"0000\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"close\": \"1400\",\n" +
+                "        \"open\": \"0000\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"close\": \"1400\",\n" +
+                "        \"open\": \"0000\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"close\": \"1400\",\n" +
+                "        \"open\": \"0000\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"close\": \"1400\",\n" +
+                "        \"open\": \"0000\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"close\": \"1400\",\n" +
                 "        \"open\": \"0000\"\n" +
                 "      }\n" +
                 "    ],\n" +

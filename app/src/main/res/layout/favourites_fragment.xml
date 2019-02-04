@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean"></variable>
+
+        <variable
+            name="noResult"
+            type="androidx.databinding.ObservableBoolean"></variable>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_4"
@@ -14,7 +32,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:id="@+id/goBackButton"
         app:srcCompat="@drawable/ic_back_red" />
 
@@ -31,19 +49,22 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:clipToPadding="false"
+        android:visibility="gone"
+        visibleGone="@{!noResult}"
+        tools:visibility="visible"
         android:id="@+id/favoriteRecycler"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:padding="16dp"
+
         android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
-        android:visibility="gone"
-        tools:visibility="visible"
         android:layout_width="match_parent"
+        tools:visibility="visible"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="36dp"
+        android:visibility="gone"
+        visibleGone="@{noResult}"
         android:id="@+id/noFavorites">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -85,3 +106,13 @@
 
     </LinearLayout>
 </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/favouritesPB"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="88dp"
+            visibleGone="@{isLoading}"
+            android:layout_height="88dp" />
+    </RelativeLayout>
+</layout>

@@ -109,14 +109,14 @@
         app:srcCompat="@drawable/ic_back" />
 
     <LinearLayout
+        tools:visibility="gone"
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Title1"
