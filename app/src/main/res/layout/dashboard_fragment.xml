@@ -10,7 +10,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:paddingLeft="12dp"
-        android:paddingRight="16dp"
+        android:paddingRight="12dp"
         android:clipToPadding="false"
         android:id="@+id/card_recycler"
         android:layout_width="match_parent"

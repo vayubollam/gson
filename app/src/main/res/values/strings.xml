@@ -47,7 +47,7 @@
     <string name="join">JOIN</string>
     <string name="sign_in">SIGN IN</string>
     <string name="drive_safely">Drive safely</string>
-    <string name="safety_message">Petro-Canada takes safety seriously. Please Don\'t use your phone while driving!</string>
+    <string name="safety_message">Petro-Canada takes safety seriously. Please don\'t use your phone while driving!</string>
     <string name="error">Error</string>
     <string name="email">Email</string>
     <string name="sign_in_progress">Signing in</string>
@@ -55,7 +55,13 @@
     <string name="invalid_credentials_dialog_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="sign_in_blocked_dialog_title">Sign-in disabled</string>
     <string name="sign_in_blocked_dialog_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
+    <string name="favourites">Favourites</string>
+    <string name="no_favourites">No favourite stations</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, graece molestiae in est. Posse feugiat delenit.</string>
+    <string name="add_station">Add a station</string>
     <string name="profile">Profile</string>
     <string name="sign_out">Sign out</string>
     <string name="distance_unavailable">Distance not available</string>
+    <string name="signin_or_join">Sign-in or join to favourite</string>
+    <string name="signin_or_join_message">Sign-in to a Petro-Canada account to access all features and content.</string>
 </resources>

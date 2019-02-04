@@ -187,4 +187,8 @@
 
     <!-- end dialog -->
 
+    <style name="BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

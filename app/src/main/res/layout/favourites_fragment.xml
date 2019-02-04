@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean"></variable>
+
+        <variable
+            name="noResult"
+            type="androidx.databinding.ObservableBoolean"></variable>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_4"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="suncor.com.android.ui.home.stationlocator.favorites.FavouritesFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:id="@+id/goBackButton"
+        app:srcCompat="@drawable/ic_back_red" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        style="@style/Title1"
+        android:layout_marginLeft="16dp"
+        android:lineHeight="34dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/favourites"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:clipToPadding="false"
+        android:visibility="gone"
+        visibleGone="@{!noResult}"
+        tools:visibility="visible"
+        android:id="@+id/favoriteRecycler"
+        android:padding="16dp"
+
+        android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        tools:visibility="visible"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="36dp"
+        android:visibility="gone"
+        visibleGone="@{noResult}"
+        android:id="@+id/noFavorites">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            app:srcCompat="@drawable/ic_pin_favourite_gray"
+            android:layout_width="88dp"
+            android:layout_gravity="center"
+            android:layout_height="88dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            style="@style/Title2"
+            android:text="@string/no_favourites"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            style="@style/Body"
+            android:textSize="18sp"
+            android:lineHeight="26sp"
+            android:textColor="@color/black_60"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="34dp"
+            android:text="@string/lorem"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/SmallButton"
+            android:layout_width="wrap_content"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/add_station"
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/favouritesPB"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="88dp"
+            visibleGone="@{isLoading}"
+            android:layout_height="88dp" />
+    </RelativeLayout>
+</layout>
