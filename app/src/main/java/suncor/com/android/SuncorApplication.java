@@ -19,7 +19,7 @@ import suncor.com.android.model.Station;
 public class SuncorApplication extends Application {
 
     private static SuncorApplication sInstance;
-    public static FavouriteRepository favouriteRepository = new FavouriteMock();
+    public static FavouriteRepository favouriteRepository = new FavouriteRepositoryImpl();
     public static boolean splashShown = false;
 
     public void onCreate() {
