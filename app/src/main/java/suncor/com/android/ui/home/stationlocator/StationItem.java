@@ -1,9 +1,5 @@
 package suncor.com.android.ui.home.stationlocator;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Toast;
-
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,10 +7,9 @@ import java.util.Calendar;
 import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.Observable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 import suncor.com.android.BR;
-import suncor.com.android.R;
-import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
@@ -30,43 +25,26 @@ public class StationItem extends BaseObservable {
     private DirectionsResult distanceDuration;
     private boolean isFavourite;
 
-    private Observable.OnPropertyChangedCallback favouriteToggleCallback = new Observable.OnPropertyChangedCallback() {
-        @Override
-        public void onPropertyChanged(Observable sender, int propertyId) {
-            if (propertyId == BR.favourite)
-                new Handler(Looper.getMainLooper()).post(() -> favouriteToggled());
-        }
-    };
-
     public StationItem(FavouriteRepository favouriteRepository, Station station, boolean isFavourite) {
         this.favouriteRepository = favouriteRepository;
         this.station = station;
         this.isFavourite = isFavourite;
-        addOnPropertyChangedCallback(favouriteToggleCallback);
     }
 
-    private void favouriteToggled() {
+    public LiveData<Resource<Boolean>> toggleFavourite() {
         if (isFavourite) {
-            favouriteRepository.addFavourite(station).observeForever((r) -> {
+            return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
                 if (r.status == Resource.Status.SUCCESS) {
-                    Toast.makeText(SuncorApplication.getInstance(), SuncorApplication.getInstance().getString(R.string.added_to_favourites), Toast.LENGTH_SHORT).show();
-                } else if (r.status == Resource.Status.ERROR) {
-                    removeOnPropertyChangedCallback(favouriteToggleCallback);
-                    isFavourite = false;
-                    addOnPropertyChangedCallback(favouriteToggleCallback);
-                    //TODO handle error
-                    Toast.makeText(SuncorApplication.getInstance(), "Error", Toast.LENGTH_LONG).show();
+                    setFavourite(false);
                 }
+                return r;
             });
         } else {
-            favouriteRepository.removeFavourite(station).observeForever((r) -> {
-                if (r.status == Resource.Status.ERROR) {
-                    removeOnPropertyChangedCallback(favouriteToggleCallback);
-                    isFavourite = true;
-                    addOnPropertyChangedCallback(favouriteToggleCallback);
-                    //TODO handle error
-                    Toast.makeText(SuncorApplication.getInstance(), "Error", Toast.LENGTH_LONG).show();
+            return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
+                if (r.status == Resource.Status.SUCCESS) {
+                    setFavourite(true);
                 }
+                return r;
             });
         }
     }

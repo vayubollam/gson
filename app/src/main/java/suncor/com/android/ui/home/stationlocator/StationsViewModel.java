@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.Resource;
@@ -33,6 +34,12 @@ public class StationsViewModel extends ViewModel {
     public final static int DEFAULT_MAP_ZOOM = 5000;
 
     private FavouriteRepository favouriteRepository;
+    private Observer<Boolean> favouritesLoadedObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(Boolean aBoolean) {
+            refreshFavouriteState();
+        }
+    };
 
     private ArrayList<StationItem> cachedStations;
     private LatLngBounds cachedStationsBounds;
@@ -79,8 +86,15 @@ public class StationsViewModel extends ViewModel {
         _mapBounds.observeForever((bounds -> {
             refreshStations();
         }));
+
+        favouriteRepository.isLoaded().observeForever(favouritesLoadedObserver);
     }
 
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        favouriteRepository.isLoaded().removeObserver(favouritesLoadedObserver);
+    }
 
     private void refreshStations() {
         LatLng mapCenter = _mapBounds.getValue().getCenter();
@@ -129,7 +143,7 @@ public class StationsViewModel extends ViewModel {
                             JSONObject jo = jsonArray.getJSONObject(i);
                             Station station = gson.fromJson(jo.toString(), Station.class);
                             boolean isFavourite = false;
-                            if (favouriteRepository.isLoaded()) {
+                            if (favouriteRepository.isLoaded().getValue()) {
                                 isFavourite = favouriteRepository.isFavourite(station);
                             }
                             StationItem item = new StationItem(favouriteRepository, station, isFavourite);
@@ -162,6 +176,21 @@ public class StationsViewModel extends ViewModel {
                 }
             });
         }
+    }
+
+    private void refreshFavouriteState() {
+        if (cachedStations == null || cachedStations.isEmpty()) {
+            return;
+        }
+        ArrayList<StationItem> stationItems = cachedStations;
+        for (StationItem item : stationItems) {
+            if (favouriteRepository.isLoaded().getValue()) {
+                item.setFavourite(favouriteRepository.isFavourite(item.getStation()));
+            } else {
+                item.setFavourite(false);
+            }
+        }
+        _stationsAround.postValue(Resource.success(filterStations()));
     }
 
     private ArrayList<StationItem> filterStations() {

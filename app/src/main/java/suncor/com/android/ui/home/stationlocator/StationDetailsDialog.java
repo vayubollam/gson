@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -22,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.databinding.CardStationItemBinding;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
@@ -29,9 +32,13 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
 
     public static final String TAG = StationDetailsDialog.class.getSimpleName();
+
+    private final static float DIM_AMOUNT = 0.6f;
     private int intialHeight;
     private int intialPosition;
     private int fullHeight;
+
+    private SessionManager sessionManager;
 
     private BottomSheetBehavior behavior;
 
@@ -43,6 +50,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.StationDetailsDialogStyle);
+        sessionManager = SessionManager.getInstance();
     }
 
     @Override
@@ -64,6 +72,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         int horizontalPadding = getResources().getDimensionPixelOffset(R.dimen.cards_horizontal_padding_expanded);
         layoutPadding = topPadding + bottomPadding;
         binding.getRoot().setPadding(horizontalPadding, topPadding, horizontalPadding, bottomPadding);
+
         DisplayMetrics dp = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
         fullHeight = dp.heightPixels - getStatusBarHeight();
@@ -74,7 +83,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         dialog.setContentView(binding.getRoot());
 
         binding.closeButton.setOnClickListener((v) -> {
-            dismiss();
+            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
         binding.callButton.setOnClickListener((v) -> {
@@ -83,6 +92,10 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         binding.directionsButton.setOnClickListener((v) -> {
             NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.getStation());
+        });
+
+        binding.favouriteButton.setOnClickListener((v) -> {
+            toggleFavourite();
         });
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
@@ -99,7 +112,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                 public void onSlide(@NonNull View view, float v) {
                     Log.d("test", "Slide: " + v);
                     if (v > 0.01) {
-                        dialog.getWindow().setDimAmount(v * 0.6f);
+                        dialog.getWindow().setDimAmount(v * DIM_AMOUNT);
 
                         float titleTextSize = v > 0.7 ? 22 : v * 4 + 18;
                         ObjectAnimator.ofFloat(binding.stationTitleText, "textSize", titleTextSize).setDuration(0).start();
@@ -127,6 +140,25 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         }));
     }
 
+    private void toggleFavourite() {
+        if (!sessionManager.isUserLoggedIn()) {
+            PromptLoginDialog promptLoginDialog = new PromptLoginDialog();
+            promptLoginDialog.show(getFragmentManager(), PromptLoginDialog.TAG);
+        } else {
+            binding.setFavouriteBusy(true);
+            stationItem.toggleFavourite().observe(this, (r) -> {
+                if (r.status != Resource.Status.LOADING) {
+                    binding.setFavouriteBusy(false);
+                }
+                if (r.status == Resource.Status.ERROR) {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+
     private void callStation(Station station) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + station.getAddress().getPhone()));
@@ -143,15 +175,18 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        binding.setIsLoggedIn(sessionManager.isUserLoggedIn());
+        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            getDialog().getWindow().setDimAmount(DIM_AMOUNT);
+        }
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
-    }
-
-    private int dpToPixels(int dimension) {
-        float density = getResources().getDisplayMetrics().density;
-        float pixel = dimension * density;
-        return (int) pixel;
     }
 
     public void setIntialHeight(int intialHeight) {

@@ -2,10 +2,9 @@ package suncor.com.android.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.worklight.wlclient.api.WLClient;
-
-import suncor.com.android.GeneralConstants;
 
 /**
  * Created by bahramhaddadi on 2018-11-27.
@@ -17,7 +16,7 @@ public class UserLocalSettings {
 
     static {
         Context context = WLClient.getInstance().getContext();
-        preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public static boolean getBool(String key) {

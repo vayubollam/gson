@@ -66,7 +66,6 @@ public class FavouritesFragment extends Fragment {
         FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(SuncorApplication.favouriteRepository);
         mViewModel = ViewModelProviders.of(this, favouritesViewModelFactory).get(FavouritesViewModel.class);
         mViewModel.stations.observe(this, stations -> {
-            //stations.clear();
             isLoading.set(false);
             if (stations.size() == 0) {
                 noResult.set(true);

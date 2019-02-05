@@ -14,6 +14,14 @@
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.StationItem" />
 
+        <variable
+            name="isLoggedIn"
+            type="Boolean" />
+
+        <variable
+            name="favouriteBusy"
+            type="Boolean" />
+
     </data>
 
     <FrameLayout
@@ -184,21 +192,47 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <ToggleButton
+                        <LinearLayout
                             android:id="@+id/favourite_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="?selectableItemBackground"
-                            android:checked="@={vm.favourite}"
-                            android:drawableLeft="@drawable/favourite_button"
-                            android:drawablePadding="16dp"
-                            android:gravity="left|center_vertical"
-                            android:paddingLeft="16dp"
-                            android:textAllCaps="false"
-                            android:textAppearance="@style/Body"
-                            android:textColor="@color/black_80"
-                            android:textOff="@string/add_to_favourites_button_off"
-                            android:textOn="@string/add_to_favourites_button_on" />
+                            android:clickable="true"
+                            android:enabled="@{!favouriteBusy}"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingStart="16dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginRight="16dp"
+                                android:src="@{vm.favourite?@drawable/ic_favourite_on:@drawable/ic_favourite_off}"
+                                app:visibleGone="@{!favouriteBusy}"
+                                tools:src="@drawable/ic_favourite_off" />
+
+                            <ProgressBar
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginRight="16dp"
+                                android:indeterminate="true"
+                                android:visibility="gone"
+                                app:visibleGone="@{favouriteBusy}" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left|center_vertical"
+                                android:text="@{isLoggedIn?(vm.favourite?@string/fav_button_remove:@string/fav_button_add):@string/fav_button_signing}"
+                                android:textAllCaps="false"
+                                android:textAppearance="@style/Body"
+                                android:textColor="@{favouriteBusy?@color/black_60:@color/black_80}"
+                                tools:text="@string/fav_button_add"
+                                tools:textColor="@color/black_80" />
+                        </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"
@@ -206,20 +240,36 @@
                             android:layout_marginLeft="56dp"
                             android:background="@drawable/horizontal_divider" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <LinearLayout
                             android:id="@+id/call_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="?selectableItemBackground"
-                            android:drawableLeft="@drawable/ic_phone"
-                            android:drawablePadding="16dp"
-                            android:gravity="left|center_vertical"
-                            android:paddingLeft="16dp"
-                            android:text="@{@string/call_generic(vm.station.address.phone)}"
-                            android:textAllCaps="false"
-                            android:textAppearance="@style/Body"
-                            android:textColor="@color/black_80"
-                            tools:text="Call \u00b7 (123)456-7890" />
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingStart="16dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginRight="16dp"
+                                android:src="@drawable/ic_phone" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="left|center_vertical"
+                                android:text="@{@string/call_generic(vm.station.address.phone)}"
+                                android:textAllCaps="false"
+                                android:textAppearance="@style/Body"
+                                android:textColor="@color/black_80"
+                                tools:text="Call \u00b7 (123)456-7890" />
+
+                        </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"

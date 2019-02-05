@@ -9,12 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.worklight.wlclient.api.WLClient;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
@@ -23,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txtUserName, txtPassword;
     private BroadcastReceiver loginErrorReceiver, loginRequiredReceiver, loginSuccessReceiver;
 
-    private UserLoginChallengeHandler userLoginChallengeHandler;
     private LinearLayout progressLayout;
     SessionManager sessionManager;
 
@@ -33,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sessionManager = SessionManager.getInstance();
-        userLoginChallengeHandler = (UserLoginChallengeHandler) WLClient.getInstance().getSecurityCheckChallengeHandler(GeneralConstants.SECURITY_CHECK_NAME_LOGIN);
 
         txtUserName = findViewById(R.id.txt_email);
         txtPassword = findViewById(R.id.txt_password);
@@ -82,9 +77,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_REQUIRED));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginErrorReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_FAILURE));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginSuccessReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUCCESS));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_REQUIRED));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginErrorReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_FAILURE));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginSuccessReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_SUCCESS));
     }
 
     @Override
@@ -126,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
     View.OnClickListener btnBack_click = v -> onBackPressed();
 
-    public void alertError(final String msg, String title) {
+    private void alertError(final String msg, String title) {
         Runnable run = () -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(msg)
