@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.worklight.wlclient.api.WLClient;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private UserLoginChallengeHandler userLoginChallengeHandler;
     private LinearLayout progressLayout;
+    private TextInputLayout email_layout, password_layout;
+    private TextView emailError, passwordError;
     SessionManager sessionManager;
 
     @Override
@@ -36,8 +43,15 @@ public class LoginActivity extends AppCompatActivity {
         userLoginChallengeHandler = (UserLoginChallengeHandler) WLClient.getInstance().getSecurityCheckChallengeHandler(GeneralConstants.SECURITY_CHECK_NAME_LOGIN);
 
         txtUserName = findViewById(R.id.txt_email);
+        txtUserName.setFilters(new InputFilter[]{emailfilter});
         txtPassword = findViewById(R.id.txt_password);
+        txtPassword.addTextChangedListener(passwordTextWatcher);
+        txtUserName.addTextChangedListener(emailTextWatcher);
         progressLayout = findViewById(R.id.progress_layout);
+        email_layout = findViewById(R.id.email_layout);
+        password_layout = findViewById(R.id.password_layout);
+        emailError = findViewById(R.id.emailError);
+        passwordError = findViewById(R.id.passwordError);
 
         findViewById(R.id.signing_button).setOnClickListener(btnSignIn_click);
         findViewById(R.id.back_button).setOnClickListener(btnBack_click);
@@ -108,6 +122,11 @@ public class LoginActivity extends AppCompatActivity {
     View.OnClickListener btnSignIn_click = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
+            if (!validateInput()) {
+                return;
+            }
+
             if (txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()) {
                 alertError("Username and password are required", getString(R.string.error));
             } else {
@@ -123,6 +142,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
+    private boolean validateInput() {
+        Boolean allGood = true;
+        if (txtUserName.getText().toString().isEmpty()) {
+            email_layout.setError(" ");
+            password_layout.setErrorEnabled(true);
+            emailError.setVisibility(View.VISIBLE);
+            allGood = false;
+        }
+        if (txtPassword.getText().toString().isEmpty()) {
+            password_layout.setError(" ");
+            password_layout.setErrorEnabled(true);
+            passwordError.setVisibility(View.VISIBLE);
+            password_layout.setPasswordVisibilityToggleDrawable(R.drawable.ic_alert);
+            allGood = false;
+        }
+        return allGood;
+    }
 
     View.OnClickListener btnBack_click = v -> onBackPressed();
 
@@ -140,5 +177,60 @@ public class LoginActivity extends AppCompatActivity {
         };
         runOnUiThread(run);
     }
+
+
+    TextWatcher passwordTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty() && password_layout.getPasswordVisibilityToggleDrawable().getConstantState() == getDrawable(R.drawable.ic_alert).getConstantState()) {
+                password_layout.setPasswordVisibilityToggleDrawable(R.drawable.show_hide_password_background);
+                password_layout.setError("");
+                passwordError.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    TextWatcher emailTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                email_layout.setError("");
+                emailError.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    InputFilter emailfilter = (source, start, end, dest, dstart, dend) -> {
+        String filtered = "";
+        for (int i = start; i < end; i++) {
+            char character = source.charAt(i);
+            if (!Character.isWhitespace(character)) {
+                filtered += character;
+            }
+        }
+
+        return filtered;
+    };
 }
+
 

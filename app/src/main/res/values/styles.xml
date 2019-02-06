@@ -57,6 +57,13 @@
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
+    <style name="Caption1Red" parent="AppTheme">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColorHint">@color/red</item>
+        <item name="android:fontFamily">@font/gibson_regular</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="Caption2" parent="@style/Base.TextAppearance.AppCompat.Caption">
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/gibson_regular</item>
@@ -189,6 +196,17 @@
 
     <style name="BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="EditTextStyle" parent="AppTheme">
+        <item name="android:textColor">@color/black_80</item>
+        <item name="colorControlNormal">@color/black_40</item>
+        <item name="colorControlActivated">@color/black_80</item>
+        <item name="colorControlHighlight">@color/black_80</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/gibson_regular</item>
+        <item name="android:textColorHint">@color/black_60</item>
+
     </style>
 
 </resources>
