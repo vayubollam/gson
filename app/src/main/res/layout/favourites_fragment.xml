@@ -111,8 +111,8 @@
             android:id="@+id/favouritesPB"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_width="88dp"
+            android:layout_width="48dp"
             visibleGone="@{isLoading}"
-            android:layout_height="88dp" />
+            android:layout_height="48dp" />
     </RelativeLayout>
 </layout>

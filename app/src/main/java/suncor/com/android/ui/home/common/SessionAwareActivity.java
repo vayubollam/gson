@@ -16,8 +16,8 @@ import com.worklight.wlclient.auth.AccessToken;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import suncor.com.android.GeneralConstants;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 
 @SuppressLint("Registered")
 public class SessionAwareActivity extends FragmentActivity {
@@ -28,6 +28,10 @@ public class SessionAwareActivity extends FragmentActivity {
     private BroadcastReceiver loginRequiredReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (currentLoginStatus) {
+                currentLoginStatus = false;
+                onLogout();
+            }
             requestLogin();
         }
     };
@@ -70,7 +74,7 @@ public class SessionAwareActivity extends FragmentActivity {
     protected void onStart() {
         super.onStart();
         if (sessionManager.getUserName() != null) {
-            WLAuthorizationManager.getInstance().obtainAccessToken(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLAccessTokenListener() {
+            WLAuthorizationManager.getInstance().obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
                 @Override
                 public void onSuccess(AccessToken accessToken) {
                     Log.d(this.getClass().getSimpleName(), "User is logged in");
@@ -82,10 +86,10 @@ public class SessionAwareActivity extends FragmentActivity {
                 }
             });
         }
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_REQUIRED));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUCCESS));
-        LocalBroadcastManager.getInstance(this).registerReceiver(logoutReceiver, new IntentFilter(GeneralConstants.ACTION_LOGOUT_SUCCESS));
-        LocalBroadcastManager.getInstance(this).registerReceiver(errorReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_FAILURE));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_REQUIRED));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_SUCCESS));
+        LocalBroadcastManager.getInstance(this).registerReceiver(logoutReceiver, new IntentFilter(SessionManager.ACTION_LOGOUT_SUCCESS));
+        LocalBroadcastManager.getInstance(this).registerReceiver(errorReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_FAILURE));
         if (currentLoginStatus != sessionManager.isUserLoggedIn()) {
             currentLoginStatus = sessionManager.isUserLoggedIn();
             if (currentLoginStatus) {

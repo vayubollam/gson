@@ -30,8 +30,9 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.login.LoginActivity;
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLoginLogOut.setOnClickListener(btnLogInOut_click);
 
 //        try to get token to find out if token is still valid , if yes then we can go ahead and use it and consider user as logged in
-        WLAuthorizationManager.getInstance().obtainAccessToken(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLAccessTokenListener() {
+        WLAuthorizationManager.getInstance().obtainAccessToken(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLAccessTokenListener() {
             @Override
             public void onSuccess(AccessToken accessToken) {
                 //update UI to show user is logged in
@@ -128,10 +129,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_REQUIRED));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUCCESS));
-        LocalBroadcastManager.getInstance(this).registerReceiver(logoutReceiver, new IntentFilter(GeneralConstants.ACTION_LOGOUT_SUCCESS));
-        LocalBroadcastManager.getInstance(this).registerReceiver(errorReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_FAILURE));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_REQUIRED));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_SUCCESS));
+        LocalBroadcastManager.getInstance(this).registerReceiver(logoutReceiver, new IntentFilter(SessionManager.ACTION_LOGOUT_SUCCESS));
+        LocalBroadcastManager.getInstance(this).registerReceiver(errorReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_FAILURE));
 
     }
 
@@ -292,10 +293,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (btnLoginLogOut.getText().toString().toLowerCase().equals("log out")) {
                 Intent intent = new Intent();
-                intent.setAction(GeneralConstants.ACTION_LOGOUT);
+                intent.setAction(SessionManager.ACTION_LOGOUT);
                 LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
             } else {
-                WLAuthorizationManager.getInstance().obtainAccessToken(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLAccessTokenListener() {
+                WLAuthorizationManager.getInstance().obtainAccessToken(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLAccessTokenListener() {
                     @Override
                     public void onSuccess(AccessToken accessToken) {
                         //update UI to show user is logged in

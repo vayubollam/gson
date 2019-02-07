@@ -27,7 +27,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:text="@string/filters_fragment_title"
-            android:textAppearance="@style/Title2" />
+            android:textAppearance="@style/Title1" />
 
         <ScrollView
             android:layout_width="match_parent"

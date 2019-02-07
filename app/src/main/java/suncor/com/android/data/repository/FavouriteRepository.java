@@ -9,7 +9,7 @@ import suncor.com.android.model.Station;
 public interface FavouriteRepository {
     LiveData<Resource<Boolean>> loadFavourites();
 
-    boolean isLoaded();
+    LiveData<Boolean> isLoaded();
 
     boolean isFavourite(Station station);
 

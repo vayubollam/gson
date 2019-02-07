@@ -60,8 +60,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         holder.binding.setVm(stationItem);
         holder.binding.stationTitleText.setText(station.getAddress().getAddressLine());
 
-        if (stationItem.getDistanceDuration() == null) {
-
+        if (userLocation != null && stationItem.getDistanceDuration() == null) {
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
                     .observe(fragment, result -> {
@@ -72,7 +71,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                         }
                     });
         }
-
 
         holder.binding.directionsButton.setOnClickListener(v -> {
             if (fragment.getContext() != null) {

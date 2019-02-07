@@ -520,14 +520,10 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             ft.add(android.R.id.content, favouritesFragment, FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
             ft.addToBackStack(null);
             ft.commit();
-
-
         } else {
             PromptLoginDialog promptLoginDialog = new PromptLoginDialog();
             promptLoginDialog.show(getFragmentManager(), PromptLoginDialog.TAG);
         }
-
-    
     }
 }
 

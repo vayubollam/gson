@@ -18,7 +18,11 @@ public class FavouriteMock implements FavouriteRepository {
 
     private final static ArrayList<Station> FAVOURITES = new ArrayList<>();
 
-    private static boolean isLoaded = false;
+    private static MutableLiveData<Boolean> isLoaded = new MutableLiveData<>();
+
+    static {
+        isLoaded.setValue(false);
+    }
 
     @Override
 
@@ -33,7 +37,7 @@ public class FavouriteMock implements FavouriteRepository {
                     FAVOURITES.clear();
                     FAVOURITES.addAll(mockFavourites());
                     result.postValue(Resource.success(true));
-                    isLoaded = true;
+                    isLoaded.postValue(true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -46,7 +50,7 @@ public class FavouriteMock implements FavouriteRepository {
     }
 
     @Override
-    public boolean isLoaded() {
+    public LiveData<Boolean> isLoaded() {
         return isLoaded;
     }
 

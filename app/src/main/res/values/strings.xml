@@ -14,8 +14,9 @@
     <string name="always">ALWAYS</string>
     <string name="nearby">NearBy</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to \nPetro-Canada on The go!</string>
-    <string name="add_to_favourites_button_off">Add as favourite location</string>
-    <string name="add_to_favourites_button_on">Favourite</string>
+    <string name="fav_button_add">Add as favourite location</string>
+    <string name="fav_button_remove">Favourite</string>
+    <string name="fav_button_signing">Sign in or join to favourite</string>
     <string name="details_services_header">Products &amp; Services</string>
     <string name="details_fuel_header">Fuel options</string>
     <string name="details_carwash_header">Car wash</string>
