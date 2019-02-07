@@ -6,138 +6,6 @@
     android:layout_height="match_parent"
     tools:context="suncor.com.android.ui.login.LoginActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageView"
-        android:layout_width="110dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="8dp"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_logo" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email_layout"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="38dp"
-        android:layout_marginEnd="16dp"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/Caption1Red"
-        app:hintTextAppearance="@style/Caption1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
-        android:theme="@style/EditTextStyle">
-
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txt_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:paddingBottom="24dp"
-            android:theme="@style/EditTextStyle" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:theme="@style/EditTextStyle"
-        android:id="@+id/password_layout"
-        android:layout_width="0dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/password"
-        app:errorEnabled="true"
-        app:errorTextAppearance="@style/Caption1Red"
-        app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_layout"
-        app:passwordToggleDrawable="@drawable/show_hide_password_background"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/black_100">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txt_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:paddingBottom="24dp"
-            android:theme="@style/EditTextStyle" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/passwordError"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_weight="1"
-        android:text="@string/password_required"
-        android:layout_marginLeft="4dp"
-        android:visibility="invisible"
-        tools:visibility="visible"
-        android:layout_marginBottom="10dp"
-        style="@style/Caption1"
-        app:layout_constraintBottom_toBottomOf="@id/password_layout"
-        app:layout_constraintLeft_toLeftOf="@id/password_layout" />
-
-    <TextView
-        android:id="@+id/emailError"
-        style="@style/Caption1"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginLeft="4dp"
-        android:layout_weight="1"
-        android:text="@string/email_required"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/email_layout"
-        app:layout_constraintLeft_toLeftOf="@id/password_layout"
-        tools:visibility="visible" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_forgot_password"
-        style="@style/SmallButtonWhite"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/gibson_semibold"
-        android:layout_marginEnd="16dp"
-        android:text="@string/forgot_password"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signing_button" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signing_button"
-        style="@style/SmallButton"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:text="@string/sign_in"
-        app:layout_constraintBottom_toTopOf="@+id/btn_forgot_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordError" />
-
     <ImageButton
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
@@ -149,15 +17,106 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_logo" />
+
+    <suncor.com.android.ui.common.TextInputLayoutEx
+        android:id="@+id/email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:errorEnabled="true"
+        app:layout_constraintTop_toBottomOf="@id/imageView">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="24dp" />
+
+    </suncor.com.android.ui.common.TextInputLayoutEx>
+
+
+    <suncor.com.android.ui.common.TextInputLayoutEx
+        android:id="@+id/password_layout"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/password"
+        app:errorEnabled="true"
+        app:hintEnabled="true"
+        app:layout_constraintTop_toBottomOf="@id/email_layout"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:paddingBottom="24dp" />
+
+    </suncor.com.android.ui.common.TextInputLayoutEx>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signing_button"
+        style="@style/SmallButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/sign_in"
+        app:layout_constraintBottom_toTopOf="@+id/btn_forgot_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_layout" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_forgot_password"
+        style="@style/SmallButtonWhite"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/gibson_semibold"
+        android:text="@string/forgot_password"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signing_button" />
+
     <LinearLayout
-        tools:visibility="gone"
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Title1"

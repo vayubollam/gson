@@ -11,10 +11,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.google.android.material.textfield.TextInputLayout;
-import com.worklight.wlclient.api.WLClient;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,15 +19,14 @@ import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
+import suncor.com.android.ui.common.TextInputLayoutEx;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText txtUserName, txtPassword;
+    private EditText userNameEditText, passwordEditText;
     private BroadcastReceiver loginErrorReceiver, loginRequiredReceiver, loginSuccessReceiver;
 
-    private UserLoginChallengeHandler userLoginChallengeHandler;
     private LinearLayout progressLayout;
-    private TextInputLayout email_layout, password_layout;
-    private TextView emailError, passwordError;
+    private TextInputLayoutEx emailLayout, passwordLayout;
     SessionManager sessionManager;
 
     @Override
@@ -40,18 +35,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sessionManager = SessionManager.getInstance();
-        userLoginChallengeHandler = (UserLoginChallengeHandler) WLClient.getInstance().getSecurityCheckChallengeHandler(GeneralConstants.SECURITY_CHECK_NAME_LOGIN);
 
-        txtUserName = findViewById(R.id.txt_email);
-        txtUserName.setFilters(new InputFilter[]{emailfilter});
-        txtPassword = findViewById(R.id.txt_password);
-        txtPassword.addTextChangedListener(passwordTextWatcher);
-        txtUserName.addTextChangedListener(emailTextWatcher);
+        userNameEditText = findViewById(R.id.txt_email);
+        userNameEditText.setFilters(new InputFilter[]{emailfilter});
+        passwordEditText = findViewById(R.id.txt_password);
+        passwordEditText.addTextChangedListener(passwordTextWatcher);
+        userNameEditText.addTextChangedListener(emailTextWatcher);
         progressLayout = findViewById(R.id.progress_layout);
-        email_layout = findViewById(R.id.email_layout);
-        password_layout = findViewById(R.id.password_layout);
-        emailError = findViewById(R.id.emailError);
-        passwordError = findViewById(R.id.passwordError);
+        emailLayout = findViewById(R.id.email_layout);
+        passwordLayout = findViewById(R.id.password_layout);
+
+        emailLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
+        passwordLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
 
         findViewById(R.id.signing_button).setOnClickListener(btnSignIn_click);
         findViewById(R.id.back_button).setOnClickListener(btnBack_click);
@@ -122,22 +117,14 @@ public class LoginActivity extends AppCompatActivity {
     View.OnClickListener btnSignIn_click = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
-            if (!validateInput()) {
-                return;
-            }
-
-            if (txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()) {
-                alertError("Username and password are required", getString(R.string.error));
-            } else {
-
+            if (validateInput()) {
                 if (sessionManager.isAccountBlocked()) {
                     String title = getString(R.string.invalid_credentials_dialog_title);
                     String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
                     alertError(content, title);
                 } else {
                     progressLayout.setVisibility(View.VISIBLE);
-                    sessionManager.login(txtUserName.getText().toString(), txtPassword.getText().toString());
+                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString());
                 }
             }
         }
@@ -145,17 +132,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateInput() {
         Boolean allGood = true;
-        if (txtUserName.getText().toString().isEmpty()) {
-            email_layout.setError(" ");
-            password_layout.setErrorEnabled(true);
-            emailError.setVisibility(View.VISIBLE);
+        if (userNameEditText.getText().toString().isEmpty()) {
+            emailLayout.setError(getString(R.string.email_required));
             allGood = false;
         }
-        if (txtPassword.getText().toString().isEmpty()) {
-            password_layout.setError(" ");
-            password_layout.setErrorEnabled(true);
-            passwordError.setVisibility(View.VISIBLE);
-            password_layout.setPasswordVisibilityToggleDrawable(R.drawable.ic_alert);
+        if (passwordEditText.getText().toString().isEmpty()) {
+            passwordLayout.setError(getString(R.string.password_required), getDrawable(R.drawable.ic_alert));
             allGood = false;
         }
         return allGood;
@@ -187,10 +169,8 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.toString().isEmpty() && password_layout.getPasswordVisibilityToggleDrawable().getConstantState() == getDrawable(R.drawable.ic_alert).getConstantState()) {
-                password_layout.setPasswordVisibilityToggleDrawable(R.drawable.show_hide_password_background);
-                password_layout.setError("");
-                passwordError.setVisibility(View.INVISIBLE);
+            if (!s.toString().isEmpty()) {
+                passwordLayout.setError("");
             }
         }
 
@@ -209,8 +189,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (!s.toString().isEmpty()) {
-                email_layout.setError("");
-                emailError.setVisibility(View.GONE);
+                emailLayout.setError("");
             }
         }
 
