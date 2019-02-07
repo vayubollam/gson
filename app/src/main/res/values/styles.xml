@@ -11,6 +11,7 @@
         <item name="android:textColorPrimary">@color/black_80</item>
         <item name="android:textColorSecondary">@color/black_60</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
@@ -55,6 +56,10 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/gibson_regular</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="Caption1.Red" parent="Caption1">
+        <item name="android:textColor">@color/red</item>
     </style>
 
     <style name="Caption2" parent="@style/Base.TextAppearance.AppCompat.Caption">
@@ -189,6 +194,19 @@
 
     <style name="BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColor">@color/black_80</item>
+        <item name="colorControlNormal">@color/black_40</item>
+        <item name="colorControlActivated">@color/black_80</item>
+        <item name="colorControlHighlight">@color/black_80</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/gibson_regular</item>
+        <item name="android:textColorHint">@color/black_60</item>
+        <item name="errorTextAppearance">@style/Caption1.Red</item>
+        <item name="passwordToggleTint">@color/black_80</item>
+        <item name="passwordToggleDrawable">@drawable/show_hide_password_background</item>
     </style>
 
 </resources>

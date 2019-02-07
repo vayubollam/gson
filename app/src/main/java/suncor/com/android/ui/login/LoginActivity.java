@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,12 +18,14 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
+import suncor.com.android.ui.common.TextInputLayoutEx;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText txtUserName, txtPassword;
+    private EditText userNameEditText, passwordEditText;
     private BroadcastReceiver loginErrorReceiver, loginRequiredReceiver, loginSuccessReceiver;
 
     private LinearLayout progressLayout;
+    private TextInputLayoutEx emailLayout, passwordLayout;
     SessionManager sessionManager;
 
     @Override
@@ -30,9 +35,17 @@ public class LoginActivity extends AppCompatActivity {
 
         sessionManager = SessionManager.getInstance();
 
-        txtUserName = findViewById(R.id.txt_email);
-        txtPassword = findViewById(R.id.txt_password);
+        userNameEditText = findViewById(R.id.txt_email);
+        userNameEditText.setFilters(new InputFilter[]{emailfilter});
+        passwordEditText = findViewById(R.id.txt_password);
+        passwordEditText.addTextChangedListener(passwordTextWatcher);
+        userNameEditText.addTextChangedListener(emailTextWatcher);
         progressLayout = findViewById(R.id.progress_layout);
+        emailLayout = findViewById(R.id.email_layout);
+        passwordLayout = findViewById(R.id.password_layout);
+
+        emailLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
+        passwordLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
 
         findViewById(R.id.signing_button).setOnClickListener(btnSignIn_click);
         findViewById(R.id.back_button).setOnClickListener(btnBack_click);
@@ -103,21 +116,31 @@ public class LoginActivity extends AppCompatActivity {
     View.OnClickListener btnSignIn_click = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()) {
-                alertError("Username and password are required", getString(R.string.error));
-            } else {
-
+            if (validateInput()) {
                 if (sessionManager.isAccountBlocked()) {
                     String title = getString(R.string.invalid_credentials_dialog_title);
                     String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
                     alertError(content, title);
                 } else {
                     progressLayout.setVisibility(View.VISIBLE);
-                    sessionManager.login(txtUserName.getText().toString(), txtPassword.getText().toString());
+                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString());
                 }
             }
         }
     };
+
+    private boolean validateInput() {
+        Boolean allGood = true;
+        if (userNameEditText.getText().toString().isEmpty()) {
+            emailLayout.setError(getString(R.string.email_required));
+            allGood = false;
+        }
+        if (passwordEditText.getText().toString().isEmpty()) {
+            passwordLayout.setError(getString(R.string.password_required), getDrawable(R.drawable.ic_alert));
+            allGood = false;
+        }
+        return allGood;
+    }
 
     View.OnClickListener btnBack_click = v -> onBackPressed();
 
@@ -135,5 +158,57 @@ public class LoginActivity extends AppCompatActivity {
         };
         runOnUiThread(run);
     }
+
+
+    TextWatcher passwordTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                passwordLayout.setError("");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    TextWatcher emailTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                emailLayout.setError("");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    InputFilter emailfilter = (source, start, end, dest, dstart, dend) -> {
+        String filtered = "";
+        for (int i = start; i < end; i++) {
+            char character = source.charAt(i);
+            if (!Character.isWhitespace(character)) {
+                filtered += character;
+            }
+        }
+
+        return filtered;
+    };
 }
+
 

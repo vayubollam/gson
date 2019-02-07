@@ -48,7 +48,7 @@
     <string name="join">JOIN</string>
     <string name="sign_in">SIGN IN</string>
     <string name="drive_safely">Drive safely</string>
-    <string name="safety_message">Petro-Canada takes safety seriously. Please don\'t use your phone while driving!</string>
+    <string name="safety_message">Remember to be responsible. Please do not use your phone while driving.</string>
     <string name="error">Error</string>
     <string name="email">Email</string>
     <string name="sign_in_progress">Signing in</string>
@@ -65,4 +65,6 @@
     <string name="distance_unavailable">Distance not available</string>
     <string name="signin_or_join">Sign-in or join to favourite</string>
     <string name="signin_or_join_message">Sign-in to a Petro-Canada account to access all features and content.</string>
+    <string name="email_required">Email is required.</string>
+    <string name="password_required">Password is required.</string>
 </resources>
