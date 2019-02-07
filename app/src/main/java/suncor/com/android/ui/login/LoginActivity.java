@@ -47,8 +47,21 @@ public class LoginActivity extends AppCompatActivity {
         emailLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
         passwordLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
 
-        findViewById(R.id.signing_button).setOnClickListener(btnSignIn_click);
-        findViewById(R.id.back_button).setOnClickListener(btnBack_click);
+        findViewById(R.id.signing_button).setOnClickListener((v) -> {
+            if (validateInput()) {
+                if (sessionManager.isAccountBlocked()) {
+                    String title = getString(R.string.invalid_credentials_dialog_title);
+                    String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                    alertError(content, title);
+                } else {
+                    progressLayout.setVisibility(View.VISIBLE);
+                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString());
+                }
+            }
+        });
+        findViewById(R.id.back_button).setOnClickListener((v) -> {
+            onBackPressed();
+        });
 
         //Login error
         loginErrorReceiver = new BroadcastReceiver() {
@@ -112,23 +125,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    //region  UI events
-    View.OnClickListener btnSignIn_click = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (validateInput()) {
-                if (sessionManager.isAccountBlocked()) {
-                    String title = getString(R.string.invalid_credentials_dialog_title);
-                    String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
-                    alertError(content, title);
-                } else {
-                    progressLayout.setVisibility(View.VISIBLE);
-                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString());
-                }
-            }
-        }
-    };
-
     private boolean validateInput() {
         Boolean allGood = true;
         if (userNameEditText.getText().toString().isEmpty()) {
@@ -141,8 +137,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         return allGood;
     }
-
-    View.OnClickListener btnBack_click = v -> onBackPressed();
 
     private void alertError(final String msg, String title) {
         Runnable run = () -> {
