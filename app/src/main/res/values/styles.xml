@@ -12,8 +12,6 @@
         <item name="android:textColorSecondary">@color/black_60</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
-        <item name="colorControlNormal">@color/black_40</item>
-        <item name="colorControlActivated">@color/black_80</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
@@ -196,6 +194,11 @@
 
     <style name="BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.TextInput">
+        <item name="colorControlNormal">@color/black_40</item>
+        <item name="colorControlActivated">@color/black_80</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
