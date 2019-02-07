@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="suncor.com.android.model.DirectionsResult" />
+
+        <variable
+            name="stationItem"
+            type="suncor.com.android.ui.home.stationlocator.StationItem" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+
+        android:paddingLeft="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_nearby_title"
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@{stationItem.station.address.addressLine}"
+            android:textColor="@color/black_80"
+            tools:text="22 Indian db" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_nearby_distance_duration"
+                style="@style/Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{DirectionsResult.formatDistance(context, stationItem.distanceDuration) + ` ·`}"
+                android:textColor="@color/black_60"
+                tools:text="12 km away" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Caption1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@+id/txt_nearby_distance_duration"
+                android:text="@{stationItem.isOpen24Hrs()?@string/station_open_24hrs:stationItem.isOpen()?@string/open_generic(stationItem.getCloseHour()) : @string/close_generic(stationItem.getOpenHour())}"
+                android:textColor="@color/black_60"
+                tools:text="Open 24 hours" />
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/horizontal_divider" />
+    </LinearLayout>
+</layout>
+
+

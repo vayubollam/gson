@@ -17,19 +17,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import suncor.com.android.GeneralConstants;
-import suncor.com.android.utilities.UserLocalSettings;
+import suncor.com.android.mfp.SessionManager;
 
 /**
  * Created by bahramhaddadi on 2018-11-28.
  */
 
 public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
-    //    private static String securityCheckName = "UserLogin";
-    private int remainingAttempts = -1;
+    public static final String ERROR_MSG = "errorMsg";
+    public static final String REMAINING_ATTEMPTS = "remainingAttempts";
+    public static final String FAILURE = "failure";
+
+    public static final String SECURITY_CHECK_NAME_LOGIN = "UserLogin";
+    public static final String SCOPE = "LoggedIn";
+
     private String errorMsg = "";
     private Context context;
     private boolean isChallenged = false;
+    private SessionManager sessionManager;
 
     private LocalBroadcastManager broadcastManager;
 
@@ -37,31 +42,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         super(securityCheckName);
         context = WLClient.getInstance().getContext();
         broadcastManager = LocalBroadcastManager.getInstance(context);
-
-        //Reset the current user
-        UserLocalSettings.removeKey(GeneralConstants.SHARED_PREF_USER);
-
-        //Receive login requests
-        broadcastManager.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                try {
-                    JSONObject credentials = new JSONObject(intent.getStringExtra("credentials"));
-                    login(credentials);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER));
-
-        //Cancel login process
-        broadcastManager.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                cancel();
-            }
-        }, new IntentFilter(GeneralConstants.ACTION_LOGIN_CANCELLED));
-
+        sessionManager = SessionManager.getInstance();
+        sessionManager.setChallengeHandler(this);
 
         //Receive logout requests
         broadcastManager.registerReceiver(new BroadcastReceiver() {
@@ -69,11 +51,11 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             public void onReceive(Context context, Intent intent) {
                 logout();
             }
-        }, new IntentFilter(GeneralConstants.ACTION_LOGOUT));
+        }, new IntentFilter(SessionManager.ACTION_LOGOUT));
     }
 
     public static UserLoginChallengeHandler createAndRegister() {
-        UserLoginChallengeHandler challengeHandler = new UserLoginChallengeHandler(GeneralConstants.SECURITY_CHECK_NAME_LOGIN);
+        UserLoginChallengeHandler challengeHandler = new UserLoginChallengeHandler(SECURITY_CHECK_NAME_LOGIN);
         WLClient.getInstance().registerChallengeHandler(challengeHandler);
         return challengeHandler;
     }
@@ -81,46 +63,62 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     @Override
     public void handleChallenge(JSONObject jsonObject) {
-        Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Challenge Received");
-        isChallenged = true;
-        try {
-            if (jsonObject.isNull("errorMsg")) {
-                errorMsg = "";
-            } else {
-                errorMsg = jsonObject.getString("errorMsg");
-            }
-
-            remainingAttempts = jsonObject.getInt("remainingAttempts");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Intent intent = new Intent();
-        intent.setAction(GeneralConstants.ACTION_LOGIN_REQUIRED);
-        intent.putExtra("errorMsg", errorMsg);
-        intent.putExtra("remainingAttempts", remainingAttempts);
-        broadcastManager.sendBroadcast(intent);
-    }
-
-    @Override
-    public void handleFailure(JSONObject error) {
-        super.handleFailure(error);
-        isChallenged = false;
-        if (error.isNull("failure")) {
-            errorMsg = "Failed to login. Please try again later.";
-        } else {
+        Log.d(SECURITY_CHECK_NAME_LOGIN, "Challenge Received");
+        sessionManager.setUserName(null);
+        {
+            isChallenged = true;
             try {
-                errorMsg = error.getString("failure");
+                if (sessionManager.isAccountBlocked()) {
+                    Intent intent = new Intent();
+                    intent.setAction(SessionManager.ACTION_USER_ACCOUNT_BLOCKED);
+                    broadcastManager.sendBroadcast(intent);
+                } else {
+                    if (jsonObject.isNull(ERROR_MSG)) {
+                        errorMsg = "";
+                    } else {
+                        errorMsg = jsonObject.getString(ERROR_MSG);
+                    }
+
+                    //private static String securityCheckName = "UserLogin";
+                    int remainingAttempts = jsonObject.getInt(REMAINING_ATTEMPTS);
+                    Intent intent = new Intent();
+                    intent.setAction(SessionManager.ACTION_LOGIN_REQUIRED);
+                    intent.putExtra(ERROR_MSG, errorMsg);
+                    intent.putExtra(REMAINING_ATTEMPTS, remainingAttempts);
+                    broadcastManager.sendBroadcast(intent);
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void handleFailure(JSONObject error) {
+        Log.d(SECURITY_CHECK_NAME_LOGIN, "Handle failure");
+        super.handleFailure(error);
+        isChallenged = false;
         Intent intent = new Intent();
-        intent.setAction(GeneralConstants.ACTION_LOGIN_FAILURE);
-        intent.putExtra("errorMsg", errorMsg);
+        intent.setAction(SessionManager.ACTION_LOGIN_FAILURE);
+        if (error.isNull(FAILURE)) {
+            errorMsg = "Failed to login. Please try again later.";
+        } else {
+            try {
+                errorMsg = error.getString(FAILURE);
+                if (errorMsg.equals("Account blocked")) {
+                    if (!sessionManager.isAccountBlocked()) {
+                        sessionManager.markAccountAsBlocked();
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        intent.putExtra(ERROR_MSG, errorMsg);
         broadcastManager.sendBroadcast(intent);
-        Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "handleFailure");
+        Log.d(SECURITY_CHECK_NAME_LOGIN, "handleFailure");
     }
 
     @Override
@@ -129,31 +127,31 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         isChallenged = false;
         try {
             //Save the current user
-            UserLocalSettings.setString(GeneralConstants.SHARED_PREF_USER, identity.getJSONObject("user").toString());
+            sessionManager.setUserName(identity.getJSONObject("user").toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         Intent intent = new Intent();
-        intent.setAction(GeneralConstants.ACTION_LOGIN_SUCCESS);
+        intent.setAction(SessionManager.ACTION_LOGIN_SUCCESS);
         broadcastManager.sendBroadcast(intent);
-        Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "handleSuccess");
+        Log.d(SECURITY_CHECK_NAME_LOGIN, "handleSuccess");
     }
 
     public void login(JSONObject credentials) {
         if (isChallenged) {
             submitChallengeAnswer(credentials);
         } else {
-            WLAuthorizationManager.getInstance().login(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
+            WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
                 @Override
                 public void onSuccess() {
-                    Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Login Preemptive Success");
+                    Log.d(SECURITY_CHECK_NAME_LOGIN, "Login Preemptive Success");
 
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Login Preemptive Failure");
+                    Log.d(SECURITY_CHECK_NAME_LOGIN, "Login Preemptive Failure");
                 }
             });
         }
@@ -161,20 +159,21 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
 
     public void logout() {
-        WLAuthorizationManager.getInstance().logout(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
+        WLAuthorizationManager.getInstance().logout(SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
-                Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Logout Success");
+                sessionManager.setUserName(null);
+                Log.d(SECURITY_CHECK_NAME_LOGIN, "Logout Success");
                 Intent intent = new Intent();
-                intent.setAction(GeneralConstants.ACTION_LOGOUT_SUCCESS);
+                intent.setAction(SessionManager.ACTION_LOGOUT_SUCCESS);
                 broadcastManager.sendBroadcast(intent);
             }
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
-                Log.d(GeneralConstants.SECURITY_CHECK_NAME_LOGIN, "Logout Failure");
+                Log.d(SECURITY_CHECK_NAME_LOGIN, "Logout Failure");
                 Intent intent = new Intent();
-                intent.setAction(GeneralConstants.ACTION_LOGOUT_FAILURE);
+                intent.setAction(SessionManager.ACTION_LOGOUT_FAILURE);
                 broadcastManager.sendBroadcast(intent);
             }
         });

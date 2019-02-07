@@ -4,25 +4,84 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import androidx.databinding.ObservableField;
+import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import suncor.com.android.BR;
+import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 
-public class StationItem {
+public class StationItem extends BaseObservable {
 
-    public ObservableField<Station> station = new ObservableField<>();
-    public ObservableField<DirectionsResult> distanceDuration = new ObservableField<>();
-    public ObservableField<Boolean> isExpanded = new ObservableField<>(false);
-    private boolean isFavourite = false;
+    private FavouriteRepository favouriteRepository;
 
-    public StationItem(Station station) {
-        this.station.set(station);
+
+    private Station station;
+    private DirectionsResult distanceDuration;
+    private boolean isFavourite;
+
+    public StationItem(FavouriteRepository favouriteRepository, Station station, boolean isFavourite) {
+        this.favouriteRepository = favouriteRepository;
+        this.station = station;
+        this.isFavourite = isFavourite;
+    }
+
+    public LiveData<Resource<Boolean>> toggleFavourite() {
+        if (isFavourite) {
+            return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
+                if (r.status == Resource.Status.SUCCESS) {
+                    setFavourite(false);
+                }
+                return r;
+            });
+        } else {
+            return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
+                if (r.status == Resource.Status.SUCCESS) {
+                    setFavourite(true);
+                }
+                return r;
+            });
+        }
     }
 
     public StationItem(Station station, DirectionsResult distanceDuration) {
-        this.station.set(station);
-        this.distanceDuration.set(distanceDuration);
+        this.station = station;
+        this.distanceDuration = distanceDuration;
+    }
+
+    @Bindable
+    public Station getStation() {
+        return station;
+    }
+
+    public void setStation(Station station) {
+        this.station = station;
+        notifyPropertyChanged(BR.station);
+    }
+
+    @Bindable
+    public DirectionsResult getDistanceDuration() {
+        return distanceDuration;
+    }
+
+    public void setDistanceDuration(DirectionsResult distanceDuration) {
+        this.distanceDuration = distanceDuration;
+        notifyPropertyChanged(BR.distanceDuration);
+    }
+
+    @Bindable
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
+        notifyPropertyChanged(BR.favourite);
     }
 
     public boolean isOpen() {
@@ -50,7 +109,7 @@ public class StationItem {
     }
 
     public String getWorkHours(int i) {
-        ArrayList<Hour> workHours = station.get().getHours();
+        ArrayList<Hour> workHours = station.getHours();
         StringBuilder buffer = new StringBuilder();
         buffer.append(workHours.get(i).formatOpenHour())
                 .append(" - ")
@@ -61,10 +120,14 @@ public class StationItem {
     private Hour getTodaysHours() {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        return station.get().getHours().get(dayOfWeek - 1);
+        return station.getHours().get(dayOfWeek - 1);
     }
 
-    public boolean isFavourite() {
-        return isFavourite;
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || !(obj instanceof StationItem)) {
+            return false;
+        }
+        return ((StationItem) obj).station.equals(this.station);
     }
 }

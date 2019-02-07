@@ -1,6 +1,8 @@
 package suncor.com.android.ui;
 
-import java.util.ArrayList;
+import android.view.View;
+
+import java.util.HashMap;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
@@ -13,29 +15,30 @@ public class BindingAdapters {
             return;
         }
         StringBuilder buffer = new StringBuilder();
-        ArrayList amenitiesEnum = new ArrayList();
-        ArrayList amenitiesValues = new ArrayList();
+        HashMap<String, String> amenitiesMap = null;
         switch (amenitieType) {
             case 0:
-                amenitiesEnum = Station.SERVICE_AMENITIES_ENUM;
-                amenitiesValues = Station.SERVICE_AMENITIES_VALUES;
+                amenitiesMap = Station.SERVICE_AMENITIES;
                 break;
             case 1:
-                amenitiesEnum = Station.FUEL_AMENITIES_ENUM;
-                amenitiesValues = Station.FUEL_AMENITIES_VALUES;
+                amenitiesMap = Station.FUEL_AMENITIES;
                 break;
             case 2:
-                amenitiesEnum = Station.WASH_AMENITIES_ENUM;
-                amenitiesValues = Station.WASH_AMENITIES_VALUES;
+                amenitiesMap = Station.WASH_AMENITIES;
                 break;
         }
         for (String amenitie : station.getAmenities()) {
-            int index = amenitiesEnum.indexOf(amenitie);
-            if (index != -1) {
-                buffer.append(amenitiesValues.get(index));
+            if (amenitiesMap.containsKey(amenitie)) {
+                buffer.append(amenitiesMap.get(amenitie));
                 buffer.append("\n");
             }
         }
         view.setText(buffer.toString().trim());
     }
+
+    @BindingAdapter({"visibleGone"})
+    public static void showHide(View view, boolean show) {
+        view.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
 }

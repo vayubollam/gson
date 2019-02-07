@@ -2,66 +2,56 @@ package suncor.com.android.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.worklight.wlclient.api.WLClient;
-
-import java.util.Date;
-
-import suncor.com.android.GeneralConstants;
 
 /**
  * Created by bahramhaddadi on 2018-11-27.
  */
 
 public class UserLocalSettings {
-    public static boolean getBool(String key) {
+
+    private static SharedPreferences preferences;
+
+    static {
         Context context = WLClient.getInstance().getContext();
-        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public static boolean getBool(String key) {
         return preferences.getBoolean(key, false);
     }
 
     public static void setBool(String key, boolean value) {
-        Context context = WLClient.getInstance().getContext();
-        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(key, value);
-        editor.commit();
+        preferences.edit()
+                .putBoolean(key, value)
+                .apply();
     }
 
     public static String getString(String key) {
-        Context context = WLClient.getInstance().getContext();
-        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return preferences.getString(key, null);
     }
 
     public static void setString(String key, String value) {
-        Context context = WLClient.getInstance().getContext();
-        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(key, value);
-        editor.commit();
+        preferences.edit()
+                .putString(key, value)
+                .apply();
     }
 
-    public static Date getDate(String key) {
-        Context context = WLClient.getInstance().getContext();
-        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        return new Date(preferences.getLong(key, 0));
+    public static long getLong(String key) {
+        return preferences.getLong(key, 0);
     }
 
-    public static void setDate(String key, Date value) {
-        Context context = WLClient.getInstance().getContext();
-        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putLong(key, value.getTime());
-        editor.commit();
+    public static void setLong(String key, long value) {
+        preferences.edit()
+                .putLong(key, value)
+                .apply();
     }
 
     public static void removeKey(String key) {
-        Context context = WLClient.getInstance().getContext();
-        SharedPreferences preferences = context.getSharedPreferences(GeneralConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove(key);
-        editor.commit();
+        preferences.edit()
+                .remove(key)
+                .apply();
     }
-
 }

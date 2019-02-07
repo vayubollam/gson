@@ -1,9 +1,6 @@
 package suncor.com.android.ui.home.stationlocator;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,11 +14,10 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.GeneralConstants;
 import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.CardStationItemBinding;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -29,22 +25,12 @@ import suncor.com.android.utilities.NavigationAppsHelper;
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
 
     private final ArrayList<StationItem> stations = new ArrayList<>();
-    private final FragmentActivity activity;
+    private final StationsFragment fragment;
     private final BottomSheetBehavior bottomSheetBehavior;
-    private final SharedPreferences prefs;
-    public static final String ORIGIN_LAT = "origin_lat";
-    public static final String ORIGIN_LNG = "origin_lng";
-    public static final String DEST_LAT = "dest_lat";
-    public static final String DEST_LNG = "dest_lng";
     private LatLng userLocation;
-    private GestureDetectorCompat swipeUpDetector;
 
     public ArrayList<StationItem> getStations() {
         return stations;
-    }
-
-    public LatLng getUserLocation() {
-        return userLocation;
     }
 
     public void setUserLocation(LatLng userLocation) {
@@ -52,45 +38,9 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         notifyDataSetChanged();
     }
 
-    public StationAdapter(FragmentActivity activity, BottomSheetBehavior bottomSheetBehavior) {
-        this.activity = activity;
+    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior) {
+        this.fragment = fragment;
         this.bottomSheetBehavior = bottomSheetBehavior;
-        prefs = activity.getSharedPreferences(GeneralConstants.USER_PREFS_NAME, Context.MODE_PRIVATE);
-        swipeUpDetector = new GestureDetectorCompat(activity, new GestureDetector.SimpleOnGestureListener() {
-            private boolean isSwipeUpDetected = false;
-
-            @Override
-            public boolean onDown(MotionEvent e) {
-                isSwipeUpDetected = false;
-                return true;
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (!isSwipeUpDetected && velocityY > 0) {
-                    isSwipeUpDetected = true;
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                if (!isSwipeUpDetected && distanceY > 0) {
-                    isSwipeUpDetected = true;
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private ArrayList<StationItem> convertToViewModel(ArrayList<Station> stations) {
-        ArrayList<StationItem> models = new ArrayList<>();
-        for (Station station : stations) {
-            models.add(new StationItem(station));
-        }
-        return models;
     }
 
     @NonNull
@@ -106,27 +56,27 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     @Override
     public void onBindViewHolder(@NonNull StationViewHolder holder, int position) {
         final StationItem stationItem = stations.get(position);
-        final Station station = stationItem.station.get();
+        final Station station = stationItem.getStation();
         holder.binding.setVm(stationItem);
-        holder.binding.txtStationTitle.setText(station.getAddress().getAddressLine());
+        holder.binding.stationTitleText.setText(station.getAddress().getAddressLine());
 
-        if (stationItem.distanceDuration.get() == null) {
-
+        if (userLocation != null && stationItem.getDistanceDuration() == null) {
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             DirectionsApi.getInstance().enqueuJob(userLocation, dest)
-                    .observe(activity, result -> { //TODO choose right lifecycle owner
-                        holder.binding.brKmCard.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
+                    .observe(fragment, result -> {
                         if (result.status == Resource.Status.SUCCESS) {
-                            stationItem.distanceDuration.set(result.data);
+                            stationItem.setDistanceDuration(result.data);
+                        } else {
+                            stationItem.setDistanceDuration(new DirectionsResult(-1, -1));
                         }
-                        //TODO handle error
                     });
         }
 
-
-        holder.binding.btnCardDirections.setOnClickListener(v -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            NavigationAppsHelper.openNavigationApps(activity, station);
+        holder.binding.directionsButton.setOnClickListener(v -> {
+            if (fragment.getContext() != null) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                NavigationAppsHelper.openNavigationApps(fragment.getContext(), station);
+            }
         });
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
@@ -136,14 +86,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
-        holder.binding.getRoot().setOnTouchListener((view, event) -> {
-            boolean eventHandled = swipeUpDetector.onTouchEvent(event);
-            boolean isSwipeUp = eventHandled && event.getAction() != MotionEvent.ACTION_DOWN;
-            if (isSwipeUp) {
-                showStationDetails(stationItem, holder.itemView);
-            }
-            return eventHandled;
-        });
+        holder.itemView.setOnTouchListener(new CardTouchListener(stationItem, holder.itemView));
 
         holder.binding.executePendingBindings();
     }
@@ -158,7 +101,8 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         itemView.getLocationInWindow(position);
         dialog.setIntialPosition(position[1]);
         dialog.setStationItem(stationItem);
-        dialog.show(activity.getSupportFragmentManager(), StationDetailsDialog.TAG);
+        dialog.setTargetFragment(fragment, StationsFragment.STATION_DETAILS_REQUEST_CODE);
+        dialog.show(fragment.getFragmentManager(), StationDetailsDialog.TAG);
     }
 
     @Override
@@ -170,19 +114,67 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     class StationViewHolder extends RecyclerView.ViewHolder {
 
         final CardStationItemBinding binding;
-        final int screenWidth = getScreenWidth();
-
 
         StationViewHolder(CardStationItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
 
-        private int getScreenWidth() {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    private class CardTouchListener implements View.OnTouchListener {
 
-            return displayMetrics.widthPixels;
+        StationItem item;
+        View view;
+
+        GestureDetectorCompat swipeUpDetector = new GestureDetectorCompat(fragment.getContext(), new GestureDetector.SimpleOnGestureListener() {
+            boolean isSwipeUpDetected;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                    return false;
+                }
+                isSwipeUpDetected = false;
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (!isSwipeUpDetected) {
+                    isSwipeUpDetected = true;
+                    if (velocityY > 0) {
+                        showStationDetails(item, view);
+                    } else if (velocityY < 0) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (!isSwipeUpDetected) {
+                    isSwipeUpDetected = true;
+                    if (distanceY > 0) {
+                        showStationDetails(item, view);
+                    } else if (distanceY < 0) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        CardTouchListener(StationItem item, View view) {
+            this.item = item;
+            this.view = view;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return swipeUpDetector.onTouchEvent(event);
         }
     }
 

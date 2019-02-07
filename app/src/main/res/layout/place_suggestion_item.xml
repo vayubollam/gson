@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="place"
+            type="suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion"></variable>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:paddingLeft="16dp"
+        android:background="@color/white"
+
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:id="@+id/txt_suggestion_title"
+
+            style="@style/Body"
+            tools:text="22 Indian db"
+            android:layout_height="wrap_content"
+            android:text="@{place.primaryText}"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/black_80"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginTop="6dp"
+                android:layout_width="wrap_content"
+                android:id="@+id/txt_suggestion_subtitle"
+                style="@style/Caption1"
+                android:text="@{place.secondaryText}"
+                tools:text="Toronto, On"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_60"/>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/horizontal_divider"
+            android:layout_marginTop="14dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>
+
+

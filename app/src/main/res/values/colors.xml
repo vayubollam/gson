@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="suncor_red">#D83938</color>
-    <color name="red">#EB182C</color>
+    <color name="colorPrimaryDark">@color/black_20</color>
+    <color name="colorAccent">@color/red</color>
     <color name="black_100">#000000</color>
     <color name="black_80">#323232</color>
     <color name="black_60">#666666</color>
     <color name="black_40">#999999</color>
-    <color name="Black_20">#CDCDCD</color>
-    <color name="Black_4">#F4F4F4</color>
+    <color name="black_20">#CDCDCD</color>
+    <color name="black_4">#F4F4F4</color>
     <color name="white">#FFFFFF</color>
-    <color name="blue">#FF0076FF</color>
-    <color name="red_location">#EC1C2F</color>
-    <color name="choose_back">#14000000</color>
+    <color name="blue">#0076FF</color>
+    <color name="greeen">#EB182C</color>
+    <color name="yellow">#FFDF00</color>
+    <color name="orange">#EB182C</color>
+    <color name="red">#EB182C</color>
 </resources>

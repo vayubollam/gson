@@ -5,28 +5,29 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.ui.home.common.SessionAwareActivity;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
+import suncor.com.android.ui.home.profile.ProfileFragment;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
 
-public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView bottom_navigation;
-    private Fragment selectedFragment;
 
     //request code for requesting permissions
-    private int requestCode = 1;
+    private final static int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkforPermission();
 
-        selectedFragment = new DashboardFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.frame_layout_home, selectedFragment);
-        transaction.addToBackStack(null);
-        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        transaction.commit();
+        openFragment(R.id.menu_home);
+
+        if (!isLoggedIn()) {
+            bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
+        }
     }
 
 
@@ -67,66 +66,84 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         }
         if (!listPermissionsNeeded.isEmpty())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                this.requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), requestCode);
+                this.requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), PERMISSION_REQUEST_CODE);
             }
-
 
     }
 
-
-    //when user clicks on one of the bottom navigation items
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        selectedFragment = null;
-        switch (menuItem.getItemId()) {
-            case R.id.menu_home: {
-                if (!(selectedFragment instanceof DashboardFragment)) {
-                    selectedFragment = new DashboardFragment();
-                    menuItem.setChecked(true);
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction transaction = fm.beginTransaction();
-                    transaction.replace(R.id.frame_layout_home, selectedFragment);
-                    transaction.addToBackStack(null);
-                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    transaction.commit();
-                }
-                break;
-
-            }
-            case R.id.menu_stations: {
-                if (!(selectedFragment instanceof StationsFragment)) {
-                    selectedFragment = new StationsFragment();
-                    menuItem.setChecked(true);
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction transaction = fm.beginTransaction();
-                    transaction.replace(R.id.frame_layout_home, selectedFragment);
-                    transaction.addToBackStack(null);
-                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    transaction.commit();
-
-                }
-                break;
-
-            }
-            default: {
-
-            }
-
-
-        }
-
+        openFragment(menuItem.getItemId());
         return true;
     }
 
 
-    public void hideBottomNavigation() {
-        bottom_navigation.setVisibility(View.GONE);
+    @Override
+    protected void onLogout() {
+        super.onLogout();
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof BaseFragment) {
+                ((BaseFragment) fragment).onLoginStatusChanged();
+            }
+        }
+
+        bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+    protected void onLoginSuccess() {
+        super.onLoginSuccess();
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof BaseFragment) {
+                ((BaseFragment) fragment).onLoginStatusChanged();
+            }
+        }
+
+        bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(true);
+    }
+
+    public void openFragment(@IdRes int menuItemId) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
+        if (fragment != null) {
+            fragmentTransaction.detach(fragment);
+        }
+
+        switch (menuItemId) {
+            case R.id.menu_home:
+                fragment = fragmentManager.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                if (fragment != null) {
+                    fragmentTransaction.attach(fragment);
+                } else {
+                    fragment = new DashboardFragment();
+                    fragmentTransaction.add(R.id.frame_layout_home, fragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                }
+                break;
+            case R.id.menu_stations:
+                fragment = fragmentManager.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG);
+                if (fragment != null) {
+                    fragmentTransaction.attach(fragment);
+                } else {
+                    fragment = new StationsFragment();
+                    fragmentTransaction.add(R.id.frame_layout_home, fragment, StationsFragment.STATIONS_FRAGMENT_TAG);
+                }
+                break;
+            case R.id.menu_profile:
+                fragment = fragmentManager.findFragmentByTag(ProfileFragment.PROFILE_FRAGMENT_TAG);
+                if (fragment != null) {
+                    fragmentTransaction.attach(fragment);
+                } else {
+                    fragment = new ProfileFragment();
+                    fragmentTransaction.add(R.id.frame_layout_home, fragment, ProfileFragment.PROFILE_FRAGMENT_TAG);
+                }
+                break;
+        }
+
+        fragmentTransaction.setPrimaryNavigationFragment(fragment);
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.commit();
+        bottom_navigation.getMenu().findItem(menuItemId).setChecked(true);
     }
 
 }

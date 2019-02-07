@@ -27,7 +27,7 @@ public class DashboardViewModel extends ViewModel {
     public MutableLiveData<Station> getNearestStation() {
         URI adapterPath = null;
         try {
-            adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat=" + 0 + "&southWestLong=" + 0 + "0&northEastLat=" + 0 + "&northEastLong=" + 0 + "&amenities=PayAtPump;ULTRA94;PAYPASS,PAYWAVE");
+            adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat=" + 0.0 + "&southWestLong=" + 0.0 + "0&northEastLat=" + 0.0 + "&northEastLong=" + 0.0);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

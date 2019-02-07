@@ -8,14 +8,15 @@ import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 public class LocationLiveData extends LiveData<Location> implements
         GoogleApiClient.ConnectionCallbacks,
@@ -24,12 +25,17 @@ public class LocationLiveData extends LiveData<Location> implements
     private GoogleApiClient googleApiClient;
 
 
-    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public LocationLiveData(Context context) {
         googleApiClient =
                 new GoogleApiClient.Builder(context, this, this)
                         .addApi(LocationServices.API)
                         .build();
+    }
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    @Override
+    public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super Location> observer) {
+        super.observe(owner, observer);
     }
 
     @Override

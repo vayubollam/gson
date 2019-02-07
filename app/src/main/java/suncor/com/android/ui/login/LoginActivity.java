@@ -1,44 +1,76 @@
 package suncor.com.android.ui.login;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import suncor.com.android.GeneralConstants;
 import suncor.com.android.R;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
+import suncor.com.android.ui.common.TextInputLayoutEx;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText txtUserName, txtPassword;
+    private EditText userNameEditText, passwordEditText;
     private BroadcastReceiver loginErrorReceiver, loginRequiredReceiver, loginSuccessReceiver;
-    private LoginActivity _this;
+
+    private LinearLayout progressLayout;
+    private TextInputLayoutEx emailLayout, passwordLayout;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        _this = this;
-        txtUserName = findViewById(R.id.txt_email);
-        txtPassword = findViewById(R.id.txt_password);
+        sessionManager = SessionManager.getInstance();
 
-        findViewById(R.id.btn_signin).setOnClickListener(btnSignIn_click);
+        userNameEditText = findViewById(R.id.txt_email);
+        userNameEditText.setFilters(new InputFilter[]{emailfilter});
+        passwordEditText = findViewById(R.id.txt_password);
+        passwordEditText.addTextChangedListener(passwordTextWatcher);
+        userNameEditText.addTextChangedListener(emailTextWatcher);
+        progressLayout = findViewById(R.id.progress_layout);
+        emailLayout = findViewById(R.id.email_layout);
+        passwordLayout = findViewById(R.id.password_layout);
+
+        emailLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
+        passwordLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
+
+        findViewById(R.id.signing_button).setOnClickListener((v) -> {
+            if (validateInput()) {
+                if (sessionManager.isAccountBlocked()) {
+                    String title = getString(R.string.invalid_credentials_dialog_title);
+                    String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                    alertError(content, title);
+                } else {
+                    progressLayout.setVisibility(View.VISIBLE);
+                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString());
+                }
+            }
+        });
+        findViewById(R.id.back_button).setOnClickListener((v) -> {
+            onBackPressed();
+        });
 
         //Login error
         loginErrorReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                alertError(intent.getStringExtra("errorMsg"));
+                progressLayout.setVisibility(View.GONE);
+                String title = getString(R.string.invalid_credentials_dialog_title);
+                String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                alertError(content, title);
             }
         };
 
@@ -46,19 +78,15 @@ public class LoginActivity extends AppCompatActivity {
         loginRequiredReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, final Intent intent) {
-                Runnable run = new Runnable() {
-                    public void run() {
-                        //Set error label on activity
-                        //lblErrorMessage.setText(intent.getStringExtra("errorMsg"));
-
-                        //Display remaining attempts
-                        if (intent.getIntExtra("remainingAttempts", -1) > -1) {
-                            //set number of atemp label
-//                            lblRemainingAttempts.setText(getString(R.string.remaining_attempts, intent.getIntExtra("remainingAttempts",-1)));
-                        }
+                Runnable run = () -> {
+                    progressLayout.setVisibility(View.GONE);
+                    if (intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, -1) > -1) {
+                        String message = getString(R.string.invalid_credentials_dialog_message, intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, 0), SessionManager.LOCK_TIME_MINUTES);
+                        String title = getString(R.string.invalid_credentials_dialog_title);
+                        alertError(message, title);
                     }
                 };
-                _this.runOnUiThread(run);
+                runOnUiThread(run);
             }
         };
 
@@ -66,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         loginSuccessReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                progressLayout.setVisibility(View.VISIBLE);
                 finish();
             }
         };
@@ -74,9 +103,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_REQUIRED));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginErrorReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_FAILURE));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginSuccessReceiver, new IntentFilter(GeneralConstants.ACTION_LOGIN_SUCCESS));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_REQUIRED));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginErrorReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_FAILURE));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginSuccessReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_SUCCESS));
     }
 
     @Override
@@ -90,53 +119,90 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent();
-        intent.setAction(GeneralConstants.ACTION_LOGIN_CANCELLED);
-        LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
+        try {
+            sessionManager.cancelLogin();
+        } catch (Exception ignored) {
+        }
     }
 
-    //region  UI events
-    View.OnClickListener btnSignIn_click = new View.OnClickListener() {
+    private boolean validateInput() {
+        Boolean allGood = true;
+        if (userNameEditText.getText().toString().isEmpty()) {
+            emailLayout.setError(getString(R.string.email_required));
+            allGood = false;
+        }
+        if (passwordEditText.getText().toString().isEmpty()) {
+            passwordLayout.setError(getString(R.string.password_required), getDrawable(R.drawable.ic_alert));
+            allGood = false;
+        }
+        return allGood;
+    }
+
+    private void alertError(final String msg, String title) {
+        Runnable run = () -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(msg)
+                    .setTitle(title);
+            builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+                // User clicked OK button
+                dialog.dismiss();
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        };
+        runOnUiThread(run);
+    }
+
+
+    TextWatcher passwordTextWatcher = new TextWatcher() {
         @Override
-        public void onClick(View view) {
-            if (txtUserName.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty()) {
-                alertError("Username and password are required");
-            } else {
-                JSONObject credentials = new JSONObject();
-                try {
-                    credentials.put("email", txtUserName.getText().toString());
-                    credentials.put("password", txtPassword.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Intent intent = new Intent();
-                intent.setAction(GeneralConstants.ACTION_LOGIN_SUBMIT_ANSWER);
-                intent.putExtra("credentials", credentials.toString());
-                LocalBroadcastManager.getInstance(_this).sendBroadcast(intent);
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                passwordLayout.setError("");
             }
         }
-    };
-    //endregion
 
-    //region custom methods
-    public void alertError(final String msg) {
-        Runnable run = new Runnable() {
-            public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(_this);
-                builder.setMessage(msg)
-                        .setTitle("Error");
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    TextWatcher emailTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                emailLayout.setError("");
             }
-        };
-        _this.runOnUiThread(run);
-    }
-    //endregion
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    InputFilter emailfilter = (source, start, end, dest, dstart, dend) -> {
+        String filtered = "";
+        for (int i = start; i < end; i++) {
+            char character = source.charAt(i);
+            if (!Character.isWhitespace(character)) {
+                filtered += character;
+            }
+        }
+
+        return filtered;
+    };
 }
+
 
