@@ -31,6 +31,7 @@
         app:srcCompat="@drawable/ic_logo" />
 
     <suncor.com.android.ui.common.TextInputLayoutEx
+        android:theme="@style/AppTheme.TextInput"
         android:id="@+id/email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,12 +49,13 @@
             android:ems="10"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
-            android:paddingBottom="24dp" />
+            android:paddingBottom="24dp"/>
 
     </suncor.com.android.ui.common.TextInputLayoutEx>
 
 
     <suncor.com.android.ui.common.TextInputLayoutEx
+        android:theme="@style/AppTheme.TextInput"
         android:id="@+id/password_layout"
         android:layout_width="match_parent"
         android:layout_height="90dp"
