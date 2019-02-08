@@ -151,12 +151,18 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
+                    //TODO handle failures related to connection issues
                     Log.d(SECURITY_CHECK_NAME_LOGIN, "Login Preemptive Failure");
                 }
             });
         }
     }
 
+    @Override
+    public void cancel() {
+        isChallenged = false;
+        super.cancel();
+    }
 
     public void logout() {
         WLAuthorizationManager.getInstance().logout(SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
