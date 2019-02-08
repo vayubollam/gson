@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import suncor.com.android.R;
@@ -90,6 +91,11 @@ public class TextInputLayoutEx extends TextInputLayout {
                 }
             }
         }
+    }
+
+    public void setError(CharSequence error, @DrawableRes int drawableRes) {
+        Drawable drawable = getResources().getDrawable(drawableRes);
+        setError(error, drawable);
     }
 
     public void setError(CharSequence error, Drawable drawable) {

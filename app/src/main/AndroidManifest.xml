@@ -19,7 +19,8 @@
 
         <activity android:name="com.worklight.wlclient.ui.UIActivity" />
         <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.login.LoginActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/CustomAppThemeForSplash"

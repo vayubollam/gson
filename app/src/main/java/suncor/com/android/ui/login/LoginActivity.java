@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -49,6 +50,11 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.signing_button).setOnClickListener((v) -> {
             if (validateInput()) {
+                userNameEditText.clearFocus();
+                passwordEditText.clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
+
                 if (sessionManager.isAccountBlocked()) {
                     String title = getString(R.string.invalid_credentials_dialog_title);
                     String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
@@ -128,11 +134,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateInput() {
         Boolean allGood = true;
         if (userNameEditText.getText().toString().isEmpty()) {
-            emailLayout.setError(getString(R.string.email_required));
+            emailLayout.setError(getString(R.string.email_required), R.drawable.ic_alert);
             allGood = false;
         }
         if (passwordEditText.getText().toString().isEmpty()) {
-            passwordLayout.setError(getString(R.string.password_required), getDrawable(R.drawable.ic_alert));
+            passwordLayout.setError(getString(R.string.password_required), R.drawable.ic_alert);
             allGood = false;
         }
         return allGood;
