@@ -1,9 +1,12 @@
 pipeline {
+
 	agent any
+
 	tools {
 		// Set names in Global Tools:
 		gradle 'Gradle5.1'
 	}
+
 	stages {
 		stage('Compile and Build  Stage') {
 			steps {
@@ -19,7 +22,7 @@ pipeline {
 
 		stage('uploading into IBM app store') {
 			steps {
-				sh 'java com.ibm.appcenter.Upload -s https://www.dev.rfmp-mfp.com:443 -c applicationcenter -u admin -p APPCTNR@dmin#Dev19 -y -f app/build/outputs/apk/debug/app-debug.apk'
+				sh 'java com.ibm.appcenter.Upload -s https://dev.rfmp-mfp.com:443 -c applicationcenter -u admin -p APPCTNR@dmin#Dev19 -y -f app/build/outputs/apk/debug/app-debug.apk'
 			}
 		}
 
@@ -29,6 +32,42 @@ pipeline {
 			}
 		}
 
+		stage('Slack Notification Stage') {
+			steps {
+				script {
+
+					SlackUtils = load 'deploy/SlackUtils.groovy'
+
+					def shortCommitHash = env.GIT_COMMIT.substring(0, 6)
+
+					def SLACK_CHANNEL_DEV = "CFRDD6XLG"
+					def SLACK_CHANNEL_QA = "GFG4ELAJF"
+					def SLACK_CHANNEL_UAT = ""
+					def SLACK_CHANNEL_PROD = ""
+					def slackChannels = ""
+
+					def slackMessage
+
+					def lastTenCommitMessages = sh(
+						script: 'git log --oneline -n 5',
+						returnStdout: true
+					)
+					lastTenCommitMessages = SlackUtils.addRMPLinks(lastTenCommitMessages)
+
+					slackMessage = "*Android ${env.BUILD_ENV} Build Completed on Master Push Commit: ${shortCommitHash}*\n"
+					slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
+					slackMessage += "${env.BUILD_URL}console\n"
+					slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-mfp/commits/branch/master\n"
+					slackMessage += "Last 5 commit messages on Master:\n ${lastTenCommitMessages}"
+
+					slackChannels = SLACK_CHANNEL_DEV
+
+
+					// https://github.com/jenkinsci/slack-plugin
+					slackSend color: "good", channel: "${slackChannels}", message: "@here " + slackMessage
+				}
+			}
+		}
 	}
 
 	post {
