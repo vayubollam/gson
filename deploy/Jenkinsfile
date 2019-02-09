@@ -31,7 +31,7 @@ pipeline {
 		                def slackChannels = ""
 		                slackChannels = SLACK_CHANNEL_DEV
 
-	                    def slackMessage = "@here *!!! Android DEV UPLOADING TO IBM APP CENTERFAILED !!!*\n" +
+	                    def slackMessage = "@here *!!! Android dev build - uploading to IBM App Center failed !!!*\n" +
 	                        "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
 	                        "${env.BUILD_URL}console"
 	                    slackSend color: "#CC0000", channel: "${slackChannels}", message: slackMessage
