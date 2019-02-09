@@ -22,21 +22,23 @@ pipeline {
 
 		stage('uploading into IBM app store') {
 			steps {
-                SlackUtils = load 'deploy/SlackUtils.groovy'
-                def SLACK_CHANNEL_DEV = "CFRDD6XLG"
-                def SLACK_CHANNEL_QA = "GFG4ELAJF"
-                def slackChannels = ""
-                slackChannels = SLACK_CHANNEL_DEV
+				script {
+	                SlackUtils = load 'deploy/SlackUtils.groovy'
+	                def SLACK_CHANNEL_DEV = "CFRDD6XLG"
+	                def SLACK_CHANNEL_QA = "GFG4ELAJF"
+	                def slackChannels = ""
+	                slackChannels = SLACK_CHANNEL_DEV
 
-				def returnValue = sh 'java com.ibm.appcenter.Upload -s https://dev.rfmp-mfp.com:443 -c applicationcenter -u admin -p APPCTNR@dmin#Dev19 -y -f app/build/outputs/apk/debug/app-debug.apk'
-                if returnValue != 0 then
-                    def slackMessage = "@here *!!! iOS QA BUILD FAILED !!!*\n" +
-                        "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
-                        "${env.BUILD_URL}console"
-                    slackSend color: "#CC0000", channel: "${slackChannels}", message: slackMessage
+					def returnValue = sh 'java com.ibm.appcenter.Upload -s https://dev.rfmp-mfp.com:443 -c applicationcenter -u admin -p APPCTNR@dmin#Dev19 -y -f app/build/outputs/apk/debug/app-debug.apk'
+	                if returnValue != 0 then
+	                    def slackMessage = "@here *!!! iOS QA BUILD FAILED !!!*\n" +
+	                        "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
+	                        "${env.BUILD_URL}console"
+	                    slackSend color: "#CC0000", channel: "${slackChannels}", message: slackMessage
 
-                    error("Build failed because app cannot upload to IBM App Center.")
-                fi				
+	                    error("Build failed because app cannot upload to IBM App Center.")
+	                fi				
+                }
 			}
 		}
 
