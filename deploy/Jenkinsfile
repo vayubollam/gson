@@ -26,9 +26,9 @@ pipeline {
 
 		stage('upload to perfecto public cloud') {
 			steps {
-				sh 'curl -X GET "https://mobilecloud.perfectomobile.com/services/repositories/media/app-debug.apk?operation=delete&securityToken=$PERFECTO_TOKEN" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache'
+				sh 'curl -X GET "https://mobilecloud.perfectomobile.com/services/repositories/media/app-debug.apk?operation=delete&securityToken=$PERFECTO_TOKEN" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache"'
 				
-				sh 'curl -X POST --data-binary @app/build/outputs/apk/debug/app-debug.apk 'https://mobilecloud.perfectomobile.com/services/repositories/media/app-debug.apk?operation=upload&securityToken=$PERFECTO_TOKEN' -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache'
+				sh 'curl -X POST --data-binary @app/build/outputs/apk/debug/app-debug.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-debug.apk?operation=upload&securityToken=$PERFECTO_TOKEN" -H "Content-Type: application/x-www-form-urlencoded" -H "cache-control: no-cache"'
 			}
 		}
 
