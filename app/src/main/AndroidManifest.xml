@@ -18,7 +18,6 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name="com.worklight.wlclient.ui.UIActivity" />
-        <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.login.LoginActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity

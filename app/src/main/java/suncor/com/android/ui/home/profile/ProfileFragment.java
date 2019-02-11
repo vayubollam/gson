@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.home.common.BaseFragment;
 
@@ -31,8 +32,13 @@ public class ProfileFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.signout_button).setOnClickListener((v) -> {
             SessionManager sessionManager = SessionManager.getInstance();
-            sessionManager.logout();
-            ((HomeActivity) getActivity()).openFragment(R.id.menu_home);
+            sessionManager.logout().observe(this, (result) -> {
+                if (result.status == Resource.Status.SUCCESS) {
+                    ((HomeActivity) getActivity()).openFragment(R.id.menu_home);
+                } else {
+                    //TODO error handling
+                }
+            });
         });
     }
 }
