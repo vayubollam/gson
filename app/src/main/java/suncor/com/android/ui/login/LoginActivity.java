@@ -1,9 +1,6 @@
 package suncor.com.android.ui.login;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -15,15 +12,13 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
+import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.TextInputLayoutEx;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText userNameEditText, passwordEditText;
-    private BroadcastReceiver loginErrorReceiver, loginRequiredReceiver, loginSuccessReceiver;
 
     private LinearLayout progressLayout;
     private TextInputLayoutEx emailLayout, passwordLayout;
@@ -61,65 +56,29 @@ public class LoginActivity extends AppCompatActivity {
                     alertError(content, title);
                 } else {
                     progressLayout.setVisibility(View.VISIBLE);
-                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString());
+                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString())
+                            .observe(this, (status) -> {
+                                progressLayout.setVisibility(View.GONE);
+                                if (status.status == Resource.Status.SUCCESS) {
+                                    finish();
+                                } else {
+                                    if (status.data == SessionManager.SigninResponse.CHALLENGED) {
+                                        String message = getString(R.string.invalid_credentials_dialog_message, Integer.parseInt(status.message), SessionManager.LOCK_TIME_MINUTES);
+                                        String title = getString(R.string.invalid_credentials_dialog_title);
+                                        alertError(message, title);
+                                    } else {
+                                        String title = getString(R.string.invalid_credentials_dialog_title);
+                                        String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                                        alertError(content, title);
+                                    }
+                                }
+                            });
                 }
             }
         });
         findViewById(R.id.back_button).setOnClickListener((v) -> {
             onBackPressed();
         });
-
-        //Login error
-        loginErrorReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                progressLayout.setVisibility(View.GONE);
-                String title = getString(R.string.invalid_credentials_dialog_title);
-                String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
-                alertError(content, title);
-            }
-        };
-
-        //Login required
-        loginRequiredReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, final Intent intent) {
-                Runnable run = () -> {
-                    progressLayout.setVisibility(View.GONE);
-                    if (intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, -1) > -1) {
-                        String message = getString(R.string.invalid_credentials_dialog_message, intent.getIntExtra(UserLoginChallengeHandler.REMAINING_ATTEMPTS, 0), SessionManager.LOCK_TIME_MINUTES);
-                        String title = getString(R.string.invalid_credentials_dialog_title);
-                        alertError(message, title);
-                    }
-                };
-                runOnUiThread(run);
-            }
-        };
-
-        //Login success
-        loginSuccessReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                progressLayout.setVisibility(View.VISIBLE);
-                finish();
-            }
-        };
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginRequiredReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_REQUIRED));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginErrorReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_FAILURE));
-        LocalBroadcastManager.getInstance(this).registerReceiver(loginSuccessReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_SUCCESS));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(loginErrorReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(loginRequiredReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(loginSuccessReceiver);
     }
 
     @Override
@@ -145,18 +104,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void alertError(final String msg, String title) {
-        Runnable run = () -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(msg)
-                    .setTitle(title);
-            builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-                // User clicked OK button
-                dialog.dismiss();
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        };
-        runOnUiThread(run);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg)
+                .setTitle(title);
+        builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
+            // User clicked OK button
+            dialog.dismiss();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

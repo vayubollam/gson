@@ -7,15 +7,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
-
-import com.worklight.wlclient.api.WLAccessTokenListener;
-import com.worklight.wlclient.api.WLAuthorizationManager;
-import com.worklight.wlclient.api.WLFailResponse;
-import com.worklight.wlclient.auth.AccessToken;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -24,8 +18,6 @@ import androidx.core.app.ActivityCompat;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
-import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
@@ -41,22 +33,8 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (SessionManager.getInstance().getUserName() != null) {
-            WLAuthorizationManager.getInstance().obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
-                @Override
-                public void onSuccess(AccessToken accessToken) {
-                    SuncorApplication.favouriteRepository.loadFavourites().observeForever((r) -> {
-                        if (r.status == Resource.Status.ERROR) {
-                            //TODO handle or retry
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.d(this.getClass().getSimpleName(), "User is not logged in");
-                }
-            });
+        if (SessionManager.getInstance().isUserLoggedIn()) {
+            SessionManager.getInstance().checkLoginState();
         }
 
         if (SuncorApplication.splashShown) {

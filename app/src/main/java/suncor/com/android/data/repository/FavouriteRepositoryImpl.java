@@ -1,9 +1,6 @@
 package suncor.com.android.data.repository;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -22,40 +19,35 @@ import java.util.ArrayList;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 
 public class FavouriteRepositoryImpl implements FavouriteRepository {
 
-    private final BroadcastReceiver logoutReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FAVOURITES.clear();
-            isLoaded.postValue(false);
-        }
-    };
-
-    private final BroadcastReceiver loginReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            loadFavourites();
-        }
-    };
-
     private final ArrayList<Station> FAVOURITES = new ArrayList<>();
     private URI adapterURI;
 
     private MutableLiveData<Boolean> isLoaded = new MutableLiveData<>();
+    private boolean loading;
 
     public FavouriteRepositoryImpl(Context context) {
         try {
             adapterURI = new URI("/adapters/suncor/v1/favourite-stations");
             isLoaded.setValue(false);
-            LocalBroadcastManager.getInstance(context).registerReceiver(logoutReceiver, new IntentFilter(SessionManager.ACTION_LOGOUT_SUCCESS));
-            LocalBroadcastManager.getInstance(context).registerReceiver(logoutReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_REQUIRED));
-            LocalBroadcastManager.getInstance(context).registerReceiver(loginReceiver, new IntentFilter(SessionManager.ACTION_LOGIN_SUCCESS));
+            SessionManager.getInstance().getLoginState().observeForever((state) -> {
+                if (state == SessionManager.LoginState.LOGGED_IN && !isLoaded.getValue()) {
+                    if (!loading) {
+                        Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Loading favourites on login");
+                        loadFavourites();
+                    }
+                }
+                if (state == SessionManager.LoginState.LOGGED_OUT) {
+                    Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Clearing favourites due to logging out");
+                    FAVOURITES.clear();
+                    isLoaded.postValue(false);
+                }
+            });
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -65,10 +57,15 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
     public LiveData<Resource<Boolean>> loadFavourites() {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
+        loading = true;
         WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET);
+        Log.d(this.getClass().getSimpleName(), "Loading favourites");
         request.send(new WLResponseListener() {
             @Override
             public void onSuccess(WLResponse wlResponse) {
+                Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Loading favourites succeeded");
+
+                loading = false;
                 String jsonText = wlResponse.getResponseText();
 
                 try {
@@ -94,7 +91,9 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
-                Log.d("mfp_error", wlFailResponse.getErrorMsg());
+                loading = false;
+                Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Loading favourites failed");
+                Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "mfp_error: " + wlFailResponse.getErrorMsg());
                 result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
             }
         });

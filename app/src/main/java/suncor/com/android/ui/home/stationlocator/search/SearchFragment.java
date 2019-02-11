@@ -148,7 +148,7 @@ public class SearchFragment extends Fragment {
 //            @Override
 //            public void onChanged(Resource<ArrayList<StationItem>> r) {
 //                if (r.status != Resource.Status.LOADING) {
-//                    if (r.status == Resource.Status.SUCCESS) {
+//                    if (r.status == Resource.Status.LOGGED_IN) {
 //                        parentViewModel.stationsAround.removeObserver(this);
 //                        StationItem selectedStation = null;
 //                        for (StationItem item : r.data) {

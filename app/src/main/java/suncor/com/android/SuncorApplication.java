@@ -18,9 +18,9 @@ public class SuncorApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        favouriteRepository = new FavouriteRepositoryImpl(this);
         WLClient.createInstance(this);
         UserLoginChallengeHandler.createAndRegister();
+        favouriteRepository = new FavouriteRepositoryImpl(this);
         Station.initiateAmenities(this);
     }
 
