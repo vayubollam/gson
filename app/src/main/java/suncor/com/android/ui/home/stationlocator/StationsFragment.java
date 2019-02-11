@@ -236,7 +236,11 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         mViewModel.mapBounds.observe(this, (bounds -> {
             if (!mGoogleMap.getProjection().getVisibleRegion().latLngBounds.equals(bounds)) {
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-                mGoogleMap.animateCamera(cameraUpdate);
+                try {
+                    mGoogleMap.animateCamera(cameraUpdate);
+                } catch (Exception ignored) {
+                    //in case the activity is restarted, observers trigger updates before the map is ready
+                }
             }
         }));
 

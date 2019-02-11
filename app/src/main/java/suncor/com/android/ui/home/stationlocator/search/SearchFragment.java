@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.location.places.GeoDataClient;
@@ -131,40 +129,6 @@ public class SearchFragment extends Fragment {
                 //TODO : handle error
             }
         });
-    }
-
-    /**
-     * This method is overrided to handle the alpha change of root layout after enter animation is finished
-     * We need this because the root layout uses fitSystemWindows to apply insets, and this disturbs animation on load
-     *
-     * @param transit
-     * @param enter
-     * @param nextAnim
-     * @return
-     */
-    @Override
-    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (enter) {
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), nextAnim);
-            animation.setDuration(100);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    binding.getRoot().animate().alpha(1).setDuration(400);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            return animation;
-        }
-        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
     private void placeSuggestionClicked(PlaceSuggestion placeSuggestion) {

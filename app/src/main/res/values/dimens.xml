@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="cards_padding_collapsed">4dp</dimen>
-    <dimen name="cards_top_padding_expanded">4dp</dimen>
-    <dimen name="cards_bottom_padding_expanded">16dp</dimen>
-    <dimen name="cards_horizontal_padding_expanded">16dp</dimen>
+    <dimen name="cards_padding_expanded">16dp</dimen>
     <dimen name="stations_recycler_view_padding">12dp</dimen>
 
     <dimen name="small_button_height">36dp</dimen>
     <dimen name="filter_item_text_size">18sp</dimen>
+    <dimen name="min_button_dim">44dp</dimen>
+    <dimen name="page_top_padding">16dp</dimen>
 </resources>

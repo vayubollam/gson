@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
+    android:paddingTop="16dp"
     android:background="@color/white"
     tools:context="suncor.com.android.ui.home.dashboard.DashboardFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:clipToPadding="false"
         android:id="@+id/card_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/station_card"/>
+        android:layout_above="@+id/station_card"
+        android:clipToPadding="false"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/station_card"
@@ -29,34 +29,34 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_margin="16dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/station_title_text"
+                style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Body"
-                android:fontFamily="@font/gibson_semibold"
                 android:layout_below="@id/img_bottom_sheet"
+                android:fontFamily="@font/gibson_semibold"
                 android:text="@string/nearby" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_height="16dp"
                 android:layout_below="@id/station_title_text"
                 android:layout_marginLeft="6dp"
+                android:layout_marginTop="16dp"
                 android:layout_toRightOf="@id/img_car_station" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_marginTop="16dp"
                 android:id="@+id/img_car_station"
                 android:layout_width="16dp"
-                android:scaleType="fitCenter"
                 android:layout_height="16dp"
                 android:layout_below="@+id/station_title_text"
+                android:layout_marginTop="16dp"
+                android:scaleType="fitCenter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/station_title_text"
                 app:srcCompat="@drawable/ic_car" />
@@ -67,12 +67,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/station_title_text"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_toRightOf="@id/img_car_station"
                 android:gravity="center"
                 android:text="0.5 Km away . 2 min drive"
                 android:textColor="@color/black_100"
                 android:textSize="14sp"
-                android:layout_marginTop="16dp"
                 android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -94,9 +94,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/open_hours_text"
                 android:textAppearance="@style/Caption1"
-                tools:text="Open, closes at 12:00 AM"
                 app:layout_constraintLeft_toRightOf="@+id/img_car_station"
-                app:layout_constraintTop_toBottomOf="@+id/distance_text" />
+                app:layout_constraintTop_toBottomOf="@+id/distance_text"
+                tools:text="Open, closes at 12:00 AM" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/directions_button"
@@ -105,8 +105,8 @@
                 android:layout_height="@dimen/small_button_height"
                 android:layout_below="@+id/open_hours_text"
                 android:layout_marginTop="6dp"
-                android:text="@string/directions_button"
-                android:paddingLeft="0dp" />
+                android:paddingLeft="0dp"
+                android:text="@string/directions_button" />
 
         </RelativeLayout>
 
