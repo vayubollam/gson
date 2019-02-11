@@ -96,10 +96,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             return;
         }
         StationDetailsDialog dialog = new StationDetailsDialog();
-        dialog.setIntialHeight(itemView.getHeight());
+        dialog.setInitialHeight(itemView.getHeight());
         int[] position = new int[2];
-        itemView.getLocationInWindow(position);
-        dialog.setIntialPosition(position[1]);
+        itemView.getLocationOnScreen(position);
+        dialog.setInitialPosition(position[1]);
         dialog.setStationItem(stationItem);
         dialog.setTargetFragment(fragment, StationsFragment.STATION_DETAILS_REQUEST_CODE);
         dialog.show(fragment.getFragmentManager(), StationDetailsDialog.TAG);

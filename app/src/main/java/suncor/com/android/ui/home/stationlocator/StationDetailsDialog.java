@@ -34,15 +34,15 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public static final String TAG = StationDetailsDialog.class.getSimpleName();
 
     private final static float DIM_AMOUNT = 0.6f;
-    private int intialHeight;
-    private int intialPosition;
+    private int initialHeight;
+    private int initialPosition;
     private int fullHeight;
 
     private SessionManager sessionManager;
 
     private BottomSheetBehavior behavior;
 
-    private int layoutPadding;
+    private int verticalPadding;
     private CardStationItemBinding binding;
     private StationItem stationItem;
 
@@ -67,19 +67,17 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void setupDialog(@NonNull Dialog dialog, int style) {
         binding = CardStationItemBinding.inflate(LayoutInflater.from(getContext()));
         binding.setVm(stationItem);
-        int topPadding = getResources().getDimensionPixelOffset(R.dimen.cards_top_padding_expanded);
-        int bottomPadding = getResources().getDimensionPixelOffset(R.dimen.cards_bottom_padding_expanded);
-        int horizontalPadding = getResources().getDimensionPixelOffset(R.dimen.cards_horizontal_padding_expanded);
-        layoutPadding = topPadding + bottomPadding;
-        binding.getRoot().setPadding(horizontalPadding, topPadding, horizontalPadding, bottomPadding);
+        int padding = getResources().getDimensionPixelOffset(R.dimen.cards_padding_expanded);
+        verticalPadding = 2 * padding;
+        binding.getRoot().setPadding(padding, padding, padding, padding);
 
         DisplayMetrics dp = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
-        fullHeight = dp.heightPixels - getStatusBarHeight();
+        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
+        fullHeight = dp.heightPixels - getStatusBarHeight() - getNavBarHeight();
 
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight);
         binding.getRoot().setLayoutParams(params);
-        binding.cardView.getLayoutParams().height = intialHeight;
+        binding.cardView.getLayoutParams().height = initialHeight;
         dialog.setContentView(binding.getRoot());
 
         binding.closeButton.setOnClickListener((v) -> {
@@ -100,7 +98,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
         if (behavior != null) {
-            behavior.setPeekHeight(fullHeight - intialPosition + layoutPadding);
+            behavior.setPeekHeight(fullHeight - (initialPosition - getStatusBarHeight()) + padding);
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
                 @Override
@@ -125,10 +123,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
                         binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);
 
-                        binding.cardView.getLayoutParams().height = (int) (((fullHeight - layoutPadding) * v) + (1 - v) * intialHeight);
+                        binding.cardView.getLayoutParams().height = (int) (((fullHeight - verticalPadding) * v) + (1 - v) * initialHeight);
                         binding.cardView.requestLayout();
-                    } else if (v > 0) {
-                        binding.cardView.setVisibility(View.GONE);
                     } else {
                         dismiss();
                     }
@@ -174,6 +170,15 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         return result;
     }
 
+    private int getNavBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -189,12 +194,12 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
     }
 
-    public void setIntialHeight(int intialHeight) {
-        this.intialHeight = intialHeight;
+    public void setInitialHeight(int initialHeight) {
+        this.initialHeight = initialHeight;
     }
 
-    public void setIntialPosition(int intialPosition) {
-        this.intialPosition = intialPosition;
+    public void setInitialPosition(int initialPosition) {
+        this.initialPosition = initialPosition;
     }
 
     public void setStationItem(StationItem stationItem) {

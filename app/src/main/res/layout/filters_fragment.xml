@@ -1,138 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:paddingTop="16dp"
-        android:fitsSystemWindows="true"
         android:clickable="true"
-        android:clipToPadding="false"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true"
+        android:paddingTop="@dimen/page_top_padding">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/back_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="?selectableItemBackground"
-            android:src="@drawable/ic_back" />
-
-        <androidx.appcompat.widget.AppCompatTextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:text="@string/filters_fragment_title"
-            android:textAppearance="@style/Title1" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:fillViewport="true">
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:minWidth="@dimen/min_button_dim"
+                android:minHeight="@dimen/min_button_dim"
+                android:src="@drawable/ic_back_red" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="true"
-                android:orientation="vertical">
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/filters_fragment_title"
+                android:textAppearance="@style/Title1" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/filters_services_header"
-                    android:textAppearance="@style/Body" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@drawable/horizontal_divider" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:fillViewport="true">
 
                 <LinearLayout
-                    android:id="@+id/service_amenities_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:nestedScrollingEnabled="true"
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/filter_fuel_header"
-                    android:textAppearance="@style/Body" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/gibson_semibold"
+                        android:text="@string/filters_services_header"
+                        android:textAppearance="@style/Body" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@drawable/horizontal_divider" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/horizontal_divider" />
 
-                <LinearLayout
-                    android:id="@+id/fuel_amenities_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    <LinearLayout
+                        android:id="@+id/service_amenities_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/filter_carwash_header"
-                    android:textAppearance="@style/Body" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/gibson_semibold"
+                        android:text="@string/filter_fuel_header"
+                        android:textAppearance="@style/Body" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@drawable/horizontal_divider" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/horizontal_divider" />
 
-                <LinearLayout
-                    android:id="@+id/carwash_amenities_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    <LinearLayout
+                        android:id="@+id/fuel_amenities_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
-            </LinearLayout>
-        </ScrollView>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/gibson_semibold"
+                        android:text="@string/filter_carwash_header"
+                        android:textAppearance="@style/Body" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardElevation="8dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/horizontal_divider" />
 
-            <LinearLayout
+                    <LinearLayout
+                        android:id="@+id/carwash_amenities_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                app:cardElevation="8dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/clear_button"
-                    style="@style/OutlinedSmallButton"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/small_button_height"
-                    android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
-                    android:text="@string/clear" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/apply_button"
-                    style="@style/SmallButton"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/small_button_height"
-                    android:layout_marginStart="4dp"
-                    android:layout_weight="1"
-                    android:text="@string/apply" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/clear_button"
+                        style="@style/OutlinedSmallButton"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/small_button_height"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/clear" />
 
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/apply_button"
+                        style="@style/SmallButton"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/small_button_height"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:text="@string/apply" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

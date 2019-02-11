@@ -34,6 +34,7 @@ public class FavouritesFragment extends Fragment {
     private FavouritesFragmentBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private ObservableBoolean noResult = new ObservableBoolean(false);
+
     public static FavouritesFragment newInstance() {
         return new FavouritesFragment();
     }
@@ -52,12 +53,10 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.goBackButton.setOnClickListener(this::goBack);
+        binding.backButton.setOnClickListener(this::goBack);
         binding.favoriteRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-
         favouritesAdapter = new FavouritesAdapter();
-
-
+        view.requestApplyInsets();
     }
 
     @Override
