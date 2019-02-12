@@ -7,9 +7,15 @@
 
         <import type="suncor.com.android.model.Resource.Status" />
 
+        <import type="android.view.View"></import>
+
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
+
+        <variable
+            name="recentSearch"
+            type="androidx.databinding.ObservableBoolean"></variable>
     </data>
 
     <LinearLayout
@@ -23,31 +29,46 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            visibleGone="@{recentSearch}"
             android:src="@drawable/horizontal_divider" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/SectionTitle"
+
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/nearby_title"/>
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/SectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/nearby_title" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="24dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/red"
+                android:visibility="@{vm.nearbyStations.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/horizontal_divider" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:indeterminateTint="@color/red"
-            app:visibleGone="@{vm.nearbyStations.status == Status.LOADING}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/nearby_recycler"

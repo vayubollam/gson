@@ -12,7 +12,7 @@
     <string name="cancel">Cancel</string>
     <string name="open_with">Open With</string>
     <string name="always">ALWAYS</string>
-    <string name="nearby">NearBy</string>
+    <string name="nearby">NEAREST</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to \nPetro-Canada on The go!</string>
     <string name="fav_button_add">Add as favourite location</string>
     <string name="fav_button_remove">Favourite</string>
@@ -40,7 +40,7 @@
     <string name="no_stations_found">Sorry, we can\'t find any results</string>
     <string name="no_stations_filters_applied">Try expanding your search or removing filters.</string>
     <string name="sugestions">suggestions</string>
-    <string name="nearby_title">nearby</string>
+    <string name="nearby_title">NEAREST</string>
     <string name="no_results">No results</string>
     <string name="clear_filters_button">clear filters</string>
     <string name="clear_all_filters_chip">Clear all</string>

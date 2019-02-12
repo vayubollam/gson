@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +48,7 @@ public class SearchFragment extends Fragment {
     private LatLng userLocation;
     private SearchNearByAdapter nearbyStationsAdapter;
     private SuggestionsAdapter suggestionsAdapter;
-
+    private ObservableBoolean recentSearch = new ObservableBoolean();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,6 +93,8 @@ public class SearchFragment extends Fragment {
         binding.addressSearchText.requestFocus();
         showKeyBoard();
 
+        recentSearch.set(false);
+        binding.setRecentSearch(recentSearch);
         return binding.getRoot();
     }
 

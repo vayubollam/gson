@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <import type="android.view.View" />
 
         <variable
+            name="recentSearch"
+            type="androidx.databinding.ObservableBoolean"></variable>
+
+        <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -52,6 +58,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/address_search_text"
                         style="@style/Body"
+                        android:theme="@style/AppTheme.TextInput"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="4dp"
@@ -62,6 +69,7 @@
                         android:hint="@string/search"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:lineHeight="26sp"
                         android:onTextChanged="@{(q, s, b, c) -> vm.setSearchQuery(q.toString())}" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
@@ -78,7 +86,8 @@
             <include
                 android:id="@+id/nearby_layout"
                 layout="@layout/nearby_layout"
-                app:vm="@{vm}" />
+                app:vm="@{vm}"
+                bind:recentSearch="@{recentSearch}" />
 
             <include
                 android:id="@+id/suggestions_layout"

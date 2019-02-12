@@ -14,13 +14,13 @@
         android:layout_width="match_parent"
         android:paddingLeft="16dp"
         android:background="@color/white"
-
         android:layout_height="wrap_content">
-
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:id="@+id/txt_suggestion_title"
-
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:lineHeight="26sp"
             style="@style/Body"
             tools:text="22 Indian db"
             android:layout_height="wrap_content"
@@ -28,26 +28,22 @@
             android:layout_marginTop="14dp"
             android:textColor="@color/black_80"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_marginTop="6dp"
                 android:layout_width="wrap_content"
                 android:id="@+id/txt_suggestion_subtitle"
+                android:maxLines="1"
+                android:lineHeight="17sp"
+                android:ellipsize="end"
                 style="@style/Caption1"
                 android:text="@{place.secondaryText}"
                 tools:text="Toronto, On"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_60"/>
 
-        </RelativeLayout>
-
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:src="@drawable/horizontal_divider"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="16dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>
