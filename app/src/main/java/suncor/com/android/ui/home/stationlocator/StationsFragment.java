@@ -82,6 +82,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private StationAdapter stationAdapter;
     private Marker myLocationMarker;
     private BottomSheetBehavior bottomSheetBehavior;
+    private boolean lockBottomSheet;
     private Marker lastSelectedMarker;
     private float screenRatio;
     private StationsFragmentBinding binding;
@@ -111,7 +112,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         binding.setEventHandler(this);
         binding.setIsLoading(isLoading);
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.cardRecycler);
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet);
         stationAdapter = new StationAdapter(this, bottomSheetBehavior);
         binding.cardRecycler.setAdapter(stationAdapter);
         binding.cardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
@@ -167,6 +168,9 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
+                if (lockBottomSheet && i == BottomSheetBehavior.STATE_DRAGGING) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
                 if (i == BottomSheetBehavior.STATE_EXPANDED) {
                     updateSelectedStation();
                 }
@@ -195,7 +199,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         mViewModel.stationsAround.observe(this, this::UpdateCards);
         mViewModel.filters.observe(this, this::filtersChanged);
         mViewModel.selectedStation.observe(this, station -> {
-            if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null) {
+            if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null || mViewModel.stationsAround.getValue().data.isEmpty()) {
                 return;
             }
             ArrayList<StationItem> stations = mViewModel.stationsAround.getValue().data;
@@ -341,10 +345,16 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
                 lastSelectedMarker = null;
 
                 if (stations != null && stations.isEmpty() && currentFilter != null && !currentFilter.isEmpty()) {
-                    binding.coordinator.setVisibility(View.GONE);
+                    binding.cardRecycler.setVisibility(View.GONE);
                     binding.statusCardview.setVisibility(View.VISIBLE);
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    lockBottomSheet = true;
                 } else {
-                    binding.coordinator.setVisibility(View.VISIBLE);
+                    if (lockBottomSheet) {
+                        lockBottomSheet = false;
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                    binding.cardRecycler.setVisibility(View.VISIBLE);
                     binding.statusCardview.setVisibility(View.GONE);
                     for (StationItem station : stations) {
                         LatLng latLng = new LatLng(station.getStation().getAddress().getLatitude(), station.getStation().getAddress().getLongitude());
