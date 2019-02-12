@@ -71,19 +71,23 @@ public class FiltersFragment extends Fragment {
     }
 
     private void initCheckBoxes() {
+
         for (String amenityKey : Station.SERVICE_AMENITIES.keySet()) {
             AppCompatCheckBox checkBox = getCheckbox(Station.SERVICE_AMENITIES.get(amenityKey));
             binding.serviceAmenitiesContainer.addView(checkBox);
+            binding.serviceAmenitiesContainer.addView(getDivider());
             checkBoxes.put(amenityKey, checkBox);
         }
         for (String amenityKey : Station.FUEL_AMENITIES.keySet()) {
             AppCompatCheckBox checkBox = getCheckbox(Station.FUEL_AMENITIES.get(amenityKey));
             binding.fuelAmenitiesContainer.addView(checkBox);
+            binding.fuelAmenitiesContainer.addView(getDivider());
             checkBoxes.put(amenityKey, checkBox);
         }
         for (String amenityKey : Station.WASH_AMENITIES.keySet()) {
             AppCompatCheckBox checkBox = getCheckbox(Station.WASH_AMENITIES.get(amenityKey));
             binding.carwashAmenitiesContainer.addView(checkBox);
+            binding.carwashAmenitiesContainer.addView(getDivider());
             checkBoxes.put(amenityKey, checkBox);
         }
     }
@@ -100,5 +104,17 @@ public class FiltersFragment extends Fragment {
         params.setMargins(0, verticalMargin, 0, verticalMargin);
         checkbox.setLayoutParams(params);
         return checkbox;
+    }
+
+    private View getDivider() {
+        View divider = new View(getContext());
+        divider.setBackground(getResources().getDrawable(R.drawable.horizontal_divider));
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+        int leftMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, getResources().getDisplayMetrics()); //44 = 32 (width checkbox) + 12 (padding)
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height);
+        params.setMargins(leftMargin, 0, 0, 0);
+        divider.setLayoutParams(params);
+        return divider;
     }
 }

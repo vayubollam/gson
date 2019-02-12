@@ -12,6 +12,7 @@
         <item name="android:textColorSecondary">@color/black_60</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
@@ -209,6 +210,10 @@
         <item name="errorTextAppearance">@style/Caption1.Red</item>
         <item name="passwordToggleTint">@color/black_60</item>
         <item name="passwordToggleDrawable">@drawable/show_hide_password_background</item>
+    </style>
+
+    <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:paddingStart">12dp</item>
     </style>
 
 </resources>

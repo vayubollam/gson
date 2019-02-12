@@ -19,8 +19,7 @@
         android:layout_height="match_parent"
         android:background="@color/black_4"
         android:clickable="true"
-        android:fitsSystemWindows="true"
-        android:paddingTop="@dimen/page_top_padding">
+        android:fitsSystemWindows="true">
 
 
         <LinearLayout

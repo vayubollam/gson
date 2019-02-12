@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingTop="@dimen/page_top_padding"
     tools:context="suncor.com.android.ui.login.LoginActivity">
 
     <androidx.appcompat.widget.AppCompatImageButton
