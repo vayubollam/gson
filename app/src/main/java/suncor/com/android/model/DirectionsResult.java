@@ -5,6 +5,7 @@ import android.content.Context;
 import suncor.com.android.R;
 
 public class DirectionsResult {
+    public static final DirectionsResult INVALID = new DirectionsResult(-1, -1);
     private int distance;
     private int duration;
 

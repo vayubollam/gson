@@ -68,8 +68,9 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Fa
                     .observe(activity, result -> { //TODO choose right lifecycle owner
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.setDistanceDuration(result.data);
+                        } else if (result.status == Resource.Status.ERROR) {
+                            stationItem.setDistanceDuration(DirectionsResult.INVALID);
                         }
-                        //TODO handle error
                     });
         }
 

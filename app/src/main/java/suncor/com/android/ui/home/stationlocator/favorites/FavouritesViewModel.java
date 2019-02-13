@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -33,35 +34,12 @@ public class FavouritesViewModel extends ViewModel {
                     StationItem stationItem = new StationItem(station, null);
                     stationItems.add(stationItem);
                 }
-                this.stations.postValue(sortStatiosn(stationItems));
+                StationsComparator comparator = new StationsComparator();
+                Collections.sort(stationItems, comparator);
+                this.stations.postValue(stationItems);
 
             }
         });
-    }
-
-    private ArrayList<StationItem> sortStatiosn(ArrayList<StationItem> stationItems) {
-        if (userLocation != null) {
-            Collections.sort(stationItems, (o1, o2) -> {
-
-                double distance1 = LocationUtils.calculateDistance(getUserLocation(), new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
-                double distance2 = LocationUtils.calculateDistance(getUserLocation(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
-                return (int) (distance1 - distance2);
-            });
-            Collections.sort(stationItems, (o1, o2) -> {
-                int comparison = Boolean.compare(o2.isOpen(), o1.isOpen());
-                return comparison;
-            });
-            return stationItems;
-        } else {
-            Collections.sort(stationItems, (o1, o2) -> {
-                int comparison = Boolean.compare(o2.isOpen(), o1.isOpen());
-                return comparison;
-            });
-            Collections.sort(stationItems, (o1, o2) -> o1.getStation().getAddress().getAddressLine().compareTo(o2.getStation().getAddress().getAddressLine()));
-            return stationItems;
-
-        }
-
     }
 
     public LatLng getUserLocation() {
@@ -70,5 +48,26 @@ public class FavouritesViewModel extends ViewModel {
 
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
+    }
+
+    private class StationsComparator implements Comparator<StationItem> {
+
+        @Override
+        public int compare(StationItem o1, StationItem o2) {
+            int openComparison = Boolean.compare(o2.isOpen(), o1.isOpen());
+            if (openComparison != 0) {
+                return openComparison;
+            } else {
+                if (userLocation != null) {
+                    double distance1 = LocationUtils.calculateDistance(getUserLocation(), new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
+                    double distance2 = LocationUtils.calculateDistance(getUserLocation(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
+                    return (int) (distance1 - distance2);
+                } else {
+                    String streetName1 = o1.getStation().getAddress().getAddressLine().replaceFirst("\\d+", "");
+                    String streetName2 = o2.getStation().getAddress().getAddressLine().replaceFirst("\\d+", "");
+                    return streetName1.compareTo(streetName2);
+                }
+            }
+        }
     }
 }
