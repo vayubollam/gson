@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="16dp"
     android:background="@color/white"
+    android:paddingTop="16dp"
     tools:context="suncor.com.android.ui.home.dashboard.DashboardFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -39,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_bottom_sheet"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/nearby" />
+                android:text="@string/dashboard_nearby_card_title"
+                android:textAllCaps="true" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -48,7 +49,8 @@
                 android:layout_below="@id/station_title_text"
                 android:layout_marginLeft="6dp"
                 android:layout_marginTop="16dp"
-                android:layout_toRightOf="@id/img_car_station" />
+                android:layout_toRightOf="@id/img_car_station"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_car_station"
@@ -71,7 +73,7 @@
                 android:layout_toRightOf="@id/img_car_station"
                 android:gravity="center"
                 android:text="0.5 Km away . 2 min drive"
-                android:textColor="@color/black_100"
+                android:textColor="@color/black_80"
                 android:textSize="14sp"
                 android:visibility="gone" />
 

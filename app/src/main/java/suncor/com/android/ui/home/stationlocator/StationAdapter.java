@@ -66,7 +66,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
                     .observe(fragment, result -> {
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.setDistanceDuration(result.data);
-                        } else {
+                        } else if (result.status == Resource.Status.ERROR) {
                             stationItem.setDistanceDuration(new DirectionsResult(-1, -1));
                         }
                     });

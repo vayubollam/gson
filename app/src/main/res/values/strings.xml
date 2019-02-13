@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Petro-Canada</string>
     <string name="don_t_use_your_phone_while_driving">Don\'t use your phone while driving!</string>
-    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="forgot_password">Forgot password</string>
     <string name="password">Password</string>
     <string name="discover_your_next_adventure">DISCOVER \nYOUR NEXT \nADVENTURE</string>
     <string name="home">Home</string>
@@ -10,9 +10,7 @@
     <string name="enable_location_dialog_message">We use location services to show locations near you.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="open_with">Open With</string>
-    <string name="always">ALWAYS</string>
-    <string name="nearby">NEAREST</string>
+    <string name="dashboard_nearby_card_title">Nearest</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to \nPetro-Canada on The go!</string>
     <string name="fav_button_add">Add as favourite location</string>
     <string name="fav_button_remove">Favourite</string>
@@ -30,7 +28,7 @@
     <string name="filter_fuel_header">Fuel</string>
     <string name="filter_carwash_header">Car wash</string>
     <string name="hours_list_title">Hours</string>
-    <string name="station_open_24hrs">Open 24h</string>
+    <string name="station_open_24hrs">Open 24 hours</string>
     <string name="directions_button">Get directions</string>
     <string name="added_to_favourites">Station added to favourites</string>
     <string name="search_an_address">Search</string>
@@ -40,7 +38,7 @@
     <string name="no_stations_found">Sorry, we can\'t find any results</string>
     <string name="no_stations_filters_applied">Try expanding your search or removing filters.</string>
     <string name="sugestions">suggestions</string>
-    <string name="nearby_title">NEAREST</string>
+    <string name="nearby_section_title">Nearest</string>
     <string name="no_results">No results</string>
     <string name="clear_filters_button">clear filters</string>
     <string name="clear_all_filters_chip">Clear all</string>
