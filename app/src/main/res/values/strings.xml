@@ -62,7 +62,7 @@
     <string name="sign_out">Sign out</string>
     <string name="distance_unavailable">Distance not available</string>
     <string name="signin_or_join">Sign-in or join to favourite</string>
-    <string name="signin_or_join_message">Sign-in to a Petro-Canada account to access all features and content.</string>
+    <string name="signin_or_join_message">Sign in to your Petro-Points account to access all features, including favourites.</string>
     <string name="email_required">Email is required.</string>
     <string name="password_required">Password is required.</string>
 </resources>
