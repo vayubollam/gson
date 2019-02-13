@@ -12,10 +12,6 @@
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
-
-        <variable
-            name="recentSearch"
-            type="androidx.databinding.ObservableBoolean"></variable>
     </data>
 
     <LinearLayout
@@ -26,40 +22,30 @@
         android:orientation="vertical"
         app:visibleGone="@{vm.query.isEmpty()}">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            visibleGone="@{recentSearch}"
-            android:src="@drawable/horizontal_divider" />
-
-
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/SectionTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/nearby_title" />
-
-            <androidx.legacy.widget.Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="@string/nearby_section_title"
+                android:textAllCaps="true"/>
 
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="24dp"
-                android:layout_marginRight="16dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
+                android:layout_marginRight="16dp"
                 android:indeterminateTint="@color/red"
                 android:visibility="@{vm.nearbyStations.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
         </LinearLayout>

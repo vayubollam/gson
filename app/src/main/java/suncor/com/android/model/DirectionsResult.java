@@ -61,12 +61,12 @@ public class DirectionsResult {
         int hours = totalMinutes / 60;
 
         if (hours != 0) {
-            return hours + " hours " + minutes + " minutes";
+            return hours + " hours " + minutes + " min";
         } else {
             if (minutes == 0 && seconds > 0) {
                 minutes = 1;
             }
-            return minutes + " minutes";
+            return minutes + " min";
         }
     }
 }

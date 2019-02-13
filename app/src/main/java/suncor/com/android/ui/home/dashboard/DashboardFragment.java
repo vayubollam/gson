@@ -15,10 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -88,24 +85,30 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
             int openmin = Integer.parseInt(workHour.getOpen().substring(2, 4));
             int closemin = Integer.parseInt(workHour.getClose().substring(2, 4));
             if (currenthour > openHour && currenthour < closeHour) {
-                openHoursText.setText(getString(R.string.open_generic, getTiming(closeHour, closemin)));
+                openHoursText.setText(getString(R.string.open_generic, workHour.formatCloseHour()));
             } else {
-                openHoursText.setText(getString(R.string.close_generic, getTiming(openHour, openmin)));
+                openHoursText.setText(getString(R.string.close_generic, workHour.formatOpenHour()));
             }
 
             if (userLocation != null) {
                 LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
                 LatLng origin = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
                 DirectionsApi.getInstance().enqueuJob(origin, dest)
-                        .observe(this, result -> { //TODO choose right lifecycle owner
+                        .observe(this, result -> {
                             progressBar.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
                             distanceText.setVisibility(result.status == Resource.Status.LOADING ? View.GONE : View.VISIBLE);
                             if (result.status == Resource.Status.SUCCESS) {
-                                progressBar.setVisibility(View.INVISIBLE);
                                 distanceText.setText(DirectionsResult.formatDistanceDuration(getContext(), result.data));
+                                distanceText.setTextColor(getResources().getColor(R.color.black_80));
+                            } else if (result.status == Resource.Status.ERROR) {
+                                distanceText.setText(R.string.distance_unavailable);
+                                distanceText.setTextColor(getResources().getColor(R.color.black_60));
                             }
-                            //TODO handle error
                         });
+            } else {
+                distanceText.setVisibility(View.VISIBLE);
+                distanceText.setText(R.string.distance_unavailable);
+                distanceText.setTextColor(getResources().getColor(R.color.black_60));
             }
         };
 
@@ -165,22 +168,6 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onLoginStatusChanged() {
         dashboardAdapter.notifyDataSetChanged();
-    }
-
-    public String getTiming(int hour, int min) {
-
-        String time;
-        try {
-            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-            final Date dateObj = sdf.parse(hour + ":" + min);
-            System.out.println(dateObj);
-            time = new SimpleDateFormat("hh:mm a").format(dateObj);
-        } catch (final ParseException e) {
-            e.printStackTrace();
-            time = "";
-        }
-
-        return time;
     }
 
     public int getDayofWeek() {
