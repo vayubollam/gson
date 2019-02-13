@@ -57,6 +57,9 @@ public class FavouritesFragment extends Fragment {
         binding.favoriteRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         favouritesAdapter = new FavouritesAdapter();
         view.requestApplyInsets();
+        binding.addFavoriteBackButton.setOnClickListener(v -> {
+            getFragmentManager().popBackStack();
+        });
     }
 
     @Override

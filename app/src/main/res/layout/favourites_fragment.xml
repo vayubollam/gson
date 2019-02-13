@@ -40,6 +40,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/Title1"
+                android:textColor="@color/black_80"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -56,7 +57,6 @@
                 android:clipToPadding="false"
                 android:padding="16dp"
                 android:visibility="gone"
-
                 tools:visibility="visible"></androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
@@ -80,6 +80,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:lineSpacingMultiplier="1.36"
+                    android:textColor="@color/black_80"
                     android:gravity="center"
                     android:text="@string/no_favourites" />
 
@@ -90,13 +92,15 @@
                     android:layout_marginLeft="34dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="24dp"
-                    android:lineHeight="26sp"
+                    android:lineSpacingMultiplier="1.44"
+                    android:textAlignment="center"
                     android:text="@string/lorem"
                     android:textColor="@color/black_60"
                     android:textSize="18sp" />
 
                 <com.google.android.material.button.MaterialButton
                     style="@style/SmallButton"
+                    android:id="@+id/addFavoriteBackButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
