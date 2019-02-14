@@ -116,6 +116,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         stationAdapter = new StationAdapter(this, bottomSheetBehavior);
         binding.cardRecycler.setAdapter(stationAdapter);
         binding.cardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
+        binding.cardRecycler.addOnItemTouchListener(new StationCardTouchListener(this, stationAdapter.getStations(), bottomSheetBehavior));
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(binding.cardRecycler);
 

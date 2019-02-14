@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.mfp.SessionManager;
@@ -45,6 +46,20 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     private int verticalPadding;
     private CardStationItemBinding binding;
     private StationItem stationItem;
+    private int initialAddressLayoutHeight;
+    private int initialAddressLayoutBottomMargin;
+
+
+    public static void showCard(Fragment fragment, StationItem stationItem, View originalView) {
+        StationDetailsDialog dialog = new StationDetailsDialog();
+        dialog.setInitialHeight(originalView.getHeight());
+        int[] position = new int[2];
+        originalView.getLocationOnScreen(position);
+        dialog.setInitialPosition(position[1]);
+        dialog.setStationItem(stationItem);
+        dialog.setTargetFragment(fragment, StationsFragment.STATION_DETAILS_REQUEST_CODE);
+        dialog.show(fragment.getFragmentManager(), StationDetailsDialog.TAG);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,11 +111,22 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
             toggleFavourite();
         });
 
+        binding.detailsLayout.setVisibility(View.VISIBLE);
+        binding.addressLayout.setVisibility(View.VISIBLE);
+        binding.addressLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                initialAddressLayoutHeight = binding.addressLayout.getMeasuredHeight();
+                initialAddressLayoutBottomMargin = ((LinearLayout.LayoutParams) binding.addressLayout.getLayoutParams()).bottomMargin;
+            }
+        });
+
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
         if (behavior != null) {
             behavior.setPeekHeight(fullHeight - (initialPosition - getStatusBarHeight()) + padding);
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+
                 @Override
                 public void onStateChanged(@NonNull View view, int i) {
 
@@ -108,21 +134,27 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
                 @Override
                 public void onSlide(@NonNull View view, float v) {
-                    Log.d("test", "Slide: " + v);
-                    if (v > 0.01) {
+                    if (v > 0.005) {
                         dialog.getWindow().setDimAmount(v * DIM_AMOUNT);
 
+                        //title text size
                         float titleTextSize = v > 0.7 ? 22 : v * 4 + 18;
-                        ObjectAnimator.ofFloat(binding.stationTitleText, "textSize", titleTextSize).setDuration(0).start();
+                        if (Math.abs(titleTextSize - binding.stationTitleText.getTextSize()) > 10) {
+                            ObjectAnimator.ofFloat(binding.stationTitleText, "textSize", titleTextSize).setDuration(0).start();
+                        }
 
+                        //changing address layout height and alpha
                         binding.addressLayout.animate().alpha(v).setDuration(0).start();
-                        binding.addressLayout.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
+                        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) binding.addressLayout.getLayoutParams();
+                        layoutParams.height = (int) (v * initialAddressLayoutHeight);
+                        layoutParams.bottomMargin = (int) (v * initialAddressLayoutBottomMargin);
+                        binding.addressLayout.requestLayout();
 
+                        //close and handle buttons
                         binding.closeButton.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
                         binding.imgBottomSheet.setVisibility(v > 0.1 ? View.INVISIBLE : View.VISIBLE);
 
-                        binding.detailsLayout.setVisibility(v > 0.2 ? View.VISIBLE : View.GONE);
-
+                        //card height
                         binding.cardView.getLayoutParams().height = (int) (((fullHeight - verticalPadding) * v) + (1 - v) * initialHeight);
                         binding.cardView.requestLayout();
                     } else {
