@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
                 android:layout_toRightOf="@+id/txt_nearby_distance_duration"
-                android:text="@{stationItem.isOpen24Hrs()?@string/station_open_24hrs:stationItem.isOpen()?@string/open_generic(stationItem.getCloseHour()) : @string/close_generic(stationItem.getOpenHour())}"
+                android:text="@{stationItem.isOpen24Hrs()?@string/station_open_24hrs:stationItem.isOpen()?@string/open_generic(stationItem.getCloseHour()) : @string/closed}"
                 android:textColor="@color/black_60"
                 android:lineHeight="17sp"
                 tools:text="Open 24 hours" />

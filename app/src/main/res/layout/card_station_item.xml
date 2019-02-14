@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
-                        android:text="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/close_generic}"
+                        android:text="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/closed}"
                         android:textAppearance="@style/Caption1"
                         tools:text="Open, closes at 12:00 AM" />
                 </LinearLayout>
