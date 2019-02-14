@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         sessionManager = SessionManager.getInstance();
 
         userNameEditText = findViewById(R.id.txt_email);
-        userNameEditText.setFilters(new InputFilter[]{emailfilter});
+        //     userNameEditText.setFilters(new InputFilter[]{emailfilter});
         passwordEditText = findViewById(R.id.txt_password);
         passwordEditText.addTextChangedListener(passwordTextWatcher);
         userNameEditText.addTextChangedListener(emailTextWatcher);

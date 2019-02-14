@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="station_services_values">
+        <item>Service de ravitaillement accessible</item>
+        <item>Guichet automatique</item>
+        <item>A&amp;W</item>
+        <item>Ouvert 24 heures</item>
+        <item>Bière et vin</item>
+        <item>Dépanneur</item>
+        <item>Avec service</item>
+        <item>Loterie</item>
+        <item>Restaurant</item>
+        <item>Propane – échange de bouteilles</item>
+    </string-array>
+
+    <string-array name="station_fuel_values">
+        <item>Diesel</item>
+        <item>Borne de recharge électrique</item>
+        <item>SuperNet 94</item>
+        <item>Ultra 94</item>
+    </string-array>
+
+    <string-array name="station_wash_values">
+        <item>Lave-auto (sans contact)</item>
+    </string-array>
+</resources>

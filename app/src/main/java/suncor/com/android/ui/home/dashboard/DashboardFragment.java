@@ -87,7 +87,7 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
             if (currenthour > openHour && currenthour < closeHour) {
                 openHoursText.setText(getString(R.string.open_generic, workHour.formatCloseHour()));
             } else {
-                openHoursText.setText(getString(R.string.close_generic, workHour.formatOpenHour()));
+                openHoursText.setText(getString(R.string.closed));
             }
 
             if (userLocation != null) {

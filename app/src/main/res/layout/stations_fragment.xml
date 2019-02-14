@@ -241,6 +241,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
+                            android:textAlignment="center"
                             android:fontFamily="@font/gibson_semibold"
                             android:text="@string/no_stations_found" />
 
@@ -253,7 +254,7 @@
                             android:layout_marginBottom="16dp"
                             android:text="@string/no_stations_filters_applied"
                             android:textColor="@color/black_60"
-                            android:lineSpacingMultiplier="1.4"/>
+                            android:lineSpacingMultiplier="1.4" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/clear_filters_button"

@@ -162,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
-                        android:text="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/close_generic(vm.getOpenHour())}"
+                        android:text="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/close_generic}"
                         android:textAppearance="@style/Caption1"
                         tools:text="Open, closes at 12:00 AM" />
                 </LinearLayout>
@@ -294,7 +294,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/details_services_header" />
+                                android:text="@string/services_header" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/service_amenities_text"
@@ -330,7 +330,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/details_fuel_header" />
+                                android:text="@string/fuel_header" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/fuel_amenities_text"
@@ -366,7 +366,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/details_carwash_header" />
+                                android:text="@string/carwash_header" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/wash_amenities_text"

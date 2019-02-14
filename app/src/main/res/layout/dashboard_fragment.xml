@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_bottom_sheet"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/dashboard_nearby_card_title"
+                android:text="@string/nearby"
                 android:textAllCaps="true" />
 
             <ProgressBar

@@ -7,8 +7,6 @@
 
         <import type="suncor.com.android.model.Resource.Status" />
 
-        <import type="android.view.View"></import>
-
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
@@ -37,8 +35,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
-                android:text="@string/nearby_section_title"
-                android:textAllCaps="true"/>
+                android:text="@string/nearby"
+                android:textAllCaps="true" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -47,7 +45,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="16dp"
                 android:indeterminateTint="@color/red"
-                android:visibility="@{vm.nearbyStations.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
+                app:visibleGone="@{vm.nearbyStations.status == Status.LOADING}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView

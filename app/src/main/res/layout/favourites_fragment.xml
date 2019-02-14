@@ -94,7 +94,7 @@
                     android:layout_marginRight="24dp"
                     android:lineSpacingMultiplier="1.44"
                     android:textAlignment="center"
-                    android:text="@string/lorem"
+                    android:text="@string/no_favourites_text"
                     android:textColor="@color/black_60"
                     android:textSize="18sp" />
 

@@ -43,7 +43,7 @@ public class DirectionsResult {
             return context.getString(R.string.distance_unavailable);
         }
         String distanceText = context.getString(R.string.distance_generic, ((float) result.getDistance()) / 1000);
-        String durationText = context.getString(R.string.duration_generic, secondsToString(result.duration));
+        String durationText = context.getString(R.string.duration_generic, secondsToString(result.duration, context));
 
         return distanceText + " · " + durationText;
     }
@@ -55,19 +55,19 @@ public class DirectionsResult {
         return context.getString(R.string.distance_generic, ((float) result.getDistance()) / 1000);
     }
 
-    private static String secondsToString(int totalSeconds) {
+    private static String secondsToString(int totalSeconds, Context context) {
         int seconds = totalSeconds % 60;
         int totalMinutes = totalSeconds / 60;
         int minutes = totalMinutes % 60;
         int hours = totalMinutes / 60;
 
         if (hours != 0) {
-            return hours + " hours " + minutes + " min";
+            return hours + 3 + " " + context.getString(R.string.hours_distance) + " " + minutes + " " + context.getString(R.string.minutes_distance);
         } else {
             if (minutes == 0 && seconds > 0) {
                 minutes = 1;
             }
-            return minutes + " min";
+            return minutes + " " + context.getString(R.string.minutes_distance);
         }
     }
 }

@@ -176,6 +176,8 @@
         <item name="android:windowTitleStyle">@style/DialogWindowTitleStyle</item>
         <item name="windowMinWidthMajor">360dp</item>
         <item name="windowMinWidthMinor">360dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:titleCondensed">All</item>
     </style>
 
     <style name="DialogWindowTitleStyle" parent="Base.DialogWindowTitle.AppCompat">

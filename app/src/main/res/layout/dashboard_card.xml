@@ -39,7 +39,9 @@
                     android:layout_weight="1"
                     android:layout_marginRight="8dp"
                     style="@style/SmallButton"
+                    android:autoSizeTextType="uniform"
                     android:textSize="14sp"
+                    android:autoSizeMaxTextSize="14sp"
                     android:text="@string/join"
                     android:layout_height="44dp" />
 
@@ -49,7 +51,9 @@
                     android:layout_weight="1"
                     android:id="@+id/card_dashboard_Sign_In"
                     android:layout_marginLeft="8dp"
+                    android:autoSizeTextType="uniform"
                     android:textSize="14sp"
+                    android:autoSizeMaxTextSize="14sp"
                     android:text="@string/sign_in"
                     android:layout_height="44dp" />
             </LinearLayout>
