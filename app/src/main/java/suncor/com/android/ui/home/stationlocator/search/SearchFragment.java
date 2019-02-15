@@ -49,6 +49,7 @@ public class SearchFragment extends Fragment {
     private SearchNearByAdapter nearbyStationsAdapter;
     private SuggestionsAdapter suggestionsAdapter;
     private ObservableBoolean recentSearch = new ObservableBoolean();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -171,8 +172,11 @@ public class SearchFragment extends Fragment {
     }
 
     public void goBack() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        try {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        } catch (NullPointerException ignored) {
+        }
         getFragmentManager().popBackStack();
     }
 

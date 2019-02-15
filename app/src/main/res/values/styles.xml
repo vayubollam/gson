@@ -176,7 +176,6 @@
         <item name="android:windowTitleStyle">@style/DialogWindowTitleStyle</item>
         <item name="windowMinWidthMajor">360dp</item>
         <item name="windowMinWidthMinor">360dp</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:titleCondensed">All</item>
     </style>
 
@@ -209,6 +208,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/gibson_regular</item>
         <item name="android:textColorHint">@color/black_60</item>
+        <item name="hintTextAppearance">@style/Caption1</item>
         <item name="errorTextAppearance">@style/Caption1.Red</item>
         <item name="passwordToggleTint">@color/black_60</item>
         <item name="passwordToggleDrawable">@drawable/show_hide_password_background</item>

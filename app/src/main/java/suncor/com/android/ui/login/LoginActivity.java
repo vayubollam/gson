@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (sessionManager.isAccountBlocked()) {
                     String title = getString(R.string.invalid_credentials_dialog_title);
                     String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
-                    alertError(content, title);
+                    createAlert(title, content).show();
                 } else {
                     progressLayout.setVisibility(View.VISIBLE);
                     sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString())
@@ -63,13 +64,29 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 } else {
                                     if (status.data == SessionManager.SigninResponse.CHALLENGED) {
-                                        String message = getString(R.string.invalid_credentials_dialog_message, Integer.parseInt(status.message), SessionManager.LOCK_TIME_MINUTES);
                                         String title = getString(R.string.invalid_credentials_dialog_title);
-                                        alertError(message, title);
+                                        String message;
+                                        int remainingAttempts = Integer.parseInt(status.message);
+                                        if (remainingAttempts == SessionManager.LOGIN_ATTEMPTS - 1) {
+                                            message = getString(R.string.invalid_credentials_dialog_1st_message);
+                                            createAlert(title, message).show();
+                                        } else {
+                                            message = getString(R.string.invalid_credentials_dialog_2nd_message, Integer.parseInt(status.message), SessionManager.LOCK_TIME_MINUTES);
+                                            AlertDialog.Builder dialog = createAlert(title, message);
+                                            dialog.setNeutralButton(R.string.reset_password, (dialogInterface, which) -> {
+                                                Toast.makeText(getApplicationContext(), "This will open the reset password screen when developed", Toast.LENGTH_SHORT).show();
+                                                dialogInterface.dismiss();
+                                            });
+                                            dialog.setPositiveButton(R.string.ok, (dialogInterface, which) -> {
+                                                passwordEditText.setText("");
+                                                dialogInterface.dismiss();
+                                            });
+                                            dialog.show();
+                                        }
                                     } else {
                                         String title = getString(R.string.invalid_credentials_dialog_title);
                                         String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
-                                        alertError(content, title);
+                                        createAlert(title, content).show();
                                     }
                                 }
                             });
@@ -103,16 +120,12 @@ public class LoginActivity extends AppCompatActivity {
         return allGood;
     }
 
-    private void alertError(final String msg, String title) {
+    private AlertDialog.Builder createAlert(final String title, final String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(msg)
                 .setTitle(title);
-        builder.setPositiveButton(android.R.string.ok, (dialog, id) -> {
-            // User clicked OK button
-            dialog.dismiss();
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.setPositiveButton(android.R.string.ok, null);
+        return builder;
     }
 
 

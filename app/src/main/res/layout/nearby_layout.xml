@@ -45,7 +45,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="16dp"
                 android:indeterminateTint="@color/red"
-                app:visibleGone="@{vm.nearbyStations.status == Status.LOADING}" />
+                app:visibleInvisible="@{vm.nearbyStations.status == Status.LOADING}" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView

@@ -33,7 +33,7 @@
     <string name="email">Courriel</string>
     <string name="password">Mot de passe</string>
     <string name="hours_list_title">Heures</string>
-    <string name="safety_message">N’oubliez pas d’agir de façon responsable. N\'utilisez pas votre téléphone en conduisant.</string>
+    <string name="safety_message">N’oubliez pas d’agir de façon responsable. N\'utilisez pas votre téléphone en conduisant!</string>
     <string name="forgot_password">Mot de passe oublié</string>
     <string name="email_required">Veuillez entrer une adresse de courriel</string>
     <string name="password_required">Le mot de passe est requis</string>
@@ -51,4 +51,10 @@
     <string name="distance_unavailable">Distance non disponible</string>
     <string name="sign_in_progress">Ouverture de session</string>
     <string name="invalid_credentials_dialog_title">Courriel et mot de passe non valide.</string>
+    <string name="home">Accueil</string>
+    <string name="ok">OK</string>
+    <string name="error">Erreur</string>
+    <string name="reset_password">Réinitialisez votre mot de passe</string>
+    <string name="drive_safely">Conduisez de façon sécuritaire</string>
+    <string name="sign_in_blocked_dialog_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
 </resources>
