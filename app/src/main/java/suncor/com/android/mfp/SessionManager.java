@@ -50,7 +50,7 @@ public class SessionManager implements SessionChangeListener {
 
     private SessionManager() {
         user = UserLocalSettings.getString(SHARED_PREF_USER);
-        if (isUserLoggedIn()) {
+        if (user != null && !user.isEmpty()) {
             loginState.postValue(LoginState.LOGGED_IN);
         } else {
             loginState.postValue(LoginState.LOGGED_OUT);
@@ -116,7 +116,9 @@ public class SessionManager implements SessionChangeListener {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
+                    //TODO handle this according to errors, an error due to connection error shouldn't clear login state
                     loginState.postValue(LoginState.LOGGED_OUT);
+                    setUser(null);
                 }
             });
         } else {
@@ -138,7 +140,7 @@ public class SessionManager implements SessionChangeListener {
     }
 
     public boolean isUserLoggedIn() {
-        return user != null;
+        return loginState.getValue() == LoginState.LOGGED_IN;
     }
 
     public String getUser() {
