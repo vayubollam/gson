@@ -12,6 +12,7 @@
         <item name="android:textColorSecondary">@color/black_60</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
@@ -198,9 +199,10 @@
         <item name="android:colorBackground">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.TextInput">
+    <style name="AppTheme.TextInput" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
         <item name="colorControlNormal">@color/black_40</item>
         <item name="colorControlActivated">@color/black_80</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
@@ -208,6 +210,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/gibson_regular</item>
         <item name="android:textColorHint">@color/black_60</item>
+        <item name="android:paddingTop">4dp</item>
         <item name="hintTextAppearance">@style/Caption1</item>
         <item name="errorTextAppearance">@style/Caption1.Red</item>
         <item name="passwordToggleTint">@color/black_60</item>
@@ -216,6 +219,12 @@
 
     <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:paddingStart">12dp</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">32dp</item>
+        <item name="android:paddingStart">2dp</item>
     </style>
 
 </resources>

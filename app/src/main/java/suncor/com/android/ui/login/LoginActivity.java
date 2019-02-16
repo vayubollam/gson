@@ -1,10 +1,12 @@
 package suncor.com.android.ui.login;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -33,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         sessionManager = SessionManager.getInstance();
 
         userNameEditText = findViewById(R.id.txt_email);
+        userNameEditText.requestFocus();
         //     userNameEditText.setFilters(new InputFilter[]{emailfilter});
         passwordEditText = findViewById(R.id.txt_password);
         passwordEditText.addTextChangedListener(passwordTextWatcher);
@@ -73,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                                         } else {
                                             message = getString(R.string.invalid_credentials_dialog_2nd_message, Integer.parseInt(status.message), SessionManager.LOCK_TIME_MINUTES);
                                             AlertDialog.Builder dialog = createAlert(title, message);
-                                            dialog.setNeutralButton(R.string.reset_password, (dialogInterface, which) -> {
+                                            dialog.setNegativeButton(R.string.reset_password, (dialogInterface, which) -> {
                                                 Toast.makeText(getApplicationContext(), "This will open the reset password screen when developed", Toast.LENGTH_SHORT).show();
                                                 dialogInterface.dismiss();
                                             });

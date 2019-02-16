@@ -33,36 +33,28 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView"
                 android:layout_width="110dp"
-                android:layout_height="84dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="65dp"
-                android:layout_marginEnd="8dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="84dp"
                 android:scaleType="fitCenter"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_logo" />
 
             <suncor.com.android.ui.common.TextInputLayoutEx
                 android:id="@+id/email_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="72dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
+                android:hint="@string/email"
                 android:theme="@style/AppTheme.TextInput"
-                app:errorEnabled="true"
-                app:layout_constraintTop_toBottomOf="@id/imageView">
+                app:hintEnabled="true">
 
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:paddingBottom="24dp" />
+                    android:inputType="textEmailAddress" />
 
             </suncor.com.android.ui.common.TextInputLayoutEx>
 
@@ -70,33 +62,30 @@
             <suncor.com.android.ui.common.TextInputLayoutEx
                 android:id="@+id/password_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="72dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="@string/password"
                 android:theme="@style/AppTheme.TextInput"
-                app:errorEnabled="true"
                 app:hintEnabled="true"
-                app:layout_constraintTop_toBottomOf="@id/email_layout"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPassword"
-                    android:paddingBottom="24dp" />
+                    android:inputType="textPassword" />
 
             </suncor.com.android.ui.common.TextInputLayoutEx>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="24dp"
                 android:layout_weight="1"
                 android:gravity="bottom"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/signing_button"
