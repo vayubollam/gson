@@ -48,10 +48,9 @@
                 android:hint="@string/email"
                 android:theme="@style/AppTheme.TextInput"
                 app:hintEnabled="true">
-
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_email"
+                    android:maxLength="100"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />
@@ -72,6 +71,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txt_password"
+                    android:maxLength="16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
