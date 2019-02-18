@@ -37,6 +37,7 @@ pipeline {
             	script {
 					def returnValue = sh 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -s https://dev.rfmp-mfp.com -c applicationcenter -u admin -p APPCTNR@dmin#Dev19 -e -f app/build/outputs/apk/debug/app-debug.apk'
 
+/*
 	                if(returnValue != 0) {        	
 	    	            SlackUtils = load 'deploy/SlackUtils.groovy'
 		                def SLACK_CHANNEL_DEV = "CFRDD6XLG"
@@ -50,7 +51,8 @@ pipeline {
 	                    slackSend color: "#CC0000", channel: "${slackChannels}", message: slackMessage
 
 	                    error("Build failed because app cannot upload to IBM App Center.")
-                	}                    
+                	}
+ */
                 }		
 			}
 		}
