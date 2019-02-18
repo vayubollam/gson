@@ -12,7 +12,6 @@ import com.worklight.wlclient.api.challengehandler.SecurityCheckChallengeHandler
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SessionManager;
 
@@ -32,12 +31,10 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private SessionManager sessionManager;
     private SessionChangeListener listener;
 
-    private LocalBroadcastManager broadcastManager;
 
     public UserLoginChallengeHandler(String securityCheckName) {
         super(securityCheckName);
         Context context = WLClient.getInstance().getContext();
-        broadcastManager = LocalBroadcastManager.getInstance(context);
         sessionManager = SessionManager.getInstance();
         sessionManager.setChallengeHandler(this);
     }

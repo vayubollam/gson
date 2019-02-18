@@ -2,10 +2,12 @@ package suncor.com.android;
 
 import android.app.Application;
 
+import com.worklight.wlclient.HttpClientManager;
 import com.worklight.wlclient.api.WLClient;
 
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.data.repository.FavouriteRepositoryImpl;
+import suncor.com.android.mfp.MFPRequestInterceptor;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Station;
 
@@ -20,6 +22,7 @@ public class SuncorApplication extends Application {
         sInstance = this;
         WLClient.createInstance(this);
         UserLoginChallengeHandler.createAndRegister();
+        MFPRequestInterceptor.attachInterceptor(HttpClientManager.getInstance());
         favouriteRepository = new FavouriteRepositoryImpl(this);
         Station.initiateAmenities(this);
     }
