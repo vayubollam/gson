@@ -78,12 +78,12 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
             child = rv.findChildViewUnder(event.getX(), event.getY());
             item = items.get(rv.getChildAdapterPosition(child));
         }
-        return swipeUpDetector.onTouchEvent(event);
+        swipeUpDetector.onTouchEvent(event);
+        return false;
     }
 
     @Override
     public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-
     }
 
     @Override
