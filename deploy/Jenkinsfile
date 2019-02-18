@@ -89,7 +89,7 @@ pipeline {
 					slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
 					slackMessage += "${env.BUILD_URL}console\n"
 					slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-mfp/commits/branch/master\n"
-					slackMessage += "Last 5 commit messages on Master:\n ${lastTenCommitMessages}"
+					slackMessage += "Last 5 commit messages on Develop:\n ${lastTenCommitMessages}"
 
 					slackChannels = SLACK_CHANNEL_DEV
 
