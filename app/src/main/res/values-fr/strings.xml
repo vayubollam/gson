@@ -57,4 +57,5 @@
     <string name="reset_password">Réinitialisez votre mot de passe</string>
     <string name="drive_safely">Conduisez de façon sécuritaire</string>
     <string name="sign_in_blocked_dialog_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
+    <string name="add_station">Ajouter un établissement</string>
 </resources>

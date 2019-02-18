@@ -1,9 +1,11 @@
 package suncor.com.android.ui;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -14,7 +16,6 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.app.ActivityCompat;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
@@ -23,12 +24,13 @@ import suncor.com.android.ui.home.HomeActivity;
 public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
     private RelativeLayout SafetyMessageLayout;
     Handler safetyMessageHandler = new Handler();
-    private Animation animZoomOut;
+    private Animation animZoomOut, animFromLet, animFromBottom;
 
     private AppCompatImageView img_retail;
 
     private AppCompatTextView txt_splash;
-    private int delay = 3000;
+    private int delay = 1000;
+    private float screenWidthDiff, screenHeightDiff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,25 +58,26 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
                     break;
             }
         }
+
     }
 
     private void showSplach() {
         setContentView(R.layout.activity_splash);
         AppCompatImageView img_splash = findViewById(R.id.img_splash_full_screen);
         img_retail = findViewById(R.id.img_retail);
-
         txt_splash = findViewById(R.id.txt_splash);
-        // load the animation
-        animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.zoomout);
-
-        // set animation listener
+        animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoomout);
+        animFromLet = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_in_left);
+        animFromBottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+        animFromBottom.setDuration(delay);
+        animFromLet.setDuration(delay);
+        animZoomOut.setDuration(delay);
         animZoomOut.setAnimationListener(this);
 
 
         img_splash.startAnimation(animZoomOut);
-        img_retail.startAnimation(animZoomOut);
-        txt_splash.startAnimation(animZoomOut);
+        img_retail.startAnimation(animFromBottom);
+        txt_splash.startAnimation(animFromLet);
     }
 
 
@@ -85,7 +88,7 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
             openHomeActivity();
         });
         //for testing purposes
-        int SPLASH_DISPLAY_LENGTH = 30000;
+        int SPLASH_DISPLAY_LENGTH = 3000;
         //real value (3 sec)
         //int SPLASH_DISPLAY_LENGTH = 3000;
         safetyMessageHandler.postDelayed(() -> {
@@ -103,15 +106,19 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        new Handler().postDelayed(() -> {
-            SuncorApplication.splashShown = true;
-            Intent homeActivity = new Intent(SplashActivity.this, HomeActivity.class);
-            homeActivity.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-            homeActivity.addCategory(Intent.CATEGORY_HOME);
-            startActivity(homeActivity);
-            ActivityCompat.finishAffinity(SplashActivity.this);
-
-        }, delay);
+        screenHeightDiff = getDifferenceHeight(getScreenHeight());
+        screenWidthDiff = getDifferenceWidth(getScreenWidth());
+        safetyMessageHandler.postDelayed(() -> {
+            ObjectAnimator toLeftAnim = ObjectAnimator.ofFloat(txt_splash, "translationX", -screenWidthDiff);
+            toLeftAnim.setDuration(delay);
+            toLeftAnim.start();
+            ObjectAnimator toBottomAnim = ObjectAnimator.ofFloat(img_retail, "translationY", screenHeightDiff);
+            toBottomAnim.setDuration(delay / 2);
+            toBottomAnim.start();
+        }, delay / 2);
+        safetyMessageHandler.postDelayed(() -> {
+            openHomeActivity();
+        }, delay / 2);
     }
 
     @Override
@@ -161,4 +168,37 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         startActivity(homeIntent);
         finish();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        safetyMessageHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        safetyMessageHandler.removeCallbacksAndMessages(null);
+    }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    private float getDifferenceHeight(float screenHeight) {
+        int[] locations = new int[2];
+        img_retail.getLocationOnScreen(locations);
+        return screenHeight - locations[1];
+    }
+
+    private float getDifferenceWidth(float screenWidth) {
+        int[] locations = new int[2];
+        txt_splash.getLocationOnScreen(locations);
+        return screenWidth - locations[0];
+    }
+
 }

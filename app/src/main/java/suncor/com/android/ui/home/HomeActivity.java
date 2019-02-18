@@ -5,6 +5,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.common.SessionAwareActivity;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
@@ -37,7 +42,14 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
         bottom_navigation = findViewById(R.id.bottom_navigation);
 
         bottom_navigation.setOnNavigationItemSelectedListener(this);
-
+        View mainDivider = findViewById(R.id.mainDivider);
+        if (!SuncorApplication.splashShown) {
+            Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
+            animslideUp.setDuration(500);
+            bottom_navigation.startAnimation(animslideUp);
+            mainDivider.startAnimation(animslideUp);
+            SuncorApplication.splashShown = true;
+        }
         //check for runtime permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkforPermission();
@@ -47,8 +59,8 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
         if (!isLoggedIn()) {
             bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
         }
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
-
 
     private void checkforPermission() {
 

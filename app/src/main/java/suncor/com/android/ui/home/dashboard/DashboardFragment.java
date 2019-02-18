@@ -2,13 +2,14 @@ package suncor.com.android.ui.home.dashboard;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -21,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +48,7 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
     private Location userLocation;
     private RecyclerView carouselRecyclerView;
     private DashboardAdapter dashboardAdapter;
+    private boolean inAnimationShown;
 
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
@@ -56,8 +57,10 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.dashboard_fragment, container, false);
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -118,7 +121,18 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressBar = getView().findViewById(R.id.progress_bar);
+        stationCard = getView().findViewById(R.id.station_card);
         carouselRecyclerView = getView().findViewById(R.id.card_recycler);
+        if (!inAnimationShown) {
+            inAnimationShown = true;
+            Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
+            animFromLet.setDuration(500);
+            Animation animslideUp = AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in);
+            animslideUp.setDuration(500);
+            carouselRecyclerView.startAnimation(animFromLet);
+            stationCard.startAnimation(animslideUp);
+        }
         dashboardAdapter = new DashboardAdapter(getContext());
         carouselRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -149,17 +163,13 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
         //handler.postDelayed(runnable, speedScroll);
 
         carouselRecyclerView.setAdapter(dashboardAdapter);
-        Typeface tfGibsonBold = ResourcesCompat.getFont(getContext(), R.font.gibson_semibold);
-        Typeface tfGibsonRegular = ResourcesCompat.getFont(getContext(), R.font.gibson_regular);
+
         nearStationTitle = getView().findViewById(R.id.station_title_text);
-        nearStationTitle.setTypeface(tfGibsonBold);
         distanceText = getView().findViewById(R.id.distance_text);
-        distanceText.setTypeface(tfGibsonRegular);
         openHoursText = getView().findViewById(R.id.txt_station_open);
         directionsButton = getView().findViewById(R.id.directions_button);
-        openHoursText.setTypeface(tfGibsonRegular);
-        progressBar = getView().findViewById(R.id.progress_bar);
-        stationCard = getView().findViewById(R.id.station_card);
+
+
         distanceText.setText("...");
 
         directionsButton.setOnClickListener(this);

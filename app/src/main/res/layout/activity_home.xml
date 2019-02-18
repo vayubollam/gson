@@ -5,29 +5,31 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:layout_width="match_parent"
         android:id="@+id/frame_layout_home"
-        android:layout_above="@+id/bottom_navigation"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"></FrameLayout>
 
-    <ImageView
+    <View
+        android:id="@+id/mainDivider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="1dp"
         android:layout_above="@+id/bottom_navigation"
-        android:background="@drawable/horizontal_divider"></ImageView>
+        android:background="@drawable/horizontal_divider" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:id="@+id/bottom_navigation"
-        app:itemHorizontalTranslationEnabled="true"
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:labelVisibilityMode="auto"
         android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
         android:clickable="true"
         android:fadingEdge="vertical"
+        app:itemHorizontalTranslationEnabled="true"
         app:itemIconTint="@drawable/bottom_navigation_colors"
         app:itemTextColor="@drawable/bottom_navigation_colors"
+        app:labelVisibilityMode="auto"
         app:menu="@menu/bottom_navigation_menu" />
 
 
