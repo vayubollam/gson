@@ -85,7 +85,7 @@ pipeline {
 					)
 					lastTenCommitMessages = SlackUtils.addRMPLinks(lastTenCommitMessages)
 
-					slackMessage = "*Android Dev Build Completed on Master Push Commit: ${shortCommitHash}*\n"
+					slackMessage = "*Android Dev Build Completed on Develop Push Commit: ${shortCommitHash}*\n"
 					slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
 					slackMessage += "${env.BUILD_URL}console\n"
 					slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-mfp/commits/branch/master\n"
