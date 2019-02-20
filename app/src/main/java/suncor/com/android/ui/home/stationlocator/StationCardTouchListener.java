@@ -3,6 +3,7 @@ package suncor.com.android.ui.home.stationlocator;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -28,6 +29,8 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
         this.bottomSheetBehavior = behavior;
         swipeUpDetector = new GestureDetectorCompat(fragment.getContext(), new GestureDetector.SimpleOnGestureListener() {
             boolean isSwipeUpDetected;
+            int touchSlop = ViewConfiguration.get(fragment.getContext()).getScaledTouchSlop();
+            int flingVelocity = ViewConfiguration.get(fragment.getContext()).getScaledMinimumFlingVelocity();
 
             @Override
             public boolean onDown(MotionEvent e) {
@@ -45,7 +48,7 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
                 }
 
                 if (!isSwipeUpDetected) {
-                    if (velocityY > 10 && Math.abs(velocityX) < 10) {
+                    if (velocityY > flingVelocity && Math.abs(velocityX) < flingVelocity) {
                         isSwipeUpDetected = true;
                         StationDetailsDialog.showCard(fragment, item, child);
                         return true;
@@ -61,7 +64,7 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
                 }
 
                 if (!isSwipeUpDetected) {
-                    if (distanceY > 10 && Math.abs(distanceX) < 10) {
+                    if (distanceY > touchSlop && Math.abs(distanceX) < touchSlop) {
                         isSwipeUpDetected = true;
                         StationDetailsDialog.showCard(fragment, item, child);
                         return true;
@@ -75,10 +78,16 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
     @Override
     public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            child = rv.findChildViewUnder(event.getX(), event.getY());
-            item = items.get(rv.getChildAdapterPosition(child));
+            View view = rv.findChildViewUnder(event.getX(), event.getY());
+            int position = rv.getChildAdapterPosition(view);
+            if (position != RecyclerView.NO_POSITION) {
+                child = view;
+                item = items.get(position);
+            }
         }
-        swipeUpDetector.onTouchEvent(event);
+        if (child != null && item != null) {
+            swipeUpDetector.onTouchEvent(event);
+        }
         return false;
     }
 
