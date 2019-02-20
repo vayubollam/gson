@@ -97,7 +97,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        locationLiveData = new LocationLiveData(getContext());
+        locationLiveData = new LocationLiveData(getContext(), false);
 
         StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
         mViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
