@@ -226,7 +226,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             }
         });
         mViewModel.userLocation.observe(this, (location) -> {
-            stationAdapter.setUserLocation(location);
             if (myLocationMarker != null) {
                 myLocationMarker.remove();
             }
@@ -235,7 +234,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             } else {
                 myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_pin_search)));
             }
-
         });
 
         mViewModel.mapBounds.observe(this, (bounds -> {
@@ -280,6 +278,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             isLoading.set(false);
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mViewModel.setUserLocation(latLng, StationsViewModel.UserLocationType.GPS);
+            stationAdapter.setUserLocation(latLng);
         }
     }
 
@@ -417,7 +416,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             return;
         }
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) binding.cardRecycler.getLayoutManager();
-        int vi = linearLayoutManager.findFirstVisibleItemPosition();
+        int vi = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
         Resource<ArrayList<StationItem>> stationsResource = mViewModel.stationsAround.getValue();
         if (vi != RecyclerView.NO_POSITION && stationsResource.status == Resource.Status.SUCCESS && stationsResource.data.size() > vi) {
             mViewModel.setSelectedStation(mViewModel.stationsAround.getValue().data.get(vi));
