@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if (status.data == SessionManager.SigninResponse.CHALLENGED) {
                                         String title = getString(R.string.invalid_credentials_dialog_title);
                                         String message;
+                                        passwordEditText.setText("");
                                         int remainingAttempts = Integer.parseInt(status.message);
                                         if (remainingAttempts == SessionManager.LOGIN_ATTEMPTS - 1) {
                                             message = getString(R.string.invalid_credentials_dialog_1st_message);
@@ -78,10 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                                             AlertDialog.Builder dialog = createAlert(title, message);
                                             dialog.setNegativeButton(R.string.reset_password, (dialogInterface, which) -> {
                                                 Toast.makeText(getApplicationContext(), "This will open the reset password screen when developed", Toast.LENGTH_SHORT).show();
-                                                dialogInterface.dismiss();
-                                            });
-                                            dialog.setPositiveButton(R.string.ok, (dialogInterface, which) -> {
-                                                passwordEditText.setText("");
                                                 dialogInterface.dismiss();
                                             });
                                             dialog.show();
