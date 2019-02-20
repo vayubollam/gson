@@ -34,6 +34,7 @@ public class FavouritesFragment extends Fragment {
     private FavouritesFragmentBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private ObservableBoolean noResult = new ObservableBoolean(false);
+    private LocationLiveData locationLiveData;
 
     public static FavouritesFragment newInstance() {
         return new FavouritesFragment();
@@ -56,6 +57,7 @@ public class FavouritesFragment extends Fragment {
         binding.backButton.setOnClickListener(this::goBack);
         binding.favoriteRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         favouritesAdapter = new FavouritesAdapter();
+        locationLiveData = new LocationLiveData(getContext());
         view.requestApplyInsets();
         binding.addFavoriteBackButton.setOnClickListener(v -> {
             getFragmentManager().popBackStack();
@@ -80,7 +82,6 @@ public class FavouritesFragment extends Fragment {
             }
 
         });
-        LocationLiveData locationLiveData = new LocationLiveData(getActivity());
         if (LocationUtils.isLocationEnabled() && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Observer<Location> locationObserver = new Observer<Location>() {
                 @Override

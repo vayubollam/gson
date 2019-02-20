@@ -77,6 +77,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private final static int MINIMUM_ZOOM_LEVEL = 10;
 
     private StationsViewModel mViewModel;
+    private LocationLiveData locationLiveData;
     private GoogleMap mGoogleMap;
     private HashMap<Marker, StationItem> stationsMarkers = new HashMap<>();
     private StationAdapter stationAdapter;
@@ -96,6 +97,10 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        locationLiveData = new LocationLiveData(getContext());
+
+        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
+        mViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
     }
 
     @Override
@@ -103,8 +108,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
                              @Nullable Bundle savedInstanceState) {
         binding = StationsFragmentBinding.inflate(inflater, container, false);
 
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
-        mViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
         screenRatio = (float) getResources().getDisplayMetrics().heightPixels / (float) getResources().getDisplayMetrics().widthPixels;
         mViewModel.setRegionRatio(screenRatio);
 
@@ -146,15 +149,9 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (mViewModel.userLocation.getValue() == null) {
+        if (mViewModel.userLocation.getValue() == null || mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.SEARCH) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locateMe(false);
             } else {
@@ -197,9 +194,9 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         if (!haveNetworkConnection()) {
             Toast.makeText(getActivity(), "No Internet access ...", Toast.LENGTH_SHORT).show();
         }
-        mViewModel.stationsAround.observe(this, this::UpdateCards);
-        mViewModel.filters.observe(this, this::filtersChanged);
-        mViewModel.selectedStation.observe(this, station -> {
+        mViewModel.stationsAround.observe(getViewLifecycleOwner(), this::UpdateCards);
+        mViewModel.filters.observe(getViewLifecycleOwner(), this::filtersChanged);
+        mViewModel.selectedStation.observe(getViewLifecycleOwner(), station -> {
             if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null || mViewModel.stationsAround.getValue().data.isEmpty()) {
                 return;
             }
@@ -225,7 +222,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
-        mViewModel.userLocation.observe(this, (location) -> {
+        mViewModel.userLocation.observe(getViewLifecycleOwner(), (location) -> {
             if (myLocationMarker != null) {
                 myLocationMarker.remove();
             }
@@ -236,7 +233,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             }
         });
 
-        mViewModel.mapBounds.observe(this, (bounds -> {
+        mViewModel.mapBounds.observe(getViewLifecycleOwner(), (bounds -> {
             if (!mGoogleMap.getProjection().getVisibleRegion().latLngBounds.equals(bounds)) {
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0);
                 try {
@@ -247,7 +244,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             }
         }));
 
-        mViewModel.queryText.observe(this, (text) ->
+        mViewModel.queryText.observe(getViewLifecycleOwner(), (text) ->
         {
             binding.addressSearchText.setText(text);
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
@@ -279,6 +276,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mViewModel.setUserLocation(latLng, StationsViewModel.UserLocationType.GPS);
             stationAdapter.setUserLocation(latLng);
+            locationLiveData.removeObserver(this::gotoMyLocation);
         }
     }
 
@@ -505,8 +503,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         if (LocationUtils.isLocationEnabled()) {
             isLoading.set(true);
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                LocationLiveData liveData = new LocationLiveData(getContext());
-                liveData.observe(this, this::gotoMyLocation);
+                locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
             }
         } else if (showDialog) {
             AlertDialog.Builder adb = new AlertDialog.Builder(getContext());

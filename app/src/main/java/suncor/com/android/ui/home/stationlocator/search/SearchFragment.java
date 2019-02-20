@@ -46,6 +46,7 @@ public class SearchFragment extends Fragment {
     private SearchFragmentBinding binding;
     private NearbyLayoutBinding nearbySearchBinding;
     private LatLng userLocation;
+    private LocationLiveData locationLiveData;
     private SearchNearByAdapter nearbyStationsAdapter;
     private SuggestionsAdapter suggestionsAdapter;
     private ObservableBoolean recentSearch = new ObservableBoolean();
@@ -66,6 +67,8 @@ public class SearchFragment extends Fragment {
 
         StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
         parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
+
+        locationLiveData = new LocationLiveData(getContext());
 
         SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
@@ -109,7 +112,6 @@ public class SearchFragment extends Fragment {
                     return;
                 }
             }
-            LocationLiveData locationLiveData = new LocationLiveData(getContext());
             locationLiveData.observe(getActivity(), location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);

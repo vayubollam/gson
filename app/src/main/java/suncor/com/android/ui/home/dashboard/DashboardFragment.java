@@ -48,10 +48,18 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
     private Location userLocation;
     private RecyclerView carouselRecyclerView;
     private DashboardAdapter dashboardAdapter;
+    private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
 
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
     }
 
     @Override
@@ -63,19 +71,12 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            new LocationLiveData(getContext())
-                    .observe(this, (location -> {
-                        userLocation = location;
-                    }));
+            locationLiveData.observe(getViewLifecycleOwner(), (location -> {
+                userLocation = location;
+            }));
         }
 
         Observer<Station> stationObserver = station -> {
@@ -97,7 +98,7 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
                 LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
                 LatLng origin = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
                 DirectionsApi.getInstance().enqueuJob(origin, dest)
-                        .observe(this, result -> {
+                        .observe(getViewLifecycleOwner(), result -> {
                             progressBar.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
                             distanceText.setVisibility(result.status == Resource.Status.LOADING ? View.GONE : View.VISIBLE);
                             if (result.status == Resource.Status.SUCCESS) {
@@ -115,7 +116,7 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
             }
         };
 
-        mViewModel.getNearestStation().observe(this, stationObserver);
+        mViewModel.getNearestStation().observe(getViewLifecycleOwner(), stationObserver);
     }
 
     @Override

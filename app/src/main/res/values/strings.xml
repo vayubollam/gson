@@ -44,6 +44,7 @@
     <string name="email">Email</string>
     <string name="sign_in_progress">Signing in</string>
     <string name="invalid_credentials_dialog_title">Invalid Email or Password</string>
+    <string name="invalid_credentials_dialog_1st_message">The email or password you entered is not correct. Please try again.</string>
     <string name="invalid_credentials_dialog_2nd_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="sign_in_blocked_dialog_title">Sign-in disabled</string>
     <string name="sign_in_blocked_dialog_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
@@ -63,6 +64,5 @@
     <string name="hours_distance">hours</string>
     <string name="minutes_distance">min</string>
     <string name="nearby">Nearest</string>
-    <string name="invalid_credentials_dialog_1st_message">Please try again</string>
     <string name="reset_password">Reset password</string>
 </resources>

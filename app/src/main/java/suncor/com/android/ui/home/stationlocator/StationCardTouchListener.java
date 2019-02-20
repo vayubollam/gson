@@ -48,7 +48,7 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
                 }
 
                 if (!isSwipeUpDetected) {
-                    if (velocityY > flingVelocity && Math.abs(velocityX) < flingVelocity) {
+                    if (velocityY > flingVelocity && Math.abs(velocityX) < 10) {
                         isSwipeUpDetected = true;
                         StationDetailsDialog.showCard(fragment, item, child);
                         return true;
@@ -64,7 +64,7 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
                 }
 
                 if (!isSwipeUpDetected) {
-                    if (distanceY > touchSlop && Math.abs(distanceX) < touchSlop) {
+                    if (distanceY > touchSlop && Math.abs(distanceX) < 10) {
                         isSwipeUpDetected = true;
                         StationDetailsDialog.showCard(fragment, item, child);
                         return true;
