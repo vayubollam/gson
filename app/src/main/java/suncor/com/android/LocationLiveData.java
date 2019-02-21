@@ -3,7 +3,6 @@ package suncor.com.android;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -12,7 +11,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
@@ -45,10 +43,8 @@ public class LocationLiveData extends LiveData<Location> {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             if (locationResult != null) {
-                if ((SystemClock.elapsedRealtimeNanos() - locationResult.getLastLocation().getElapsedRealtimeNanos()) < TimeUnit.SECONDS.toNanos(30)) {
-                    fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-                    postValue(locationResult.getLastLocation());
-                }
+                fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+                postValue(locationResult.getLastLocation());
             }
         }
     };
