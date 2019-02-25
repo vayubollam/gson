@@ -95,7 +95,7 @@ pipeline {
 
 
 					// https://github.com/jenkinsci/slack-plugin
-					slackSend color: "good", channel: "${slackChannels}", message: "@here " + slackMessage
+					slackSend color: "good", channel: "${slackChannels}", message: slackMessage
 				}
 			}
 		}
