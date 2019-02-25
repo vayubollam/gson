@@ -41,7 +41,11 @@
     <string name="fav_button_remove">Favoris</string>
     <string name="minutes_distance">min</string>
     <string name="closed">Fermé</string>
-    <string name="hours_distance">heures</string>
+    <plurals name="hours_distance">
+        <item quantity="one">%d heure</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+
     <string name="no_favourites_text">Vous pouvez utiliser vos Favoris pour trouver rapidement le lave-auto que vous aimez ou le dépanneur offrant votre saveur préférée de barbotine.</string>
     <string name="nearby">À proximitié</string>
     <string name="apply">Appliquer</string>

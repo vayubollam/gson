@@ -60,14 +60,20 @@ public class DirectionsResult {
         int totalMinutes = totalSeconds / 60;
         int minutes = totalMinutes % 60;
         int hours = totalMinutes / 60;
-
-        if (hours != 0) {
-            return hours + 3 + " " + context.getString(R.string.hours_distance) + " " + minutes + " " + context.getString(R.string.minutes_distance);
-        } else {
-            if (minutes == 0 && seconds > 0) {
-                minutes = 1;
-            }
-            return minutes + " " + context.getString(R.string.minutes_distance);
+        if (hours == 0 && minutes == 0 && seconds > 0) {
+            minutes = 1;
         }
+
+        StringBuilder builder = new StringBuilder();
+        if (hours != 0) {
+            builder.append(context.getResources().getQuantityString(R.plurals.hours_distance, hours, hours))
+                    .append(minutes != 0 ? " " : "");
+        }
+        if (minutes != 0) {
+            builder.append(minutes)
+                    .append(" ")
+                    .append(context.getString(R.string.minutes_distance));
+        }
+        return builder.toString();
     }
 }

@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:ellipsize="end"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:maxLines="1"
                         android:text="@{vm.station.address.addressLine + `, ` + vm.station.address.primaryCity + `, ` + vm.station.address.subdivision}"
                         android:textAppearance="@style/Caption1"
@@ -137,7 +137,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
                         android:text="@{DirectionsResult.formatDistanceDuration(context, vm.distanceDuration)}"
                         android:textAppearance="@style/Caption1"
                         android:textColor="@{vm.distanceDuration.distance == -1 ? @color/black_60 : @color/black_80}"
@@ -162,7 +164,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
                         android:text="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.isOpen()?@string/open_generic(vm.getCloseHour()) : @string/closed}"
                         android:textAppearance="@style/Caption1"
                         tools:text="Open, closes at 12:00 AM" />
@@ -283,8 +287,8 @@
                             android:id="@+id/service_amenities_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_marginLeft="16dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginRight="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasService()?View.VISIBLE:View.GONE}">
@@ -302,8 +306,8 @@
                                 style="@style/Caption1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:amenitieType="@{0}"
                                 android:lineSpacingMultiplier="1.71"
+                                app:amenitieType="@{0}"
                                 app:station="@{vm.station}"
                                 tools:text="Pay at pump\nContactless payment" />
                         </LinearLayout>
@@ -319,8 +323,8 @@
                             android:id="@+id/fuel_amenities_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_marginLeft="16dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginRight="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}">
@@ -355,8 +359,8 @@
                             android:id="@+id/wash_amenities_list"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_marginLeft="16dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginRight="16dp"
                             android:orientation="vertical"
                             android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}">
@@ -389,10 +393,10 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginTop="20dp"
                             android:layout_marginLeft="16dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginRight="16dp"
+                            android:orientation="vertical"
                             android:paddingBottom="16dp">
 
                             <androidx.appcompat.widget.AppCompatTextView
