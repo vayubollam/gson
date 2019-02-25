@@ -95,7 +95,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/sign_in_login" />
+                    android:text="@string/sign_in" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_forgot_password"

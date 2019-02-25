@@ -23,7 +23,7 @@
     <string name="sugestions">Suggestions</string>
     <string name="favourites">Favorites</string>
     <string name="signin_or_join_message">Connectez-vous à votre compte Petro-Points pour accéder à toutes les fonctions, incluant votre liste de favoris.</string>
-    <string name="sign_in">Ouvrir une session</string>
+    <string name="sign_in">Démarrez</string>
     <string name="join">Joindre</string>
     <string name="cancel">Annuler</string>
     <string name="signin_or_join">Connectez-vous ou ajoutez à vos favoris.</string>
@@ -37,7 +37,6 @@
     <string name="forgot_password">Mot de passe oublié</string>
     <string name="email_required">Veuillez entrer une adresse de courriel</string>
     <string name="password_required">Le mot de passe est requis</string>
-    <string name="sign_in_login">Démarrez</string>
     <string name="fav_button_add">Ajouter à vos établissements favoris</string>
     <string name="fav_button_remove">Favoris</string>
     <string name="minutes_distance">min</string>

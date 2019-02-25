@@ -60,7 +60,6 @@
     <string name="email_required">Email is required.</string>
     <string name="password_required">Password is required.</string>
     <string name="expand_range">Expand your range.</string>
-    <string name="sign_in_login">Sign in</string>
     <string name="hours_distance">hours</string>
     <string name="minutes_distance">min</string>
     <string name="nearby">Nearest</string>
