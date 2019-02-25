@@ -2,14 +2,14 @@
     <string name="app_name" translatable="false">Petro-Canada</string>
     <string name="forgot_password">Forgot password</string>
     <string name="password">Password</string>
-    <string name="discover_your_next_adventure">DISCOVER \nYOUR NEXT \nADVENTURE</string>
+    <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>
     <string name="home">Home</string>
     <string name="stations">Locations</string>
     <string name="enable_location_dialog_title">Enable Location Services</string>
     <string name="enable_location_dialog_message">We use location services to show locations near you.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="welcome_to_petro_canda_on_the_go">Welcome to \nPetro-Canada on The go!</string>
+    <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canada on the go!</string>
     <string name="fav_button_add">Add as favourite location</string>
     <string name="fav_button_remove">Favourite</string>
     <string name="fav_button_signing">Sign in or join to favourite</string>

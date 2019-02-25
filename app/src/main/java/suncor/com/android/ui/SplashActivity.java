@@ -1,21 +1,27 @@
 package suncor.com.android.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
@@ -24,12 +30,13 @@ import suncor.com.android.ui.home.HomeActivity;
 public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
     private RelativeLayout SafetyMessageLayout;
     Handler safetyMessageHandler = new Handler();
-    private Animation animZoomOut, animFromLet, animFromBottom;
 
-    private AppCompatImageView img_retail;
-
-    private AppCompatTextView txt_splash;
-    private int delay = 1000;
+    private AppCompatImageView imageRetail;
+    private AppCompatImageView backgroundImage;
+    private LinearLayout textLayout;
+    private int enterAnimationDuration = 1400;
+    private int exitAnimationDuration = 900;
+    private int delayExit = 900;
     private float screenWidthDiff, screenHeightDiff;
 
     @Override
@@ -38,66 +45,53 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         if (SessionManager.getInstance().isUserLoggedIn()) {
             SessionManager.getInstance().checkLoginState();
         }
-
         if (SuncorApplication.splashShown) {
             openHomeActivity();
-        } else {
-
-
-            switch (checkAppStart()) {
-                case NORMAL:
-                    showSplach();
-                    break;
-                case FIRST_TIME_VERSION:
-                    //new update show what's new if applicable
-                    break;
-                case FIRST_TIME:
-                    showSafetyMessage();
-                    break;
-                default:
-                    break;
-            }
+            return;
         }
-
+        setContentView(R.layout.activity_splash);
+        backgroundImage = findViewById(R.id.img_splash_full_screen);
+        imageRetail = findViewById(R.id.img_retail);
+        textLayout = findViewById(R.id.text_layout);
+        AppCompatTextView splashText1 = findViewById(R.id.splash_text_1);
+        AppCompatTextView splashText2 = findViewById(R.id.splash_text_2);
+        switch (checkAppStart()) {
+            case NORMAL:
+                splashText2.setVisibility(View.GONE);
+                break;
+            case FIRST_TIME:
+                splashText2.setVisibility(View.VISIBLE);
+                splashText1.setText(R.string.drive_safely);
+                backgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.drive_safely));
+                delayExit = 3000;
+                break;
+            case FIRST_TIME_VERSION:
+                //new update show what's new if applicable
+                break;
+            default:
+                break;
+        }
     }
 
-    private void showSplach() {
-        setContentView(R.layout.activity_splash);
-        AppCompatImageView img_splash = findViewById(R.id.img_splash_full_screen);
-        img_retail = findViewById(R.id.img_retail);
-        txt_splash = findViewById(R.id.txt_splash);
-        animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoomout);
-        animFromLet = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_in_left);
-        animFromBottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
-        animFromBottom.setDuration(delay);
-        animFromLet.setDuration(delay);
-        animZoomOut.setDuration(delay);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Animation animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoomout);
+        Animation animFromLet = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.slide_in_left);
+        Animation animFromBottom = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+        Interpolator animInterpolator = new DecelerateInterpolator(3f);
+        animFromBottom.setInterpolator(animInterpolator);
+        animFromLet.setInterpolator(animInterpolator);
+        animZoomOut.setInterpolator(animInterpolator);
+        animFromBottom.setDuration(enterAnimationDuration);
+        animFromLet.setDuration(enterAnimationDuration);
+        animZoomOut.setDuration(enterAnimationDuration);
         animZoomOut.setAnimationListener(this);
 
-
-        img_splash.startAnimation(animZoomOut);
-        img_retail.startAnimation(animFromBottom);
-        txt_splash.startAnimation(animFromLet);
+        backgroundImage.startAnimation(animZoomOut);
+        imageRetail.startAnimation(animFromBottom);
+        textLayout.startAnimation(animFromLet);
     }
-
-
-    private void showSafetyMessage() {
-        setContentView(R.layout.activity_safe_drive);
-        SafetyMessageLayout = findViewById(R.id.SafetyMessageLayout);
-        SafetyMessageLayout.setOnClickListener(v -> {
-            openHomeActivity();
-        });
-        //for testing purposes
-        int SPLASH_DISPLAY_LENGTH = 3000;
-        //real value (3 sec)
-        //int SPLASH_DISPLAY_LENGTH = 3000;
-        safetyMessageHandler.postDelayed(() -> {
-            Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-            SplashActivity.this.startActivity(mainIntent);
-            SplashActivity.this.finish();
-        }, SPLASH_DISPLAY_LENGTH);
-    }
-
 
     @Override
     public void onAnimationStart(Animation animation) {
@@ -109,16 +103,23 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         screenHeightDiff = getDifferenceHeight(getScreenHeight());
         screenWidthDiff = getDifferenceWidth(getScreenWidth());
         safetyMessageHandler.postDelayed(() -> {
-            ObjectAnimator toLeftAnim = ObjectAnimator.ofFloat(txt_splash, "translationX", -screenWidthDiff);
-            toLeftAnim.setDuration(delay);
-            toLeftAnim.start();
-            ObjectAnimator toBottomAnim = ObjectAnimator.ofFloat(img_retail, "translationY", screenHeightDiff);
-            toBottomAnim.setDuration(delay / 2);
-            toBottomAnim.start();
-        }, delay / 2);
-        safetyMessageHandler.postDelayed(() -> {
-            openHomeActivity();
-        }, delay / 2);
+            ObjectAnimator toLeftAnim = ObjectAnimator.ofFloat(textLayout, "translationX", -screenWidthDiff);
+
+            ObjectAnimator toBottomAnim = ObjectAnimator.ofFloat(imageRetail, "translationY", screenHeightDiff);
+
+            AnimatorSet animSetXY = new AnimatorSet();
+            animSetXY.setDuration(exitAnimationDuration);
+            animSetXY.playTogether(toLeftAnim, toBottomAnim);
+            animSetXY.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    openHomeActivity();
+                }
+            });
+            animSetXY.start();
+
+
+        }, delayExit);
     }
 
     @Override
@@ -133,20 +134,13 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     private static final String LAST_APP_VERSION = "last_app_version";
 
     public AppStart checkAppStart() {
-        PackageInfo pInfo;
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
-        AppStart appStart = AppStart.NORMAL;
-        try {
-            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            int lastVersionCode = sharedPreferences
-                    .getInt(LAST_APP_VERSION, -1);
-            int currentVersionCode = pInfo.versionCode;
-            appStart = checkAppStart(currentVersionCode, lastVersionCode);
-            sharedPreferences.edit()
-                    .putInt(LAST_APP_VERSION, currentVersionCode).commit();
-        } catch (PackageManager.NameNotFoundException e) {
-        }
+        int lastVersionCode = sharedPreferences
+                .getInt(LAST_APP_VERSION, -1);
+        int currentVersionCode = BuildConfig.VERSION_CODE;
+        AppStart appStart = checkAppStart(currentVersionCode, lastVersionCode);
+        sharedPreferences.edit().putInt(LAST_APP_VERSION, currentVersionCode).apply();
         return appStart;
     }
 
@@ -155,17 +149,17 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
             return AppStart.FIRST_TIME;
         } else if (lastVersionCode < currentVersionCode) {
             return AppStart.FIRST_TIME_VERSION;
-        } else if (lastVersionCode > currentVersionCode) {
-            return AppStart.NORMAL;
         } else {
             return AppStart.NORMAL;
         }
     }
 
     private void openHomeActivity() {
+
         safetyMessageHandler.removeCallbacksAndMessages(null);
         Intent homeIntent = new Intent(this, HomeActivity.class);
         startActivity(homeIntent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
     }
 
@@ -191,13 +185,13 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     private float getDifferenceHeight(float screenHeight) {
         int[] locations = new int[2];
-        img_retail.getLocationOnScreen(locations);
+        imageRetail.getLocationOnScreen(locations);
         return screenHeight - locations[1];
     }
 
     private float getDifferenceWidth(float screenWidth) {
         int[] locations = new int[2];
-        txt_splash.getLocationOnScreen(locations);
+        textLayout.getLocationOnScreen(locations);
         return screenWidth - locations[0];
     }
 

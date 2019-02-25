@@ -61,4 +61,5 @@
     <string name="invalid_credentials_dialog_1st_message">L\'adresse courriel ou le mot de passe que vous avez entré n\'est pas correct. Veuillez réessayer.</string>
     <string name="invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="sign_out">Déconnexion</string>
+    <string name="discover_your_next_adventure">DÉCOUREZ VOTRE \nCOIN DE PARADIS</string>
 </resources>

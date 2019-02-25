@@ -21,6 +21,8 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <!-- <item name="android:windowBackground">@drawable/splash_logo</item>-->
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
 
