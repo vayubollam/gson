@@ -67,4 +67,11 @@
     <string name="minutes_distance">min</string>
     <string name="nearby">Nearest</string>
     <string name="reset_password">Reset password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="have_card_header">Do you have a Petro-Points card?</string>
+    <string name="card_question_body">You can use your points for dollars off fuel, car wash, or store purchases.</string>
+    <string name="yes_i_have_a_card">Yes, I have a card.</string>
+    <string name="no_i_don_t_have_a_card">No, I don\'t have a card.</string>
 </resources>

@@ -134,7 +134,7 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
             carouselRecyclerView.startAnimation(animFromLet);
             stationCard.startAnimation(animslideUp);
         }
-        dashboardAdapter = new DashboardAdapter(getContext());
+        dashboardAdapter = new DashboardAdapter(getActivity());
         carouselRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(carouselRecyclerView);
