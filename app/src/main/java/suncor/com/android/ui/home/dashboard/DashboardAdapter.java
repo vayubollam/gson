@@ -1,8 +1,7 @@
 package suncor.com.android.ui.home.dashboard;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,28 +14,28 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.ui.enrollement.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DashboardHolder> {
 
     private ArrayList<Drawable> images;
-    private Context context;
+    private Activity activity;
     private LayoutInflater layoutInflater;
     private SessionManager sessionManager;
 
 
-    public DashboardAdapter(Context context) {
-        this.context = context;
-        layoutInflater = LayoutInflater.from(context);
+    public DashboardAdapter(Activity activity) {
+        this.activity = activity;
+        layoutInflater = LayoutInflater.from(activity);
         images = new ArrayList<>();
-        images.add(context.getResources().getDrawable(R.drawable.car_trip));
-        images.add(context.getResources().getDrawable(R.drawable.agriculture));
-        images.add(context.getResources().getDrawable(R.drawable.petro_card));
+        images.add(activity.getResources().getDrawable(R.drawable.car_trip));
+        images.add(activity.getResources().getDrawable(R.drawable.agriculture));
+        images.add(activity.getResources().getDrawable(R.drawable.petro_card));
         sessionManager = SessionManager.getInstance();
     }
 
@@ -59,6 +58,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
             holder.sign_in.setOnClickListener(v -> {
                 holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), LoginActivity.class));
             });
+            holder.join.setOnClickListener(v -> {
+                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), EnrollmentActivity.class));
+            });
         }
 
     }
@@ -78,13 +80,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
             super(itemView);
             img_card = itemView.findViewById(R.id.img_dashboard);
             card_welcome = itemView.findViewById(R.id.card_welcome);
-            Typeface tfGibsonGold = ResourcesCompat.getFont(context, R.font.gibson_bold);
-            Typeface tfGibsonSemiBold = ResourcesCompat.getFont(context, R.font.gibson_semibold);
-            card_welcome.setTypeface(tfGibsonGold);
             join = itemView.findViewById(R.id.card_dashboard_join);
             sign_in = itemView.findViewById(R.id.card_dashboard_Sign_In);
-            join.setTypeface(tfGibsonSemiBold);
-            sign_in.setTypeface(tfGibsonSemiBold);
         }
     }
 
