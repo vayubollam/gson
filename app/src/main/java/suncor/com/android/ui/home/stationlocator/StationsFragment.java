@@ -19,7 +19,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -183,6 +182,11 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        try {
+            getViewLifecycleOwner();
+        } catch (Exception e) {
+            return;
+        }
         this.mGoogleMap = googleMap;
         this.mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.getUiSettings().setCompassEnabled(false);
@@ -191,9 +195,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnCameraMoveStartedListener(this);
-        if (!haveNetworkConnection()) {
-            Toast.makeText(getActivity(), "No Internet access ...", Toast.LENGTH_SHORT).show();
-        }
         mViewModel.stationsAround.observe(getViewLifecycleOwner(), this::UpdateCards);
         mViewModel.filters.observe(getViewLifecycleOwner(), this::filtersChanged);
         mViewModel.selectedStation.observe(getViewLifecycleOwner(), station -> {

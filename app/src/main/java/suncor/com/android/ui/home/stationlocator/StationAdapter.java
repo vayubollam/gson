@@ -31,6 +31,9 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
+        for (StationItem stationItem : stations) {
+            stationItem.setDistanceDuration(null);
+        }
         notifyDataSetChanged();
     }
 

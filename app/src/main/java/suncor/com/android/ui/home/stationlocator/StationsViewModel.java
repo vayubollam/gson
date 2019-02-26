@@ -102,6 +102,12 @@ public class StationsViewModel extends ViewModel {
         if (userLocation.getValue() == null)
             return;
         if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
+            Collections.sort(cachedStations, (o1, o2) -> {
+                double distance1 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
+                double distance2 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
+                return (int) (distance1 - distance2);
+            });
+
             ArrayList<StationItem> filteredStations = filterStations();
             _stationsAround.setValue(Resource.success(filteredStations));
 
