@@ -22,7 +22,7 @@
     <string name="no_results">Aucun résultat</string>
     <string name="sugestions">Suggestions</string>
     <string name="favourites">Favorites</string>
-    <string name="signin_or_join_message">Connectez-vous à votre compte Petro-Points pour accéder à toutes les fonctions, incluant votre liste de favoris.</string>
+    <string name="signin_or_join_message">Connectez-vous à votre compte Petro\u2011Points pour accéder à toutes les fonctions, incluant votre liste de favoris.</string>
     <string name="sign_in">Démarrez</string>
     <string name="join">Joindre</string>
     <string name="cancel">Annuler</string>
@@ -65,9 +65,9 @@
     <string name="invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="sign_out">Déconnexion</string>
     <string name="discover_your_next_adventure">DÉCOUVREZ VOTRE \nCOIN DE PARADIS</string>
-    <string name="enrollment_card_question">Avez-vous une carte Petro-Points?</string>
+    <string name="enrollment_card_question">Avez-vous une carte Petro\u2011Points?</string>
     <string name="enrollment_card_question_body">Utilisez vos points contre des économies sur l\'essence, des lavages d\'auto ou des articles de dépanneur.</string>
-    <string name="enrollment_yes_i_have_a_card_button">Oui, j\'ai une carte Petro-Points.</string>
+    <string name="enrollment_yes_i_have_a_card_button">Oui, j\'ai une carte Petro\u2011Points.</string>
     <string name="enrollment_no_i_don_t_have_a_card_button">Non, je n\'ai pas encore de carte.</string>
     <string name="enrollment_personal_information_category">Informations personnelles</string>
     <string name="enrollment_address_category">Adresse</string>
@@ -87,6 +87,6 @@
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les %s</string>
     <string name="enrollment_terms">Conditions du programme Petro‑Points</string>
     <string name="enrollment_join_button">Joindre</string>
-    <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
+    <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro\u2011Points.</string>
     <string name="enrollment_terms_url">https://www.petro-canada.ca/fr/personnel/conditions#petropoints</string>
 </resources>
