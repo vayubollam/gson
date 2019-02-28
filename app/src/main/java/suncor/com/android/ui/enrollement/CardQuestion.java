@@ -1,65 +1,77 @@
 package suncor.com.android.ui.enrollement;
 
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import suncor.com.android.R;
 
 public class CardQuestion extends Fragment {
 
-    private LinearLayout cardQuestionLayout;
-    private AppCompatImageView cardImg, cardShadowImg;
+    private AppCompatImageView cardImg, cardShadow;
+    private int cardAnimationDuration = 300;
 
     public CardQuestion() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_card_question, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        cardQuestionLayout = getView().findViewById(R.id.xtCardQuestionLayout);
         cardImg = getView().findViewById(R.id.cardImage);
-        cardShadowImg = getView().findViewById(R.id.cardShadowImg);
-        cardShadowImg.setVisibility(View.INVISIBLE);
+        cardShadow = getView().findViewById(R.id.cardShadow);
+
+        cardImg.post(() -> {
+            float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();
+            float shadowRatio = (float) cardShadow.getDrawable().getIntrinsicHeight() / cardShadow.getDrawable().getIntrinsicWidth();
+
+            int width = (int) (cardImg.getMeasuredHeight() / cardRatio);
+            cardImg.getLayoutParams().width = width;
+            cardShadow.getLayoutParams().width = width;
+            cardShadow.getLayoutParams().height = (int) (shadowRatio * width);
+            cardImg.requestLayout();
+            cardShadow.requestLayout();
+        });
+
+        AppCompatImageButton backButton = getView().findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> getActivity().finish());
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
-
-     /*   AnimationSet set = new AnimationSet(true);
-        Animation trAnimation = new TranslateAnimation(0, 0, -50, 10);
-        trAnimation.setDuration(200);
-
-        trAnimation.setRepeatMode(Animation.REVERSE);
+        AnimationSet set = new AnimationSet(true);
+        Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.05f);
+        trAnimation.setDuration(cardAnimationDuration);
         set.addAnimation(trAnimation);
-        Animation anim = new AlphaAnimation(0.3f, 1.0f);
-        anim.setDuration(200);
-        set.addAnimation(anim);
+        Animation alphaAnim = new AlphaAnimation(0.0f, 1.0f);
+        alphaAnim.setDuration(cardAnimationDuration);
+        set.addAnimation(alphaAnim);
+        set.setInterpolator(new AccelerateInterpolator());
+        set.setStartOffset(cardAnimationDuration / 2);
         cardImg.startAnimation(set);
-*/
-        Animation cardAnim = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down_card);
-        cardAnim.setAnimationListener(new Animation.AnimationListener() {
+        cardShadow.startAnimation(alphaAnim);
+        set.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -67,12 +79,7 @@ public class CardQuestion extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                cardQuestionLayout.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        cardQuestionLayout.animate().scaleY(1f).scaleX(1f).setDuration(100);
-                    }
-                });
+                cardImg.animate().translationY(-pxFromDp(getContext(), 8)).setDuration(cardAnimationDuration / 2).start();
             }
 
             @Override
@@ -80,23 +87,9 @@ public class CardQuestion extends Fragment {
 
             }
         });
-        cardShadowImg.setAlpha(0f);
-        cardShadowImg.setVisibility(View.VISIBLE);
-        cardImg.startAnimation(cardAnim);
-        cardShadowImg.animate().alpha(1f).setDuration(200).setInterpolator(new AccelerateInterpolator()).setListener(null);
-        cardImg.animate().translationY(1.5f).translationX(1.5f).setDuration(200);
     }
 
-    public static int getDistanceBetweenViews(View firstView, View secondView) {
-        int[] firstPosition = new int[2];
-        int[] secondPosition = new int[2];
-
-        firstView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        firstView.getLocationOnScreen(firstPosition);
-        secondView.getLocationOnScreen(secondPosition);
-
-        int b = firstView.getMeasuredHeight() + firstPosition[1];
-        int t = secondPosition[1];
-        return Math.abs(b - t);
+    public static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
     }
 }

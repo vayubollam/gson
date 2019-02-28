@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,14 +8,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="20dp">
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/back_button"
+            android:id="@+id/backButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -24,80 +27,95 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             android:orientation="vertical">
 
-            <LinearLayout
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtCardQuestionHeader"
+                style="@style/Title1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/xtCardQuestionLayout"
+                android:layout_gravity="top"
+                android:layout_marginTop="28dp"
+                android:lineSpacingMultiplier="1.31"
+                android:text="@string/enrollment_card_question"
+                android:textAlignment="center"
+                android:textColor="@color/black_80" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtCardQuestionBody"
+                style="@style/Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.44"
+                android:text="@string/enrollment_card_question_body"
+                android:textAlignment="center"
+                android:textColor="@color/black_60" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtCardQuestionHeader"
-                    style="@style/Title1"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cardImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="32dp"
-                    android:textColor="@color/black_80"
-                    android:lineSpacingMultiplier="1.31"
-                    android:textAlignment="center"
-                    android:text="@string/have_card_header" />
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/card"
+                    app:layout_constraintBottom_toTopOf="@id/cardShadow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.65" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:id="@+id/txtCardQuestionBody"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:lineSpacingMultiplier="1.44"
-                    style="@style/Body"
-                    android:textColor="@color/black_60"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:textAlignment="center"
-                    android:text="@string/card_question_body" />
-            </LinearLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cardShadow"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="32dp"
+                    android:src="@drawable/card_shadow"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/cardImage"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@id/cardImage"
+                    app:layout_constraintTop_toBottomOf="@+id/cardImage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/cardImage"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="32dp"
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/OutlinedSmallButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/card"
-                android:foregroundGravity="center"
-                android:scaleType="fitCenter" />
-
-            <ImageView
-                android:id="@+id/cardShadowImg"
-                android:layout_width="wrap_content"
-                android:src="@drawable/card_shadow"
-                android:layout_marginLeft="90dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:layout_gravity="bottom"
-            android:orientation="vertical">
+                android:layout_above="@+id/IDontHaveCardButton"
+                android:layout_gravity="bottom"
+                android:padding="16dp"
+                android:text="@string/enrollment_yes_i_have_a_card_button" />
 
             <com.google.android.material.button.MaterialButton
-                android:layout_marginTop="32dp"
+                android:id="@+id/IDontHaveCardButton"
+                style="@style/OutlinedSmallButton"
                 android:layout_width="match_parent"
-                style="@style/OutlinedLargeButton"
-                android:text="@string/yes_i_have_a_card"
-                android:layout_height="wrap_content" />
-
-            <com.google.android.material.button.MaterialButton
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
                 android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                style="@style/OutlinedLargeButton"
-                android:text="@string/no_i_don_t_have_a_card"
-                android:layout_height="wrap_content" />
+                android:padding="16dp"
+                android:text="@string/enrollment_no_i_don_t_have_a_card_button" />
         </LinearLayout>
+
 
     </LinearLayout>
 

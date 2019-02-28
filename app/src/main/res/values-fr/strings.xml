@@ -65,4 +65,8 @@
     <string name="invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="sign_out">Déconnexion</string>
     <string name="discover_your_next_adventure">DÉCOUREZ VOTRE \nCOIN DE PARADIS</string>
+    <string name="enrollment_card_question">Avez-vous une carte Petro-Points?</string>
+    <string name="enrollment_card_question_body">Utilisez vos points contre des économies sur l\'essence, des lavages d\'auto ou des articles de dépanneur.</string>
+    <string name="enrollment_yes_i_have_a_card_button">Oui, j\'ai une carte Petro-Points.</string>
+    <string name="enrollment_no_i_don_t_have_a_card_button">Non, je n\'ai pas encore de carte.</string>
 </resources>
