@@ -28,7 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView"
@@ -39,61 +41,37 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_logo" />
 
-            <suncor.com.android.ui.common.TextInputLayoutEx
+            <suncor.com.android.uicomponents.SuncorTextInputLayout
                 android:id="@+id/email_layout"
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_height="wrap_content"
                 android:hint="@string/email"
-                android:theme="@style/AppTheme.TextInput"
-                app:hintEnabled="true">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_email"
-                    android:maxLength="100"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
+                android:maxLength="100" />
 
-            </suncor.com.android.ui.common.TextInputLayoutEx>
-
-
-            <suncor.com.android.ui.common.TextInputLayoutEx
+            <suncor.com.android.uicomponents.SuncorTextInputLayout
                 android:id="@+id/password_layout"
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:theme="@style/AppTheme.TextInput"
-                app:hintEnabled="true"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txt_password"
-                    android:maxLength="16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
-
-            </suncor.com.android.ui.common.TextInputLayoutEx>
-
+                android:inputType="textPassword"
+                android:maxLength="16"
+                app:passwordToggleEnabled="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="bottom"
+                android:minHeight="152dp"
                 android:orientation="vertical"
-                android:paddingTop="8dp">
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/signing_button"
                     style="@style/SmallButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/sign_in" />
 
@@ -102,9 +80,6 @@
                     style="@style/SmallButtonWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/forgot_password"
                     android:textSize="12sp" />

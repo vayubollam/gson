@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="suncorTextInputStyle" format="reference" />
+    <declare-styleable name="SuncorTextInputLayout">
+        <attr name="android:hint" format="string" />
+        <attr name="android:maxLength" format="integer" />
+        <!-- textAppearance of the hint. When the hint is expanded the it will have the same size as the editText -->
+        <attr name="hintTextAppearance" format="reference" />
+        <attr name="hintTextColor" format="color" />
+        <attr name="android:inputType" />
+        <attr name="android:textAppearance" />
+        <attr name="errorTextAppearance" format="reference" />
+        <!-- color to be applied on error -->
+        <attr name="errorColor" format="color" />
+        <attr name="passwordToggleEnabled" format="boolean" />
+        <attr name="passwordToggleTint" format="color" />
+        <attr name="errorDrawable" format="reference" />
+    </declare-styleable>
+
+    <attr name="suncorAppBarLayoutStyle" format="reference" />
+    <declare-styleable name="SuncorAppBarLayout">
+        <attr name="title" format="string" />
+        <attr name="expandedTitle" format="string" />
+        <attr name="titleAppearance" format="reference" />
+        <attr name="expandedTitleAppearance" format="reference" />
+        <attr name="navigationIcon" format="reference" />
+        <attr name="statusBarScrim" format="color" />
+        <attr name="expandable" format="boolean" />
+    </declare-styleable>
+</resources>

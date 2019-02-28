@@ -1,12 +1,10 @@
 package suncor.com.android.ui.login;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -18,13 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.common.TextInputLayoutEx;
+import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText userNameEditText, passwordEditText;
 
     private LinearLayout progressLayout;
-    private TextInputLayoutEx emailLayout, passwordLayout;
+    private SuncorTextInputLayout emailLayout, passwordLayout;
     SessionManager sessionManager;
 
     @Override
@@ -33,19 +31,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sessionManager = SessionManager.getInstance();
-
-        userNameEditText = findViewById(R.id.txt_email);
-        userNameEditText.requestFocus();
-        //     userNameEditText.setFilters(new InputFilter[]{emailfilter});
-        passwordEditText = findViewById(R.id.txt_password);
-        passwordEditText.addTextChangedListener(passwordTextWatcher);
-        userNameEditText.addTextChangedListener(emailTextWatcher);
-        progressLayout = findViewById(R.id.progress_layout);
         emailLayout = findViewById(R.id.email_layout);
         passwordLayout = findViewById(R.id.password_layout);
 
-        emailLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
-        passwordLayout.setErrorLabelColor(getResources().getColor(R.color.black_80));
+        userNameEditText = emailLayout.getEditText();
+        userNameEditText.requestFocus();
+        //     userNameEditText.setFilters(new InputFilter[]{emailfilter});
+        passwordEditText = passwordLayout.getEditText();
+        passwordEditText.addTextChangedListener(passwordTextWatcher);
+        userNameEditText.addTextChangedListener(emailTextWatcher);
+        progressLayout = findViewById(R.id.progress_layout);
 
         findViewById(R.id.signing_button).setOnClickListener((v) -> {
             if (validateInput()) {
@@ -110,11 +105,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateInput() {
         Boolean allGood = true;
         if (userNameEditText.getText().toString().isEmpty()) {
-            emailLayout.setError(getString(R.string.email_required), R.drawable.ic_alert);
+            emailLayout.setError(getString(R.string.email_required));
             allGood = false;
         }
         if (passwordEditText.getText().toString().isEmpty()) {
-            passwordLayout.setError(getString(R.string.password_required), R.drawable.ic_alert);
+            passwordLayout.setError(getString(R.string.password_required));
             allGood = false;
         }
         return allGood;

@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     tools:context="suncor.com.android.ui.enrollement.EnrollmentActivity">
 
-
     <FrameLayout
+        android:id="@+id/enrollment_main_frame"
         android:layout_width="match_parent"
-        android:id="@+id/enrolMainFrame"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

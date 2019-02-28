@@ -10,13 +10,16 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.ui.enrollement.form.EnrollmentForm;
+import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class CardQuestion extends Fragment {
 
@@ -52,8 +55,22 @@ public class CardQuestion extends Fragment {
             cardShadow.requestLayout();
         });
 
-        AppCompatImageButton backButton = getView().findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> getActivity().finish());
+        SuncorAppBarLayout appBarLayout = getView().findViewById(R.id.app_bar);
+        appBarLayout.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+
+        getView().findViewById(R.id.no_card_button).setOnClickListener((v) -> {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            Fragment fragment = new EnrollmentForm();
+            ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            ft.replace(R.id.enrollment_main_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        });
+
+        getView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
+            Toast.makeText(getContext(), "This button will take to the \"Join with Card screen\"", Toast.LENGTH_LONG).show();
+        });
+
     }
 
 

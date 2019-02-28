@@ -127,7 +127,7 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
         carouselRecyclerView = getView().findViewById(R.id.card_recycler);
         if (!inAnimationShown) {
             inAnimationShown = true;
-            Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
+            Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right_dashboard);
             animFromLet.setDuration(500);
             Animation animslideUp = AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in);
             animslideUp.setDuration(500);

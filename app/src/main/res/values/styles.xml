@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/white</item>
@@ -11,8 +11,9 @@
         <item name="android:textColorPrimary">@color/black_80</item>
         <item name="android:textColorSecondary">@color/black_60</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
-        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="suncorTextInputStyle">@style/TextInputLayoutStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="suncorAppBarLayoutStyle">@style/AppBarStyle</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
@@ -40,13 +41,13 @@
     <style name="Title1" parent="Base.TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">@font/gibson_semibold</item>
         <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@color/black_100</item>
+        <item name="android:textColor">@color/black_80</item>
     </style>
 
     <style name="Title2" parent="Base.TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">@font/gibson_semibold</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/black_100</item>
+        <item name="android:textColor">@color/black_80</item>
     </style>
 
     <style name="Body" parent="@style/Base.TextAppearance.AppCompat.Body1">
@@ -69,6 +70,10 @@
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/gibson_regular</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="Body.Input">
+        <item name="android:textColor">@color/black_80</item>
     </style>
 
     <style name="ChipTextAppearance" parent="Caption1">
@@ -207,16 +212,14 @@
         <item name="editTextStyle">@style/EditTextStyle</item>
     </style>
 
-    <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
-        <item name="android:textColor">@color/black_80</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/gibson_regular</item>
-        <item name="android:textColorHint">@color/black_60</item>
-        <item name="android:paddingTop">4dp</item>
+    <style name="TextInputLayoutStyle">
+        <item name="android:textAppearance">@style/Body.Input</item>
+        <item name="errorColor">@color/red</item>
+        <item name="errorDrawable">@drawable/ic_alert</item>
+        <item name="errorTextAppearance">@style/Caption1</item>
         <item name="hintTextAppearance">@style/Caption1</item>
-        <item name="errorTextAppearance">@style/Caption1.Red</item>
+        <item name="hintTextColor">@color/black_60</item>
         <item name="passwordToggleTint">@color/black_60</item>
-        <item name="passwordToggleDrawable">@drawable/show_hide_password_background</item>
     </style>
 
     <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
@@ -225,6 +228,11 @@
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:paddingStart">2dp</item>
+    </style>
+
+    <style name="AppBarStyle">
+        <item name="titleAppearance">@style/Title2</item>
+        <item name="expandedTitleAppearance">@style/Title1</item>
     </style>
 
 </resources>

@@ -18,20 +18,23 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name="com.worklight.wlclient.ui.UIActivity" />
-        <activity android:name=".ui.login.LoginActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/CustomAppThemeForSplash"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/CustomAppThemeForSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.enrollement.EnrollmentActivity"></activity>
         <activity
             android:name=".ui.home.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.enrollement.EnrollmentActivity"
             android:screenOrientation="portrait" />
 
         <meta-data
