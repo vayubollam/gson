@@ -37,7 +37,6 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     private int enterAnimationDuration = 1400;
     private int exitAnimationDuration = 900;
     private int delayExit = 900;
-    private float screenWidthDiff, screenHeightDiff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +62,9 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
                 splashText2.setVisibility(View.VISIBLE);
                 splashText1.setText(R.string.drive_safely);
                 backgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.drive_safely));
+                backgroundImage.setOnClickListener((v) -> {
+                    startExitAnimation();
+                });
                 delayExit = 3000;
                 break;
             case FIRST_TIME_VERSION:
@@ -100,26 +102,29 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        screenHeightDiff = getDifferenceHeight(getScreenHeight());
-        screenWidthDiff = getDifferenceWidth(getScreenWidth());
         safetyMessageHandler.postDelayed(() -> {
-            ObjectAnimator toLeftAnim = ObjectAnimator.ofFloat(textLayout, "translationX", -screenWidthDiff);
-
-            ObjectAnimator toBottomAnim = ObjectAnimator.ofFloat(imageRetail, "translationY", screenHeightDiff);
-
-            AnimatorSet animSetXY = new AnimatorSet();
-            animSetXY.setDuration(exitAnimationDuration);
-            animSetXY.playTogether(toLeftAnim, toBottomAnim);
-            animSetXY.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    openHomeActivity();
-                }
-            });
-            animSetXY.start();
-
-
+            startExitAnimation();
         }, delayExit);
+    }
+
+    private void startExitAnimation() {
+        float screenHeightDiff = getDifferenceHeight(getScreenHeight());
+        float screenWidthDiff = getDifferenceWidth(getScreenWidth());
+
+        ObjectAnimator toLeftAnim = ObjectAnimator.ofFloat(textLayout, "translationX", -screenWidthDiff);
+
+        ObjectAnimator toBottomAnim = ObjectAnimator.ofFloat(imageRetail, "translationY", screenHeightDiff);
+
+        AnimatorSet animSetXY = new AnimatorSet();
+        animSetXY.setDuration(exitAnimationDuration);
+        animSetXY.playTogether(toLeftAnim, toBottomAnim);
+        animSetXY.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                openHomeActivity();
+            }
+        });
+        animSetXY.start();
     }
 
     @Override
