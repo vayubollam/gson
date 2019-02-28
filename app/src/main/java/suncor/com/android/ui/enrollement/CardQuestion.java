@@ -21,7 +21,7 @@ import suncor.com.android.R;
 public class CardQuestion extends Fragment {
 
     private AppCompatImageView cardImg, cardShadow;
-    private int cardAnimationDuration = 300;
+    private int cardAnimationDuration = 400;
 
     public CardQuestion() {
     }
@@ -68,7 +68,7 @@ public class CardQuestion extends Fragment {
         alphaAnim.setDuration(cardAnimationDuration);
         set.addAnimation(alphaAnim);
         set.setInterpolator(new AccelerateInterpolator());
-        set.setStartOffset(cardAnimationDuration / 2);
+        set.setStartOffset(150);
         cardImg.startAnimation(set);
         cardShadow.startAnimation(alphaAnim);
         set.setAnimationListener(new Animation.AnimationListener() {
@@ -79,7 +79,7 @@ public class CardQuestion extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                cardImg.animate().translationY(-pxFromDp(getContext(), 8)).setDuration(cardAnimationDuration / 2).start();
+                cardImg.animate().translationY(-pxFromDp(getContext(), 1)).setDuration(cardAnimationDuration / 2).start();
             }
 
             @Override
