@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="eventHandler"
+            type="suncor.com.android.ui.enrollement.form.EnrollmentFormFragment" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,6 +22,7 @@
             app:title="@string/enrollment_form_title" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -44,6 +52,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_first_name_label"
                     android:maxLength="20"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/personal_category_title" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
@@ -52,6 +62,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_last_name_label"
                     android:maxLength="20"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/first_name_input" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
@@ -61,6 +73,8 @@
                     android:hint="@string/enrollment_email_label"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/last_name_input" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
@@ -70,6 +84,8 @@
                     android:hint="@string/enrollment_password_label"
                     android:inputType="textPassword"
                     android:maxLength="16"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/email_input"
                     app:passwordToggleEnabled="true" />
 
@@ -87,6 +103,8 @@
                     android:hint="@string/enrollment_security_answer_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="100"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/security_question_input" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -108,6 +126,8 @@
                     android:hint="@string/enrollment_street_address_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="50"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/address_category_title" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
@@ -116,6 +136,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_city_label"
                     android:maxLength="30"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/street_address_input" />
 
                 <suncor.com.android.uicomponents.SuncorSelectInputLayout
@@ -130,7 +152,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_postalcode_label"
-                    android:maxLength="6"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="7"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/province_input" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
@@ -140,6 +165,8 @@
                     android:hint="@string/enrollment_phone_label"
                     android:inputType="phone"
                     android:maxLength="14"
+                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -212,8 +239,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
+                    android:onClick="@{() -> eventHandler.joinButtonClicked()}"
                     android:text="@string/enrollment_join_button"
                     app:layout_constraintTop_toBottomOf="@id/terms_agreement" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

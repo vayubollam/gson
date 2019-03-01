@@ -1,5 +1,7 @@
 package suncor.com.android.ui;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import java.util.HashMap;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
 import suncor.com.android.model.Station;
+import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class BindingAdapters {
     @BindingAdapter({"station", "amenitieType"})
@@ -44,5 +47,36 @@ public class BindingAdapters {
     @BindingAdapter({"visibleInvisible"})
     public static void showHide(View view, boolean show) {
         view.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @BindingAdapter({"afterTextChanged"})
+    public static void afterTextChanged(SuncorTextInputLayout input, AfterTextChanged listener) {
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (listener != null) {
+                    listener.afterTextChanged(input, s);
+                }
+            }
+        };
+        input.getEditText().addTextChangedListener(watcher);
+    }
+
+    @BindingAdapter({"focusChanged"})
+    public static void showHide(SuncorTextInputLayout view, View.OnFocusChangeListener focusChangeListener) {
+        view.getEditText().setOnFocusChangeListener((v, hasFocus) -> focusChangeListener.onFocusChange(view, hasFocus));
+    }
+
+    public interface AfterTextChanged {
+        void afterTextChanged(SuncorTextInputLayout input, Editable s);
     }
 }

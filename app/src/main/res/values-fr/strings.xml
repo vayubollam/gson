@@ -89,4 +89,16 @@
     <string name="enrollment_join_button">Joindre</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro\u2011Points.</string>
     <string name="enrollment_terms_url">https://www.petro-canada.ca/fr/personnel/conditions#petropoints</string>
+    <string name="yes_i_have_a_card">Oui, j\'ai une carte Petro-Points.</string>
+    <string name="no_i_don_t_have_a_card">Non, je n\'ai pas encore de carte.</string>
+    <string name="have_card_header">Avez-vous une carte Petro\\u2011Points?</string>
+    <string name="card_question_body">Utilisez vos points contre des économies sur l\'essence, des lavages d\'auto ou des articles de dépanneur.</string>
+    <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
+    <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
+    <string name="enrollment_email_error">Veuillez entrer une adresse.</string>
+    <string name="enrollment_password_empty_error">Le mot de passe est requis.</string>
+    <string name="enrollment_street_address_error">L\'adresse est requise.</string>
+    <string name="enrollment_city_error">La ville est requise.</string>
+    <string name="enrollment_province_error">La province est requise.</string>
+    <string name="enrollment_postalcode_error">Le code postal est requis.</string>
 </resources>

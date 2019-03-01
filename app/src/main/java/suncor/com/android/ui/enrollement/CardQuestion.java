@@ -18,7 +18,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
-import suncor.com.android.ui.enrollement.form.EnrollmentForm;
+import suncor.com.android.ui.enrollement.form.EnrollmentFormFragment;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class CardQuestion extends Fragment {
@@ -60,7 +60,7 @@ public class CardQuestion extends Fragment {
 
         getView().findViewById(R.id.no_card_button).setOnClickListener((v) -> {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            Fragment fragment = new EnrollmentForm();
+            Fragment fragment = new EnrollmentFormFragment();
             ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.replace(R.id.enrollment_main_frame, fragment);
             ft.addToBackStack(null);

@@ -16,11 +16,11 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -112,19 +112,6 @@ public class SuncorTextInputLayout extends LinearLayout {
         setAddStatesFromChildren(true);
         setFocusable(true);
 
-
-        editText.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    collapseHint(true);
-                } else {
-                    expandHint(true);
-                }
-            }
-        });
-
-
         TintTypedArray a = TintTypedArray.obtainStyledAttributes(getContext(), attrs, R.styleable.SuncorTextInputLayout, defStyleAttr, 0);
         final int hintAppearance = a.getResourceId(R.styleable.SuncorTextInputLayout_hintTextAppearance, -1);
         if (hintAppearance != -1) {
@@ -177,6 +164,10 @@ public class SuncorTextInputLayout extends LinearLayout {
         a.recycle();
 
         editText.addTextChangedListener(textWatcher);
+    }
+
+    public void setError(@StringRes int error) {
+        setError(getContext().getString(error));
     }
 
     public void setError(CharSequence error) {
@@ -319,12 +310,9 @@ public class SuncorTextInputLayout extends LinearLayout {
 
     private void animateLabelText(float textSize) {
         labelSizeAnimator = ObjectAnimator.ofFloat(hintTextView.getTextSize(), textSize).setDuration(LABEL_SCALE_ANIMATION_DURATION);
-        labelSizeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float animatedValue = (float) animation.getAnimatedValue();
-                hintTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, animatedValue);
-            }
+        labelSizeAnimator.addUpdateListener(animation -> {
+            float animatedValue = (float) animation.getAnimatedValue();
+            hintTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, animatedValue);
         });
         labelSizeAnimator.start();
     }
