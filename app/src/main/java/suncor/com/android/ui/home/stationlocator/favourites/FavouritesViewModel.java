@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.stationlocator.favorites;
+package suncor.com.android.ui.home.stationlocator.favourites;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.model.Resource;
@@ -17,7 +19,8 @@ import suncor.com.android.utilities.LocationUtils;
 public class FavouritesViewModel extends ViewModel {
 
     private FavouriteRepository favouriteRepository;
-    MutableLiveData<ArrayList<StationItem>> stations = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<StationItem>> _stations = new MutableLiveData<>();
+    public LiveData<ArrayList<StationItem>> stations = _stations;
     private LatLng userLocation;
 
     public FavouritesViewModel(FavouriteRepository favouriteRepository) {
@@ -36,7 +39,7 @@ public class FavouritesViewModel extends ViewModel {
                 }
                 StationsComparator comparator = new StationsComparator();
                 Collections.sort(stationItems, comparator);
-                this.stations.postValue(stationItems);
+                this._stations.postValue(stationItems);
 
             }
         });
@@ -48,6 +51,19 @@ public class FavouritesViewModel extends ViewModel {
 
     public void setUserLocation(LatLng userLocation) {
         this.userLocation = userLocation;
+    }
+
+    public LiveData<Resource<Boolean>> removeStation(StationItem stationItem) {
+        int index = _stations.getValue().indexOf(stationItem);
+        _stations.getValue().remove(index);
+        _stations.postValue(_stations.getValue());
+        return Transformations.map(favouriteRepository.removeFavourite(stationItem.getStation()), r -> {
+            if (r.status == Resource.Status.ERROR) {
+                _stations.getValue().add(index, stationItem);
+                _stations.postValue(stations.getValue());
+            }
+            return r;
+        });
     }
 
     private class StationsComparator implements Comparator<StationItem> {

@@ -27,6 +27,7 @@ public class SuncorApplication extends Application {
         Station.initiateAmenities(this);
     }
 
+
     public static SuncorApplication getInstance() {
         return sInstance;
     }

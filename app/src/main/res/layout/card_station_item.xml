@@ -36,32 +36,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:theme="@style/Widget.MaterialComponents.CardView"
-            app:cardCornerRadius="12dp">
+            app:cardCornerRadius="@dimen/station_card_radius">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_bottom_sheet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/bottom_sheet_icon" />
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
-
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_bottom_sheet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:padding="4dp"
-                    app:srcCompat="@drawable/bottom_sheet_icon" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:paddingTop="8dp">
+                    android:layout_marginBottom="16dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/station_title_text"

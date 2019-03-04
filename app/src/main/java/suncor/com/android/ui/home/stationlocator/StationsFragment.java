@@ -61,7 +61,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.common.BaseFragment;
-import suncor.com.android.ui.home.stationlocator.favorites.FavouritesFragment;
+import suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment;
 import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
 import suncor.com.android.utilities.LocationUtils;
 

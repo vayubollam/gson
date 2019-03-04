@@ -15,5 +15,6 @@
     <dimen name="edit_text_top_padding_hint_expanded">4dp</dimen>
     <dimen name="error_text_size">14sp</dimen>
     <dimen name="space_between_hint_and_label">4dp</dimen>
-
+    <dimen name="station_card_radius">12dp</dimen>
+    <dimen name="station_remove_hint_width">16dp</dimen>
 </resources>

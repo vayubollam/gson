@@ -6,11 +6,11 @@
     <data>
 
         <variable
-            name="isLoading"
+            name="noResult"
             type="androidx.databinding.ObservableBoolean" />
 
         <variable
-            name="noResult"
+            name="isLoading"
             type="androidx.databinding.ObservableBoolean" />
     </data>
 
@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
-            tools:context="suncor.com.android.ui.home.stationlocator.favorites.FavouritesFragment">
+            tools:context="suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/back_button"
@@ -40,24 +40,28 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/Title1"
-                android:textColor="@color/black_80"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="36dp"
                 android:layout_marginBottom="16dp"
                 android:lineHeight="34dp"
-                android:text="@string/favourites" />
+                android:text="@string/favourites"
+                android:textColor="@color/black_80" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/favoriteRecycler"
+                android:id="@+id/favouriteRecycler"
                 visibleGone="@{!noResult}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipChildren="false"
                 android:clipToPadding="false"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
                 android:visibility="gone"
-                tools:visibility="visible"></androidx.recyclerview.widget.RecyclerView>
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/noFavorites"
@@ -80,10 +84,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:lineSpacingMultiplier="1.36"
-                    android:textColor="@color/black_80"
                     android:gravity="center"
-                    android:text="@string/no_favourites" />
+                    android:lineSpacingMultiplier="1.36"
+                    android:text="@string/no_favourites"
+                    android:textColor="@color/black_80" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/Body"
@@ -93,14 +97,14 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="24dp"
                     android:lineSpacingMultiplier="1.44"
-                    android:textAlignment="center"
                     android:text="@string/no_favourites_text"
+                    android:textAlignment="center"
                     android:textColor="@color/black_60"
                     android:textSize="18sp" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/SmallButton"
                     android:id="@+id/addFavoriteBackButton"
+                    style="@style/SmallButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

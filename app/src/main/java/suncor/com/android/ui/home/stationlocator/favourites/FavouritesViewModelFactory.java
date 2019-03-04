@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.stationlocator.favorites;
+package suncor.com.android.ui.home.stationlocator.favourites;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

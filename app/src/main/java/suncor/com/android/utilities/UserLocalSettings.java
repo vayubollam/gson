@@ -19,8 +19,8 @@ public class UserLocalSettings {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static boolean getBool(String key) {
-        return preferences.getBoolean(key, false);
+    public static boolean getBool(String key, boolean defValue) {
+        return preferences.getBoolean(key, defValue);
     }
 
     public static void setBool(String key, boolean value) {
