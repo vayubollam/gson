@@ -7,6 +7,8 @@
 
         <import type="suncor.com.android.model.Resource.Status" />
 
+        <import type="android.view.View"></import>
+
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
@@ -49,15 +51,15 @@
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
                     android:indeterminateTint="@color/red"
-                    app:visibleGone="@{vm.placeSuggestions.status == Status.LOADING}" />
+                    app:visibleInvisible="@{vm.placeSuggestions.status == Status.LOADING}" />
             </LinearLayout>
 
 

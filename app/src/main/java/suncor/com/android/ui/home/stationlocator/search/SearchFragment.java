@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import suncor.com.android.BuildConfig;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
@@ -62,15 +63,16 @@ public class SearchFragment extends Fragment {
         nearbySearchBinding = binding.nearbyLayout;
         SuggestionsLayoutBinding suggestionsLayoutBinding = binding.suggestionsLayout;
 
+        Places.initialize(getContext(), BuildConfig.MAP_API_KEY);
         //instantiating
-        GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
+        PlacesClient placesClient = Places.createClient(getContext());
 
         StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
         parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
 
         locationLiveData = new LocationLiveData(getContext());
 
-        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
+        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(placesClient));
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(getActivity());

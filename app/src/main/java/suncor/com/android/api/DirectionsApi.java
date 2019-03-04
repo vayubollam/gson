@@ -14,6 +14,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import suncor.com.android.BuildConfig;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 
@@ -41,7 +42,7 @@ public class DirectionsApi {
         String str_dest = "destinations=" + dest.latitude + "," + dest.longitude;
         String sensor = "sensor=false";
         String mode = "mode = driving";
-        String mapKey = "key=AIzaSyAtC2AuQA0e-jJYbMrteC06unYKysCa1tA";
+        String mapKey = "key=" + BuildConfig.MAP_API_KEY;
         String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + mapKey;
 
 
