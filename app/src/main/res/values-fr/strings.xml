@@ -101,4 +101,6 @@
     <string name="enrollment_city_error">La ville est requise.</string>
     <string name="enrollment_province_error">La province est requise.</string>
     <string name="enrollment_postalcode_error">Le code postal est requis.</string>
+    <string name="enrollment_preferences_category">Préférences et conditions</string>
+    <string name="enrollment_form_title">Commençons votre inscription.</string>
 </resources>
