@@ -69,7 +69,6 @@ public class FavouritesFragment extends Fragment {
         binding.favouriteRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         favouritesAdapter = new FavouritesAdapter(this);
         binding.favouriteRecycler.setAdapter(favouritesAdapter);
-        binding.favouriteRecycler.setItemAnimator(new Animator());
         binding.favouriteRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -95,8 +94,8 @@ public class FavouritesFragment extends Fragment {
             isLoading.set(false);
             if (stations.size() == 0) {
                 noResult.set(true);
-
             } else {
+                noResult.set(false);
                 binding.favouriteRecycler.setVisibility(View.VISIBLE);
                 favouritesAdapter.setStationItems(stations);
 
@@ -139,6 +138,8 @@ public class FavouritesFragment extends Fragment {
 
 
     public void removeFavourite(StationItem stationItem) {
+        //override recyclerview animation after remove to avoid overriding first loading animation
+        binding.favouriteRecycler.setItemAnimator(new Animator());
         mViewModel.removeStation(stationItem).observe(getActivity(), (r) -> {
             if (r.status == Resource.Status.SUCCESS) {
                 SuncorToast.makeText(SuncorApplication.getInstance(), "Station removed", Toast.LENGTH_SHORT).show();

@@ -69,8 +69,6 @@ import suncor.com.android.utilities.LocationUtils;
 public class StationsFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
 
-    public static final int STATION_DETAILS_REQUEST_CODE = 1;
-
     public static final String STATIONS_FRAGMENT_TAG = "stations-tag";
 
     private final static int MINIMUM_ZOOM_LEVEL = 10;
@@ -261,12 +259,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!isAdded())
             return;
-        if (requestCode == STATION_DETAILS_REQUEST_CODE) {
-            if (lastSelectedMarker != null) {
-                StationItem item = stationsMarkers.get(lastSelectedMarker);
-                lastSelectedMarker.setIcon(getDrawableForMarker(true, item.isFavourite()));
-            }
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

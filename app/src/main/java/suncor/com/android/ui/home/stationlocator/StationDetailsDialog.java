@@ -1,7 +1,6 @@
 package suncor.com.android.ui.home.stationlocator;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,7 +56,6 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         originalView.getLocationOnScreen(position);
         dialog.setInitialPosition(position[1]);
         dialog.setStationItem(stationItem);
-        dialog.setTargetFragment(fragment, StationsFragment.STATION_DETAILS_REQUEST_CODE);
         dialog.show(fragment.getFragmentManager(), StationDetailsDialog.TAG);
     }
 
@@ -223,7 +221,6 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
     }
 
     public void setInitialHeight(int initialHeight) {

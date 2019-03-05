@@ -128,6 +128,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     FAVOURITES.add(station);
+                    isLoaded.postValue(true);
                     result.postValue(Resource.success(true));
                 }
 
@@ -156,6 +157,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             @Override
             public void onSuccess(WLResponse wlResponse) {
                 FAVOURITES.remove(station);
+                isLoaded.postValue(true);
                 result.postValue(Resource.success(true));
             }
 
