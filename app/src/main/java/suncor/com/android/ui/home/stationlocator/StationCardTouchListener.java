@@ -19,6 +19,7 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
     private ArrayList<StationItem> items;
     private BottomSheetBehavior bottomSheetBehavior;
     private View child;
+    private int position = RecyclerView.NO_POSITION;
     private StationItem item;
 
 
@@ -77,18 +78,23 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
 
     @Override
     public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent event) {
+        boolean ret = false;
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View view = rv.findChildViewUnder(event.getX(), event.getY());
-            int position = rv.getChildAdapterPosition(view);
+            position = rv.getChildAdapterPosition(view);
             if (position != RecyclerView.NO_POSITION) {
                 child = view;
                 item = items.get(position);
             }
         }
         if (child != null && item != null) {
-            swipeUpDetector.onTouchEvent(event);
+            if (swipeUpDetector.onTouchEvent(event) && event.getAction() != MotionEvent.ACTION_DOWN) {
+                child.getParent().requestDisallowInterceptTouchEvent(true);
+                rv.scrollToPosition(position);
+                ret = true;
+            }
         }
-        return false;
+        return ret;
     }
 
     @Override
