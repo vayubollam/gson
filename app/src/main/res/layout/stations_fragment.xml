@@ -205,7 +205,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                app:behavior_peekHeight="72dp"
+                app:behavior_peekHeight="64dp"
                 app:layout_behavior="@string/bottom_sheet_behavior"
                 app:layout_insetEdge="bottom">
 
