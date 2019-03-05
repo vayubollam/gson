@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.databinding.PromptLoginDialogBinding;
+import suncor.com.android.ui.enrollement.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 
 public class PromptLoginDialog extends BottomSheetDialogFragment {
@@ -43,6 +44,11 @@ public class PromptLoginDialog extends BottomSheetDialogFragment {
         });
         binding.signingButton.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), LoginActivity.class));
+            dismiss();
+
+        });
+        binding.joinButton.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), EnrollmentActivity.class));
             dismiss();
 
         });
