@@ -2,16 +2,20 @@ package suncor.com.android.uicomponents;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class SuncorAppBarLayout extends AppBarLayout {
 
@@ -46,6 +50,8 @@ public class SuncorAppBarLayout extends AppBarLayout {
     private AppCompatTextView collapsedTitleTextView;
     private AppCompatImageButton navigationButton;
     private int expandedTitleTopMargin;
+
+    private boolean isDragable = true;
 
     public SuncorAppBarLayout(Context context) {
         super(context);
@@ -108,6 +114,8 @@ public class SuncorAppBarLayout extends AppBarLayout {
             params.setScrollFlags(0);
         }
 
+        isDragable = a.getBoolean(R.styleable.SuncorAppBarLayout_dragable, true);
+
         addOnOffsetChangedListener(offsetChangeListener);
 
         toolbar.post(() -> {
@@ -115,18 +123,67 @@ public class SuncorAppBarLayout extends AppBarLayout {
             params.topMargin = toolbar.getMeasuredHeight() + expandedTitleTopMargin;
             expandedTitleTextView.setLayoutParams(params);
         });
-
         a.recycle();
+
     }
 
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        if (params instanceof CoordinatorLayout.LayoutParams) {
+            AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+            behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                @Override
+                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    return isDragable;
+                }
+            });
+            ((CoordinatorLayout.LayoutParams) params).setBehavior(behavior);
+        }
+        super.setLayoutParams(params);
+    }
+
+
+    /**
+     * Sets whether this @{@link SuncorAppBarLayout} is collapsible by dragging
+     *
+     * @param dragable true to enable dragging for collapsing, false to disable it
+     */
+    public void setDragable(boolean dragable) {
+        isDragable = dragable;
+    }
+
+    public boolean isDragable() {
+        return isDragable;
+    }
+
+    /**
+     * Sets the main title of this @{@link SuncorAppBarLayout},
+     * if the expanded title is empty, the same title is used for both collapsing and expanding states
+     * if the expanded title is already set, it will be only used as collapsed title.
+     *
+     * @param title the main title
+     */
     public void setTitle(CharSequence title) {
         collapsedTitleTextView.setText(title);
+        if (TextUtils.isEmpty(expandedTitleTextView.getText())) {
+            expandedTitleTextView.setText(title);
+        }
     }
 
+    /**
+     * Sets the expanded title of this @{@link SuncorAppBarLayout},
+     *
+     * @param expandedTitle the expanded title
+     */
     public void setExpandedTitle(CharSequence expandedTitle) {
         expandedTitleTextView.setText(expandedTitle);
     }
 
+    /**
+     * Sets click listener on navigation icon
+     *
+     * @param listener click listener to be applied on navigation icon
+     */
     public void setNavigationOnClickListener(OnClickListener listener) {
         navigationButton.setOnClickListener(listener);
     }

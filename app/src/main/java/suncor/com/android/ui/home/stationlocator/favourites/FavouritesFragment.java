@@ -43,6 +43,7 @@ public class FavouritesFragment extends Fragment {
     private FavouritesFragmentBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private ObservableBoolean noResult = new ObservableBoolean(false);
+    private ObservableBoolean appBarDragable = new ObservableBoolean(false);
     private LocationLiveData locationLiveData;
 
     public static FavouritesFragment newInstance() {
@@ -57,6 +58,7 @@ public class FavouritesFragment extends Fragment {
         binding = FavouritesFragmentBinding.inflate(inflater, container, false);
         binding.setIsLoading(isLoading);
         binding.setNoResult(noResult);
+        binding.setAppBarDragable(appBarDragable);
         return binding.getRoot();
 
 
@@ -65,7 +67,7 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.backButton.setOnClickListener(this::goBack);
+        binding.appBar.setNavigationOnClickListener(this::goBack);
         binding.favouriteRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         favouritesAdapter = new FavouritesAdapter(this);
         binding.favouriteRecycler.setAdapter(favouritesAdapter);
@@ -95,7 +97,7 @@ public class FavouritesFragment extends Fragment {
             isLoading.set(false);
             if (stations.size() == 0) {
                 noResult.set(true);
-
+                appBarDragable.set(false);
             } else {
                 binding.favouriteRecycler.setVisibility(View.VISIBLE);
                 favouritesAdapter.setStationItems(stations);
@@ -107,10 +109,15 @@ public class FavouritesFragment extends Fragment {
                     });
                     UserLocalSettings.setBool(SHOW_FAVS_HINT, false);
                 }
+
+                //Check if recyclerview content is not fully visible then enable dragging for appbar layout
+                LinearLayoutManager layoutManager = (LinearLayoutManager) binding.favouriteRecycler.getLayoutManager();
+                appBarDragable.set(layoutManager.findLastCompletelyVisibleItemPosition() < favouritesAdapter.getItemCount() - 1);
             }
 
         });
-        if (LocationUtils.isLocationEnabled() && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (LocationUtils.isLocationEnabled()
+                && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Observer<Location> locationObserver = new Observer<Location>() {
                 @Override
                 public void onChanged(Location location) {

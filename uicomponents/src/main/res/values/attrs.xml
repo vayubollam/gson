@@ -24,8 +24,12 @@
         <attr name="titleAppearance" format="reference" />
         <attr name="expandedTitleAppearance" format="reference" />
         <attr name="navigationIcon" format="reference" />
+        <!-- control status bar color-->
         <attr name="statusBarScrim" format="color" />
+        <!-- disables expanded title view, and removes elevation -->
         <attr name="expandable" format="boolean" />
+        <!-- controls whether the appbar layout can be dragged -->
+        <attr name="dragable" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SwipeLayout">
