@@ -8,6 +8,7 @@ import com.worklight.wlclient.api.WLClient;
 import suncor.com.android.data.repository.FavouriteRepository;
 import suncor.com.android.data.repository.FavouriteRepositoryImpl;
 import suncor.com.android.mfp.MFPRequestInterceptor;
+import suncor.com.android.mfp.MfpLogging;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Station;
 
@@ -20,15 +21,23 @@ public class SuncorApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        initMFP();
+        favouriteRepository = new FavouriteRepositoryImpl(this);
+        Station.initiateAmenities(this);
+    }
+
+    private void initMFP() {
         WLClient.createInstance(this);
         UserLoginChallengeHandler.createAndRegister();
         MFPRequestInterceptor.attachInterceptor(HttpClientManager.getInstance());
-        favouriteRepository = new FavouriteRepositoryImpl(this);
-        Station.initiateAmenities(this);
+        MfpLogging.logDeviceInfo(this);
     }
 
 
     public static SuncorApplication getInstance() {
         return sInstance;
     }
+
+
+
 }
