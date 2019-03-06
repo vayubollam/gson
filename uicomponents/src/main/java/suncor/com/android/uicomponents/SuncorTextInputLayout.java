@@ -16,6 +16,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -164,6 +165,12 @@ public class SuncorTextInputLayout extends LinearLayout {
         a.recycle();
 
         editText.addTextChangedListener(textWatcher);
+
+        inputFrame.setOnClickListener((v) -> {
+            editText.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        });
     }
 
     public void setError(@StringRes int error) {
