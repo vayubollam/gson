@@ -25,13 +25,14 @@
         android:clickable="true"
         android:fitsSystemWindows="true">
 
+        <!--TODO app:dragable="@{appBarDragable}"-->
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black_4"
-            app:dragable="@{appBarDragable}"
+            app:dragable="false"
             app:statusBarScrim="@color/black_4"
             app:title="@string/favourites" />
 
