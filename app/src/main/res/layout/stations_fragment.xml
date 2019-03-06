@@ -69,7 +69,7 @@
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:hint="@string/search_an_address"
+                    android:hint="@string/station_search_hint"
                     android:maxLines="1"
                     android:onClick="@{() -> eventHandler.launchSearchFragment()}"
                     android:text="@{vm.queryText}" />
@@ -244,7 +244,7 @@
                             android:layout_marginBottom="8dp"
                             android:textAlignment="center"
                             android:fontFamily="@font/gibson_semibold"
-                            android:text="@string/no_stations_found" />
+                            android:text="@string/station_result_no_stations_found" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/status_card_subtitle"
@@ -253,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:layout_marginBottom="16dp"
-                            android:text="@string/no_stations_filters_applied"
+                            android:text="@string/station_result_no_stations_filters_applied"
                             android:textColor="@color/black_60"
                             android:lineSpacingMultiplier="1.4" />
 
@@ -264,7 +264,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gibson_semibold"
                             android:onClick="@{() -> vm.clearFilters()}"
-                            android:text="@string/clear_filters_button" />
+                            android:text="@string/station_clear_filters_button" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </FrameLayout>

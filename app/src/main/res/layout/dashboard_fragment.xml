@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_bottom_sheet"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/nearby"
+                android:text="@string/dashboard_nearby_card_title"
                 android:textAllCaps="true" />
 
             <ProgressBar
@@ -113,7 +113,7 @@
                 android:layout_below="@+id/open_hours_text"
                 android:layout_marginTop="6dp"
                 android:paddingLeft="0dp"
-                android:text="@string/directions_button" />
+                android:text="@string/station_directions_button" />
 
         </RelativeLayout>
 

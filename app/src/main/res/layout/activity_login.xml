@@ -45,14 +45,14 @@
                 android:id="@+id/email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
+                android:hint="@string/login_email_field_label"
                 android:maxLength="100" />
 
             <suncor.com.android.uicomponents.SuncorTextInputLayout
                 android:id="@+id/password_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
+                android:hint="@string/login_password_field"
                 android:inputType="textPassword"
                 android:maxLength="16"
                 app:passwordToggleEnabled="true" />
@@ -81,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/forgot_password"
+                    android:text="@string/login_forgot_password_button"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -101,7 +101,7 @@
             style="@style/Title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in_progress" />
+            android:text="@string/login_in_progress" />
 
         <FrameLayout
             android:layout_width="64dp"

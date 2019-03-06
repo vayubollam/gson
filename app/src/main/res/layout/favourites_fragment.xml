@@ -34,7 +34,7 @@
             android:background="@color/black_4"
             app:dragable="false"
             app:statusBarScrim="@color/black_4"
-            app:title="@string/favourites" />
+            app:title="@string/favourites_fragment_title" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -76,7 +76,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.36"
-                android:text="@string/no_favourites"
+                android:text="@string/favourites_no_result"
                 android:textColor="@color/black_80" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -87,7 +87,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="24dp"
                 android:lineSpacingMultiplier="1.44"
-                android:text="@string/no_favourites_text"
+                android:text="@string/favourites_no_result_text"
                 android:textAlignment="center"
                 android:textColor="@color/black_60"
                 android:textSize="18sp" />
@@ -101,7 +101,7 @@
                 android:layout_marginTop="24dp"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
-                android:text="@string/add_station"
+                android:text="@string/favourites_add_station_button"
                 android:textSize="17sp" />
 
         </LinearLayout>

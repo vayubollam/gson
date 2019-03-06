@@ -392,7 +392,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
                 binding.filtersChipgroup.addView(chip);
             }
             Chip clearFiltersChip = new Chip(getActivity());
-            clearFiltersChip.setText(R.string.clear_all_filters_chip);
+            clearFiltersChip.setText(R.string.station_clear_all_filters_chip);
             clearFiltersChip.setTextColor(getResources().getColor(R.color.red));
             clearFiltersChip.setCloseIconVisible(false);
             clearFiltersChip.setOnClickListener((v) -> {
