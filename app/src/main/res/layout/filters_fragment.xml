@@ -9,143 +9,126 @@
         android:clickable="true"
         android:fitsSystemWindows="true">
 
-        <LinearLayout
+        <!-- TODO remove dragable="false" -->
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:fitsSystemWindows="true"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            app:dragable="false"
+            app:statusBarScrim="@color/white"
+            app:title="@string/filters_fragment_title" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:minWidth="@dimen/min_button_dim"
-                android:minHeight="@dimen/min_button_dim"
-                android:src="@drawable/ic_back_red" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:paddingBottom="68dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
-                android:text="@string/filters_fragment_title"
-                android:textAppearance="@style/Title1"
-                android:textColor="@color/black_80" />
+                android:nestedScrollingEnabled="true"
+                android:orientation="vertical">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:fillViewport="true">
-
-                <LinearLayout
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="true"
-                    android:orientation="vertical">
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/services_header"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_80" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/gibson_semibold"
-                        android:text="@string/services_header"
-                        android:textAppearance="@style/Body"
-                        android:textColor="@color/black_80" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@drawable/horizontal_divider" />
-
-                    <LinearLayout
-                        android:id="@+id/service_amenities_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/gibson_semibold"
-                        android:text="@string/fuel_header"
-                        android:textAppearance="@style/Body"
-                        android:textColor="@color/black_80" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@drawable/horizontal_divider" />
-
-                    <LinearLayout
-                        android:id="@+id/fuel_amenities_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/gibson_semibold"
-                        android:text="@string/carwash_header"
-                        android:textAppearance="@style/Body"
-                        android:textColor="@color/black_80" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@drawable/horizontal_divider" />
-
-                    <LinearLayout
-                        android:id="@+id/carwash_amenities_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-
-                </LinearLayout>
-            </ScrollView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardElevation="8dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider" />
 
                 <LinearLayout
+                    android:id="@+id/service_amenities_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:orientation="vertical" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/clear_button"
-                        style="@style/OutlinedSmallButton"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/small_button_height"
-                        android:layout_marginEnd="4dp"
-                        android:layout_weight="1"
-                        android:text="@string/clear" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/fuel_header"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_80" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/apply_button"
-                        style="@style/SmallButton"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/small_button_height"
-                        android:layout_marginStart="4dp"
-                        android:layout_weight="1"
-                        android:text="@string/apply" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider" />
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/fuel_amenities_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/carwash_header"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_80" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider" />
+
+                <LinearLayout
+                    android:id="@+id/carwash_amenities_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:cardElevation="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clear_button"
+                    style="@style/OutlinedSmallButton"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/small_button_height"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/clear" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/apply_button"
+                    style="@style/SmallButton"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/small_button_height"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/apply" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -43,7 +42,6 @@ public class FavouritesFragment extends Fragment {
     private FavouritesFragmentBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private ObservableBoolean noResult = new ObservableBoolean(false);
-    private ObservableBoolean appBarDragable = new ObservableBoolean(false);
     private LocationLiveData locationLiveData;
 
     public static FavouritesFragment newInstance() {
@@ -53,12 +51,9 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
         binding = FavouritesFragmentBinding.inflate(inflater, container, false);
         binding.setIsLoading(isLoading);
         binding.setNoResult(noResult);
-        binding.setAppBarDragable(appBarDragable);
         return binding.getRoot();
 
 
@@ -96,7 +91,6 @@ public class FavouritesFragment extends Fragment {
             isLoading.set(false);
             if (stations.size() == 0) {
                 noResult.set(true);
-                appBarDragable.set(false);
             } else {
                 noResult.set(false);
                 binding.favouriteRecycler.setVisibility(View.VISIBLE);
@@ -109,12 +103,7 @@ public class FavouritesFragment extends Fragment {
                     });
                     UserLocalSettings.setBool(SHOW_FAVS_HINT, false);
                 }
-
-                //Check if recyclerview content is not fully visible then enable dragging for appbar layout
-                LinearLayoutManager layoutManager = (LinearLayoutManager) binding.favouriteRecycler.getLayoutManager();
-                appBarDragable.set(layoutManager.findLastCompletelyVisibleItemPosition() < favouritesAdapter.getItemCount() - 1);
             }
-
         });
         if (LocationUtils.isLocationEnabled()
                 && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

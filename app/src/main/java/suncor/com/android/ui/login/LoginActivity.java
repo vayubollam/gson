@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.uicomponents.SuncorAppBarLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
@@ -88,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-        findViewById(R.id.back_button).setOnClickListener((v) -> {
+        ((SuncorAppBarLayout) findViewById(R.id.app_bar)).setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
     }

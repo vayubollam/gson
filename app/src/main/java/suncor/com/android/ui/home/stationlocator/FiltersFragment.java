@@ -64,7 +64,7 @@ public class FiltersFragment extends Fragment {
                 checkBox.setChecked(false);
             }
         });
-        binding.backButton.setOnClickListener((v) -> {
+        binding.appBar.setNavigationOnClickListener((v) -> {
             getFragmentManager().popBackStack();
         });
         return binding.getRoot();

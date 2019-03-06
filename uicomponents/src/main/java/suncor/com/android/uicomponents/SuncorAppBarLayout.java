@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 
 public class SuncorAppBarLayout extends AppBarLayout {
 
@@ -106,15 +107,15 @@ public class SuncorAppBarLayout extends AppBarLayout {
 
         boolean isExpandable = a.getBoolean(R.styleable.SuncorAppBarLayout_expandable, true);
         if (!isExpandable) {
-            setElevation(0);
-            toolbar.setElevation(0);
-            collapsingToolbarLayout.setElevation(0);
             expandedTitleTextView.setVisibility(GONE);
-            AppBarLayout.LayoutParams params = (LayoutParams) collapsingToolbarLayout.getLayoutParams();
-            params.setScrollFlags(0);
+            disableScroll();
         }
 
         isDragable = a.getBoolean(R.styleable.SuncorAppBarLayout_dragable, true);
+
+        if (!isDragable) {
+            disableScroll();
+        }
 
         addOnOffsetChangedListener(offsetChangeListener);
 
@@ -127,6 +128,17 @@ public class SuncorAppBarLayout extends AppBarLayout {
 
     }
 
+    private void disableScroll() {
+        LayoutParams params = (LayoutParams) collapsingToolbarLayout.getLayoutParams();
+        params.setScrollFlags(0);
+        //Post elevation change to give it time to be done after drawing
+        post(() -> {
+            ViewCompat.setElevation(this, 0);
+            ViewCompat.setElevation(collapsingToolbarLayout, 0);
+            ViewCompat.setElevation(toolbar, 0);
+        });
+    }
+
     @Override
     public void setLayoutParams(ViewGroup.LayoutParams params) {
         if (params instanceof CoordinatorLayout.LayoutParams) {
@@ -134,26 +146,12 @@ public class SuncorAppBarLayout extends AppBarLayout {
             behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
                 @Override
                 public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                    return isDragable;
+                    return false;
                 }
             });
             ((CoordinatorLayout.LayoutParams) params).setBehavior(behavior);
         }
         super.setLayoutParams(params);
-    }
-
-
-    /**
-     * Sets whether this @{@link SuncorAppBarLayout} is collapsible by dragging
-     *
-     * @param dragable true to enable dragging for collapsing, false to disable it
-     */
-    public void setDragable(boolean dragable) {
-        isDragable = dragable;
-    }
-
-    public boolean isDragable() {
-        return isDragable;
     }
 
     /**
