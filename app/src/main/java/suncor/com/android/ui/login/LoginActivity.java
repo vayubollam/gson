@@ -51,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
 
                 if (sessionManager.isAccountBlocked()) {
-                    String title = getString(R.string.invalid_credentials_dialog_title);
-                    String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                    String title = getString(R.string.login_invalid_credentials_dialog_title);
+                    String content = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
                     createAlert(title, content).show();
                 } else {
                     progressLayout.setVisibility(View.VISIBLE);
@@ -63,25 +63,25 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 } else {
                                     if (status.data == SessionManager.SigninResponse.CHALLENGED) {
-                                        String title = getString(R.string.invalid_credentials_dialog_title);
+                                        String title = getString(R.string.login_invalid_credentials_dialog_title);
                                         String message;
                                         passwordEditText.setText("");
                                         int remainingAttempts = Integer.parseInt(status.message);
                                         if (remainingAttempts == SessionManager.LOGIN_ATTEMPTS - 1) {
-                                            message = getString(R.string.invalid_credentials_dialog_1st_message);
+                                            message = getString(R.string.login_invalid_credentials_dialog_1st_message);
                                             createAlert(title, message).show();
                                         } else {
-                                            message = getString(R.string.invalid_credentials_dialog_2nd_message, Integer.parseInt(status.message), SessionManager.LOCK_TIME_MINUTES);
+                                            message = getString(R.string.login_invalid_credentials_dialog_2nd_message, Integer.parseInt(status.message), SessionManager.LOCK_TIME_MINUTES);
                                             AlertDialog.Builder dialog = createAlert(title, message);
-                                            dialog.setNegativeButton(R.string.reset_password, (dialogInterface, which) -> {
+                                            dialog.setNegativeButton(R.string.login_invalid_credentials_reset_password, (dialogInterface, which) -> {
                                                 Toast.makeText(getApplicationContext(), "This will open the reset password screen when developed", Toast.LENGTH_SHORT).show();
                                                 dialogInterface.dismiss();
                                             });
                                             dialog.show();
                                         }
                                     } else {
-                                        String title = getString(R.string.invalid_credentials_dialog_title);
-                                        String content = getString(R.string.sign_in_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                                        String title = getString(R.string.login_invalid_credentials_dialog_title);
+                                        String content = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
                                         createAlert(title, content).show();
                                     }
                                 }
@@ -106,11 +106,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateInput() {
         Boolean allGood = true;
         if (userNameEditText.getText().toString().isEmpty()) {
-            emailLayout.setError(getString(R.string.email_required));
+            emailLayout.setError(getString(R.string.login_email_field_error));
             allGood = false;
         }
         if (passwordEditText.getText().toString().isEmpty()) {
-            passwordLayout.setError(getString(R.string.password_required));
+            passwordLayout.setError(getString(R.string.login_password_field_error));
             allGood = false;
         }
         return allGood;

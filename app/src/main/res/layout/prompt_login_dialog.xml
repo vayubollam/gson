@@ -15,7 +15,7 @@
             android:lineHeight="26sp"
             android:layout_margin="16dp"
             android:fontFamily="@font/gibson_semibold"
-            android:text="@string/signin_or_join"
+            android:text="@string/login_prompt_title"
             android:layout_height="wrap_content" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -24,7 +24,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             style="@style/Caption1"
-            android:text="@string/signin_or_join_message"
+            android:text="@string/login_prompt_message"
             android:lineHeight="24sp"
             android:layout_height="wrap_content" />
 

@@ -89,9 +89,9 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
             int openmin = Integer.parseInt(workHour.getOpen().substring(2, 4));
             int closemin = Integer.parseInt(workHour.getClose().substring(2, 4));
             if (currenthour > openHour && currenthour < closeHour) {
-                openHoursText.setText(getString(R.string.open_generic, workHour.formatCloseHour()));
+                openHoursText.setText(getString(R.string.station_open_generic, workHour.formatCloseHour()));
             } else {
-                openHoursText.setText(getString(R.string.closed));
+                openHoursText.setText(getString(R.string.station_closed));
             }
 
             if (userLocation != null) {
@@ -105,13 +105,13 @@ public class DashboardFragment extends BaseFragment implements View.OnClickListe
                                 distanceText.setText(DirectionsResult.formatDistanceDuration(getContext(), result.data));
                                 distanceText.setTextColor(getResources().getColor(R.color.black_80));
                             } else if (result.status == Resource.Status.ERROR) {
-                                distanceText.setText(R.string.distance_unavailable);
+                                distanceText.setText(R.string.station_distance_unavailable);
                                 distanceText.setTextColor(getResources().getColor(R.color.black_60));
                             }
                         });
             } else {
                 distanceText.setVisibility(View.VISIBLE);
-                distanceText.setText(R.string.distance_unavailable);
+                distanceText.setText(R.string.station_distance_unavailable);
                 distanceText.setTextColor(getResources().getColor(R.color.black_60));
             }
         };

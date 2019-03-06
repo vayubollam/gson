@@ -5,16 +5,16 @@
         android:id="@+id/menu_home"
         android:icon="@drawable/ic_home"
         android:iconTint="@color/black_60"
-        android:title="@string/home" />
+        android:title="@string/navigation_home_tab" />
     <item
         android:id="@+id/menu_stations"
         android:icon="@drawable/ic_locations"
         android:iconTint="@color/black_60"
-        android:title="@string/stations" />
+        android:title="@string/navigation_stations_tab" />
     <item
         android:id="@+id/menu_profile"
         android:icon="@drawable/ic_profile"
         android:iconTint="@color/black_60"
-        android:title="@string/profile" />
+        android:title="@string/navigation_profile_tab" />
 
 </menu>

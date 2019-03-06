@@ -37,7 +37,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/services_header"
+                    android:text="@string/filters_carwash_header"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/black_80" />
 
@@ -58,7 +58,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/fuel_header"
+                    android:text="@string/filters_fuel_header"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/black_80" />
 
@@ -79,7 +79,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/carwash_header"
+                    android:text="@string/filters_carwash_header"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/black_80" />
 
@@ -117,7 +117,7 @@
                     android:layout_height="@dimen/small_button_height"
                     android:layout_marginEnd="4dp"
                     android:layout_weight="1"
-                    android:text="@string/clear" />
+                    android:text="@string/filters_clear_button" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/apply_button"
@@ -126,7 +126,7 @@
                     android:layout_height="@dimen/small_button_height"
                     android:layout_marginStart="4dp"
                     android:layout_weight="1"
-                    android:text="@string/apply" />
+                    android:text="@string/filters_apply_button" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

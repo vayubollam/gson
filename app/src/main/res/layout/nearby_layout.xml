@@ -35,7 +35,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
-                android:text="@string/nearby"
+                android:text="@string/suggestions_fragment_nearby_title"
                 android:textAllCaps="true" />
 
             <ProgressBar
