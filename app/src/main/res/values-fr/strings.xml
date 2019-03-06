@@ -103,7 +103,7 @@
     <string name="enrollment_province_error">La province est requise.</string>
     <string name="enrollment_postalcode_error">Le code postal est requis.</string>
     <string name="enrollment_preferences_category">Préférences et conditions</string>
-    <string name="enrollment_form_title">Commencer</string>
+    <string name="enrollment_form_title">Commençons votre inscription</string>
     <string name="enrollment_leave_alert_title">Vous voulez quitter la fonction de création de compte?</string>
     <string name="enrollment_leave_alert_message">Les détails que vous avez entrés ne seront pas sauvegardés si vous quittez. Vous voulez quitter le formulaire de création de compte?</string>
     <string name="profile_fragment_title">Profil</string>
