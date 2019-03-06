@@ -3,7 +3,7 @@
     <string name="profile">Profil</string>
     <string name="stations">Établissements</string>
     <string name="search_an_address">Recherche</string>
-    <string name="distance_generic">"Distance en  %.1f km "</string>
+    <string name="distance_generic">%.1f km de vous</string>
     <string name="duration_generic">%1s en auto</string>
     <string name="search">Recherche</string>
     <string name="open_generic">Ouvert jusqu\'à %s</string>
