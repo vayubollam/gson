@@ -51,7 +51,14 @@
                     android:id="@+id/collapsed_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginRight="44dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    app:autoSizeMaxTextSize="22sp"
+                    app:autoSizeMinTextSize="18sp"
+                    app:autoSizeTextType="uniform" />
             </FrameLayout>
 
         </androidx.appcompat.widget.Toolbar>

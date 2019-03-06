@@ -98,7 +98,7 @@
     <string name="enrollment_terms">terms and conditions</string>
     <string name="enrollment_join_button">Join</string>
     <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect 2,500 Petro-Points.</string>
-    <string name="enrollment_form_title">Let\'s get you signed up.</string>
+    <string name="enrollment_form_title">Let\'s get you signed up</string>
     <string name="enrollment_leave_alert_title">Leave Create Account?</string>
     <string name="enrollment_leave_alert_message">The details you\'ve entered won\'t be saved if you leave. Leave the Create Account form?</string>
     <string name="enrollment_terms_url">https://www.petro-canada.ca/en/personal/terms-conditions#petropoints</string>
