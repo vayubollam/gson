@@ -37,8 +37,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.enrollement.EnrollmentActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
