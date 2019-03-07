@@ -158,6 +158,16 @@ public class SuncorTextInputLayout extends LinearLayout {
             editText.setFilters(FilterArray);
         }
 
+        if (a.hasValue(R.styleable.SuncorTextInputLayout_text)) {
+            CharSequence text = a.getText(R.styleable.SuncorTextInputLayout_text);
+            editText.setText(text);
+        }
+
+        if (a.hasValue(R.styleable.SuncorTextInputLayout_error)) {
+            CharSequence text = a.getText(R.styleable.SuncorTextInputLayout_error);
+            setError(text);
+        }
+
         editText.setInputType(a.getInt(R.styleable.SuncorTextInputLayout_android_inputType, InputType.TYPE_CLASS_TEXT));
 
         errorColor = a.getColor(R.styleable.SuncorTextInputLayout_errorColor, Color.RED);
@@ -174,29 +184,41 @@ public class SuncorTextInputLayout extends LinearLayout {
     }
 
     public void setError(@StringRes int error) {
-        setError(getContext().getString(error));
+        CharSequence errorText = error != -1 ? getContext().getText(error) : "";
+        setError(errorText);
     }
 
     public void setError(CharSequence error) {
-        if (!TextUtils.isEmpty(error)) {
-            errorTextView.setText(error);
-            errorTextView.setVisibility(VISIBLE);
-            errorImage.setVisibility(VISIBLE);
-        } else {
-            errorTextView.setText("");
-            errorTextView.setVisibility(GONE);
-            errorImage.setVisibility(GONE);
-        }
-        updateBackground();
-        updateLabelState(false);
+
+        post(() -> {
+            if (!TextUtils.isEmpty(error)) {
+                errorTextView.setText(error);
+                errorTextView.setVisibility(VISIBLE);
+                errorImage.setVisibility(VISIBLE);
+            } else {
+                errorTextView.setText("");
+                errorTextView.setVisibility(GONE);
+                errorImage.setVisibility(GONE);
+            }
+            updateBackground();
+            updateLabelState(false);
+        });
     }
 
     public AppCompatEditText getEditText() {
         return editText;
     }
 
+    public void setText(@StringRes int text) {
+        editText.setText(text);
+    }
+
+    public void setText(CharSequence text) {
+        editText.setText(text);
+    }
+
     public CharSequence getText() {
-        return editText.getText();
+        return String.valueOf(editText.getText());
     }
 
     protected ConstraintLayout getInputLayout() {
@@ -328,4 +350,5 @@ public class SuncorTextInputLayout extends LinearLayout {
         return editText != null
                 && editText.getTransformationMethod() instanceof PasswordTransformationMethod;
     }
+
 }

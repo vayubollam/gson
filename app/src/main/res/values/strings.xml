@@ -104,10 +104,11 @@
     <string name="enrollment_terms_url">https://www.petro-canada.ca/en/personal/terms-conditions#petropoints</string>
     <string name="enrollment_first_name_error">First name is required.</string>
     <string name="enrollment_last_name_error">Last name is required.</string>
-    <string name="enrollment_email_error">Email is required.</string>
-    <string name="enrollment_password_empty_error">Password in required.</string>
+    <string name="enrollment_email_empty_error">Email is required.</string>
+    <string name="enrollment_password_empty_error">Password is required.</string>
     <string name="enrollment_street_address_error">Address is required.</string>
     <string name="enrollment_city_error">City is required.</string>
     <string name="enrollment_province_error">Province is required.</string>
     <string name="enrollment_postalcode_error">Postal code is required.</string>
+    <string name="enrollment_email_format_error">Invalid format</string>
 </resources>

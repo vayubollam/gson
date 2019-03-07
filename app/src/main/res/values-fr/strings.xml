@@ -96,7 +96,7 @@
     <string name="enrollment_terms_url">https://www.petro-canada.ca/fr/personnel/conditions#petropoints</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
-    <string name="enrollment_email_error">Veuillez entrer une adresse.</string>
+    <string name="enrollment_email_empty_error">Veuillez entrer une adresse.</string>
     <string name="enrollment_password_empty_error">Le mot de passe est requis.</string>
     <string name="enrollment_street_address_error">L\'adresse est requise.</string>
     <string name="enrollment_city_error">La ville est requise.</string>

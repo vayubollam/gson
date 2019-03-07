@@ -11,7 +11,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import suncor.com.android.R;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -36,7 +36,8 @@ import suncor.com.android.uicomponents.SuncorTextInputLayout;
 public class EnrollmentFormFragment extends Fragment implements OnBackPressedListener {
 
     EnrollmentFormFragmentBinding binding;
-    ArrayList<Pair<SuncorTextInputLayout, Integer>> requiredInputFieldsWithErrors = new ArrayList<>();
+    ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
+    private EnrollmentFormViewModel viewModel;
 
     public EnrollmentFormFragment() {
 
@@ -46,18 +47,20 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = EnrollmentFormFragmentBinding.inflate(inflater, container, false);
+        viewModel = ViewModelProviders.of(this).get(EnrollmentFormViewModel.class);
         binding.setEventHandler(this);
+        binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
-        requiredInputFieldsWithErrors.add(new Pair(binding.firstNameInput, R.string.enrollment_first_name_error));
-        requiredInputFieldsWithErrors.add(new Pair(binding.lastNameInput, R.string.enrollment_last_name_error));
-        requiredInputFieldsWithErrors.add(new Pair(binding.emailInput, R.string.enrollment_email_error));
-        requiredInputFieldsWithErrors.add(new Pair(binding.passwordInput, R.string.enrollment_password_empty_error));
-        requiredInputFieldsWithErrors.add(new Pair(binding.streetAddressInput, R.string.enrollment_street_address_error));
-        requiredInputFieldsWithErrors.add(new Pair(binding.cityInput, R.string.enrollment_city_error));
-        requiredInputFieldsWithErrors.add(new Pair(binding.provinceInput, R.string.enrollment_province_error));
-        requiredInputFieldsWithErrors.add(new Pair(binding.postalcodeInput, R.string.enrollment_postalcode_error));
+        requiredFields.add(binding.firstNameInput);
+        requiredFields.add(binding.lastNameInput);
+        requiredFields.add(binding.emailInput);
+        requiredFields.add(binding.passwordInput);
+        requiredFields.add(binding.streetAddressInput);
+        requiredFields.add(binding.cityInput);
+        requiredFields.add(binding.provinceInput);
+        requiredFields.add(binding.postalcodeInput);
 
         ((EnrollmentActivity) getActivity()).setOnBackPressedListener(this);
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
@@ -107,7 +110,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-        if (oneItemFilled()) {
+        if (viewModel.oneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
@@ -127,40 +130,26 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-        boolean isRequiredItemsFilled = true;
-        boolean firstItemFocused = false;
-        for (Pair<SuncorTextInputLayout, Integer> input : requiredInputFieldsWithErrors) {
-            if (TextUtils.isEmpty(input.first.getText())) {
-                isRequiredItemsFilled = false;
-                if (input.first != binding.passwordInput || !firstItemFocused) {
-                    input.first.setError(input.second);
-                }
-                if (!firstItemFocused) {
-                    focusOnItem(input.first);
-                    firstItemFocused = true;
-                }
-            } else {
-                input.first.clearFocus();
-            }
-        }
-
-        if (isRequiredItemsFilled) {
+        int itemWithError = viewModel.canJoin();
+        if (itemWithError != -1) {
+            focusOnItem(requiredFields.get(itemWithError));
+        } else {
+            //TODO join
             Toast.makeText(getContext(), "Will Join", Toast.LENGTH_LONG).show();
         }
     }
 
 
     public void textChanged(SuncorTextInputLayout input, Editable s) {
-        if (s.length() > 0) {
-            input.post(() -> {
-                input.setError("");
-            });
+        if(TextUtils.isEmpty(s)){
+            return;
         }
         if (input == binding.streetAddressInput || input == binding.passwordInput) {
             scrollToView(input);
         }
     }
 
+    //Applied on input fields
     public void focusChanged(View view, boolean hasFocus) {
         if (hasFocus) {
             scrollToView(view);
@@ -181,19 +170,13 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         });
     }
 
-    private boolean oneItemFilled() {
-        for (Pair<SuncorTextInputLayout, Integer> input : requiredInputFieldsWithErrors) {
-            if (!TextUtils.isEmpty(input.first.getText())) {
-                return true;
-            }
-        }
-        return !(TextUtils.isEmpty(binding.phoneInput.getText())
-                && TextUtils.isEmpty(binding.securityQuestionInput.getText())
-                && TextUtils.isEmpty(binding.securityAnswerInput.getText()));
-    }
-
     private void focusOnItem(SuncorTextInputLayout input) {
-        input.getEditText().requestFocus();
+        //if the edittext has already focus, just scroll to it
+        if (input.getEditText().hasFocus()) {
+            scrollToView(input);
+        } else {
+            input.getEditText().requestFocus();
+        }
         if (!(input instanceof SuncorSelectInputLayout)) {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(input.getEditText(), InputMethodManager.SHOW_IMPLICIT);

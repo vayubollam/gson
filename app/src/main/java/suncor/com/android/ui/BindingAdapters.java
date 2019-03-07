@@ -8,8 +8,15 @@ import java.util.HashMap;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingListener;
+import androidx.databinding.InverseBindingMethod;
+import androidx.databinding.InverseBindingMethods;
 import suncor.com.android.model.Station;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
+
+@InverseBindingMethods({
+        @InverseBindingMethod(type = SuncorTextInputLayout.class, attribute = "text"),
+})
 
 public class BindingAdapters {
     @BindingAdapter({"station", "amenitieType"})
@@ -78,5 +85,27 @@ public class BindingAdapters {
 
     public interface AfterTextChanged {
         void afterTextChanged(SuncorTextInputLayout input, Editable s);
+    }
+
+    @BindingAdapter(value = "textAttrChanged")
+    public static void setListener(SuncorTextInputLayout errorInputLayout, final InverseBindingListener textAttrChanged) {
+        if (textAttrChanged != null) {
+            errorInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    textAttrChanged.onChange();
+                }
+            });
+        }
     }
 }
