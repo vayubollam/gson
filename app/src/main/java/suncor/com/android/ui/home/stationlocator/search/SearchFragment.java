@@ -33,7 +33,6 @@ import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.ui.home.stationlocator.StationViewModelFactory;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
@@ -150,29 +149,12 @@ public class SearchFragment extends Fragment {
                 });
     }
 
-    private void nearbyItemClicked(Station station) {
-        //TODO
-//        Observer<Resource<ArrayList<StationItem>>> tempObserver = new Observer<Resource<ArrayList<StationItem>>>() {
-//            @Override
-//            public void onChanged(Resource<ArrayList<StationItem>> r) {
-//                if (r.status != Resource.Status.LOADING) {
-//                    if (r.status == Resource.Status.LOGGED_IN) {
-//                        parentViewModel.stationsAround.removeObserver(this);
-//                        StationItem selectedStation = null;
-//                        for (StationItem item : r.data) {
-//                            if (station.getId().equals(item.station.get().getId())) {
-//                                selectedStation = item;
-//                                break;
-//                            }
-//                        }
-//                        parentViewModel.setSelectedStation(selectedStation);
-//                    }
-//                    goBack();
-//                }
-//            }
-//        };
-//        parentViewModel.setUserLocation(userLocation, StationsViewModel.UserLocationType.GPS);
-//        parentViewModel.stationsAround.observe(this, tempObserver);
+    private void nearbyItemClicked(StationItem station) {
+        if (viewModel.nearbyStations.getValue().status != Resource.Status.SUCCESS) {
+            throw new IllegalStateException("to handle clicks, nearby stations should be initialized");
+        }
+        parentViewModel.setSelectedStationFromSearch(userLocation, viewModel.nearbyStations.getValue().data, station);
+        goBack();
     }
 
     public void goBack() {

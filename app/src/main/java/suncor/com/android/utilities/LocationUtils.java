@@ -44,4 +44,10 @@ public class LocationUtils {
         return locationMode != Settings.Secure.LOCATION_MODE_OFF;
     }
 
+    public static double getHorizontalDistance(LatLngBounds lngBounds) {
+        LatLng westBound = new LatLng(lngBounds.southwest.latitude, lngBounds.southwest.longitude);
+        LatLng eastBound = new LatLng(lngBounds.southwest.latitude, lngBounds.northeast.longitude);
+
+        return calculateDistance(westBound, eastBound);
+    }
 }
