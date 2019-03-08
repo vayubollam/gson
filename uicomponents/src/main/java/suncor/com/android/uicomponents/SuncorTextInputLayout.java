@@ -83,7 +83,6 @@ public class SuncorTextInputLayout extends LinearLayout {
     private boolean hintExpanded;
 
     private ValueAnimator labelSizeAnimator;
-    private ColorStateList originalEditTextTint;
 
     public SuncorTextInputLayout(Context context) {
         this(context, null);
@@ -125,6 +124,7 @@ public class SuncorTextInputLayout extends LinearLayout {
             hintTextColor = hintTextView.getTextColors();
         }
 
+        editText.setInputType(a.getInt(R.styleable.SuncorTextInputLayout_android_inputType, InputType.TYPE_CLASS_TEXT));
 
         final int textAppearance = a.getResourceId(R.styleable.SuncorTextInputLayout_android_textAppearance, -1);
         if (textAppearance != -1) {
@@ -167,8 +167,6 @@ public class SuncorTextInputLayout extends LinearLayout {
             CharSequence text = a.getText(R.styleable.SuncorTextInputLayout_error);
             setError(text);
         }
-
-        editText.setInputType(a.getInt(R.styleable.SuncorTextInputLayout_android_inputType, InputType.TYPE_CLASS_TEXT));
 
         errorColor = a.getColor(R.styleable.SuncorTextInputLayout_errorColor, Color.RED);
 
