@@ -40,9 +40,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         for (int i = 0; i < requiredFields.size(); i++) {
             InputField field = requiredFields.get(i);
             if (!field.isValid()) {
-                if (field != passwordField || !firstItemFocused) {
-                    field.setShowError(true);
-                }
+                field.setShowError(true);
                 if (!firstItemFocused) {
                     firstItemWithError = i;
                     firstItemFocused = true;
@@ -53,22 +51,27 @@ public class EnrollmentFormViewModel extends ViewModel {
     }
 
     public InputField getFirstNameField() {
+
         return firstNameField;
     }
 
     public InputField getLastNameField() {
+
         return lastNameField;
     }
 
     public EmailInputField getEmailInputField() {
+
         return emailInputField;
     }
 
     public InputField getPasswordField() {
+
         return passwordField;
     }
 
     public InputField getSecurityQuestionField() {
+
         return securityQuestionField;
     }
 

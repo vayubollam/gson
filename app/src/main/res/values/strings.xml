@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Petro-Canada</string>
-    <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>
     <string name="navigation_home_tab">Home</string>
     <string name="navigation_stations_tab">Locations</string>
     <string name="navigation_profile_tab">Profile</string>
@@ -111,4 +110,5 @@
     <string name="enrollment_province_error">Province is required.</string>
     <string name="enrollment_postalcode_error">Postal code is required.</string>
     <string name="enrollment_email_format_error">Invalid format</string>
+    <string name="discover_your_next_adventure">FIND YOUR HAPPY PLACE</string>
 </resources>

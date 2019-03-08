@@ -30,10 +30,9 @@
     <string name="sign_in">Démarrez</string>
     <string name="join">Joindre</string>
     <string name="cancel">Annuler</string>
-    <string name="login_prompt_title">Connectez-vous ou ajoutez à vos favoris.</string>
     <string name="favourites_no_result">Pas de stations favorites</string>
     <string name="station_open_24hrs">Ouvert 24 heures</string>
-    <string name="station_fav_button_signing">Connectez-vous ou ajoutez à vos favoris.</string>
+    <string name="station_fav_button_signing">Ajoutez à vos favoris.</string>
     <string name="login_email_field_label">Courriel</string>
     <string name="login_password_field">Mot de passe</string>
     <string name="station_hours_list_title">Heures</string>
@@ -58,6 +57,7 @@
     <string name="station_clear_all_filters_chip">Effacer filtres</string>
     <string name="station_distance_unavailable">Distance non disponible</string>
     <string name="login_in_progress">Ouverture de session</string>
+    <string name="login_prompt_title">Connectez-vous ou ajoutez à vos favoris.</string>
     <string name="login_invalid_credentials_dialog_title">Courriel et mot de passe non valide.</string>
     <string name="navigation_home_tab">Accueil</string>
     <string name="ok">OK</string>
