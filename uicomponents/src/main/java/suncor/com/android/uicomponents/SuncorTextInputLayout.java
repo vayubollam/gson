@@ -272,7 +272,7 @@ public class SuncorTextInputLayout extends LinearLayout {
             hintTextView.setTextColor(hintTextColor);
         }
 
-        if (hasText || (isEnabled() && (hasFocus) && !errorShouldBeShown)) {
+        if (hasText || (isEnabled() && hasFocus)) {
             // We should be showing the label so do so if it isn't already
             if (force || hintExpanded) {
                 collapseHint(animate);
