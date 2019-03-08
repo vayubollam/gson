@@ -227,6 +227,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             }
             if (mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS) {
                 myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_my_location)));
+                stationAdapter.setUserLocation(location);
             } else {
                 myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_pin_search)));
             }

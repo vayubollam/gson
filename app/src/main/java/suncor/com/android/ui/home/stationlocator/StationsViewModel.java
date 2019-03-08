@@ -64,6 +64,8 @@ public class StationsViewModel extends ViewModel {
     private MutableLiveData<String> _queryText = new MutableLiveData<>();
     public LiveData<String> queryText = _queryText;
 
+    private StationItem selectedNearbyStationFromSearch = null;
+
     private float regionRatio = 1f;
 
     private boolean shouldUpdateSectedStation;
@@ -97,11 +99,14 @@ public class StationsViewModel extends ViewModel {
     }
 
     private void refreshStations() {
+        Log.d(StationsViewModel.class.getSimpleName(), "refreshing stations");
         LatLng mapCenter = _mapBounds.getValue().getCenter();
         LatLngBounds bounds = _mapBounds.getValue();
         if (userLocation.getValue() == null)
             return;
         if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
+            Log.d(StationsViewModel.class.getSimpleName(), "Using cached stations");
+
             Collections.sort(cachedStations, (o1, o2) -> {
                 double distance1 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
                 double distance2 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
@@ -113,9 +118,14 @@ public class StationsViewModel extends ViewModel {
 
             if (shouldUpdateSectedStation && !filteredStations.isEmpty()) {
                 _selectedStation.postValue(filteredStations.get(0));
+                shouldUpdateSectedStation = false;
+            } else if (selectedNearbyStationFromSearch != null) {
+                _selectedStation.postValue(selectedNearbyStationFromSearch);
+                selectedNearbyStationFromSearch = null;
             }
-            shouldUpdateSectedStation = false;
         } else {
+            Log.d(StationsViewModel.class.getSimpleName(), "Load stations from API");
+
             _stationsAround.setValue(Resource.loading(null));
 
             LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
@@ -166,8 +176,11 @@ public class StationsViewModel extends ViewModel {
                         _stationsAround.postValue(Resource.success(filteredStations));
                         if (shouldUpdateSectedStation && !filteredStations.isEmpty()) {
                             _selectedStation.postValue(filteredStations.get(0));
+                            shouldUpdateSectedStation = false;
+                        } else if (selectedNearbyStationFromSearch != null) {
+                            _selectedStation.postValue(selectedNearbyStationFromSearch);
+                            selectedNearbyStationFromSearch = null;
                         }
-                        shouldUpdateSectedStation = false;
                     } catch (JSONException e) {
                         e.printStackTrace();
                         _stationsAround.postValue(Resource.error(e.getMessage(), null));
@@ -245,10 +258,21 @@ public class StationsViewModel extends ViewModel {
         }
     }
 
+    public void setSelectedStationFromSearch(LatLng userLocation, ArrayList<StationItem> stationItems, StationItem selectedStation) {
+        //init cache data to default 25km bounds
+        cachedStations = stationItems;
+        cachedStationsBounds = LocationUtils.calculateBounds(userLocation, DEFAULT_DISTANCE_API, regionRatio);
+        clearFilters();
+        int mapHorizontalRange = (int) LocationUtils.getHorizontalDistance(_mapBounds.getValue());
+        setUserLocation(userLocation, UserLocationType.GPS);
+        LatLng selectedStationPosition = new LatLng(selectedStation.getStation().getAddress().getLatitude(), selectedStation.getStation().getAddress().getLongitude());
+        selectedNearbyStationFromSearch = selectedStation;
+        _mapBounds.postValue(LocationUtils.calculateBounds(selectedStationPosition, mapHorizontalRange, regionRatio));
+    }
+
     public void setMapBounds(LatLngBounds bounds) {
         _mapBounds.setValue(bounds);
     }
-
 
     public void setRegionRatio(float screenRatio) {
         this.regionRatio = screenRatio;
