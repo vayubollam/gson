@@ -110,6 +110,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:letterSpacing">0.05</item>
     </style>
 
     <style name="OutlinedSmallButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
@@ -120,6 +121,7 @@
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="rippleColor">@color/black_8</item>
+        <item name="android:letterSpacing">0.05</item>
     </style>
 
     <style name="LargeButton" parent="SmallButton">

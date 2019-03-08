@@ -25,12 +25,14 @@
         android:layout_margin="16dp"
         android:elevation="12dp"
         android:padding="16dp"
+        android:clipChildren="false"
         app:cardCornerRadius="12dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp">
+            android:layout_margin="16dp"
+            android:clipToPadding="false">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/station_title_text"
@@ -85,8 +87,6 @@
                 android:layout_height="16dp"
                 android:layout_below="@+id/img_car_station"
                 android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_car_station"
                 app:srcCompat="@drawable/ic_clock" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -101,8 +101,6 @@
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:textAppearance="@style/Caption1"
-                app:layout_constraintLeft_toRightOf="@+id/img_car_station"
-                app:layout_constraintTop_toBottomOf="@+id/distance_text"
                 tools:text="Open, closes at 12:00 AM" />
 
             <com.google.android.material.button.MaterialButton
@@ -112,7 +110,8 @@
                 android:layout_height="@dimen/small_button_height"
                 android:layout_below="@+id/open_hours_text"
                 android:layout_marginTop="6dp"
-                android:paddingLeft="0dp"
+                android:paddingLeft="8dp"
+                android:layout_marginLeft="-8dp"
                 android:text="@string/station_directions_button" />
 
         </RelativeLayout>

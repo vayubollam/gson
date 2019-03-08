@@ -10,6 +10,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
@@ -79,7 +80,8 @@ public class CardQuestion extends Fragment {
     public void onResume() {
         super.onResume();
         AnimationSet set = new AnimationSet(true);
-        Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.05f);
+        Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.02f);
+        trAnimation.setFillAfter(true);
         trAnimation.setDuration(cardAnimationDuration);
         set.addAnimation(trAnimation);
         Animation alphaAnim = new AlphaAnimation(0.0f, 1.0f);
@@ -87,6 +89,7 @@ public class CardQuestion extends Fragment {
         set.addAnimation(alphaAnim);
         set.setInterpolator(new AccelerateInterpolator());
         set.setStartOffset(150);
+        set.setFillAfter(true);
         cardImg.startAnimation(set);
         cardShadow.startAnimation(alphaAnim);
         set.setAnimationListener(new Animation.AnimationListener() {
@@ -97,7 +100,7 @@ public class CardQuestion extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                cardImg.animate().translationY(-pxFromDp(getContext(), 1)).setDuration(cardAnimationDuration / 2).start();
+                cardImg.animate().translationY(-pxFromDp(getContext(), 8)).setDuration(150).setInterpolator(new DecelerateInterpolator()).start();
             }
 
             @Override

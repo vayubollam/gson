@@ -132,7 +132,6 @@
                     android:id="@+id/street_address_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:hint="@string/enrollment_street_address_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="50"
@@ -202,6 +201,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:lineSpacingMultiplier="1.21"
+                    android:paddingTop="4dp"
+                    android:gravity="top"
                     android:text="@string/enrollment_news_label"
                     android:textAppearance="@style/Caption1"
                     app:layout_constraintTop_toBottomOf="@id/preferences_category_title" />
@@ -225,6 +226,8 @@
                     android:lineSpacingMultiplier="1.21"
                     android:text="@string/enrollment_fingerprint_label"
                     android:textAppearance="@style/Caption1"
+                    android:paddingTop="4dp"
+                    android:gravity="top"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/news_hint" />
 
