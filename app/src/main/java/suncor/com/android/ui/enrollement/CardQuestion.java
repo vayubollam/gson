@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
@@ -53,6 +54,7 @@ public class CardQuestion extends Fragment {
             cardImg.getLayoutParams().width = width;
             cardShadow.getLayoutParams().width = width;
             cardShadow.getLayoutParams().height = (int) (shadowRatio * width);
+            ((ConstraintLayout.LayoutParams)cardImg.getLayoutParams()).bottomMargin = cardShadow.getLayoutParams().height;
             cardImg.requestLayout();
             cardShadow.requestLayout();
         });
@@ -80,8 +82,7 @@ public class CardQuestion extends Fragment {
     public void onResume() {
         super.onResume();
         AnimationSet set = new AnimationSet(true);
-        Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.02f);
-        trAnimation.setFillAfter(true);
+        Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0f);
         trAnimation.setDuration(cardAnimationDuration);
         set.addAnimation(trAnimation);
         Animation alphaAnim = new AlphaAnimation(0.0f, 1.0f);
@@ -100,7 +101,11 @@ public class CardQuestion extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                cardImg.animate().translationY(-pxFromDp(getContext(), 8)).setDuration(150).setInterpolator(new DecelerateInterpolator()).start();
+                cardImg.animate()
+                        .translationY(-pxFromDp(getContext(), 8))
+                        .setDuration(150)
+                        .setInterpolator(new DecelerateInterpolator())
+                        .start();
             }
 
             @Override

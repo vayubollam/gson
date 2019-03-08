@@ -54,7 +54,8 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="32dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/cardImage"
@@ -62,27 +63,23 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:src="@drawable/card"
-                app:layout_constraintBottom_toTopOf="@id/cardShadow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.65" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/cardShadow"
                 android:layout_width="0dp"
                 android:layout_height="16dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="32dp"
                 android:src="@drawable/card_shadow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/cardImage"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@id/cardImage"
-                app:layout_constraintTop_toBottomOf="@+id/cardImage" />
+                app:layout_constraintStart_toStartOf="@id/cardImage" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
