@@ -50,8 +50,8 @@
     </plurals>
 
     <string name="favourites_no_result_text">Vous pouvez utiliser vos Favoris pour trouver rapidement le lave-auto que vous aimez ou le dépanneur offrant votre saveur préférée de barbotine.</string>
-    <string name="dashboard_nearby_card_title">À proximitié</string>
-    <string name="suggestions_fragment_nearby_title">À proximitié</string>
+    <string name="dashboard_nearby_card_title">À proximité</string>
+    <string name="suggestions_fragment_nearby_title">À proximité</string>
     <string name="filters_apply_button">Appliquer</string>
     <string name="filters_clear_button">Effacer filtres</string>
     <string name="station_clear_all_filters_chip">Effacer filtres</string>
