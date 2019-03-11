@@ -5,11 +5,9 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="recentSearch"
-            type="androidx.databinding.ObservableBoolean"></variable>
+            type="androidx.databinding.ObservableBoolean" />
 
         <variable
             name="vm"

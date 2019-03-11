@@ -41,7 +41,7 @@ public class FiltersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FiltersFragmentBinding.inflate(inflater, container, false);
 
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
+        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.stationsProvider, SuncorApplication.favouriteRepository);
         parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
         initCheckBoxes();
         if (parentViewModel.filters.getValue() != null) {

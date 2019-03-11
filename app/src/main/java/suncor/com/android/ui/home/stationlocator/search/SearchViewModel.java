@@ -1,21 +1,8 @@
 package suncor.com.android.ui.home.stationlocator.search;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.gson.Gson;
-import com.worklight.wlclient.api.WLFailResponse;
-import com.worklight.wlclient.api.WLResourceRequest;
-import com.worklight.wlclient.api.WLResponse;
-import com.worklight.wlclient.api.WLResponseListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,7 +10,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.data.repository.PlaceSuggestionsProvider;
+import suncor.com.android.data.repository.stations.StationsProvider;
+import suncor.com.android.data.repository.suggestions.PlaceSuggestionsProvider;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
@@ -33,7 +21,11 @@ import suncor.com.android.utilities.LocationUtils;
 public class SearchViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
-    public MutableLiveData<Resource<ArrayList<StationItem>>> nearbyStations = new MutableLiveData<>();
+
+    private StationsProvider stationsProvider;
+
+    private MutableLiveData<Resource<ArrayList<StationItem>>> _nearbyStations = new MutableLiveData<>();
+    public LiveData<Resource<ArrayList<StationItem>>> nearbyStations = _nearbyStations;
     public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
     private PlaceSuggestionsProvider suggestionsProvider;
     private LatLng userLocation;
@@ -41,7 +33,8 @@ public class SearchViewModel extends ViewModel {
 
     public MutableLiveData<String> query = new MutableLiveData<>();
 
-    public SearchViewModel(PlaceSuggestionsProvider suggestionsProvider) {
+    public SearchViewModel(StationsProvider stationsProvider, PlaceSuggestionsProvider suggestionsProvider) {
+        this.stationsProvider = stationsProvider;
         this.suggestionsProvider = suggestionsProvider;
         query.setValue("");
         placeSuggestions = Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
@@ -50,55 +43,29 @@ public class SearchViewModel extends ViewModel {
     private void refreshNearbyStations(LatLng mapCenter) {
         if (userLocation == null)
             return;
-        nearbyStations.setValue(Resource.loading(null));
         LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
-        double southWestLat = _25KmBounds.southwest.latitude;
-        double southWestLong = _25KmBounds.southwest.longitude;
-        double northEastLat = _25KmBounds.northeast.latitude;
-        double northEastLong = _25KmBounds.northeast.longitude;
-
-
-        URI adapterPath = null;
-        try {
-            adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat=" + southWestLat + "&southWestLong=" + southWestLong + "0&northEastLat=" + northEastLat + "&northEastLong=" + northEastLong + "&amenities=PayAtPump;ULTRA94;PAYPASS,PAYWAVE");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET);
-        request.send(new WLResponseListener() {
-            @Override
-            public void onSuccess(WLResponse wlResponse) {
-                String jsonText = wlResponse.getResponseText();
-
-                try {
-                    final JSONArray jsonArray = new JSONArray(jsonText);
-                    Gson gson = new Gson();
-                    ArrayList<StationItem> stations = new ArrayList<>();
-                    stations.clear();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jo = jsonArray.getJSONObject(i);
-                        Station station = gson.fromJson(jo.toString(), Station.class);
-                        LatLng stationLocation = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                        stations.add(new StationItem(station, getDistance(userLocation, stationLocation)));
+        stationsProvider.getStations(_25KmBounds).observeForever((resource) -> {
+            switch (resource.status) {
+                case LOADING:
+                    _nearbyStations.postValue(Resource.loading());
+                    break;
+                case ERROR:
+                    _nearbyStations.postValue(Resource.error(resource.message));
+                    break;
+                case SUCCESS:
+                    if (resource.data.isEmpty()) {
+                        _nearbyStations.postValue(Resource.success(new ArrayList<>()));
+                    } else {
+                        ArrayList<StationItem> stations = new ArrayList<>();
+                        for (Station station : resource.data) {
+                            LatLng stationLocation = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+                            StationItem item = new StationItem(station, calculateDistance(userLocation, stationLocation));
+                            stations.add(item);
+                        }
+                        Collections.sort(stations, (o1, o2) -> o1.getDistanceDuration().getDistance() - o2.getDistanceDuration().getDistance());
+                        _nearbyStations.postValue(Resource.success(stations));
                     }
-                    Collections.sort(stations, (o1, o2) -> {
-                        double distance1 = LocationUtils.calculateDistance(userLocation, new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
-                        double distance2 = LocationUtils.calculateDistance(userLocation, new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
-                        return (int) (distance1 - distance2);
-                    });
-                    nearbyStations.postValue(Resource.success(stations));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    nearbyStations.postValue(Resource.error(e.getMessage(), null));
-                }
-            }
-
-            @Override
-            public void onFailure(WLFailResponse wlFailResponse) {
-                Log.d("mfp_error", wlFailResponse.getErrorMsg());
-                nearbyStations.postValue(Resource.error(wlFailResponse.getErrorMsg(), null));
-
+                    break;
             }
         });
     }
@@ -112,7 +79,7 @@ public class SearchViewModel extends ViewModel {
         return suggestionsProvider.getCoordinatesOfPlace(suggestion);
     }
 
-    private DirectionsResult getDistance(LatLng userLocation, LatLng des) {
+    private DirectionsResult calculateDistance(LatLng userLocation, LatLng des) {
         return new DirectionsResult((int) LocationUtils.calculateDistance(userLocation, new LatLng(des.latitude, des.longitude)), 0);
     }
 

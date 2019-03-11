@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/black_4"
         android:orientation="vertical"
-        app:visibleGone="@{vm.query.isEmpty()}">
+        app:visibleGone="@{vm.query.isEmpty() &amp;&amp; (vm.nearbyStations.status == Status.LOADING || (vm.nearbyStations.status == Status.SUCCESS &amp;&amp; !vm.nearbyStations.data.isEmpty()))}">
 
         <LinearLayout
             android:layout_width="match_parent"

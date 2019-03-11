@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository;
+package suncor.com.android.data.repository.suggestions;
 
 import android.util.Log;
 
@@ -20,13 +20,13 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion;
 
-public class PlaceSuggestionsProviderImpl implements PlaceSuggestionsProvider {
+public class GooglePlaceSuggestionsProvider implements PlaceSuggestionsProvider {
 
     private PlacesClient placesClient;
     private AutocompleteSessionToken token;
     private String TAG = "places_api";
 
-    public PlaceSuggestionsProviderImpl(PlacesClient placesClient) {
+    public GooglePlaceSuggestionsProvider(PlacesClient placesClient) {
         this.placesClient = placesClient;
         token = AutocompleteSessionToken.newInstance();
     }

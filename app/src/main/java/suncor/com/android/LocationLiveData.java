@@ -99,7 +99,8 @@ public class LocationLiveData extends LiveData<Location> {
 
     @SuppressLint("MissingPermission")
     private void requestLocationUpdate() {
-        LocationRequest request = LocationRequest.create();
+        LocationRequest request = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         fusedLocationProviderClient.requestLocationUpdates(request, locationCallback, null);
     }
 }

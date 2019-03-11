@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -28,7 +29,7 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
-import suncor.com.android.data.repository.PlaceSuggestionsProviderImpl;
+import suncor.com.android.data.repository.suggestions.GooglePlaceSuggestionsProvider;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
@@ -66,12 +67,12 @@ public class SearchFragment extends Fragment {
         //instantiating
         PlacesClient placesClient = Places.createClient(getContext());
 
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
+        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.stationsProvider, SuncorApplication.favouriteRepository);
         parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
 
         locationLiveData = new LocationLiveData(getContext());
 
-        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(placesClient));
+        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(SuncorApplication.stationsProvider, new GooglePlaceSuggestionsProvider(placesClient));
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(getActivity());
@@ -103,22 +104,21 @@ public class SearchFragment extends Fragment {
         return binding.getRoot();
     }
 
-
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if (LocationUtils.isLocationEnabled()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
             }
-            locationLiveData.observe(getActivity(), location -> {
+            locationLiveData.observe(this, location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);
             });
 
-            viewModel.nearbyStations.observe(getActivity(), arrayListResource -> {
+            viewModel.nearbyStations.observe(this, arrayListResource -> {
                 if (arrayListResource.status == Resource.Status.SUCCESS) {
                     ArrayList<StationItem> stationItems = arrayListResource.data;
                     nearbyStationsAdapter = new SearchNearByAdapter(stationItems, (this::nearbyItemClicked));
@@ -128,11 +128,12 @@ public class SearchFragment extends Fragment {
         } else {
             nearbySearchBinding.getRoot().setVisibility(View.GONE);
         }
-        viewModel.placeSuggestions.observe(getActivity(), arrayListResource -> {
+        viewModel.placeSuggestions.observe(this, arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
                 suggestionsAdapter.setSuggestions(suggestions);
             } else if (arrayListResource.status == Resource.Status.ERROR) {
+                Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG).show();
                 //TODO : handle error
             }
         });

@@ -3,7 +3,7 @@ package suncor.com.android.ui.home.stationlocator.favourites;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import suncor.com.android.data.repository.FavouriteRepository;
+import suncor.com.android.data.repository.favourite.FavouriteRepository;
 
 public class FavouritesViewModelFactory implements ViewModelProvider.Factory {
 

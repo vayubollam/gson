@@ -31,5 +31,13 @@ public class Resource<T> {
         return new Resource<>(Status.LOADING, data, null);
     }
 
+    public static <T> Resource<T> loading() {
+        return loading(null);
+    }
+
+    public static <T> Resource<T> error(String message) {
+        return error(message, null);
+    }
+
     public enum Status {SUCCESS, ERROR, LOADING}
 }

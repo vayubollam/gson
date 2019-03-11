@@ -93,7 +93,7 @@
     <string name="enrollment_news_unsubscribe_hint">You can unsubscribe at any time.</string>
     <string name="enrollment_fingerprint_label">I\'d like to use Touch ID to sign in</string>
     <string name="enrollment_fingerprint_hint">Use Touch ID to sign in, authorize purchases, reload your Petro-Canada cards and more.</string>
-    <string name="enrollment_terms_agreement">By creating an account, I agree to the  Petro-Points %s</string>
+    <string name="enrollment_terms_agreement">By creating an account, I agree to the Petro-Points %s</string>
     <string name="enrollment_terms">terms and conditions</string>
     <string name="enrollment_join_button">Join</string>
     <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect 2,500 Petro-Points.</string>

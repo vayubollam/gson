@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository;
+package suncor.com.android.data.repository.favourite;
 
 
 import com.google.gson.Gson;

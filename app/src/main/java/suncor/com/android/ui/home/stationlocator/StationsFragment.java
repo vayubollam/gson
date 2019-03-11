@@ -96,7 +96,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         locationLiveData = new LocationLiveData(getContext(), false);
 
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
+        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.stationsProvider, SuncorApplication.favouriteRepository);
         mViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
     }
 
@@ -493,13 +493,14 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         locateMe(false);
     }
 
+    //TODO check if we can remove the showDialog parameter
     public void locateMe(boolean showDialog) {
         if (LocationUtils.isLocationEnabled()) {
             isLoading.set(true);
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
             }
-        } else if (showDialog) {
+        } else {
             AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
             adb.setTitle(R.string.enable_location_dialog_title);
             adb.setMessage(R.string.enable_location_dialog_message);

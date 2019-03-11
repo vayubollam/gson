@@ -4,18 +4,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.gson.Gson;
-import com.worklight.wlclient.api.WLFailResponse;
-import com.worklight.wlclient.api.WLResourceRequest;
-import com.worklight.wlclient.api.WLResponse;
-import com.worklight.wlclient.api.WLResponseListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,9 +12,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.data.repository.FavouriteRepository;
+import suncor.com.android.data.repository.favourite.FavouriteRepository;
+import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.utilities.DirectDistanceComparator;
 import suncor.com.android.utilities.LocationUtils;
 
 public class StationsViewModel extends ViewModel {
@@ -34,12 +25,8 @@ public class StationsViewModel extends ViewModel {
     public final static int DEFAULT_MAP_ZOOM = 5000;
 
     private FavouriteRepository favouriteRepository;
-    private Observer<Boolean> favouritesLoadedObserver = new Observer<Boolean>() {
-        @Override
-        public void onChanged(Boolean aBoolean) {
-            refreshFavouriteState();
-        }
-    };
+    private StationsProvider stationsProvider;
+    private Observer<Boolean> favouritesLoadedObserver = b -> refreshFavouriteState();
 
     private ArrayList<StationItem> cachedStations;
     private LatLngBounds cachedStationsBounds;
@@ -70,8 +57,9 @@ public class StationsViewModel extends ViewModel {
 
     private boolean shouldUpdateSectedStation;
 
-    public StationsViewModel(FavouriteRepository favouriteRepository) {
+    public StationsViewModel(StationsProvider stationsProvider, FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
+        this.stationsProvider = stationsProvider;
         filters.observeForever((l) -> {
             if (stationsAround.getValue().status != Resource.Status.SUCCESS) {
                 return;
@@ -106,23 +94,12 @@ public class StationsViewModel extends ViewModel {
             return;
         if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
             Log.d(StationsViewModel.class.getSimpleName(), "Using cached stations");
-
-            Collections.sort(cachedStations, (o1, o2) -> {
-                double distance1 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
-                double distance2 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
-                return (int) (distance1 - distance2);
-            });
-
+            Collections.sort(cachedStations, new DirectDistanceComparator(userLocation.getValue()));
             ArrayList<StationItem> filteredStations = filterStations();
+
             _stationsAround.setValue(Resource.success(filteredStations));
 
-            if (shouldUpdateSectedStation && !filteredStations.isEmpty()) {
-                _selectedStation.postValue(filteredStations.get(0));
-                shouldUpdateSectedStation = false;
-            } else if (selectedNearbyStationFromSearch != null) {
-                _selectedStation.postValue(selectedNearbyStationFromSearch);
-                selectedNearbyStationFromSearch = null;
-            }
+            updateSelectedStationIfNeeded(filteredStations);
         } else {
             Log.d(StationsViewModel.class.getSimpleName(), "Load stations from API");
 
@@ -131,69 +108,48 @@ public class StationsViewModel extends ViewModel {
             LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
             LatLngBounds apiBounds = _mapBounds.getValue() != null ? LocationUtils.getLargerBounds(_mapBounds.getValue(), _25KmBounds) : _25KmBounds;
 
-            double southWestLat = apiBounds.southwest.latitude;
-            double southWestLong = apiBounds.southwest.longitude;
-            double northEastLat = apiBounds.northeast.latitude;
-            double northEastLong = apiBounds.northeast.longitude;
-
-
-            URI adapterPath = null;
-            try {
-                adapterPath = new URI("/adapters/suncor/v1/locations?southWestLat=" + southWestLat + "&southWestLong=" + southWestLong + "0&northEastLat=" + northEastLat + "&northEastLong=" + northEastLong);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET);
-            request.send(new WLResponseListener() {
-                @Override
-                public void onSuccess(WLResponse wlResponse) {
-                    String jsonText = wlResponse.getResponseText();
-
-                    try {
-                        final JSONArray jsonArray = new JSONArray(jsonText);
-                        Gson gson = new Gson();
-                        ArrayList<StationItem> stations = new ArrayList<>();
-                        stations.clear();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jo = jsonArray.getJSONObject(i);
-                            Station station = gson.fromJson(jo.toString(), Station.class);
-                            boolean isFavourite = false;
-                            if (favouriteRepository.isLoaded().getValue()) {
-                                isFavourite = favouriteRepository.isFavourite(station);
+            stationsProvider.getStations(apiBounds).observeForever((resource) -> {
+                switch (resource.status) {
+                    case LOADING:
+                        _stationsAround.postValue(Resource.loading());
+                        break;
+                    case ERROR:
+                        _stationsAround.postValue(Resource.error(resource.message));
+                        shouldUpdateSectedStation = false;
+                        break;
+                    case SUCCESS:
+                        if (resource.data.isEmpty()) {
+                            _stationsAround.postValue(Resource.success(new ArrayList<>()));
+                        } else {
+                            ArrayList<StationItem> stations = new ArrayList<>();
+                            for (Station station : resource.data) {
+                                boolean isFavourite = false;
+                                if (favouriteRepository.isLoaded().getValue()) {
+                                    isFavourite = favouriteRepository.isFavourite(station);
+                                }
+                                StationItem item = new StationItem(favouriteRepository, station, isFavourite);
+                                stations.add(item);
                             }
-                            StationItem item = new StationItem(favouriteRepository, station, isFavourite);
-                            stations.add(item);
+                            Collections.sort(stations, new DirectDistanceComparator(userLocation.getValue()));
+                            cachedStationsBounds = apiBounds;
+                            cachedStations = stations;
+                            ArrayList<StationItem> filteredStations = filterStations();
+                            _stationsAround.postValue(Resource.success(filteredStations));
+                            updateSelectedStationIfNeeded(filteredStations);
                         }
-                        Collections.sort(stations, (o1, o2) -> {
-                            double distance1 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o1.getStation().getAddress().getLatitude(), o1.getStation().getAddress().getLongitude()));
-                            double distance2 = LocationUtils.calculateDistance(userLocation.getValue(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
-                            return (int) (distance1 - distance2);
-                        });
-                        cachedStationsBounds = apiBounds;
-                        cachedStations = stations;
-                        ArrayList<StationItem> filteredStations = filterStations();
-                        _stationsAround.postValue(Resource.success(filteredStations));
-                        if (shouldUpdateSectedStation && !filteredStations.isEmpty()) {
-                            _selectedStation.postValue(filteredStations.get(0));
-                            shouldUpdateSectedStation = false;
-                        } else if (selectedNearbyStationFromSearch != null) {
-                            _selectedStation.postValue(selectedNearbyStationFromSearch);
-                            selectedNearbyStationFromSearch = null;
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        _stationsAround.postValue(Resource.error(e.getMessage(), null));
-                    }
-                }
-
-                @Override
-                public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.d("mfp_error", wlFailResponse.getErrorMsg());
-                    _stationsAround.postValue(Resource.error(wlFailResponse.getErrorMsg(), null));
-                    shouldUpdateSectedStation = false;
+                        break;
                 }
             });
+        }
+    }
+
+    private void updateSelectedStationIfNeeded(ArrayList<StationItem> stationItems) {
+        if (shouldUpdateSectedStation && !stationItems.isEmpty()) {
+            _selectedStation.postValue(stationItems.get(0));
+            shouldUpdateSectedStation = false;
+        } else if (selectedNearbyStationFromSearch != null) {
+            _selectedStation.postValue(selectedNearbyStationFromSearch);
+            selectedNearbyStationFromSearch = null;
         }
     }
 
