@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/enrollment_navigation"
+    app:startDestination="@id/card_question">
+
+    <fragment
+        android:id="@+id/card_question"
+        android:name="suncor.com.android.ui.enrollement.CardQuestion"
+        android:label="fragment_card_question"
+        tools:layout="@layout/fragment_card_question">
+        <action
+            android:id="@+id/action_cardQuestion_to_enrollmentFormFragment"
+            app:destination="@id/enrollment_form_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/enrollment_form_fragment"
+        android:name="suncor.com.android.ui.enrollement.form.EnrollmentFormFragment"
+        android:label="EnrollmentFormFragment"
+        tools:layout="@layout/enrollment_form_fragment" />
+</navigation>

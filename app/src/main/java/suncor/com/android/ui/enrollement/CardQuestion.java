@@ -19,9 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import suncor.com.android.R;
-import suncor.com.android.ui.enrollement.form.EnrollmentFormFragment;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class CardQuestion extends Fragment {
@@ -54,7 +53,7 @@ public class CardQuestion extends Fragment {
             cardImg.getLayoutParams().width = width;
             cardShadow.getLayoutParams().width = width;
             cardShadow.getLayoutParams().height = (int) (shadowRatio * width);
-            ((ConstraintLayout.LayoutParams)cardImg.getLayoutParams()).bottomMargin = cardShadow.getLayoutParams().height;
+            ((ConstraintLayout.LayoutParams) cardImg.getLayoutParams()).bottomMargin = cardShadow.getLayoutParams().height;
             cardImg.requestLayout();
             cardShadow.requestLayout();
         });
@@ -62,13 +61,8 @@ public class CardQuestion extends Fragment {
         SuncorAppBarLayout appBarLayout = getView().findViewById(R.id.app_bar);
         appBarLayout.setNavigationOnClickListener(v -> getActivity().onBackPressed());
 
-        getView().findViewById(R.id.no_card_button).setOnClickListener((v) -> {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            Fragment fragment = new EnrollmentFormFragment();
-            ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            ft.replace(R.id.enrollment_main_frame, fragment);
-            ft.addToBackStack(null);
-            ft.commit();
+        getView().findViewById(R.id.no_card_button).setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_cardQuestion_to_enrollmentFormFragment);
         });
 
         getView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {

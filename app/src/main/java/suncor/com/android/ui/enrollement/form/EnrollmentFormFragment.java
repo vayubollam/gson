@@ -26,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -114,15 +115,11 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
-            alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
-                getFragmentManager().popBackStack();
-                ((EnrollmentActivity) getActivity()).setOnBackPressedListener(null);
-            });
+            alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> Navigation.findNavController(getView()).navigateUp());
             alertDialog.setNegativeButton(R.string.cancel, null);
             alertDialog.show();
         } else {
-            getFragmentManager().popBackStack();
-            ((EnrollmentActivity) getActivity()).setOnBackPressedListener(null);
+            Navigation.findNavController(getView()).navigateUp();
         }
     }
 
@@ -141,7 +138,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
 
 
     public void textChanged(SuncorTextInputLayout input, Editable s) {
-        if(TextUtils.isEmpty(s)){
+        if (TextUtils.isEmpty(s)) {
             return;
         }
         if (input == binding.streetAddressInput || input == binding.passwordInput) {
