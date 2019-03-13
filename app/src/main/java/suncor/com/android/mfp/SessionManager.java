@@ -19,13 +19,10 @@ import suncor.com.android.utilities.UserLocalSettings;
 
 public class SessionManager implements SessionChangeListener {
 
-    private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
-    private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
-
     public static final int LOCK_TIME_MINUTES = 15;
     public static final int LOGIN_ATTEMPTS = 5;
-
-
+    private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
+    private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
     private static SessionManager sInstance;
     private String user;
     private UserLoginChallengeHandler challengeHandler;

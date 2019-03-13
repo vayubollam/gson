@@ -7,7 +7,7 @@
 
         <import type="suncor.com.android.model.Resource.Status" />
 
-        <import type="android.view.View"></import>
+        <import type="android.view.View" />
 
         <variable
             name="vm"
@@ -38,11 +38,11 @@
                     style="@style/SectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/suggestions_fragment_title"
-                    android:layout_gravity="center"/>
+                    android:text="@string/suggestions_fragment_title" />
 
                 <Space
                     android:layout_width="0dp"
@@ -79,12 +79,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/no_result_text"
-            style="@style/Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:text="@string/suggestions_no_results"
+            android:textAppearance="@style/Body"
             android:textColor="@color/black_40"
             app:visibleGone="@{vm.placeSuggestions.status == Status.SUCCESS &amp;&amp; vm.placeSuggestions.data.isEmpty()}"
             tools:visibility="visible" />

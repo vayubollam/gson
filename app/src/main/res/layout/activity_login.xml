@@ -12,8 +12,8 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:expandable="false"
         app:elevation="0dp"
+        app:expandable="false"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
@@ -68,7 +68,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/signing_button"
-                    style="@style/SmallButton"
+                    style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -76,7 +76,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_forgot_password"
-                    style="@style/SmallButtonWhite"
+                    style="@style/FilledButton.White.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"

@@ -23,9 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
+        android:clipChildren="false"
         android:elevation="12dp"
         android:padding="16dp"
-        android:clipChildren="false"
         app:cardCornerRadius="12dp">
 
         <RelativeLayout
@@ -105,13 +105,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/directions_button"
-                style="@style/LinkButton"
+                style="@style/LinkButton.Red.M"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/small_button_height"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/open_hours_text"
-                android:layout_marginTop="6dp"
-                android:paddingLeft="8dp"
                 android:layout_marginLeft="-8dp"
+                android:layout_marginTop="6dp"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
                 android:text="@string/station_directions_button" />
 
         </RelativeLayout>

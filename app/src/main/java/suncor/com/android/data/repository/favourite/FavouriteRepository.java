@@ -11,6 +11,7 @@ public interface FavouriteRepository {
 
     /**
      * holds loading status, and can be also used to observe lists changes
+     *
      * @return LiveData<Boolean> to observe loading status
      */
     LiveData<Boolean> isLoaded();

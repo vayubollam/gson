@@ -56,10 +56,10 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_first_name_label"
                     android:maxLength="20"
-                    app:text="@={vm.firstNameField.text}"
                     app:error="@{vm.firstNameField.error}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/personal_category_title" />
+                    app:layout_constraintTop_toBottomOf="@id/personal_category_title"
+                    app:text="@={vm.firstNameField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/last_name_input"
@@ -67,10 +67,10 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_last_name_label"
                     android:maxLength="20"
-                    app:text="@={vm.lastNameField.text}"
                     app:error="@{vm.lastNameField.error}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/first_name_input" />
+                    app:layout_constraintTop_toBottomOf="@id/first_name_input"
+                    app:text="@={vm.lastNameField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/email_input"
@@ -79,10 +79,10 @@
                     android:hint="@string/enrollment_email_label"
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
-                    app:text="@={vm.emailInputField.text}"
                     app:error="@{vm.emailInputField.error}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/last_name_input" />
+                    app:layout_constraintTop_toBottomOf="@id/last_name_input"
+                    app:text="@={vm.emailInputField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/password_input"
@@ -91,20 +91,20 @@
                     android:hint="@string/enrollment_password_label"
                     android:inputType="textPassword"
                     android:maxLength="16"
-                    app:text="@={vm.passwordField.text}"
                     app:afterTextChanged="@{eventHandler.textChanged}"
                     app:error="@{vm.passwordField.error}"
                     app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/email_input"
-                    app:passwordToggleEnabled="true" />
+                    app:passwordToggleEnabled="true"
+                    app:text="@={vm.passwordField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorSelectInputLayout
                     android:id="@+id/security_question_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_security_question_label"
-                    app:text="@={vm.securityQuestionField.text}"
-                    app:layout_constraintTop_toBottomOf="@id/password_input" />
+                    app:layout_constraintTop_toBottomOf="@id/password_input"
+                    app:text="@={vm.securityQuestionField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/security_answer_input"
@@ -113,9 +113,9 @@
                     android:hint="@string/enrollment_security_answer_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="100"
-                    app:text="@={vm.securityAnswerField.text}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/security_question_input" />
+                    app:layout_constraintTop_toBottomOf="@id/security_question_input"
+                    app:text="@={vm.securityAnswerField.text}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/address_category_title"
@@ -135,11 +135,11 @@
                     android:hint="@string/enrollment_street_address_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="50"
-                    app:text="@={vm.streetAddressField.text}"
                     app:afterTextChanged="@{eventHandler.textChanged}"
                     app:error="@{vm.streetAddressField.error}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/address_category_title" />
+                    app:layout_constraintTop_toBottomOf="@id/address_category_title"
+                    app:text="@={vm.streetAddressField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/city_input"
@@ -147,19 +147,19 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_city_label"
                     android:maxLength="30"
-                    app:text="@={vm.cityField.text}"
                     app:error="@{vm.cityField.error}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/street_address_input" />
+                    app:layout_constraintTop_toBottomOf="@id/street_address_input"
+                    app:text="@={vm.cityField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorSelectInputLayout
                     android:id="@+id/province_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_province_label"
-                    app:text="@={vm.provinceField.text}"
                     app:error="@{vm.provinceField.error}"
-                    app:layout_constraintTop_toBottomOf="@id/city_input" />
+                    app:layout_constraintTop_toBottomOf="@id/city_input"
+                    app:text="@={vm.provinceField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/postalcode_input"
@@ -168,10 +168,10 @@
                     android:hint="@string/enrollment_postalcode_label"
                     android:inputType="textCapCharacters"
                     android:maxLength="7"
-                    app:text="@={vm.postalCodeField.text}"
                     app:error="@{vm.postalCodeField.error}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/province_input" />
+                    app:layout_constraintTop_toBottomOf="@id/province_input"
+                    app:text="@={vm.postalCodeField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/phone_input"
@@ -180,9 +180,9 @@
                     android:hint="@string/enrollment_phone_label"
                     android:inputType="phone"
                     android:maxLength="14"
-                    app:text="@={vm.phoneField.text}"
                     app:focusChanged="@{eventHandler.focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/postalcode_input" />
+                    app:layout_constraintTop_toBottomOf="@id/postalcode_input"
+                    app:text="@={vm.phoneField.text}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/preferences_category_title"
@@ -200,9 +200,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:gravity="top"
                     android:lineSpacingMultiplier="1.21"
                     android:paddingTop="4dp"
-                    android:gravity="top"
                     android:text="@string/enrollment_news_label"
                     android:textAppearance="@style/Caption1"
                     app:layout_constraintTop_toBottomOf="@id/preferences_category_title" />
@@ -223,11 +223,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="26dp"
+                    android:gravity="top"
                     android:lineSpacingMultiplier="1.21"
+                    android:paddingTop="4dp"
                     android:text="@string/enrollment_fingerprint_label"
                     android:textAppearance="@style/Caption1"
-                    android:paddingTop="4dp"
-                    android:gravity="top"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/news_hint" />
 
@@ -248,16 +248,16 @@
                     style="@style/Caption1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="2dp"
                     android:layout_marginTop="24dp"
                     android:lineSpacingMultiplier="1.57"
+                    android:paddingRight="2dp"
                     android:textAppearance="@style/Caption1"
                     app:layout_constraintTop_toBottomOf="@id/fingerprint_hint"
                     tools:text="@string/enrollment_terms_agreement" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/join_button"
-                    style="@style/SmallButton"
+                    style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"

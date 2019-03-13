@@ -25,6 +25,11 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private final BottomSheetBehavior bottomSheetBehavior;
     private LatLng userLocation;
 
+    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior) {
+        this.fragment = fragment;
+        this.bottomSheetBehavior = bottomSheetBehavior;
+    }
+
     public ArrayList<StationItem> getStations() {
         return stations;
     }
@@ -35,11 +40,6 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             stationItem.setDistanceDuration(null);
         }
         notifyDataSetChanged();
-    }
-
-    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior) {
-        this.fragment = fragment;
-        this.bottomSheetBehavior = bottomSheetBehavior;
     }
 
     @NonNull

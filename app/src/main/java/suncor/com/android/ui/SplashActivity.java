@@ -28,14 +28,22 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.home.HomeActivity;
 
 public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
-    Handler delayHandler = new Handler();
     private final static int ENTER_ANIMATION_DURATION = 1400;
     private final static int EXIT_ANIMATION_DURATION = 900;
-
+    private static final String LAST_APP_VERSION = "last_app_version";
+    Handler delayHandler = new Handler();
     private AppCompatImageView imageRetail;
     private AppCompatImageView backgroundImage;
     private LinearLayout textLayout;
     private int delayExit = 900;
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,12 +143,6 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     }
 
-    public enum AppStart {
-        FIRST_TIME, FIRST_TIME_VERSION, NORMAL;
-    }
-
-    private static final String LAST_APP_VERSION = "last_app_version";
-
     public AppStart checkAppStart() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -182,14 +184,6 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         delayHandler.removeCallbacksAndMessages(null);
     }
 
-    public static int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
-    }
-
-    public static int getScreenHeight() {
-        return Resources.getSystem().getDisplayMetrics().heightPixels;
-    }
-
     private float getDifferenceHeight(float screenHeight) {
         int[] locations = new int[2];
         imageRetail.getLocationOnScreen(locations);
@@ -200,6 +194,10 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         int[] locations = new int[2];
         textLayout.getLocationOnScreen(locations);
         return screenWidth - locations[0];
+    }
+
+    public enum AppStart {
+        FIRST_TIME, FIRST_TIME_VERSION, NORMAL;
     }
 
 }

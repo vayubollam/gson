@@ -20,11 +20,57 @@ import suncor.com.android.uicomponents.SuncorAppBarLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText userNameEditText, passwordEditText;
+    SessionManager sessionManager;
+    TextWatcher passwordTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                passwordLayout.setError("");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+    InputFilter emailfilter = (source, start, end, dest, dstart, dend) -> {
+        String filtered = "";
+        for (int i = start; i < end; i++) {
+            char character = source.charAt(i);
+            if (!Character.isWhitespace(character)) {
+                filtered += character;
+            }
+        }
+
+        return filtered;
+    };
+    private EditText userNameEditText, passwordEditText;
     private LinearLayout progressLayout;
     private SuncorTextInputLayout emailLayout, passwordLayout;
-    SessionManager sessionManager;
+    TextWatcher emailTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                emailLayout.setError("");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,57 +169,6 @@ public class LoginActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.ok, null);
         return builder;
     }
-
-
-    TextWatcher passwordTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.toString().isEmpty()) {
-                passwordLayout.setError("");
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
-
-    TextWatcher emailTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.toString().isEmpty()) {
-                emailLayout.setError("");
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
-
-    InputFilter emailfilter = (source, start, end, dest, dstart, dend) -> {
-        String filtered = "";
-        for (int i = start; i < end; i++) {
-            char character = source.charAt(i);
-            if (!Character.isWhitespace(character)) {
-                filtered += character;
-            }
-        }
-
-        return filtered;
-    };
 }
 
 

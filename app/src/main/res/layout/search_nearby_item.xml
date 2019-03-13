@@ -22,15 +22,14 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txt_nearby_title"
-            style="@style/Body"
-            android:maxLines="1"
-            android:lineHeight="26sp"
-            android:layout_marginTop="14dp"
-            android:ellipsize="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:ellipsize="end"
+            android:lineHeight="26sp"
+            android:maxLines="1"
             android:text="@{stationItem.station.address.addressLine}"
-            android:textColor="@color/black_80"
+            android:textAppearance="@style/Body"
             tools:text="22 Indian db" />
 
         <RelativeLayout
@@ -39,27 +38,27 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_nearby_distance_duration"
-                style="@style/Caption1"
-                android:maxLines="1"
-                android:lineHeight="17sp"
-                android:ellipsize="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lineHeight="17sp"
+                android:maxLines="1"
                 android:text="@{DirectionsResult.formatDistance(context, stationItem.distanceDuration) + ` ·`}"
+                android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_60"
                 tools:text="12 km away" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/Caption1"
                 android:layout_width="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
                 android:layout_toRightOf="@+id/txt_nearby_distance_duration"
+                android:ellipsize="end"
+                android:lineHeight="17sp"
+                android:maxLines="1"
                 android:text="@{stationItem.isOpen24Hrs()?@string/station_open_24hrs:stationItem.isOpen()?@string/station_open_generic(stationItem.getCloseHour()) : @string/station_closed}"
                 android:textColor="@color/black_60"
-                android:lineHeight="17sp"
                 tools:text="Open 24 hours" />
 
         </RelativeLayout>

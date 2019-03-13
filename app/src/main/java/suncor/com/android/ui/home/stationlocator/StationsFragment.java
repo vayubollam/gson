@@ -89,6 +89,22 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
 
+    //convert vector images to bitmap in order to use as lastSelectedMarker icons
+    private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
+                                                        @DrawableRes int vectorResourceId) {
+
+        Drawable vectorDrawable = ResourcesCompat.getDrawable(
+                context.getResources(), vectorResourceId, null);
+        if (vectorDrawable == null) {
+            return BitmapDescriptorFactory.defaultMarker();
+        }
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -263,7 +279,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     private void gotoMyLocation(Location location) {
         if (mGoogleMap != null && isAdded()) {
             isLoading.set(false);
@@ -273,7 +288,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             locationLiveData.removeObserver(this::gotoMyLocation);
         }
     }
-
 
     //checking the user connectivity
     private boolean haveNetworkConnection() {
@@ -293,7 +307,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (stationsMarkers.containsKey(marker)) {
@@ -302,7 +315,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         }
         return false;
     }
-
 
     @Override
     public void onCameraIdle() {
@@ -441,23 +453,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             }
         }
         return null;
-    }
-
-    //convert vector images to bitmap in order to use as lastSelectedMarker icons
-    private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
-                                                        @DrawableRes int vectorResourceId) {
-
-        Drawable vectorDrawable = ResourcesCompat.getDrawable(
-                context.getResources(), vectorResourceId, null);
-        if (vectorDrawable == null) {
-            return BitmapDescriptorFactory.defaultMarker();
-        }
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
-                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     public void launchFiltersFragment() {

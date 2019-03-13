@@ -83,10 +83,6 @@ public class BindingAdapters {
         view.getEditText().setOnFocusChangeListener((v, hasFocus) -> focusChangeListener.onFocusChange(view, hasFocus));
     }
 
-    public interface AfterTextChanged {
-        void afterTextChanged(SuncorTextInputLayout input, Editable s);
-    }
-
     @BindingAdapter(value = "textAttrChanged")
     public static void setListener(SuncorTextInputLayout errorInputLayout, final InverseBindingListener textAttrChanged) {
         if (textAttrChanged != null) {
@@ -107,5 +103,9 @@ public class BindingAdapters {
                 }
             });
         }
+    }
+
+    public interface AfterTextChanged {
+        void afterTextChanged(SuncorTextInputLayout input, Editable s);
     }
 }

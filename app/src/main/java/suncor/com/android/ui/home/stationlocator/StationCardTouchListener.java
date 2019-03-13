@@ -16,14 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class StationCardTouchListener implements RecyclerView.OnItemTouchListener {
 
+    GestureDetectorCompat swipeUpDetector;
     private ArrayList<StationItem> items;
     private BottomSheetBehavior bottomSheetBehavior;
     private View child;
     private int position = RecyclerView.NO_POSITION;
     private StationItem item;
-
-
-    GestureDetectorCompat swipeUpDetector;
 
     StationCardTouchListener(Fragment fragment, ArrayList<StationItem> items, BottomSheetBehavior behavior) {
         this.items = items;

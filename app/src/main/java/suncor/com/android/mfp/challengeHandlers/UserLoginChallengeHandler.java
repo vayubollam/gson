@@ -20,12 +20,10 @@ import suncor.com.android.mfp.SessionManager;
  */
 
 public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
-    private static final String REMAINING_ATTEMPTS = "remainingAttempts";
-    private static final String FAILURE = "failure";
-
     public static final String SECURITY_CHECK_NAME_LOGIN = "UserLogin";
     public static final String SCOPE = "LoggedIn";
-
+    private static final String REMAINING_ATTEMPTS = "remainingAttempts";
+    private static final String FAILURE = "failure";
     private String errorMsg = "";
     private boolean isChallenged = false;
     private SessionManager sessionManager;

@@ -38,7 +38,6 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtCardQuestionBody"
-            style="@style/Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -47,6 +46,7 @@
             android:lineSpacingMultiplier="1.44"
             android:text="@string/enrollment_card_question_body"
             android:textAlignment="center"
+            android:textAppearance="@style/Body"
             android:textColor="@color/black_60" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,8 +54,8 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:clipToPadding="false"
             android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="32dp">
 
@@ -69,9 +69,9 @@
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:src="@drawable/card"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/cardShadow"
@@ -87,7 +87,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/with_card_button"
-            style="@style/OutlinedSmallButton"
+            style="@style/OutlinedButton.L"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -96,7 +96,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/no_card_button"
-            style="@style/OutlinedSmallButton"
+            style="@style/OutlinedButton.L"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

@@ -5,46 +5,46 @@
 
         <variable
             name="place"
-            type="suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion"></variable>
+            type="suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:paddingLeft="16dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:id="@+id/txt_suggestion_title"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:lineHeight="26sp"
-            style="@style/Body"
-            tools:text="22 Indian db"
-            android:layout_height="wrap_content"
-            android:text="@{place.primaryText}"
-            android:layout_marginTop="14dp"
-            android:textColor="@color/black_80"/>
+        android:orientation="vertical"
+        android:paddingLeft="16dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:id="@+id/txt_suggestion_subtitle"
-                android:maxLines="1"
-                android:lineHeight="17sp"
-                android:ellipsize="end"
-                style="@style/Caption1"
-                android:text="@{place.secondaryText}"
-                tools:text="Toronto, On"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black_60"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_suggestion_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.44"
+            android:maxLines="1"
+            android:text="@{place.primaryText}"
+            android:textAppearance="@style/Body"
+            tools:text="22 Indian db" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_suggestion_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.21"
+            android:maxLines="1"
+            android:text="@{place.secondaryText}"
+            android:textAppearance="@style/Caption1"
+            android:textColor="@color/black_60"
+            tools:text="Toronto, On" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
-            android:src="@drawable/horizontal_divider"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_height="wrap_content" />
+            android:src="@drawable/horizontal_divider" />
     </LinearLayout>
 </layout>
 

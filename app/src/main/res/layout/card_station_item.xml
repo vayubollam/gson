@@ -170,9 +170,9 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/directions_button"
-                    style="@style/SmallButton"
+                    style="@style/FilledButton.Red.M"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/small_button_height"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
@@ -233,8 +233,7 @@
                                 android:textAllCaps="false"
                                 android:textAppearance="@style/Body"
                                 android:textColor="@{favouriteBusy?@color/black_60:@color/black_80}"
-                                tools:text="@string/station_fav_button_add"
-                                tools:textColor="@color/black_80" />
+                                tools:text="@string/station_fav_button_add" />
                         </LinearLayout>
 
                         <View
@@ -269,7 +268,6 @@
                                 android:text="@{@string/station_call_button_generic(vm.station.address.phone)}"
                                 android:textAllCaps="false"
                                 android:textAppearance="@style/Body"
-                                android:textColor="@color/black_80"
                                 tools:text="Call \u00b7 (123)456-7890" />
 
                         </LinearLayout>
@@ -290,12 +288,12 @@
                             android:visibility="@{vm.station.hasService()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/station_services_header" />
+                                android:text="@string/station_services_header"
+                                android:textAppearance="@style/Body" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/service_amenities_text"
@@ -326,12 +324,12 @@
                             android:visibility="@{vm.station.hasFuelOptions()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/station_fuel_header" />
+                                android:text="@string/station_fuel_header"
+                                android:textAppearance="@style/Body" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/fuel_amenities_text"
@@ -362,12 +360,12 @@
                             android:visibility="@{vm.station.hasWashOptions()?View.VISIBLE:View.GONE}">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/station_carwash_header" />
+                                android:text="@string/station_carwash_header"
+                                android:textAppearance="@style/Body" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/wash_amenities_text"
@@ -396,12 +394,12 @@
                             android:paddingBottom="16dp">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Body"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
                                 android:fontFamily="@font/gibson_semibold"
-                                android:text="@string/station_hours_list_title" />
+                                android:text="@string/station_hours_list_title"
+                                android:textAppearance="@style/Body" />
 
                             <include
                                 layout="@layout/station_openhour_line"

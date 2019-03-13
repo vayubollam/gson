@@ -38,8 +38,7 @@
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/filters_carwash_header"
-                    android:textAppearance="@style/Body"
-                    android:textColor="@color/black_80" />
+                    android:textAppearance="@style/Body" />
 
                 <View
                     android:layout_width="match_parent"
@@ -59,8 +58,7 @@
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/filters_fuel_header"
-                    android:textAppearance="@style/Body"
-                    android:textColor="@color/black_80" />
+                    android:textAppearance="@style/Body" />
 
                 <View
                     android:layout_width="match_parent"
@@ -80,8 +78,7 @@
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/filters_carwash_header"
-                    android:textAppearance="@style/Body"
-                    android:textColor="@color/black_80" />
+                    android:textAppearance="@style/Body" />
 
                 <View
                     android:layout_width="match_parent"
@@ -112,7 +109,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/clear_button"
-                    style="@style/OutlinedSmallButton"
+                    style="@style/OutlinedButton.M"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/small_button_height"
                     android:layout_marginEnd="4dp"
@@ -121,7 +118,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/apply_button"
-                    style="@style/SmallButton"
+                    style="@style/FilledButton.Red.M"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/small_button_height"
                     android:layout_marginStart="4dp"

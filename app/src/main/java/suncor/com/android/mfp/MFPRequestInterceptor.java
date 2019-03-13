@@ -22,6 +22,23 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.ui.home.HomeActivity;
 
 public class MFPRequestInterceptor implements Interceptor {
+    public static void attachInterceptor(HttpClientManager instance) {
+        try {
+            Field okHttpBuilderField = HttpClientManager.class.getDeclaredField("builder");
+            Field okHttpField = HttpClientManager.class.getDeclaredField("httpClient");
+            okHttpField.setAccessible(true);
+            okHttpBuilderField.setAccessible(true);
+            OkHttpClient.Builder builder = (OkHttpClient.Builder) okHttpBuilderField.get(instance);
+            builder.addNetworkInterceptor(new MFPRequestInterceptor());
+            okHttpField.set(instance, builder.build());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
@@ -53,23 +70,6 @@ public class MFPRequestInterceptor implements Interceptor {
         }
 
         return response;
-    }
-
-    public static void attachInterceptor(HttpClientManager instance) {
-        try {
-            Field okHttpBuilderField = HttpClientManager.class.getDeclaredField("builder");
-            Field okHttpField = HttpClientManager.class.getDeclaredField("httpClient");
-            okHttpField.setAccessible(true);
-            okHttpBuilderField.setAccessible(true);
-            OkHttpClient.Builder builder = (OkHttpClient.Builder) okHttpBuilderField.get(instance);
-            builder.addNetworkInterceptor(new MFPRequestInterceptor());
-            okHttpField.set(instance, builder.build());
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
     }
 }
 

@@ -61,7 +61,6 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/address_search_text"
-                    style="@style/Body"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="4dp"
@@ -72,7 +71,8 @@
                     android:hint="@string/station_search_hint"
                     android:maxLines="1"
                     android:onClick="@{() -> eventHandler.launchSearchFragment()}"
-                    android:text="@{vm.queryText}" />
+                    android:text="@{vm.queryText}"
+                    android:textAppearance="@style/Body" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/clear_search_button"
@@ -238,24 +238,24 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/status_card_title"
-                            style="@style/Body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:textAlignment="center"
                             android:fontFamily="@font/gibson_semibold"
-                            android:text="@string/station_result_no_stations_found" />
+                            android:text="@string/station_result_no_stations_found"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/Body" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/status_card_subtitle"
-                            style="@style/Body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_marginBottom="16dp"
+                            android:gravity="center"
+                            android:lineSpacingMultiplier="1.4"
                             android:text="@string/station_result_no_stations_filters_applied"
-                            android:textColor="@color/black_60"
-                            android:lineSpacingMultiplier="1.4" />
+                            android:textAppearance="@style/Body"
+                            android:textColor="@color/black_60" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/clear_filters_button"

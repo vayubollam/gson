@@ -54,7 +54,6 @@
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/address_search_text"
-                        style="@style/Body"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="4dp"
@@ -67,6 +66,7 @@
                         android:lineHeight="26sp"
                         android:maxLines="1"
                         android:onTextChanged="@{(q, s, b, c) -> vm.setSearchQuery(q.toString())}"
+                        android:textAppearance="@style/Body"
                         android:theme="@style/AppTheme.TextInput" />
 
                     <androidx.appcompat.widget.AppCompatImageButton

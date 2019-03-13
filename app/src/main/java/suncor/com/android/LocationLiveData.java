@@ -19,6 +19,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 public class LocationLiveData extends LiveData<Location> {
+    private final AtomicBoolean mPending = new AtomicBoolean(false);
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Observer<? super Location> mCurrentObserver;
     private final Observer<Location> internalObserver = new Observer<Location>() {
@@ -30,9 +31,6 @@ public class LocationLiveData extends LiveData<Location> {
         }
     };
     private boolean useLastKnownLocation = true;
-    private final AtomicBoolean mPending = new AtomicBoolean(false);
-
-
     private LocationCallback locationCallback = new LocationCallback() {
 
         @Override

@@ -21,13 +21,13 @@ public class InputField extends BaseObservable {
         this.isRequired = false;
     }
 
+    protected boolean getShowError() {
+        return showError;
+    }
+
     public void setShowError(boolean showError) {
         this.showError = showError;
         notifyPropertyChanged(BR.error);
-    }
-
-    protected boolean getShowError() {
-        return showError;
     }
 
     @Bindable
@@ -35,7 +35,7 @@ public class InputField extends BaseObservable {
         return showError && !isValid() ? error : -1;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return text == null || text.isEmpty();
     }
 

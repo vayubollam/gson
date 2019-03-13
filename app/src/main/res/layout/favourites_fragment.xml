@@ -90,7 +90,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addFavoriteBackButton"
-                style="@style/SmallButton"
+                style="@style/FilledButton.Red.L"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

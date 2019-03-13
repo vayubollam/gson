@@ -31,6 +31,9 @@ public class CardQuestion extends Fragment {
     public CardQuestion() {
     }
 
+    public static float pxFromDp(final Context context, final float dp) {
+        return dp * context.getResources().getDisplayMetrics().density;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +74,6 @@ public class CardQuestion extends Fragment {
 
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -107,9 +109,5 @@ public class CardQuestion extends Fragment {
 
             }
         });
-    }
-
-    public static float pxFromDp(final Context context, final float dp) {
-        return dp * context.getResources().getDisplayMetrics().density;
     }
 }

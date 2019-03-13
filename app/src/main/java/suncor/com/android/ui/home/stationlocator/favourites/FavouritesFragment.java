@@ -36,8 +36,8 @@ import suncor.com.android.utilities.UserLocalSettings;
 public class FavouritesFragment extends Fragment {
 
     private static final String SHOW_FAVS_HINT = "show_favs_hint";
-    private FavouritesViewModel mViewModel;
     public static String FAVOURITES_FRAGMENT_TAG = "FAVOURITES_FRAGMENT";
+    private FavouritesViewModel mViewModel;
     private FavouritesAdapter favouritesAdapter;
     private FavouritesFragmentBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(true);

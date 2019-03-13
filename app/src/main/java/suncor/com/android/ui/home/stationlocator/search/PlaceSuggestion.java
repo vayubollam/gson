@@ -15,25 +15,24 @@ public class PlaceSuggestion extends BaseObservable {
         return primaryText;
     }
 
-    @Bindable
-    public String getSecondaryText() {
-        return secondaryText;
-    }
-
-    @Bindable
-    public String getPlaceId() {
-        return placeId;
-    }
-
-
     public void setPrimaryText(String primaryText) {
         this.primaryText = primaryText;
         notifyPropertyChanged(suncor.com.android.BR.primaryText);
     }
 
+    @Bindable
+    public String getSecondaryText() {
+        return secondaryText;
+    }
+
     public void setSecondaryText(String secondaryText) {
         this.secondaryText = secondaryText;
         notifyPropertyChanged(suncor.com.android.BR.secondaryText);
+    }
+
+    @Bindable
+    public String getPlaceId() {
+        return placeId;
     }
 
     public void setPlaceId(String placeId) {

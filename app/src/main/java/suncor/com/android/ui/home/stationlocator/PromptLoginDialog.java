@@ -18,8 +18,8 @@ import suncor.com.android.ui.login.LoginActivity;
 public class PromptLoginDialog extends BottomSheetDialogFragment {
 
 
-    private PromptLoginDialogBinding binding;
     public static final String TAG = "PROMPT_LOGIN_DIALOG";
+    private PromptLoginDialogBinding binding;
 
     @Nullable
     @Override

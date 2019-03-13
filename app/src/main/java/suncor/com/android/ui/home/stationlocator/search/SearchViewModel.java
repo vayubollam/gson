@@ -21,17 +21,14 @@ import suncor.com.android.utilities.LocationUtils;
 public class SearchViewModel extends ViewModel {
 
     private final static int DEFAULT_DISTANCE_API = 25000;
-
+    public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
+    public MutableLiveData<String> query = new MutableLiveData<>();
     private StationsProvider stationsProvider;
-
     private MutableLiveData<Resource<ArrayList<StationItem>>> _nearbyStations = new MutableLiveData<>();
     public LiveData<Resource<ArrayList<StationItem>>> nearbyStations = _nearbyStations;
-    public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
     private PlaceSuggestionsProvider suggestionsProvider;
     private LatLng userLocation;
     private float regionRatio = 1f;
-
-    public MutableLiveData<String> query = new MutableLiveData<>();
 
     public SearchViewModel(StationsProvider stationsProvider, PlaceSuggestionsProvider suggestionsProvider) {
         this.stationsProvider = stationsProvider;

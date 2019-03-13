@@ -13,8 +13,8 @@ import suncor.com.android.model.Station;
 
 public class DashboardViewModel extends ViewModel {
 
-    private StationsProvider stationsProvider;
     public LiveData<Resource<Station>> nearestStation;
+    private StationsProvider stationsProvider;
 
     public DashboardViewModel() {
         //TODO move the parameter to constructor

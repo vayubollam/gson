@@ -16,10 +16,14 @@ import suncor.com.android.model.Station;
 
 public class SuncorApplication extends Application {
 
-    private static SuncorApplication sInstance;
     public static FavouriteRepository favouriteRepository;
     public static StationsProvider stationsProvider;
     public static boolean splashShown = false;
+    private static SuncorApplication sInstance;
+
+    public static SuncorApplication getInstance() {
+        return sInstance;
+    }
 
     public void onCreate() {
         super.onCreate();
@@ -35,11 +39,6 @@ public class SuncorApplication extends Application {
         UserLoginChallengeHandler.createAndRegister();
         MFPRequestInterceptor.attachInterceptor(HttpClientManager.getInstance());
         MfpLogging.logDeviceInfo(this);
-    }
-
-
-    public static SuncorApplication getInstance() {
-        return sInstance;
     }
 
 

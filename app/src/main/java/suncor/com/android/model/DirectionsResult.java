@@ -14,28 +14,6 @@ public class DirectionsResult {
         this.duration = duration;
     }
 
-    /**
-     * @return distance in meter
-     */
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
-    /**
-     * @return duration in seconds
-     */
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
     public static String formatDistanceDuration(Context context, DirectionsResult result) {
         if (result == null) {
             return "";
@@ -75,5 +53,27 @@ public class DirectionsResult {
                     .append(context.getString(R.string.minutes_distance));
         }
         return builder.toString();
+    }
+
+    /**
+     * @return distance in meter
+     */
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    /**
+     * @return duration in seconds
+     */
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

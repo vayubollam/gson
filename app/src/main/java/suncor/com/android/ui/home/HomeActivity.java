@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -29,10 +28,9 @@ import suncor.com.android.ui.home.profile.ProfileFragment;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
 
 public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-    private BottomNavigationView bottom_navigation;
-
     //request code for requesting permissions
     private final static int PERMISSION_REQUEST_CODE = 1;
+    private BottomNavigationView bottom_navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

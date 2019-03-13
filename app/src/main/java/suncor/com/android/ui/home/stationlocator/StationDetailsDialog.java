@@ -5,12 +5,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -84,12 +86,18 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         verticalPadding = 2 * padding;
         binding.getRoot().setPadding(padding, padding, padding, padding);
 
-        DisplayMetrics dp = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
-        fullHeight = dp.heightPixels - getStatusBarHeight() - getNavBarHeight();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            DisplayMetrics dp = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
+            WindowInsets insets = getActivity().getWindow().getDecorView().getRootWindowInsets();
+            fullHeight = dp.heightPixels - insets.getSystemWindowInsetTop() - insets.getStableInsetBottom();
+        } else {
+            DisplayMetrics dp = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
+            fullHeight = dp.heightPixels - getStatusBarHeight();
+        }
 
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight);
-        binding.getRoot().setLayoutParams(params);
+        binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight));
         binding.cardView.getLayoutParams().height = initialHeight;
         dialog.setContentView(binding.getRoot());
 
@@ -111,12 +119,9 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         binding.detailsLayout.setVisibility(View.VISIBLE);
         binding.addressLayout.setVisibility(View.VISIBLE);
-        binding.addressLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                initialAddressLayoutHeight = binding.addressLayout.getMeasuredHeight();
-                initialAddressLayoutBottomMargin = ((LinearLayout.LayoutParams) binding.addressLayout.getLayoutParams()).bottomMargin;
-            }
+        binding.addressLayout.post(() -> {
+            initialAddressLayoutHeight = binding.addressLayout.getMeasuredHeight();
+            initialAddressLayoutBottomMargin = ((LinearLayout.LayoutParams) binding.addressLayout.getLayoutParams()).bottomMargin;
         });
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
@@ -194,15 +199,6 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     private int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    private int getNavBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
             result = getResources().getDimensionPixelSize(resourceId);
         }

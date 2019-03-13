@@ -32,7 +32,7 @@
             android:gravity="start|center_vertical"
             android:text="@string/profile_sign_out_button"
             android:textAllCaps="false"
-            android:textAppearance="@style/Body"/>
+            android:textAppearance="@style/Body" />
 
         <View
             android:layout_width="match_parent"

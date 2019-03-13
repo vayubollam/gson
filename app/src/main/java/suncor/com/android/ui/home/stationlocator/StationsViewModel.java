@@ -21,31 +21,23 @@ import suncor.com.android.utilities.LocationUtils;
 
 public class StationsViewModel extends ViewModel {
 
-    private final static int DEFAULT_DISTANCE_API = 25000;
     public final static int DEFAULT_MAP_ZOOM = 5000;
-
+    private final static int DEFAULT_DISTANCE_API = 25000;
     private FavouriteRepository favouriteRepository;
     private StationsProvider stationsProvider;
-    private Observer<Boolean> favouritesLoadedObserver = b -> refreshFavouriteState();
-
     private ArrayList<StationItem> cachedStations;
     private LatLngBounds cachedStationsBounds;
-
     private MutableLiveData<Resource<ArrayList<StationItem>>> _stationsAround = new MutableLiveData<>();
     public LiveData<Resource<ArrayList<StationItem>>> stationsAround = _stationsAround;
-
     private MutableLiveData<StationItem> _selectedStation = new MutableLiveData<>();
     public LiveData<StationItem> selectedStation = _selectedStation;
-
     private MutableLiveData<ArrayList<String>> _filters = new MutableLiveData<>();
     public LiveData<ArrayList<String>> filters = _filters;
-
     private MutableLiveData<LatLng> _userLocation = new MutableLiveData<>();
     public LiveData<LatLng> userLocation = _userLocation;
-
     private UserLocationType userLocationType;
-
     private MutableLiveData<LatLngBounds> _mapBounds = new MutableLiveData<>();
+    private Observer<Boolean> favouritesLoadedObserver = b -> refreshFavouriteState();
     public LiveData<LatLngBounds> mapBounds = _mapBounds;
 
     private MutableLiveData<String> _queryText = new MutableLiveData<>();
