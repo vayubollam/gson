@@ -35,6 +35,19 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    flavorDimensions "version"
+    productFlavors {
+        Dev {
+            dimension "version"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        QA {
+            dimension "version"
+            applicationIdSuffix ""
+            versionNameSuffix ""
+        }
+    }
 }
 configurations {
     all*.exclude group: 'com.google.guava', module: 'listenablefuture'

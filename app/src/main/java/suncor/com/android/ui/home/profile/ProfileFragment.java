@@ -1,10 +1,15 @@
 package suncor.com.android.ui.home.profile;
 
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.io.InputStream;
+import java.util.Properties;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +35,24 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        try {
+            Properties properties = new Properties();
+            AssetManager assetManager = getActivity().getAssets();
+            InputStream inputStream = assetManager.open("buildSettings.properties");
+            properties.load(inputStream);
+            String buildDate = properties.getProperty("buildDate");
+            String buildSHA = properties.getProperty("buildSHA");
+
+            TextView lblBuildDate = view.findViewById(R.id.lblBuildDate);
+            TextView lblBuildSHA = view.findViewById(R.id.lblBuildSHA);
+
+            lblBuildDate.setText("Build Date: "+buildDate);
+            lblBuildSHA.setText("Build SHA: "+buildSHA);
+        } catch (Exception e){
+            //Show nothing
+        }
+
         view.findViewById(R.id.signout_button).setOnClickListener((v) -> {
             SessionManager sessionManager = SessionManager.getInstance();
             sessionManager.logout().observe(this, (result) -> {

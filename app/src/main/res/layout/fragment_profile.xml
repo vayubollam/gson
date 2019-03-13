@@ -38,6 +38,18 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@drawable/horizontal_divider" />
+
+        <TextView
+            android:id="@+id/lblBuildDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Build Date: __BUILD_DATE__" />
+
+        <TextView
+            android:id="@+id/lblBuildSHA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Build SHA: __BUILD_SHA__" />
     </LinearLayout>
 
 
