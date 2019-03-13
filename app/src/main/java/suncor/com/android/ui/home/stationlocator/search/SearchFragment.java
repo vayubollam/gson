@@ -9,31 +9,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import suncor.com.android.BuildConfig;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
-import suncor.com.android.data.repository.PlaceSuggestionsProviderImpl;
+import suncor.com.android.data.repository.suggestions.GooglePlaceSuggestionsProvider;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.ui.home.stationlocator.StationViewModelFactory;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
@@ -47,8 +47,10 @@ public class SearchFragment extends Fragment {
     private SearchFragmentBinding binding;
     private NearbyLayoutBinding nearbySearchBinding;
     private LatLng userLocation;
+    private LocationLiveData locationLiveData;
     private SearchNearByAdapter nearbyStationsAdapter;
     private SuggestionsAdapter suggestionsAdapter;
+    private ObservableBoolean recentSearch = new ObservableBoolean();
 
     @Nullable
     @Override
@@ -61,13 +63,16 @@ public class SearchFragment extends Fragment {
         nearbySearchBinding = binding.nearbyLayout;
         SuggestionsLayoutBinding suggestionsLayoutBinding = binding.suggestionsLayout;
 
+        Places.initialize(getContext(), BuildConfig.MAP_API_KEY);
         //instantiating
-        GeoDataClient geoDataClient = Places.getGeoDataClient(getContext());
+        PlacesClient placesClient = Places.createClient(getContext());
 
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.favouriteRepository);
+        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.stationsProvider, SuncorApplication.favouriteRepository);
         parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
 
-        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(new PlaceSuggestionsProviderImpl(geoDataClient));
+        locationLiveData = new LocationLiveData(getContext());
+
+        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(SuncorApplication.stationsProvider, new GooglePlaceSuggestionsProvider(placesClient));
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(getActivity());
@@ -94,26 +99,26 @@ public class SearchFragment extends Fragment {
         binding.addressSearchText.requestFocus();
         showKeyBoard();
 
+        recentSearch.set(false);
+        binding.setRecentSearch(recentSearch);
         return binding.getRoot();
     }
 
-
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         if (LocationUtils.isLocationEnabled()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
             }
-            LocationLiveData locationLiveData = new LocationLiveData(getContext());
-            locationLiveData.observe(getActivity(), location -> {
+            locationLiveData.observe(this, location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);
             });
 
-            viewModel.nearbyStations.observe(getActivity(), arrayListResource -> {
+            viewModel.nearbyStations.observe(this, arrayListResource -> {
                 if (arrayListResource.status == Resource.Status.SUCCESS) {
                     ArrayList<StationItem> stationItems = arrayListResource.data;
                     nearbyStationsAdapter = new SearchNearByAdapter(stationItems, (this::nearbyItemClicked));
@@ -123,48 +128,15 @@ public class SearchFragment extends Fragment {
         } else {
             nearbySearchBinding.getRoot().setVisibility(View.GONE);
         }
-        viewModel.placeSuggestions.observe(getActivity(), arrayListResource -> {
+        viewModel.placeSuggestions.observe(this, arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
                 suggestionsAdapter.setSuggestions(suggestions);
             } else if (arrayListResource.status == Resource.Status.ERROR) {
+                Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG).show();
                 //TODO : handle error
             }
         });
-    }
-
-    /**
-     * This method is overrided to handle the alpha change of root layout after enter animation is finished
-     * We need this because the root layout uses fitSystemWindows to apply insets, and this disturbs animation on load
-     *
-     * @param transit
-     * @param enter
-     * @param nextAnim
-     * @return
-     */
-    @Override
-    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (enter) {
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), nextAnim);
-            animation.setDuration(100);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    binding.getRoot().animate().alpha(1).setDuration(400);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            return animation;
-        }
-        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
     private void placeSuggestionClicked(PlaceSuggestion placeSuggestion) {
@@ -178,34 +150,20 @@ public class SearchFragment extends Fragment {
                 });
     }
 
-    private void nearbyItemClicked(Station station) {
-        //TODO
-//        Observer<Resource<ArrayList<StationItem>>> tempObserver = new Observer<Resource<ArrayList<StationItem>>>() {
-//            @Override
-//            public void onChanged(Resource<ArrayList<StationItem>> r) {
-//                if (r.status != Resource.Status.LOADING) {
-//                    if (r.status == Resource.Status.SUCCESS) {
-//                        parentViewModel.stationsAround.removeObserver(this);
-//                        StationItem selectedStation = null;
-//                        for (StationItem item : r.data) {
-//                            if (station.getId().equals(item.station.get().getId())) {
-//                                selectedStation = item;
-//                                break;
-//                            }
-//                        }
-//                        parentViewModel.setSelectedStation(selectedStation);
-//                    }
-//                    goBack();
-//                }
-//            }
-//        };
-//        parentViewModel.setUserLocation(userLocation, StationsViewModel.UserLocationType.GPS);
-//        parentViewModel.stationsAround.observe(this, tempObserver);
+    private void nearbyItemClicked(StationItem station) {
+        if (viewModel.nearbyStations.getValue().status != Resource.Status.SUCCESS) {
+            throw new IllegalStateException("to handle clicks, nearby stations should be initialized");
+        }
+        parentViewModel.setSelectedStationFromSearch(userLocation, viewModel.nearbyStations.getValue().data, station);
+        goBack();
     }
 
     public void goBack() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        try {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        } catch (NullPointerException ignored) {
+        }
         getFragmentManager().popBackStack();
     }
 

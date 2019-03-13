@@ -1,0 +1,109 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="suncor.com.android.ui.enrollement.CardQuestion">
+
+    <suncor.com.android.uicomponents.SuncorAppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:elevation="0dp"
+        app:expandable="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:clipChildren="false"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="20dp">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCardQuestionHeader"
+            style="@style/Title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="28dp"
+            android:lineSpacingMultiplier="1.31"
+            android:text="@string/enrollment_card_question"
+            android:textAlignment="center"
+            android:textColor="@color/black_80" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtCardQuestionBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.44"
+            android:text="@string/enrollment_card_question_body"
+            android:textAlignment="center"
+            android:textAppearance="@style/Body"
+            android:textColor="@color/black_60" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="32dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/cardImage"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/card"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/cardShadow"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/card_shadow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/cardImage"
+                app:layout_constraintStart_toStartOf="@id/cardImage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/with_card_button"
+            style="@style/OutlinedButton.L"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="16dp"
+            android:text="@string/enrollment_yes_i_have_a_card_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/no_card_button"
+            style="@style/OutlinedButton.L"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:text="@string/enrollment_no_i_don_t_have_a_card_button" />
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

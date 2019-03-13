@@ -21,20 +21,22 @@
         android:paddingBottom="4dp">
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Caption1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:gravity="start"
+            android:lineHeight="24dp"
             android:text="@{dayName}"
-            style="@style/Caption1"
             tools:text="Monday" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Caption1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
+            android:lineHeight="24dp"
             android:text="@{workHour}"
-            style="@style/Caption1"
             tools:text="09:00 AM - 12:00 AM" />
     </LinearLayout>
 

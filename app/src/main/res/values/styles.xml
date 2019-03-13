@@ -1,9 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/white</item>
@@ -11,15 +9,16 @@
         <item name="android:textColorPrimary">@color/black_80</item>
         <item name="android:textColorSecondary">@color/black_60</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
-        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="suncorTextInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="suncorAppBarLayoutStyle">@style/AppBarStyle</item>
+        <item name="android:windowDisablePreview">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <!-- custom Base application theme. -->
-    <style name="CustomAppThemeForSplash" parent="AppTheme">
-        <!-- Customize your theme here. -->
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
+    <style name="SplashScreenTheme" parent="AppTheme">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 
 
@@ -37,19 +36,19 @@
     <style name="Title1" parent="Base.TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">@font/gibson_semibold</item>
         <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@color/black_100</item>
+        <item name="android:textColor">@color/black_80</item>
     </style>
 
     <style name="Title2" parent="Base.TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">@font/gibson_semibold</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/black_100</item>
+        <item name="android:textColor">@color/black_80</item>
     </style>
 
     <style name="Body" parent="@style/Base.TextAppearance.AppCompat.Body1">
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/gibson_regular</item>
-        <item name="android:textColor">@color/black_100</item>
+        <item name="android:textColor">@color/black_80</item>
     </style>
 
     <style name="Caption1" parent="@style/Base.TextAppearance.AppCompat.Caption">
@@ -68,75 +67,215 @@
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
+    <style name="Body.Input">
+        <item name="android:textColor">@color/black_80</item>
+    </style>
+
     <style name="ChipTextAppearance" parent="Caption1">
         <item name="fontFamily">@font/gibson_semibold</item>
     </style>
 
     <style name="SectionTitle" parent="@style/Caption1">
         <item name="android:textColor">@color/black_60</item>
-        <item name="android:letterSpacing">0.2</item>
+        <item name="android:letterSpacing">0.1</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <!--end text appearances-->
 
     <!-- Button styles -->
-    <style name="SmallButton" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/red</item>
+
+    <style name="FilledButton" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="fontFamily">@font/gibson_semibold</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:lines">1</item>
         <item name="cornerRadius">4dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:letterSpacing">0.05</item>
     </style>
 
-    <style name="SmallButtonWhite" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/white</item>
-        <item name="fontFamily">@font/gibson_semibold</item>
-        <item name="android:textColor">@color/black_100</item>
+    <style name="FilledButton.Red">
+        <item name="backgroundTint">@color/red</item>
+        <item name="rippleColor">@color/red_pressed</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="FilledButton.Red.L">
         <item name="android:textSize">16sp</item>
-        <item name="cornerRadius">4dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="FilledButton.Red.ML">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="FilledButton.Red.M">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">64dp</item>
+    </style>
+
+    <style name="FilledButton.Red.S">
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:minHeight">28dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <style name="FilledButton.White">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="rippleColor">@color/black_8</item>
+    </style>
+
+    <style name="FilledButton.White.L">
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="FilledButton.White.ML">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="FilledButton.White.M">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">64dp</item>
+    </style>
+
+    <style name="FilledButton.White.S">
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:minHeight">28dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
     </style>
 
     <style name="LinkButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="fontFamily">@font/gibson_semibold</item>
-        <item name="android:textColor">@color/red</item>
         <item name="android:textSize">16sp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:lines">1</item>
     </style>
 
-    <style name="OutlinedSmallButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="fontFamily">@font/gibson_semibold</item>
+    <style name="LinkButton.Black">
+        <item name="android:textColor">@color/black_100</item>
+    </style>
+
+    <style name="LinkButton.Black.L">
         <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="LinkButton.Black.ML">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="LinkButton.Black.M">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">64dp</item>
+    </style>
+
+    <style name="LinkButton.Black.S">
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:minHeight">28dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <style name="LinkButton.Red">
+        <item name="android:textColor">@color/red</item>
+        <item name="rippleColor">@color/red_link_button_pressed</item>
+    </style>
+
+    <style name="LinkButton.Red.L">
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="LinkButton.Red.ML">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">72dp</item>
+    </style>
+
+    <style name="LinkButton.Red.M">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">64dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <style name="LinkButton.Red.S">
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:minHeight">28dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <style name="OutlinedButton" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="fontFamily">@font/gibson_semibold</item>
         <item name="android:textColor">@color/black_100</item>
         <item name="strokeColor">@color/black_40</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="rippleColor">@color/black_8</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:lines">1</item>
     </style>
 
-    <style name="LargeButton" parent="SmallButton">
-        <item name="android:textSize">18sp</item>
+    <style name="OutlinedButton.L">
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:minWidth">72dp</item>
     </style>
 
-    <style name="OutlinedLargeButton" parent="OutlinedSmallButton">
-        <item name="android:textSize">18sp</item>
+    <style name="OutlinedButton.ML">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">72dp</item>
     </style>
 
-    <style name="LargeButtonWhite" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/white</item>
-        <item name="fontFamily">@font/gibson_semibold</item>
-        <item name="android:textColor">@color/black_100</item>
-        <item name="android:textSize">18sp</item>
-        <item name="cornerRadius">4dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
+    <style name="OutlinedButton.M">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">64dp</item>
     </style>
 
-
+    <style name="OutlinedButton.S">
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:minHeight">28dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
     <!-- End Button styles -->
 
 
@@ -175,6 +314,7 @@
         <item name="android:windowTitleStyle">@style/DialogWindowTitleStyle</item>
         <item name="windowMinWidthMajor">360dp</item>
         <item name="windowMinWidthMinor">360dp</item>
+        <item name="android:titleCondensed">All</item>
     </style>
 
     <style name="DialogWindowTitleStyle" parent="Base.DialogWindowTitle.AppCompat">
@@ -196,19 +336,33 @@
         <item name="android:colorBackground">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.TextInput">
+    <style name="AppTheme.TextInput" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
         <item name="colorControlNormal">@color/black_40</item>
         <item name="colorControlActivated">@color/black_80</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
     </style>
 
-    <style name="TextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
-        <item name="android:textColor">@color/black_80</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/gibson_regular</item>
-        <item name="android:textColorHint">@color/black_60</item>
-        <item name="errorTextAppearance">@style/Caption1.Red</item>
+    <style name="TextInputLayoutStyle">
+        <item name="android:textAppearance">@style/Body.Input</item>
+        <item name="errorColor">@color/red</item>
+        <item name="errorDrawable">@drawable/ic_alert</item>
+        <item name="errorTextAppearance">@style/Caption1</item>
+        <item name="hintTextAppearance">@style/Caption1</item>
+        <item name="hintTextColor">@color/black_60</item>
         <item name="passwordToggleTint">@color/black_60</item>
-        <item name="passwordToggleDrawable">@drawable/show_hide_password_background</item>
+    </style>
+
+    <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:paddingStart">12dp</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:paddingStart">2dp</item>
+    </style>
+
+    <style name="AppBarStyle">
+        <item name="titleAppearance">@style/Title2</item>
+        <item name="expandedTitleAppearance">@style/Title1</item>
     </style>
 
 </resources>

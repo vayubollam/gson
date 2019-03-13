@@ -1,40 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:paddingTop="16dp"
-        android:fitsSystemWindows="true"
         android:clickable="true"
-        android:clipToPadding="false"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/back_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="?selectableItemBackground"
-            android:src="@drawable/ic_back" />
+        <!-- TODO remove dragable="false" -->
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dragable="false"
+            app:statusBarScrim="@color/white"
+            app:title="@string/filters_fragment_title" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:text="@string/filters_fragment_title"
-            android:textAppearance="@style/Title1" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:fillViewport="true">
+            android:paddingBottom="68dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,9 +34,10 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/filters_services_header"
+                    android:text="@string/filters_carwash_header"
                     android:textAppearance="@style/Body" />
 
                 <View
@@ -64,9 +54,10 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/filter_fuel_header"
+                    android:text="@string/filters_fuel_header"
                     android:textAppearance="@style/Body" />
 
                 <View
@@ -83,9 +74,10 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/filter_carwash_header"
+                    android:text="@string/filters_carwash_header"
                     android:textAppearance="@style/Body" />
 
                 <View
@@ -100,39 +92,40 @@
                     android:orientation="vertical" />
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             app:cardElevation="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="68dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:padding="16dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/clear_button"
-                    style="@style/OutlinedSmallButton"
+                    style="@style/OutlinedButton.M"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/small_button_height"
                     android:layout_marginEnd="4dp"
                     android:layout_weight="1"
-                    android:text="@string/clear" />
+                    android:text="@string/filters_clear_button" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/apply_button"
-                    style="@style/SmallButton"
+                    style="@style/FilledButton.Red.M"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/small_button_height"
                     android:layout_marginStart="4dp"
                     android:layout_weight="1"
-                    android:text="@string/apply" />
+                    android:text="@string/filters_apply_button" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

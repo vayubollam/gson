@@ -1,5 +1,8 @@
 package suncor.com.android.utilities;
 
+import android.content.Context;
+import android.location.LocationManager;
+import android.os.Build;
 import android.provider.Settings;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -32,16 +35,22 @@ public class LocationUtils {
     }
 
     public static boolean isLocationEnabled() {
-        int locationMode;
-        try {
-            locationMode = Settings.Secure.getInt(SuncorApplication.getInstance().getContentResolver(), Settings.Secure.LOCATION_MODE);
 
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-            return false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            LocationManager lm = (LocationManager) SuncorApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
+            return lm.isLocationEnabled();
+        } else {
+            int mode = Settings.Secure.getInt(SuncorApplication.getInstance().getContentResolver(), Settings.Secure.LOCATION_MODE,
+                    Settings.Secure.LOCATION_MODE_OFF);
+            return (mode != Settings.Secure.LOCATION_MODE_OFF);
+
         }
-
-        return locationMode != Settings.Secure.LOCATION_MODE_OFF;
     }
 
+    public static double getHorizontalDistance(LatLngBounds lngBounds) {
+        LatLng westBound = new LatLng(lngBounds.southwest.latitude, lngBounds.southwest.longitude);
+        LatLng eastBound = new LatLng(lngBounds.southwest.latitude, lngBounds.northeast.longitude);
+
+        return calculateDistance(westBound, eastBound);
+    }
 }

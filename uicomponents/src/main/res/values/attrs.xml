@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="suncorTextInputStyle" format="reference" />
+    <declare-styleable name="SuncorTextInputLayout">
+        <attr name="android:hint" format="string" />
+        <attr name="android:maxLength" format="integer" />
+        <!-- textAppearance of the hint. When the hint is expanded the it will have the same size as the editText -->
+        <attr name="hintTextAppearance" format="reference" />
+        <attr name="hintTextColor" format="color" />
+        <attr name="android:inputType" />
+        <attr name="android:textAppearance" />
+        <attr name="errorTextAppearance" format="reference" />
+        <!-- color to be applied on error -->
+        <attr name="errorColor" format="color" />
+        <attr name="passwordToggleEnabled" format="boolean" />
+        <attr name="passwordToggleTint" format="color" />
+        <attr name="errorDrawable" format="reference" />
+        <attr name="text" format="string" />
+        <attr name="error" format="string" />
+    </declare-styleable>
+
+    <attr name="suncorAppBarLayoutStyle" format="reference" />
+    <declare-styleable name="SuncorAppBarLayout">
+        <attr name="title" format="string" />
+        <attr name="expandedTitle" format="string" />
+        <attr name="titleAppearance" format="reference" />
+        <attr name="expandedTitleAppearance" format="reference" />
+        <attr name="navigationIcon" format="reference" />
+        <!-- control status bar color-->
+        <attr name="statusBarScrim" format="color" />
+        <!-- disables expanded title view, and removes elevation -->
+        <attr name="expandable" format="boolean" />
+        <!-- controls whether the appbar layout can be dragged -->
+        <attr name="dragable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SwipeLayout">
+        <attr name="drag_edge">
+            <flag name="left" value="1" />
+            <flag name="right" value="2" />
+            <flag name="top" value="4" />
+            <flag name="bottom" value="8" />
+        </attr>
+        <attr name="leftEdgeSwipeOffset" format="dimension" />
+        <attr name="rightEdgeSwipeOffset" format="dimension" />
+        <attr name="topEdgeSwipeOffset" format="dimension" />
+        <attr name="bottomEdgeSwipeOffset" format="dimension" />
+        <attr name="show_mode" format="enum">
+            <enum name="lay_down" value="0" />
+            <enum name="pull_out" value="1" />
+        </attr>
+        <attr name="clickToClose" format="boolean" />
+    </declare-styleable>
+
+</resources>

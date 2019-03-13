@@ -1,13 +1,56 @@
 pipeline {
 	agent any
+
+    triggers {
+        pollSCM('* * * * *')
+    }
+
 	tools {
 		// Set names in Global Tools:
 		gradle 'Gradle5.1'
 	}
+
+	environment {
+		PERFECTO_TOKEN = credentials("PerfectoToken")
+	}
+
 	stages {
+		stage('update app settings json file to show build date') {
+            steps {
+                script {
+                    SlackUtils = load 'deploy/SlackUtils.groovy'
+
+                    def shortCommitHash = env.GIT_COMMIT.substring(0, 6)
+                    sh (
+                        script: "sed -i '' -e 's/__BUILD_DATE__/${SlackUtils.getFormattedTime()}/g' app/src/main/assets/buildSettings.properties",
+                        returnStdout: false
+                    )
+                    sh (
+                        script: "sed -i '' -e 's/__BUILD_SHA__/${shortCommitHash}/g' app/src/main/assets/buildSettings.properties",
+                        returnStdout: false
+                    )
+                }
+
+                sh 'cat app/src/main/assets/buildSettings.properties'
+            }
+        }
+
 		stage('Compile and Build  Stage') {
 			steps {
-				sh './gradlew assembleDebug'
+				script {
+					if (env.BUILD_ENV == "Dev") {
+						sh (
+							script: "./gradlew assembleDevDebug",
+							returnStdout: false
+						)
+					}
+					if (env.BUILD_ENV == "QA") {
+						sh (
+							script: "./gradlew assembleQADebug",
+							returnStdout: false
+						)
+					}
+				}
 			}
 		}
 
@@ -17,24 +60,157 @@ pipeline {
 			}
 		}
 
+		stage('upload to perfecto public cloud') {
+			steps {
+				script {
+					if (env.BUILD_ENV == "QA") {
+						sh (
+							script: 'curl -X POST -T app/build/outputs/apk/debug/app-debug.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-QA-debug.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
+							returnStdout: false
+						)
+					}
+				}
+			}
+		}
+
 		stage('uploading into IBM app store') {
 			steps {
-				sh 'java com.ibm.appcenter.Upload -s https://www.rfmp-mfp-dev.com:443 -c applicationcenter -u admin -p admin -y -f app/build/outputs/apk/debug/app-debug.apk'
+            	script {
+					if (env.BUILD_ENV == "Dev") {
+						sh (
+							script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -s https://dev.rfmp-mfp.com -c applicationcenter -u admin -p APPCTNR@dmin#Dev19 -e -f app/build/outputs/apk/Dev/debug/app-Dev-debug.apk',
+							returnStdout: false
+						)
+					}
+					if (env.BUILD_ENV == "QA") {
+						sh (
+							script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -s https://qa.rfmp-mfp.com -c applicationcenter -u admin -p APPCTNR@dmin#QA19 -e -f app/build/outputs/apk/QA/debug/app-QA-debug.apk',
+							returnStdout: false
+						)
+					}
+				}		
 			}
 		}
 
-		stage('Testing Stage') {
-			steps {
-				sh 'ls'
-			}
-		}
+		stage('Jenkins Logs Build Information') {
+            steps {
+                script {
+                    SlackUtils = load 'deploy/SlackUtils.groovy'
 
+                    def shortCommitHash = env.GIT_COMMIT.substring(0, 6)
+
+                    echo "LOGS BLOCK"
+
+                    echo "${env.Build_ENV} Build\n"
+                    echo "Built Time: ${SlackUtils.getFormattedTime()}"
+                    echo "Build SHA: ${shortCommitHash}"
+                }
+            }
+        }
+
+		stage('Slack Notification Stage') {
+            steps {
+                script {
+                    SlackUtils = load 'deploy/SlackUtils.groovy'
+
+                    def shortCommitHash = env.GIT_COMMIT.substring(0, 6)
+
+                    def SLACK_CHANNEL_DEV = "CFRDD6XLG"
+                    def SLACK_CHANNEL_QA = "GFG4ELAJF"
+                    def SLACK_CHANNEL_UAT = ""
+                    def SLACK_CHANNEL_PROD = ""
+                    def slackChannels = ""
+
+                    def slackMessage = ""
+
+                    if (env.BUILD_ENV == 'QA'){
+                        def commitMessagesSinceLastTag = sh(
+							script: 'git log --oneline $(git describe --tags --abbrev=0 @^)..@',
+							returnStdout: true
+						).trim()
+						def iosTagName = sh(
+							script: 'git describe --abbrev=0 --tags',
+							returnStdout: true
+						).trim()
+
+						commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
+
+						slackMessage = "*Android ${env.BUILD_ENV} Build Completed on Tag Push: ${iosTagName} Commit: ${shortCommitHash}*\n"
+						slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
+						slackMessage += "${env.BUILD_URL}console\n"
+						slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android/commits/tag/${iosTagName}\n"
+						slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
+
+						slackChannels = SLACK_CHANNEL_QA
+                    }
+                    if (env.BUILD_ENV == 'Dev'){
+                        def lastTenCommitMessages = sh(
+                            script: 'git log --oneline -n 5',
+                            returnStdout: true
+                        )
+                        lastTenCommitMessages = SlackUtils.addRMPLinks(lastTenCommitMessages)
+
+                        slackMessage = "*Android ${env.BUILD_ENV} Build Completed on Master Push Commit: ${shortCommitHash}*\n"
+                        slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
+                        slackMessage += "${env.BUILD_URL}console\n"
+                        slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android/commits/${env.GIT_COMMIT}\n"
+                        slackMessage += "Last 5 commit messages on Master:\n ${lastTenCommitMessages}"
+
+                        slackChannels = SLACK_CHANNEL_DEV 
+                    }
+
+                    // https://github.com/jenkinsci/slack-plugin
+                    slackSend color: "good", channel: "${slackChannels}", message: slackMessage
+                }
+            }
+        }
 	}
 
 	post {
+        failure {
+            script {
+                echo "FAILURE BLOCK OK"
+
+                SlackUtils = load 'deploy/SlackUtils.groovy'
+
+                def SLACK_CHANNEL_DEV = "CFRDD6XLG"
+                def SLACK_CHANNEL_QA = "GFG4ELAJF"
+                def slackChannels = ""
+                def slackMessage = ""
+
+                if (env.BUILD_ENV == "Dev"){
+                    def shortCommitHash = env.GIT_COMMIT.substring(0, 6)
+
+                    slackChannels = SLACK_CHANNEL_DEV
+
+                    slackMessage = "*!!! Android ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
+                    "*Failed on commit: ${shortCommitHash}*\n" +
+                    "https://bitbucket.org/rfmp-suncor/suncor-android/commits/${env.GIT_COMMIT}\n" +
+                    "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
+                    "${env.BUILD_URL}console"
+                }
+
+                if (env.BUILD_ENV == "QA"){
+                    def androidTagName = sh(
+                        script: 'git describe --abbrev=0 --tags',
+                        returnStdout: true
+					).trim()
+
+                    slackChannels = SLACK_CHANNEL_QA
+
+                    slackMessage = "*!!! Android ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
+                    "*Failed on Tag: ${androidTagName}*\n" +
+                    "https://bitbucket.org/suncor-android/mobileapp-ios/src/${androidTagName}\n" +
+                    "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
+                    "${env.BUILD_URL}console"
+                }
+
+                slackSend color: "#CC0000", channel: "${slackChannels}", message: slackMessage
+            }
+        }
+
 		always {
-			archiveArtifacts artifacts: '**/build/outputs/apk/debug/*.apk', fingerprint: true
-//			junit 'build/reports/**/*.xml'
+			archiveArtifacts artifacts: "**/build/outputs/apk/${BUILD_ENV}/debug/*.apk", fingerprint: true
 		}
 	}
 }

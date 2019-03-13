@@ -7,6 +7,8 @@
 
         <import type="suncor.com.android.model.Resource.Status" />
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
@@ -36,11 +38,11 @@
                     style="@style/SectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/sugestions"
-                    android:layout_gravity="center"/>
+                    android:text="@string/suggestions_fragment_title" />
 
                 <Space
                     android:layout_width="0dp"
@@ -49,15 +51,15 @@
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
                     android:indeterminateTint="@color/red"
-                    app:visibleGone="@{vm.placeSuggestions.status == Status.LOADING}" />
+                    app:visibleInvisible="@{vm.placeSuggestions.status == Status.LOADING}" />
             </LinearLayout>
 
 
@@ -77,12 +79,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/no_result_text"
-            style="@style/Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
-            android:text="@string/no_results"
+            android:text="@string/suggestions_no_results"
+            android:textAppearance="@style/Body"
             android:textColor="@color/black_40"
             app:visibleGone="@{vm.placeSuggestions.status == Status.SUCCESS &amp;&amp; vm.placeSuggestions.data.isEmpty()}"
             tools:visibility="visible" />

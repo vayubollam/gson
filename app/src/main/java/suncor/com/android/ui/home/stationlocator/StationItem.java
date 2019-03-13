@@ -10,7 +10,7 @@ import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import suncor.com.android.BR;
-import suncor.com.android.data.repository.FavouriteRepository;
+import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Hour;
 import suncor.com.android.model.Resource;
@@ -31,28 +31,15 @@ public class StationItem extends BaseObservable {
         this.isFavourite = isFavourite;
     }
 
-    public LiveData<Resource<Boolean>> toggleFavourite() {
-        if (isFavourite) {
-            return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
-                if (r.status == Resource.Status.SUCCESS) {
-                    setFavourite(false);
-                }
-                return r;
-            });
-        } else {
-            return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
-                if (r.status == Resource.Status.SUCCESS) {
-                    setFavourite(true);
-                }
-                return r;
-            });
-        }
-    }
-
     public StationItem(Station station, DirectionsResult distanceDuration) {
         this.station = station;
         this.distanceDuration = distanceDuration;
     }
+
+    public StationItem(Station station) {
+        this.station = station;
+    }
+
 
     @Bindable
     public Station getStation() {
@@ -82,6 +69,24 @@ public class StationItem extends BaseObservable {
     public void setFavourite(boolean favourite) {
         isFavourite = favourite;
         notifyPropertyChanged(BR.favourite);
+    }
+
+    public LiveData<Resource<Boolean>> toggleFavourite() {
+        if (isFavourite) {
+            return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
+                if (r.status == Resource.Status.SUCCESS) {
+                    setFavourite(false);
+                }
+                return r;
+            });
+        } else {
+            return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
+                if (r.status == Resource.Status.SUCCESS) {
+                    setFavourite(true);
+                }
+                return r;
+            });
+        }
     }
 
     public boolean isOpen() {

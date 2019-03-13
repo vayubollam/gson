@@ -18,36 +18,41 @@
         android:layout_height="match_parent"
         android:background="@color/black_4"
         android:orientation="vertical"
-        app:visibleGone="@{vm.query.isEmpty()}">
+        app:visibleGone="@{vm.query.isEmpty() &amp;&amp; (vm.nearbyStations.status == Status.LOADING || (vm.nearbyStations.status == Status.SUCCESS &amp;&amp; !vm.nearbyStations.data.isEmpty()))}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/SectionTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:text="@string/suggestions_fragment_nearby_title"
+                android:textAllCaps="true" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                android:indeterminateTint="@color/red"
+                app:visibleInvisible="@{vm.nearbyStations.status == Status.LOADING}" />
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/horizontal_divider" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/SectionTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/nearby_title"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/horizontal_divider" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:indeterminateTint="@color/red"
-            app:visibleGone="@{vm.nearbyStations.status == Status.LOADING}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/nearby_recycler"

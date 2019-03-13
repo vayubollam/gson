@@ -12,6 +12,8 @@ android {
         versionCode 3
         versionName "3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "MAP_API_KEY", MAP_API_KEY
+        resValue "string", "MAP_API_KEY", MAP_API_KEY
     }
 
     dataBinding {
@@ -33,14 +35,35 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    flavorDimensions "version"
+    productFlavors {
+        Dev {
+            dimension "version"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        QA {
+            dimension "version"
+            applicationIdSuffix ""
+            versionNameSuffix ""
+        }
+    }
 }
+configurations {
+    all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(":uicomponents")
+
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.legacy:legacy-support-v4:$rootProject.legacyLibraryVersion"
     implementation "com.google.android.material:material:$rootProject.materialLibraryVersion"
+    implementation "android.arch.navigation:navigation-fragment:$rootProject.navigationVersion"
 
     //Library for json Parsing
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
@@ -51,7 +74,7 @@ dependencies {
     //google map libraries
     implementation "com.google.android.gms:play-services-maps:$rootProject.playServicesVersion"
     implementation "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
-    implementation "com.google.android.gms:play-services-places:$rootProject.playServicesVersion"
+    implementation "com.google.android.libraries.places:places:$rootProject.googlePlacesVersion"
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
     implementation "com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:$rootProject.mfpVersion"

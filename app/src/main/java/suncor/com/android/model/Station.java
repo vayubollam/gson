@@ -54,37 +54,36 @@ public class Station {
         }
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-    public void setHours(ArrayList<Hour> hours) {
-        this.hours = hours;
-    }
-
-    public void setAmenities(List<String> amenities) {
-        this.amenities = amenities;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public ArrayList<Hour> getHours() {
         return this.hours;
     }
 
+    public void setHours(ArrayList<Hour> hours) {
+        this.hours = hours;
+    }
+
     public List<String> getAmenities() {
         return amenities;
     }
 
+    public void setAmenities(List<String> amenities) {
+        this.amenities = amenities;
+    }
+
     public Address getAddress() {
         return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public boolean hasService() {

@@ -1,47 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_40"
     tools:context="suncor.com.android.ui.SplashActivity">
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_splash_full_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:foreground="@drawable/gradient_splash_background"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04"
         app:srcCompat="@drawable/lake" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txt_splash"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/text_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="95dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="329dp"
-        android:text="@string/discover_your_next_adventure"
-        android:textAlignment="textStart"
-        android:textColor="@color/white"
-        android:textSize="48sp"
-        app:fontFamily="@font/futurastd_condensedlightobl" />
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/splash_text_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.05"
+            android:lineSpacingMultiplier="1.50"
+            android:shadowColor="@color/black_40"
+            android:shadowDx="1"
+            android:shadowRadius="4"
+            android:text="@string/discover_your_next_adventure"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            android:textSize="48sp"
+            app:fontFamily="@font/futurastd_condensedlightobl" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/splash_text_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/gibson_regular"
+            android:lineHeight="32sp"
+            android:lineSpacingMultiplier="1.45"
+            android:shadowColor="@color/black_20"
+            android:shadowDy="1"
+            android:shadowRadius="4"
+            android:text="@string/safety_message"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_retail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="23dp"
         android:scaleType="fitEnd"
-        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_retail_canopy" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

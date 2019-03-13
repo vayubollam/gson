@@ -29,12 +29,24 @@ public class Address {
         return subdivision;
     }
 
+    public void setSubdivision(String subdivision) {
+        this.subdivision = subdivision;
+    }
+
     public String getPhone() {
         return phone;
     }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getCountryRegion() {
         return countryRegion;
+    }
+
+    public void setCountryRegion(String countryRegion) {
+        this.countryRegion = countryRegion;
     }
 
     public String getpostalCode() {
@@ -46,55 +58,43 @@ public class Address {
         return latitude;
     }
 
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public String getAddressLine() {
-        return addressLine;
-    }
-
-    public String getCrossStreet() {
-        return crossStreet;
-    }
-
-    public String getPrimaryCity() {
-        return primaryCity;
-    }
-
-    public void setSubdivision(String subdivision) {
-        this.subdivision = subdivision;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setCountryRegion(String countryRegion) {
-        this.countryRegion = countryRegion;
-    }
-
-    public void setpostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
     }
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
+    public String getAddressLine() {
+        return addressLine;
+    }
+
     public void setAddressLine(String addressLine) {
         this.addressLine = addressLine;
+    }
+
+    public String getCrossStreet() {
+        return crossStreet;
     }
 
     public void setCrossStreet(String crossStreet) {
         this.crossStreet = crossStreet;
     }
 
+    public String getPrimaryCity() {
+        return primaryCity;
+    }
+
     public void setPrimaryCity(String primaryCity) {
         this.primaryCity = primaryCity;
+    }
+
+    public void setpostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 }
