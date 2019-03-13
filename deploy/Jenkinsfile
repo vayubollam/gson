@@ -65,7 +65,7 @@ pipeline {
 				script {
 					if (env.BUILD_ENV == "QA") {
 						sh (
-							script: 'curl -X POST -T app/build/outputs/apk/debug/app-debug.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-QA-debug.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
+							script: 'curl -X POST -T app/build/outputs/apk/QA/debug/app-QA-debug.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-QA-debug.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
 							returnStdout: false
 						)
 					}
@@ -128,17 +128,17 @@ pipeline {
 							script: 'git log --oneline $(git describe --tags --abbrev=0 @^)..@',
 							returnStdout: true
 						).trim()
-						def iosTagName = sh(
+						def androidTagName = sh(
 							script: 'git describe --abbrev=0 --tags',
 							returnStdout: true
 						).trim()
 
 						commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
 
-						slackMessage = "*Android ${env.BUILD_ENV} Build Completed on Tag Push: ${iosTagName} Commit: ${shortCommitHash}*\n"
+						slackMessage = "*Android ${env.BUILD_ENV} Build Completed on Tag Push: ${androidTagName} Commit: ${shortCommitHash}*\n"
 						slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
 						slackMessage += "${env.BUILD_URL}console\n"
-						slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android/commits/tag/${iosTagName}\n"
+						slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android/commits/tag/${androidTagName}\n"
 						slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
 
 						slackChannels = SLACK_CHANNEL_QA
