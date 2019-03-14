@@ -1,5 +1,8 @@
 package suncor.com.android.ui;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -56,6 +59,18 @@ public class BindingAdapters {
         view.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
 
+    @BindingAdapter({"android:drawableTint"})
+    public static void setDrawableTint(AppCompatTextView view, int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            view.setCompoundDrawableTintList(ColorStateList.valueOf(color));
+        } else {
+            Drawable drawable = view.getCompoundDrawables()[0];
+            drawable = drawable.mutate();
+            drawable.setTint(color);
+            view.setCompoundDrawables(drawable, view.getCompoundDrawables()[1], view.getCompoundDrawables()[2], view.getCompoundDrawables()[3]);
+        }
+    }
+
     @BindingAdapter({"afterTextChanged"})
     public static void afterTextChanged(SuncorTextInputLayout input, AfterTextChanged listener) {
         TextWatcher watcher = new TextWatcher() {
@@ -104,6 +119,21 @@ public class BindingAdapters {
             });
         }
     }
+
+    @BindingAdapter(value = "showError")
+    public static void showError(SuncorTextInputLayout inputLayout, boolean showError) {
+        inputLayout.setError(showError);
+    }
+
+//    @BindingAdapter(value = "animateVisibleGone")
+//    public static void animateVisibleGone(View view, boolean visible) {
+//        ConstraintLayout parent = (ConstraintLayout) view.getParent();
+//        ConstraintSet set = new ConstraintSet();
+//        set.clone(parent);
+//        set.setVisibility(view.getId(), visible ? View.VISIBLE : View.GONE);
+//        TransitionManager.beginDelayedTransition(parent);
+//        set.applyTo(parent);
+//    }
 
     public interface AfterTextChanged {
         void afterTextChanged(SuncorTextInputLayout input, Editable s);

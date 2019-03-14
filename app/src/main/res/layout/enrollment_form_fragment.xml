@@ -34,6 +34,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
                 android:paddingStart="16dp"
                 android:paddingTop="24dp"
                 android:paddingEnd="16dp"
@@ -96,14 +97,24 @@
                     app:focusChanged="@{eventHandler.focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/email_input"
                     app:passwordToggleEnabled="true"
+                    app:showError="@{vm.passwordField.showError}"
                     app:text="@={vm.passwordField.text}" />
+
+                <include
+                    android:id="@+id/password_validation"
+                    layout="@layout/password_validation_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:field="@{vm.passwordField}"
+                    app:layout_constraintTop_toBottomOf="@id/password_input" />
 
                 <suncor.com.android.uicomponents.SuncorSelectInputLayout
                     android:id="@+id/security_question_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_security_question_label"
-                    app:layout_constraintTop_toBottomOf="@id/password_input"
+                    app:layout_constraintTop_toBottomOf="@id/password_validation"
                     app:text="@={vm.securityQuestionField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout

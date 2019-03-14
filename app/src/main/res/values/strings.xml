@@ -111,4 +111,10 @@
     <string name="enrollment_postalcode_error">Postal code is required.</string>
     <string name="enrollment_email_format_error">Invalid format</string>
     <string name="discover_your_next_adventure">FIND YOUR HAPPY PLACE</string>
+    <string name="password_validation_text_length">Must be 8-16 characters</string>
+    <string name="password_validation_lowercase">At least one lowercase letter</string>
+    <string name="password_validation_uppercase">At least one uppercase letter</string>
+    <string name="password_validation_number">At least one number</string>
+    <string name="password_validation_title">Password must contain the following:</string>
+    <string name="password_validation_special_char">At least one special character (@$!%*#?&amp;)</string>
 </resources>
