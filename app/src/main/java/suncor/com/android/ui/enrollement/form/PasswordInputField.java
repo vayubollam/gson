@@ -1,7 +1,5 @@
 package suncor.com.android.ui.enrollement.form;
 
-import android.text.TextUtils;
-
 import java.util.regex.Pattern;
 
 import androidx.databinding.Bindable;
@@ -130,9 +128,9 @@ public class PasswordInputField extends InputField {
             setShowValidationHint(true);
             notifyPropertyChanged(BR.error);
         } else {
-            if (isValid()) {
+            if (isEmpty() || isValid()) {
                 setShowValidationHint(false);
-            } else if (!TextUtils.isEmpty(getText())) {
+            } else {
                 setShowError(true);
             }
         }

@@ -1,7 +1,5 @@
 package suncor.com.android.ui.enrollement.form;
 
-import android.text.TextUtils;
-
 import androidx.annotation.StringRes;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -55,6 +53,6 @@ public class InputField extends BaseObservable {
     }
 
     public boolean isValid() {
-        return !TextUtils.isEmpty(text);
+        return !isEmpty();
     }
 }
