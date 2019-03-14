@@ -71,12 +71,12 @@
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/sign_in" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_forgot_password"
-                    style="@style/FilledButton.White.L"
+                    style="@style/FilledButton.White.S"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"

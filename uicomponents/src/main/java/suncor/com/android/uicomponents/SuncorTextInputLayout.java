@@ -74,6 +74,7 @@ public class SuncorTextInputLayout extends LinearLayout {
     private final AppCompatTextView hintTextView;
     private final AppCompatCheckBox passwordToggle;
     private final AppCompatImageView errorImage;
+    private boolean shouldShowError;
 
     private float collapsedHintTextSize;
 
@@ -187,17 +188,25 @@ public class SuncorTextInputLayout extends LinearLayout {
     }
 
     public void setError(CharSequence error) {
+        shouldShowError = !TextUtils.isEmpty(error);
+        errorTextView.setText(error);
+        updateError();
+    }
 
+    public void setError(boolean shouldShowError) {
+        this.shouldShowError = shouldShowError;
+        updateError();
+    }
+
+    private void updateError() {
         post(() -> {
-            if (!TextUtils.isEmpty(error)) {
-                errorTextView.setText(error);
-                errorTextView.setVisibility(VISIBLE);
+            if (shouldShowError) {
                 errorImage.setVisibility(VISIBLE);
             } else {
-                errorTextView.setText("");
-                errorTextView.setVisibility(GONE);
                 errorImage.setVisibility(GONE);
             }
+            boolean shouldShowTextView = !TextUtils.isEmpty(errorTextView.getText());
+            errorTextView.setVisibility(shouldShowTextView ? VISIBLE : GONE);
             updateBackground();
             updateLabelState(false);
         });
@@ -231,8 +240,7 @@ public class SuncorTextInputLayout extends LinearLayout {
     }
 
     private void updateBackground() {
-        final boolean errorShouldBeShown = !TextUtils.isEmpty(errorTextView.getText());
-        if (errorShouldBeShown) {
+        if (shouldShowError) {
             inputFrame.setBackgroundResource(R.drawable.textfield_activated);
             inputFrame.setBackgroundTintList(ColorStateList.valueOf(errorColor));
         } else {
@@ -259,12 +267,11 @@ public class SuncorTextInputLayout extends LinearLayout {
         final boolean isEnabled = isEnabled();
         final boolean hasText = !TextUtils.isEmpty(editText.getText());
         final boolean hasFocus = editText.hasFocus();
-        final boolean errorShouldBeShown = !TextUtils.isEmpty(errorTextView.getText());
 
         // Set the collapsed and expanded label text colors based on the current state.
         if (!isEnabled) {
             //TODO handle disabled state
-        } else if (errorShouldBeShown) {
+        } else if (shouldShowError) {
             hintTextView.setTextColor(errorColor);
         } else if (hintTextColor != null) {
             hintTextView.setTextColor(hintTextColor);
