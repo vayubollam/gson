@@ -50,6 +50,12 @@ public class SuncorSelectInputLayout extends SuncorTextInputLayout {
     }
 
     @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        getInputLayout().setOnClickListener(l);
+        getEditText().setOnClickListener(l);
+    }
+
+    @Override
     public void refreshDrawableState() {
         super.refreshDrawableState();
         if (chevronImage != null) {

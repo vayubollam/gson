@@ -84,7 +84,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         });
 
 
-        binding.provinceInput.getEditText().setOnClickListener(v -> {
+        binding.provinceInput.setOnClickListener(v -> {
             isExpanded = binding.appBar.isExpanded();
             hideKeyBoard();
             Navigation.findNavController(binding.getRoot()).navigate(R.id.action_enrollment_form_fragment_to_provinceFragment);
@@ -144,6 +144,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         viewModel.getLastNameField().setText("");
         viewModel.getCityField().setText("");
         viewModel.getPasswordField().setText("");
+        viewModel.getPasswordField().setShowValidationHint(false);
         viewModel.getPhoneField().setText("");
         viewModel.getSecurityAnswerField().setText("");
         viewModel.getStreetAddressField().setText("");
@@ -173,9 +174,9 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
 
 
     public void textChanged(SuncorTextInputLayout input, Editable s) {
-        if (TextUtils.isEmpty(s)) {
+        if (!binding.getRoot().isLaidOut() || TextUtils.isEmpty(s))
             return;
-        }
+
         if (input == binding.streetAddressInput || input == binding.passwordInput) {
             scrollToView(input);
         }
