@@ -2,11 +2,20 @@ package suncor.com.android.ui.enrollement.form;
 
 import java.util.ArrayList;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
+import suncor.com.android.data.repository.account.EmailCheckApi;
+import suncor.com.android.model.Resource;
 
 public class EnrollmentFormViewModel extends ViewModel {
+
+    private EmailCheckApi emailCheckApi;
+
+    public LiveData<Resource<EmailCheckApi.EmailState>> emailCheckLiveData;
+
     private InputField firstNameField = new InputField(R.string.enrollment_first_name_error);
     private InputField lastNameField = new InputField(R.string.enrollment_last_name_error);
     private EmailInputField emailInputField = new EmailInputField(R.string.enrollment_email_empty_error, R.string.enrollment_email_format_error);
@@ -21,7 +30,9 @@ public class EnrollmentFormViewModel extends ViewModel {
     public MutableLiveData<Integer> selectedProvince = new MutableLiveData<>();
 
     private ArrayList<InputField> requiredFields = new ArrayList<>();
-    public EnrollmentFormViewModel() {
+
+    public EnrollmentFormViewModel(EmailCheckApi emailCheckApi) {
+        this.emailCheckApi = emailCheckApi;
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -31,6 +42,14 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
         selectedProvince.setValue(-1);
+
+        emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (hasFocus) -> {
+            if (hasFocus) {
+                return new MutableLiveData<>();
+            } else {
+                return emailCheckApi.checkEmail(emailInputField.getText());
+            }
+        });
     }
 
     /**

@@ -11,6 +11,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.enrollement.EnrollmentActivity;
@@ -45,11 +47,20 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     }
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EnrollmentFormViewModelFactory factory = new EnrollmentFormViewModelFactory(SuncorApplication.emailCheckApi);
+        viewModel = ViewModelProviders.of(getActivity(), factory).get(EnrollmentFormViewModel.class);
+        viewModel.emailCheckLiveData.observe(this, (r) -> {
+            Log.d(EnrollmentFormViewModel.class.getSimpleName(), r.toString());
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = EnrollmentFormFragmentBinding.inflate(inflater, container, false);
-        viewModel = ViewModelProviders.of(getActivity()).get(EnrollmentFormViewModel.class);
         binding.setEventHandler(this);
         binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener((v) -> {
@@ -189,6 +200,9 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         }
         if (view == binding.passwordInput) {
             viewModel.getPasswordField().setHasFocus(hasFocus);
+        }
+        if (view == binding.emailInput) {
+            viewModel.getEmailInputField().setHasFocus(hasFocus);
         }
 
     }

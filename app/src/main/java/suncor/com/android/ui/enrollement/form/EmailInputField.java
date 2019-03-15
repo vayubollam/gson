@@ -3,6 +3,8 @@ package suncor.com.android.ui.enrollement.form;
 import java.util.regex.Pattern;
 
 import androidx.databinding.Bindable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class EmailInputField extends InputField {
 
@@ -18,6 +20,8 @@ public class EmailInputField extends InputField {
     );
     private final int formatError;
 
+    private MutableLiveData<Boolean> hasFocus = new MutableLiveData<>();
+
     public EmailInputField(int emptyError, int formatError) {
         super(emptyError);
         this.formatError = formatError;
@@ -32,6 +36,14 @@ public class EmailInputField extends InputField {
             return !super.isValid() ? super.getError() :
                     !formatValid() ? formatError : -1;
         }
+    }
+
+    public LiveData<Boolean> getHasFocusObservable() {
+        return hasFocus;
+    }
+
+    public void setHasFocus(boolean hasFocus) {
+        this.hasFocus.postValue(hasFocus);
     }
 
     @Override
