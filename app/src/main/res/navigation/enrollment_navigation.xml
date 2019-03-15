@@ -22,5 +22,19 @@
         android:id="@+id/enrollment_form_fragment"
         android:name="suncor.com.android.ui.enrollement.form.EnrollmentFormFragment"
         android:label="EnrollmentFormFragment"
-        tools:layout="@layout/enrollment_form_fragment" />
+        tools:layout="@layout/enrollment_form_fragment">
+        <action
+            android:id="@+id/action_enrollment_form_fragment_to_provinceFragment"
+            app:destination="@id/provinceFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/enrollment_form_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/provinceFragment"
+        android:name="suncor.com.android.ui.enrollement.form.ProvinceFragment"
+        android:label="fragment_province"
+        tools:layout="@layout/fragment_province" />
 </navigation>

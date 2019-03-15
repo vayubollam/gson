@@ -125,7 +125,6 @@ public class SuncorAppBarLayout extends AppBarLayout {
             expandedTitleTextView.setLayoutParams(params);
         });
         a.recycle();
-
     }
 
     private void disableScroll() {
@@ -137,6 +136,10 @@ public class SuncorAppBarLayout extends AppBarLayout {
             ViewCompat.setElevation(collapsingToolbarLayout, 0);
             ViewCompat.setElevation(toolbar, 0);
         });
+    }
+
+    public boolean isExpanded() {
+        return !isToolbarTitleShown;
     }
 
     @Override

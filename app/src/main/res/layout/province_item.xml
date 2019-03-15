@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/horizontal_divider"
+            android:layout_height="1dp"
+            android:layout_marginStart="60dp"
+            android:backgroundTint="@color/black_8"></androidx.appcompat.widget.AppCompatImageView>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            tools:text="Britich colobia"
+            android:textAppearance="@style/Body"
+            android:paddingStart="16dp"
+            android:layout_marginStart="20dp"
+            android:buttonTint="@color/red"
+            android:lineSpacingMultiplier="1.44"
+            android:id="@+id/check_province"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp"
+            android:button="@drawable/selector_check"
+            android:layout_height="wrap_content"
+            android:checked="false" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:src="@drawable/horizontal_divider"
+            android:layout_height="1dp"
+            android:layout_marginStart="60dp"
+            android:backgroundTint="@color/black_8"
+            android:visibility="gone"
+            android:id="@+id/bottom_divider"></androidx.appcompat.widget.AppCompatImageView>
+    </LinearLayout>
+</layout>

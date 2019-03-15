@@ -1,0 +1,20 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="suncor.com.android.ui.enrollement.form.ProvinceFragment">
+
+    <suncor.com.android.uicomponents.SuncorAppBarLayout
+        android:layout_width="match_parent"
+        app:title="Province"
+        android:id="@+id/app_bar"
+        android:layout_height="wrap_content"></suncor.com.android.uicomponents.SuncorAppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="wrap_content"
+        android:id="@+id/province_recycler"
+        tools:listitem="@layout/province_item"></androidx.recyclerview.widget.RecyclerView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

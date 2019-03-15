@@ -39,16 +39,17 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     EnrollmentFormFragmentBinding binding;
     ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
+    private boolean isExpanded = true;
 
     public EnrollmentFormFragment() {
-
     }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = EnrollmentFormFragmentBinding.inflate(inflater, container, false);
-        viewModel = ViewModelProviders.of(this).get(EnrollmentFormViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(EnrollmentFormViewModel.class);
         binding.setEventHandler(this);
         binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener((v) -> {
@@ -81,12 +82,25 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
                 }
             }
         });
+
+
+        binding.provinceInput.getEditText().setOnClickListener(v -> {
+            isExpanded = binding.appBar.isExpanded();
+            hideKeyBoard();
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_enrollment_form_fragment_to_provinceFragment);
+
+        });
+        binding.appBar.post(() -> {
+            binding.appBar.setExpanded(isExpanded, false);
+        });
         return binding.getRoot();
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -108,19 +122,40 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
 
     @Override
     public void onBackPressed() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        hideKeyBoard();
 
         if (viewModel.oneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
-            alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> Navigation.findNavController(getView()).navigateUp());
+            alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
+                Navigation.findNavController(getView()).navigateUp();
+                clearViewModel();
+            });
             alertDialog.setNegativeButton(R.string.cancel, null);
             alertDialog.show();
         } else {
             Navigation.findNavController(getView()).navigateUp();
         }
+    }
+
+    private void clearViewModel() {
+        viewModel.getFirstNameField().setText("");
+        viewModel.getLastNameField().setText("");
+        viewModel.getCityField().setText("");
+        viewModel.getPasswordField().setText("");
+        viewModel.getPhoneField().setText("");
+        viewModel.getSecurityAnswerField().setText("");
+        viewModel.getStreetAddressField().setText("");
+        viewModel.getPostalCodeField().setText("");
+        viewModel.getEmailInputField().setText("");
+        viewModel.getProvinceField().setText("");
+        viewModel.selectedProvince.postValue(-1);
+    }
+
+    private void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     public void joinButtonClicked() {
@@ -200,4 +235,5 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
             ds.setColor(getResources().getColor(R.color.red));
         }
     }
+
 }

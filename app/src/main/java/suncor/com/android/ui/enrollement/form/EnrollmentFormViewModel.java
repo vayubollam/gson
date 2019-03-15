@@ -2,6 +2,7 @@ package suncor.com.android.ui.enrollement.form;
 
 import java.util.ArrayList;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
 
@@ -17,9 +18,9 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private InputField postalCodeField = new InputField(R.string.enrollment_postalcode_error);
     private InputField phoneField = new InputField();
+    public MutableLiveData<Integer> selectedProvince = new MutableLiveData<>();
 
     private ArrayList<InputField> requiredFields = new ArrayList<>();
-
     public EnrollmentFormViewModel() {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
@@ -29,6 +30,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(cityField);
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
+        selectedProvince.setValue(-1);
     }
 
     /**
