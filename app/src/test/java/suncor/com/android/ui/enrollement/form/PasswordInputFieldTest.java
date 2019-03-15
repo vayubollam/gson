@@ -90,7 +90,7 @@ public class PasswordInputFieldTest {
         Assert.assertTrue(inputField.isHasUpperCase());
         Assert.assertTrue(inputField.isHasNumber());
         Assert.assertTrue(inputField.isHasSpecialChar());
-        Assert.assertTrue(inputField.isShowValidationHint());
+        Assert.assertFalse(inputField.isShowValidationHint());
     }
 
     @Test

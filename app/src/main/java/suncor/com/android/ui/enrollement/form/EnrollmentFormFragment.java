@@ -152,11 +152,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
             scrollToView(view);
         }
         if (view == binding.passwordInput) {
-             viewModel.getPasswordField().setHasFocus(hasFocus);
-            //When the user uses the keyboard to navigate to next item, the next item loses focus after hiding the hint
-            if (binding.securityAnswerInput.hasFocus() && !viewModel.getPasswordField().isShowValidationHint()) {
-                binding.scrollView.postDelayed(() -> focusOnItem(binding.securityAnswerInput), 200);
-            }
+            viewModel.getPasswordField().setHasFocus(hasFocus);
         }
 
     }

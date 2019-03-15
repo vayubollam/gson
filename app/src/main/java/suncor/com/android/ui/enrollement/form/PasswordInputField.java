@@ -36,6 +36,10 @@ public class PasswordInputField extends InputField {
     public void setShowError(boolean showError) {
         super.setShowError(showError);
         notifyPropertyChanged(BR.showError);
+        if(showError && isEmpty()){
+            //When the user clicks on join, if it's empty show only required error
+            setShowValidationHint(false);
+        }
     }
 
     @Override
@@ -124,13 +128,11 @@ public class PasswordInputField extends InputField {
 
     public void setHasFocus(boolean hasFocus) {
         this.hasFocus = hasFocus;
-        if (hasFocus) {
+        if (hasFocus && !isValid()) {
             setShowValidationHint(true);
             notifyPropertyChanged(BR.error);
         } else {
-            if (isEmpty() || isValid()) {
-                setShowValidationHint(false);
-            } else {
+            if (!isEmpty() && !isValid()) {
                 setShowError(true);
             }
         }
@@ -146,6 +148,9 @@ public class PasswordInputField extends InputField {
     public void setText(String text) {
         super.setText(text);
         validate(text);
+        if (hasFocus) {
+            setShowValidationHint(!isValid());
+        }
     }
 
     private void validate(String text) {
