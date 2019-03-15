@@ -44,15 +44,14 @@ public class ChoiceSelectorAdapter extends RecyclerView.Adapter<ChoiceSelectorAd
         provincesCheckBoxs.add(holder.binding.checkProvince);
         holder.binding.checkProvince.setOnClickListener(v -> {
             if (selectedItem == position) {
-                selectedItem = -1;
-                return;
+                holder.binding.checkProvince.setChecked(true);
+            } else if (selectedItem != -1) {
+                provincesCheckBoxs.get(selectedItem).setChecked(false);
             }
+
             callback.accept(position);
 
-            if (selectedItem != -1) {
-                provincesCheckBoxs.get(selectedItem).setChecked(false);
 
-            }
             selectedItem = position;
             handler.removeCallbacksAndMessages(null);
             handler.postDelayed(new Runnable() {
