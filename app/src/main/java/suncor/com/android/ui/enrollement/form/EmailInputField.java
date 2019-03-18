@@ -61,6 +61,9 @@ public class EmailInputField extends InputField {
 
     public void setHasFocus(boolean hasFocus) {
         this.hasFocus.postValue(Event.newEvent(hasFocus));
+        if (!hasFocus && !isEmpty() && !isValid()) {
+            setShowError(true);
+        }
     }
 
     @Override
