@@ -43,11 +43,23 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(postalCodeField);
         selectedProvince.setValue(-1);
 
-        emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (hasFocus) -> {
-            if (hasFocus) {
-                return new MutableLiveData<>();
+        emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
+            Boolean hasFocus = event.getContentIfNotHandled();
+            //If it's focused, or has already been checked, or email is invalid, return empty livedata
+            if (hasFocus == null || hasFocus
+                    || emailInputField.getVerificationState() != EmailInputField.VerificationState.UNCHECKED
+                    || !emailInputField.isValid()) {
+                MutableLiveData<Resource<EmailCheckApi.EmailState>> temp = new MutableLiveData<>();
+                temp.setValue(Resource.success(EmailCheckApi.EmailState.UNCHECKED));
+                return temp;
             } else {
-                return emailCheckApi.checkEmail(emailInputField.getText());
+                return Transformations.map(emailCheckApi.checkEmail(emailInputField.getText()), (r) -> {
+                    //to avoid further checks, save the state to the email field
+                    if (r.status != Resource.Status.LOADING) {
+                        emailInputField.setVerificationState(EmailInputField.VerificationState.CHECKED);
+                    }
+                    return r;
+                });
             }
         });
     }

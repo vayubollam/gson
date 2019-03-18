@@ -7,7 +7,7 @@ public interface EmailCheckApi {
 
     LiveData<Resource<EmailState>> checkEmail(String email);
 
-    public enum EmailState {
-        VALID, INVALID
+    enum EmailState {
+        VALID, INVALID, UNCHECKED
     }
 }

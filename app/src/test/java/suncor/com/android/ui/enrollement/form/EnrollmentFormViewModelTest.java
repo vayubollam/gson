@@ -2,17 +2,30 @@ package suncor.com.android.ui.enrollement.form;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.mockito.Mockito;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import suncor.com.android.R;
+import suncor.com.android.data.repository.account.EmailCheckApi;
+import suncor.com.android.model.Resource;
+
+import static org.mockito.Mockito.when;
 
 public class EnrollmentFormViewModelTest {
 
     private EnrollmentFormViewModel viewModel;
 
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
+
     @Before
     public void init() {
-        viewModel = new EnrollmentFormViewModel();
+        viewModel = new EnrollmentFormViewModel(null);
     }
 
     @Test
@@ -110,5 +123,49 @@ public class EnrollmentFormViewModelTest {
         viewModel.getFirstNameField().setText("name");
 
         Assert.assertTrue(viewModel.oneItemFilled());
+    }
+
+    @Test
+    public void testEmailValidation_ValidEmail() {
+        EmailCheckApi api = Mockito.mock(EmailCheckApi.class);
+        MutableLiveData<Resource<EmailCheckApi.EmailState>> successValidation = new MutableLiveData<>();
+        successValidation.setValue(Resource.success(EmailCheckApi.EmailState.VALID));
+        when(api.checkEmail("email@suncor.com")).thenReturn(successValidation);
+
+        viewModel = new EnrollmentFormViewModel(api);
+        Observer<Resource<EmailCheckApi.EmailState>> dummyObserver = emailStateResource -> {
+            //Just to active the livedata
+        };
+
+        viewModel.emailCheckLiveData.observeForever(dummyObserver);
+
+        viewModel.getEmailInputField().setHasFocus(true);
+
+        viewModel.getEmailInputField().setText("email@suncor.com");
+        viewModel.getEmailInputField().setHasFocus(false);
+
+        Assert.assertEquals(EmailCheckApi.EmailState.VALID, viewModel.emailCheckLiveData.getValue().data);
+    }
+
+    @Test
+    public void testEmailValidation_InValidEmail() {
+        EmailCheckApi api = Mockito.mock(EmailCheckApi.class);
+        MutableLiveData<Resource<EmailCheckApi.EmailState>> successValidation = new MutableLiveData<>();
+        successValidation.setValue(Resource.success(EmailCheckApi.EmailState.INVALID));
+        when(api.checkEmail("email@suncor.com")).thenReturn(successValidation);
+
+        viewModel = new EnrollmentFormViewModel(api);
+        Observer<Resource<EmailCheckApi.EmailState>> dummyObserver = emailStateResource -> {
+            //Just to active the livedata
+        };
+
+        viewModel.emailCheckLiveData.observeForever(dummyObserver);
+
+        viewModel.getEmailInputField().setHasFocus(true);
+
+        viewModel.getEmailInputField().setText("email@suncor.com");
+        viewModel.getEmailInputField().setHasFocus(false);
+
+        Assert.assertEquals(EmailCheckApi.EmailState.INVALID, viewModel.emailCheckLiveData.getValue().data);
     }
 }

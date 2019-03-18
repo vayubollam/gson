@@ -1,6 +1,7 @@
 package suncor.com.android.ui.enrollement.form;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
@@ -11,7 +12,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +30,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
+import suncor.com.android.model.Resource;
+import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.enrollement.EnrollmentActivity;
+import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
@@ -53,7 +57,24 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         EnrollmentFormViewModelFactory factory = new EnrollmentFormViewModelFactory(SuncorApplication.emailCheckApi);
         viewModel = ViewModelProviders.of(getActivity(), factory).get(EnrollmentFormViewModel.class);
         viewModel.emailCheckLiveData.observe(this, (r) -> {
-            Log.d(EnrollmentFormViewModel.class.getSimpleName(), r.toString());
+            //Ignore all results except success answers
+            if (r.status == Resource.Status.SUCCESS && r.data == EmailCheckApi.EmailState.INVALID) {
+                ModalDialog dialog = new ModalDialog();
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
+                        .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
+                        .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        })
+                        .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
+                            binding.emailInput.setText("");
+                            dialog.dismiss();
+                            focusOnItem(binding.emailInput);
+                        })
+                        .show(getFragmentManager(), ModalDialog.TAG);
+            }
         });
     }
 
@@ -63,6 +84,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         binding = EnrollmentFormFragmentBinding.inflate(inflater, container, false);
         binding.setEventHandler(this);
         binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
