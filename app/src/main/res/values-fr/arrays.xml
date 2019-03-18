@@ -24,4 +24,19 @@
     <string-array name="station_wash_values">
         <item>Lave-auto (sans contact)</item>
     </string-array>
+    <string-array name="province_names">
+        <item>Alberta</item>
+        <item>Colombie-Britannique</item>
+        <item>Île-du Prince Édouard</item>
+        <item>Manitoba</item>
+        <item>Nouveau-Brunswick</item>
+        <item>Nouveau-Écosse</item>
+        <item>Nunavut</item>
+        <item>Ontario</item>
+        <item>Québec</item>
+        <item>Saskatchewan</item>
+        <item>Terre-Nueve-et-Labrador</item>
+        <item>Territoires du Nord-Ouest</item>
+        <item>Yukon</item>
+    </string-array>
 </resources>
