@@ -82,7 +82,8 @@ dependencies {
     //library for workers
     implementation "android.arch.work:work-runtime:$rootProject.workManagerVersion"
 
-
+    testImplementation "androidx.arch.core:core-testing:$rootProject.archLifecycleVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"

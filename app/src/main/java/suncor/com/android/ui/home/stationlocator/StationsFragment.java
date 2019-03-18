@@ -60,9 +60,12 @@ import suncor.com.android.databinding.StationsFragmentBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.ui.common.ModalDialog;
+import suncor.com.android.ui.enrollement.EnrollmentActivity;
 import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment;
 import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
+import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.LocationUtils;
 
 
@@ -522,8 +525,21 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             ft.addToBackStack(null);
             ft.commit();
         } else {
-            PromptLoginDialog promptLoginDialog = new PromptLoginDialog();
-            promptLoginDialog.show(getFragmentManager(), PromptLoginDialog.TAG);
+            ModalDialog dialog = new ModalDialog();
+            dialog.setTitle(getString(R.string.login_prompt_title))
+                    .setMessage(getString(R.string.login_prompt_message))
+                    .setRightButton(getString(R.string.sign_in), (v) -> {
+                        startActivity(new Intent(getContext(), LoginActivity.class));
+                        dialog.dismiss();
+                    })
+                    .setCenterButton(getString(R.string.join), (v) -> {
+                        startActivity(new Intent(getContext(), EnrollmentActivity.class));
+                        dialog.dismiss();
+                    })
+                    .setLeftButton(getString(R.string.cancel), (v) -> {
+                        dialog.dismiss();
+                    })
+                    .show(getFragmentManager(), ModalDialog.TAG);
         }
     }
 }

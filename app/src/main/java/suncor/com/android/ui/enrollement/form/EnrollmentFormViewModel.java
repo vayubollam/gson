@@ -2,11 +2,20 @@ package suncor.com.android.ui.enrollement.form;
 
 import java.util.ArrayList;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
+import suncor.com.android.data.repository.account.EmailCheckApi;
+import suncor.com.android.model.Resource;
 
 public class EnrollmentFormViewModel extends ViewModel {
+
+    private EmailCheckApi emailCheckApi;
+
+    public LiveData<Resource<EmailCheckApi.EmailState>> emailCheckLiveData;
+
     private InputField firstNameField = new InputField(R.string.enrollment_first_name_error);
     private InputField lastNameField = new InputField(R.string.enrollment_last_name_error);
     private EmailInputField emailInputField = new EmailInputField(R.string.enrollment_email_empty_error, R.string.enrollment_email_format_error);
@@ -21,7 +30,9 @@ public class EnrollmentFormViewModel extends ViewModel {
     public MutableLiveData<Integer> selectedProvince = new MutableLiveData<>();
 
     private ArrayList<InputField> requiredFields = new ArrayList<>();
-    public EnrollmentFormViewModel() {
+
+    public EnrollmentFormViewModel(EmailCheckApi emailCheckApi) {
+        this.emailCheckApi = emailCheckApi;
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -31,6 +42,26 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
         selectedProvince.setValue(-1);
+
+        emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
+            Boolean hasFocus = event.getContentIfNotHandled();
+            //If it's focused, or has already been checked, or email is invalid, return empty livedata
+            if (hasFocus == null || hasFocus
+                    || emailInputField.getVerificationState() != EmailInputField.VerificationState.UNCHECKED
+                    || !emailInputField.isValid()) {
+                MutableLiveData<Resource<EmailCheckApi.EmailState>> temp = new MutableLiveData<>();
+                temp.setValue(Resource.success(EmailCheckApi.EmailState.UNCHECKED));
+                return temp;
+            } else {
+                return Transformations.map(emailCheckApi.checkEmail(emailInputField.getText()), (r) -> {
+                    //to avoid further checks, save the state to the email field
+                    if (r.status != Resource.Status.LOADING) {
+                        emailInputField.setVerificationState(EmailInputField.VerificationState.CHECKED);
+                    }
+                    return r;
+                });
+            }
+        });
     }
 
     /**
