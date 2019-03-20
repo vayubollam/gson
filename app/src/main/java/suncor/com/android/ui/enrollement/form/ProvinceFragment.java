@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -18,7 +21,7 @@ import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class ProvinceFragment extends DialogFragment {
     private EnrollmentFormViewModel enrollmentFormViewModel;
-    private String[] provinceNames;
+    private ArrayList<String> provinceNames = new ArrayList<>();
 
 
     public ProvinceFragment() {
@@ -29,7 +32,14 @@ public class ProvinceFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_province, container, false);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        provinceNames.addAll(Arrays.asList(getResources().getStringArray(R.array.province_names)));
     }
 
     @Override
@@ -41,20 +51,17 @@ public class ProvinceFragment extends DialogFragment {
         });
         enrollmentFormViewModel = ViewModelProviders.of(getActivity()).get(EnrollmentFormViewModel.class);
         ChoiceSelectorAdapter provinceAdapter;
-        provinceNames = getResources().getStringArray(R.array.province_names);
-        if (enrollmentFormViewModel.selectedProvince.getValue() != -1) {
-            provinceAdapter = new ChoiceSelectorAdapter(provinceNames, (this::provinceSelected), enrollmentFormViewModel.selectedProvince.getValue());
-        } else {
-            provinceAdapter = new ChoiceSelectorAdapter(provinceNames, (this::provinceSelected), -1);
-        }
+
+        int index = provinceNames.indexOf(enrollmentFormViewModel.getProvinceField().getText());
+        provinceAdapter = new ChoiceSelectorAdapter(provinceNames, (this::provinceSelected), index);
+
         RecyclerView province_recycler = getView().findViewById(R.id.province_recycler);
         province_recycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         province_recycler.setAdapter(provinceAdapter);
     }
 
     public void provinceSelected(int selectedProvince) {
-        enrollmentFormViewModel.selectedProvince.setValue(selectedProvince);
-        enrollmentFormViewModel.getProvinceField().setText(provinceNames[selectedProvince]);
+        enrollmentFormViewModel.getProvinceField().setText(provinceNames.get(selectedProvince));
     }
 
 

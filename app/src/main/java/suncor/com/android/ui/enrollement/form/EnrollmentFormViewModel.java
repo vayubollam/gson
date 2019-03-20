@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.SecurityQuestion;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
@@ -27,7 +28,8 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private InputField postalCodeField = new InputField(R.string.enrollment_postalcode_error);
     private InputField phoneField = new InputField();
-    public MutableLiveData<Integer> selectedProvince = new MutableLiveData<>();
+    private SecurityQuestion question;
+
 
     private ArrayList<InputField> requiredFields = new ArrayList<>();
 
@@ -41,7 +43,6 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(cityField);
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
-        selectedProvince.setValue(-1);
 
         emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
             Boolean hasFocus = event.getContentIfNotHandled();
@@ -145,5 +146,13 @@ public class EnrollmentFormViewModel extends ViewModel {
 
     ArrayList<InputField> getRequiredFields() {
         return requiredFields;
+    }
+
+    public void setQuestion(SecurityQuestion question) {
+        this.question = question;
+        if (question != null) {
+            securityQuestionField.setText(question.getLocalizedQuestion());
+        }
+
     }
 }
