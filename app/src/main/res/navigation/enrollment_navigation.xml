@@ -31,10 +31,22 @@
             app:popEnterAnim="@anim/enter_from_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/enrollment_form_fragment" />
+        <action
+            android:id="@+id/action_enrollment_form_fragment_to_securityQuestionFragment"
+            app:destination="@id/securityQuestionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/enrollment_form_fragment" />
     </fragment>
     <fragment
         android:id="@+id/provinceFragment"
         android:name="suncor.com.android.ui.enrollement.form.ProvinceFragment"
         android:label="fragment_province"
         tools:layout="@layout/fragment_province" />
+    <fragment
+        android:id="@+id/securityQuestionFragment"
+        android:name="suncor.com.android.ui.enrollement.form.SecurityQuestionFragment"
+        android:label="SecurityQuestionFragment" />
 </navigation>

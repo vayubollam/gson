@@ -121,4 +121,6 @@
     <string name="enrollment_invalid_email_dialog_message">If you don\'t remember your password, submit a password reset.</string>
     <string name="enrollment_invalid_email_dialog_sign_in">Sign in</string>
     <string name="enrollment_invalid_email_dialog_diff_email">Use different email</string>
+    <string name="enrollment_province_title">Province</string>
+    <string name="enrollment_security_question_title">Security Question</string>
 </resources>

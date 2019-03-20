@@ -19,8 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
+import suncor.com.android.ui.enrollement.form.SecurityQuestionViewModel;
+import suncor.com.android.ui.enrollement.form.SecurityQuestionViewModelFactory;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class CardQuestion extends Fragment {
@@ -65,12 +69,18 @@ public class CardQuestion extends Fragment {
         appBarLayout.setNavigationOnClickListener(v -> getActivity().onBackPressed());
 
         getView().findViewById(R.id.no_card_button).setOnClickListener(v -> {
+
+            //bus logic
             Navigation.findNavController(v).navigate(R.id.action_cardQuestion_to_enrollmentFormFragment);
         });
 
         getView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
             Toast.makeText(getContext(), "This button will take to the \"Join with Card screen\"", Toast.LENGTH_LONG).show();
         });
+
+        SecurityQuestionViewModelFactory questionViewModelFactory = new SecurityQuestionViewModelFactory(SuncorApplication.fetchSecurityQuestionApi);
+        SecurityQuestionViewModel securityQuestionViewModel = ViewModelProviders.of(getActivity(), questionViewModelFactory).get(SecurityQuestionViewModel.class);
+        securityQuestionViewModel.fetchQuestion();
 
     }
 

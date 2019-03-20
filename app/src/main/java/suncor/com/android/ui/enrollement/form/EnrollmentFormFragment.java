@@ -123,6 +123,11 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
             Navigation.findNavController(binding.getRoot()).navigate(R.id.action_enrollment_form_fragment_to_provinceFragment);
 
         });
+        binding.securityQuestionInput.setOnClickListener(v -> {
+            isExpanded = binding.appBar.isExpanded();
+            hideKeyBoard();
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_enrollment_form_fragment_to_securityQuestionFragment);
+        });
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
@@ -133,7 +138,8 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     @Override
     public void onResume() {
         super.onResume();
-
+        binding.securityQuestionInput.getEditText().setSingleLine(true);
+        binding.securityQuestionInput.getEditText().setEllipsize(TextUtils.TruncateAt.END);
     }
 
     @Override
@@ -162,29 +168,13 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
             alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
-                Navigation.findNavController(getView()).navigateUp();
-                clearViewModel();
+                getActivity().finish();
             });
             alertDialog.setNegativeButton(R.string.cancel, null);
             alertDialog.show();
         } else {
             Navigation.findNavController(getView()).navigateUp();
         }
-    }
-
-    private void clearViewModel() {
-        viewModel.getFirstNameField().setText("");
-        viewModel.getLastNameField().setText("");
-        viewModel.getCityField().setText("");
-        viewModel.getPasswordField().setText("");
-        viewModel.getPasswordField().setShowValidationHint(false);
-        viewModel.getPhoneField().setText("");
-        viewModel.getSecurityAnswerField().setText("");
-        viewModel.getStreetAddressField().setText("");
-        viewModel.getPostalCodeField().setText("");
-        viewModel.getEmailInputField().setText("");
-        viewModel.getProvinceField().setText("");
-        viewModel.selectedProvince.postValue(-1);
     }
 
     private void hideKeyBoard() {
