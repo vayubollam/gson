@@ -298,14 +298,9 @@
         <item name="closeIconEnabled">true</item>
     </style>
 
-    <style name="alertLocation" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-    </style>
-
     <!-- Dialog -->
     <style name="AlertDialogStyle" parent="@style/Theme.MaterialComponents.Light.Dialog.Alert">
-        <item name="android:colorAccent">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
         <item name="android:background">@drawable/dialog_background</item>
         <item name="android:colorBackground">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/black_100</item>
@@ -324,6 +319,7 @@
 
     <style name="TextAppearance.AppCompat.Subhead" parent="Body">
         <item name="android:textColor">@color/black_80</item>
+        <item name="android:lineSpacingMultiplier">1.30</item>
     </style>
 
     <style name="DialogButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">

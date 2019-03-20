@@ -6,14 +6,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/modal_dialog_background"
-        android:paddingTop="16dp">
+        android:background="@drawable/modal_dialog_background">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/gibson_semibold"
             android:gravity="start"
@@ -28,9 +28,9 @@
             android:id="@+id/message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:lineSpacingMultiplier="1.43"
-            android:textAppearance="@style/Caption1"
+            android:textAppearance="@style/Body"
             android:textColor="@color/black_60"
             app:layout_constraintEnd_toEndOf="@id/title"
             app:layout_constraintStart_toStartOf="@id/title"
@@ -41,7 +41,7 @@
             android:id="@+id/horizontal_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/horizontal_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,42 +54,50 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/gibson_semibold"
-            android:text="@string/sign_in"
+            android:minHeight="36dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textColor="@color/blue"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontal_divider"
-            app:strokeColor="@color/white" />
+            app:strokeColor="@color/white"
+            tools:text="@string/sign_in" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/center_button"
             style="@style/OutlinedButton.L"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
             android:fontFamily="@font/gibson_semibold"
-            android:text="@string/join"
+            android:minHeight="36dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textColor="@color/blue"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/right_button"
             app:layout_constraintTop_toBottomOf="@id/horizontal_divider"
-            app:strokeColor="@color/white" />
+            app:strokeColor="@color/white"
+            tools:text="@string/join" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/left_button"
             style="@style/OutlinedButton.L"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
             android:fontFamily="@font/gibson_semibold"
-            android:text="@string/cancel"
+            android:minHeight="36dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textColor="@color/blue"
             android:textSize="14sp"
             android:visibility="gone"
@@ -97,6 +105,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontal_divider"
             app:strokeColor="@color/white"
+            tools:text="@string/cancel"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
