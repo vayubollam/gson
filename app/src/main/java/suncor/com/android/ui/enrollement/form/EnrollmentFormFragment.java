@@ -138,8 +138,6 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     @Override
     public void onResume() {
         super.onResume();
-        binding.securityQuestionInput.getEditText().setSingleLine(true);
-        binding.securityQuestionInput.getEditText().setEllipsize(TextUtils.TruncateAt.END);
     }
 
     @Override

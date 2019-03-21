@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_text"
             android:layout_width="0dp"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:background="@null"
             android:gravity="center_vertical"
             android:textCursorDrawable="@drawable/cursor"

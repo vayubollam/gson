@@ -3,7 +3,6 @@ package suncor.com.android.uicomponents;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class SuncorSelectInputLayout extends SuncorTextInputLayout {
     }
 
     private void init() {
-        getEditText().setInputType(InputType.TYPE_NULL);
+        // getEditText().setInputType(InputType.TYPE_NULL);
         getEditText().setFocusable(false);
 
         chevronImage = new AppCompatImageView(getContext());
@@ -44,9 +43,27 @@ public class SuncorSelectInputLayout extends SuncorTextInputLayout {
         params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
 
         getInputLayout().addView(chevronImage, params);
-
+        ConstraintLayout.LayoutParams inputParams = (ConstraintLayout.LayoutParams) getEditText().getLayoutParams();
+        inputParams.endToStart = chevronImage.getId();
+        getEditText().setMaxLines(2);
+        getEditText().setLayoutParams(inputParams);
+        getEditText().setHorizontallyScrolling(false);
         Drawable drawable = getResources().getDrawable(R.drawable.chevron_tinted);
         chevronImage.setImageDrawable(drawable);
+
+
+    }
+
+
+    @Override
+    public void setText(CharSequence text) {
+        super.setText(text);
+        getEditText().post(() -> {
+            if (getEditText().getLineCount() == 2) {
+                getInputLayout().getLayoutParams().height = getResources().getDimensionPixelSize(R.dimen.select_input_two_lines_height);
+            }
+        });
+
     }
 
     @Override
@@ -74,4 +91,5 @@ public class SuncorSelectInputLayout extends SuncorTextInputLayout {
             chevronImage.setVisibility(VISIBLE);
         }
     }
+
 }
