@@ -124,7 +124,6 @@
     <string name="msg_e001_title">Quelque chose a mal tourné</string>
     <string name="msg_e001_message">Veuillez essayer à nouveau.</string>
     <string name="enrollment_province_title">Province</string>
-    <string name="enrollment_province_title">Province</string>
     <string name="enrollment_cardform_lastname_error">Veuillez entrer un nom.</string>
     <string name="enrollment_cardform_postalcode_error">Le code postal est requis.</string>
     <string name="enrollment_cardform_postalcode_label">Code postal</string>
