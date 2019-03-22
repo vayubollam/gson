@@ -31,7 +31,7 @@ public class EnrollmentFormViewModelTest {
 
     @Test
     public void testViewModelJoinEmpty() {
-        int focusedItem = viewModel.canJoin();
+        int focusedItem = viewModel.validateAndJoin();
 
         for (InputField field : viewModel.getRequiredFields()) {
             Assert.assertTrue(field.getShowError());
@@ -44,7 +44,7 @@ public class EnrollmentFormViewModelTest {
     public void testViewModelPasswordFirstEmpty() {
         viewModel.getFirstNameField().setText("name");
         viewModel.getLastNameField().setText("last name");
-        int focusedItem = viewModel.canJoin();
+        int focusedItem = viewModel.validateAndJoin();
 
         for (InputField field : viewModel.getRequiredFields()) {
             if (field == viewModel.getFirstNameField() || field == viewModel.getLastNameField()) {

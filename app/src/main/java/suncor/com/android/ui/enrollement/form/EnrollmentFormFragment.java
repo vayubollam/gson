@@ -54,7 +54,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EnrollmentFormViewModel.Factory factory = new EnrollmentFormViewModel.Factory(SuncorApplication.emailCheckApi);
+        EnrollmentFormViewModel.Factory factory = new EnrollmentFormViewModel.Factory(SuncorApplication.enrollmentsApi, SuncorApplication.emailCheckApi);
         viewModel = ViewModelProviders.of(getActivity(), factory).get(EnrollmentFormViewModel.class);
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
@@ -168,7 +168,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-        int itemWithError = viewModel.canJoin();
+        int itemWithError = viewModel.validateAndJoin();
         if (itemWithError != -1) {
             focusOnItem(requiredFields.get(itemWithError));
         } else {

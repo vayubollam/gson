@@ -223,6 +223,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:checked="@={vm.newsAndOffersField}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.21"
                     android:paddingTop="4dp"
@@ -290,5 +291,64 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:visibleGone="@{ vm.joinLiveData.status == Resource.Status.LOADING || vm.joinLiveData.status == Resource.Status.SUCCESS }">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Creating Account"
+                android:textAppearance="@style/Title1"
+                app:layout_constraintBottom_toTopOf="@id/progress_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/progress_layout"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_profile"
+                    android:tint="@color/red" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="100"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibleGone="@{ vm.joinLiveData.status == Resource.Status.LOADING}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/progress_complete"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/circular_ring"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibleGone="@{ vm.joinLiveData.status == Resource.Status.SUCCESS}" />
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
