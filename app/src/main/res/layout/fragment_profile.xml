@@ -21,8 +21,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/black_4"
-        android:orientation="vertical"
-        android:paddingStart="16dp">
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signout_button"
@@ -30,27 +29,39 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
             android:text="@string/profile_sign_out_button"
             android:textAllCaps="false"
-            android:textAppearance="@style/Body" />
+            android:textAppearance="@style/Body"
+            android:textColor="@color/red" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@drawable/horizontal_divider" />
+            android:background="@drawable/horizontal_divider"
+            android:layout_marginStart="16dp" />
 
         <TextView
             android:id="@+id/lblBuildDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
             android:text="Build Date: __BUILD_DATE__" />
 
         <TextView
             android:id="@+id/lblBuildSHA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
             android:text="Build SHA: __BUILD_SHA__" />
+
+        <ProgressBar
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:id="@+id/sign_out_PB"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
-
 </LinearLayout>

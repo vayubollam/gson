@@ -123,6 +123,11 @@
     <string name="enrollment_invalid_email_dialog_diff_email">Use different email</string>
     <string name="enrollment_province_title">Province</string>
     <string name="enrollment_security_question_title">Security Question</string>
+    <string name="profil_sign_out_alert_title">Sign out of Petro-Canada</string>
+    <string name="profil_sign_out_dialog_positive_button">Sign Out</string>
+    <string name="profil_sign_out_dialog_negative_button">Cancel</string>
+    <string name="msg_e001_title">Something went wrong</string>
+    <string name="msg_e001_message">Please try again later.</string>
     <string name="enrollment_cardform_header">Let\'s get you registered.</string>
     <string name="enrollment_cardform_card_label">Petro-Points card number</string>
     <string name="enrollment_cardform_postalcode_label">Postal code</string>
