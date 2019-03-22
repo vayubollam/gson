@@ -1,4 +1,4 @@
-package suncor.com.android.ui.enrollement.form;
+package suncor.com.android.ui.common.input;
 
 import androidx.annotation.StringRes;
 import androidx.databinding.BaseObservable;

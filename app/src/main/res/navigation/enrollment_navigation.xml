@@ -17,7 +17,19 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_card_question_to_card_form_fragment"
+            app:destination="@id/card_form_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
+    <fragment
+        android:id="@+id/card_form_fragment"
+        android:name="suncor.com.android.ui.enrollement.cardform.CardFormFragment"
+        android:label="fragment_card_form"
+        tools:layout="@layout/fragment_card_form" />
     <fragment
         android:id="@+id/enrollment_form_fragment"
         android:name="suncor.com.android.ui.enrollement.form.EnrollmentFormFragment"

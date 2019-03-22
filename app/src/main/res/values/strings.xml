@@ -123,4 +123,14 @@
     <string name="enrollment_invalid_email_dialog_diff_email">Use different email</string>
     <string name="enrollment_province_title">Province</string>
     <string name="enrollment_security_question_title">Security Question</string>
+    <string name="enrollment_cardform_header">Let\'s get you registered.</string>
+    <string name="enrollment_cardform_card_label">Petro-Points card number</string>
+    <string name="enrollment_cardform_postalcode_label">Postal code</string>
+    <string name="enrollment_cardform_lastname_label">Last name</string>
+    <string name="enrollment_cardform_continue_button">Continue</string>
+    <string name="enrollment_cardform_card_error">Your card number is required.</string>
+    <string name="enrollment_cardform_postalcode_error">Postal code is required.</string>
+    <string name="enrollment_cardform_lastname_error">Last name is required.</string>
+    <string name="enrollment_cardform_card_format_error">The card number you entered is incorrect.</string>
+    <string name="enrollment_cardform_postalcode_format_error">The postal code you entered isn\'t valid.</string>
 </resources>

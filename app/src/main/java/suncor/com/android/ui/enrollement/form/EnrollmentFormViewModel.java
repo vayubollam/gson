@@ -2,14 +2,19 @@ package suncor.com.android.ui.enrollement.form;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SecurityQuestion;
+import suncor.com.android.ui.common.input.EmailInputField;
+import suncor.com.android.ui.common.input.InputField;
+import suncor.com.android.ui.common.input.PasswordInputField;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
@@ -154,5 +159,23 @@ public class EnrollmentFormViewModel extends ViewModel {
             securityQuestionField.setText(question.getLocalizedQuestion());
         }
 
+    }
+
+    public static class Factory implements ViewModelProvider.Factory {
+
+        private final EmailCheckApi emailCheckApi;
+
+        public Factory(EmailCheckApi emailCheckApi) {
+            this.emailCheckApi = emailCheckApi;
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(EnrollmentFormViewModel.class)) {
+                return (T) new EnrollmentFormViewModel(emailCheckApi);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel class");
+        }
     }
 }

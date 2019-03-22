@@ -51,7 +51,7 @@ public class SecurityQuestionFragment extends Fragment {
         });
         RecyclerView questionsRecyclerView = getView().findViewById(R.id.security_question_recycler);
         questionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        SecurityQuestionViewModelFactory questionViewModelFactory = new SecurityQuestionViewModelFactory(SuncorApplication.fetchSecurityQuestionApi);
+        SecurityQuestionViewModel.Factory questionViewModelFactory = new SecurityQuestionViewModel.Factory(SuncorApplication.fetchSecurityQuestionApi);
         securityQuestionViewModel = ViewModelProviders.of(getActivity(), questionViewModelFactory).get(SecurityQuestionViewModel.class);
         questions = new ArrayList<>();
         for (SecurityQuestion question : securityQuestionViewModel.questionArrayList

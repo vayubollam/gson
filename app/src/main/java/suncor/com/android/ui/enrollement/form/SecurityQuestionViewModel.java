@@ -2,8 +2,10 @@ package suncor.com.android.ui.enrollement.form;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import suncor.com.android.data.repository.account.FetchSecurityQuestionApi;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SecurityQuestion;
@@ -46,4 +48,20 @@ public class SecurityQuestionViewModel extends ViewModel {
     }
 
 
+    public static class Factory implements ViewModelProvider.Factory {
+        private FetchSecurityQuestionApi fetchSecurityQuestionApi;
+
+        public Factory(FetchSecurityQuestionApi fetchSecurityQuestionApi) {
+            this.fetchSecurityQuestionApi = fetchSecurityQuestionApi;
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(SecurityQuestionViewModel.class)) {
+                return (T) new SecurityQuestionViewModel(fetchSecurityQuestionApi);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel Class");
+        }
+    }
 }

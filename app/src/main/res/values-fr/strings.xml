@@ -118,4 +118,15 @@
     <string name="enrollment_invalid_email_dialog_diff_email">Entrez autre courriel</string>
     <string name="enrollment_invalid_email_dialog_sign_in">Démarrez</string>
     <string name="enrollment_security_question_title">Choisissez une question de sécurité</string>
+    <string name="enrollment_province_title">Province</string>
+    <string name="enrollment_cardform_lastname_error">Veuillez entrer un nom.</string>
+    <string name="enrollment_cardform_postalcode_error">Le code postal est requis.</string>
+    <string name="enrollment_cardform_postalcode_label">Code postal</string>
+    <string name="enrollment_cardform_lastname_label">Nom</string>
+    <string name="enrollment_cardform_continue_button">Continuer</string>
+    <string name="enrollment_cardform_card_format_error">"Le numéro de carte entré est erroné. "</string>
+    <string name="enrollment_cardform_postalcode_format_error">Le code postal entré est erroné.</string>
+    <string name="enrollment_cardform_card_error">Le numéro de carte est requis.</string>
+    <string name="enrollment_cardform_card_label">Numéro de carte Petro‑Points</string>
+    <string name="enrollment_cardform_header">Commençons votre inscription.</string>
 </resources>

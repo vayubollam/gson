@@ -10,7 +10,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +34,7 @@ import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollement.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
@@ -54,7 +54,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EnrollmentFormViewModelFactory factory = new EnrollmentFormViewModelFactory(SuncorApplication.emailCheckApi);
+        EnrollmentFormViewModel.Factory factory = new EnrollmentFormViewModel.Factory(SuncorApplication.emailCheckApi);
         viewModel = ViewModelProviders.of(getActivity(), factory).get(EnrollmentFormViewModel.class);
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
@@ -99,23 +99,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
 
         ((EnrollmentActivity) getActivity()).setOnBackPressedListener(this);
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-        binding.postalcodeInput.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 4 && s.charAt(s.length() - 1) != ' ') {
-                    s.insert(3, " ");
-                }
-            }
-        });
-
+        binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
         binding.provinceInput.setOnClickListener(v -> {
             isExpanded = binding.appBar.isExpanded();

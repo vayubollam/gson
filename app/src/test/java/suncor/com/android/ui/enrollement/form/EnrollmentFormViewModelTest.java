@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.common.input.InputField;
 
 import static org.mockito.Mockito.when;
 

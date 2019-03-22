@@ -12,7 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +23,6 @@ import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.ui.enrollement.form.SecurityQuestionViewModel;
-import suncor.com.android.ui.enrollement.form.SecurityQuestionViewModelFactory;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class CardQuestion extends Fragment {
@@ -75,10 +73,10 @@ public class CardQuestion extends Fragment {
         });
 
         getView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
-            Toast.makeText(getContext(), "This button will take to the \"Join with Card screen\"", Toast.LENGTH_LONG).show();
+            Navigation.findNavController(v).navigate(R.id.action_card_question_to_card_form_fragment);
         });
 
-        SecurityQuestionViewModelFactory questionViewModelFactory = new SecurityQuestionViewModelFactory(SuncorApplication.fetchSecurityQuestionApi);
+        SecurityQuestionViewModel.Factory questionViewModelFactory = new SecurityQuestionViewModel.Factory(SuncorApplication.fetchSecurityQuestionApi);
         SecurityQuestionViewModel securityQuestionViewModel = ViewModelProviders.of(getActivity(), questionViewModelFactory).get(SecurityQuestionViewModel.class);
         securityQuestionViewModel.fetchQuestion();
 
