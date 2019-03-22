@@ -4,21 +4,20 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 
@@ -28,6 +27,8 @@ public class StationsProviderImpl implements StationsProvider {
 
     @Override
     public LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds) {
+        Log.d(StationsProviderImpl.class.getSimpleName(), "Retrieving stations for :" + bounds);
+
         MutableLiveData<Resource<ArrayList<Station>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
@@ -37,25 +38,21 @@ public class StationsProviderImpl implements StationsProvider {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();
+                    Log.d(StationsProviderImpl.class.getSimpleName(), "Locations API response:\n" + jsonText);
+
                     try {
-                        final JSONArray jsonArray = new JSONArray(jsonText);
                         Gson gson = new Gson();
-                        ArrayList<Station> stations = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jo = jsonArray.getJSONObject(i);
-                            Station station = gson.fromJson(jo.toString(), Station.class);
-                            stations.add(station);
-                        }
-                        result.postValue(Resource.success(stations));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        result.postValue(Resource.error(e.getMessage()));
+                        Station[] stations = gson.fromJson(jsonText, Station[].class);
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(stations))));
+                    } catch (JsonSyntaxException e) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        Log.e(StationsProviderImpl.class.getSimpleName(), "Retrieving locations failed due to " + e.toString());
                     }
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.d(StationsProviderImpl.class.getSimpleName(), wlFailResponse.toString());
+                    Log.e(StationsProviderImpl.class.getSimpleName(), "Retrieving locations failed due to " + wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });

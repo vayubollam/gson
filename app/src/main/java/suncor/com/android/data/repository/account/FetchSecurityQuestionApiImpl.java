@@ -3,21 +3,20 @@ package suncor.com.android.data.repository.account;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SecurityQuestion;
 
@@ -26,6 +25,7 @@ public class FetchSecurityQuestionApiImpl implements FetchSecurityQuestionApi {
 
     @Override
     public LiveData<Resource<ArrayList<SecurityQuestion>>> fetchSecurityQuestions() {
+        Log.d(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Retrieve security questions");
         MutableLiveData<Resource<ArrayList<SecurityQuestion>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         URI adapterPath;
@@ -36,28 +36,20 @@ public class FetchSecurityQuestionApiImpl implements FetchSecurityQuestionApi {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();
-                    Log.d(FetchSecurityQuestionApiImpl.class.getSimpleName(), "security Question Response:" + jsonText);
+                    Log.d(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Security Question Response:" + jsonText);
                     try {
-                        final JSONArray jsonArray = new JSONArray(jsonText);
                         Gson gson = new Gson();
-                        ArrayList<SecurityQuestion> questions = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jo = jsonArray.getJSONObject(i);
-                            SecurityQuestion question = gson.fromJson(jo.toString(), SecurityQuestion.class);
-                            questions.add(question);
-                        }
-                        result.postValue(Resource.success(questions));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        result.postValue(Resource.error(e.getMessage()));
-                        Log.d(FetchSecurityQuestionApiImpl.class.getSimpleName(), "security Question Response:" + jsonText);
+                        SecurityQuestion[] questions = gson.fromJson(jsonText, SecurityQuestion[].class);
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(questions))));
+                    } catch (JsonSyntaxException e) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        Log.e(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Retrieving security questions failed due to " + e.toString());
                     }
-
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.d(FetchSecurityQuestionApiImpl.class.getSimpleName(), "security Question Response:" + wlFailResponse.getErrorMsg());
+                    Log.e(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Retrieving security questions failed due to:" + wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
