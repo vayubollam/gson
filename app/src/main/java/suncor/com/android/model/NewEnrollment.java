@@ -1,6 +1,9 @@
 package suncor.com.android.model;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+
+import suncor.com.android.utilities.EmptyStringTypeAdapter;
 
 public class NewEnrollment {
 
@@ -19,7 +22,10 @@ public class NewEnrollment {
     private String city;
     private String province;
     private String postalCode;
+
+    @JsonAdapter(EmptyStringTypeAdapter.class)
     private String phone;
+
     private boolean recieveOffers;
     private String securityQuestionId;
     private String securityAnswer;

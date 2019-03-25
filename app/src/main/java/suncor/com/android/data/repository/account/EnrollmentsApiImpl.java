@@ -35,11 +35,13 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
+                    Log.d(EnrollmentsApi.class.getSimpleName(), "Enrollments API success response\n" + wlResponse.getResponseText());
                     result.postValue(Resource.success(true));
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
+                    Log.d(EnrollmentsApi.class.getSimpleName(), "Enrollments API failed, " + wlFailResponse.toString());
                     Log.e(EmailCheckApiImpl.class.getSimpleName(), wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }

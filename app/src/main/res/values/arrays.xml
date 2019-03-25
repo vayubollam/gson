@@ -46,18 +46,18 @@
     </string-array>
 
     <string-array name="province_names">
-        <item>Alberta</item>
-        <item>British Columbia</item>
-        <item>Manitoba</item>
-        <item>New Brunswick</item>
-        <item>Newfoundland and Labrador</item>
-        <item>Northwest Territories</item>
-        <item>Nova Scotia</item>
-        <item>Nunavut</item>
-        <item>Ontario</item>
-        <item>Prince Edward Island</item>
-        <item>Quebec</item>
-        <item>Saskatchewan</item>
-        <item>Yukon</item>
+        <item>Alberta;AB</item>
+        <item>British Columbia;BC</item>
+        <item>Manitoba;MB</item>
+        <item>New Brunswick;NB</item>
+        <item>Newfoundland and Labrador;NL</item>
+        <item>Northwest Territories;NT</item>
+        <item>Nova Scotia;NS</item>
+        <item>Nunavut;NU</item>
+        <item>Ontario;ON</item>
+        <item>Prince Edward Island;PE</item>
+        <item>Quebec;QC</item>
+        <item>Saskatchewan;SK</item>
+        <item>Yukon;YT</item>
     </string-array>
 </resources>

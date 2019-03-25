@@ -1,5 +1,7 @@
 package suncor.com.android.ui.enrollement.form;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -12,7 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.NewEnrollment;
+import suncor.com.android.model.Province;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SecurityQuestion;
 import suncor.com.android.ui.common.Event;
@@ -38,7 +42,8 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField postalCodeField = new InputField(R.string.enrollment_postalcode_error);
     private InputField phoneField = new InputField();
     private ObservableBoolean newsAndOffersField = new ObservableBoolean();
-    private SecurityQuestion question;
+    private SecurityQuestion selectedQuestion;
+    private Province selectedProvince;
     private ArrayList<InputField> requiredFields = new ArrayList<>();
 
 
@@ -72,8 +77,9 @@ public class EnrollmentFormViewModel extends ViewModel {
             }
         });
 
-        joinLiveData = Transformations.switchMap(join, (event) -> {
+        LiveData<Resource<Boolean>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
+                Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Start sign up process");
                 NewEnrollment account = new NewEnrollment(
                         NewEnrollment.EnrollmentType.NEW,
                         firstNameField.getText(),
@@ -82,17 +88,38 @@ public class EnrollmentFormViewModel extends ViewModel {
                         passwordField.getText(),
                         streetAddressField.getText(),
                         cityField.getText(),
-                        provinceField.getText(),
-                        postalCodeField.getText(),
-                        phoneField.getText(),
+                        selectedProvince.getId(),
+                        postalCodeField.getText().replace(" ", ""), //Replace the space characters
+                        phoneField.getText().replaceAll("[^\\d]", ""), //Replace all characters except digits
                         newsAndOffersField.get(),
-                        question.getId(),
+                        selectedQuestion.getId(),
                         securityAnswerField.getText()
                 );
 
                 return enrollmentsApi.registerAccount(account);
             }
             return new MutableLiveData<>();
+        });
+
+        joinLiveData = Transformations.switchMap(joinApiData, (result) -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                //login the user
+                Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Success sign up, start user auto login");
+                return Transformations.map(SessionManager.getInstance().login(emailInputField.getText(), passwordField.getText()), (r) -> {
+                    switch (r.status) {
+                        case SUCCESS:
+                            return Resource.success(true);
+                        case ERROR:
+                            return Resource.error(r.message);
+                        default:
+                            return Resource.loading();
+                    }
+                });
+            } else {
+                MutableLiveData<Resource<Boolean>> liveData = new MutableLiveData<>();
+                liveData.setValue(result);
+                return liveData;
+            }
         });
     }
 
@@ -187,12 +214,22 @@ public class EnrollmentFormViewModel extends ViewModel {
         return requiredFields;
     }
 
-    public void setQuestion(SecurityQuestion question) {
-        this.question = question;
-        if (question != null) {
-            securityQuestionField.setText(question.getLocalizedQuestion());
+    public void setSelectedQuestion(SecurityQuestion selectedQuestion) {
+        this.selectedQuestion = selectedQuestion;
+        if (selectedQuestion != null) {
+            securityQuestionField.setText(selectedQuestion.getLocalizedQuestion());
         }
+    }
 
+    public void setSelectedProvince(Province selectedProvince) {
+        this.selectedProvince = selectedProvince;
+        if (selectedProvince != null) {
+            provinceField.setText(selectedProvince.getName());
+        }
+    }
+
+    public Province getSelectedProvince() {
+        return selectedProvince;
     }
 
     public static class Factory implements ViewModelProvider.Factory {

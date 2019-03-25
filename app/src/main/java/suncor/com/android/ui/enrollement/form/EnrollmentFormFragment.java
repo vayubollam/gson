@@ -76,6 +76,16 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
                         .show(getFragmentManager(), ModalDialog.TAG);
             }
         });
+
+        viewModel.joinLiveData.observe(this, (r) -> {
+            //Ignore all results except success answers
+            if (r.status == Resource.Status.SUCCESS) {
+                getView().postDelayed(() -> getActivity().finish(), 1000);
+            } else if (r.status == Resource.Status.ERROR) {
+                Toast.makeText(getContext(), r.message, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Nullable
@@ -171,9 +181,6 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         int itemWithError = viewModel.validateAndJoin();
         if (itemWithError != -1) {
             focusOnItem(requiredFields.get(itemWithError));
-        } else {
-            //TODO join
-            Toast.makeText(getContext(), "Will Join", Toast.LENGTH_LONG).show();
         }
     }
 

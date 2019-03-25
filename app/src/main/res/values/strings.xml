@@ -80,7 +80,7 @@
     <string name="enrollment_last_name_label">Last name</string>
     <string name="enrollment_email_label">Email</string>
     <string name="enrollment_password_label">Password</string>
-    <string name="enrollment_security_question_label">Security question</string>
+    <string name="enrollment_security_question_label">Security selectedQuestion</string>
     <string name="enrollment_street_address_label">Street address</string>
     <string name="enrollment_security_answer_label">Answer</string>
     <string name="enrollment_city_label">City</string>

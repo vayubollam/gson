@@ -25,18 +25,18 @@
         <item>Lave-auto (sans contact)</item>
     </string-array>
     <string-array name="province_names">
-        <item>Alberta</item>
-        <item>Colombie-Britannique</item>
-        <item>Île-du Prince Édouard</item>
-        <item>Manitoba</item>
-        <item>Nouveau-Brunswick</item>
-        <item>Nouveau-Écosse</item>
-        <item>Nunavut</item>
-        <item>Ontario</item>
-        <item>Québec</item>
-        <item>Saskatchewan</item>
-        <item>Terre-Nueve-et-Labrador</item>
-        <item>Territoires du Nord-Ouest</item>
-        <item>Yukon</item>
+        <item>Alberta;AB</item>
+        <item>Colombie-Britannique;BC</item>
+        <item>Île-du Prince Édouard;PE</item>
+        <item>Manitoba;MB</item>
+        <item>Nouveau-Brunswick;NB</item>
+        <item>Nouveau-Écosse;NS</item>
+        <item>Nunavut;NU</item>
+        <item>Ontario;ON</item>
+        <item>Québec;QC</item>
+        <item>Saskatchewan;SK</item>
+        <item>Terre-Nueve-et-Labrador;NL</item>
+        <item>Territoires du Nord-Ouest;NT</item>
+        <item>Yukon;YT</item>
     </string-array>
 </resources>

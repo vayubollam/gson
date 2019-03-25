@@ -55,6 +55,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e(UserLoginChallengeHandler.class.getSimpleName(), "handle challenge failed, " + jsonObject);
         }
     }
 
