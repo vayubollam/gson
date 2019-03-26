@@ -128,6 +128,8 @@
     <string name="profil_sign_out_dialog_negative_button">Cancel</string>
     <string name="msg_e001_title">Something went wrong</string>
     <string name="msg_e001_message">Please try again later.</string>
+    <string name="msg_e002_title">No internet connection</string>
+    <string name="msg_e002_message">Go online and try again.</string>
     <string name="enrollment_cardform_header">Let\'s get you registered.</string>
     <string name="enrollment_cardform_card_label">Petro-Points card number</string>
     <string name="enrollment_cardform_postalcode_label">Postal code</string>

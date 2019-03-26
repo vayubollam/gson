@@ -20,6 +20,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.utilities.ConnectionUtil;
 
 
 public class ProfileFragment extends BaseFragment {
@@ -79,10 +80,16 @@ public class ProfileFragment extends BaseFragment {
             } else if (result.status == Resource.Status.ERROR) {
                 signOutBP.setVisibility(View.GONE);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                        .setTitle(getString(R.string.msg_e001_title))
-                        .setMessage(getString(R.string.msg_e001_message))
                         .setPositiveButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss()
                         );
+                if (!ConnectionUtil.haveNetworkConnection()) {
+                    builder.setTitle(getString(R.string.msg_e002_title))
+                            .setMessage(getString(R.string.msg_e002_message));
+                } else {
+                    builder.setTitle(getString(R.string.msg_e001_title))
+                            .setMessage(getString(R.string.msg_e001_message));
+                }
+
                 builder.create().show();
             }
         });

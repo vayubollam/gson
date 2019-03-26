@@ -134,4 +134,6 @@
     <string name="enrollment_cardform_card_error">Le numéro de carte est requis.</string>
     <string name="enrollment_cardform_card_label">Numéro de carte Petro‑Points</string>
     <string name="enrollment_cardform_header">Commençons votre inscription.</string>
+    <string name="msg_e002_title">Aucune connexion internet</string>
+    <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
 </resources>
