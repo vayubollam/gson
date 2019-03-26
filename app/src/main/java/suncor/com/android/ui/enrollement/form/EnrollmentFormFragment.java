@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,10 +31,12 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollement.EnrollmentActivity;
+import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
@@ -78,11 +79,17 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         });
 
         viewModel.joinLiveData.observe(this, (r) -> {
-            //Ignore all results except success answers
             if (r.status == Resource.Status.SUCCESS) {
-                getView().postDelayed(() -> getActivity().finish(), 1000);
+                getView().postDelayed(() -> {
+                    if (getActivity() != null) {
+                        //Go to home screen to show the welcome message
+                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }, 1000);
             } else if (r.status == Resource.Status.ERROR) {
-                Toast.makeText(getContext(), r.message, Toast.LENGTH_LONG).show();
+                Alerts.prepareGeneralErrorDialog(getActivity()).show();
             }
         });
 

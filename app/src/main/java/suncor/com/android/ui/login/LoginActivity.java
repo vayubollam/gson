@@ -126,8 +126,10 @@ public class LoginActivity extends AppCompatActivity {
                                             dialog.show();
                                         }
                                     } else {
-                                        String title = getString(R.string.login_invalid_credentials_dialog_title);
-                                        String content = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+//                                        String title = getString(R.string.login_invalid_credentials_dialog_title);
+//                                        String content = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
+                                        String title = getString(R.string.msg_e001_title);
+                                        String content = getString(R.string.msg_e001_message);
                                         createAlert(title, content).show();
                                     }
                                 }

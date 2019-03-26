@@ -80,7 +80,7 @@
     <string name="enrollment_last_name_label">Last name</string>
     <string name="enrollment_email_label">Email</string>
     <string name="enrollment_password_label">Password</string>
-    <string name="enrollment_security_question_label">Security selectedQuestion</string>
+    <string name="enrollment_security_question_label">Security Question</string>
     <string name="enrollment_street_address_label">Street address</string>
     <string name="enrollment_security_answer_label">Answer</string>
     <string name="enrollment_city_label">City</string>
@@ -140,4 +140,7 @@
     <string name="enrollment_cardform_lastname_error">Last name is required.</string>
     <string name="enrollment_cardform_card_format_error">The card number you entered is incorrect.</string>
     <string name="enrollment_cardform_postalcode_format_error">The postal code you entered isn\'t valid.</string>
+    <string name="enrollment_create_account_message">Creating your\nPetro-Points account</string>
+    <string name="enrollment_account_created_message">Account created</string>
+    <string name="dashboard_enrolled_welcome_message">Thanks for joining, %s.\nEnjoy 2,500 points on us!</string>
 </resources>

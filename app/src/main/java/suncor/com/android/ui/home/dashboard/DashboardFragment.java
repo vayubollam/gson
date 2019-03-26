@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -28,7 +29,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
+import suncor.com.android.model.Profile;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.home.common.BaseFragment;
@@ -48,6 +51,8 @@ public class DashboardFragment extends BaseFragment {
     private DashboardAdapter dashboardAdapter;
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
+    private AppCompatTextView welcomeMessage;
+    private FrameLayout welcomeLayout;
 
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
@@ -71,6 +76,8 @@ public class DashboardFragment extends BaseFragment {
         openHoursText = view.findViewById(R.id.txt_station_open);
         directionsButton = view.findViewById(R.id.directions_button);
         carouselRecyclerView = view.findViewById(R.id.card_recycler);
+        welcomeMessage = view.findViewById(R.id.welcome_message);
+        welcomeLayout = view.findViewById(R.id.welcome_layout);
         return view;
     }
 
@@ -164,11 +171,27 @@ public class DashboardFragment extends BaseFragment {
         };
 
         mViewModel.nearestStation.observe(getViewLifecycleOwner(), stationObserver);
+        //TODO use this if (mViewModel.getAccountState() == SessionManager.AccountState.JUST_ENROLLED) {
+        if (SessionManager.getInstance().isUserLoggedIn()) {
+            showWelcomeMessage();
+        }
+
+    }
+
+    private void showWelcomeMessage() {
+        //TODO improve this
+        welcomeLayout.setVisibility(View.VISIBLE);
+        Profile profile = SessionManager.getInstance().getProfile();
+        welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName()));
     }
 
     @Override
     public void onLoginStatusChanged() {
-        dashboardAdapter.notifyDataSetChanged();
+        if (SessionManager.getInstance().isUserLoggedIn()) {
+            showWelcomeMessage();
+        } else {
+            welcomeLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override

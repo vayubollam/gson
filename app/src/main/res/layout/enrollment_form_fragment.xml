@@ -298,17 +298,21 @@
             android:background="@color/white"
             android:clickable="true"
             android:elevation="8dp"
+            android:visibility="gone"
             app:visibleGone="@{ vm.joinLiveData.status == Resource.Status.LOADING || vm.joinLiveData.status == Resource.Status.SUCCESS }">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:text="Creating Account"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.31"
+                android:text="@{vm.joinLiveData.status == Resource.Status.SUCCESS?@string/enrollment_account_created_message:@string/enrollment_create_account_message}"
                 android:textAppearance="@style/Title1"
                 app:layout_constraintBottom_toTopOf="@id/progress_layout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/enrollment_create_account_message" />
 
             <FrameLayout
                 android:id="@+id/progress_layout"

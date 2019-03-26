@@ -3,6 +3,7 @@ package suncor.com.android.mfp.challengeHandlers;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLClient;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.Profile;
 
 /**
  * Created by bahramhaddadi on 2018-11-28.
@@ -56,6 +58,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(UserLoginChallengeHandler.class.getSimpleName(), "handle challenge failed, " + jsonObject);
+            listener.onLoginFailed(e.getMessage());
         }
     }
 
@@ -84,7 +87,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         isChallenged = false;
         try {
             //Save the current user
-            listener.onLoginSuccess(identity.getJSONObject("user").toString());
+            String profile = identity.getJSONObject("user").getString("attributes");
+            listener.onLoginSuccess(new Gson().fromJson(profile, Profile.class));
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -108,23 +108,37 @@ public class EnrollmentFormViewModel extends ViewModel {
                 return Transformations.map(SessionManager.getInstance().login(emailInputField.getText(), passwordField.getText()), (r) -> {
                     switch (r.status) {
                         case SUCCESS:
+                            Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Login succeeded");
+                            SessionManager.getInstance().setAccountState(SessionManager.AccountState.JUST_ENROLLED);
                             return Resource.success(true);
                         case ERROR:
+                            Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Login failed");
                             return Resource.error(r.message);
                         default:
                             return Resource.loading();
                     }
                 });
             } else {
-                MutableLiveData<Resource<Boolean>> liveData = new MutableLiveData<>();
-                liveData.setValue(result);
-                return liveData;
+                MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
+                intermediateLivedata.setValue(result);
+                return intermediateLivedata;
             }
         });
     }
 
     public ObservableBoolean getNewsAndOffersField() {
         return newsAndOffersField;
+    }
+
+    public boolean oneItemFilled() {
+        for (InputField input : requiredFields) {
+            if (!input.isEmpty()) {
+                return true;
+            }
+        }
+        return !phoneField.isEmpty()
+                || !securityQuestionField.isEmpty()
+                || !securityAnswerField.isEmpty();
     }
 
     /**
@@ -199,17 +213,6 @@ public class EnrollmentFormViewModel extends ViewModel {
         return phoneField;
     }
 
-    public boolean oneItemFilled() {
-        for (InputField input : requiredFields) {
-            if (!input.isEmpty()) {
-                return true;
-            }
-        }
-        return !phoneField.isEmpty()
-                || !securityQuestionField.isEmpty()
-                || !securityAnswerField.isEmpty();
-    }
-
     ArrayList<InputField> getRequiredFields() {
         return requiredFields;
     }
@@ -221,15 +224,15 @@ public class EnrollmentFormViewModel extends ViewModel {
         }
     }
 
+    public Province getSelectedProvince() {
+        return selectedProvince;
+    }
+
     public void setSelectedProvince(Province selectedProvince) {
         this.selectedProvince = selectedProvince;
         if (selectedProvince != null) {
             provinceField.setText(selectedProvince.getName());
         }
-    }
-
-    public Province getSelectedProvince() {
-        return selectedProvince;
     }
 
     public static class Factory implements ViewModelProvider.Factory {

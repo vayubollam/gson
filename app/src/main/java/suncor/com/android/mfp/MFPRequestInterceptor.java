@@ -1,6 +1,7 @@
 package suncor.com.android.mfp;
 
 import android.content.Intent;
+import android.os.Handler;
 
 import com.worklight.nativeandroid.common.WLUtils;
 import com.worklight.wlclient.HttpClientManager;
@@ -19,6 +20,7 @@ import okhttp3.Response;
 import okio.Buffer;
 import okio.BufferedSource;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.HomeActivity;
 
 public class MFPRequestInterceptor implements Interceptor {
@@ -58,10 +60,15 @@ public class MFPRequestInterceptor implements Interceptor {
                 JSONObject object = new JSONObject(body);
                 if (object.has("errorCode")) {
                     if (ErrorCodes.OTHER_SESSION_STARTED.equalsIgnoreCase(object.getString("errorCode"))) {
-                        SessionManager.getInstance().logout();
-                        Intent intent = new Intent(SuncorApplication.getInstance(), HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        SuncorApplication.getInstance().startActivity(intent);
+                        Handler mainHandler = new Handler(SuncorApplication.getInstance().getMainLooper());
+                        mainHandler.post(() -> SessionManager.getInstance().logout().observeForever((result) -> {
+                            //The livedata from logout is short lived, so observing it forever won't leak memories
+                            if (result.status == Resource.Status.SUCCESS) {
+                                Intent intent = new Intent(SuncorApplication.getInstance(), HomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                SuncorApplication.getInstance().startActivity(intent);
+                            }
+                        }));
                     }
                 }
             } catch (JSONException e) {

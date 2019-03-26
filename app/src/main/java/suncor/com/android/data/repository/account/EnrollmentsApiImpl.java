@@ -35,7 +35,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
-                    Log.d(EnrollmentsApi.class.getSimpleName(), "Enrollments API success response\n" + wlResponse.getResponseText());
+                    Log.d(EnrollmentsApi.class.getSimpleName(), "Enrollments API success");
                     result.postValue(Resource.success(true));
                 }
 
