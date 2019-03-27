@@ -107,23 +107,23 @@ public class SessionManager implements SessionChangeListener {
     }
 
     public void checkLoginState() {
-        if (isUserLoggedIn()) {
-            WLAuthorizationManager.getInstance().obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
-                @Override
-                public void onSuccess(AccessToken accessToken) {
-                    loginState.postValue(LoginState.LOGGED_IN);
-                }
+        Log.d(SessionManager.class.getSimpleName(), "Checking login status");
+        WLAuthorizationManager.getInstance().obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
+            @Override
+            public void onSuccess(AccessToken accessToken) {
+                Log.d(SessionManager.class.getSimpleName(), "Access token received, user is logged in");
+                loginState.postValue(LoginState.LOGGED_IN);
+            }
 
-                @Override
-                public void onFailure(WLFailResponse wlFailResponse) {
-                    //TODO handle this according to errors, an error due to connection error shouldn't clear login state
-                    loginState.postValue(LoginState.LOGGED_OUT);
-                    setProfile(null);
-                }
-            });
-        } else {
-            loginState.postValue(LoginState.LOGGED_OUT);
-        }
+            @Override
+            public void onFailure(WLFailResponse wlFailResponse) {
+                //TODO handle this according to errors, an error due to connection error shouldn't clear login state
+                Log.w(SessionManager.class.getSimpleName(), "Access token cannot be retrieved");
+                Log.w(SessionManager.class.getSimpleName(), wlFailResponse.toString());
+                loginState.postValue(LoginState.LOGGED_OUT);
+                setProfile(null);
+            }
+        });
     }
 
     public void cancelLogin() {
@@ -190,7 +190,9 @@ public class SessionManager implements SessionChangeListener {
 
     @Override
     public void onLoginSuccess(Profile profile) {
+        Log.d(SessionManager.class.getSimpleName(), "login succeeded");
         if (!profile.equals(this.profile)) {
+            Log.d(SessionManager.class.getSimpleName(), "user's email: " + profile.getEmail());
             setProfile(profile);
             if (loginObservable != null) {
                 loginObservable.postValue(Resource.success(SigninResponse.SUCCESS));
@@ -202,6 +204,7 @@ public class SessionManager implements SessionChangeListener {
 
     @Override
     public void onLoginRequired(int remainingAttempts) {
+        Log.d(SessionManager.class.getSimpleName(), "login challenged, remaining attempts: " + remainingAttempts);
         setProfile(null);
         if (loginObservable != null) {
             loginObservable.postValue(Resource.error(remainingAttempts + "", SigninResponse.CHALLENGED));
@@ -215,6 +218,7 @@ public class SessionManager implements SessionChangeListener {
 
     @Override
     public void onLoginFailed(String error) {
+        Log.d(SessionManager.class.getSimpleName(), "login failed, cause: " + error);
         setProfile(null);
         if (loginObservable != null) {
             loginObservable.postValue(Resource.error(error, SigninResponse.FAILED));

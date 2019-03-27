@@ -52,9 +52,8 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
         getWindow().getDecorView()
                 .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        if (SessionManager.getInstance().isUserLoggedIn()) {
-            SessionManager.getInstance().checkLoginState();
-        }
+        SessionManager.getInstance().checkLoginState();
+
         if (SuncorApplication.splashShown) {
             openHomeActivity();
             return;
