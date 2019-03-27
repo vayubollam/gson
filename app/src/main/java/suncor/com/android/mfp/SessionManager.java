@@ -2,6 +2,7 @@ package suncor.com.android.mfp;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
+import suncor.com.android.model.Profile;
 import suncor.com.android.model.Resource;
 import suncor.com.android.utilities.UserLocalSettings;
 
@@ -24,7 +26,8 @@ public class SessionManager implements SessionChangeListener {
     private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
     private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
     private static SessionManager sInstance;
-    private String user;
+    private Profile profile;
+    private AccountState accountState;
     private UserLoginChallengeHandler challengeHandler;
     private MutableLiveData<Resource<SigninResponse>> loginObservable;
     private MutableLiveData<LoginState> loginState = new MutableLiveData<LoginState>() {
@@ -46,11 +49,10 @@ public class SessionManager implements SessionChangeListener {
     private boolean loginOngoing = false;
 
     private SessionManager() {
-        user = UserLocalSettings.getString(SHARED_PREF_USER);
-        if (user != null && !user.isEmpty()) {
-            loginState.postValue(LoginState.LOGGED_IN);
-        } else {
-            loginState.postValue(LoginState.LOGGED_OUT);
+        String profileString = UserLocalSettings.getString(SHARED_PREF_USER);
+        if (profileString != null && !profileString.isEmpty()) {
+            profile = new Gson().fromJson(profileString, Profile.class);
+            accountState = AccountState.REGULAR_LOGIN;
         }
     }
 
@@ -67,7 +69,8 @@ public class SessionManager implements SessionChangeListener {
         WLAuthorizationManager.getInstance().logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
-                setUser(null);
+                setProfile(null);
+                accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
                 result.postValue(Resource.success(true));
             }
@@ -115,7 +118,7 @@ public class SessionManager implements SessionChangeListener {
                 public void onFailure(WLFailResponse wlFailResponse) {
                     //TODO handle this according to errors, an error due to connection error shouldn't clear login state
                     loginState.postValue(LoginState.LOGGED_OUT);
-                    setUser(null);
+                    setProfile(null);
                 }
             });
         } else {
@@ -137,20 +140,36 @@ public class SessionManager implements SessionChangeListener {
     }
 
     public boolean isUserLoggedIn() {
-        return loginState.getValue() == LoginState.LOGGED_IN;
+        if (loginState.getValue() != null) {
+            return loginState.getValue() == LoginState.LOGGED_IN;
+        } else {
+            //when the app is just being launched, we want to assume that it was logged in if we have a cached profile
+            return profile != null;
+        }
     }
 
-    public String getUser() {
-        return user;
+    public Profile getProfile() {
+        return profile;
     }
 
-    private void setUser(String user) {
-        this.user = user;
-        if (user == null) {
+    private void setProfile(Profile profile) {
+        if (profile == null) {
+            this.profile = null;
+            accountState = null;
             UserLocalSettings.removeKey(SHARED_PREF_USER);
         } else {
-            UserLocalSettings.setString(SHARED_PREF_USER, user);
+            this.profile = profile;
+            UserLocalSettings.setString(SHARED_PREF_USER, new Gson().toJson(profile));
+            accountState = AccountState.REGULAR_LOGIN;
         }
+    }
+
+    public AccountState getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(AccountState accountState) {
+        this.accountState = accountState;
     }
 
     public void markAccountAsBlocked() {
@@ -170,18 +189,20 @@ public class SessionManager implements SessionChangeListener {
     }
 
     @Override
-    public void onLoginSuccess(String userName) {
-        setUser(userName);
-        if (loginObservable != null) {
-            loginObservable.postValue(Resource.success(SigninResponse.SUCCESS));
+    public void onLoginSuccess(Profile profile) {
+        if (!profile.equals(this.profile)) {
+            setProfile(profile);
+            if (loginObservable != null) {
+                loginObservable.postValue(Resource.success(SigninResponse.SUCCESS));
+            }
+            loginState.postValue(LoginState.LOGGED_IN);
+            loginOngoing = false;
         }
-        loginState.postValue(LoginState.LOGGED_IN);
-        loginOngoing = false;
     }
 
     @Override
     public void onLoginRequired(int remainingAttempts) {
-        setUser(null);
+        setProfile(null);
         if (loginObservable != null) {
             loginObservable.postValue(Resource.error(remainingAttempts + "", SigninResponse.CHALLENGED));
         }
@@ -194,7 +215,7 @@ public class SessionManager implements SessionChangeListener {
 
     @Override
     public void onLoginFailed(String error) {
-        setUser(null);
+        setProfile(null);
         if (loginObservable != null) {
             loginObservable.postValue(Resource.error(error, SigninResponse.FAILED));
         }
@@ -208,5 +229,9 @@ public class SessionManager implements SessionChangeListener {
 
     public enum SigninResponse {
         SUCCESS, CHALLENGED, FAILED
+    }
+
+    public enum AccountState {
+        JUST_ENROLLED, REGULAR_LOGIN
     }
 }

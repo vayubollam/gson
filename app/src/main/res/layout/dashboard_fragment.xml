@@ -119,5 +119,21 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <FrameLayout
+        android:id="@+id/welcome_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:elevation="8dp"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/welcome_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Title1" />
+    </FrameLayout>
 
 </RelativeLayout>

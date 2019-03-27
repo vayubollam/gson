@@ -66,7 +66,7 @@ public class SecurityQuestionFragment extends Fragment {
     }
 
     public void onSecurityQuestionSelected(int selectedQuestion) {
-        enrollmentFormViewModel.setQuestion(securityQuestionViewModel.questionArrayList.get(selectedQuestion));
+        enrollmentFormViewModel.setSelectedQuestion(securityQuestionViewModel.questionArrayList.get(selectedQuestion));
         securityQuestionViewModel.setSelectedItem(selectedQuestion);
 
     }

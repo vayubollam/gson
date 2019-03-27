@@ -7,6 +7,8 @@ import com.worklight.wlclient.api.WLClient;
 
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.data.repository.account.EmailCheckApiImpl;
+import suncor.com.android.data.repository.account.EnrollmentsApi;
+import suncor.com.android.data.repository.account.EnrollmentsApiImpl;
 import suncor.com.android.data.repository.account.FetchSecurityQuestionApi;
 import suncor.com.android.data.repository.account.FetchSecurityQuestionApiImpl;
 import suncor.com.android.data.repository.favourite.FavouriteRepository;
@@ -24,6 +26,7 @@ public class SuncorApplication extends Application {
     public static StationsProvider stationsProvider;
     public static EmailCheckApi emailCheckApi;
     public static FetchSecurityQuestionApi fetchSecurityQuestionApi;
+    public static EnrollmentsApi enrollmentsApi;
 
     public static boolean splashShown = false;
     private static SuncorApplication sInstance;
@@ -39,6 +42,7 @@ public class SuncorApplication extends Application {
         favouriteRepository = new FavouriteRepositoryImpl(this);
         stationsProvider = new StationsProviderImpl();
         emailCheckApi = new EmailCheckApiImpl();
+        enrollmentsApi = new EnrollmentsApiImpl();
         fetchSecurityQuestionApi = new FetchSecurityQuestionApiImpl();
         Station.initiateAmenities(this);
     }

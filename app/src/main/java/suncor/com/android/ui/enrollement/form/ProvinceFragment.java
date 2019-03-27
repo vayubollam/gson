@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,10 +16,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
+import suncor.com.android.model.Province;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class ProvinceFragment extends DialogFragment {
     private EnrollmentFormViewModel enrollmentFormViewModel;
+    private ArrayList<Province> provinces = new ArrayList<>();
     private ArrayList<String> provinceNames = new ArrayList<>();
 
 
@@ -39,7 +40,12 @@ public class ProvinceFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        provinceNames.addAll(Arrays.asList(getResources().getStringArray(R.array.province_names)));
+        String[] provincesArray = getResources().getStringArray(R.array.province_names);
+        for (String provinceCodeName : provincesArray) {
+            String[] nameCode = provinceCodeName.split(";");
+            provinces.add(new Province(nameCode[1], nameCode[0]));
+            provinceNames.add(nameCode[0]);
+        }
     }
 
     @Override
@@ -52,7 +58,8 @@ public class ProvinceFragment extends DialogFragment {
         enrollmentFormViewModel = ViewModelProviders.of(getActivity()).get(EnrollmentFormViewModel.class);
         ChoiceSelectorAdapter provinceAdapter;
 
-        int index = provinceNames.indexOf(enrollmentFormViewModel.getProvinceField().getText());
+        int index = provinces.indexOf(enrollmentFormViewModel.getSelectedProvince());
+
         provinceAdapter = new ChoiceSelectorAdapter(provinceNames, (this::provinceSelected), index);
 
         RecyclerView province_recycler = getView().findViewById(R.id.province_recycler);
@@ -61,7 +68,7 @@ public class ProvinceFragment extends DialogFragment {
     }
 
     public void provinceSelected(int selectedProvince) {
-        enrollmentFormViewModel.getProvinceField().setText(provinceNames.get(selectedProvince));
+        enrollmentFormViewModel.setSelectedProvince(provinces.get(selectedProvince));
     }
 
 

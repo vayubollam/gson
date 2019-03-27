@@ -136,4 +136,6 @@
     <string name="enrollment_cardform_header">Commençons votre inscription.</string>
     <string name="msg_e002_title">Aucune connexion internet</string>
     <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
+    <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
+    <string name="enrollment_account_created_message">Compte créé</string>
 </resources>

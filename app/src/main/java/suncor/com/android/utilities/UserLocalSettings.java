@@ -54,4 +54,14 @@ public class UserLocalSettings {
                 .remove(key)
                 .apply();
     }
+
+    public static int getInt(String key, int defaultValue) {
+        return preferences.getInt(key, defaultValue);
+    }
+
+    public static void setInt(String key, int value) {
+        preferences.edit()
+                .putInt(key, value)
+                .apply();
+    }
 }

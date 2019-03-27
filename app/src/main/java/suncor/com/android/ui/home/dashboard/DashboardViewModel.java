@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.stations.StationsProvider;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 
@@ -15,11 +16,15 @@ public class DashboardViewModel extends ViewModel {
 
     public LiveData<Resource<Station>> nearestStation;
     private StationsProvider stationsProvider;
+    private SessionManager.AccountState accountState = null;
 
     public DashboardViewModel() {
         //TODO move the parameter to constructor
         this.stationsProvider = SuncorApplication.stationsProvider;
         initNearestStation();
+        if (SessionManager.getInstance().isUserLoggedIn()) {
+            accountState = SessionManager.getInstance().getAccountState();
+        }
     }
 
     public void initNearestStation() {
@@ -42,5 +47,17 @@ public class DashboardViewModel extends ViewModel {
                     }
             }
         }));
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        if (accountState == SessionManager.AccountState.JUST_ENROLLED) {
+            SessionManager.getInstance().setAccountState(SessionManager.AccountState.REGULAR_LOGIN);
+        }
+    }
+
+    public SessionManager.AccountState getAccountState() {
+        return accountState;
     }
 }
