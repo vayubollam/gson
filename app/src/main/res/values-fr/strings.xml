@@ -9,7 +9,6 @@
     <string name="station_open_generic">Ouvert jusqu\'à %s</string>
     <string name="station_directions_button">Obtenir un itinéraire</string>
     <string name="enable_location_dialog_title">Activer les services de localisation</string>
-    <string name="enable_location_dialog_message">Nous utilisons les services de localisation pour montrer les établissements près de chez vous.</string>
     <string name="station_call_button_generic">Appeler · %s</string>
     <string name="station_services_header">Produits et services</string>
     <string name="station_fuel_header">Options de carburants</string>
@@ -138,4 +137,6 @@
     <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
     <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
     <string name="enrollment_account_created_message">Compte créé</string>
+    <string name="station_location_alert_settings">Réglages</string>
+    <string name="enable_location_dialog_message">Nous utilisons les services de localisation pour montrer les établissements près de chez vous.</string>
 </resources>

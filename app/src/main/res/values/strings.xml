@@ -4,7 +4,7 @@
     <string name="navigation_stations_tab">Locations</string>
     <string name="navigation_profile_tab">Profile</string>
     <string name="enable_location_dialog_title">Enable Location Services</string>
-    <string name="enable_location_dialog_message">We use location services to show locations near you.</string>
+    <string name="enable_location_dialog_message">Petro-Canada uses locations services to show stations around you.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canada on the go!</string>
@@ -143,4 +143,5 @@
     <string name="enrollment_create_account_message">Creating your\nPetro-Points account</string>
     <string name="enrollment_account_created_message">Account created</string>
     <string name="dashboard_enrolled_welcome_message">Thanks for joining, %s.\nEnjoy 2,500 points on us!</string>
+    <string name="station_location_alert_settings">Settings</string>
 </resources>
