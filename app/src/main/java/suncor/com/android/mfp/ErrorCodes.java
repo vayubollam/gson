@@ -5,10 +5,6 @@ public class ErrorCodes {
     //A general error which can't be mapped to server errors
     public final static String GENERAL_ERROR = "SUNCOR000";
 
-    public final static String OTHER_SESSION_STARTED = "SUNCOR006";
-    public final static String ACCOUNT_LOCKED = "SUNCOR009";
-    public static final String EXISTING_EMAIL = "SUNCOR017";
-
 
     //Copied from https://bitbucket.org/rfmp-suncor/suncor-mfp/src/master/src/main/java/com/suncor/adapters/constants/SuncorConstants.java
     public static final String DB_CONNECTION_ERROR_CODE = "SUNCOR001";

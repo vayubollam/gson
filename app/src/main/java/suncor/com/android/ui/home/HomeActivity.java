@@ -16,6 +16,7 @@ import java.util.List;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,12 +31,21 @@ import suncor.com.android.ui.home.stationlocator.StationsFragment;
 public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     //request code for requesting permissions
     private final static int PERMISSION_REQUEST_CODE = 1;
+    public static final String LOGGED_OUT_EXTRA = "logged_out_extra";
     private BottomNavigationView bottom_navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if (getIntent().getBooleanExtra(LOGGED_OUT_EXTRA, false)) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setTitle("Signed out");
+            adb.setMessage("You've been signed out as this account was being used on another device. Please sign-in to continue.");
+            adb.setPositiveButton("OK", null);
+            adb.show();
+        }
 
         bottom_navigation = findViewById(R.id.bottom_navigation);
 

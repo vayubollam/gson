@@ -59,13 +59,14 @@ public class MFPRequestInterceptor implements Interceptor {
             try {
                 JSONObject object = new JSONObject(body);
                 if (object.has("errorCode")) {
-                    if (ErrorCodes.OTHER_SESSION_STARTED.equalsIgnoreCase(object.getString("errorCode"))) {
+                    if (ErrorCodes.CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
                         Handler mainHandler = new Handler(SuncorApplication.getInstance().getMainLooper());
                         mainHandler.post(() -> SessionManager.getInstance().logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories
                             if (result.status == Resource.Status.SUCCESS) {
                                 Intent intent = new Intent(SuncorApplication.getInstance(), HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, true);
                                 SuncorApplication.getInstance().startActivity(intent);
                             }
                         }));
