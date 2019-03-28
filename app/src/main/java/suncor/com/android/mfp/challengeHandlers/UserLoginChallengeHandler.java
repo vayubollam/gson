@@ -1,7 +1,6 @@
 package suncor.com.android.mfp.challengeHandlers;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -16,6 +15,7 @@ import org.json.JSONObject;
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Profile;
+import suncor.com.android.utilities.Timber;
 
 /**
  * Created by bahramhaddadi on 2018-11-28.
@@ -48,7 +48,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     @Override
     public void handleChallenge(JSONObject jsonObject) {
-        Log.d(UserLoginChallengeHandler.class.getSimpleName(), "Challenge Received");
+        Timber.d( "Challenge Received");
         isChallenged = true;
         try {
             if (!sessionManager.isAccountBlocked()) {
@@ -57,14 +57,14 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e(UserLoginChallengeHandler.class.getSimpleName(), "handle challenge failed, " + jsonObject);
+            Timber.e( "handle challenge failed, " + jsonObject);
             listener.onLoginFailed(e.getMessage());
         }
     }
 
     @Override
     public void handleFailure(JSONObject error) {
-        Log.d(UserLoginChallengeHandler.class.getSimpleName(), "Handle failure");
+        Timber.d( "Handle failure");
         super.handleFailure(error);
         isChallenged = false;
         try {
@@ -82,7 +82,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     @Override
     public void handleSuccess(JSONObject identity) {
-        Log.d(UserLoginChallengeHandler.class.getSimpleName(), "handle success");
+        Timber.d( "handle success");
         super.handleSuccess(identity);
         isChallenged = false;
         try {
@@ -101,13 +101,13 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
                 @Override
                 public void onSuccess() {
-                    Log.d(UserLoginChallengeHandler.class.getSimpleName(), "Login Preemptive Success");
+                    Timber.d( "Login Preemptive Success");
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     //TODO handle failures related to connection issues
-                    Log.d(UserLoginChallengeHandler.class.getSimpleName(), "Login Preemptive Failure");
+                    Timber.d( "Login Preemptive Failure");
                 }
             });
         }

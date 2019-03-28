@@ -1,7 +1,5 @@
 package suncor.com.android.data.repository.stations;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -21,6 +19,7 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.utilities.Timber;
 
 public class StationsProviderImpl implements StationsProvider {
 
@@ -28,7 +27,7 @@ public class StationsProviderImpl implements StationsProvider {
 
     @Override
     public LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds) {
-        Log.d(StationsProviderImpl.class.getSimpleName(), "Retrieving stations for :" + bounds);
+        Timber.d( "Retrieving stations for :" + bounds);
 
         MutableLiveData<Resource<ArrayList<Station>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
@@ -39,7 +38,7 @@ public class StationsProviderImpl implements StationsProvider {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();
-                    Log.d(StationsProviderImpl.class.getSimpleName(), "Locations API response:\n" + jsonText);
+                    Timber.d( "Locations API response:\n" + jsonText);
 
                     try {
                         Gson gson = new Gson();
@@ -47,13 +46,13 @@ public class StationsProviderImpl implements StationsProvider {
                         result.postValue(Resource.success(new ArrayList<>(Arrays.asList(stations))));
                     } catch (JsonSyntaxException e) {
                         result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-                        Log.e(StationsProviderImpl.class.getSimpleName(), "Retrieving locations failed due to " + e.toString());
+                        Timber.e( "Retrieving locations failed due to " + e.toString());
                     }
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.e(StationsProviderImpl.class.getSimpleName(), "Retrieving locations failed due to " + wlFailResponse.toString());
+                    Timber.e( "Retrieving locations failed due to " + wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });

@@ -3,7 +3,6 @@ package suncor.com.android;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -17,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import suncor.com.android.utilities.Timber;
 
 public class LocationLiveData extends LiveData<Location> {
     private final AtomicBoolean mPending = new AtomicBoolean(false);
@@ -66,7 +66,7 @@ public class LocationLiveData extends LiveData<Location> {
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super Location> observer) {
         if (hasActiveObservers()) {
-            Log.w(LocationLiveData.class.getSimpleName(), "Has previous observers, but only the last one will be used");
+            Timber.w( "Has previous observers, but only the last one will be used");
         }
         mCurrentObserver = observer;
         super.observe(owner, internalObserver);

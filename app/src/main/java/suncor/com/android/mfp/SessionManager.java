@@ -1,7 +1,5 @@
 package suncor.com.android.mfp;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -17,6 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Profile;
 import suncor.com.android.model.Resource;
+import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
 
 public class SessionManager implements SessionChangeListener {
@@ -77,7 +76,7 @@ public class SessionManager implements SessionChangeListener {
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
-                Log.d(UserLoginChallengeHandler.class.getSimpleName(), "Logout Failure");
+                Timber.d( "Logout Failure");
                 result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
             }
         });
@@ -107,19 +106,19 @@ public class SessionManager implements SessionChangeListener {
     }
 
     public void checkLoginState() {
-        Log.d(SessionManager.class.getSimpleName(), "Checking login status");
+        Timber.d( "Checking login status");
         WLAuthorizationManager.getInstance().obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
             @Override
             public void onSuccess(AccessToken accessToken) {
-                Log.d(SessionManager.class.getSimpleName(), "Access token received, user is logged in");
+                Timber.d( "Access token received, user is logged in");
                 loginState.postValue(LoginState.LOGGED_IN);
             }
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
                 //TODO handle this according to errors, an error due to connection error shouldn't clear login state
-                Log.w(SessionManager.class.getSimpleName(), "Access token cannot be retrieved");
-                Log.w(SessionManager.class.getSimpleName(), wlFailResponse.toString());
+                Timber.w( "Access token cannot be retrieved");
+                Timber.w( wlFailResponse.toString());
                 loginState.postValue(LoginState.LOGGED_OUT);
                 setProfile(null);
             }
@@ -190,9 +189,9 @@ public class SessionManager implements SessionChangeListener {
 
     @Override
     public void onLoginSuccess(Profile profile) {
-        Log.d(SessionManager.class.getSimpleName(), "login succeeded");
+        Timber.d( "login succeeded");
         if (!profile.equals(this.profile)) {
-            Log.d(SessionManager.class.getSimpleName(), "user's email: " + profile.getEmail());
+            Timber.d( "user's email: " + profile.getEmail());
             setProfile(profile);
             if (loginObservable != null) {
                 loginObservable.postValue(Resource.success(SigninResponse.SUCCESS));
@@ -204,7 +203,7 @@ public class SessionManager implements SessionChangeListener {
 
     @Override
     public void onLoginRequired(int remainingAttempts) {
-        Log.d(SessionManager.class.getSimpleName(), "login challenged, remaining attempts: " + remainingAttempts);
+        Timber.d( "login challenged, remaining attempts: " + remainingAttempts);
         setProfile(null);
         if (loginObservable != null) {
             loginObservable.postValue(Resource.error(remainingAttempts + "", SigninResponse.CHALLENGED));
@@ -218,7 +217,7 @@ public class SessionManager implements SessionChangeListener {
 
     @Override
     public void onLoginFailed(String error) {
-        Log.d(SessionManager.class.getSimpleName(), "login failed, cause: " + error);
+        Timber.d( "login failed, cause: " + error);
         setProfile(null);
         if (loginObservable != null) {
             loginObservable.postValue(Resource.error(error, SigninResponse.FAILED));

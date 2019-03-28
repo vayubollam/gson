@@ -1,7 +1,5 @@
 package suncor.com.android.data.repository.account;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -20,13 +18,14 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SecurityQuestion;
+import suncor.com.android.utilities.Timber;
 
 public class FetchSecurityQuestionApiImpl implements FetchSecurityQuestionApi {
     private final static String ADAPTER_PATH = "/adapters/suncor/v1/enrollments/security-questions";
 
     @Override
     public LiveData<Resource<ArrayList<SecurityQuestion>>> fetchSecurityQuestions() {
-        Log.d(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Retrieve security questions");
+        Timber.d( "Retrieve security questions");
         MutableLiveData<Resource<ArrayList<SecurityQuestion>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         URI adapterPath;
@@ -37,20 +36,20 @@ public class FetchSecurityQuestionApiImpl implements FetchSecurityQuestionApi {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();
-                    Log.d(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Security Question Response:" + jsonText);
+                    Timber.d( "Security Question Response:" + jsonText);
                     try {
                         Gson gson = new Gson();
                         SecurityQuestion[] questions = gson.fromJson(jsonText, SecurityQuestion[].class);
                         result.postValue(Resource.success(new ArrayList<>(Arrays.asList(questions))));
                     } catch (JsonSyntaxException e) {
                         result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-                        Log.e(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Retrieving security questions failed due to " + e.toString());
+                        Timber.e( "Retrieving security questions failed due to " + e.toString());
                     }
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.e(FetchSecurityQuestionApiImpl.class.getSimpleName(), "Retrieving security questions failed due to:" + wlFailResponse.toString());
+                    Timber.e( "Retrieving security questions failed due to:" + wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });

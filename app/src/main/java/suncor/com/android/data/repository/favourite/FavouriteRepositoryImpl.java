@@ -1,7 +1,6 @@
 package suncor.com.android.data.repository.favourite;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -23,6 +22,7 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
+import suncor.com.android.utilities.Timber;
 
 public class FavouriteRepositoryImpl implements FavouriteRepository {
 
@@ -39,12 +39,12 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             SessionManager.getInstance().getLoginState().observeForever((state) -> {
                 if (state == SessionManager.LoginState.LOGGED_IN && !isLoaded.getValue()) {
                     if (!loading) {
-                        Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Loading favourites on login");
+                        Timber.d( "Loading favourites on login");
                         loadFavourites();
                     }
                 }
                 if (state == SessionManager.LoginState.LOGGED_OUT) {
-                    Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Clearing favourites due to logging out");
+                    Timber.d( "Clearing favourites due to logging out");
                     FAVOURITES.clear();
                     isLoaded.postValue(false);
                 }
@@ -60,11 +60,11 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         result.postValue(Resource.loading(null));
         loading = true;
         WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
-        Log.d(this.getClass().getSimpleName(), "Loading favourites");
+        Timber.d( "Loading favourites");
         request.send(new WLResponseListener() {
             @Override
             public void onSuccess(WLResponse wlResponse) {
-                Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Loading favourites succeeded");
+                Timber.d( "Loading favourites succeeded");
 
                 loading = false;
                 String jsonText = wlResponse.getResponseText();
@@ -93,8 +93,8 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
                 loading = false;
-                Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "Loading favourites failed");
-                Log.d(FavouriteRepositoryImpl.this.getClass().getSimpleName(), "mfp_error: " + wlFailResponse.getErrorMsg());
+                Timber.d( "Loading favourites failed");
+                Timber.d( "mfp_error: " + wlFailResponse.getErrorMsg());
                 result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
             }
         });
@@ -135,13 +135,13 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.d(FavouriteRepositoryImpl.class.getSimpleName(), "mfp_error:" + wlFailResponse.getErrorMsg());
+                    Timber.d( "mfp_error:" + wlFailResponse.getErrorMsg());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e(FavouriteRepositoryImpl.class.getSimpleName(), e.getMessage());
+            Timber.e( e.getMessage());
             result.postValue(Resource.error(e.getMessage(), false));
         }
 
@@ -164,7 +164,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
-                Log.d(FavouriteRepositoryImpl.class.getSimpleName(), "mfp_error:" + wlFailResponse.getErrorMsg());
+                Timber.d( "mfp_error:" + wlFailResponse.getErrorMsg());
                 result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
             }
         });

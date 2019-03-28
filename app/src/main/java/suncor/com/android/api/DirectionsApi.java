@@ -1,7 +1,5 @@
 package suncor.com.android.api;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
@@ -19,6 +17,7 @@ import okhttp3.Response;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
+import suncor.com.android.utilities.Timber;
 
 public class DirectionsApi {
 
@@ -37,7 +36,7 @@ public class DirectionsApi {
     }
 
     public LiveData<Resource<DirectionsResult>> enqueuJob(LatLng origin, LatLng dest) {
-        Log.d(DirectionsApi.class.getSimpleName(), "Getting distance from " + origin + " to " + dest);
+        Timber.d( "Getting distance from " + origin + " to " + dest);
         MutableLiveData<Resource<DirectionsResult>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
 
@@ -65,7 +64,7 @@ public class DirectionsApi {
                     try {
                         JSONObject jsonObj = new JSONObject(response.body().string());
                         String status = jsonObj.getString("status");
-                        Log.d(DirectionsApi.class.getSimpleName(), "Distance result for " + origin + " to " + dest + " is " + status);
+                        Timber.d( "Distance result for " + origin + " to " + dest + " is " + status);
                         if (status.equals("OK")) {
                             JSONObject distanceResult = jsonObj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
                             if ("OK".equals(distanceResult.getString("status"))) {

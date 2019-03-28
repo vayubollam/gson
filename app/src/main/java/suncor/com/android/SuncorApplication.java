@@ -19,6 +19,7 @@ import suncor.com.android.mfp.MFPRequestInterceptor;
 import suncor.com.android.mfp.MfpLogging;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Station;
+import suncor.com.android.utilities.Timber;
 
 public class SuncorApplication extends Application {
 
@@ -40,6 +41,9 @@ public class SuncorApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
         initMFP();
         favouriteRepository = new FavouriteRepositoryImpl(this);
         stationsProvider = new StationsProviderImpl();

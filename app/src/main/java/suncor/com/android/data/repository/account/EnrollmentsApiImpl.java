@@ -1,7 +1,5 @@
 package suncor.com.android.data.repository.account;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
@@ -20,13 +18,14 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.NewEnrollment;
 import suncor.com.android.model.Resource;
+import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ADAPTER_PATH = "/adapters/suncor/v1/enrollments";
 
     @Override
     public LiveData<Resource<Boolean>> registerAccount(NewEnrollment account) {
-        Log.d(EnrollmentsApi.class.getSimpleName(), "Call enrollments API, account: " + account.getEmail());
+        Timber.d("Call enrollments API, account: " + account.getEmail());
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
@@ -36,22 +35,22 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
-                    Log.d(EnrollmentsApi.class.getSimpleName(), "Enrollments API success");
+                    Timber.d("Enrollments API success");
                     result.postValue(Resource.success(true));
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.d(EnrollmentsApi.class.getSimpleName(), "Enrollments API failed, " + wlFailResponse.toString());
-                    Log.e(EmailCheckApiImpl.class.getSimpleName(), wlFailResponse.toString());
+                    Timber.d("Enrollments API failed, " + wlFailResponse.toString());
+                    Timber.e( wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
         } catch (URISyntaxException e) {
-            Log.e(EmailCheckApiImpl.class.getSimpleName(), e.toString());
+            Timber.e( e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         } catch (JSONException e) {
-            Log.e(EnrollmentsApiImpl.class.getSimpleName(), e.toString());
+            Timber.e( e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }
 

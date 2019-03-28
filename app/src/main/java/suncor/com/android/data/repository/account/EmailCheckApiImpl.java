@@ -1,7 +1,5 @@
 package suncor.com.android.data.repository.account;
 
-import android.util.Log;
-
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
@@ -18,6 +16,7 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.utilities.Timber;
 
 public class EmailCheckApiImpl implements EmailCheckApi {
 
@@ -25,7 +24,7 @@ public class EmailCheckApiImpl implements EmailCheckApi {
 
     @Override
     public LiveData<Resource<EmailState>> checkEmail(String email) {
-        Log.d(EmailCheckApiImpl.class.getSimpleName(), "validating email: " + email);
+        Timber.d( "validating email: " + email);
         MutableLiveData<Resource<EmailState>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
@@ -35,7 +34,7 @@ public class EmailCheckApiImpl implements EmailCheckApi {
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
-                    Log.d(EmailCheckApiImpl.class.getSimpleName(), "response: " + wlResponse.getResponseText());
+                    Timber.d( "response: " + wlResponse.getResponseText());
 
                     JSONObject json = wlResponse.getResponseJSON();
                     if (json == null) {
@@ -56,12 +55,12 @@ public class EmailCheckApiImpl implements EmailCheckApi {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Log.e(EmailCheckApiImpl.class.getSimpleName(), wlFailResponse.toString());
+                    Timber.e( wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
         } catch (URISyntaxException e) {
-            Log.e(EmailCheckApiImpl.class.getSimpleName(), e.toString());
+            Timber.e( e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }
 
