@@ -58,6 +58,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         } catch (JSONException e) {
             e.printStackTrace();
             Timber.e( "handle challenge failed, " + jsonObject);
+            cancel();
             listener.onLoginFailed(e.getMessage());
         }
     }

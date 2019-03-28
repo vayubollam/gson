@@ -3,6 +3,7 @@ package suncor.com.android;
 import android.app.Application;
 
 import com.worklight.wlclient.HttpClientManager;
+import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLClient;
 
 import suncor.com.android.data.repository.account.EmailCheckApi;
@@ -23,7 +24,7 @@ import suncor.com.android.utilities.Timber;
 
 public class SuncorApplication extends Application {
 
-    public static final int DEFAULT_TIMEOUT = 15;
+    public static final int DEFAULT_TIMEOUT = 15_000;
 
     public static FavouriteRepository favouriteRepository;
     public static StationsProvider stationsProvider;
@@ -58,6 +59,7 @@ public class SuncorApplication extends Application {
         UserLoginChallengeHandler.createAndRegister();
         MFPRequestInterceptor.attachInterceptor(HttpClientManager.getInstance());
         MfpLogging.logDeviceInfo(this);
+        WLAuthorizationManager.getInstance().setLoginTimeout(DEFAULT_TIMEOUT / 1000);
     }
 
 
