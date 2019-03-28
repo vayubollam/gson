@@ -22,6 +22,8 @@ import suncor.com.android.model.Station;
 
 public class SuncorApplication extends Application {
 
+    public static final int DEFAULT_TIMEOUT = 15;
+
     public static FavouriteRepository favouriteRepository;
     public static StationsProvider stationsProvider;
     public static EmailCheckApi emailCheckApi;

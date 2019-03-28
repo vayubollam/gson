@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 
@@ -29,7 +30,7 @@ public class EmailCheckApiImpl implements EmailCheckApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.addHeader("x-email", email);
             request.send(new WLResponseListener() {
                 @Override
