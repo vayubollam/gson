@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
@@ -33,7 +34,7 @@ public class StationsProviderImpl implements StationsProvider {
         result.postValue(Resource.loading());
         try {
             URI adapterURI = new URI(BASE_PATH + "?southWestLat=" + bounds.southwest.latitude + "&southWestLong=" + bounds.southwest.longitude + "0&northEastLat=" + bounds.northeast.latitude + "&northEastLong=" + bounds.northeast.longitude);
-            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET);
+            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {

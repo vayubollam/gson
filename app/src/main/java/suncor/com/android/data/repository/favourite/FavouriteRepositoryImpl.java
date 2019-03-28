@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
@@ -58,7 +59,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
         loading = true;
-        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET);
+        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
         Log.d(this.getClass().getSimpleName(), "Loading favourites");
         request.send(new WLResponseListener() {
             @Override
@@ -121,7 +122,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
         try {
-            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.POST);
+            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject();
             body.put("encryptedEntityId", station.getId());
             request.send(body, new WLResponseListener() {
@@ -151,7 +152,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
     public LiveData<Resource<Boolean>> removeFavourite(Station station) {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
-        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.DELETE);
+        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT);
         request.setQueryParameter("encryptedEntityId", String.valueOf(station.getId()));
         request.send(new WLResponseListener() {
             @Override

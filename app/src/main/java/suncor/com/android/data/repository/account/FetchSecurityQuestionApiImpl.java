@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SecurityQuestion;
@@ -31,7 +32,7 @@ public class FetchSecurityQuestionApiImpl implements FetchSecurityQuestionApi {
         URI adapterPath;
         try {
             adapterPath = new URI(ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {

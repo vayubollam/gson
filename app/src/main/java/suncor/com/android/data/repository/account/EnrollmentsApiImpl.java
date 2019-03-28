@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.NewEnrollment;
 import suncor.com.android.model.Resource;
@@ -30,7 +31,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(new Gson().toJson(account));
             request.send(body, new WLResponseListener() {
                 @Override
