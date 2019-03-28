@@ -138,4 +138,5 @@
     <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
     <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
     <string name="enrollment_account_created_message">Compte créé</string>
+    <string name="MSG_SL003">Les suggestions d\'adresse ne sont pas disponibles a ce moment.</string>
 </resources>

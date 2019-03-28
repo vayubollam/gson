@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:background="@color/black_4"
             android:orientation="vertical"
-            app:visibleGone="@{vm.placeSuggestions.data == null || !vm.placeSuggestions.data.isEmpty()}"
+            app:visibleGone="@{(vm.placeSuggestions.status == Status.SUCCESS &amp;&amp; !vm.placeSuggestions.data.isEmpty())  || vm.placeSuggestions.status == Status.LOADING}"
             tools:visibility="visible">
 
 
@@ -82,11 +82,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="32dp"
+            android:textAlignment="center"
+            android:lineSpacingMultiplier="1.44"
+            android:layout_marginEnd="32dp"
             android:layout_marginTop="32dp"
-            android:text="@string/suggestions_no_results"
+            android:text="@{vm.placeSuggestions.status == Status.ERROR ? @string/msg_sl003 : @string/suggestions_no_results}"
             android:textAppearance="@style/Body"
             android:textColor="@color/black_40"
-            app:visibleGone="@{vm.placeSuggestions.status == Status.SUCCESS &amp;&amp; vm.placeSuggestions.data.isEmpty()}"
+            app:visibleGone="@{(vm.placeSuggestions.status == Status.SUCCESS &amp;&amp; vm.placeSuggestions.data.isEmpty())  || vm.placeSuggestions.status == Status.ERROR}"
             tools:visibility="visible" />
     </RelativeLayout>
 </layout>

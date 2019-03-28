@@ -27,6 +27,10 @@ public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.
         notifyDataSetChanged();
     }
 
+    public void clearSuggestions() {
+        this.suggestions.clear();
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public SuggestionyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
