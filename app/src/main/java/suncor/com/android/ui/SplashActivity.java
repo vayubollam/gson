@@ -18,9 +18,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
+import javax.inject.Inject;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import dagger.android.AndroidInjection;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
@@ -37,6 +40,9 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     private LinearLayout textLayout;
     private int delayExit = 900;
 
+    @Inject
+    SessionManager sessionManager;
+
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
@@ -47,12 +53,13 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().getDecorView()
                 .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        SessionManager.getInstance().checkLoginState();
+        sessionManager.checkLoginState();
 
         if (SuncorApplication.splashShown) {
             openHomeActivity();

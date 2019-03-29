@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -23,10 +25,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FavouritesFragmentBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.home.stationlocator.StationItem;
@@ -43,6 +47,15 @@ public class FavouritesFragment extends Fragment {
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private LocationLiveData locationLiveData;
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    @Inject
+    SuncorApplication application;
+
+    @Inject
+    UserLocalSettings userLocalSettings;
+
     public static FavouritesFragment newInstance() {
         return new FavouritesFragment();
     }
@@ -50,8 +63,8 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(SuncorApplication.favouriteRepository);
-        mViewModel = ViewModelProviders.of(this, favouritesViewModelFactory).get(FavouritesViewModel.class);
+        AndroidSupportInjection.inject(this);
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavouritesViewModel.class);
     }
 
     @Override
@@ -94,12 +107,12 @@ public class FavouritesFragment extends Fragment {
             if (stations.status == Resource.Status.SUCCESS) {
                 favouritesAdapter.setStationItems(stations.data);
 
-                if (UserLocalSettings.getBool(SHOW_FAVS_HINT, true)) {
+                if (userLocalSettings.getBool(SHOW_FAVS_HINT, true)) {
                     binding.favouriteRecycler.post(() -> {
                         FavouritesAdapter.FavoriteHolder viewHolder = (FavouritesAdapter.FavoriteHolder) binding.favouriteRecycler.findViewHolderForAdapterPosition(0);
                         viewHolder.binding.swipeableLayout.showHint(getResources().getDimensionPixelSize(R.dimen.station_remove_hint_width));
                     });
-                    UserLocalSettings.setBool(SHOW_FAVS_HINT, false);
+                    userLocalSettings.setBool(SHOW_FAVS_HINT, false);
                 }
             }
         });
@@ -137,10 +150,11 @@ public class FavouritesFragment extends Fragment {
         //override recyclerview animation after remove to avoid overriding first loading animation
         binding.favouriteRecycler.setItemAnimator(new Animator());
         mViewModel.removeStation(stationItem).observe(getActivity(), (r) -> {
+            //TODO update copy content
             if (r.status == Resource.Status.SUCCESS) {
-                SuncorToast.makeText(SuncorApplication.getInstance(), "Station removed", Toast.LENGTH_SHORT).show();
+                SuncorToast.makeText(application, "Station removed", Toast.LENGTH_SHORT).show();
             } else if (r.status == Resource.Status.ERROR) {
-                Toast.makeText(SuncorApplication.getInstance(), "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(application, "Error", Toast.LENGTH_SHORT).show();
             }
         });
     }

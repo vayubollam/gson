@@ -7,6 +7,9 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 
 public interface FavouriteRepository {
+
+    void observeSessionChanges();
+
     LiveData<Resource<Boolean>> loadFavourites();
 
     /**

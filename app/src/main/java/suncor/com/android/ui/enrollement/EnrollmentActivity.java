@@ -1,23 +1,30 @@
 package suncor.com.android.ui.enrollement;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
+
+import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import suncor.com.android.R;
 import suncor.com.android.ui.common.OnBackPressedListener;
 
-public class EnrollmentActivity extends AppCompatActivity {
-    private FrameLayout enrolMainFrame;
-    private OnBackPressedListener onBackPressedListener;
+public class EnrollmentActivity extends AppCompatActivity implements HasSupportFragmentInjector {
     private Fragment mNavHostFragment;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> injector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidInjection.inject(this);
         setContentView(R.layout.activity_enrollment);
         mNavHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
     }
@@ -32,7 +39,8 @@ public class EnrollmentActivity extends AppCompatActivity {
             finish();
     }
 
-    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
-        this.onBackPressedListener = onBackPressedListener;
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return injector;
     }
 }

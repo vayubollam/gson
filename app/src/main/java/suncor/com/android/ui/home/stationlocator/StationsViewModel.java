@@ -6,6 +6,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.inject.Inject;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -48,6 +50,7 @@ public class StationsViewModel extends ViewModel {
 
     private boolean shouldUpdateSectedStation;
 
+    @Inject
     public StationsViewModel(StationsProvider stationsProvider, FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
         this.stationsProvider = stationsProvider;
@@ -78,13 +81,13 @@ public class StationsViewModel extends ViewModel {
     }
 
     private void refreshStations() {
-        Timber.d( "refreshing stations");
+        Timber.d("refreshing stations");
         LatLng mapCenter = _mapBounds.getValue().getCenter();
         LatLngBounds bounds = _mapBounds.getValue();
         if (userLocation.getValue() == null)
             return;
         if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
-            Timber.d( "Using cached stations");
+            Timber.d("Using cached stations");
             Collections.sort(cachedStations, new DirectDistanceComparator(userLocation.getValue()));
             ArrayList<StationItem> filteredStations = filterStations();
 
@@ -92,7 +95,7 @@ public class StationsViewModel extends ViewModel {
 
             updateSelectedStationIfNeeded(filteredStations);
         } else {
-            Timber.d( "Load stations from API");
+            Timber.d("Load stations from API");
 
             _stationsAround.setValue(Resource.loading(null));
 

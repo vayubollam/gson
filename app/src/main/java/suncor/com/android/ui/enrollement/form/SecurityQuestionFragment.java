@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,8 +17,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.R;
-import suncor.com.android.SuncorApplication;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.SecurityQuestion;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
@@ -30,10 +33,21 @@ public class SecurityQuestionFragment extends Fragment {
     private SecurityQuestionViewModel securityQuestionViewModel;
     private EnrollmentFormViewModel enrollmentFormViewModel;
 
+
+    @Inject
+    ViewModelFactory viewModelFactory;
+
     public SecurityQuestionFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AndroidSupportInjection.inject(this);
+        securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
+        enrollmentFormViewModel = ViewModelProviders.of(getActivity()).get(EnrollmentFormViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,8 +65,6 @@ public class SecurityQuestionFragment extends Fragment {
         });
         RecyclerView questionsRecyclerView = getView().findViewById(R.id.security_question_recycler);
         questionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        SecurityQuestionViewModel.Factory questionViewModelFactory = new SecurityQuestionViewModel.Factory(SuncorApplication.fetchSecurityQuestionApi);
-        securityQuestionViewModel = ViewModelProviders.of(getActivity(), questionViewModelFactory).get(SecurityQuestionViewModel.class);
         questions = new ArrayList<>();
         for (SecurityQuestion question : securityQuestionViewModel.questionArrayList
         ) {
@@ -61,8 +73,6 @@ public class SecurityQuestionFragment extends Fragment {
 
         ChoiceSelectorAdapter choiceSelectorAdapter = new ChoiceSelectorAdapter(questions, (this::onSecurityQuestionSelected), securityQuestionViewModel.getSelectedItem());
         questionsRecyclerView.setAdapter(choiceSelectorAdapter);
-        enrollmentFormViewModel = ViewModelProviders.of(getActivity()).get(EnrollmentFormViewModel.class);
-
     }
 
     public void onSecurityQuestionSelected(int selectedQuestion) {

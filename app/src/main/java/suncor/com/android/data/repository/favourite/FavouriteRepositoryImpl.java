@@ -1,7 +1,5 @@
 package suncor.com.android.data.repository.favourite;
 
-import android.content.Context;
-
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
@@ -16,6 +14,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import javax.inject.Singleton;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
@@ -24,34 +24,42 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.Timber;
 
+@Singleton
 public class FavouriteRepositoryImpl implements FavouriteRepository {
 
     private final ArrayList<Station> FAVOURITES = new ArrayList<>();
+
+    private SessionManager sessionManager;
     private URI adapterURI;
 
     private MutableLiveData<Boolean> isLoaded = new MutableLiveData<>();
     private boolean loading;
 
-    public FavouriteRepositoryImpl(Context context) {
+    public FavouriteRepositoryImpl(SessionManager sessionManager) {
         try {
             adapterURI = new URI("/adapters/suncor/v1/favourite-stations");
+            this.sessionManager = sessionManager;
             isLoaded.setValue(false);
-            SessionManager.getInstance().getLoginState().observeForever((state) -> {
-                if (state == SessionManager.LoginState.LOGGED_IN && !isLoaded.getValue()) {
-                    if (!loading) {
-                        Timber.d( "Loading favourites on login");
-                        loadFavourites();
-                    }
-                }
-                if (state == SessionManager.LoginState.LOGGED_OUT) {
-                    Timber.d( "Clearing favourites due to logging out");
-                    FAVOURITES.clear();
-                    isLoaded.postValue(false);
-                }
-            });
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void observeSessionChanges() {
+        sessionManager.getLoginState().observeForever((state) -> {
+            if (state == SessionManager.LoginState.LOGGED_IN && !isLoaded.getValue()) {
+                if (!loading) {
+                    Timber.d("Loading favourites on login");
+                    loadFavourites();
+                }
+            }
+            if (state == SessionManager.LoginState.LOGGED_OUT) {
+                Timber.d("Clearing favourites due to logging out");
+                FAVOURITES.clear();
+                isLoaded.postValue(false);
+            }
+        });
     }
 
     @Override
@@ -60,11 +68,11 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         result.postValue(Resource.loading(null));
         loading = true;
         WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
-        Timber.d( "Loading favourites");
+        Timber.d("Loading favourites");
         request.send(new WLResponseListener() {
             @Override
             public void onSuccess(WLResponse wlResponse) {
-                Timber.d( "Loading favourites succeeded");
+                Timber.d("Loading favourites succeeded");
 
                 loading = false;
                 String jsonText = wlResponse.getResponseText();
@@ -93,8 +101,8 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
                 loading = false;
-                Timber.d( "Loading favourites failed");
-                Timber.d( "mfp_error: " + wlFailResponse.getErrorMsg());
+                Timber.d("Loading favourites failed");
+                Timber.d("mfp_error: " + wlFailResponse.getErrorMsg());
                 result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
             }
         });
@@ -135,13 +143,13 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.d( "mfp_error:" + wlFailResponse.getErrorMsg());
+                    Timber.d("mfp_error:" + wlFailResponse.getErrorMsg());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
-            Timber.e( e.getMessage());
+            Timber.e(e.getMessage());
             result.postValue(Resource.error(e.getMessage(), false));
         }
 
@@ -164,7 +172,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
-                Timber.d( "mfp_error:" + wlFailResponse.getErrorMsg());
+                Timber.d("mfp_error:" + wlFailResponse.getErrorMsg());
                 result.postValue(Resource.error(wlFailResponse.getErrorMsg(), false));
             }
         });

@@ -1,65 +1,65 @@
 package suncor.com.android.utilities;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.worklight.wlclient.api.WLClient;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-/**
- * Created by bahramhaddadi on 2018-11-27.
- */
+import suncor.com.android.SuncorApplication;
 
+@Singleton
 public class UserLocalSettings {
 
-    private static SharedPreferences preferences;
+    private SharedPreferences preferences;
 
-    static {
-        Context context = WLClient.getInstance().getContext();
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+    @Inject
+    public UserLocalSettings(SuncorApplication application) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(application);
     }
 
-    public static boolean getBool(String key, boolean defValue) {
+    public boolean getBool(String key, boolean defValue) {
         return preferences.getBoolean(key, defValue);
     }
 
-    public static void setBool(String key, boolean value) {
+    public void setBool(String key, boolean value) {
         preferences.edit()
                 .putBoolean(key, value)
                 .apply();
     }
 
-    public static String getString(String key) {
+    public String getString(String key) {
         return preferences.getString(key, null);
     }
 
-    public static void setString(String key, String value) {
+    public void setString(String key, String value) {
         preferences.edit()
                 .putString(key, value)
                 .apply();
     }
 
-    public static long getLong(String key) {
+    public long getLong(String key) {
         return preferences.getLong(key, 0);
     }
 
-    public static void setLong(String key, long value) {
+    public void setLong(String key, long value) {
         preferences.edit()
                 .putLong(key, value)
                 .apply();
     }
 
-    public static void removeKey(String key) {
+    public void removeKey(String key) {
         preferences.edit()
                 .remove(key)
                 .apply();
     }
 
-    public static int getInt(String key, int defaultValue) {
+    public int getInt(String key, int defaultValue) {
         return preferences.getInt(key, defaultValue);
     }
 
-    public static void setInt(String key, int value) {
+    public void setInt(String key, int value) {
         preferences.edit()
                 .putInt(key, value)
                 .apply();

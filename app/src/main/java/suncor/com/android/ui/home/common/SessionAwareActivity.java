@@ -3,58 +3,25 @@ package suncor.com.android.ui.home.common;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import dagger.android.AndroidInjection;
 import suncor.com.android.mfp.SessionManager;
 
 @SuppressLint("Registered")
 public class SessionAwareActivity extends FragmentActivity {
 
-    private SessionManager sessionManager;
+    @Inject
+    SessionManager sessionManager;
     private boolean currentLoginStatus;
 
-//    private BroadcastReceiver loginRequiredReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (currentLoginStatus) {
-//                currentLoginStatus = false;
-//                onLogout();
-//            }
-//            requestLogin();
-//        }
-//    };
-//
-//    private BroadcastReceiver loginReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (!currentLoginStatus) {
-//                currentLoginStatus = true;
-//                onLoginSuccess();
-//            }
-//        }
-//    };
-//
-//    private BroadcastReceiver logoutReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (currentLoginStatus) {
-//                currentLoginStatus = false;
-//                onLogout();
-//            }
-//        }
-//    };
-
-//    //private BroadcastReceiver errorReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            onLoginFailed();
-//        }
-//    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        sessionManager = SessionManager.getInstance();
         currentLoginStatus = sessionManager.isUserLoggedIn();
         sessionManager.getLoginState().observe(this, (state) -> {
             if (state == SessionManager.LoginState.LOGGED_IN) {

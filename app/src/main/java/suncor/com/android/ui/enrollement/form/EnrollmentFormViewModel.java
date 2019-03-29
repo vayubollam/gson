@@ -2,13 +2,13 @@ package suncor.com.android.ui.enrollement.form;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
+import javax.inject.Inject;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
@@ -45,8 +45,8 @@ public class EnrollmentFormViewModel extends ViewModel {
     private Province selectedProvince;
     private ArrayList<InputField> requiredFields = new ArrayList<>();
 
-
-    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, EmailCheckApi emailCheckApi) {
+    @Inject
+    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager) {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -66,7 +66,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                 temp.setValue(Resource.success(EmailCheckApi.EmailState.UNCHECKED));
                 return temp;
             } else {
-                return Transformations.map(emailCheckApi.checkEmail(emailInputField.getText()), (r) -> {
+                return Transformations.map(enrollmentsApi.checkEmail(emailInputField.getText()), (r) -> {
                     //to avoid further checks, save the state to the email field
                     if (r.status != Resource.Status.LOADING) {
                         emailInputField.setVerificationState(EmailInputField.VerificationState.CHECKED);
@@ -78,7 +78,7 @@ public class EnrollmentFormViewModel extends ViewModel {
 
         LiveData<Resource<Boolean>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
-                Timber.d( "Start sign up process");
+                Timber.d("Start sign up process");
                 NewEnrollment account = new NewEnrollment(
                         NewEnrollment.EnrollmentType.NEW,
                         firstNameField.getText(),
@@ -103,15 +103,15 @@ public class EnrollmentFormViewModel extends ViewModel {
         joinLiveData = Transformations.switchMap(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 //login the user
-                Timber.d( "Success sign up, start user auto login");
-                return Transformations.map(SessionManager.getInstance().login(emailInputField.getText(), passwordField.getText()), (r) -> {
+                Timber.d("Success sign up, start user auto login");
+                return Transformations.map(sessionManager.login(emailInputField.getText(), passwordField.getText()), (r) -> {
                     switch (r.status) {
                         case SUCCESS:
-                            Timber.d( "Login succeeded");
-                            SessionManager.getInstance().setAccountState(SessionManager.AccountState.JUST_ENROLLED);
+                            Timber.d("Login succeeded");
+                            sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
                             return Resource.success(true);
                         case ERROR:
-                            Timber.d( "Login failed");
+                            Timber.d("Login failed");
                             return Resource.error(r.message);
                         default:
                             return Resource.loading();
@@ -231,26 +231,6 @@ public class EnrollmentFormViewModel extends ViewModel {
         this.selectedProvince = selectedProvince;
         if (selectedProvince != null) {
             provinceField.setText(selectedProvince.getName());
-        }
-    }
-
-    public static class Factory implements ViewModelProvider.Factory {
-
-        private final EmailCheckApi emailCheckApi;
-        private final EnrollmentsApi enrollmentsApi;
-
-        public Factory(EnrollmentsApi enrollmentsApi, EmailCheckApi emailCheckApi) {
-            this.enrollmentsApi = enrollmentsApi;
-            this.emailCheckApi = emailCheckApi;
-        }
-
-        @NonNull
-        @Override
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(EnrollmentFormViewModel.class)) {
-                return (T) new EnrollmentFormViewModel(enrollmentsApi, emailCheckApi);
-            }
-            throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }
 }

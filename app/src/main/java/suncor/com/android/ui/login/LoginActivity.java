@@ -3,7 +3,6 @@ package suncor.com.android.ui.login;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -11,8 +10,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import dagger.android.AndroidInjection;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -20,7 +22,6 @@ import suncor.com.android.uicomponents.SuncorAppBarLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
-    SessionManager sessionManager;
     TextWatcher passwordTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -39,17 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     };
-    InputFilter emailfilter = (source, start, end, dest, dstart, dend) -> {
-        String filtered = "";
-        for (int i = start; i < end; i++) {
-            char character = source.charAt(i);
-            if (!Character.isWhitespace(character)) {
-                filtered += character;
-            }
-        }
 
-        return filtered;
-    };
     private EditText userNameEditText, passwordEditText;
     private LinearLayout progressLayout;
     private SuncorTextInputLayout emailLayout, passwordLayout;
@@ -72,18 +63,23 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
+    @Inject
+    SessionManager sessionManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidInjection.inject(this);
+
         setContentView(R.layout.activity_login);
 
-        sessionManager = SessionManager.getInstance();
         emailLayout = findViewById(R.id.email_layout);
         passwordLayout = findViewById(R.id.password_layout);
 
         userNameEditText = emailLayout.getEditText();
         userNameEditText.requestFocus();
-        //     userNameEditText.setFilters(new InputFilter[]{emailfilter});
+
         passwordEditText = passwordLayout.getEditText();
         passwordEditText.addTextChangedListener(passwordTextWatcher);
         userNameEditText.addTextChangedListener(emailTextWatcher);

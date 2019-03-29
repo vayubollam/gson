@@ -14,12 +14,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.ui.home.common.BaseFragment;
@@ -28,15 +34,19 @@ import suncor.com.android.ui.home.dashboard.DashboardFragment;
 import suncor.com.android.ui.home.profile.ProfileFragment;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
 
-public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HasSupportFragmentInjector {
     //request code for requesting permissions
     private final static int PERMISSION_REQUEST_CODE = 1;
     public static final String LOGGED_OUT_EXTRA = "logged_out_extra";
     private BottomNavigationView bottom_navigation;
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> injector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidInjection.inject(this);
         setContentView(R.layout.activity_home);
 
         if (getIntent().getBooleanExtra(LOGGED_OUT_EXTRA, false)) {
@@ -166,4 +176,8 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
         bottom_navigation.getMenu().findItem(menuItemId).setChecked(true);
     }
 
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return injector;
+    }
 }

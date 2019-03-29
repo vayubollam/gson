@@ -9,8 +9,7 @@ import suncor.com.android.SuncorApplication;
 public class ConnectionUtil {
 
     public static boolean haveNetworkConnection() {
-        ConnectivityManager cm =
-                (ConnectivityManager) SuncorApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) SuncorApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnected();

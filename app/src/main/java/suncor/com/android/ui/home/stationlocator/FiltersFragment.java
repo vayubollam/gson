@@ -18,7 +18,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import suncor.com.android.R;
-import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FiltersFragmentBinding;
 import suncor.com.android.model.Station;
 
@@ -41,8 +40,7 @@ public class FiltersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FiltersFragmentBinding.inflate(inflater, container, false);
 
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.stationsProvider, SuncorApplication.favouriteRepository);
-        parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
+        parentViewModel = ViewModelProviders.of(getActivity()).get(StationsViewModel.class);
         initCheckBoxes();
         if (parentViewModel.filters.getValue() != null) {
             for (String filter : parentViewModel.filters.getValue()) {

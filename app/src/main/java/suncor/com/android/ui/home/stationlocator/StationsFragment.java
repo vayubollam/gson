@@ -38,6 +38,8 @@ import com.google.android.material.chip.Chip;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,10 +55,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
-import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.StationsFragmentBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
@@ -92,6 +95,12 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    @Inject
+    SessionManager sessionManager;
+
     //convert vector images to bitmap in order to use as lastSelectedMarker icons
     private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
                                                         @DrawableRes int vectorResourceId) {
@@ -112,11 +121,11 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidSupportInjection.inject(this);
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         locationLiveData = new LocationLiveData(getContext(), false);
 
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.stationsProvider, SuncorApplication.favouriteRepository);
-        mViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(StationsViewModel.class);
     }
 
     @Override
@@ -514,7 +523,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     }
 
     public void showFavourites() {
-        if (SessionManager.getInstance().isUserLoggedIn()) {
+        if (sessionManager.isUserLoggedIn()) {
             FragmentManager fragmentManager = getFragmentManager();
             Fragment favouritesFragment = fragmentManager.findFragmentByTag(FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
             if (favouritesFragment != null && favouritesFragment.isAdded()) {

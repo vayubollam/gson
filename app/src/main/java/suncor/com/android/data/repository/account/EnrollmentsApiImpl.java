@@ -1,6 +1,7 @@
 package suncor.com.android.data.repository.account;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
@@ -11,6 +12,8 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,6 +21,7 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.NewEnrollment;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
@@ -42,16 +46,99 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.d("Enrollments API failed, " + wlFailResponse.toString());
-                    Timber.e( wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
         } catch (URISyntaxException e) {
-            Timber.e( e.toString());
+            Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         } catch (JSONException e) {
-            Timber.e( e.toString());
+            Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<EmailCheckApi.EmailState>> checkEmail(String email) {
+        Timber.d("validating email: " + email);
+        MutableLiveData<Resource<EmailCheckApi.EmailState>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(ADAPTER_PATH.concat("/email-validation"));
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            request.addHeader("x-email", email);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    Timber.d("response: " + wlResponse.getResponseText());
+
+                    JSONObject json = wlResponse.getResponseJSON();
+                    if (json == null) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                    }
+                    try {
+                        boolean isAlreadyRegistered = json.getBoolean("isAlreadyRegistered");
+                        if (isAlreadyRegistered) {
+                            result.postValue(Resource.success(EmailCheckApi.EmailState.INVALID));
+                        } else {
+                            result.postValue(Resource.success(EmailCheckApi.EmailState.VALID));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<ArrayList<SecurityQuestion>>> fetchSecurityQuestions() {
+        Timber.d("Retrieve security questions");
+        MutableLiveData<Resource<ArrayList<SecurityQuestion>>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        URI adapterPath;
+        try {
+            adapterPath = new URI(ADAPTER_PATH.concat("/security-questions"));
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Security Question Response:" + jsonText);
+                    try {
+                        Gson gson = new Gson();
+                        SecurityQuestion[] questions = gson.fromJson(jsonText, SecurityQuestion[].class);
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(questions))));
+                    } catch (JsonSyntaxException e) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        Timber.e("Retrieving security questions failed due to " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.e("Retrieving security questions failed due to:" + wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
 
         return result;

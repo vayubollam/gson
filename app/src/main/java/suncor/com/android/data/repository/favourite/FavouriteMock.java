@@ -25,6 +25,11 @@ public class FavouriteMock implements FavouriteRepository {
     }
 
     @Override
+    public void observeSessionChanges() {
+
+    }
+
+    @Override
 
     synchronized public LiveData<Resource<Boolean>> loadFavourites() {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
