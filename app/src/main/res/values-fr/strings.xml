@@ -138,5 +138,5 @@
     <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
     <string name="enrollment_account_created_message">Compte créé</string>
     <string name="station_location_alert_settings">Réglages</string>
-    <string name="enable_location_dialog_message">Nous utilisons les services de localisation pour montrer les établissements près de chez vous.</string>
+    <string name="enable_location_dialog_message">Petro-Canada utilise les services de localisation pour montrer les établissements près de chez vous.</string>
 </resources>
