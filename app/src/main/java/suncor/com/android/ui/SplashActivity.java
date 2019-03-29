@@ -43,6 +43,9 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
     @Inject
     SessionManager sessionManager;
 
+    @Inject
+    SuncorApplication application;
+
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
@@ -61,7 +64,7 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
         sessionManager.checkLoginState();
 
-        if (SuncorApplication.splashShown) {
+        if (application.isSplashShown()) {
             openHomeActivity();
             return;
         }

@@ -21,8 +21,7 @@ public class SuncorApplication extends DaggerApplication {
     public static final int DEFAULT_TIMEOUT = 15_000;
 
 
-    public static boolean splashShown = false;
-    private static SuncorApplication sInstance;
+    private boolean splashShown = false;
 
     @Inject
     FavouriteRepository favouriteRepository;
@@ -37,13 +36,8 @@ public class SuncorApplication extends DaggerApplication {
     UserLoginChallengeHandler challengeHandler;
 
 
-    public static SuncorApplication getInstance() {
-        return sInstance;
-    }
-
     public void onCreate() {
         super.onCreate();
-        sInstance = this;
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
@@ -69,4 +63,11 @@ public class SuncorApplication extends DaggerApplication {
     }
 
 
+    public boolean isSplashShown() {
+        return splashShown;
+    }
+
+    public void setSplashShown(boolean splashShown) {
+        this.splashShown = splashShown;
+    }
 }

@@ -107,7 +107,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (LocationUtils.isLocationEnabled()) {
+        if (LocationUtils.isLocationEnabled(getContext())) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;

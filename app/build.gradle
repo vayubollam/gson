@@ -75,15 +75,15 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$rootProject.playServicesVersion"
     implementation "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
     implementation "com.google.android.libraries.places:places:$rootProject.googlePlacesVersion"
-    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 
     implementation "com.ibm.mobile.foundation:ibmmobilefirstplatformfoundation:$rootProject.mfpVersion"
 
     //Dagger2
-    implementation 'com.google.dagger:dagger-android:2.17'
-    implementation 'com.google.dagger:dagger-android-support:2.17'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
+    implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     //library for workers
     implementation "android.arch.work:work-runtime:$rootProject.workManagerVersion"

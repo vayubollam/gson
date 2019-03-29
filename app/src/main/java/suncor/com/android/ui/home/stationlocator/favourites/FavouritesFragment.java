@@ -116,7 +116,7 @@ public class FavouritesFragment extends Fragment {
                 }
             }
         });
-        if (LocationUtils.isLocationEnabled()
+        if (LocationUtils.isLocationEnabled(getContext())
                 && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             isLoading.set(true);
             Observer<Location> locationObserver = new Observer<Location>() {

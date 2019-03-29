@@ -9,8 +9,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.SphericalUtil;
 
-import suncor.com.android.SuncorApplication;
-
 public class LocationUtils {
 
     public static LatLngBounds calculateBounds(LatLng center, int distanceMeter, float regionRatio) {
@@ -34,13 +32,13 @@ public class LocationUtils {
         return bounds1.contains(bounds2.southwest) ? bounds1 : bounds2;
     }
 
-    public static boolean isLocationEnabled() {
+    public static boolean isLocationEnabled(Context context) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            LocationManager lm = (LocationManager) SuncorApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
+            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             return lm.isLocationEnabled();
         } else {
-            int mode = Settings.Secure.getInt(SuncorApplication.getInstance().getContentResolver(), Settings.Secure.LOCATION_MODE,
+            int mode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE,
                     Settings.Secure.LOCATION_MODE_OFF);
             return (mode != Settings.Secure.LOCATION_MODE_OFF);
 

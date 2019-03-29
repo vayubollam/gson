@@ -43,6 +43,9 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
     @Inject
     DispatchingAndroidInjector<Fragment> injector;
 
+    @Inject
+    SuncorApplication application;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +64,12 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
 
         bottom_navigation.setOnNavigationItemSelectedListener(this);
         View mainDivider = findViewById(R.id.mainDivider);
-        if (!SuncorApplication.splashShown) {
+        if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
             animslideUp.setDuration(500);
             bottom_navigation.startAnimation(animslideUp);
             mainDivider.startAnimation(animslideUp);
-            SuncorApplication.splashShown = true;
+            application.setSplashShown(true);
         }
         //check for runtime permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

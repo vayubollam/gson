@@ -55,7 +55,7 @@ public class MFPRequestInterceptor implements Interceptor {
                 JSONObject object = new JSONObject(body);
                 if (object.has("errorCode")) {
                     if (ErrorCodes.CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
-                        Handler mainHandler = new Handler(SuncorApplication.getInstance().getMainLooper());
+                        Handler mainHandler = new Handler(application.getMainLooper());
                         mainHandler.post(() -> sessionManager.logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories
                             if (result.status == Resource.Status.SUCCESS) {

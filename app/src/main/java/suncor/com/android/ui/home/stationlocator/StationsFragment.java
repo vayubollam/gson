@@ -502,7 +502,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
 
     //TODO check if we can remove the showDialog parameter
     public void locateMe(boolean showDialog) {
-        if (LocationUtils.isLocationEnabled()) {
+        if (LocationUtils.isLocationEnabled(getContext())) {
             isLoading.set(true);
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
