@@ -503,11 +503,13 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             adb.setTitle(R.string.enable_location_dialog_title);
             adb.setMessage(R.string.enable_location_dialog_message);
             adb.setNegativeButton(R.string.cancel, null);
-            adb.setPositiveButton(R.string.ok, (dialog, which) -> {
+            adb.setPositiveButton(R.string.station_location_alert_settings, (dialog, which) -> {
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 dialog.dismiss();
             });
-            adb.show();
+            AlertDialog alertDialog = adb.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
         }
     }
 
