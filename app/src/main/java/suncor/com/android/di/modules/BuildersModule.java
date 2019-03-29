@@ -22,14 +22,14 @@ import suncor.com.android.ui.login.LoginActivity;
  */
 @Module
 public abstract class BuildersModule {
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract SessionAwareActivity contributeSessionAwareActivity();
 
     //Home Activity and its fragments
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract HomeActivity contributeHomeActivity();
 
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract StationsFragment contributeStationsFragment();
 
     @ContributesAndroidInjector
@@ -49,7 +49,7 @@ public abstract class BuildersModule {
 
 
     //Login Activity
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract LoginActivity contributeLoginActivity();
 
     //Enrollment Activity
@@ -66,7 +66,7 @@ public abstract class BuildersModule {
     abstract SecurityQuestionFragment contributeSecurityQuestionFragment();
 
 
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract SplashActivity contributeSplashActivity();
 
 

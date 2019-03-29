@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -37,7 +36,6 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
     }
 
     @Override

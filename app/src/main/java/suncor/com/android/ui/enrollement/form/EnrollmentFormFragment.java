@@ -25,10 +25,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
@@ -43,7 +42,7 @@ import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
-public class EnrollmentFormFragment extends Fragment implements OnBackPressedListener {
+public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
 
     EnrollmentFormFragmentBinding binding;
     ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
@@ -60,7 +59,6 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers

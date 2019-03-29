@@ -20,11 +20,10 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableBoolean;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.NearbyLayoutBinding;
@@ -36,7 +35,7 @@ import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.utilities.LocationUtils;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends DaggerFragment {
 
     public static final String SEARCH_FRAGMENT_TAG = "Search_Fragment";
     private SearchViewModel viewModel;
@@ -55,7 +54,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
         parentViewModel = ViewModelProviders.of(getActivity()).get(StationsViewModel.class);
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);

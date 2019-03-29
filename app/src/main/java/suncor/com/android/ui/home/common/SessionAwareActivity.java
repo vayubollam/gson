@@ -6,12 +6,11 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
-import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.mfp.SessionManager;
 
 @SuppressLint("Registered")
-public class SessionAwareActivity extends FragmentActivity {
+public class SessionAwareActivity extends DaggerAppCompatActivity {
 
     @Inject
     SessionManager sessionManager;
@@ -20,7 +19,6 @@ public class SessionAwareActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         currentLoginStatus = sessionManager.isUserLoggedIn();
         sessionManager.getLoginState().observe(this, (state) -> {

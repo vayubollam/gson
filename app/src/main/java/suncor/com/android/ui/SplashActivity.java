@@ -20,17 +20,16 @@ import android.widget.LinearLayout;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.home.HomeActivity;
 
-public class SplashActivity extends AppCompatActivity implements Animation.AnimationListener {
+public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
     private final static int EXIT_ANIMATION_DURATION = 900;
     private static final String LAST_APP_VERSION = "last_app_version";
@@ -56,7 +55,6 @@ public class SplashActivity extends AppCompatActivity implements Animation.Anima
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().getDecorView()

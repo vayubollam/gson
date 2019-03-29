@@ -28,7 +28,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
@@ -71,7 +70,6 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
     }

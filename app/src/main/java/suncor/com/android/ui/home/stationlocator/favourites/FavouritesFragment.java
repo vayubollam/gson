@@ -19,13 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
@@ -37,7 +36,7 @@ import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.UserLocalSettings;
 
-public class FavouritesFragment extends Fragment {
+public class FavouritesFragment extends DaggerFragment {
 
     private static final String SHOW_FAVS_HINT = "show_favs_hint";
     public static String FAVOURITES_FRAGMENT_TAG = "FAVOURITES_FRAGMENT";
@@ -63,7 +62,6 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavouritesViewModel.class);
     }
 

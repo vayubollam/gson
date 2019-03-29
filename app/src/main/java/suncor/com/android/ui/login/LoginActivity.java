@@ -13,15 +13,14 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends DaggerAppCompatActivity {
     TextWatcher passwordTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -70,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidInjection.inject(this);
 
         setContentView(R.layout.activity_login);
 

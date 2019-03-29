@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.SecurityQuestion;
@@ -27,7 +27,7 @@ import suncor.com.android.uicomponents.SuncorAppBarLayout;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SecurityQuestionFragment extends Fragment {
+public class SecurityQuestionFragment extends DaggerFragment {
 
     private ArrayList<String> questions;
     private SecurityQuestionViewModel securityQuestionViewModel;
@@ -44,7 +44,6 @@ public class SecurityQuestionFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
         securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
         enrollmentFormViewModel = ViewModelProviders.of(getActivity()).get(EnrollmentFormViewModel.class);
     }

@@ -19,16 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.enrollement.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
-public class CardQuestion extends Fragment {
+public class CardQuestion extends DaggerFragment {
 
     private AppCompatImageView cardImg, cardShadow;
     private int cardAnimationDuration = 400;
@@ -42,7 +41,6 @@ public class CardQuestion extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidSupportInjection.inject(this);
 
         SecurityQuestionViewModel securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
         securityQuestionViewModel.fetchQuestion();
