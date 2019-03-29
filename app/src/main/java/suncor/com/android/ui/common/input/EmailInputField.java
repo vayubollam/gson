@@ -9,16 +9,8 @@ import suncor.com.android.ui.common.Event;
 
 public class EmailInputField extends InputField {
 
-    private static final Pattern EMAIL_ADDRESS
-            = Pattern.compile(
-            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-                    "\\@" +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-                    "(" +
-                    "\\." +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-                    ")+"
-    );
+    private static final Pattern EMAIL_ADDRESS = Pattern.compile("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}");
+
     private final int formatError;
     private MutableLiveData<Event<Boolean>> hasFocus = new MutableLiveData<>();
     private VerificationState verificationState = VerificationState.UNCHECKED;
