@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -29,7 +28,6 @@ public class SuncorAppBarLayout extends AppBarLayout {
 
             int positiveOffset = -verticalOffset;
             int threshold = expandedTitleTextView.getMeasuredHeight() + expandedTitleTopMargin;
-            Log.d("offset", positiveOffset + " " + threshold);
             if (positiveOffset >= threshold) {
                 if (!isToolbarTitleShown) {
                     expandedTitleTextView.setVisibility(INVISIBLE);

@@ -51,6 +51,7 @@ public class GooglePlaceSuggestionsProvider implements PlaceSuggestionsProvider 
             }
             predictions.postValue(Resource.success(returnedResult));
         }).addOnFailureListener((exception) -> {
+            predictions.postValue(Resource.error(exception.getMessage()));
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
                 Log.e(TAG, "Place not found: " + apiException.getStatusCode());

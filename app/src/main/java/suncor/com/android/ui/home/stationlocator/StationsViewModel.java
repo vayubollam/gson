@@ -1,7 +1,5 @@
 package suncor.com.android.ui.home.stationlocator;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -18,6 +16,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.DirectDistanceComparator;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.Timber;
 
 public class StationsViewModel extends ViewModel {
 
@@ -79,13 +78,13 @@ public class StationsViewModel extends ViewModel {
     }
 
     private void refreshStations() {
-        Log.d(StationsViewModel.class.getSimpleName(), "refreshing stations");
+        Timber.d( "refreshing stations");
         LatLng mapCenter = _mapBounds.getValue().getCenter();
         LatLngBounds bounds = _mapBounds.getValue();
         if (userLocation.getValue() == null)
             return;
         if (cachedStationsBounds != null && cachedStationsBounds.contains(bounds.northeast) && cachedStationsBounds.contains(bounds.southwest)) {
-            Log.d(StationsViewModel.class.getSimpleName(), "Using cached stations");
+            Timber.d( "Using cached stations");
             Collections.sort(cachedStations, new DirectDistanceComparator(userLocation.getValue()));
             ArrayList<StationItem> filteredStations = filterStations();
 
@@ -93,7 +92,7 @@ public class StationsViewModel extends ViewModel {
 
             updateSelectedStationIfNeeded(filteredStations);
         } else {
-            Log.d(StationsViewModel.class.getSimpleName(), "Load stations from API");
+            Timber.d( "Load stations from API");
 
             _stationsAround.setValue(Resource.loading(null));
 

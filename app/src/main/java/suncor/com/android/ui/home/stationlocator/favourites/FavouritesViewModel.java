@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -19,18 +20,16 @@ import suncor.com.android.utilities.LocationUtils;
 public class FavouritesViewModel extends ViewModel {
 
     private FavouriteRepository favouriteRepository;
-    private MutableLiveData<ArrayList<StationItem>> _stations = new MutableLiveData<>();
-    public LiveData<ArrayList<StationItem>> stations = _stations;
+    private MediatorLiveData<Resource<ArrayList<StationItem>>> _stations = new MediatorLiveData<>();
+    public LiveData<Resource<ArrayList<StationItem>>> stations = _stations;
+    private MutableLiveData<Boolean> refreshStations = new MutableLiveData<>();
     private LatLng userLocation;
 
     public FavouritesViewModel(FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
-    }
-
-    public void refreshStations() {
-        favouriteRepository.loadFavourites().observeForever(booleanResource -> {
-            if (booleanResource.status == Resource.Status.SUCCESS) {
-
+        LiveData<Resource<Boolean>> favouritesApiCaller = Transformations.switchMap(refreshStations, (e) -> favouriteRepository.loadFavourites());
+        _stations.addSource(favouritesApiCaller, resource -> {
+            if (resource.status == Resource.Status.SUCCESS) {
                 ArrayList<Station> stations = favouriteRepository.getFavouriteList();
                 ArrayList<StationItem> stationItems = new ArrayList<>();
                 for (Station station : stations) {
@@ -39,10 +38,17 @@ public class FavouritesViewModel extends ViewModel {
                 }
                 StationsComparator comparator = new StationsComparator();
                 Collections.sort(stationItems, comparator);
-                this._stations.postValue(stationItems);
-
+                _stations.setValue(Resource.success(stationItems));
+            } else if (resource.status == Resource.Status.ERROR) {
+                _stations.setValue(Resource.error(resource.message));
+            } else {
+                _stations.setValue(Resource.loading());
             }
         });
+    }
+
+    public void refreshStations() {
+        refreshStations.postValue(true);
     }
 
     public LatLng getUserLocation() {
@@ -54,12 +60,16 @@ public class FavouritesViewModel extends ViewModel {
     }
 
     public LiveData<Resource<Boolean>> removeStation(StationItem stationItem) {
-        int index = _stations.getValue().indexOf(stationItem);
-        _stations.getValue().remove(index);
-        _stations.postValue(_stations.getValue());
+        if (stations.getValue() == null || stations.getValue().status != Resource.Status.SUCCESS) {
+            throw new IllegalStateException("remove shouldn't be called before the stations are loaded");
+        }
+        ArrayList<StationItem> stationItems = stations.getValue().data;
+        int index = stationItems.indexOf(stationItem);
+        stationItems.remove(index);
+        _stations.postValue(Resource.success(stationItems));
         return Transformations.map(favouriteRepository.removeFavourite(stationItem.getStation()), r -> {
             if (r.status == Resource.Status.ERROR) {
-                _stations.getValue().add(index, stationItem);
+                _stations.getValue().data.add(index, stationItem);
                 _stations.postValue(stations.getValue());
             }
             return r;

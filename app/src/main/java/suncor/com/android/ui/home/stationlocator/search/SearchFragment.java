@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -133,8 +132,7 @@ public class SearchFragment extends Fragment {
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
                 suggestionsAdapter.setSuggestions(suggestions);
             } else if (arrayListResource.status == Resource.Status.ERROR) {
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG).show();
-                //TODO : handle error
+                suggestionsAdapter.clearSuggestions();
             }
         });
     }

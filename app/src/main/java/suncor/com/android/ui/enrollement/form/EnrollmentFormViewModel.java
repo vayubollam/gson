@@ -1,7 +1,5 @@
 package suncor.com.android.ui.enrollement.form;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -23,6 +21,7 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.EmailInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PasswordInputField;
+import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
@@ -79,7 +78,7 @@ public class EnrollmentFormViewModel extends ViewModel {
 
         LiveData<Resource<Boolean>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
-                Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Start sign up process");
+                Timber.d( "Start sign up process");
                 NewEnrollment account = new NewEnrollment(
                         NewEnrollment.EnrollmentType.NEW,
                         firstNameField.getText(),
@@ -104,15 +103,15 @@ public class EnrollmentFormViewModel extends ViewModel {
         joinLiveData = Transformations.switchMap(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 //login the user
-                Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Success sign up, start user auto login");
+                Timber.d( "Success sign up, start user auto login");
                 return Transformations.map(SessionManager.getInstance().login(emailInputField.getText(), passwordField.getText()), (r) -> {
                     switch (r.status) {
                         case SUCCESS:
-                            Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Login succeeded");
+                            Timber.d( "Login succeeded");
                             SessionManager.getInstance().setAccountState(SessionManager.AccountState.JUST_ENROLLED);
                             return Resource.success(true);
                         case ERROR:
-                            Log.d(EnrollmentFormViewModel.class.getSimpleName(), "Login failed");
+                            Timber.d( "Login failed");
                             return Resource.error(r.message);
                         default:
                             return Resource.loading();
