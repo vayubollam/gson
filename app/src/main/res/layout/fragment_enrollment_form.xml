@@ -60,7 +60,7 @@
                     android:hint="@string/enrollment_first_name_label"
                     android:maxLength="20"
                     app:error="@{vm.firstNameField.error}"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/personal_category_title"
                     app:text="@={vm.firstNameField.text}" />
 
@@ -71,7 +71,7 @@
                     android:hint="@string/enrollment_last_name_label"
                     android:maxLength="20"
                     app:error="@{vm.lastNameField.error}"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/first_name_input"
                     app:text="@={vm.lastNameField.text}" />
 
@@ -83,7 +83,7 @@
                     android:inputType="textEmailAddress"
                     android:maxLength="100"
                     app:error="@{vm.emailInputField.error}"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/last_name_input"
                     app:text="@={vm.emailInputField.text}" />
 
@@ -104,9 +104,9 @@
                     android:hint="@string/enrollment_password_label"
                     android:inputType="textPassword"
                     android:maxLength="16"
-                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:afterTextChanged="@{eventHandler::textChanged}"
                     app:error="@{vm.passwordField.error}"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/email_input"
                     app:passwordToggleEnabled="true"
                     app:showError="@{vm.passwordField.showError}"
@@ -136,7 +136,7 @@
                     android:hint="@string/enrollment_security_answer_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="100"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/security_question_input"
                     app:text="@={vm.securityAnswerField.text}" />
 
@@ -158,9 +158,9 @@
                     android:hint="@string/enrollment_street_address_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="50"
-                    app:afterTextChanged="@{eventHandler.textChanged}"
+                    app:afterTextChanged="@{eventHandler::textChanged}"
                     app:error="@{vm.streetAddressField.error}"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/address_category_title"
                     app:text="@={vm.streetAddressField.text}" />
 
@@ -171,7 +171,7 @@
                     android:hint="@string/enrollment_city_label"
                     android:maxLength="30"
                     app:error="@{vm.cityField.error}"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/street_address_input"
                     app:text="@={vm.cityField.text}" />
 
@@ -192,7 +192,7 @@
                     android:inputType="textCapCharacters"
                     android:maxLength="7"
                     app:error="@{vm.postalCodeField.error}"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/province_input"
                     app:text="@={vm.postalCodeField.text}" />
 
@@ -203,7 +203,7 @@
                     android:hint="@string/enrollment_phone_label"
                     android:inputType="phone"
                     android:maxLength="14"
-                    app:focusChanged="@{eventHandler.focusChanged}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"
                     app:text="@={vm.phoneField.text}" />
 
