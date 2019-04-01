@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -29,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Profile;
@@ -54,6 +57,12 @@ public class DashboardFragment extends BaseFragment {
     private AppCompatTextView welcomeMessage;
     private FrameLayout welcomeLayout;
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    @Inject
+    SessionManager sessionManager;
+
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
     }
@@ -62,7 +71,7 @@ public class DashboardFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
-        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
     }
 
     @Override
@@ -93,7 +102,7 @@ public class DashboardFragment extends BaseFragment {
             carouselRecyclerView.startAnimation(animFromLet);
             stationCard.startAnimation(animslideUp);
         }
-        dashboardAdapter = new DashboardAdapter(getActivity());
+        dashboardAdapter = new DashboardAdapter(getActivity(), sessionManager);
         carouselRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(carouselRecyclerView);
@@ -172,7 +181,7 @@ public class DashboardFragment extends BaseFragment {
 
         mViewModel.nearestStation.observe(getViewLifecycleOwner(), stationObserver);
         //TODO use this if (mViewModel.getAccountState() == SessionManager.AccountState.JUST_ENROLLED) {
-        if (SessionManager.getInstance().isUserLoggedIn()) {
+        if (sessionManager.isUserLoggedIn()) {
             showWelcomeMessage();
         }
 
@@ -181,13 +190,13 @@ public class DashboardFragment extends BaseFragment {
     private void showWelcomeMessage() {
         //TODO improve this
         welcomeLayout.setVisibility(View.VISIBLE);
-        Profile profile = SessionManager.getInstance().getProfile();
+        Profile profile = sessionManager.getProfile();
         welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName()));
     }
 
     @Override
     public void onLoginStatusChanged() {
-        if (SessionManager.getInstance().isUserLoggedIn()) {
+        if (sessionManager.isUserLoggedIn()) {
             showWelcomeMessage();
         } else {
             welcomeLayout.setVisibility(View.GONE);

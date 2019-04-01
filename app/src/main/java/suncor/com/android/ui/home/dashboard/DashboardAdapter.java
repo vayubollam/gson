@@ -29,14 +29,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     private SessionManager sessionManager;
 
 
-    public DashboardAdapter(Activity activity) {
+    public DashboardAdapter(Activity activity, SessionManager sessionManager) {
         this.activity = activity;
         layoutInflater = LayoutInflater.from(activity);
         images = new ArrayList<>();
         images.add(activity.getResources().getDrawable(R.drawable.car_trip));
         images.add(activity.getResources().getDrawable(R.drawable.agriculture));
         images.add(activity.getResources().getDrawable(R.drawable.petro_card));
-        sessionManager = SessionManager.getInstance();
+        this.sessionManager = sessionManager;
     }
 
     @NonNull

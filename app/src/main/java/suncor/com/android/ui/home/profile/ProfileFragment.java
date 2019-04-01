@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +30,13 @@ public class ProfileFragment extends BaseFragment {
     public static String PROFILE_FRAGMENT_TAG = "profile";
     ProgressBar signOutBP;
 
+    @Inject
+    SessionManager sessionManager;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +81,6 @@ public class ProfileFragment extends BaseFragment {
 
     private void signUserOut() {
         signOutBP.setVisibility(View.VISIBLE);
-        SessionManager sessionManager = SessionManager.getInstance();
         sessionManager.logout().observe(this, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 signOutBP.setVisibility(View.GONE);

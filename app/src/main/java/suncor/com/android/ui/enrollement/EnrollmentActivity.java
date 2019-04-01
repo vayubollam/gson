@@ -1,18 +1,15 @@
 package suncor.com.android.ui.enrollement;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.R;
 import suncor.com.android.ui.common.OnBackPressedListener;
 
-public class EnrollmentActivity extends AppCompatActivity {
-    private FrameLayout enrolMainFrame;
-    private OnBackPressedListener onBackPressedListener;
+public class EnrollmentActivity extends DaggerAppCompatActivity {
     private Fragment mNavHostFragment;
 
     @Override
@@ -30,9 +27,5 @@ public class EnrollmentActivity extends AppCompatActivity {
             ((OnBackPressedListener) currentFragment).onBackPressed();
         else if (!controller.popBackStack())
             finish();
-    }
-
-    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
-        this.onBackPressedListener = onBackPressedListener;
     }
 }

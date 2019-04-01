@@ -14,6 +14,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -34,6 +36,9 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
     public static final String LOGGED_OUT_EXTRA = "logged_out_extra";
     private BottomNavigationView bottom_navigation;
 
+    @Inject
+    SuncorApplication application;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +56,12 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
 
         bottom_navigation.setOnNavigationItemSelectedListener(this);
         View mainDivider = findViewById(R.id.mainDivider);
-        if (!SuncorApplication.splashShown) {
+        if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
             animslideUp.setDuration(500);
             bottom_navigation.startAnimation(animslideUp);
             mainDivider.startAnimation(animslideUp);
-            SuncorApplication.splashShown = true;
+            application.setSplashShown(true);
         }
         //check for runtime permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -165,5 +170,4 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
         fragmentTransaction.commit();
         bottom_navigation.getMenu().findItem(menuItemId).setChecked(true);
     }
-
 }

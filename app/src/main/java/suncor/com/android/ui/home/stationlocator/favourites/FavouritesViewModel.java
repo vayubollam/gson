@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.inject.Inject;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -25,6 +27,7 @@ public class FavouritesViewModel extends ViewModel {
     private MutableLiveData<Boolean> refreshStations = new MutableLiveData<>();
     private LatLng userLocation;
 
+    @Inject
     public FavouritesViewModel(FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
         LiveData<Resource<Boolean>> favouritesApiCaller = Transformations.switchMap(refreshStations, (e) -> favouriteRepository.loadFavourites());

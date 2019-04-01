@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 
-public class BaseFragment extends Fragment {
+public class BaseFragment extends DaggerFragment {
 
     private FragmentManager.OnBackStackChangedListener backStackListener = () -> {
         if (isVisible()) {

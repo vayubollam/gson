@@ -77,7 +77,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.36"
-                android:text="@{vm.stations.status == Status.ERROR?(ConnectionUtil.haveNetworkConnection()? @string/msg_sl005_title: @string/msg_e002_title):@string/favourites_no_result}"
+                android:text="@{vm.stations.status == Status.ERROR?(ConnectionUtil.haveNetworkConnection(context)? @string/msg_sl005_title: @string/msg_e002_title):@string/favourites_no_result}"
                 android:textColor="@color/black_80" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -88,7 +88,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="24dp"
                 android:lineSpacingMultiplier="1.44"
-                android:text="@{vm.stations.status == Status.ERROR? (ConnectionUtil.haveNetworkConnection()? @string/msg_sl005_message: @string/msg_e002_message):@string/favourites_no_result_text}"
+                android:text="@{vm.stations.status == Status.ERROR? (ConnectionUtil.haveNetworkConnection(context)? @string/msg_sl005_message: @string/msg_e002_message):@string/favourites_no_result_text}"
                 android:textAlignment="center"
                 android:textColor="@color/black_60"
                 android:textSize="18sp" />

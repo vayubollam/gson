@@ -14,6 +14,8 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.zip.GZIPInputStream;
 
+import javax.inject.Inject;
+
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -24,21 +26,14 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.HomeActivity;
 
 public class MFPRequestInterceptor implements Interceptor {
-    public static void attachInterceptor(HttpClientManager instance) {
-        try {
-            Field okHttpBuilderField = HttpClientManager.class.getDeclaredField("builder");
-            Field okHttpField = HttpClientManager.class.getDeclaredField("httpClient");
-            okHttpField.setAccessible(true);
-            okHttpBuilderField.setAccessible(true);
-            OkHttpClient.Builder builder = (OkHttpClient.Builder) okHttpBuilderField.get(instance);
-            builder.addNetworkInterceptor(new MFPRequestInterceptor());
-            okHttpField.set(instance, builder.build());
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
 
+    @Inject
+    SessionManager sessionManager;
+    @Inject
+    SuncorApplication application;
+
+    @Inject
+    MFPRequestInterceptor() {
     }
 
     @Override
@@ -60,14 +55,14 @@ public class MFPRequestInterceptor implements Interceptor {
                 JSONObject object = new JSONObject(body);
                 if (object.has("errorCode")) {
                     if (ErrorCodes.CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
-                        Handler mainHandler = new Handler(SuncorApplication.getInstance().getMainLooper());
-                        mainHandler.post(() -> SessionManager.getInstance().logout().observeForever((result) -> {
+                        Handler mainHandler = new Handler(application.getMainLooper());
+                        mainHandler.post(() -> sessionManager.logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories
                             if (result.status == Resource.Status.SUCCESS) {
-                                Intent intent = new Intent(SuncorApplication.getInstance(), HomeActivity.class);
+                                Intent intent = new Intent(application, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, true);
-                                SuncorApplication.getInstance().startActivity(intent);
+                                application.startActivity(intent);
                             }
                         }));
                     }
@@ -79,5 +74,22 @@ public class MFPRequestInterceptor implements Interceptor {
 
         return response;
     }
+
+    public static void attachRequestInterceptor(MFPRequestInterceptor requestInterceptor, HttpClientManager instance) {
+        try {
+            Field okHttpBuilderField = HttpClientManager.class.getDeclaredField("builder");
+            Field okHttpField = HttpClientManager.class.getDeclaredField("httpClient");
+            okHttpField.setAccessible(true);
+            okHttpBuilderField.setAccessible(true);
+            OkHttpClient.Builder builder = (OkHttpClient.Builder) okHttpBuilderField.get(instance);
+            builder.addNetworkInterceptor(requestInterceptor);
+            okHttpField.set(instance, builder.build());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

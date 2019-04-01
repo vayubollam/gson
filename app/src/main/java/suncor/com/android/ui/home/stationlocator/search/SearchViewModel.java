@@ -6,6 +6,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.inject.Inject;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -30,6 +32,7 @@ public class SearchViewModel extends ViewModel {
     private LatLng userLocation;
     private float regionRatio = 1f;
 
+    @Inject
     public SearchViewModel(StationsProvider stationsProvider, PlaceSuggestionsProvider suggestionsProvider) {
         this.stationsProvider = stationsProvider;
         this.suggestionsProvider = suggestionsProvider;

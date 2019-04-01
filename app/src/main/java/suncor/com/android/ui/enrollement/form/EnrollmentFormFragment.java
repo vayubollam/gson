@@ -19,34 +19,38 @@ import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
-import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
-import suncor.com.android.ui.enrollement.EnrollmentActivity;
 import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
-public class EnrollmentFormFragment extends Fragment implements OnBackPressedListener {
+public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
 
     EnrollmentFormFragmentBinding binding;
     ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     public EnrollmentFormFragment() {
     }
@@ -55,8 +59,7 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EnrollmentFormViewModel.Factory factory = new EnrollmentFormViewModel.Factory(SuncorApplication.enrollmentsApi, SuncorApplication.emailCheckApi);
-        viewModel = ViewModelProviders.of(getActivity(), factory).get(EnrollmentFormViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
             if (r.status == Resource.Status.SUCCESS && r.data == EmailCheckApi.EmailState.INVALID) {
@@ -114,7 +117,6 @@ public class EnrollmentFormFragment extends Fragment implements OnBackPressedLis
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
 
-        ((EnrollmentActivity) getActivity()).setOnBackPressedListener(this);
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 

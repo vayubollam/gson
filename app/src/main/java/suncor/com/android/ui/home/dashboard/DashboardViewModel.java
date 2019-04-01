@@ -3,10 +3,11 @@ package suncor.com.android.ui.home.dashboard;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import javax.inject.Inject;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -18,12 +19,15 @@ public class DashboardViewModel extends ViewModel {
     private StationsProvider stationsProvider;
     private SessionManager.AccountState accountState = null;
 
-    public DashboardViewModel() {
-        //TODO move the parameter to constructor
-        this.stationsProvider = SuncorApplication.stationsProvider;
+    private SessionManager sessionManager;
+
+    @Inject
+    public DashboardViewModel(SessionManager sessionManager, StationsProvider stationsProvider) {
+        this.stationsProvider = stationsProvider;
+        this.sessionManager = sessionManager;
         initNearestStation();
-        if (SessionManager.getInstance().isUserLoggedIn()) {
-            accountState = SessionManager.getInstance().getAccountState();
+        if (sessionManager.isUserLoggedIn()) {
+            accountState = sessionManager.getAccountState();
         }
     }
 
@@ -53,7 +57,7 @@ public class DashboardViewModel extends ViewModel {
     protected void onCleared() {
         super.onCleared();
         if (accountState == SessionManager.AccountState.JUST_ENROLLED) {
-            SessionManager.getInstance().setAccountState(SessionManager.AccountState.REGULAR_LOGIN);
+            sessionManager.setAccountState(SessionManager.AccountState.REGULAR_LOGIN);
         }
     }
 

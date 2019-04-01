@@ -13,6 +13,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.inject.Singleton;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
@@ -21,13 +23,14 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.utilities.Timber;
 
+@Singleton
 public class StationsProviderImpl implements StationsProvider {
 
     private static final String BASE_PATH = "/adapters/suncor/v1/locations";
 
     @Override
     public LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds) {
-        Timber.d( "Retrieving stations for :" + bounds);
+        Timber.d("Retrieving stations for :" + bounds);
 
         MutableLiveData<Resource<ArrayList<Station>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
@@ -38,7 +41,7 @@ public class StationsProviderImpl implements StationsProvider {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();
-                    Timber.d( "Locations API response:\n" + jsonText);
+                    Timber.d("Locations API response:\n" + jsonText);
 
                     try {
                         Gson gson = new Gson();
@@ -46,13 +49,13 @@ public class StationsProviderImpl implements StationsProvider {
                         result.postValue(Resource.success(new ArrayList<>(Arrays.asList(stations))));
                     } catch (JsonSyntaxException e) {
                         result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-                        Timber.e( "Retrieving locations failed due to " + e.toString());
+                        Timber.e("Retrieving locations failed due to " + e.toString());
                     }
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.e( "Retrieving locations failed due to " + wlFailResponse.toString());
+                    Timber.e("Retrieving locations failed due to " + wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });

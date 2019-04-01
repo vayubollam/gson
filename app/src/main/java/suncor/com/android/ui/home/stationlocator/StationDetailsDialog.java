@@ -20,9 +20,12 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.R;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.mfp.SessionManager;
@@ -43,8 +46,6 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     private int initialPosition;
     private int fullHeight;
 
-    private SessionManager sessionManager;
-
     private BottomSheetBehavior behavior;
 
     private int verticalPadding;
@@ -53,6 +54,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     private int initialAddressLayoutHeight;
     private int initialAddressLayoutBottomMargin;
 
+    @Inject
+    SessionManager sessionManager;
 
     public static void showCard(Fragment fragment, StationItem stationItem, View originalView) {
         StationDetailsDialog dialog = new StationDetailsDialog();
@@ -68,7 +71,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.StationDetailsDialogStyle);
-        sessionManager = SessionManager.getInstance();
+        AndroidSupportInjection.inject(this);
     }
 
     @Override

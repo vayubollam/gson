@@ -9,7 +9,7 @@ import suncor.com.android.utilities.ConnectionUtil;
 
 public class Alerts {
     public static Dialog prepareGeneralErrorDialog(Context context) {
-        boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection();
+        boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 .setMessage(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message)

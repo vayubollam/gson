@@ -12,33 +12,30 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.net.PlacesClient;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableBoolean;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.BuildConfig;
+import dagger.android.support.DaggerFragment;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
-import suncor.com.android.SuncorApplication;
-import suncor.com.android.data.repository.suggestions.GooglePlaceSuggestionsProvider;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.stationlocator.StationItem;
-import suncor.com.android.ui.home.stationlocator.StationViewModelFactory;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.utilities.LocationUtils;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends DaggerFragment {
 
     public static final String SEARCH_FRAGMENT_TAG = "Search_Fragment";
     private SearchViewModel viewModel;
@@ -51,6 +48,19 @@ public class SearchFragment extends Fragment {
     private SuggestionsAdapter suggestionsAdapter;
     private ObservableBoolean recentSearch = new ObservableBoolean();
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        parentViewModel = ViewModelProviders.of(getActivity()).get(StationsViewModel.class);
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
+
+        locationLiveData = new LocationLiveData(getContext());
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,17 +72,6 @@ public class SearchFragment extends Fragment {
         nearbySearchBinding = binding.nearbyLayout;
         SuggestionsLayoutBinding suggestionsLayoutBinding = binding.suggestionsLayout;
 
-        Places.initialize(getContext(), BuildConfig.MAP_API_KEY);
-        //instantiating
-        PlacesClient placesClient = Places.createClient(getContext());
-
-        StationViewModelFactory factory = new StationViewModelFactory(SuncorApplication.stationsProvider, SuncorApplication.favouriteRepository);
-        parentViewModel = ViewModelProviders.of(getActivity(), factory).get(StationsViewModel.class);
-
-        locationLiveData = new LocationLiveData(getContext());
-
-        SearchViewModelFactory viewModelFactory = new SearchViewModelFactory(SuncorApplication.stationsProvider, new GooglePlaceSuggestionsProvider(placesClient));
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(getActivity());
         suggestionsLayoutBinding.setLifecycleOwner(getActivity());
@@ -106,7 +105,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (LocationUtils.isLocationEnabled()) {
+        if (LocationUtils.isLocationEnabled(getContext())) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
