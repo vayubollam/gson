@@ -15,7 +15,7 @@ import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {

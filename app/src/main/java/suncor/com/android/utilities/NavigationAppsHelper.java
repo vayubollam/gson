@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 
 public class NavigationAppsHelper {
 

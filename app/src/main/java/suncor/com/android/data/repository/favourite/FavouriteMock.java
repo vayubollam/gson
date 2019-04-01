@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 
 public class FavouriteMock implements FavouriteRepository {
 

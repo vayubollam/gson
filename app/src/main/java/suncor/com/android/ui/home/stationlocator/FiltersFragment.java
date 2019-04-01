@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFiltersBinding;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 
 public class FiltersFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package suncor.com.android.model;
+package suncor.com.android.model.station;
 
 public class Address {
 

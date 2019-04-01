@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.model.SecurityQuestion;
+import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 

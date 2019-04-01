@@ -16,8 +16,8 @@ import javax.inject.Singleton;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
-import suncor.com.android.model.Profile;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.Profile;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
 

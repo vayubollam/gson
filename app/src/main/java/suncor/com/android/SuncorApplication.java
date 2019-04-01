@@ -13,7 +13,7 @@ import suncor.com.android.di.DaggerAppComponent;
 import suncor.com.android.mfp.MFPRequestInterceptor;
 import suncor.com.android.mfp.MfpLogging;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.Timber;
 
 public class SuncorApplication extends DaggerApplication {

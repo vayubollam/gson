@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 
 public class DashboardViewModel extends ViewModel {
 

@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.DirectDistanceComparator;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.Timber;

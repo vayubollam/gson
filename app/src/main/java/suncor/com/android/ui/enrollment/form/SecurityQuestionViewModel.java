@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.SecurityQuestion;
+import suncor.com.android.model.account.SecurityQuestion;
 
 public class SecurityQuestionViewModel extends ViewModel {
     private EnrollmentsApi enrollmentsApi;

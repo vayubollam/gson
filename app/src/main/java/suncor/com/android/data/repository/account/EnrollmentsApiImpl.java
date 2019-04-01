@@ -19,9 +19,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
-import suncor.com.android.model.NewEnrollment;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.SecurityQuestion;
+import suncor.com.android.model.account.NewEnrollment;
+import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {

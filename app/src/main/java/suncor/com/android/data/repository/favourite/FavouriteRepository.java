@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import androidx.lifecycle.LiveData;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 
 public interface FavouriteRepository {
 
