@@ -32,7 +32,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.Station;
 import suncor.com.android.ui.common.ModalDialog;
-import suncor.com.android.ui.enrollement.EnrollmentActivity;
+import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.NavigationAppsHelper;
 

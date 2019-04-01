@@ -17,7 +17,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.ui.enrollement.EnrollmentActivity;
+import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 
 

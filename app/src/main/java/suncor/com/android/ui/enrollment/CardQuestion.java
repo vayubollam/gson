@@ -1,4 +1,4 @@
-package suncor.com.android.ui.enrollement;
+package suncor.com.android.ui.enrollment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import androidx.navigation.Navigation;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.ui.enrollement.form.SecurityQuestionViewModel;
+import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class CardQuestion extends DaggerFragment {

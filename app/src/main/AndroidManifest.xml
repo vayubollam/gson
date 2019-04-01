@@ -37,7 +37,7 @@
             android:name=".ui.home.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.enrollement.EnrollmentActivity"
+            android:name=".ui.enrollment.EnrollmentActivity"
             android:screenOrientation="portrait" />
 
         <meta-data

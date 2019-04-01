@@ -18,14 +18,14 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import suncor.com.android.R;
-import suncor.com.android.databinding.FiltersFragmentBinding;
+import suncor.com.android.databinding.FragmentFiltersBinding;
 import suncor.com.android.model.Station;
 
 public class FiltersFragment extends Fragment {
 
 
     public static final String FILTERS_FRAGMENT_TAG = "filters-tag";
-    private FiltersFragmentBinding binding;
+    private FragmentFiltersBinding binding;
     private HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private StationsViewModel parentViewModel;
 
@@ -38,7 +38,7 @@ public class FiltersFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FiltersFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentFiltersBinding.inflate(inflater, container, false);
 
         parentViewModel = ViewModelProviders.of(getActivity()).get(StationsViewModel.class);
         initCheckBoxes();

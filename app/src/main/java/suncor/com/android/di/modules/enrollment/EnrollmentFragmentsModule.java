@@ -2,9 +2,9 @@ package suncor.com.android.di.modules.enrollment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import suncor.com.android.ui.enrollement.CardQuestion;
-import suncor.com.android.ui.enrollement.form.EnrollmentFormFragment;
-import suncor.com.android.ui.enrollement.form.SecurityQuestionFragment;
+import suncor.com.android.ui.enrollment.CardQuestion;
+import suncor.com.android.ui.enrollment.form.EnrollmentFormFragment;
+import suncor.com.android.ui.enrollment.form.SecurityQuestionFragment;
 
 @Module
 abstract class EnrollmentFragmentsModule {

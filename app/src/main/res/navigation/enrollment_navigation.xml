@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/card_question"
-        android:name="suncor.com.android.ui.enrollement.CardQuestion"
+        android:name="suncor.com.android.ui.enrollment.CardQuestion"
         android:label="fragment_card_question"
         tools:layout="@layout/fragment_card_question">
         <action
@@ -27,14 +27,14 @@
     </fragment>
     <fragment
         android:id="@+id/card_form_fragment"
-        android:name="suncor.com.android.ui.enrollement.cardform.CardFormFragment"
+        android:name="suncor.com.android.ui.enrollment.cardform.CardFormFragment"
         android:label="fragment_card_form"
         tools:layout="@layout/fragment_card_form" />
     <fragment
         android:id="@+id/enrollment_form_fragment"
-        android:name="suncor.com.android.ui.enrollement.form.EnrollmentFormFragment"
+        android:name="suncor.com.android.ui.enrollment.form.EnrollmentFormFragment"
         android:label="EnrollmentFormFragment"
-        tools:layout="@layout/enrollment_form_fragment">
+        tools:layout="@layout/fragment_enrollment_form">
         <action
             android:id="@+id/action_enrollment_form_fragment_to_provinceFragment"
             app:destination="@id/provinceFragment"
@@ -54,11 +54,11 @@
     </fragment>
     <fragment
         android:id="@+id/provinceFragment"
-        android:name="suncor.com.android.ui.enrollement.form.ProvinceFragment"
+        android:name="suncor.com.android.ui.enrollment.form.ProvinceFragment"
         android:label="fragment_province"
         tools:layout="@layout/fragment_province" />
     <fragment
         android:id="@+id/securityQuestionFragment"
-        android:name="suncor.com.android.ui.enrollement.form.SecurityQuestionFragment"
+        android:name="suncor.com.android.ui.enrollment.form.SecurityQuestionFragment"
         android:label="SecurityQuestionFragment" />
 </navigation>

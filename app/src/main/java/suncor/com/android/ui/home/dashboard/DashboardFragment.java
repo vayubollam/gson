@@ -77,7 +77,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dashboard_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         progressBar = view.findViewById(R.id.progress_bar);
         stationCard = view.findViewById(R.id.station_card);
         nearStationTitle = view.findViewById(R.id.station_title_text);

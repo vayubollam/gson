@@ -28,7 +28,7 @@ import dagger.android.support.DaggerFragment;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
-import suncor.com.android.databinding.FavouritesFragmentBinding;
+import suncor.com.android.databinding.FragmentFavouritesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.SuncorToast;
@@ -42,7 +42,7 @@ public class FavouritesFragment extends DaggerFragment {
     public static String FAVOURITES_FRAGMENT_TAG = "FAVOURITES_FRAGMENT";
     private FavouritesViewModel mViewModel;
     private FavouritesAdapter favouritesAdapter;
-    private FavouritesFragmentBinding binding;
+    private FragmentFavouritesBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private LocationLiveData locationLiveData;
 
@@ -68,7 +68,7 @@ public class FavouritesFragment extends DaggerFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FavouritesFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentFavouritesBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.setEventHandler(this);
         binding.setVm(mViewModel);

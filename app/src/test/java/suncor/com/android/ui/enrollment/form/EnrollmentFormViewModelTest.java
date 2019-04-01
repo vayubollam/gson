@@ -1,4 +1,4 @@
-package suncor.com.android.ui.enrollement.form;
+package suncor.com.android.ui.enrollment.form;
 
 import org.junit.Assert;
 import org.junit.Before;

@@ -9,11 +9,11 @@
 
         <variable
             name="eventHandler"
-            type="suncor.com.android.ui.enrollement.form.EnrollmentFormFragment" />
+            type="suncor.com.android.ui.enrollment.form.EnrollmentFormFragment" />
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.enrollement.form.EnrollmentFormViewModel" />
+            type="suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
