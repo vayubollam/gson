@@ -1,4 +1,4 @@
-package suncor.com.android.ui.enrollement;
+package suncor.com.android.ui.enrollment;
 
 import android.os.Bundle;
 

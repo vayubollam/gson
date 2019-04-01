@@ -21,7 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.Timber;
 
 @Singleton

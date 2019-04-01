@@ -57,13 +57,13 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
-import suncor.com.android.databinding.StationsFragmentBinding;
+import suncor.com.android.databinding.FragmentStationsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
-import suncor.com.android.ui.enrollement.EnrollmentActivity;
+import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment;
 import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
@@ -88,7 +88,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private boolean lockBottomSheet;
     private Marker lastSelectedMarker;
     private float screenRatio;
-    private StationsFragmentBinding binding;
+    private FragmentStationsBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     private boolean userScrolledMap;
@@ -129,7 +129,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = StationsFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentStationsBinding.inflate(inflater, container, false);
 
         screenRatio = (float) getResources().getDisplayMetrics().heightPixels / (float) getResources().getDisplayMetrics().widthPixels;
         mViewModel.setRegionRatio(screenRatio);

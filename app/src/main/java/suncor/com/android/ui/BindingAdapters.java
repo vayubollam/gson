@@ -14,7 +14,7 @@ import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
 import androidx.databinding.InverseBindingMethod;
 import androidx.databinding.InverseBindingMethods;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 @InverseBindingMethods({

@@ -1,4 +1,4 @@
-package suncor.com.android.ui.enrollement.form;
+package suncor.com.android.ui.enrollment.form;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,8 +29,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EmailCheckApi;
-import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
+import suncor.com.android.data.repository.account.EnrollmentsApi;
+import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
@@ -44,8 +44,8 @@ import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
 
-    EnrollmentFormFragmentBinding binding;
-    ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
+    private FragmentEnrollmentFormBinding binding;
+    private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
 
@@ -62,7 +62,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
-            if (r.status == Resource.Status.SUCCESS && r.data == EmailCheckApi.EmailState.INVALID) {
+            if (r.status == Resource.Status.SUCCESS && r.data == EnrollmentsApi.EmailState.INVALID) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
                 dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
@@ -101,7 +101,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = EnrollmentFormFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentEnrollmentFormBinding.inflate(inflater, container, false);
         binding.setEventHandler(this);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);

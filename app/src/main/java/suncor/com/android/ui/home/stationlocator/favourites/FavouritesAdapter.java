@@ -16,7 +16,7 @@ import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.SwipeableStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swipe.Attributes;
 import suncor.com.android.uicomponents.swipe.RecyclerSwipeAdapter;

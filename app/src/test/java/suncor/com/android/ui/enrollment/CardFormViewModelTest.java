@@ -1,11 +1,11 @@
-package suncor.com.android.ui.enrollement;
+package suncor.com.android.ui.enrollment;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import suncor.com.android.R;
-import suncor.com.android.ui.enrollement.cardform.CardFormViewModel;
+import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 
 public class CardFormViewModelTest {
 

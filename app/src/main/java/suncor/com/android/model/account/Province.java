@@ -1,4 +1,4 @@
-package suncor.com.android.model;
+package suncor.com.android.model.account;
 
 import androidx.annotation.Nullable;
 

@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import suncor.com.android.mfp.SessionChangeListener;
-import suncor.com.android.model.Profile;
+import suncor.com.android.model.account.Profile;
 import suncor.com.android.utilities.Timber;
 
 /**

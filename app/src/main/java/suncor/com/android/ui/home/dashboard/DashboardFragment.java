@@ -34,9 +34,9 @@ import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
-import suncor.com.android.model.Profile;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.account.Profile;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -77,7 +77,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dashboard_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         progressBar = view.findViewById(R.id.progress_bar);
         stationCard = view.findViewById(R.id.station_card);
         nearStationTitle = view.findViewById(R.id.station_title_text);

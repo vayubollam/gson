@@ -1,4 +1,4 @@
-package suncor.com.android.ui.enrollement.cardform;
+package suncor.com.android.ui.enrollment.cardform;
 
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;

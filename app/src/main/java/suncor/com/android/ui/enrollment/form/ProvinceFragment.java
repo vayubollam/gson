@@ -1,4 +1,4 @@
-package suncor.com.android.ui.enrollement.form;
+package suncor.com.android.ui.enrollment.form;
 
 
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
-import suncor.com.android.model.Province;
+import suncor.com.android.model.account.Province;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class ProvinceFragment extends DialogFragment {

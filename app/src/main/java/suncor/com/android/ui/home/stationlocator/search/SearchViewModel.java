@@ -16,7 +16,7 @@ import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.data.repository.suggestions.PlaceSuggestionsProvider;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 

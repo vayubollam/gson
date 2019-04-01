@@ -26,8 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.databinding.FragmentSearchBinding;
 import suncor.com.android.databinding.NearbyLayoutBinding;
-import suncor.com.android.databinding.SearchFragmentBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
@@ -40,7 +40,7 @@ public class SearchFragment extends DaggerFragment {
     public static final String SEARCH_FRAGMENT_TAG = "Search_Fragment";
     private SearchViewModel viewModel;
     private StationsViewModel parentViewModel;
-    private SearchFragmentBinding binding;
+    private FragmentSearchBinding binding;
     private NearbyLayoutBinding nearbySearchBinding;
     private LatLng userLocation;
     private LocationLiveData locationLiveData;
@@ -68,7 +68,7 @@ public class SearchFragment extends DaggerFragment {
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
 
-        binding = SearchFragmentBinding.inflate(inflater, container, false);
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
         nearbySearchBinding = binding.nearbyLayout;
         SuggestionsLayoutBinding suggestionsLayoutBinding = binding.suggestionsLayout;
 

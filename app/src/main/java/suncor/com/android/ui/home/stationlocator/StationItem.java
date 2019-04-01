@@ -12,9 +12,9 @@ import androidx.lifecycle.Transformations;
 import suncor.com.android.BR;
 import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
-import suncor.com.android.model.Hour;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.Station;
+import suncor.com.android.model.station.Hour;
+import suncor.com.android.model.station.Station;
 
 public class StationItem extends BaseObservable {
 
