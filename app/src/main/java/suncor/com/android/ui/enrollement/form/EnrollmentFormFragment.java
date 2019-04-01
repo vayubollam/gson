@@ -29,7 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EmailCheckApi;
+import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.EnrollmentFormFragmentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
@@ -62,7 +62,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
-            if (r.status == Resource.Status.SUCCESS && r.data == EmailCheckApi.EmailState.INVALID) {
+            if (r.status == Resource.Status.SUCCESS && r.data == EnrollmentsApi.EmailState.INVALID) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
                 dialog.setTitle(getString(R.string.enrollment_invalid_email_title))

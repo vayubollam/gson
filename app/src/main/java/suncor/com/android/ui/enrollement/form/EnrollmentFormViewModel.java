@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EmailCheckApi;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.NewEnrollment;
@@ -25,7 +24,7 @@ import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
-    public LiveData<Resource<EmailCheckApi.EmailState>> emailCheckLiveData;
+    public LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData;
     public LiveData<Resource<Boolean>> joinLiveData;
     private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
 
@@ -62,8 +61,8 @@ public class EnrollmentFormViewModel extends ViewModel {
             if (hasFocus == null || hasFocus
                     || emailInputField.getVerificationState() != EmailInputField.VerificationState.UNCHECKED
                     || !emailInputField.isValid()) {
-                MutableLiveData<Resource<EmailCheckApi.EmailState>> temp = new MutableLiveData<>();
-                temp.setValue(Resource.success(EmailCheckApi.EmailState.UNCHECKED));
+                MutableLiveData<Resource<EnrollmentsApi.EmailState>> temp = new MutableLiveData<>();
+                temp.setValue(Resource.success(EnrollmentsApi.EmailState.UNCHECKED));
                 return temp;
             } else {
                 return Transformations.map(enrollmentsApi.checkEmail(emailInputField.getText()), (r) -> {

@@ -62,9 +62,9 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
     }
 
     @Override
-    public LiveData<Resource<EmailCheckApi.EmailState>> checkEmail(String email) {
+    public LiveData<Resource<EmailState>> checkEmail(String email) {
         Timber.d("validating email: " + email);
-        MutableLiveData<Resource<EmailCheckApi.EmailState>> result = new MutableLiveData<>();
+        MutableLiveData<Resource<EmailState>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH.concat("/email-validation"));
@@ -82,9 +82,9 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                     try {
                         boolean isAlreadyRegistered = json.getBoolean("isAlreadyRegistered");
                         if (isAlreadyRegistered) {
-                            result.postValue(Resource.success(EmailCheckApi.EmailState.INVALID));
+                            result.postValue(Resource.success(EmailState.INVALID));
                         } else {
-                            result.postValue(Resource.success(EmailCheckApi.EmailState.VALID));
+                            result.postValue(Resource.success(EmailState.VALID));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
