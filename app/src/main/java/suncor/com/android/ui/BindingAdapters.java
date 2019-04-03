@@ -125,16 +125,6 @@ public class BindingAdapters {
         inputLayout.setError(showError);
     }
 
-//    @BindingAdapter(value = "animateVisibleGone")
-//    public static void animateVisibleGone(View view, boolean visible) {
-//        ConstraintLayout parent = (ConstraintLayout) view.getParent();
-//        ConstraintSet set = new ConstraintSet();
-//        set.clone(parent);
-//        set.setVisibility(view.getId(), visible ? View.VISIBLE : View.GONE);
-//        TransitionManager.beginDelayedTransition(parent);
-//        set.applyTo(parent);
-//    }
-
     public interface AfterTextChanged {
         void afterTextChanged(SuncorTextInputLayout input, Editable s);
     }

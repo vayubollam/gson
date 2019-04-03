@@ -15,7 +15,6 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -200,11 +199,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                 if (r.status != Resource.Status.LOADING) {
                     binding.setFavouriteBusy(false);
                 }
-                if (r.status == Resource.Status.ERROR) {
-                    if (getContext() != null) {
-                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                //TODO handle error
             });
         }
     }

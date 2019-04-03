@@ -42,6 +42,12 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         notifyDataSetChanged();
     }
 
+    public void setStationItems(ArrayList<StationItem> stations) {
+        this.stations.clear();
+        this.stations.addAll(stations);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public StationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

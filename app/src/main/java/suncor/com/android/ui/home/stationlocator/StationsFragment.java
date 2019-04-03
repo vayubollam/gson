@@ -47,6 +47,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
+import androidx.databinding.Observable;
 import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -90,6 +91,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     private float screenRatio;
     private FragmentStationsBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
+    private ObservableBoolean isErrorCardVisible = new ObservableBoolean(false);
 
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
@@ -124,6 +126,18 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         locationLiveData = new LocationLiveData(getContext(), false);
 
         mViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(StationsViewModel.class);
+        isErrorCardVisible.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if (isErrorCardVisible.get()) {
+                    lockBottomSheet = true;
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    lockBottomSheet = false;
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
     }
 
     @Override
@@ -137,12 +151,23 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         binding.setVm(mViewModel);
         binding.setEventHandler(this);
         binding.setIsLoading(isLoading);
+        binding.setIsErrorCardVisible(isErrorCardVisible);
+        binding.setLifecycleOwner(this);
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet);
+
         stationAdapter = new StationAdapter(this, bottomSheetBehavior);
         binding.cardRecycler.setAdapter(stationAdapter);
         binding.cardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
         binding.cardRecycler.addOnItemTouchListener(new StationCardTouchListener(this, stationAdapter.getStations(), bottomSheetBehavior));
+        binding.cardRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    updateSelectedStation();
+                }
+            }
+        });
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(binding.cardRecycler);
 
@@ -156,6 +181,8 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             fm.executePendingTransactions();
         }
         mapFragment.getMapAsync(this);
+
+        //Apply top insets to accomodate for the transparent state
         systemMarginsAlreadyApplied = false;
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             if (!systemMarginsAlreadyApplied) {
@@ -219,7 +246,8 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnCameraMoveStartedListener(this);
-        mViewModel.stationsAround.observe(getViewLifecycleOwner(), this::UpdateCards);
+
+        mViewModel.stationsAround.observe(getViewLifecycleOwner(), this::updateCards);
         mViewModel.filters.observe(getViewLifecycleOwner(), this::filtersChanged);
         mViewModel.selectedStation.observe(getViewLifecycleOwner(), station -> {
             if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null || mViewModel.stationsAround.getValue().data.isEmpty()) {
@@ -291,7 +319,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
 
     private void gotoMyLocation(Location location) {
         if (mGoogleMap != null && isAdded()) {
-            isLoading.set(false);
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mViewModel.setUserLocation(latLng, StationsViewModel.UserLocationType.GPS);
             stationAdapter.setUserLocation(latLng);
@@ -343,57 +370,51 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         }
     }
 
-    private void UpdateCards(Resource<ArrayList<StationItem>> result) {
-        isLoading.set(result.status == Resource.Status.LOADING);
+    private void updateCards(Resource<ArrayList<StationItem>> result) {
+        binding.bottomSheet.requestLayout();
+        if (result.status == Resource.Status.LOADING) {
+            isLoading.set(true);
+            isErrorCardVisible.set(false);
+        } else {
+            isLoading.set(false);
+            if (result.status == Resource.Status.SUCCESS) {
+                if (isAdded() && mGoogleMap != null) {
+                    ArrayList<StationItem> stations = result.data;
+                    ArrayList<String> currentFilter = mViewModel.filters.getValue();
 
-        if (result.status == Resource.Status.SUCCESS) {
+                    clearMapMarkers();
 
-            if (isAdded() && mGoogleMap != null) {
-                ArrayList<StationItem> stations = result.data;
-                ArrayList<String> currentFilter = mViewModel.filters.getValue();
-
-                for (Marker marker : stationsMarkers.keySet()) {
-                    marker.remove();
-                }
-                stationsMarkers.clear();
-                lastSelectedMarker = null;
-
-                if (stations != null && stations.isEmpty() && currentFilter != null && !currentFilter.isEmpty()) {
-                    binding.cardRecycler.setVisibility(View.GONE);
-                    binding.statusCardview.setVisibility(View.VISIBLE);
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    lockBottomSheet = true;
-                } else {
-                    if (lockBottomSheet) {
-                        lockBottomSheet = false;
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }
-                    binding.cardRecycler.setVisibility(View.VISIBLE);
-                    binding.statusCardview.setVisibility(View.GONE);
-                    for (StationItem station : stations) {
-                        LatLng latLng = new LatLng(station.getStation().getAddress().getLatitude(), station.getStation().getAddress().getLongitude());
-                        boolean isFavourite = station.isFavourite();
-                        boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue().equals(station);
-                        Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
-                        if (isSelected) {
-                            lastSelectedMarker = stationMarker;
-                        }
-                        stationsMarkers.put(stationMarker, station);
-                    }
-                    stationAdapter.getStations().clear();
-                    stationAdapter.getStations().addAll(stations);
-                    stationAdapter.notifyDataSetChanged();
-                    binding.cardRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                        @Override
-                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                            if (newState == RecyclerView.SCROLL_STATE_IDLE && bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                                updateSelectedStation();
+                    if (stations != null && stations.isEmpty() && currentFilter != null && !currentFilter.isEmpty()) {
+                        isErrorCardVisible.set(true);
+                    } else {
+                        isErrorCardVisible.set(false);
+                        for (StationItem station : stations) {
+                            LatLng latLng = new LatLng(station.getStation().getAddress().getLatitude(), station.getStation().getAddress().getLongitude());
+                            boolean isFavourite = station.isFavourite();
+                            boolean isSelected = mViewModel.selectedStation.getValue() != null && mViewModel.selectedStation.getValue().equals(station);
+                            Marker stationMarker = mGoogleMap.addMarker(new MarkerOptions().position(latLng).icon(getDrawableForMarker(isSelected, isFavourite)));
+                            if (isSelected) {
+                                lastSelectedMarker = stationMarker;
                             }
+                            stationsMarkers.put(stationMarker, station);
                         }
-                    });
+                        stationAdapter.setStationItems(stations);
+                    }
                 }
+            } else if (result.status == Resource.Status.ERROR) {
+                isErrorCardVisible.set(true);
+                stationAdapter.getStations().clear();
+                clearMapMarkers();
             }
         }
+    }
+
+    private void clearMapMarkers() {
+        for (Marker marker : stationsMarkers.keySet()) {
+            marker.remove();
+        }
+        stationsMarkers.clear();
+        lastSelectedMarker = null;
     }
 
     private void filtersChanged(ArrayList<String> filterList) {
@@ -501,7 +522,9 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     //TODO check if we can remove the showDialog parameter
     public void locateMe(boolean showDialog) {
         if (LocationUtils.isLocationEnabled(getContext())) {
-            isLoading.set(true);
+            //start by loading only if the current location is not initialized or not GPS
+            boolean alreadyHasGPSLocation = mViewModel.userLocation.getValue() != null && mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS;
+            isLoading.set(!alreadyHasGPSLocation);
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
             }

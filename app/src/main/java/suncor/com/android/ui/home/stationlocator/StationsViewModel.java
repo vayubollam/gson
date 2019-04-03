@@ -80,7 +80,7 @@ public class StationsViewModel extends ViewModel {
         favouriteRepository.isLoaded().removeObserver(favouritesLoadedObserver);
     }
 
-    private void refreshStations() {
+    public void refreshStations() {
         Timber.d("refreshing stations");
         LatLng mapCenter = _mapBounds.getValue().getCenter();
         LatLngBounds bounds = _mapBounds.getValue();
@@ -108,6 +108,8 @@ public class StationsViewModel extends ViewModel {
                         _stationsAround.postValue(Resource.loading());
                         break;
                     case ERROR:
+                        cachedStations = null;
+                        cachedStationsBounds = null;
                         _stationsAround.postValue(Resource.error(resource.message));
                         shouldUpdateSectedStation = false;
                         break;
