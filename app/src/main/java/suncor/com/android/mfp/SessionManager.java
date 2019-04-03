@@ -24,8 +24,8 @@ import suncor.com.android.utilities.UserLocalSettings;
 @Singleton
 public class SessionManager implements SessionChangeListener {
 
-    public static final int LOCK_TIME_MINUTES = 15;
-    public static final int LOGIN_ATTEMPTS = 5;
+    public static final int LOCK_TIME_MINUTES = 30;
+    public static final int LOGIN_ATTEMPTS = 6;
     private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
     private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
     private final UserLocalSettings userLocalSettings;
@@ -197,7 +197,7 @@ public class SessionManager implements SessionChangeListener {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);
             if (loginObservable != null) {
-                loginObservable.postValue(Resource.success(SigninResponse.SUCCESS));
+                loginObservable.postValue(Resource.success(SigninResponse.success()));
             }
             loginState.postValue(LoginState.LOGGED_IN);
             loginOngoing = false;
@@ -205,36 +205,24 @@ public class SessionManager implements SessionChangeListener {
     }
 
     @Override
-    public void onLoginRequired(int remainingAttempts) {
-        Timber.d("login challenged, remaining attempts: " + remainingAttempts);
+    public void onLoginFailed(SigninResponse response) {
+        Timber.d("login failed, cause: " + response.getStatus().name());
         setProfile(null);
         if (loginObservable != null) {
-            loginObservable.postValue(Resource.error(remainingAttempts + "", SigninResponse.CHALLENGED));
+            loginObservable.postValue(Resource.success(response));
         }
         loginState.postValue(LoginState.LOGGED_OUT);
-
-        if (!loginOngoing) {
+        if (!loginOngoing && response.getStatus() == SigninResponse.Status.WRONG_CREDENTIALS) {
             cancelLogin();
         }
-    }
 
-    @Override
-    public void onLoginFailed(String error) {
-        Timber.d("login failed, cause: " + error);
-        setProfile(null);
-        if (loginObservable != null) {
-            loginObservable.postValue(Resource.error(error, SigninResponse.FAILED));
+        if (response.getStatus() != SigninResponse.Status.WRONG_CREDENTIALS) {
+            loginOngoing = false;
         }
-        loginState.postValue(LoginState.LOGGED_OUT);
-        loginOngoing = false;
     }
 
     public enum LoginState {
         LOGGED_IN, LOGGED_OUT
-    }
-
-    public enum SigninResponse {
-        SUCCESS, CHALLENGED, FAILED
     }
 
     public enum AccountState {

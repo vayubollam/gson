@@ -150,4 +150,7 @@
 
     <string name="msg_sl003">Address suggestions are not available at the moment.</string>
     <string name="enrollment_loading_question_title">One moment</string>
+    <string name="login_hard_lock_alert_title">Account locked</string>
+    <string name="login_hard_lock_alert_message">Sorry, the login function has been disabled for 30 minutes. If you need help, please call Customer Service.</string>
+    <string name="login_hard_lock_alert_call_button">Contact us</string>
 </resources>

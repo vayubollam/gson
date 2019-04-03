@@ -5,7 +5,5 @@ import suncor.com.android.model.account.Profile;
 public interface SessionChangeListener {
     void onLoginSuccess(Profile profile);
 
-    void onLoginRequired(int remainingAttempts);
-
-    void onLoginFailed(String error);
+    void onLoginFailed(SigninResponse response);
 }

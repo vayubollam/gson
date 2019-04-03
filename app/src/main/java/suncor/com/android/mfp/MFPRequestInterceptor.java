@@ -54,7 +54,7 @@ public class MFPRequestInterceptor implements Interceptor {
             try {
                 JSONObject object = new JSONObject(body);
                 if (object.has("errorCode")) {
-                    if (ErrorCodes.CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
+                    if (ErrorCodes.ERR_CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
                         Handler mainHandler = new Handler(application.getMainLooper());
                         mainHandler.post(() -> sessionManager.logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories

@@ -16,7 +16,9 @@ import androidx.appcompat.app.AlertDialog;
 import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
@@ -90,28 +92,26 @@ public class LoginActivity extends DaggerAppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
 
-                if (sessionManager.isAccountBlocked()) {
-                    String title = getString(R.string.login_invalid_credentials_dialog_title);
-                    String content = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
-                    createAlert(title, content).show();
-                } else {
-                    progressLayout.setVisibility(View.VISIBLE);
-                    sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString())
-                            .observe(this, (status) -> {
-                                progressLayout.setVisibility(View.GONE);
-                                if (status.status == Resource.Status.SUCCESS) {
-                                    finish();
-                                } else {
-                                    if (status.data == SessionManager.SigninResponse.CHALLENGED) {
+
+                progressLayout.setVisibility(View.VISIBLE);
+                sessionManager.login(userNameEditText.getText().toString(), passwordEditText.getText().toString())
+                        .observe(this, (result) -> {
+                            progressLayout.setVisibility(View.GONE);
+                            if (result.status == Resource.Status.SUCCESS) {
+                                SigninResponse response = result.data;
+                                switch (response.getStatus()) {
+                                    case SUCCESS:
+                                        finish();
+                                        break;
+                                    case WRONG_CREDENTIALS: {
                                         String title = getString(R.string.login_invalid_credentials_dialog_title);
                                         String message;
                                         passwordEditText.setText("");
-                                        int remainingAttempts = Integer.parseInt(status.message);
-                                        if (remainingAttempts == SessionManager.LOGIN_ATTEMPTS - 1) {
+                                        if (response.getRemainingAttempts() == SessionManager.LOGIN_ATTEMPTS - 1 || response.getRemainingAttempts() == -1) {
                                             message = getString(R.string.login_invalid_credentials_dialog_1st_message);
                                             createAlert(title, message).show();
                                         } else {
-                                            message = getString(R.string.login_invalid_credentials_dialog_2nd_message, Integer.parseInt(status.message), SessionManager.LOCK_TIME_MINUTES);
+                                            message = getString(R.string.login_invalid_credentials_dialog_2nd_message, response.getRemainingAttempts(), SessionManager.LOCK_TIME_MINUTES);
                                             AlertDialog.Builder dialog = createAlert(title, message);
                                             dialog.setNegativeButton(R.string.login_invalid_credentials_reset_password, (dialogInterface, which) -> {
                                                 Toast.makeText(getApplicationContext(), "This will open the reset password screen when developed", Toast.LENGTH_SHORT).show();
@@ -119,21 +119,34 @@ public class LoginActivity extends DaggerAppCompatActivity {
                                             });
                                             dialog.show();
                                         }
-                                    } else {
-//                                        String title = getString(R.string.login_invalid_credentials_dialog_title);
-//                                        String content = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, sessionManager.remainingTimeToUnblock() / (1000 * 60));
-                                        String title = getString(R.string.msg_e001_title);
-                                        String content = getString(R.string.msg_e001_message);
-                                        createAlert(title, content).show();
+                                        break;
                                     }
+                                    case SOFT_LOCKED: {
+                                        String title = getString(R.string.login_invalid_credentials_dialog_title);
+                                        String content = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, response.getTimeOut());
+                                        createAlert(title, content).show();
+                                        break;
+                                    }
+                                    case HARD_LOCKED: {
+                                        String title = getString(R.string.login_hard_lock_alert_title);
+                                        String content = getString(R.string.login_hard_lock_alert_message);//TODO this message should be updated
+                                        AlertDialog.Builder dialog = createAlert(title, content);
+                                        dialog.setNegativeButton(R.string.login_hard_lock_alert_call_button, (dialogInterface, which) -> {
+                                            //TODO handle call
+                                            dialogInterface.dismiss();
+                                        });
+                                        dialog.show();
+                                    }
+                                    default:
+                                        Alerts.prepareGeneralErrorDialog(this).show();
                                 }
-                            });
-                }
+                            } else if (result.status == Resource.Status.ERROR) {
+                                Alerts.prepareGeneralErrorDialog(this).show();
+                            }
+                        });
             }
         });
-        ((SuncorAppBarLayout) findViewById(R.id.app_bar)).setNavigationOnClickListener((v) -> {
-            onBackPressed();
-        });
+        ((SuncorAppBarLayout) findViewById(R.id.app_bar)).setNavigationOnClickListener((v) -> onBackPressed());
     }
 
     @Override

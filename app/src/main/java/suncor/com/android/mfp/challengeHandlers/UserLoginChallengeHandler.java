@@ -12,7 +12,9 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionChangeListener;
+import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.utilities.Timber;
 
@@ -24,8 +26,12 @@ import suncor.com.android.utilities.Timber;
 public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     public static final String SECURITY_CHECK_NAME_LOGIN = "UserLogin";
     public static final String SCOPE = "LoggedIn";
-    private static final String REMAINING_ATTEMPTS = "remainingAttempts";
+    private static final String REMAINING_ATTEMPTS = "attemptsRemaining";
     private static final String FAILURE = "failure";
+    private static final String ERROR_CODE = "errorCode";
+    private static final String PUBWEB = "pubWeb";
+    public static final String RETRY_TIMEOUT = "retryTimeout";
+
     private String errorMsg = "";
     private boolean isChallenged = false;
     private SessionChangeListener listener;
@@ -39,29 +45,48 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     @Override
     public void handleChallenge(JSONObject jsonObject) {
         Timber.d("Challenge Received");
+        Timber.v(jsonObject.toString());
         isChallenged = true;
         try {
-            int remainingAttempts = jsonObject.getInt(REMAINING_ATTEMPTS);
-            listener.onLoginRequired(remainingAttempts);
+            String errorCode = jsonObject.getString(ERROR_CODE);
+            JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
+
+            switch (errorCode) {
+                case ErrorCodes.ERR_ACCOUNT_BAD_PASSWORD:
+                    if (pubWebResponse.has(REMAINING_ATTEMPTS)) {
+                        int remainingAttempts = pubWebResponse.getInt(REMAINING_ATTEMPTS);
+                        listener.onLoginFailed(SigninResponse.wrongCredentials(remainingAttempts));
+                    } else {
+                        listener.onLoginFailed(SigninResponse.wrongCredentials());
+                    }
+                    break;
+                case ErrorCodes.ERR_ACCOUNT_SOFT_LOCK:
+                    int timeout = pubWebResponse.getInt(RETRY_TIMEOUT);
+                    listener.onLoginFailed(SigninResponse.softLocked(timeout));
+                    break;
+                case ErrorCodes.ERR_ACCOUNT_HARD_LOCK:
+                    listener.onLoginFailed(SigninResponse.hardLocked());
+                    break;
+                case ErrorCodes.ERR_PASSWORD_CHANGE_REQUIRED:
+                    listener.onLoginFailed(SigninResponse.passwordReset());
+                    break;
+                default:
+                    listener.onLoginFailed(SigninResponse.generalFailure());
+            }
         } catch (JSONException e) {
-            e.printStackTrace();
-            Timber.e("handle challenge failed, " + jsonObject);
-            cancel();
-            listener.onLoginFailed(e.getMessage());
+            Timber.e(e, "parsing challenge response failed");
+            listener.onLoginFailed(SigninResponse.generalFailure());
         }
     }
 
     @Override
     public void handleFailure(JSONObject error) {
-        Timber.d("Handle failure");
         super.handleFailure(error);
+        Timber.d("Handle failure");
+        Timber.v(error.toString());
+
         isChallenged = false;
-        try {
-            errorMsg = error.getString(FAILURE);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        listener.onLoginFailed(errorMsg);
+        listener.onLoginFailed(SigninResponse.generalFailure());
     }
 
     @Override
