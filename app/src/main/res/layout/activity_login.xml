@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout>
+    <data>
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.login.LoginViewModel" />
+
+</data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -45,7 +53,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/login_email_field_label"
-                android:maxLength="100" />
+                android:maxLength="100"
+                app:error="@{vm.EmailInputField.error}"
+                app:text="@={vm.emailInputField.text}"/>
 
             <suncor.com.android.uicomponents.SuncorTextInputLayout
                 android:id="@+id/password_layout"
@@ -54,7 +64,10 @@
                 android:hint="@string/login_password_field"
                 android:inputType="textPassword"
                 android:maxLength="16"
-                app:passwordToggleEnabled="true" />
+                app:passwordToggleEnabled="true"
+                app:error="@{vm.passwordInputField.error}"
+                app:text="@={vm.passwordInputField.text}"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -72,7 +85,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="@string/sign_in" />
+                    android:text="@string/sign_in"
+                    android:onClick="@{() -> vm.onClickSignIn()}"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_forgot_password"
@@ -81,7 +95,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/login_forgot_password_button"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
+
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -120,3 +136,4 @@
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </layout>

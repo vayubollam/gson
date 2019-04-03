@@ -62,7 +62,8 @@
                     app:error="@{vm.firstNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/personal_category_title"
-                    app:text="@={vm.firstNameField.text}" />
+                    app:text="@={vm.firstNameField.text}"
+                    tools:layout_editor_absoluteX="16dp" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/last_name_input"

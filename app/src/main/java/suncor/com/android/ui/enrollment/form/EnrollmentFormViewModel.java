@@ -27,7 +27,6 @@ public class EnrollmentFormViewModel extends ViewModel {
     public LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData;
     public LiveData<Resource<Boolean>> joinLiveData;
     private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
-
     private InputField firstNameField = new InputField(R.string.enrollment_first_name_error);
     private InputField lastNameField = new InputField(R.string.enrollment_last_name_error);
     private EmailInputField emailInputField = new EmailInputField(R.string.enrollment_email_empty_error, R.string.enrollment_email_format_error);

@@ -11,21 +11,16 @@ public class PasswordInputField extends InputField {
     private static final Pattern UPPER_CASE_PATTERN = Pattern.compile(".*[A-Z]+.*");
     private static final Pattern NUMBER_PATTERN = Pattern.compile(".*[0-9]+.*");
     private static final Pattern SPECIAL_CHARS_PATTERN = Pattern.compile(".*[@$!%*#?&]+.*");
-
     private boolean hasRightLength;
     private boolean hasLowerCase;
     private boolean hasUpperCase;
     private boolean hasNumber;
     private boolean hasSpecialChar;
-
     private boolean showValidationHint;
-
     private boolean hasFocus;
-
     public PasswordInputField(int error) {
         super(error);
     }
-
     @Override
     @Bindable
     public boolean getShowError() {
