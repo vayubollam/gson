@@ -76,7 +76,8 @@
                         android:layout_gravity="center"
                         android:layout_margin="8dp"
                         android:background="@color/white"
-                        android:src="@drawable/ic_close" />
+                        android:src="@drawable/ic_close"
+                        app:visibleGone="@{!vm.query.isEmpty()}" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
