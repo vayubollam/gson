@@ -63,7 +63,7 @@
     <string name="error">Erreur</string>
     <string name="login_invalid_credentials_reset_password">Réinitialisez votre mot de passe</string>
     <string name="drive_safely">Conduisez de façon sécuritaire</string>
-    <string name="login_account_blocked_dialog_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
+    <string name="login_soft_lock_alert_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
     <string name="favourites_add_station_button">Ajouter un établissement</string>
     <string name="login_invalid_credentials_dialog_1st_message">L\'adresse courriel ou le mot de passe que vous avez entré n\'est pas correct. Veuillez réessayer.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>

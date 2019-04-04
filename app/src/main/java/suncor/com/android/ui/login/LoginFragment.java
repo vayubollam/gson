@@ -13,8 +13,10 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerFragment;
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 
@@ -66,15 +68,23 @@ public class LoginFragment extends DaggerFragment {
             }
         });
 
-        viewModel.getNavigateToPasswordResetEvent().observe(this, (event -> {
+        viewModel.getPasswordResetEvent().observe(this, (event -> {
             if (event.getContentIfNotHandled() != null) {
-                Toast.makeText(getContext(), "Navigate to password reset", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Reset password", Toast.LENGTH_SHORT).show();
             }
         }));
 
         viewModel.getCallCustomerService().observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 Toast.makeText(getContext(), "Call customer service", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.getCreatePasswordEvent().observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment, new CreatePasswordFragment());
+                ft.commit();
             }
         });
     }

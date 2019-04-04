@@ -111,6 +111,7 @@
             android:background="@color/white"
             android:gravity="center"
             android:orientation="vertical"
+            android:clickable="true"
             app:visibleGone="@{vm.isLoading}"
             tools:visibility="gone">
 

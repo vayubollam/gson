@@ -50,8 +50,8 @@
     <string name="login_invalid_credentials_dialog_1st_message">The email or password you entered is not correct. Please try again.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="login_invalid_credentials_reset_password">Reset password</string>
-    <string name="login_account_blocked_dialog_title">Sign-in disabled</string>
-    <string name="login_account_blocked_dialog_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
+    <string name="login_soft_lock_alert_title">Sign-in disabled</string>
+    <string name="login_soft_lock_alert_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
     <string name="login_forgot_password_button">Forgot password</string>
     <string name="login_password_field">Password</string>
     <string name="favourites_fragment_title">Favourites</string>
@@ -154,4 +154,5 @@
     <string name="login_hard_lock_alert_message">Sorry, the login function has been disabled for 30 minutes. If you need help, please call Customer Service.</string>
     <string name="login_hard_lock_alert_call_button">Contact us</string>
     <string name="login_create_password_header">Create password</string>
+    <string name="login_create_password_empty_error">Password is required.</string>
 </resources>

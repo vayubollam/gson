@@ -18,9 +18,11 @@ public class PasswordInputField extends InputField {
     private boolean hasSpecialChar;
     private boolean showValidationHint;
     private boolean hasFocus;
+
     public PasswordInputField(int error) {
         super(error);
     }
+
     @Override
     @Bindable
     public boolean getShowError() {
@@ -31,7 +33,7 @@ public class PasswordInputField extends InputField {
     public void setShowError(boolean showError) {
         super.setShowError(showError);
         notifyPropertyChanged(BR.showError);
-        if(showError && isEmpty()){
+        if (showError && isEmpty()) {
             //When the user clicks on join, if it's empty show only required error
             setShowValidationHint(false);
         }
@@ -117,7 +119,9 @@ public class PasswordInputField extends InputField {
         }
     }
 
-    public boolean hasFocus() {
+
+    @Bindable
+    public boolean isHasFocus() {
         return hasFocus;
     }
 
