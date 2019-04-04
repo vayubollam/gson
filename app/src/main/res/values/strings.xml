@@ -149,4 +149,5 @@
     <string name="msg_sl005_button">TRY AGAIN</string>
 
     <string name="msg_sl003">Address suggestions are not available at the moment.</string>
+    <string name="enrollment_loading_question_title">One moment</string>
 </resources>
