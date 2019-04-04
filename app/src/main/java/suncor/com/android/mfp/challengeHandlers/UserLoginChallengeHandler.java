@@ -30,9 +30,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private static final String FAILURE = "failure";
     private static final String ERROR_CODE = "errorCode";
     private static final String PUBWEB = "pubWeb";
-    public static final String RETRY_TIMEOUT = "retryTimeout";
+    private static final String RETRY_TIMEOUT = "retryTimeout";
 
-    private String errorMsg = "";
     private boolean isChallenged = false;
     private SessionChangeListener listener;
 
@@ -46,8 +45,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     public void handleChallenge(JSONObject jsonObject) {
         Timber.d("Challenge Received");
         Timber.v(jsonObject.toString());
-        isChallenged = true;
+        //TODO handle token expired cases
         try {
+            isChallenged = true;
             String errorCode = jsonObject.getString(ERROR_CODE);
             JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
 

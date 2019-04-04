@@ -24,6 +24,7 @@ import okio.BufferedSource;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.HomeActivity;
+import suncor.com.android.utilities.Timber;
 
 public class MFPRequestInterceptor implements Interceptor {
 
@@ -51,6 +52,7 @@ public class MFPRequestInterceptor implements Interceptor {
                 bytes = buffer.readByteArray();
             }
             String body = new String(bytes, Charset.forName("UTF-8"));
+            Timber.v("Response Intercepted:\nRequest URI:%s\ncode :%d\nbody:%s", response.request().url().toString(), response.code(), body);
             try {
                 JSONObject object = new JSONObject(body);
                 if (object.has("errorCode")) {

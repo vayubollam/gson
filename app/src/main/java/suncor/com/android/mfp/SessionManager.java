@@ -96,6 +96,7 @@ public class SessionManager implements SessionChangeListener {
         try {
             credentials.put("email", name);
             credentials.put("password", password);
+            loginObservable.postValue(Resource.loading());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -212,12 +213,9 @@ public class SessionManager implements SessionChangeListener {
             loginObservable.postValue(Resource.success(response));
         }
         loginState.postValue(LoginState.LOGGED_OUT);
-        if (!loginOngoing && response.getStatus() == SigninResponse.Status.WRONG_CREDENTIALS) {
-            cancelLogin();
-        }
 
-        if (response.getStatus() != SigninResponse.Status.WRONG_CREDENTIALS) {
-            loginOngoing = false;
+        if (response.getStatus() == SigninResponse.Status.WRONG_CREDENTIALS || loginOngoing) {
+            cancelLogin();
         }
     }
 

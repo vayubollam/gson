@@ -2,12 +2,7 @@ package suncor.com.android.ui.login;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -20,9 +15,6 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.ActivityLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.mfp.SigninResponse;
-import suncor.com.android.model.Resource;
-import suncor.com.android.ui.common.Alerts;
 
 public class LoginActivity extends DaggerAppCompatActivity {
 
@@ -32,13 +24,21 @@ public class LoginActivity extends DaggerAppCompatActivity {
     ViewModelFactory viewModelFactory;
     ActivityLoginBinding loginActivityBinding;
     LoginViewModel loginViewModel;
-    private AlertDialog.Builder createAlert(final String title, final String msg) {
+
+    private AlertDialog.Builder createAlert(int title, LoginViewModel.ErrorMessage msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(msg)
+        String message;
+        if (msg.args != null) {
+            message = getString(msg.content, msg.args);
+        } else {
+            message = getString(msg.content);
+        }
+        builder.setMessage(message)
                 .setTitle(title);
         builder.setPositiveButton(android.R.string.ok, null);
         return builder;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,49 +47,46 @@ public class LoginActivity extends DaggerAppCompatActivity {
         loginActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         loginActivityBinding.setVm(loginViewModel);
         loginActivityBinding.setLifecycleOwner(this);
-        loginActivityBinding.executePendingBindings();
-        loginViewModel.loginLiveData.observe(this, result -> {
-            String title;
-            String message;
-            if (result.status == Resource.Status.SUCCESS) {
-                SigninResponse response = result.data;
-                switch (response.getStatus()){
-                    case SUCCESS:
-                        finish();
-                        break;
-                    case WRONG_CREDENTIALS:
-                        int remainingAttempts = response.getRemainingAttempts();
-                        title = getString(R.string.login_invalid_credentials_dialog_title);
 
-                        if (remainingAttempts == SessionManager.LOGIN_ATTEMPTS - 1 || remainingAttempts == -1) {
-                            message = getString(R.string.login_invalid_credentials_dialog_1st_message);
-                            createAlert(title, message).show();
-                        }else {
-                            message = getString(R.string.login_invalid_credentials_dialog_2nd_message, remainingAttempts, SessionManager.LOCK_TIME_MINUTES);
-                            AlertDialog.Builder dialog = createAlert(title, message);
-                            dialog.setNegativeButton(R.string.login_invalid_credentials_reset_password, (dialogInterface, which) -> {
-                                Toast.makeText(getApplicationContext(), "This will open the reset password screen when developed", Toast.LENGTH_SHORT).show();
-                                dialogInterface.dismiss();
-                        });
-                        }
-                        break;
-                    case SOFT_LOCKED:
-                        title = getString(R.string.login_invalid_credentials_dialog_title);
-                        message = getString(R.string.login_account_blocked_dialog_message, SessionManager.LOGIN_ATTEMPTS, response.getTimeOut() / (1000 * 60));
-                        createAlert(title, message).show();
-                        break;
-                    case HARD_LOCKED:
-                        title = getString(R.string.login_hard_lock_alert_title);
-                        message = getString(R.string.login_hard_lock_alert_message);
-                        createAlert(title, message).show();
-                        break;
-                    case OTHER_FAILURE:
-                        Alerts.prepareGeneralErrorDialog(this).show();
-                        break;
-        }
+        loginViewModel.getLoginFailedEvent().observe(this, (event) -> {
+            LoginViewModel.LoginFailResponse response = event.getContentIfNotHandled();
+            if (response != null) {
+
+                AlertDialog.Builder dialog = createAlert(response.title, response.message);
+                if (response.callback != null) {
+                    dialog.setNegativeButton(response.buttonTitle, (i, w) -> {
+                        response.callback.call();
+                        i.dismiss();
+                    });
+                }
+                dialog.show();
             }
-            else if (result.status == Resource.Status.ERROR){
-                Alerts.prepareGeneralErrorDialog(this).show();
+        });
+        loginViewModel.getLoginSuccessEvent().observe(this, event -> {
+                    if (event.getContentIfNotHandled() != null) {
+                        finish();
+                    }
+                }
+        );
+
+        loginViewModel.getIsLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                loginActivityBinding.emailLayout.getEditText().clearFocus();
+                loginActivityBinding.passwordLayout.getEditText().clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(loginActivityBinding.getRoot().getWindowToken(), 0);
+            }
+        });
+
+        loginViewModel.getNavigateToPasswordResetEvent().observe(this, (event -> {
+            if (event.getContentIfNotHandled() != null) {
+                Toast.makeText(this, "Navigate to password reset", Toast.LENGTH_SHORT).show();
+            }
+        }));
+
+        loginViewModel.getCallCustomerService().observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                Toast.makeText(this, "Call customer service", Toast.LENGTH_SHORT).show();
             }
         });
     }
