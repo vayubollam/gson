@@ -214,7 +214,8 @@ public class SessionManager implements SessionChangeListener {
         }
         loginState.postValue(LoginState.LOGGED_OUT);
 
-        if (response.getStatus() == SigninResponse.Status.WRONG_CREDENTIALS || loginOngoing) {
+        //cancel login only if it's not an intermediate response, or the handler was started by MFP without login flow
+        if (response.getStatus() != SigninResponse.Status.WRONG_CREDENTIALS || !loginOngoing) {
             cancelLogin();
         }
     }
