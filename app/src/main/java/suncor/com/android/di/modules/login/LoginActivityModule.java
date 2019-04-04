@@ -6,6 +6,6 @@ import suncor.com.android.ui.login.LoginActivity;
 
 @Module
 public abstract class LoginActivityModule {
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = LoginFragmentsModule.class)
     abstract LoginActivity contributeLoginActivity();
 }

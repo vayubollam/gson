@@ -13,7 +13,7 @@ import suncor.com.android.ui.home.dashboard.DashboardViewModel;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.ui.home.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.home.stationlocator.search.SearchViewModel;
-import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.login.CreatePasswordViewModel;
 import suncor.com.android.ui.login.LoginViewModel;
 
 @Module
@@ -70,4 +70,10 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel.class)
     protected abstract ViewModel loginViewModel(LoginViewModel loginViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreatePasswordViewModel.class)
+    protected abstract ViewModel createPasswordViewModel(CreatePasswordViewModel createPasswordViewModel);
+
 }
