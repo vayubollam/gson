@@ -6,4 +6,6 @@ public interface SessionChangeListener {
     void onLoginSuccess(Profile profile);
 
     void onLoginFailed(SigninResponse response);
+
+    void onTokenInvalid();
 }

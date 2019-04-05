@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SigninResponse;
@@ -35,6 +36,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private boolean isChallenged = false;
     private SessionChangeListener listener;
 
+    @Inject
+    SuncorApplication application;
 
     @Inject
     public UserLoginChallengeHandler() {
@@ -45,33 +48,38 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     public void handleChallenge(JSONObject jsonObject) {
         Timber.d("Challenge Received");
         Timber.v(jsonObject.toString());
-        //TODO handle token expired cases
         try {
             isChallenged = true;
-            String errorCode = jsonObject.getString(ERROR_CODE);
-            JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
+            if (jsonObject.has("useCase")) {
+                String errorCode = jsonObject.getString(ERROR_CODE);
+                JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
 
-            switch (errorCode) {
-                case ErrorCodes.ERR_ACCOUNT_BAD_PASSWORD:
-                    if (pubWebResponse.has(REMAINING_ATTEMPTS)) {
-                        int remainingAttempts = pubWebResponse.getInt(REMAINING_ATTEMPTS);
-                        listener.onLoginFailed(SigninResponse.wrongCredentials(remainingAttempts));
-                    } else {
-                        listener.onLoginFailed(SigninResponse.wrongCredentials());
-                    }
-                    break;
-                case ErrorCodes.ERR_ACCOUNT_SOFT_LOCK:
-                    int timeout = pubWebResponse.getInt(RETRY_TIMEOUT);
-                    listener.onLoginFailed(SigninResponse.softLocked(timeout));
-                    break;
-                case ErrorCodes.ERR_ACCOUNT_HARD_LOCK:
-                    listener.onLoginFailed(SigninResponse.hardLocked());
-                    break;
-                case ErrorCodes.ERR_PASSWORD_CHANGE_REQUIRED:
-                    listener.onLoginFailed(SigninResponse.passwordReset());
-                    break;
-                default:
-                    listener.onLoginFailed(SigninResponse.generalFailure());
+                switch (errorCode) {
+                    case ErrorCodes.ERR_ACCOUNT_BAD_PASSWORD:
+                        if (pubWebResponse.has(REMAINING_ATTEMPTS)) {
+                            int remainingAttempts = pubWebResponse.getInt(REMAINING_ATTEMPTS);
+                            listener.onLoginFailed(SigninResponse.wrongCredentials(remainingAttempts));
+                        } else {
+                            listener.onLoginFailed(SigninResponse.wrongCredentials());
+                        }
+                        break;
+                    case ErrorCodes.ERR_ACCOUNT_SOFT_LOCK:
+                        int timeout = pubWebResponse.getInt(RETRY_TIMEOUT);
+                        listener.onLoginFailed(SigninResponse.softLocked(timeout));
+                        break;
+                    case ErrorCodes.ERR_ACCOUNT_HARD_LOCK:
+                        listener.onLoginFailed(SigninResponse.hardLocked());
+                        break;
+                    case ErrorCodes.ERR_PASSWORD_CHANGE_REQUIRED:
+                        listener.onLoginFailed(SigninResponse.passwordReset());
+                        break;
+                    default:
+                        listener.onLoginFailed(SigninResponse.generalFailure());
+                }
+            } else {
+                //Which means the token is either invalid or has expired
+                Timber.d("Challenge without a useCase, user either is not logged in, or token expired");
+                listener.onTokenInvalid();
             }
         } catch (JSONException e) {
             Timber.e(e, "parsing challenge response failed");

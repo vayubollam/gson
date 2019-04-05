@@ -34,6 +34,9 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
     //request code for requesting permissions
     private final static int PERMISSION_REQUEST_CODE = 1;
     public static final String LOGGED_OUT_EXTRA = "logged_out_extra";
+    public static final int LOGGED_OUT_DUE_CONFLICTING_LOGIN = 0;
+    public static final int LOGGED_OUT_DUE_INACTIVITY = 1;
+
     private BottomNavigationView bottom_navigation;
 
     @Inject
@@ -44,13 +47,19 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        if (getIntent().getBooleanExtra(LOGGED_OUT_EXTRA, false)) {
+        if (getIntent().hasExtra(LOGGED_OUT_EXTRA)) {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setTitle("Signed out");
-            adb.setMessage("You've been signed out as this account was being used on another device. Please sign-in to continue.");
             adb.setPositiveButton("OK", null);
+            adb.setTitle(R.string.alert_signed_out_title);
+
+            if (getIntent().getIntExtra(LOGGED_OUT_EXTRA, -1) == LOGGED_OUT_DUE_CONFLICTING_LOGIN) {
+                adb.setMessage(getString(R.string.alert_signed_out_conflicting_login));
+            } else {
+                adb.setMessage(getString(R.string.alert_signed_out_inactivity));
+            }
             adb.show();
         }
+
 
         bottom_navigation = findViewById(R.id.bottom_navigation);
 

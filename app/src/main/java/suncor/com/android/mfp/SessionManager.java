@@ -1,5 +1,7 @@
 package suncor.com.android.mfp;
 
+import android.content.Intent;
+
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -15,9 +17,11 @@ import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
 
@@ -51,6 +55,9 @@ public class SessionManager implements SessionChangeListener {
     };
 
     private boolean loginOngoing = false;
+
+    @Inject
+    SuncorApplication application;
 
     @Inject
     public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings) {
@@ -218,6 +225,19 @@ public class SessionManager implements SessionChangeListener {
         if (response.getStatus() != SigninResponse.Status.WRONG_CREDENTIALS || !loginOngoing) {
             cancelLogin();
         }
+    }
+
+    @Override
+    public void onTokenInvalid() {
+        if (profile != null) {
+            setProfile(null);
+            Timber.d("token expired, navigate to home");
+            Intent intent = new Intent(application, HomeActivity.class);
+            intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_INACTIVITY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            application.startActivity(intent);
+        }
+        cancelLogin();
     }
 
     public enum LoginState {

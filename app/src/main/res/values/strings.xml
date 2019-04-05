@@ -155,4 +155,7 @@
     <string name="login_hard_lock_alert_call_button">Contact us</string>
     <string name="login_create_password_header">Create password</string>
     <string name="login_create_password_empty_error">Password is required.</string>
+    <string name="alert_signed_out_inactivity">You\'ve been signed out due to a change in your account details.</string>
+    <string name="alert_signed_out_title">Signed out</string>
+    <string name="alert_signed_out_conflicting_login">Your sign-in was used on another device. Please sign-in again.</string>
 </resources>

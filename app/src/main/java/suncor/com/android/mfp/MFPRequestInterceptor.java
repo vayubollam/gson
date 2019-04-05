@@ -63,7 +63,7 @@ public class MFPRequestInterceptor implements Interceptor {
                             if (result.status == Resource.Status.SUCCESS) {
                                 Intent intent = new Intent(application, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, true);
+                                intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN);
                                 application.startActivity(intent);
                             }
                         }));
