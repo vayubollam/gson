@@ -149,4 +149,5 @@
     <string name="login_hard_lock_alert_message">Désolé, la fonction d\'ouverture de session a été désactivée pendant 30 minutes. Si vous avez besoin d\'aide, veuillez communiquer avec le service à la clientèle.</string>
     <string name="login_hard_lock_alert_call_button">Nous joindre</string>
     <string name="login_hard_lock_alert_title">Compte bloqué</string>
+    <string name="alert_signed_out_title">Fin de session</string>
 </resources>
