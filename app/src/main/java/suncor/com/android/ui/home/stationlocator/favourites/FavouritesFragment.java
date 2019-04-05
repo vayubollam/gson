@@ -102,7 +102,7 @@ public class FavouritesFragment extends DaggerFragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel.stations.observe(this, stations -> {
             isLoading.set(stations.status == Resource.Status.LOADING);
-            if (stations.status == Resource.Status.SUCCESS) {
+            if (stations.status == Resource.Status.SUCCESS && !stations.data.isEmpty()) {
                 favouritesAdapter.setStationItems(stations.data);
 
                 if (userLocalSettings.getBool(SHOW_FAVS_HINT, true)) {
