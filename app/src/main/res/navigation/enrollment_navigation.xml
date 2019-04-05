@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/card_question"
-        android:name="suncor.com.android.ui.enrollment.CardQuestion"
+        android:name="suncor.com.android.ui.enrollment.CardQuestionFragment"
         android:label="fragment_card_question"
         tools:layout="@layout/fragment_card_question">
         <action

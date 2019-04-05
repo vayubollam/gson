@@ -138,6 +138,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
             });
 
         } catch (URISyntaxException e) {
+            result.postValue(Resource.error(e.getMessage()));
             e.printStackTrace();
         }
 

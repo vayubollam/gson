@@ -1,5 +1,6 @@
 package suncor.com.android.ui.enrollment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,33 +24,43 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
+import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
-public class CardQuestion extends DaggerFragment {
+public class CardQuestionFragment extends DaggerFragment {
 
     private AppCompatImageView cardImg, cardShadow;
     private int cardAnimationDuration = 400;
+    private SecurityQuestionViewModel securityQuestionViewModel;
+    private FragmentCardQuestionBinding binding;
 
     @Inject
     ViewModelFactory viewModelFactory;
 
-    public CardQuestion() {
+    public CardQuestionFragment() {
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SecurityQuestionViewModel securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
+
+        securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
         securityQuestionViewModel.fetchQuestion();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_card_question, container, false);
+        binding = FragmentCardQuestionBinding.inflate(inflater, container, false);
+        binding.setVm(securityQuestionViewModel);
+        binding.setLifecycleOwner(this);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -84,11 +95,32 @@ public class CardQuestion extends DaggerFragment {
         getView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
             Navigation.findNavController(v).navigate(R.id.action_card_question_to_card_form_fragment);
         });
+
+        securityQuestionViewModel.securityQuestions.observe(this, arrayListResource -> {
+            switch (arrayListResource.status) {
+                case SUCCESS:
+                    animateCard();
+                    break;
+                case ERROR:
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.setOnDismissListener((listener) -> getActivity().finish());
+                    dialog.show();
+
+            }
+
+        });
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+    }
+
+    private void animateCard() {
         AnimationSet set = new AnimationSet(true);
         Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0f);
         trAnimation.setDuration(cardAnimationDuration);
