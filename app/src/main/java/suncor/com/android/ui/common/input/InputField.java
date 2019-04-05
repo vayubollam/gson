@@ -7,10 +7,11 @@ import suncor.com.android.BR;
 
 public class InputField extends BaseObservable {
     private String text;
+
     @StringRes
-    private int error;
+    private int error ;
     private boolean isRequired;
-    private boolean showError;
+    private boolean showError = false;
 
     public InputField(int error) {
         this.error = error;
@@ -38,7 +39,7 @@ public class InputField extends BaseObservable {
     public boolean isEmpty() {
         return text == null || text.isEmpty();
     }
-
+    @Bindable
     public String getText() {
         return text;
     }

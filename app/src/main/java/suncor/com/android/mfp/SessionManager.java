@@ -1,5 +1,7 @@
 package suncor.com.android.mfp;
 
+import android.content.Intent;
+
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -15,17 +17,19 @@ import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
 
 @Singleton
 public class SessionManager implements SessionChangeListener {
 
-    public static final int LOCK_TIME_MINUTES = 15;
-    public static final int LOGIN_ATTEMPTS = 5;
+    public static final int LOCK_TIME_MINUTES = 30;
+    public static final int LOGIN_ATTEMPTS = 6;
     private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
     private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
     private final UserLocalSettings userLocalSettings;
@@ -51,6 +55,9 @@ public class SessionManager implements SessionChangeListener {
     };
 
     private boolean loginOngoing = false;
+
+    @Inject
+    SuncorApplication application;
 
     @Inject
     public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings) {
@@ -96,6 +103,7 @@ public class SessionManager implements SessionChangeListener {
         try {
             credentials.put("email", name);
             credentials.put("password", password);
+            loginObservable.postValue(Resource.loading());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -197,7 +205,7 @@ public class SessionManager implements SessionChangeListener {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);
             if (loginObservable != null) {
-                loginObservable.postValue(Resource.success(SigninResponse.SUCCESS));
+                loginObservable.postValue(Resource.success(SigninResponse.success()));
             }
             loginState.postValue(LoginState.LOGGED_IN);
             loginOngoing = false;
@@ -205,36 +213,35 @@ public class SessionManager implements SessionChangeListener {
     }
 
     @Override
-    public void onLoginRequired(int remainingAttempts) {
-        Timber.d("login challenged, remaining attempts: " + remainingAttempts);
+    public void onLoginFailed(SigninResponse response) {
+        Timber.d("login failed, cause: " + response.getStatus().name());
         setProfile(null);
         if (loginObservable != null) {
-            loginObservable.postValue(Resource.error(remainingAttempts + "", SigninResponse.CHALLENGED));
+            loginObservable.postValue(Resource.success(response));
         }
         loginState.postValue(LoginState.LOGGED_OUT);
 
-        if (!loginOngoing) {
+        //cancel login only if it's not an intermediate response, or the handler was started by MFP without login flow
+        if (response.getStatus() != SigninResponse.Status.WRONG_CREDENTIALS || !loginOngoing) {
             cancelLogin();
         }
     }
 
     @Override
-    public void onLoginFailed(String error) {
-        Timber.d("login failed, cause: " + error);
-        setProfile(null);
-        if (loginObservable != null) {
-            loginObservable.postValue(Resource.error(error, SigninResponse.FAILED));
+    public void onTokenInvalid() {
+        if (profile != null) {
+            setProfile(null);
+            Timber.d("token expired, navigate to home");
+            Intent intent = new Intent(application, HomeActivity.class);
+            intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_INACTIVITY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            application.startActivity(intent);
         }
-        loginState.postValue(LoginState.LOGGED_OUT);
-        loginOngoing = false;
+        cancelLogin();
     }
 
     public enum LoginState {
         LOGGED_IN, LOGGED_OUT
-    }
-
-    public enum SigninResponse {
-        SUCCESS, CHALLENGED, FAILED
     }
 
     public enum AccountState {

@@ -98,6 +98,15 @@ public class BindingAdapters {
         view.getEditText().setOnFocusChangeListener((v, hasFocus) -> focusChangeListener.onFocusChange(view, hasFocus));
     }
 
+    @BindingAdapter({"focus"})
+    public static void setFocus(View view, boolean hasFocus) {
+        if (hasFocus) {
+            view.requestFocus();
+        } else {
+            view.clearFocus();
+        }
+    }
+
     @BindingAdapter(value = "textAttrChanged")
     public static void setListener(SuncorTextInputLayout errorInputLayout, final InverseBindingListener textAttrChanged) {
         if (textAttrChanged != null) {

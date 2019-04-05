@@ -11,15 +11,12 @@ public class PasswordInputField extends InputField {
     private static final Pattern UPPER_CASE_PATTERN = Pattern.compile(".*[A-Z]+.*");
     private static final Pattern NUMBER_PATTERN = Pattern.compile(".*[0-9]+.*");
     private static final Pattern SPECIAL_CHARS_PATTERN = Pattern.compile(".*[@$!%*#?&]+.*");
-
     private boolean hasRightLength;
     private boolean hasLowerCase;
     private boolean hasUpperCase;
     private boolean hasNumber;
     private boolean hasSpecialChar;
-
     private boolean showValidationHint;
-
     private boolean hasFocus;
 
     public PasswordInputField(int error) {
@@ -36,7 +33,7 @@ public class PasswordInputField extends InputField {
     public void setShowError(boolean showError) {
         super.setShowError(showError);
         notifyPropertyChanged(BR.showError);
-        if(showError && isEmpty()){
+        if (showError && isEmpty()) {
             //When the user clicks on join, if it's empty show only required error
             setShowValidationHint(false);
         }
@@ -122,7 +119,9 @@ public class PasswordInputField extends InputField {
         }
     }
 
-    public boolean hasFocus() {
+
+    @Bindable
+    public boolean isHasFocus() {
         return hasFocus;
     }
 

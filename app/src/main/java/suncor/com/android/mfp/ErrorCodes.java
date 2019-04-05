@@ -7,15 +7,23 @@ public class ErrorCodes {
 
 
     //Copied from https://bitbucket.org/rfmp-suncor/suncor-mfp/src/master/src/main/java/com/suncor/adapters/constants/SuncorConstants.java
-    public static final String DB_CONNECTION_ERROR_CODE = "SUNCOR001";
-    public static final String INTERNAL_SERVER_ERROR_CODE = "SUNCOR002";
-    public static final String INVALID_LOCATION_COORDINATES_ERROR_CODE = "SUNCOR003";
-    public static final String INVALID_PARAM_ERROR_CODE = "SUNCOR004";
-    public static final String PROFILE_NOT_FOUND = "SUNCOR005";
-    public static final String CONFLICTING_LOGINS = "SUNCOR006";
-    public static final String INVALID_ENCRYPTION_VALUE_CODE = "SUNCOR007";
-    public static final String INVALID_DECRYPTION_VALUE_CODE = "SUNCOR008";
-    public static final String PUBWEB_SERVICE_ERROR_CODE = "SUNCOR014";
-    public static final String INVALID_CARD_ERROR_CODE = "SUNCOR016";
-    public static final String ACCOUNT_ALREDY_REGISTERED_ERROR_CODE = "SUNCOR017";
+    public static final String ERR_DB_CONNECTION_ERROR_CODE = "SUNCOR001";
+    public static final String ERR_INTERNAL_SERVER_ERROR_CODE = "SUNCOR002";
+    public static final String ERR_INVALID_PARAM_ERROR_CODE = "SUNCOR004";
+
+    public static final String ERR_PROFILE_NOT_FOUND = "SUNCOR005";
+    public static final String ERR_CONFLICTING_LOGINS = "SUNCOR006";
+    public static final String ERR_INVALID_ENCRYPTION_VALUE_CODE = "SUNCOR007";
+    public static final String ERR_INVALID_DECRYPTION_VALUE_CODE = "SUNCOR008";
+    public static final String ERR_ACCOUNT_HARD_LOCK = "SUNCOR009";
+    public static final String ERR_ACCOUNT_SOFT_LOCK = "SUNCOR010";
+
+    public static final String ERR_PASSWORD_CHANGE_REQUIRED = "SUNCOR012";
+    public static final String ERR_ACCOUNT_BAD_PASSWORD = "SUNCOR013";
+    public static final String ERR_ACCOUNT_NOT_FOUND = "SUNCOR013";
+    public static final String ERR_PUBWEB_SERVICE_ERROR_CODE = "SUNCOR014";
+    public static final String ERR_PASSWORD_DUPLICATED = "SUNCOR015";
+    public static final String ERR_INVALID_CARD_ERROR_CODE = "SUNCOR016";
+    public static final String ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE = "SUNCOR017";
+    public static final String ERR_USER_INFO_NOT_MATCHED = "SUNCOR018";
 }

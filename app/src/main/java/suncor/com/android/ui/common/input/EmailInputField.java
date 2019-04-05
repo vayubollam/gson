@@ -29,6 +29,7 @@ public class EmailInputField extends InputField {
     }
 
     @Override
+
     @Bindable
     public int getError() {
         if (!getShowError()) {

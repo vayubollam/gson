@@ -24,6 +24,7 @@ import okio.BufferedSource;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.home.HomeActivity;
+import suncor.com.android.utilities.Timber;
 
 public class MFPRequestInterceptor implements Interceptor {
 
@@ -51,17 +52,18 @@ public class MFPRequestInterceptor implements Interceptor {
                 bytes = buffer.readByteArray();
             }
             String body = new String(bytes, Charset.forName("UTF-8"));
+            Timber.v("Response Intercepted:\nRequest URI:%s\ncode :%d\nbody:%s", response.request().url().toString(), response.code(), body);
             try {
                 JSONObject object = new JSONObject(body);
                 if (object.has("errorCode")) {
-                    if (ErrorCodes.CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
+                    if (ErrorCodes.ERR_CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
                         Handler mainHandler = new Handler(application.getMainLooper());
                         mainHandler.post(() -> sessionManager.logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories
                             if (result.status == Resource.Status.SUCCESS) {
                                 Intent intent = new Intent(application, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, true);
+                                intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN);
                                 application.startActivity(intent);
                             }
                         }));
