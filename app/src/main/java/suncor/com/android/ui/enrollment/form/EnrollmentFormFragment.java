@@ -61,6 +61,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
+        if (getArguments() != null) {
+            CardStatus cardStatus = EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus();
+        }
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
             if (r.status == Resource.Status.SUCCESS && r.data == EnrollmentsApi.EmailState.INVALID) {
@@ -148,12 +151,10 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        if (getArguments() != null) {
-            initTerms(getArguments());
-        }
+        initTerms();
     }
 
-    private void initTerms(Bundle bundle) {
+    private void initTerms() {
         String terms = getString(R.string.enrollment_terms);
         String url = getString(R.string.enrollment_terms_url);
         String agreement = getString(R.string.enrollment_terms_agreement, terms);
@@ -161,7 +162,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         span.setSpan(new SuncorURLSpan(url), agreement.indexOf(terms), agreement.indexOf(terms) + terms.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.termsAgreement.setText(span);
         binding.termsAgreement.setMovementMethod(LinkMovementMethod.getInstance());
-        CardStatus cardStatus = EnrollmentFormFragmentArgs.fromBundle(bundle).getCardStatus();
     }
 
     @Override
