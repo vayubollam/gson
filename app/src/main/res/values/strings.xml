@@ -141,6 +141,8 @@
     <string name="enrollment_cardform_lastname_error">Last name is required.</string>
     <string name="enrollment_cardform_card_format_error">The card number you entered is incorrect.</string>
     <string name="enrollment_cardform_postalcode_format_error">The postal code you entered isn\'t valid.</string>
+    <string name="enrollment_cardform_verifying_card">Verifying card</string>
+    <string name="enrollment_cardform_card_verified">Card verified</string>
     <string name="enrollment_create_account_message">Creating your\nPetro-Points account</string>
     <string name="enrollment_account_created_message">Account created</string>
     <string name="dashboard_enrolled_welcome_message">Thanks for joining, %s.\nEnjoy 2,500 points on us!</string>
@@ -150,6 +152,14 @@
     <string name="msg_sl005_button">TRY AGAIN</string>
 
     <string name="msg_sl003">Address suggestions are not available at the moment.</string>
+    <string name="enrollment_card_form_invalid_title">Invalid Card Details</string>
+    <string name="enrollment_card_form_invalid_message">The Petro-Points card number, the postal code, or the first name are incorrect.</string>
+    <string name="enrollment_card_form_try_again">Try again</string>
+    <string name="enrollment_card_form_get_new_card">Get a new card</string>
+    <string name="enrollment_card_form_existing_title">Petro-Points cards already used</string>
+    <string name="enrollment_card_form_exisiting_message">This card is already associated with a Petro-Points account. Sign in or use a different card.</string>
+    <string name="enrollment_card_form_sign_in">SIGN IN</string>
+    <string name="enrollment_card_form_existing_use_different_card">USE A DIFFERENT CARD</string>
     <string name="enrollment_loading_question_title">One moment</string>
     <string name="login_hard_lock_alert_title">Account locked</string>
     <string name="login_hard_lock_alert_message">Sorry, the login function has been disabled for 30 minutes. If you need help, please call Customer Service.</string>

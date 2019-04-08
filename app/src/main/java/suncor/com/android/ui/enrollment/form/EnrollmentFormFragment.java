@@ -33,6 +33,7 @@ import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -147,10 +148,10 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        initTerms();
+        initTerms(getArguments());
     }
 
-    private void initTerms() {
+    private void initTerms(Bundle bundle) {
         String terms = getString(R.string.enrollment_terms);
         String url = getString(R.string.enrollment_terms_url);
         String agreement = getString(R.string.enrollment_terms_agreement, terms);
@@ -158,6 +159,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         span.setSpan(new SuncorURLSpan(url), agreement.indexOf(terms), agreement.indexOf(terms) + terms.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.termsAgreement.setText(span);
         binding.termsAgreement.setMovementMethod(LinkMovementMethod.getInstance());
+        CardStatus cardStatus = EnrollmentFormFragmentArgs.fromBundle(bundle).getCardStatus();
     }
 
     @Override

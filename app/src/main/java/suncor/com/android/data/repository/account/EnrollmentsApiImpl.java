@@ -20,6 +20,7 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
@@ -139,6 +140,43 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
 
         } catch (URISyntaxException e) {
             result.postValue(Resource.error(e.getMessage()));
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardStatus>> checkCardStatus(String cardNumber, String postalCode, String lastName) {
+        MutableLiveData<Resource<CardStatus>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(ADAPTER_PATH.concat("/card-status"));
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            request.addHeader("x-card-number", cardNumber);
+            request.addHeader("x-postal-code", postalCode);
+            request.addHeader("x-last-name", lastName);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String response = wlResponse.getResponseText();
+                    Timber.d("card status:" + response);
+                    if (wlResponse.getResponseJSON().keys().hasNext()) {
+                        Gson gson = new Gson();
+                        CardStatus cardStatus = gson.fromJson(response, CardStatus.class);
+                        result.postValue(Resource.success(cardStatus));
+                    } else {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                    }
+
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 

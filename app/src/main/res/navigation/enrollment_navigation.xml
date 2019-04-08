@@ -29,7 +29,14 @@
         android:id="@+id/card_form_fragment"
         android:name="suncor.com.android.ui.enrollment.cardform.CardFormFragment"
         android:label="fragment_card_form"
-        tools:layout="@layout/fragment_card_form" />
+        tools:layout="@layout/fragment_card_form">
+        <action
+            android:id="@+id/action_card_form_fragment_to_enrollment_form_fragment"
+            app:destination="@id/enrollment_form_fragment"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/card_question" />
+    </fragment>
     <fragment
         android:id="@+id/enrollment_form_fragment"
         android:name="suncor.com.android.ui.enrollment.form.EnrollmentFormFragment"
@@ -51,6 +58,11 @@
             app:popEnterAnim="@anim/enter_from_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/enrollment_form_fragment" />
+        <argument
+            android:name="cardStatus"
+            app:argType="suncor.com.android.model.account.CardStatus"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/provinceFragment"

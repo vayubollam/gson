@@ -51,4 +51,5 @@ public class DataModule {
     PlaceSuggestionsProvider providePlaceSuggestionsProvider(PlacesClient client) {
         return new GooglePlaceSuggestionsProvider(client);
     }
+
 }

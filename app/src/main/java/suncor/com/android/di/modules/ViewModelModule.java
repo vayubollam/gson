@@ -7,6 +7,7 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.di.viewmodel.ViewModelKey;
+import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 import suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.home.dashboard.DashboardViewModel;
@@ -64,6 +65,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SecurityQuestionViewModel.class)
     protected abstract ViewModel securityQuestionViewModel(SecurityQuestionViewModel securityQuestionViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CardFormViewModel.class)
+    protected abstract ViewModel cardformViewModel(CardFormViewModel cardFormViewModel);
 
 
     @Binds

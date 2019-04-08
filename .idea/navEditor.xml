@@ -8,6 +8,27 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="card_form_fragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="79" />
+                            <option name="y" value="398" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_card_form_fragment_to_enrollment_form_fragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="card_question">
                     <value>
                       <LayoutPositions>
@@ -20,6 +41,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_cardQuestion_to_enrollmentFormFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_card_question_to_card_form_fragment">
                               <value>
                                 <LayoutPositions />
                               </value>

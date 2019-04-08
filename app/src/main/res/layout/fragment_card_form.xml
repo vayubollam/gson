@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="suncor.com.android.model.Resource" />
+
         <variable
             name="vm"
             type="suncor.com.android.ui.enrollment.cardform.CardFormViewModel" />
@@ -97,5 +99,56 @@
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="@color/white"
+            app:visibleGone="@{vm.verifyCard.status == Resource.Status.LOADING | vm.verifyCard.status == Resource.Status.SUCCESS}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/verifying_card_pd"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="24dp"
+                android:text="@{vm.verifyCard.status == Resource.Status.SUCCESS ? @string/enrollment_cardform_card_verified : @string/enrollment_cardform_verifying_card}"
+                android:textAppearance="@style/Title1" />
+
+            <ProgressBar
+                android:id="@+id/verifying_card_pd"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+
+                android:indeterminateTint="@color/red" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_card"
+                android:tint="@color/red"
+                app:visibleGone="@{vm.verifyCard.status == Resource.Status.LOADING}" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:tint="@color/red"
+                app:visibleGone="@{vm.verifyCard.status == Resource.Status.SUCCESS}"
+                android:src="@drawable/ic_check" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/circular_ring"
+                app:visibleGone="@{vm.verifyCard.status == Resource.Status.SUCCESS}"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
