@@ -233,7 +233,7 @@ public class SessionManager implements SessionChangeListener {
             setProfile(null);
             Timber.d("token expired, navigate to home");
             Intent intent = new Intent(application, HomeActivity.class);
-            intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_INACTIVITY);
+            //intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_INACTIVITY);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             application.startActivity(intent);
         }
