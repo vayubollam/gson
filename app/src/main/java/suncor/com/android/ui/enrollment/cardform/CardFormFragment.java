@@ -102,7 +102,7 @@ public class CardFormFragment extends DaggerFragment {
                 CardFormFragmentDirections.ActionCardFormFragmentToEnrollmentFormFragment action = CardFormFragmentDirections.actionCardFormFragmentToEnrollmentFormFragment().setCardStatus(cardStatusResource.data);
                 new Handler(Looper.getMainLooper()).postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
             } else if (cardStatusResource.status == Resource.Status.ERROR) {
-                if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.INVALID_CARD_ERROR_CODE)) {
+                if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     dialog.setTitle(getString(R.string.enrollment_card_form_invalid_title))
@@ -116,7 +116,7 @@ public class CardFormFragment extends DaggerFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
+                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     dialog.setTitle(getString(R.string.enrollment_card_form_existing_title))

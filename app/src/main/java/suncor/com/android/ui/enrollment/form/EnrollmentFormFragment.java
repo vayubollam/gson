@@ -148,7 +148,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        initTerms(getArguments());
+        if (getArguments() != null) {
+            initTerms(getArguments());
+        }
     }
 
     private void initTerms(Bundle bundle) {
