@@ -16,7 +16,7 @@
     <string name="filters_services_header">Produits et services</string>
     <string name="filters_fuel_header">Options de carburants</string>
     <string name="filters_carwash_header">Lave-auto</string>
-
+    <string name="filters_only_in_qc_message">(QC seulement)</string>
     <string name="station_result_no_stations_found">Désolé, votre recherche n\'a donné aucun résultat.</string>
     <string name="station_result_no_stations_filters_applied">Essayez d\'élargir votre recherche ou de supprimer des filtres.</string>
     <string name="station_clear_filters_button">Effacer filtres</string>

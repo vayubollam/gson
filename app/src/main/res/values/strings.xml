@@ -30,6 +30,7 @@
     <string name="filters_fragment_title">Filter by</string>
     <string name="filters_apply_button">Apply</string>
     <string name="filters_clear_button">Clear All</string>
+    <string name="filters_only_in_qc_message">(only available in QC)</string>
     <string name="station_result_no_stations_found">Sorry, we can\'t find any results</string>
     <string name="station_result_no_stations_filters_applied">Try expanding your search or removing filters.</string>
     <string name="suggestions_fragment_title">suggestions</string>

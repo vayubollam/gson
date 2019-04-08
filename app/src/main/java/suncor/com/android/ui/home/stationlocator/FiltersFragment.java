@@ -71,7 +71,11 @@ public class FiltersFragment extends Fragment {
     private void initCheckBoxes() {
 
         for (String amenityKey : Station.SERVICE_AMENITIES.keySet()) {
-            AppCompatCheckBox checkBox = getCheckbox(Station.SERVICE_AMENITIES.get(amenityKey));
+            String amenityTitle = Station.SERVICE_AMENITIES.get(amenityKey);
+            if (amenityKey.equals("beerAndWine")) {
+                amenityTitle = amenityTitle.concat(" ").concat(getString(R.string.filters_only_in_qc_message));
+            }
+            AppCompatCheckBox checkBox = getCheckbox(amenityTitle);
             binding.serviceAmenitiesContainer.addView(checkBox);
             binding.serviceAmenitiesContainer.addView(getDivider());
             checkBoxes.put(amenityKey, checkBox);
