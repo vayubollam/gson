@@ -34,6 +34,7 @@ import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
+import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -49,6 +50,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
+    CardStatus cardStatus;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -62,7 +64,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
         if (getArguments() != null) {
-            CardStatus cardStatus = EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus();
+            cardStatus = EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus();
         }
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
@@ -112,14 +114,27 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
-        requiredFields.add(binding.firstNameInput);
-        requiredFields.add(binding.lastNameInput);
-        requiredFields.add(binding.emailInput);
-        requiredFields.add(binding.passwordInput);
-        requiredFields.add(binding.streetAddressInput);
-        requiredFields.add(binding.cityInput);
-        requiredFields.add(binding.provinceInput);
-        requiredFields.add(binding.postalcodeInput);
+        if (cardStatus != null && cardStatus.getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
+            //TODO: adjust required fields according to enrollment type
+            requiredFields.add(binding.firstNameInput);
+            requiredFields.add(binding.lastNameInput);
+            requiredFields.add(binding.emailInput);
+            requiredFields.add(binding.passwordInput);
+            requiredFields.add(binding.streetAddressInput);
+            requiredFields.add(binding.cityInput);
+            requiredFields.add(binding.provinceInput);
+            requiredFields.add(binding.postalcodeInput);
+        } else {
+            requiredFields.add(binding.firstNameInput);
+            requiredFields.add(binding.lastNameInput);
+            requiredFields.add(binding.emailInput);
+            requiredFields.add(binding.passwordInput);
+            requiredFields.add(binding.streetAddressInput);
+            requiredFields.add(binding.cityInput);
+            requiredFields.add(binding.provinceInput);
+            requiredFields.add(binding.postalcodeInput);
+        }
+
 
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
@@ -138,13 +153,16 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
+        binding.setCardStatus(cardStatus);
         return binding.getRoot();
     }
 
 
     @Override
     public void onResume() {
+
         super.onResume();
+
     }
 
     @Override
@@ -152,7 +170,17 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initTerms();
+        binding.lastNameInput.post(() -> {
+            if (cardStatus != null && cardStatus.getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
+                binding.firstNameInput.setText(cardStatus.getUserInfo().getFirstName());
+                binding.lastNameInput.setText(cardStatus.getUserInfo().getLastName());
+                binding.emailInput.setText(cardStatus.getUserInfo().getEmail());
+                binding.lastNameInput.getEditText().setEnabled(false);
+                binding.firstNameInput.getEditText().setEnabled(false);
+            }
+        });
     }
+
 
     private void initTerms() {
         String terms = getString(R.string.enrollment_terms);

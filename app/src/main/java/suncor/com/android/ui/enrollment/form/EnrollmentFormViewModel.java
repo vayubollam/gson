@@ -123,6 +123,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         });
     }
 
+
     public ObservableBoolean getNewsAndOffersField() {
         return newsAndOffersField;
     }
