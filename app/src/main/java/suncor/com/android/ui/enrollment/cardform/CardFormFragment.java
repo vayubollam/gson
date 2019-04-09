@@ -4,6 +4,7 @@ package suncor.com.android.ui.enrollment.cardform;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -100,7 +101,7 @@ public class CardFormFragment extends DaggerFragment {
                 Timber.d("cards status : success");
 
                 CardFormFragmentDirections.ActionCardFormFragmentToEnrollmentFormFragment action = CardFormFragmentDirections.actionCardFormFragmentToEnrollmentFormFragment().setCardStatus(cardStatusResource.data);
-                new Handler(Looper.getMainLooper()).postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 500);
             } else if (cardStatusResource.status == Resource.Status.ERROR) {
                 if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
@@ -113,6 +114,7 @@ public class CardFormFragment extends DaggerFragment {
                                 dialog.dismiss();
                             })
                             .setCenterButton(getString(R.string.enrollment_card_form_get_new_card), (v) -> {
+                                callCostumerSupport(getString(R.string.enrllment_card_form_customer_support_number));
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
@@ -153,4 +155,9 @@ public class CardFormFragment extends DaggerFragment {
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
+    private void callCostumerSupport(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
+    }
 }

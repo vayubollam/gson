@@ -155,10 +155,10 @@
     <string name="msg_sl005_button">TRY AGAIN</string>
 
     <string name="msg_sl003">Address suggestions are not available at the moment.</string>
-    <string name="enrollment_card_form_invalid_title">Invalid Card Details</string>
+    <string name="enrollment_card_form_invalid_title">Invalid Card</string>
     <string name="enrollment_card_form_invalid_message">The Petro-Points card number, the postal code, or the first name are incorrect.</string>
     <string name="enrollment_card_form_try_again">Try again</string>
-    <string name="enrollment_card_form_get_new_card">Get a new card</string>
+    <string name="enrollment_card_form_get_new_card">Call us</string>
     <string name="enrollment_card_form_existing_title">Petro-Points cards already used</string>
     <string name="enrollment_card_form_exisiting_message">This card is already associated with a Petro-Points account. Sign in or use a different card.</string>
     <string name="enrollment_card_form_sign_in">SIGN IN</string>
@@ -172,4 +172,5 @@
     <string name="alert_signed_out_inactivity">You\'ve been signed out due to a change in your account details.</string>
     <string name="alert_signed_out_title">Sign out</string>
     <string name="alert_signed_out_conflicting_login">Your sign-in was used on another device. Please sign-in again.</string>
+    <string name="enrllment_card_form_customer_support_number">(800)668-0220</string>
 </resources>
