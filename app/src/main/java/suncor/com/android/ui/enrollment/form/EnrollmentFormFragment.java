@@ -33,7 +33,6 @@ import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -137,7 +136,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
-        binding.setCardStatus(viewModel.getCardStatus());
         return binding.getRoot();
     }
 
@@ -154,12 +152,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initTerms();
-        binding.lastNameInput.post(() -> {
-            if (viewModel.getCardStatus() != null && viewModel.getCardStatus().getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
-                binding.lastNameInput.getEditText().setEnabled(false);
-                binding.firstNameInput.getEditText().setEnabled(false);
-            }
-        });
     }
 
 

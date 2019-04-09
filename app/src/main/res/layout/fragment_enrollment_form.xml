@@ -16,10 +16,6 @@
         <variable
             name="vm"
             type="suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel" />
-
-        <variable
-            name="cardStatus"
-            type="suncor.com.android.model.account.CardStatus" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -64,6 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_first_name_label"
+                    app:editable="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
                     android:maxLength="20"
                     app:error="@{vm.firstNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
@@ -76,6 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_last_name_label"
+                    app:editable="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
                     android:maxLength="20"
                     app:error="@{vm.lastNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
@@ -149,7 +147,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    app:visibleGone="@{cardStatus.cardType!=EnrollmentType.EXISTING}"
+                    app:visibleGone="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
                     android:id="@+id/address_layout"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
