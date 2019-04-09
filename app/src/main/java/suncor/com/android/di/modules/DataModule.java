@@ -2,11 +2,13 @@ package suncor.com.android.di.modules;
 
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.gson.Gson;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
@@ -15,6 +17,7 @@ import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.data.repository.favourite.FavouriteRepositoryImpl;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.data.repository.stations.StationsProviderImpl;
+import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.data.repository.suggestions.GooglePlaceSuggestionsProvider;
 import suncor.com.android.data.repository.suggestions.PlaceSuggestionsProvider;
 import suncor.com.android.mfp.SessionManager;
@@ -52,4 +55,21 @@ public class DataModule {
         return new GooglePlaceSuggestionsProvider(client);
     }
 
+    @Provides
+    @Singleton
+    Gson providesGson() {
+        return new Gson();
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient providesHttpClient() {
+        return new OkHttpClient();
+    }
+
+    @Provides
+    @Singleton
+    CanadaPostAutocompleteProvider providesCanadaPostAutocompleteProvider(Gson gson, OkHttpClient okHttpClient) {
+        return new CanadaPostAutocompleteProvider(gson, okHttpClient);
+    }
 }

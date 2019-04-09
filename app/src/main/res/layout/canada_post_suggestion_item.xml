@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="suncor.com.android.model.canadapost.CanadaPostSuggestion.Next" />
+
+        <variable
+            name="place"
+            type="suncor.com.android.model.canadapost.CanadaPostSuggestion" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/suggestion_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.44"
+            android:maxLines="1"
+            android:text="@{place.text}"
+            android:textAppearance="@style/Body"
+            app:layout_constraintBottom_toTopOf="@id/suggestion_subtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="22 Indian db" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/suggestion_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.21"
+            android:maxLines="1"
+            android:text="@{place.description}"
+            android:textAppearance="@style/Caption1"
+            android:textColor="@color/black_60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/suggestion_title"
+            tools:text="Toronto, On" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_chevron_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleGone="@{place.next == Next.FIND}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+

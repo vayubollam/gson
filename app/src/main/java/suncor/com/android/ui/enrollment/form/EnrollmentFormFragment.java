@@ -3,6 +3,7 @@ package suncor.com.android.ui.enrollment.form;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
@@ -23,8 +24,10 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import dagger.android.support.DaggerFragment;
@@ -56,6 +59,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +103,22 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             }
         });
 
+        viewModel.showAutocompleteLayout.observe(this, (show) -> {
+            if (binding.appBar.isExpanded()) {
+                return;
+            }
+            binding.appBar.postDelayed(() -> {
+                if (show) {
+                    binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
+                    ViewCompat.setElevation(binding.appBar, 0);
+                    binding.scrollView.setOnTouchListener((v, e) -> true);
+                } else {
+                    binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
+                    ViewCompat.setElevation(binding.appBar, 8);
+                    binding.scrollView.setOnTouchListener(null);
+                }
+            }, 100);
+        });
     }
 
     @Nullable

@@ -6,28 +6,34 @@ import javax.inject.Inject;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
+import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.model.account.SecurityQuestion;
+import suncor.com.android.model.canadapost.CanadaPostSuggestion;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.EmailInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
+import suncor.com.android.ui.common.input.StreetAddressInputField;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
     public LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData;
     public LiveData<Resource<Boolean>> joinLiveData;
+    public MutableLiveData<Boolean> showAutocompleteLayout = new MutableLiveData<>();
+    private MediatorLiveData<Resource<CanadaPostSuggestion[]>> autocompleteResults;
     private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
     private InputField firstNameField = new InputField(R.string.enrollment_first_name_error);
     private InputField lastNameField = new InputField(R.string.enrollment_last_name_error);
@@ -35,7 +41,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private PasswordInputField passwordField = new PasswordInputField(R.string.enrollment_password_empty_error);
     private InputField securityQuestionField = new InputField();
     private InputField securityAnswerField = new InputField();
-    private InputField streetAddressField = new InputField(R.string.enrollment_street_address_error);
+    private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error);
     private InputField cityField = new InputField(R.string.enrollment_city_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
@@ -47,7 +53,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private CardStatus cardStatus;
 
     @Inject
-    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager) {
+    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider) {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -124,6 +130,30 @@ public class EnrollmentFormViewModel extends ViewModel {
                 return intermediateLivedata;
             }
         });
+
+        initAutoComplete(canadaPostAutocompleteProvider);
+    }
+
+    private void initAutoComplete(CanadaPostAutocompleteProvider provider) {
+
+        autocompleteResults = new MediatorLiveData<>();
+        LiveData<Resource<CanadaPostSuggestion[]>> suggestionsOnTextChange = Transformations.switchMap(streetAddressField.getTextLiveData(), text -> {
+            if (text.length() >= 3) {
+                return provider.findSuggestions(text, null);
+            } else {
+                showAutocompleteLayout.postValue(false);
+                return new MutableLiveData<>();
+            }
+        });
+
+        autocompleteResults.addSource(suggestionsOnTextChange, (results) -> {
+            if (results.status == Resource.Status.SUCCESS) {
+                showAutocompleteLayout.postValue(true);
+            }
+            autocompleteResults.setValue(results);
+        });
+        autocompleteResults.observeForever((resulst) -> {
+        });
     }
 
 
@@ -140,6 +170,10 @@ public class EnrollmentFormViewModel extends ViewModel {
         return !phoneField.isEmpty()
                 || !securityQuestionField.isEmpty()
                 || !securityAnswerField.isEmpty();
+    }
+
+    public void hideAutoCompleteLayout() {
+        showAutocompleteLayout.setValue(false);
     }
 
     /**

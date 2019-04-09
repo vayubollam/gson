@@ -41,6 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:paddingStart="16dp"
                 android:paddingTop="24dp"
                 android:paddingEnd="16dp"
@@ -173,18 +175,19 @@
                         android:textColor="@color/black_80"
                         app:layout_constraintTop_toBottomOf="@id/security_answer_input" />
 
-                    <suncor.com.android.uicomponents.SuncorTextInputLayout
-                        android:id="@+id/street_address_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enrollment_street_address_label"
-                        android:inputType="textPostalAddress"
-                        android:maxLength="50"
-                        app:afterTextChanged="@{eventHandler::textChanged}"
-                        app:error="@{vm.streetAddressField.error}"
-                        app:focusChanged="@{eventHandler::focusChanged}"
-                        app:layout_constraintTop_toBottomOf="@id/address_category_title"
-                        app:text="@={vm.streetAddressField.text}" />
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/street_address_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enrollment_street_address_label"
+                    android:inputType="textPostalAddress"
+                    android:maxLength="50"
+                    android:translationZ="8dp"
+                    app:afterTextChanged="@{eventHandler::textChanged}"
+                    app:error="@{vm.streetAddressField.error}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toBottomOf="@id/address_category_title"
+                    app:text="@={vm.streetAddressField.text}" />
 
                     <suncor.com.android.uicomponents.SuncorTextInputLayout
                         android:id="@+id/city_input"
@@ -313,9 +316,31 @@
                     android:text="@string/enrollment_join_button"
                     app:layout_constraintTop_toBottomOf="@id/terms_agreement" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="-16dp"
+                    android:layout_marginTop="-24dp"
+                    android:layout_marginEnd="-16dp"
+                    android:background="@color/black_40_transparent"
+                    android:clickable="true"
+                    android:onClick="@{(v) -> vm.hideAutoCompleteLayout()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibleGone="@{vm.showAutocompleteLayout}" />
+
+                <include
+                    layout="@layout/street_autocomplete_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="288dp"
+                    android:layout_marginStart="-8dp"
+                    android:layout_marginEnd="-8dp"
+                    app:isVisible="@{vm.showAutocompleteLayout}"
+                    app:layout_constraintTop_toTopOf="@id/street_address_input" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
