@@ -151,7 +151,7 @@ public class SessionManager implements SessionChangeListener {
 
     public boolean isUserLoggedIn() {
         if (loginState.getValue() != null) {
-            return loginState.getValue() == LoginState.LOGGED_IN;
+            return loginState.getValue() == LoginState.LOGGED_IN && profile != null;
         } else {
             //when the app is just being launched, we want to assume that it was logged in if we have a cached profile
             return profile != null;
