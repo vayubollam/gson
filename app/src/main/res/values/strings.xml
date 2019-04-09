@@ -51,7 +51,7 @@
     <string name="login_invalid_credentials_dialog_1st_message">The email or password you entered is not correct. Please try again.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="login_invalid_credentials_reset_password">Reset password</string>
-    <string name="login_soft_lock_alert_title">Sign-in disabled</string>
+    <string name="login_soft_lock_alert_title">Account locked</string>
     <string name="login_soft_lock_alert_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
     <string name="login_forgot_password_button">Forgot password</string>
     <string name="login_password_field">Password</string>

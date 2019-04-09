@@ -68,7 +68,9 @@ public class LoginViewModel extends ViewModel {
                     case SOFT_LOCKED:
                         loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
                                 R.string.login_soft_lock_alert_title,
-                                new ErrorMessage(R.string.login_soft_lock_alert_message, SessionManager.LOGIN_ATTEMPTS, response.getTimeOut())
+                                new ErrorMessage(R.string.login_soft_lock_alert_message, SessionManager.LOGIN_ATTEMPTS, response.getTimeOut()),
+                                R.string.login_invalid_credentials_reset_password,
+                                () -> passwordResetEvent.postValue(Event.newEvent(true))
                         )));
                         break;
                     case HARD_LOCKED:
