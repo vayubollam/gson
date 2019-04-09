@@ -13,6 +13,7 @@ import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.model.account.SecurityQuestion;
@@ -42,6 +43,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private ArrayList<InputField> requiredFields = new ArrayList<>();
+    private CardStatus cardStatus;
 
     @Inject
     public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager) {
@@ -230,6 +232,26 @@ public class EnrollmentFormViewModel extends ViewModel {
         this.selectedProvince = selectedProvince;
         if (selectedProvince != null) {
             provinceField.setText(selectedProvince.getName());
+        }
+    }
+
+    public CardStatus getCardStatus() {
+        return cardStatus;
+    }
+
+    public void setCardStatus(CardStatus cardStatus) {
+        if (cardStatus == null)
+            return;
+        this.cardStatus = cardStatus;
+        firstNameField.setText(cardStatus.getUserInfo().getFirstName());
+        lastNameField.setText(cardStatus.getUserInfo().getLastName());
+        emailInputField.setText(cardStatus.getUserInfo().getEmail());
+        streetAddressField.setText(cardStatus.getAddress().getStreetAddress());
+        cityField.setText(cardStatus.getAddress().getCity());
+        provinceField.setText(cardStatus.getAddress().getProvince());
+        postalCodeField.setText(cardStatus.getAddress().getPostalCode());
+        if (!cardStatus.getAddress().getPhone().isEmpty()) {
+            phoneField.setText(cardStatus.getAddress().getPhone());
         }
     }
 }

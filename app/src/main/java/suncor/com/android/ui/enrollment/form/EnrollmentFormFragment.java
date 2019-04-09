@@ -33,7 +33,6 @@ import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
@@ -50,7 +49,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
-    CardStatus cardStatus;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -64,7 +62,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
         if (getArguments() != null) {
-            cardStatus = EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus();
+            viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
         }
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
@@ -114,8 +112,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
-        if (cardStatus != null && cardStatus.getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
-            //TODO: adjust required fields according to enrollment type
             requiredFields.add(binding.firstNameInput);
             requiredFields.add(binding.lastNameInput);
             requiredFields.add(binding.emailInput);
@@ -124,18 +120,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             requiredFields.add(binding.cityInput);
             requiredFields.add(binding.provinceInput);
             requiredFields.add(binding.postalcodeInput);
-        } else {
-            requiredFields.add(binding.firstNameInput);
-            requiredFields.add(binding.lastNameInput);
-            requiredFields.add(binding.emailInput);
-            requiredFields.add(binding.passwordInput);
-            requiredFields.add(binding.streetAddressInput);
-            requiredFields.add(binding.cityInput);
-            requiredFields.add(binding.provinceInput);
-            requiredFields.add(binding.postalcodeInput);
-        }
-
-
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
@@ -153,7 +137,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
-        binding.setCardStatus(cardStatus);
+        binding.setCardStatus(viewModel.getCardStatus());
         return binding.getRoot();
     }
 
@@ -171,10 +155,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initTerms();
         binding.lastNameInput.post(() -> {
-            if (cardStatus != null && cardStatus.getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
-                binding.firstNameInput.setText(cardStatus.getUserInfo().getFirstName());
-                binding.lastNameInput.setText(cardStatus.getUserInfo().getLastName());
-                binding.emailInput.setText(cardStatus.getUserInfo().getEmail());
+            if (viewModel.getCardStatus() != null && viewModel.getCardStatus().getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
                 binding.lastNameInput.getEditText().setEnabled(false);
                 binding.firstNameInput.getEditText().setEnabled(false);
             }
