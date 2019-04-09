@@ -110,6 +110,8 @@
     <string name="enrollment_city_error">City is required.</string>
     <string name="enrollment_province_error">Province is required.</string>
     <string name="enrollment_postalcode_error">Postal code is required.</string>
+    <string name="enrollment_postalcode_format_error">The postal code you entered isn\'t valid.</string>
+
     <string name="enrollment_email_format_error">Invalid format</string>
     <string name="discover_your_next_adventure">FIND YOUR HAPPY PLACE</string>
     <string name="password_validation_text_length">Must be 8-16 characters</string>
@@ -143,6 +145,7 @@
     <string name="enrollment_cardform_postalcode_format_error">The postal code you entered isn\'t valid.</string>
     <string name="enrollment_cardform_verifying_card">Verifying card</string>
     <string name="enrollment_cardform_card_verified">Card verified</string>
+    <string name="enrollment_postalcode_matching_province_error">Postal code does not match the province selected</string>
     <string name="enrollment_create_account_message">Creating your\nPetro-Points account</string>
     <string name="enrollment_account_created_message">Account created</string>
     <string name="dashboard_enrolled_welcome_message">Thanks for joining, %s.\nEnjoy 2,500 points on us!</string>

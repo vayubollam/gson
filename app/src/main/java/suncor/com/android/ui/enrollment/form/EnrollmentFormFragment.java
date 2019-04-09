@@ -218,6 +218,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         if (view == binding.emailInput) {
             viewModel.getEmailInputField().setHasFocus(hasFocus);
         }
+        if (view == binding.postalcodeInput) {
+            viewModel.getPostalCodeField().setHasFocus(hasFocus);
+        }
 
     }
 

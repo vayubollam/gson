@@ -85,6 +85,7 @@
     <string name="enrollment_city_label">Ville</string>
     <string name="enrollment_province_label">Province</string>
     <string name="enrollment_postalcode_label">Code postal</string>
+    <string name="enrollment_postalcode_matching_province_error">Le code postal saisi ne correspond pas à la province sélectionnée.</string>
     <string name="enrollment_phone_label">Numéro de téléphone (facultatif)</string>
     <string name="enrollment_news_label">Oui, j\'aimerais recevoir des nouvelles, des offres et des rabais chez les partenaires de Petro‑Points.</string>
     <string name="enrollment_news_unsubscribe_hint">Vous pouvez vous désinscrire en tout temps.</string>
@@ -160,4 +161,5 @@
     <string name="alert_signed_out_title">Fin de session</string>
     <string name="enrollment_cardform_card_verified">Carte vérifiée</string>
     <string name="enrollment_cardform_verifying_card">Vérification de la carte</string>
+    <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
 </resources>

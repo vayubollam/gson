@@ -43,7 +43,7 @@ public class ProvinceFragment extends DialogFragment {
         String[] provincesArray = getResources().getStringArray(R.array.province_names);
         for (String provinceCodeName : provincesArray) {
             String[] nameCode = provinceCodeName.split(";");
-            provinces.add(new Province(nameCode[1], nameCode[0]));
+            provinces.add(new Province(nameCode[1], nameCode[0], nameCode[2]));
             provinceNames.add(nameCode[0]);
         }
     }

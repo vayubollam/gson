@@ -5,10 +5,16 @@ import androidx.annotation.Nullable;
 public class Province {
     private String id;
     private String name;
+    private String firstCharacter;
 
-    public Province(String id, String name) {
+    public Province(String id, String name, String firstCharacter) {
         this.id = id;
         this.name = name;
+        this.firstCharacter = firstCharacter;
+    }
+
+    public String getFirstCharacter() {
+        return firstCharacter;
     }
 
     public String getId() {

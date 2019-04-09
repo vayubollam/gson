@@ -101,7 +101,43 @@ public class EnrollmentFormViewModelTest {
 
         Assert.assertEquals(R.string.enrollment_postalcode_error, viewModel.getPostalCodeField().getError());
     }
+    @Test
+    public void testPostalCodeFormatError() {
+        viewModel.getPostalCodeField().setHasFocus(true);
+        viewModel.getPostalCodeField().setText("bad postal code");
+        viewModel.getPostalCodeField().setHasFocus(false);
 
+        Assert.assertEquals(R.string.enrollment_postalcode_format_error, viewModel.getPostalCodeField().getError());
+    }
+    @Test
+    public void testPostalCodeFormatValid() {
+        viewModel.getPostalCodeField().setHasFocus(true);
+        viewModel.getPostalCodeField().setText("K7T 9O6");
+        viewModel.getPostalCodeField().setHasFocus(false);
+
+        Assert.assertEquals(-1, viewModel.getPostalCodeField().getError());
+    }
+
+    @Test
+    public void testPostalCodeMatchingProvinceError() {
+        viewModel.getPostalCodeField().setHasFocus(true);
+        viewModel.getPostalCodeField().setFirstCharacterValidation("T"); //for Alberta
+        viewModel.getPostalCodeField().setText("Y7Y 7U7");
+        viewModel.getPostalCodeField().setHasFocus(false);
+
+
+        Assert.assertEquals(R.string.enrollment_postalcode_matching_province_error, viewModel.getPostalCodeField().getError());
+    }
+    @Test
+    public void testPostalCodeMatchingProvinceValid() {
+        viewModel.getPostalCodeField().setHasFocus(true);
+        viewModel.getPostalCodeField().setFirstCharacterValidation("T"); //for Alberta
+        viewModel.getPostalCodeField().setText("T7Y 7U7");
+        viewModel.getPostalCodeField().setHasFocus(false);
+
+
+        Assert.assertEquals(-1, viewModel.getPostalCodeField().getError());
+    }
     @Test
     public void testEmailEmptyError() {
         viewModel.getEmailInputField().setText("");

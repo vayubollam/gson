@@ -3,17 +3,20 @@ package suncor.com.android.ui.enrollment;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import suncor.com.android.R;
+import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 
 public class CardFormViewModelTest {
 
     private CardFormViewModel viemodel;
+    private EnrollmentsApi api = Mockito.mock(EnrollmentsApi.class);
 
     @Before
     public void init() {
-        viemodel = new CardFormViewModel();
+        viemodel = new CardFormViewModel(api);
     }
 
     @Test

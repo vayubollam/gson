@@ -20,6 +20,7 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.EmailInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PasswordInputField;
+import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
@@ -36,7 +37,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField streetAddressField = new InputField(R.string.enrollment_street_address_error);
     private InputField cityField = new InputField(R.string.enrollment_city_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
-    private InputField postalCodeField = new InputField(R.string.enrollment_postalcode_error);
+    private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
     private InputField phoneField = new InputField();
     private ObservableBoolean newsAndOffersField = new ObservableBoolean();
     private SecurityQuestion selectedQuestion;
@@ -202,7 +203,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         return provinceField;
     }
 
-    public InputField getPostalCodeField() {
+    public PostalCodeField getPostalCodeField() {
         return postalCodeField;
     }
 
@@ -229,6 +230,8 @@ public class EnrollmentFormViewModel extends ViewModel {
         this.selectedProvince = selectedProvince;
         if (selectedProvince != null) {
             provinceField.setText(selectedProvince.getName());
+            postalCodeField.setFirstCharacterValidation(selectedProvince.getFirstCharacter());
+
         }
     }
 }
