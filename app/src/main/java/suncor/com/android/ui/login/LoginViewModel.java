@@ -51,7 +51,7 @@ public class LoginViewModel extends ViewModel {
                         passwordInputField.setText("");
                         passwordInputField.notifyPropertyChanged(BR.text);
                         int remainingAttempts = response.getRemainingAttempts();
-                        if (remainingAttempts == SessionManager.LOGIN_ATTEMPTS - 1 || remainingAttempts == -1) {
+                        if (remainingAttempts >= SessionManager.LOGIN_ATTEMPTS - 2 || remainingAttempts == -1) {
                             loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
                                     R.string.login_invalid_credentials_dialog_title,
                                     new ErrorMessage(R.string.login_invalid_credentials_dialog_1st_message)
