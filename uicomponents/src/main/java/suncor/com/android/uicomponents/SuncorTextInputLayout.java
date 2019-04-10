@@ -216,6 +216,11 @@ public class SuncorTextInputLayout extends LinearLayout {
         return editText;
     }
 
+    public void setInputType(int inputType) {
+        getEditText().setInputType(inputType);
+        getEditText().setFocusable(inputType != InputType.TYPE_NULL);
+    }
+
     public void setText(@StringRes int text) {
         editText.setText(text);
     }

@@ -33,7 +33,6 @@ import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -62,7 +61,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
         if (getArguments() != null) {
-            CardStatus cardStatus = EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus();
+            viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
         }
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
@@ -112,15 +111,14 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
-        requiredFields.add(binding.firstNameInput);
-        requiredFields.add(binding.lastNameInput);
-        requiredFields.add(binding.emailInput);
-        requiredFields.add(binding.passwordInput);
-        requiredFields.add(binding.streetAddressInput);
-        requiredFields.add(binding.cityInput);
-        requiredFields.add(binding.provinceInput);
-        requiredFields.add(binding.postalcodeInput);
-
+            requiredFields.add(binding.firstNameInput);
+            requiredFields.add(binding.lastNameInput);
+            requiredFields.add(binding.emailInput);
+            requiredFields.add(binding.passwordInput);
+            requiredFields.add(binding.streetAddressInput);
+            requiredFields.add(binding.cityInput);
+            requiredFields.add(binding.provinceInput);
+            requiredFields.add(binding.postalcodeInput);
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
@@ -144,7 +142,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
 
     @Override
     public void onResume() {
+
         super.onResume();
+
     }
 
     @Override
@@ -153,6 +153,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         initTerms();
     }
+
 
     private void initTerms() {
         String terms = getString(R.string.enrollment_terms);
