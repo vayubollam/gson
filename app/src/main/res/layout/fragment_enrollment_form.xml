@@ -7,6 +7,8 @@
 
         <import type="suncor.com.android.model.account.NewEnrollment.EnrollmentType" />
 
+        <import type="android.text.InputType"></import>
+
         <import type="suncor.com.android.model.Resource" />
 
         <variable
@@ -60,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_first_name_label"
-                    app:editable="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
+                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
                     android:maxLength="20"
                     app:error="@{vm.firstNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
@@ -73,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_last_name_label"
-                    app:editable="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
+                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
                     android:maxLength="20"
                     app:error="@{vm.lastNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"

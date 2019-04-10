@@ -17,7 +17,6 @@
         <attr name="errorDrawable" format="reference" />
         <attr name="text" format="string" />
         <attr name="error" format="string" />
-        <attr name="editable" format="boolean" />
     </declare-styleable>
 
     <attr name="suncorAppBarLayoutStyle" format="reference" />

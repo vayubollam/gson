@@ -134,10 +134,6 @@ public class BindingAdapters {
         inputLayout.setError(showError);
     }
 
-    @BindingAdapter(value = "editable")
-    public static void editableEditText(SuncorTextInputLayout inputLayout, boolean editable) {
-        inputLayout.setEditable(editable);
-    }
     public interface AfterTextChanged {
         void afterTextChanged(SuncorTextInputLayout input, Editable s);
     }
