@@ -30,6 +30,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
@@ -189,6 +190,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
 
         binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
         binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        DividerItemDecoration dividerDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
+        binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
         return binding.getRoot();
     }
 
