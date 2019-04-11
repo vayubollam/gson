@@ -5,11 +5,20 @@ import androidx.lifecycle.MutableLiveData;
 
 public class StreetAddressInputField extends InputField {
 
+    private boolean hasFocus;
+    private MutableLiveData<String> textLiveData = new MutableLiveData<>();
+
     public StreetAddressInputField(int error) {
         super(error);
     }
 
-    private MutableLiveData<String> textLiveData = new MutableLiveData<>();
+    public boolean hasFocus() {
+        return hasFocus;
+    }
+
+    public void setHasFocus(boolean hasFocus) {
+        this.hasFocus = hasFocus;
+    }
 
     public LiveData<String> getTextLiveData() {
         return textLiveData;

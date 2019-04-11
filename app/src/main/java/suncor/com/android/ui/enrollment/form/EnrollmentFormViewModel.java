@@ -168,7 +168,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         });
 
         autocompleteResults.addSource(suggestionsOnTextChange, (results) -> {
-            if (results.status == Resource.Status.SUCCESS) {
+            if (results.status == Resource.Status.SUCCESS && streetAddressField.hasFocus()) {
                 showAutocompleteLayout.postValue(true);
             }
             autocompleteResults.setValue(results);
@@ -288,7 +288,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         return securityAnswerField;
     }
 
-    public InputField getStreetAddressField() {
+    public StreetAddressInputField getStreetAddressField() {
         return streetAddressField;
     }
 
