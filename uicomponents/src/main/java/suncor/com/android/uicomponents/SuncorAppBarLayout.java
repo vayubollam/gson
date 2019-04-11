@@ -11,6 +11,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -123,6 +124,20 @@ public class SuncorAppBarLayout extends AppBarLayout {
             expandedTitleTextView.setLayoutParams(params);
         });
         a.recycle();
+    }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        super.setOnClickListener(l);
+        toolbar.setOnClickListener(l);
+        collapsingToolbarLayout.setOnClickListener(l);
+    }
+
+    @Override
+    public void setBackgroundColor(int color) {
+        super.setBackgroundColor(color);
+        toolbar.setBackgroundColor(color);
+        collapsingToolbarLayout.setBackgroundColor(color);
     }
 
     private void disableScroll() {

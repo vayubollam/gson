@@ -3,9 +3,13 @@ package suncor.com.android.model.canadapost;
 import com.google.gson.annotations.SerializedName;
 
 public class CanadaPostSuggestion {
+    @SerializedName("Id")
     private String id;
+    @SerializedName("Text")
     private String text;
+    @SerializedName("Description")
     private String description;
+    @SerializedName("Next")
     private Next next;
 
     public String getId() {

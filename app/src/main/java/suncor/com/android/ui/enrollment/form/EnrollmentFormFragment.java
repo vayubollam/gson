@@ -30,6 +30,8 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
@@ -40,6 +42,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
+import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
@@ -51,6 +54,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
+    private AddressAutocompleteAdapter addressAutocompleteAdapter;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -64,9 +68,14 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
+        viewModel.setProvincesList(((EnrollmentActivity) getActivity()).getProvinces());
+
+        addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
+
         if (getArguments() != null) {
             viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
         }
+
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
             if (r.status == Resource.Status.SUCCESS && r.data == EnrollmentsApi.EmailState.INVALID) {
@@ -88,6 +97,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             }
         });
 
+        //enrollments api call result
         viewModel.joinLiveData.observe(this, (r) -> {
             if (r.status == Resource.Status.SUCCESS) {
                 getView().postDelayed(() -> {
@@ -103,21 +113,41 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             }
         });
 
+        //show and hide autocomplete layout
         viewModel.showAutocompleteLayout.observe(this, (show) -> {
-            if (binding.appBar.isExpanded()) {
+            if (getActivity() == null || binding.appBar.isExpanded()) {
                 return;
             }
-            binding.appBar.postDelayed(() -> {
-                if (show) {
-                    binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
-                    ViewCompat.setElevation(binding.appBar, 0);
-                    binding.scrollView.setOnTouchListener((v, e) -> true);
-                } else {
-                    binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
-                    ViewCompat.setElevation(binding.appBar, 8);
-                    binding.scrollView.setOnTouchListener(null);
-                }
-            }, 100);
+            if (show) {
+                binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
+                binding.appBar.setOnClickListener((v) -> viewModel.hideAutoCompleteLayout());
+                binding.streetAutocompleteBackground.setVisibility(View.VISIBLE);
+                binding.streetAutocompleteOverlay.setIsVisible(true);
+                ViewCompat.setElevation(binding.appBar, 0);
+                binding.scrollView.setScrollEnabled(false);
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
+            } else {
+                binding.appBar.setOnClickListener(null);
+                binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.streetAutocompleteBackground.setVisibility(View.GONE);
+                binding.streetAutocompleteOverlay.setIsVisible(false);
+                ViewCompat.setElevation(binding.appBar, 8);
+                binding.scrollView.setScrollEnabled(true);
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+            }
+        });
+
+        //binding autocomplete results to adapter
+        viewModel.getAutocompleteResults().observe(this, (resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
+                addressAutocompleteAdapter.setSuggestions(resource.data);
+                binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
+            }
+        }));
+
+        viewModel.getAutocompleteRetrievalStatus().observe(this, resource -> {
+            hideKeyBoard();
+            binding.streetAddressInput.getEditText().clearFocus();
         });
     }
 
@@ -131,14 +161,14 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
-            requiredFields.add(binding.firstNameInput);
-            requiredFields.add(binding.lastNameInput);
-            requiredFields.add(binding.emailInput);
-            requiredFields.add(binding.passwordInput);
-            requiredFields.add(binding.streetAddressInput);
-            requiredFields.add(binding.cityInput);
-            requiredFields.add(binding.provinceInput);
-            requiredFields.add(binding.postalcodeInput);
+        requiredFields.add(binding.firstNameInput);
+        requiredFields.add(binding.lastNameInput);
+        requiredFields.add(binding.emailInput);
+        requiredFields.add(binding.passwordInput);
+        requiredFields.add(binding.streetAddressInput);
+        requiredFields.add(binding.cityInput);
+        requiredFields.add(binding.provinceInput);
+        requiredFields.add(binding.postalcodeInput);
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
@@ -156,6 +186,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
+
+        binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
+        binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         return binding.getRoot();
     }
 
@@ -209,8 +242,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     }
 
     public void joinButtonClicked() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        hideKeyBoard();
 
         int itemWithError = viewModel.validateAndJoin();
         if (itemWithError != -1) {

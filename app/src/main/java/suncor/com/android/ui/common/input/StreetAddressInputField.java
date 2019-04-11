@@ -17,7 +17,13 @@ public class StreetAddressInputField extends InputField {
 
     @Override
     public void setText(String text) {
+        if (!text.equals(this.getText())) {
+            textLiveData.postValue(text);
+        }
         super.setText(text);
-        textLiveData.postValue(text);
+    }
+
+    public void setTextSilent(String text) {
+        super.setText(text);
     }
 }
