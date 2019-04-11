@@ -9,6 +9,10 @@ public class CanadaPostDetails {
     private String language;
     @SerializedName("LanguageAlternatives")
     private String languageAlternatives;
+    @SerializedName("BuildingNumber")
+    private String buildingNumber;
+    @SerializedName("Line1")
+    private String line1;
     @SerializedName("Street")
     private String street;
     @SerializedName("City")
@@ -19,6 +23,14 @@ public class CanadaPostDetails {
     private String provinceCode;
     @SerializedName("PostalCode")
     private String postalCode;
+
+    public String getLine1() {
+        return line1;
+    }
+
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
 
     public String getId() {
         return id;

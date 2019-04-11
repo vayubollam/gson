@@ -183,7 +183,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                 autocompleteResults.setValue(Resource.loading());
             } else if (result.status == Resource.Status.SUCCESS) {
                 CanadaPostDetails placeDetails = result.data;
-                streetAddressField.setTextSilent(placeDetails.getStreet());
+                streetAddressField.setTextSilent(placeDetails.getLine1());
                 streetAddressField.notifyPropertyChanged(BR.text);
                 postalCodeField.setText(placeDetails.getPostalCode());
                 postalCodeField.notifyPropertyChanged(BR.text);
