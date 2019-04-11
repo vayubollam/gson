@@ -150,9 +150,9 @@ public class FavouritesFragment extends DaggerFragment {
         mViewModel.removeStation(stationItem).observe(getActivity(), (r) -> {
             //TODO update copy content
             if (r.status == Resource.Status.SUCCESS) {
-                SuncorToast.makeText(application, "Station removed", Toast.LENGTH_SHORT).show();
+                SuncorToast.makeText(application, R.string.favourites_remove_station_message, Toast.LENGTH_SHORT).show();
             } else if (r.status == Resource.Status.ERROR) {
-                Toast.makeText(application, "Error", Toast.LENGTH_SHORT).show();
+                SuncorToast.makeText(application,  R.string.msg_sl007, Toast.LENGTH_SHORT).show();
             }
         });
     }
