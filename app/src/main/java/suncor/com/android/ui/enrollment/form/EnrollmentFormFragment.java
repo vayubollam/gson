@@ -222,11 +222,13 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.termsAgreement.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    @SuppressWarnings({"PointlessBooleanExpression"})
     @Override
     public void onBackPressed() {
         hideKeyBoard();
-
-        if (viewModel.oneItemFilled()) {
+        if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
+            viewModel.hideAutoCompleteLayout();
+        } else if (viewModel.oneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
