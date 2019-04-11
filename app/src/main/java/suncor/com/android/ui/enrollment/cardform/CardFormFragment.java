@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +27,7 @@ import suncor.com.android.databinding.FragmentCardFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.input.CardNumberFormattingTextWatcher;
@@ -59,49 +58,18 @@ public class CardFormFragment extends DaggerFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardFormViewModel.class);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentCardFormBinding.inflate(inflater, container, false);
-        binding.setVm(viewModel);
-        binding.appBar.setNavigationOnClickListener((v) -> {
-            Navigation.findNavController(getView()).navigateUp();
-        });
-        binding.scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY > binding.appBar.getBottom()) {
-                binding.appBar.setTitle(getString(R.string.enrollment_cardform_header));
-                ViewCompat.setElevation(binding.appBar, appBarElevation);
-            } else {
-                binding.appBar.setTitle("");
-                ViewCompat.setElevation(binding.appBar, 0);
-            }
-        });
-
-        binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
-        binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText()));
-        binding.setVm(viewModel);
-        binding.setLifecycleOwner(this);
-        return binding.getRoot();
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         viewModel.verifyCard.observe(this, cardStatusResource -> {
             if (cardStatusResource.status == Resource.Status.LOADING) {
                 hideKeyBoard();
-
             }
             if (cardStatusResource.status == Resource.Status.SUCCESS) {
                 Timber.d("cards status : success");
-
-                CardFormFragmentDirections.ActionCardFormFragmentToEnrollmentFormFragment action = CardFormFragmentDirections.actionCardFormFragmentToEnrollmentFormFragment().setCardStatus(cardStatusResource.data);
-                new Handler(Looper.getMainLooper()).postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 500);
+                CardStatus cardStatus = cardStatusResource.data;
+                CardFormFragmentDirections.ActionCardFormFragmentToEnrollmentFormFragment action = CardFormFragmentDirections.actionCardFormFragmentToEnrollmentFormFragment().setCardStatus(cardStatus);
+                if (getView() != null) {
+                    getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 500);
+                }
             } else if (cardStatusResource.status == Resource.Status.ERROR) {
                 if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
@@ -137,12 +105,41 @@ public class CardFormFragment extends DaggerFragment {
                 } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
                     dialog.show();
-
-
                 }
             }
-
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentCardFormBinding.inflate(inflater, container, false);
+        binding.setVm(viewModel);
+        binding.appBar.setNavigationOnClickListener((v) -> {
+            Navigation.findNavController(getView()).navigateUp();
+        });
+        binding.scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > binding.appBar.getBottom()) {
+                binding.appBar.setTitle(getString(R.string.enrollment_cardform_header));
+                ViewCompat.setElevation(binding.appBar, appBarElevation);
+            } else {
+                binding.appBar.setTitle("");
+                ViewCompat.setElevation(binding.appBar, 0);
+            }
+        });
+
+        binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
+        binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText()));
+        binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
+        return binding.getRoot();
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     private void hideKeyBoard() {

@@ -341,15 +341,20 @@ public class EnrollmentFormViewModel extends ViewModel {
         if (cardStatus == null)
             return;
         this.cardStatus = cardStatus;
-        firstNameField.setText(cardStatus.getUserInfo().getFirstName());
-        lastNameField.setText(cardStatus.getUserInfo().getLastName());
-        emailInputField.setText(cardStatus.getUserInfo().getEmail());
-        streetAddressField.setText(cardStatus.getAddress().getStreetAddress());
-        cityField.setText(cardStatus.getAddress().getCity());
-        provinceField.setText(cardStatus.getAddress().getProvince());
-        postalCodeField.setText(cardStatus.getAddress().getPostalCode());
-        if (!cardStatus.getAddress().getPhone().isEmpty()) {
-            phoneField.setText(cardStatus.getAddress().getPhone());
+        if (cardStatus.getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
+            firstNameField.setText(cardStatus.getUserInfo().getFirstName());
+            lastNameField.setText(cardStatus.getUserInfo().getLastName());
+            emailInputField.setText(cardStatus.getUserInfo().getEmail());
+            streetAddressField.setText(cardStatus.getAddress().getStreetAddress());
+            cityField.setText(cardStatus.getAddress().getCity());
+            provinceField.setText(cardStatus.getAddress().getProvince());
+            postalCodeField.setText(cardStatus.getAddress().getPostalCode());
+            if (!cardStatus.getAddress().getPhone().isEmpty()) {
+                phoneField.setText(cardStatus.getAddress().getPhone());
+            }
+        } else {
+            lastNameField.setText(cardStatus.getUserInfo().getLastName());
+            postalCodeField.setText(cardStatus.getAddress().getPostalCode());
         }
     }
 
