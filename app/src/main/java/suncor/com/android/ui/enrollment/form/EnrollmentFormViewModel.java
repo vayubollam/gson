@@ -344,12 +344,14 @@ public class EnrollmentFormViewModel extends ViewModel {
         if (cardStatus.getCardType() == NewEnrollment.EnrollmentType.EXISTING) {
             firstNameField.setText(cardStatus.getUserInfo().getFirstName());
             lastNameField.setText(cardStatus.getUserInfo().getLastName());
-            emailInputField.setText(cardStatus.getUserInfo().getEmail());
+            if (cardStatus.getUserInfo().getEmail() != null) {
+                emailInputField.setText(cardStatus.getUserInfo().getEmail());
+            }
             streetAddressField.setText(cardStatus.getAddress().getStreetAddress());
             cityField.setText(cardStatus.getAddress().getCity());
             provinceField.setText(cardStatus.getAddress().getProvince());
             postalCodeField.setText(cardStatus.getAddress().getPostalCode());
-            if (!cardStatus.getAddress().getPhone().isEmpty()) {
+            if (cardStatus.getAddress().getPhone() != null) {
                 phoneField.setText(cardStatus.getAddress().getPhone());
             }
         } else {

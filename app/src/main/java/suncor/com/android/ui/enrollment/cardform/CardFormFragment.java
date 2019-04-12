@@ -71,7 +71,7 @@ public class CardFormFragment extends DaggerFragment {
                     getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 500);
                 }
             } else if (cardStatusResource.status == Resource.Status.ERROR) {
-                if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE)) {
+                if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE) || cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_USER_INFO_NOT_MATCHED)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     dialog.setTitle(getString(R.string.enrollment_card_form_invalid_title))
