@@ -167,7 +167,7 @@
     <string name="enrollment_card_form_existing_use_different_card">USE A DIFFERENT CARD</string>
     <string name="enrollment_loading_question_title">One moment</string>
     <string name="login_hard_lock_alert_title">Account locked</string>
-    <string name="login_hard_lock_alert_message">Sorry, the login function has been disabled for 30 minutes. If you need help, please call Customer Service.</string>
+    <string name="login_hard_lock_alert_message">If you need help, please call Customer Service.</string>
     <string name="login_hard_lock_alert_call_button">Contact us</string>
     <string name="login_create_password_header">Create password</string>
     <string name="login_create_password_empty_error">Password is required.</string>
