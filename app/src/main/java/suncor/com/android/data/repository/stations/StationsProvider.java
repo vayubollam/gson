@@ -9,5 +9,5 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 
 public interface StationsProvider {
-    LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds);
+    LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds, boolean tryNearest);
 }

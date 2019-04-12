@@ -102,7 +102,7 @@ public class StationsViewModel extends ViewModel {
             LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
             LatLngBounds apiBounds = _mapBounds.getValue() != null ? LocationUtils.getLargerBounds(_mapBounds.getValue(), _25KmBounds) : _25KmBounds;
 
-            stationsProvider.getStations(apiBounds).observeForever((resource) -> {
+            stationsProvider.getStations(apiBounds, false).observeForever((resource) -> {
                 switch (resource.status) {
                     case LOADING:
                         _stationsAround.postValue(Resource.loading());

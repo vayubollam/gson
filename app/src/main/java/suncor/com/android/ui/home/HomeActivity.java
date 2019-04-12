@@ -1,6 +1,7 @@
 package suncor.com.android.ui.home;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +31,9 @@ import suncor.com.android.ui.home.common.SessionAwareActivity;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
 import suncor.com.android.ui.home.profile.ProfileFragment;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
+
+import static suncor.com.android.ui.home.dashboard.DashboardFragment.DASHBOARD_FRAGMENT_TAG;
+import static suncor.com.android.ui.home.dashboard.DashboardFragment.REQUEST_CHECK_SETTINGS;
 
 public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     //request code for requesting permissions
@@ -82,6 +87,23 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
         }
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case REQUEST_CHECK_SETTINGS:
+                DashboardFragment dashboardFragment = (DashboardFragment) getSupportFragmentManager().findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                if (dashboardFragment != null) {
+                    dashboardFragment.onActivityResult(requestCode, resultCode, data);
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void checkforPermission() {
@@ -146,12 +168,12 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
 
         switch (menuItemId) {
             case R.id.menu_home:
-                fragment = fragmentManager.findFragmentByTag(DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                fragment = fragmentManager.findFragmentByTag(DASHBOARD_FRAGMENT_TAG);
                 if (fragment != null) {
                     fragmentTransaction.attach(fragment);
                 } else {
                     fragment = new DashboardFragment();
-                    fragmentTransaction.add(R.id.frame_layout_home, fragment, DashboardFragment.DASHBOARD_FRAGMENT_TAG);
+                    fragmentTransaction.add(R.id.frame_layout_home, fragment, DASHBOARD_FRAGMENT_TAG);
                 }
                 break;
             case R.id.menu_stations:

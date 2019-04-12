@@ -23,6 +23,20 @@ public class LocationUtils {
                 new LatLng(northBound.latitude, eastBound.longitude));
     }
 
+    public static LatLngBounds calculateSquareBounds(LatLng center, int distanceMeter) {
+
+        LatLng westBound = SphericalUtil.computeOffsetOrigin(center, distanceMeter / 2, 90.0);
+        LatLng eastBound = SphericalUtil.computeOffset(center, distanceMeter / 2, 90.0);
+        LatLng northBound = SphericalUtil.computeOffsetOrigin(center, distanceMeter / 2, 180.0);
+        LatLng southBound = SphericalUtil.computeOffset(center, distanceMeter / 2, 180.0);
+
+        return new LatLngBounds(
+                new LatLng(southBound.latitude, westBound.longitude),
+                new LatLng(northBound.latitude, eastBound.longitude));
+    }
+
+
+
     public static double calculateDistance(LatLng origin, LatLng destination) {
         return SphericalUtil.computeDistanceBetween(origin, destination);
     }

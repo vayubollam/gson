@@ -44,7 +44,7 @@ public class SearchViewModel extends ViewModel {
         if (userLocation == null)
             return;
         LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
-        stationsProvider.getStations(_25KmBounds).observeForever((resource) -> {
+        stationsProvider.getStations(_25KmBounds, false).observeForever((resource) -> {
             switch (resource.status) {
                 case LOADING:
                     _nearbyStations.postValue(Resource.loading());
