@@ -1,6 +1,8 @@
 package suncor.com.android.ui.login;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +78,10 @@ public class LoginFragment extends DaggerFragment {
 
         viewModel.getCallCustomerService().observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
-                Toast.makeText(getContext(), "Call customer service", Toast.LENGTH_SHORT).show();
+                String customerSupportNumber = getString(R.string.customer_support_number);
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + customerSupportNumber));
+                startActivity(intent);
             }
         });
 
@@ -84,6 +89,7 @@ public class LoginFragment extends DaggerFragment {
             if (event.getContentIfNotHandled() != null) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment, new CreatePasswordFragment());
+                ft.addToBackStack(null);
                 ft.commit();
             }
         });

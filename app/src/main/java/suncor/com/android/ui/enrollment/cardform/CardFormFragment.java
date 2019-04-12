@@ -82,7 +82,7 @@ public class CardFormFragment extends DaggerFragment {
                                 dialog.dismiss();
                             })
                             .setCenterButton(getString(R.string.enrollment_card_form_get_new_card), (v) -> {
-                                callCostumerSupport(getString(R.string.enrllment_card_form_customer_support_number));
+                                callCostumerSupport(getString(R.string.customer_support_number));
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);

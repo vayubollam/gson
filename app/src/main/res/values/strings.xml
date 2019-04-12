@@ -174,5 +174,5 @@
     <string name="alert_signed_out_inactivity">You\'ve been signed out due to a change in your account details.</string>
     <string name="alert_signed_out_title">Sign out</string>
     <string name="alert_signed_out_conflicting_login">Your sign-in was used on another device. Please sign-in again.</string>
-    <string name="enrllment_card_form_customer_support_number">(800)668-0220</string>
+    <string name="customer_support_number">18006680220</string>
 </resources>
