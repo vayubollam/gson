@@ -100,7 +100,8 @@ public class EnrollmentFormViewModel extends ViewModel {
             if (event.getContentIfNotHandled() != null) {
                 Timber.d("Start sign up process");
                 NewEnrollment account = new NewEnrollment(
-                        NewEnrollment.EnrollmentType.NEW,
+                        cardStatus != null ? cardStatus.getCardType() : NewEnrollment.EnrollmentType.NEW,
+                        cardStatus != null ? cardStatus.getCardNumber() : null,
                         firstNameField.getText(),
                         lastNameField.getText(),
                         emailInputField.getText(),
@@ -349,7 +350,8 @@ public class EnrollmentFormViewModel extends ViewModel {
             }
             streetAddressField.setText(cardStatus.getAddress().getStreetAddress());
             cityField.setText(cardStatus.getAddress().getCity());
-            provinceField.setText(cardStatus.getAddress().getProvince());
+            Province province = Province.findProvince(provincesList, cardStatus.getAddress().getProvince());
+            setSelectedProvince(province);
             postalCodeField.setText(cardStatus.getAddress().getPostalCode());
             if (cardStatus.getAddress().getPhone() != null) {
                 phoneField.setText(cardStatus.getAddress().getPhone());

@@ -26,12 +26,16 @@ public class NewEnrollment {
     @JsonAdapter(EmptyStringTypeAdapter.class)
     private String phone;
 
+    @JsonAdapter(EmptyStringTypeAdapter.class)
+    private String petroPointsId;
+
     private boolean recieveOffers;
     private String securityQuestionId;
     private String securityAnswer;
 
-    public NewEnrollment(EnrollmentType type, String firstName, String lastName, String email, String password, String streetAddress, String city, String province, String postalCode, String phone, boolean recieveOffers, String securityQuestionId, String securityAnswer) {
+    public NewEnrollment(EnrollmentType type, String petroPointsId, String firstName, String lastName, String email, String password, String streetAddress, String city, String province, String postalCode, String phone, boolean recieveOffers, String securityQuestionId, String securityAnswer) {
         this.type = type;
+        this.petroPointsId = petroPointsId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

@@ -148,6 +148,8 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
 
     @Override
     public LiveData<Resource<CardStatus>> checkCardStatus(String cardNumber, String postalCode, String lastName) {
+        Timber.d("Checking card status, cardNumber: " + cardNumber + " , postalCode: " + postalCode + ", lastName: " + lastName);
+
         MutableLiveData<Resource<CardStatus>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
@@ -160,7 +162,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String response = wlResponse.getResponseText();
-                    Timber.d("card status:" + response);
+                    Timber.d("card status response:" + response);
                     if (wlResponse.getResponseJSON().keys().hasNext()) {
                         Gson gson = new Gson();
                         CardStatus cardStatus = gson.fromJson(response, CardStatus.class);
@@ -173,6 +175,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Checking card status failed:" + wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });

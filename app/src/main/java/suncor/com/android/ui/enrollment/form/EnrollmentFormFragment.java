@@ -38,6 +38,7 @@ import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
@@ -51,14 +52,13 @@ import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
 
+    @Inject
+    ViewModelFactory viewModelFactory;
     private FragmentEnrollmentFormBinding binding;
     private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
-
-    @Inject
-    ViewModelFactory viewModelFactory;
 
     public EnrollmentFormFragment() {
     }
@@ -80,21 +80,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
             if (r.status == Resource.Status.SUCCESS && r.data == EnrollmentsApi.EmailState.INVALID) {
-                ModalDialog dialog = new ModalDialog();
-                dialog.setCancelable(false);
-                dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
-                        .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
-                        .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
-                            Intent intent = new Intent(getContext(), LoginActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
-                        })
-                        .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
-                            binding.emailInput.setText("");
-                            dialog.dismiss();
-                            focusOnItem(binding.emailInput);
-                        })
-                        .show(getFragmentManager(), ModalDialog.TAG);
+                showDuplicateEmailAlert();
             }
         });
 
@@ -110,7 +96,11 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                     }
                 }, 1000);
             } else if (r.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
+                    showDuplicateEmailAlert();
+                } else {
+                    Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                }
             }
         });
 
@@ -150,6 +140,24 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             hideKeyBoard();
             binding.streetAddressInput.getEditText().clearFocus();
         });
+    }
+
+    private void showDuplicateEmailAlert() {
+        ModalDialog dialog = new ModalDialog();
+        dialog.setCancelable(false);
+        dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
+                .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
+                .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                })
+                .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
+                    binding.emailInput.setText("");
+                    dialog.dismiss();
+                    focusOnItem(binding.emailInput);
+                })
+                .show(getFragmentManager(), ModalDialog.TAG);
     }
 
     @Nullable
