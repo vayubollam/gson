@@ -43,18 +43,22 @@ public class CardFormViewModel extends ViewModel {
             }
         });
         verifyCard = Transformations.map(verifyCardApi, (result) -> {
-            if (result.status == Resource.Status.SUCCESS && result.data.getCardType() == NewEnrollment.EnrollmentType.GHOST) {
+            if (result.status == Resource.Status.SUCCESS) {
                 CardStatus cardStatus = result.data;
-                UserInfo userInfo = new UserInfo();
-                userInfo.setLastName(lastNameField.getText());
-                cardStatus.setUserInfo(userInfo);
-                Address address = new Address();
-                address.setPostalCode(postalCodeField.getText());
-                cardStatus.setAddress(address);
+                if (cardStatus.getCardType() == NewEnrollment.EnrollmentType.GHOST) {
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setLastName(lastNameField.getText());
+                    cardStatus.setUserInfo(userInfo);
+                    Address address = new Address();
+                    address.setPostalCode(postalCodeField.getText());
+                    cardStatus.setAddress(address);
+                    cardStatus.setCardNumber(cardNumberField.getText().replace(" ", ""));
+                } else {
+                    cardStatus.setCardNumber(cardNumberField.getText().replace(" ", ""));
+                }
                 return Resource.success(cardStatus);
-            } else {
-                return result;
             }
+            return result;
         });
     }
 

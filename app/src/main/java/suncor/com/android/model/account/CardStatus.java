@@ -4,9 +4,36 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CardStatus implements Parcelable {
-    NewEnrollment.EnrollmentType cardType;
-    UserInfo userInfo;
-    Address address;
+    public static final Creator<CardStatus> CREATOR = new Creator<CardStatus>() {
+        @Override
+        public CardStatus createFromParcel(Parcel in) {
+            return new CardStatus(in);
+        }
+
+        @Override
+        public CardStatus[] newArray(int size) {
+            return new CardStatus[size];
+        }
+    };
+    private NewEnrollment.EnrollmentType cardType;
+    private String cardNumber;
+    private UserInfo userInfo;
+    private Address address;
+
+    public CardStatus(Parcel in) {
+        userInfo = in.readParcelable(UserInfo.class.getClassLoader());
+        address = in.readParcelable(Address.class.getClassLoader());
+        cardNumber = in.readString();
+        cardType = NewEnrollment.EnrollmentType.valueOf(in.readString());
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
 
     public NewEnrollment.EnrollmentType getCardType() {
         return cardType;
@@ -41,12 +68,7 @@ public class CardStatus implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(userInfo, flags);
         dest.writeParcelable(address, flags);
+        dest.writeString(cardNumber);
         dest.writeString(cardType.name());
-    }
-
-    public CardStatus(Parcel in) {
-        userInfo = in.readParcelable(UserInfo.class.getClassLoader());
-        address = in.readParcelable(Address.class.getClassLoader());
-        cardType = NewEnrollment.EnrollmentType.valueOf(in.readString());
     }
 }
