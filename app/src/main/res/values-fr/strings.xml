@@ -165,4 +165,6 @@
     <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
     <string name="customer_support_number">18006680222</string>
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
+    <string name="msg_sl006">Station non ajoutée</string>
+    <string name="msg_sl007">Station non supprimée</string>
 </resources>

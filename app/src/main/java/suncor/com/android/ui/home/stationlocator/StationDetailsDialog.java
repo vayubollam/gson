@@ -202,17 +202,13 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         } else {
             binding.setFavouriteBusy(true);
             stationItem.toggleFavourite().observe(this, (r) -> {
-                if (r.status != Resource.Status.LOADING) {
-                    binding.setFavouriteBusy(false);
-                }
-
+                binding.setFavouriteBusy(r.status == Resource.Status.LOADING);
                 if (r.status == Resource.Status.ERROR) {
                     if (stationItem.isFavourite()) {
-                        SuncorToast.makeText(application,  R.string.msg_sl007, Toast.LENGTH_SHORT).show();
-                    } else
-                        SuncorToast.makeText(application,  R.string.msg_sl006, Toast.LENGTH_SHORT).show();
-
-
+                        SuncorToast.makeText(application, R.string.msg_sl007, Toast.LENGTH_SHORT).show();
+                    } else {
+                        SuncorToast.makeText(application, R.string.msg_sl006, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
