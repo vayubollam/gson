@@ -167,4 +167,9 @@
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
     <string name="msg_sl006">Station non ajoutée</string>
     <string name="msg_sl007">Station non supprimée</string>
+    <string name="login_create_password_header">Nouveau mot de passe</string>
+    <string name="login_create_password_empty_error">Le mot de passe est requis.</string>
+    <string name="login_create_password_button">Changer mon mot de passe</string>
+    <string name="login_create_password_duplicated_alert_title">Mot de passe invalide</string>
+    <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
 </resources>

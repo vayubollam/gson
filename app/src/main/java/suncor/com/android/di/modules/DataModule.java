@@ -20,6 +20,8 @@ import suncor.com.android.data.repository.stations.StationsProviderImpl;
 import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.data.repository.suggestions.GooglePlaceSuggestionsProvider;
 import suncor.com.android.data.repository.suggestions.PlaceSuggestionsProvider;
+import suncor.com.android.data.repository.users.UsersApi;
+import suncor.com.android.data.repository.users.UsersApiImpl;
 import suncor.com.android.mfp.SessionManager;
 
 @Module
@@ -40,6 +42,12 @@ public class DataModule {
     @Singleton
     EnrollmentsApi providesEnrollmentApi() {
         return new EnrollmentsApiImpl();
+    }
+
+    @Provides
+    @Singleton
+    UsersApi providesUsersApi() {
+        return new UsersApiImpl();
     }
 
     @Provides
