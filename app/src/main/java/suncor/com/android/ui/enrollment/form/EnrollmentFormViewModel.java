@@ -15,6 +15,7 @@ import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.model.account.NewEnrollment;
@@ -127,9 +128,14 @@ public class EnrollmentFormViewModel extends ViewModel {
                 return Transformations.map(sessionManager.login(emailInputField.getText(), passwordField.getText()), (r) -> {
                     switch (r.status) {
                         case SUCCESS:
-                            Timber.d("Login succeeded");
-                            sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
-                            return Resource.success(true);
+                            if (r.data.getStatus() == SigninResponse.Status.SUCCESS) {
+                                Timber.d("Login succeeded");
+                                sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
+                                return Resource.success(true);
+                            } else {
+                                Timber.d("Login failed, status: " + r.data.getStatus());
+                                return Resource.error(r.data.getStatus().toString());
+                            }
                         case ERROR:
                             Timber.d("Login failed");
                             return Resource.error(r.message);

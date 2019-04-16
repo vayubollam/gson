@@ -88,7 +88,7 @@ public class LoginFragment extends DaggerFragment {
         viewModel.getCreatePasswordEvent().observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment, new CreatePasswordFragment());
+                ft.replace(R.id.fragment, CreatePasswordFragment.newInstance(viewModel.getEmailInputField().getText()));
                 ft.addToBackStack(null);
                 ft.commit();
             }

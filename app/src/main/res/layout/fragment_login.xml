@@ -104,14 +104,14 @@
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/progress_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
+            android:clickable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:clickable="true"
             app:visibleGone="@{vm.isLoading}"
             tools:visibility="gone">
 
@@ -119,24 +119,22 @@
                 style="@style/Title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="64dp"
                 android:text="@string/login_in_progress" />
 
-            <FrameLayout
+
+            <ProgressBar
                 android:layout_width="64dp"
-                android:layout_height="64dp">
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:indeterminate="true" />
 
-                <ProgressBar
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:indeterminate="true" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_vpn_key" />
-            </FrameLayout>
-
-        </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_vpn_key" />
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
