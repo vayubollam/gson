@@ -92,7 +92,7 @@
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les %s</string>
     <string name="enrollment_terms">Conditions du programme Petro‑Points</string>
     <string name="enrollment_join_button">Joindre</string>
-    <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro\u2011Points.</string>
+    <string name="enrollment_form_header">Commençons votre inscription.</string>
     <string name="enrollment_terms_url">https://www.petro-canada.ca/fr/personnel/conditions#petropoints</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
@@ -103,7 +103,7 @@
     <string name="enrollment_province_error">La province est requise.</string>
     <string name="enrollment_postalcode_error">Le code postal est requis.</string>
     <string name="enrollment_preferences_category">Préférences et conditions</string>
-    <string name="enrollment_form_title">Commençons votre inscription</string>
+    <string name="enrollment_form_title">Ouvrir un compte</string>
     <string name="enrollment_leave_alert_title">Vous voulez quitter la fonction de création de compte?</string>
     <string name="enrollment_leave_alert_message">Les détails que vous avez entrés ne seront pas sauvegardés si vous quittez. Vous voulez quitter le formulaire de création de compte?</string>
     <string name="profile_fragment_title">Profil</string>
@@ -172,4 +172,5 @@
     <string name="login_create_password_button">Changer mon mot de passe</string>
     <string name="login_create_password_duplicated_alert_title">Mot de passe invalide</string>
     <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
+    <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez 2 500 points.</string>
 </resources>
