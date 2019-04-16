@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
+import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.input.InputField;
@@ -23,6 +24,7 @@ public class EnrollmentFormViewModelTest {
     private EnrollmentFormViewModel viewModel;
     private EnrollmentsApi api = Mockito.mock(EnrollmentsApi.class);
     private SessionManager sessionManager = Mockito.mock(SessionManager.class);
+    private CanadaPostAutocompleteProvider canadaPostAutocompleteProvider = Mockito.mock(CanadaPostAutocompleteProvider.class);
 
 
     @Rule
@@ -30,7 +32,7 @@ public class EnrollmentFormViewModelTest {
 
     @Before
     public void init() {
-        viewModel = new EnrollmentFormViewModel(api, sessionManager);
+        viewModel = new EnrollmentFormViewModel(api, sessionManager, canadaPostAutocompleteProvider);
     }
 
     @Test
@@ -101,6 +103,7 @@ public class EnrollmentFormViewModelTest {
 
         Assert.assertEquals(R.string.enrollment_postalcode_error, viewModel.getPostalCodeField().getError());
     }
+
     @Test
     public void testPostalCodeFormatError() {
         viewModel.getPostalCodeField().setHasFocus(true);
@@ -109,6 +112,7 @@ public class EnrollmentFormViewModelTest {
 
         Assert.assertEquals(R.string.enrollment_postalcode_format_error, viewModel.getPostalCodeField().getError());
     }
+
     @Test
     public void testPostalCodeFormatValid() {
         viewModel.getPostalCodeField().setHasFocus(true);
@@ -128,6 +132,7 @@ public class EnrollmentFormViewModelTest {
 
         Assert.assertEquals(R.string.enrollment_postalcode_matching_province_error, viewModel.getPostalCodeField().getError());
     }
+
     @Test
     public void testPostalCodeMatchingProvinceValid() {
         viewModel.getPostalCodeField().setHasFocus(true);
@@ -138,6 +143,7 @@ public class EnrollmentFormViewModelTest {
 
         Assert.assertEquals(-1, viewModel.getPostalCodeField().getError());
     }
+
     @Test
     public void testEmailEmptyError() {
         viewModel.getEmailInputField().setText("");
