@@ -2,12 +2,14 @@ package suncor.com.android.ui.home.dashboard;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -21,34 +23,36 @@ import suncor.com.android.utilities.LocationUtils;
 
 public class DashboardViewModel extends ViewModel {
 
-    public LiveData<Resource<Station>> nearestStation;
+    public static final int MIN_Y = -180;
+    public static final int MAX_Y = -50;
+    public static final int MIN_X = 20;
+    public static final int MAX_X = 90;
+    private MediatorLiveData<Resource<Station>> _nearestStation = new MediatorLiveData<>();
+    public LiveData<Resource<Station>> nearestStation = _nearestStation;
+
     private StationsProvider stationsProvider;
     private SessionManager.AccountState accountState = null;
-    private final static int DISTANCE_API = 100000;
+    private final static int DISTANCE_API = 25000;
     private SessionManager sessionManager;
     public StationItem stationItem;
     public MutableLiveData<Boolean> locationServiceEnabled = new MutableLiveData<>();
     private LatLng userLocation;
-    private MutableLiveData<Event<Boolean>> loadNearest = new MutableLiveData<>();
+    LatLngBounds canadaUSbounds;
+    public MutableLiveData<Event<Boolean>> loadNearest = new MutableLiveData<>();
 
 
     @Inject
     public DashboardViewModel(SessionManager sessionManager, StationsProvider stationsProvider) {
         this.stationsProvider = stationsProvider;
         this.sessionManager = sessionManager;
-        initNearestStation();
+        canadaUSbounds = new LatLngBounds(new LatLng(MIN_X, MIN_Y), new LatLng(MAX_X, MAX_Y));
         if (sessionManager.isUserLoggedIn()) {
             accountState = sessionManager.getAccountState();
         }
-    }
-
-
-    public void initNearestStation() {
-
 
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
 
-            if (event.getContentIfNotHandled() != null && userLocation != null) {
+            if (event.getContentIfNotHandled() != null) {
                 LatLngBounds bounds = LocationUtils.calculateSquareBounds(userLocation, DISTANCE_API);
                 return stationsProvider.getStations(bounds, true);
             } else {
@@ -57,21 +61,26 @@ public class DashboardViewModel extends ViewModel {
         });
 
 
-        nearestStation = Transformations.map(nearestStationLoad, ((resource) -> {
+        _nearestStation.addSource(nearestStationLoad, ((resource) -> {
             switch (resource.status) {
                 case LOADING:
-                    return Resource.loading(null);
+                    _nearestStation.setValue(Resource.loading());
+                    break;
                 case ERROR:
-                    return Resource.error(resource.message, null);
-                default:
-                    if (resource.data.isEmpty()) {
-                        return Resource.success(null);
+                    _nearestStation.setValue(Resource.error(resource.message));
+                    break;
+                case SUCCESS:
+                    if (resource.data == null || resource.data.isEmpty()) {
+                        _nearestStation.setValue(Resource.success(null));
                     } else {
-                        return Resource.success(resource.data.get(0));
+                        _nearestStation.setValue(Resource.success(resource.data.get(0)));
                     }
+                    break;
             }
         }));
+
     }
+
 
     @Override
     protected void onCleared() {
@@ -90,8 +99,17 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public void setUserLocation(LatLng userLocation) {
-        loadNearest.setValue(Event.newEvent(true));
+        if (getUserLocation() != null && SphericalUtil.computeDistanceBetween(getUserLocation(), new LatLng(userLocation.latitude, userLocation.longitude)) < 10) {
+            this.userLocation = userLocation;
+            return;
+        }
         this.userLocation = userLocation;
+        if (canadaUSbounds.contains(userLocation)) {
+            loadNearest.setValue(Event.newEvent(true));
+        } else {
+            _nearestStation.setValue(Resource.success(null));
+        }
+
 
     }
 }
