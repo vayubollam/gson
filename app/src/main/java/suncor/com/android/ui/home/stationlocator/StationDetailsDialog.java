@@ -62,6 +62,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
     @Inject
     SuncorApplication application;
+
     public static void showCard(Fragment fragment, StationItem stationItem, View originalView, boolean shouldShowCardHandler) {
         StationDetailsDialog dialog = new StationDetailsDialog();
         dialog.setInitialHeight(originalView.getHeight());
@@ -175,8 +176,6 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                         } else {
                             binding.imgBottomSheet.setVisibility(View.INVISIBLE);
                         }
-
-
 
                         //card height
                         binding.cardView.getLayoutParams().height = (int) (((fullHeight - verticalPadding) * v) + (1 - v) * initialHeight);

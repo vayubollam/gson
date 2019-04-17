@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,6 +50,7 @@ import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
+import suncor.com.android.utilities.Timber;
 
 public class DashboardFragment extends BaseFragment {
 
@@ -94,11 +96,10 @@ public class DashboardFragment extends BaseFragment {
 
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         mViewModel.locationServiceEnabled.postValue(LocationUtils.isLocationEnabled(getContext()));
         setStatusBarColor(getResources().getColor(R.color.dashboard_back));
-
     }
 
     OnClickListener tryAgainLister = v -> {
@@ -227,33 +228,28 @@ public class DashboardFragment extends BaseFragment {
         Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getContext()).checkLocationSettings(builder.build());
 
         result.addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+            try {
+                LocationSettingsResponse response = result.getResult(ApiException.class);
                 mViewModel.locationServiceEnabled.setValue(true);
-
-            } else {
-                try {
-                    LocationSettingsResponse response = result.getResult(ApiException.class);
-
-                } catch (ApiException ex) {
-                    switch (ex.getStatusCode()) {
-                        case LocationSettingsStatusCodes
-                                .RESOLUTION_REQUIRED:
-                            try {
-                                ResolvableApiException resolvableApiException = (ResolvableApiException) ex;
-                                resolvableApiException.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
-                            } catch (IntentSender.SendIntentException intentException) {
-
-                            } catch (ClassCastException classException) {
-
-                            }
-                            break;
-
-                    }
-
+            } catch (ApiException ex) {
+                switch (ex.getStatusCode()) {
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        try {
+                            ResolvableApiException resolvableApiException = (ResolvableApiException) ex;
+                            startIntentSenderForResult(resolvableApiException.getResolution().getIntentSender(), REQUEST_CHECK_SETTINGS, null, 0, 0, 0, null);
+                        } catch (IntentSender.SendIntentException intentException) {
+                            Timber.w(intentException);
+                        } catch (ClassCastException classException) {
+                            Timber.w(classException);
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way to fix the
+                        // settings so we won't show the dialog.
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        break;
                 }
             }
-
-
         });
     }
 
