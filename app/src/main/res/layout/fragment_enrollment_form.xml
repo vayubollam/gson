@@ -7,7 +7,7 @@
 
         <import type="suncor.com.android.model.account.NewEnrollment.EnrollmentType" />
 
-        <import type="android.text.InputType"></import>
+        <import type="android.text.InputType" />
 
         <import type="suncor.com.android.model.Resource" />
 
@@ -28,10 +28,10 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expandedTitle="@string/enrollment_form_header"
+            app:expandedTitle="@{vm.cardStatus.cardType == EnrollmentType.GHOST ? @string/enrollment_form_header_ghost:@string/enrollment_form_header}"
             app:title="@string/enrollment_form_title" />
 
-        <androidx.core.widget.NestedScrollView
+        <suncor.com.android.uicomponents.ExtendedNestedScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,6 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:paddingStart="16dp"
                 android:paddingTop="24dp"
                 android:paddingEnd="16dp"
@@ -62,10 +64,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_first_name_label"
-                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
                     android:maxLength="20"
                     app:error="@{vm.firstNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
+                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
                     app:layout_constraintTop_toBottomOf="@id/personal_category_title"
                     app:text="@={vm.firstNameField.text}"
                     tools:layout_editor_absoluteX="16dp" />
@@ -75,10 +77,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_last_name_label"
-                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
                     android:maxLength="20"
                     app:error="@{vm.lastNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
+                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
                     app:layout_constraintTop_toBottomOf="@id/first_name_input"
                     app:text="@={vm.lastNameField.text}" />
 
@@ -147,88 +149,79 @@
                     app:layout_constraintTop_toBottomOf="@id/security_question_input"
                     app:text="@={vm.securityAnswerField.text}" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    app:visibleGone="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
-                    android:id="@+id/address_layout"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/address_category_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/preferences_category_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/security_answer_input">
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/enrollment_address_category"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_80"
+                    app:layout_constraintTop_toBottomOf="@id/security_answer_input"
+                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/address_category_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
-                        android:fontFamily="@font/gibson_semibold"
-                        android:text="@string/enrollment_address_category"
-                        android:textAppearance="@style/Body"
-                        android:textColor="@color/black_80"
-                        app:layout_constraintTop_toBottomOf="@id/security_answer_input" />
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/street_address_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enrollment_street_address_label"
+                    android:inputType="textPostalAddress"
+                    android:maxLength="50"
+                    android:translationZ="8dp"
+                    app:afterTextChanged="@{eventHandler::textChanged}"
+                    app:error="@{vm.streetAddressField.error}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toBottomOf="@id/address_category_title"
+                    app:text="@={vm.streetAddressField.text}"
+                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
-                    <suncor.com.android.uicomponents.SuncorTextInputLayout
-                        android:id="@+id/street_address_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enrollment_street_address_label"
-                        android:inputType="textPostalAddress"
-                        android:maxLength="50"
-                        app:afterTextChanged="@{eventHandler::textChanged}"
-                        app:error="@{vm.streetAddressField.error}"
-                        app:focusChanged="@{eventHandler::focusChanged}"
-                        app:layout_constraintTop_toBottomOf="@id/address_category_title"
-                        app:text="@={vm.streetAddressField.text}" />
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/city_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enrollment_city_label"
+                    android:maxLength="30"
+                    app:error="@{vm.cityField.error}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toBottomOf="@id/street_address_input"
+                    app:text="@={vm.cityField.text}"
+                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
-                    <suncor.com.android.uicomponents.SuncorTextInputLayout
-                        android:id="@+id/city_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enrollment_city_label"
-                        android:maxLength="30"
-                        app:error="@{vm.cityField.error}"
-                        app:focusChanged="@{eventHandler::focusChanged}"
-                        app:layout_constraintTop_toBottomOf="@id/street_address_input"
-                        app:text="@={vm.cityField.text}" />
+                <suncor.com.android.uicomponents.SuncorSelectInputLayout
+                    android:id="@+id/province_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enrollment_province_label"
+                    app:error="@{vm.provinceField.error}"
+                    app:layout_constraintTop_toBottomOf="@id/city_input"
+                    app:text="@={vm.provinceField.text}"
+                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
-                    <suncor.com.android.uicomponents.SuncorSelectInputLayout
-                        android:id="@+id/province_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enrollment_province_label"
-                        app:error="@{vm.provinceField.error}"
-                        app:layout_constraintTop_toBottomOf="@id/city_input"
-                        app:text="@={vm.provinceField.text}" />
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/postalcode_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enrollment_postalcode_label"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="7"
+                    app:error="@{vm.postalCodeField.error}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toBottomOf="@id/province_input"
+                    app:text="@={vm.postalCodeField.text}"
+                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
-                    <suncor.com.android.uicomponents.SuncorTextInputLayout
-                        android:id="@+id/postalcode_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enrollment_postalcode_label"
-                        android:inputType="textCapCharacters"
-                        android:maxLength="7"
-                        app:error="@{vm.postalCodeField.error}"
-                        app:focusChanged="@{eventHandler::focusChanged}"
-                        app:layout_constraintTop_toBottomOf="@id/province_input"
-                        app:text="@={vm.postalCodeField.text}" />
-
-                    <suncor.com.android.uicomponents.SuncorTextInputLayout
-                        android:id="@+id/phone_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/enrollment_phone_label"
-                        android:inputType="phone"
-                        android:maxLength="14"
-                        app:focusChanged="@{eventHandler::focusChanged}"
-                        app:layout_constraintTop_toBottomOf="@id/postalcode_input"
-                        app:text="@={vm.phoneField.text}" />
-                </LinearLayout>
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/phone_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enrollment_phone_label"
+                    android:inputType="phone"
+                    android:maxLength="14"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toBottomOf="@id/postalcode_input"
+                    app:text="@={vm.phoneField.text}"
+                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -240,7 +233,7 @@
                     android:text="@string/enrollment_preferences_category"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/black_80"
-                    app:layout_constraintTop_toBottomOf="@id/address_layout" />
+                    app:layout_constraintTop_toBottomOf="@id/phone_input" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/news_checkbox"
@@ -313,9 +306,32 @@
                     android:text="@string/enrollment_join_button"
                     app:layout_constraintTop_toBottomOf="@id/terms_agreement" />
 
+                <View
+                    android:id="@+id/street_autocomplete_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="-16dp"
+                    android:layout_marginTop="-24dp"
+                    android:layout_marginEnd="-16dp"
+                    android:background="@color/black_40_transparent"
+                    android:clickable="true"
+                    android:onClick="@{(v) -> vm.hideAutoCompleteLayout()}"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <include
+                    android:id="@+id/street_autocomplete_overlay"
+                    layout="@layout/street_autocomplete_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="288dp"
+                    android:layout_marginStart="-8dp"
+                    android:layout_marginEnd="-8dp"
+                    app:isLoading="@{vm.autocompleteResults.status == Resource.Status.LOADING}"
+                    app:layout_constraintTop_toTopOf="@id/street_address_input" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        </suncor.com.android.uicomponents.ExtendedNestedScrollView>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -54,9 +54,9 @@
         <item>Northwest Territories;NT;X</item>
         <item>Nova Scotia;NS;B</item>
         <item>Nunavut;NU;X</item>
-        <item>Ontario;ON;K L N P</item>
+        <item>Ontario;ON;K L M N P</item>
         <item>Prince Edward Island;PE;C</item>
-        <item>Quebec;QC;G J</item>
+        <item>Quebec;QC;G H J</item>
         <item>Saskatchewan;SK;S</item>
         <item>Yukon;YT;Y</item>
     </string-array>

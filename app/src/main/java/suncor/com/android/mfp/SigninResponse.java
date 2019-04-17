@@ -45,7 +45,7 @@ public class SigninResponse {
     }
 
     public static SigninResponse passwordReset() {
-        return new SigninResponse(Status.HARD_LOCKED, -1);
+        return new SigninResponse(Status.PASSWORD_RESET, -1);
     }
 
     public static SigninResponse generalFailure() {

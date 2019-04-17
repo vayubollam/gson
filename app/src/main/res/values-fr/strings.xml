@@ -92,7 +92,7 @@
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les %s</string>
     <string name="enrollment_terms">Conditions du programme Petro‑Points</string>
     <string name="enrollment_join_button">Joindre</string>
-    <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro\u2011Points.</string>
+    <string name="enrollment_form_header">Commençons votre inscription.</string>
     <string name="enrollment_terms_url">https://www.petro-canada.ca/fr/personnel/conditions#petropoints</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
@@ -103,7 +103,7 @@
     <string name="enrollment_province_error">La province est requise.</string>
     <string name="enrollment_postalcode_error">Le code postal est requis.</string>
     <string name="enrollment_preferences_category">Préférences et conditions</string>
-    <string name="enrollment_form_title">Commençons votre inscription</string>
+    <string name="enrollment_form_title">Ouvrir un compte</string>
     <string name="enrollment_leave_alert_title">Vous voulez quitter la fonction de création de compte?</string>
     <string name="enrollment_leave_alert_message">Les détails que vous avez entrés ne seront pas sauvegardés si vous quittez. Vous voulez quitter le formulaire de création de compte?</string>
     <string name="profile_fragment_title">Profil</string>
@@ -132,6 +132,7 @@
     <string name="enrollment_cardform_card_format_error">"Le numéro de carte entré est erroné. "</string>
     <string name="enrollment_cardform_postalcode_format_error">Le code postal entré est erroné.</string>
     <string name="enrollment_cardform_card_error">Le numéro de carte est requis.</string>
+    <string name="favourites_remove_station_message">Station supprimée</string>
     <string name="enrollment_cardform_card_label">Numéro de carte Petro‑Points</string>
     <string name="enrollment_cardform_header">Commençons votre inscription.</string>
     <string name="msg_e002_title">Aucune connexion internet</string>
@@ -155,14 +156,14 @@
     <string name="enrollment_loading_question_title">Un moment</string>
     <string name="alert_signed_out_inactivity">Votre session a été fermée à la suite d\'un changement dans votre compte.</string>
     <string name="alert_signed_out_conflicting_login">Votre adresse de connexion a été utilisée sur un autre appareil. Veuillez ouvrir une nouvelle session.</string>
-    <string name="login_hard_lock_alert_message">Désolé, la fonction d\'ouverture de session a été désactivée pendant 30 minutes. Si vous avez besoin d\'aide, veuillez communiquer avec le service à la clientèle.</string>
+    <string name="login_hard_lock_alert_message">Si vous avez besoin d\'aide, veuillez communiquer avec le service à la clientèle.</string>
     <string name="login_hard_lock_alert_call_button">Nous joindre</string>
     <string name="login_hard_lock_alert_title">Compte bloqué</string>
     <string name="alert_signed_out_title">Fin de session</string>
     <string name="enrollment_cardform_card_verified">Carte vérifiée</string>
     <string name="enrollment_cardform_verifying_card">Vérification de la carte</string>
     <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
-    <string name="enrllment_card_form_customer_support_number">(800) 668-0222</string>
+    <string name="customer_support_number">18006680222</string>
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
     <string name="dashboard_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
     <string name="dashboard_nearest_no_stations_found">Aucun emplacement trouvé</string>
@@ -173,4 +174,12 @@
     <string name="dashboard_nearest_error_body">Nous ne trouvons pas l\'établissement le plus près pour le moment. Veuillez réessayer plus tard.</string>
     <string name="dashboard_nearest_error_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
     <string name="dashboard_nearest_error_title">Quelque chose a mal tourné</string>
+    <string name="msg_sl006">Station non ajoutée</string>
+    <string name="msg_sl007">Station non supprimée</string>
+    <string name="login_create_password_header">Nouveau mot de passe</string>
+    <string name="login_create_password_empty_error">Le mot de passe est requis.</string>
+    <string name="login_create_password_button">Changer mon mot de passe</string>
+    <string name="login_create_password_duplicated_alert_title">Mot de passe invalide</string>
+    <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
+    <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez 2 500 points.</string>
 </resources>

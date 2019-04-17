@@ -7,6 +7,7 @@
     <color name="black_80">#323232</color>
     <color name="black_60">#666666</color>
     <color name="black_40">#999999</color>
+    <color name="black_40_transparent">#66000000</color>
     <color name="black_20">#CDCDCD</color>
     <color name="black_4">#F4F4F4</color>
     <color name="black_8">#14000000</color>

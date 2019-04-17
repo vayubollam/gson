@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.Address;
 import suncor.com.android.model.account.CardStatus;
+import suncor.com.android.model.account.NewEnrollment;
+import suncor.com.android.model.account.UserInfo;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.CardNumberInputField;
 import suncor.com.android.ui.common.input.InputField;
@@ -29,12 +32,33 @@ public class CardFormViewModel extends ViewModel {
     public CardFormViewModel(EnrollmentsApi enrollmentsApi) {
         this.enrollmentsApi = enrollmentsApi;
 
-        verifyCard = Transformations.switchMap(verify, (event) -> {
+        LiveData<Resource<CardStatus>> verifyCardApi = Transformations.switchMap(verify, (event) -> {
             if (event.getContentIfNotHandled() != null) {
-                return enrollmentsApi.checkCardStatus(cardNumberField.getText().replace(" ", ""), postalCodeField.getText().replace(" ", ""), lastNameField.getText());
+                return enrollmentsApi.checkCardStatus(
+                        cardNumberField.getText().replace(" ", ""),
+                        postalCodeField.getText().replace(" ", ""),
+                        lastNameField.getText());
             } else {
                 return new MutableLiveData<>();
             }
+        });
+        verifyCard = Transformations.map(verifyCardApi, (result) -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                CardStatus cardStatus = result.data;
+                if (cardStatus.getCardType() == NewEnrollment.EnrollmentType.GHOST) {
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setLastName(lastNameField.getText());
+                    cardStatus.setUserInfo(userInfo);
+                    Address address = new Address();
+                    address.setPostalCode(postalCodeField.getText());
+                    cardStatus.setAddress(address);
+                    cardStatus.setCardNumber(cardNumberField.getText().replace(" ", ""));
+                } else {
+                    cardStatus.setCardNumber(cardNumberField.getText().replace(" ", ""));
+                }
+                return Resource.success(cardStatus);
+            }
+            return result;
         });
     }
 

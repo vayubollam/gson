@@ -3,6 +3,7 @@ package suncor.com.android.ui.enrollment.form;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
@@ -23,20 +24,27 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
+import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
@@ -44,46 +52,39 @@ import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
 
+    @Inject
+    ViewModelFactory viewModelFactory;
     private FragmentEnrollmentFormBinding binding;
     private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
-
-    @Inject
-    ViewModelFactory viewModelFactory;
+    private AddressAutocompleteAdapter addressAutocompleteAdapter;
 
     public EnrollmentFormFragment() {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
+        viewModel.setProvincesList(((EnrollmentActivity) getActivity()).getProvinces());
+
+        addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
+
         if (getArguments() != null) {
             viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
         }
+
         viewModel.emailCheckLiveData.observe(this, (r) -> {
             //Ignore all results except success answers
             if (r.status == Resource.Status.SUCCESS && r.data == EnrollmentsApi.EmailState.INVALID) {
-                ModalDialog dialog = new ModalDialog();
-                dialog.setCancelable(false);
-                dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
-                        .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
-                        .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
-                            Intent intent = new Intent(getContext(), LoginActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
-                        })
-                        .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
-                            binding.emailInput.setText("");
-                            dialog.dismiss();
-                            focusOnItem(binding.emailInput);
-                        })
-                        .show(getFragmentManager(), ModalDialog.TAG);
+                showDuplicateEmailAlert();
             }
         });
 
+        //enrollments api call result
         viewModel.joinLiveData.observe(this, (r) -> {
             if (r.status == Resource.Status.SUCCESS) {
                 getView().postDelayed(() -> {
@@ -95,10 +96,68 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                     }
                 }, 1000);
             } else if (r.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
+                    showDuplicateEmailAlert();
+                } else {
+                    Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                }
             }
         });
 
+        //show and hide autocomplete layout
+        viewModel.showAutocompleteLayout.observe(this, (show) -> {
+            if (getActivity() == null || binding.appBar.isExpanded()) {
+                return;
+            }
+            if (show) {
+                binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
+                binding.appBar.setOnClickListener((v) -> viewModel.hideAutoCompleteLayout());
+                binding.streetAutocompleteBackground.setVisibility(View.VISIBLE);
+                binding.streetAutocompleteOverlay.setIsVisible(true);
+                ViewCompat.setElevation(binding.appBar, 0);
+                binding.scrollView.setScrollEnabled(false);
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
+            } else {
+                binding.appBar.setOnClickListener(null);
+                binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.streetAutocompleteBackground.setVisibility(View.GONE);
+                binding.streetAutocompleteOverlay.setIsVisible(false);
+                ViewCompat.setElevation(binding.appBar, 8);
+                binding.scrollView.setScrollEnabled(true);
+                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+            }
+        });
+
+        //binding autocomplete results to adapter
+        viewModel.getAutocompleteResults().observe(this, (resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
+                addressAutocompleteAdapter.setSuggestions(resource.data);
+                binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
+            }
+        }));
+
+        viewModel.getAutocompleteRetrievalStatus().observe(this, resource -> {
+            hideKeyBoard();
+            binding.streetAddressInput.getEditText().clearFocus();
+        });
+    }
+
+    private void showDuplicateEmailAlert() {
+        ModalDialog dialog = new ModalDialog();
+        dialog.setCancelable(false);
+        dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
+                .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
+                .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                })
+                .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
+                    binding.emailInput.setText("");
+                    dialog.dismiss();
+                    focusOnItem(binding.emailInput);
+                })
+                .show(getFragmentManager(), ModalDialog.TAG);
     }
 
     @Nullable
@@ -111,14 +170,14 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.setNavigationOnClickListener((v) -> {
             onBackPressed();
         });
-            requiredFields.add(binding.firstNameInput);
-            requiredFields.add(binding.lastNameInput);
-            requiredFields.add(binding.emailInput);
-            requiredFields.add(binding.passwordInput);
-            requiredFields.add(binding.streetAddressInput);
-            requiredFields.add(binding.cityInput);
-            requiredFields.add(binding.provinceInput);
-            requiredFields.add(binding.postalcodeInput);
+        requiredFields.add(binding.firstNameInput);
+        requiredFields.add(binding.lastNameInput);
+        requiredFields.add(binding.emailInput);
+        requiredFields.add(binding.passwordInput);
+        requiredFields.add(binding.streetAddressInput);
+        requiredFields.add(binding.cityInput);
+        requiredFields.add(binding.provinceInput);
+        requiredFields.add(binding.postalcodeInput);
         binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
@@ -136,6 +195,12 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
+
+        binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
+        binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        DividerItemDecoration dividerDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
+        binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
         return binding.getRoot();
     }
 
@@ -165,11 +230,13 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         binding.termsAgreement.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    @SuppressWarnings({"PointlessBooleanExpression"})
     @Override
     public void onBackPressed() {
         hideKeyBoard();
-
-        if (viewModel.oneItemFilled()) {
+        if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
+            viewModel.hideAutoCompleteLayout();
+        } else if (viewModel.oneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
@@ -189,8 +256,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     }
 
     public void joinButtonClicked() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        hideKeyBoard();
 
         int itemWithError = viewModel.validateAndJoin();
         if (itemWithError != -1) {
@@ -221,6 +287,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         }
         if (view == binding.postalcodeInput) {
             viewModel.getPostalCodeField().setHasFocus(hasFocus);
+        }
+        if (view == binding.streetAddressInput) {
+            viewModel.getStreetAddressField().setHasFocus(hasFocus);
         }
 
     }

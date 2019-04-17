@@ -10,12 +10,8 @@ public class Address implements Parcelable {
     private String postalCode;
     private String phone;
 
-    public Address(String streetAddress, String city, String province, String postalCode, String phone) {
-        this.streetAddress = streetAddress;
-        this.city = city;
-        this.province = province;
-        this.postalCode = postalCode;
-        this.phone = phone;
+    public Address() {
+
     }
 
     public String getStreetAddress() {

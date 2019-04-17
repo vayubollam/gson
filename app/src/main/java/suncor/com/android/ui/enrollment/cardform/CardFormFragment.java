@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +27,7 @@ import suncor.com.android.databinding.FragmentCardFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.input.CardNumberFormattingTextWatcher;
@@ -59,6 +58,56 @@ public class CardFormFragment extends DaggerFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardFormViewModel.class);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+
+        viewModel.verifyCard.observe(this, cardStatusResource -> {
+            if (cardStatusResource.status == Resource.Status.LOADING) {
+                hideKeyBoard();
+            }
+            if (cardStatusResource.status == Resource.Status.SUCCESS) {
+                Timber.d("cards status : success");
+                CardStatus cardStatus = cardStatusResource.data;
+                CardFormFragmentDirections.ActionCardFormFragmentToEnrollmentFormFragment action = CardFormFragmentDirections.actionCardFormFragmentToEnrollmentFormFragment().setCardStatus(cardStatus);
+                if (getView() != null) {
+                    getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 500);
+                }
+            } else if (cardStatusResource.status == Resource.Status.ERROR) {
+                if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE) || cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_USER_INFO_NOT_MATCHED)) {
+                    ModalDialog dialog = new ModalDialog();
+                    dialog.setCancelable(false);
+                    dialog.setTitle(getString(R.string.enrollment_card_form_invalid_title))
+                            .setMessage(getString(R.string.enrollment_card_form_invalid_message))
+                            .setRightButton(getString(R.string.enrollment_card_form_try_again), (v) -> {
+                                binding.cardInput.getEditText().requestFocus();
+                                showKeyBoard();
+                                dialog.dismiss();
+                            })
+                            .setCenterButton(getString(R.string.enrollment_card_form_get_new_card), (v) -> {
+                                callCostumerSupport(getString(R.string.customer_support_number));
+                                dialog.dismiss();
+                            })
+                            .show(getFragmentManager(), ModalDialog.TAG);
+                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
+                    ModalDialog dialog = new ModalDialog();
+                    dialog.setCancelable(false);
+                    dialog.setTitle(getString(R.string.enrollment_card_form_existing_title))
+                            .setMessage(getString(R.string.enrollment_card_form_exisiting_message))
+                            .setRightButton(getString(R.string.enrollment_card_form_sign_in), (v) -> {
+                                getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
+                                getActivity().finish();
+                                dialog.dismiss();
+                            })
+                            .setCenterButton(getString(R.string.enrollment_card_form_existing_use_different_card), (v) -> {
+                                binding.cardInput.getEditText().requestFocus();
+                                showKeyBoard();
+                                dialog.dismiss();
+                            })
+                            .show(getFragmentManager(), ModalDialog.TAG);
+                } else {
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
+                    dialog.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -91,58 +140,6 @@ public class CardFormFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        viewModel.verifyCard.observe(this, cardStatusResource -> {
-            if (cardStatusResource.status == Resource.Status.LOADING) {
-                hideKeyBoard();
-
-            }
-            if (cardStatusResource.status == Resource.Status.SUCCESS) {
-                Timber.d("cards status : success");
-
-                CardFormFragmentDirections.ActionCardFormFragmentToEnrollmentFormFragment action = CardFormFragmentDirections.actionCardFormFragmentToEnrollmentFormFragment().setCardStatus(cardStatusResource.data);
-                new Handler(Looper.getMainLooper()).postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 500);
-            } else if (cardStatusResource.status == Resource.Status.ERROR) {
-                if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE)) {
-                    ModalDialog dialog = new ModalDialog();
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.enrollment_card_form_invalid_title))
-                            .setMessage(getString(R.string.enrollment_card_form_invalid_message))
-                            .setRightButton(getString(R.string.enrollment_card_form_try_again), (v) -> {
-                                binding.cardInput.getEditText().requestFocus();
-                                showKeyBoard();
-                                dialog.dismiss();
-                            })
-                            .setCenterButton(getString(R.string.enrollment_card_form_get_new_card), (v) -> {
-                                callCostumerSupport(getString(R.string.enrllment_card_form_customer_support_number));
-                                dialog.dismiss();
-                            })
-                            .show(getFragmentManager(), ModalDialog.TAG);
-                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
-                    ModalDialog dialog = new ModalDialog();
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.enrollment_card_form_existing_title))
-                            .setMessage(getString(R.string.enrollment_card_form_exisiting_message))
-                            .setRightButton(getString(R.string.enrollment_card_form_sign_in), (v) -> {
-                                getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
-                                getActivity().finish();
-                                dialog.dismiss();
-                            })
-                            .setCenterButton(getString(R.string.enrollment_card_form_existing_use_different_card), (v) -> {
-                                binding.cardInput.getEditText().requestFocus();
-                                showKeyBoard();
-                                dialog.dismiss();
-                            })
-                            .show(getFragmentManager(), ModalDialog.TAG);
-                } else {
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
-                    dialog.show();
-
-
-                }
-            }
-
-        });
     }
 
     private void hideKeyBoard() {

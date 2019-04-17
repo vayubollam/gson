@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -26,11 +27,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
+import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -57,6 +60,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     @Inject
     SessionManager sessionManager;
 
+    @Inject
+    SuncorApplication application;
     public static void showCard(Fragment fragment, StationItem stationItem, View originalView, boolean shouldShowCardHandler) {
         StationDetailsDialog dialog = new StationDetailsDialog();
         dialog.setInitialHeight(originalView.getHeight());
@@ -207,10 +212,14 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         } else {
             binding.setFavouriteBusy(true);
             stationItem.toggleFavourite().observe(this, (r) -> {
-                if (r.status != Resource.Status.LOADING) {
-                    binding.setFavouriteBusy(false);
+                binding.setFavouriteBusy(r.status == Resource.Status.LOADING);
+                if (r.status == Resource.Status.ERROR) {
+                    if (stationItem.isFavourite()) {
+                        SuncorToast.makeText(application, R.string.msg_sl007, Toast.LENGTH_SHORT).show();
+                    } else {
+                        SuncorToast.makeText(application, R.string.msg_sl006, Toast.LENGTH_SHORT).show();
+                    }
                 }
-                //TODO handle error
             });
         }
     }

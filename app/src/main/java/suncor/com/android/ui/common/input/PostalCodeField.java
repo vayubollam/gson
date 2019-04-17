@@ -1,6 +1,5 @@
 package suncor.com.android.ui.common.input;
 
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import androidx.annotation.StringRes;
@@ -29,6 +28,16 @@ public class PostalCodeField extends InputField {
 
     public void setFirstCharacterValidation(String firstCharacterValidation) {
         this.firstCharacterValidation = firstCharacterValidation;
+    }
+
+    @Override
+    public void setShowError(boolean showError) {
+        super.setShowError(showError);
+    }
+
+    @Override
+    public boolean getShowError() {
+        return super.getShowError();
     }
 
     @Bindable

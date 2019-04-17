@@ -55,6 +55,7 @@
     <string name="login_soft_lock_alert_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
     <string name="login_forgot_password_button">Forgot password</string>
     <string name="login_password_field">Password</string>
+    <string name="favourites_remove_station_message">Station removed</string>
     <string name="favourites_fragment_title">Favourites</string>
     <string name="favourites_no_result">No favourite stations</string>
     <string name="favourites_no_result_text">You can use Favourites to quickly find the car wash you love or that store with your favourite slush flavour.</string>
@@ -97,8 +98,8 @@
     <string name="enrollment_terms_agreement">By creating an account, I agree to the Petro-Points %s</string>
     <string name="enrollment_terms">terms and conditions</string>
     <string name="enrollment_join_button">Join</string>
-    <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect 2,500 Petro-Points.</string>
-    <string name="enrollment_form_title">Let\'s get you signed up</string>
+    <string name="enrollment_form_header">Let\'s get you signed up.</string>
+    <string name="enrollment_form_title">Create account</string>
     <string name="enrollment_leave_alert_title">Leave Create Account?</string>
     <string name="enrollment_leave_alert_message">The details you\'ve entered won\'t be saved if you leave. Leave the Create Account form?</string>
     <string name="enrollment_terms_url">https://www.petro-canada.ca/en/personal/terms-conditions#petropoints</string>
@@ -153,7 +154,8 @@
     <string name="msg_sl005_title">Something went wrong</string>
     <string name="msg_sl005_message">We can\'t seem to load your favourites right now.</string>
     <string name="msg_sl005_button">TRY AGAIN</string>
-
+    <string name="msg_sl006">Station not added</string>
+    <string name="msg_sl007">Station not removed</string>
     <string name="msg_sl003">Address suggestions are not available at the moment.</string>
     <string name="enrollment_card_form_invalid_title">Invalid Card</string>
     <string name="enrollment_card_form_invalid_message">The Petro-Points card number, the postal code, or the first name are incorrect.</string>
@@ -165,13 +167,18 @@
     <string name="enrollment_card_form_existing_use_different_card">USE A DIFFERENT CARD</string>
     <string name="enrollment_loading_question_title">One moment</string>
     <string name="login_hard_lock_alert_title">Account locked</string>
-    <string name="login_hard_lock_alert_message">Sorry, the login function has been disabled for 30 minutes. If you need help, please call Customer Service.</string>
+    <string name="login_hard_lock_alert_message">If you need help, please call Customer Service.</string>
     <string name="login_hard_lock_alert_call_button">Contact us</string>
-    <string name="login_create_password_header">Create password</string>
+    <string name="login_create_password_header">New password</string>
     <string name="login_create_password_empty_error">Password is required.</string>
     <string name="alert_signed_out_inactivity">You\'ve been signed out due to a change in your account details.</string>
     <string name="alert_signed_out_title">Sign out</string>
     <string name="alert_signed_out_conflicting_login">Your sign-in was used on another device. Please sign-in again.</string>
+    <string name="customer_support_number">18006680220</string>
+    <string name="login_create_password_button">Change my password</string>
+    <string name="login_create_password_duplicated_alert_title">Invalid password</string>
+    <string name="login_create_password_duplicated_alert_message">Your new password can\'t be the same as your temporary password.</string>
+    <string name="enrollment_form_header_ghost">Almost there. Complete your registration and receive 2,500 points.</string>
     <string name="enrllment_card_form_customer_support_number">(800)668-0220</string>
     <string name="dashboard_nearest_no_stations_found">No stations found</string>
     <string name="dashboard_nearest_no_station_message">We couldn\'t locate the nearest station at the moment.</string>

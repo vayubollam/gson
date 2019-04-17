@@ -10,6 +10,7 @@ import android.view.View;
 import java.util.HashMap;
 
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
 import androidx.databinding.InverseBindingMethod;
@@ -137,4 +138,15 @@ public class BindingAdapters {
     public interface AfterTextChanged {
         void afterTextChanged(SuncorTextInputLayout input, Editable s);
     }
+
+    @BindingAdapter(value = "background")
+    public static void updateBackground(View view, int color) {
+        view.setBackgroundColor(color);
+    }
+
+    @BindingAdapter(value = "elevation")
+    public static void updateElevation(View view, int elevation) {
+        ViewCompat.setElevation(view, elevation);
+    }
+
 }
