@@ -102,7 +102,7 @@ public class StationsViewModel extends ViewModel {
             LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
             LatLngBounds apiBounds = _mapBounds.getValue() != null ? LocationUtils.getLargerBounds(_mapBounds.getValue(), _25KmBounds) : _25KmBounds;
 
-            stationsProvider.getStations(apiBounds).observeForever((resource) -> {
+            stationsProvider.getStations(apiBounds, false).observeForever((resource) -> {
                 switch (resource.status) {
                     case LOADING:
                         _stationsAround.postValue(Resource.loading());
@@ -170,11 +170,15 @@ public class StationsViewModel extends ViewModel {
             stationsInBound = new ArrayList<>(cachedStations);
         } else {
             stationsInBound = new ArrayList<>();
-            for (StationItem stationItem : cachedStations) {
-                if (_mapBounds.getValue().contains(new LatLng(stationItem.getStation().getAddress().getLatitude(), stationItem.getStation().getAddress().getLongitude()))) {
-                    stationsInBound.add(stationItem);
+            //app crashes when cachedStations is null
+            if (cachedStations != null) {
+                for (StationItem stationItem : cachedStations) {
+                    if (_mapBounds.getValue().contains(new LatLng(stationItem.getStation().getAddress().getLatitude(), stationItem.getStation().getAddress().getLongitude()))) {
+                        stationsInBound.add(stationItem);
+                    }
                 }
             }
+
         }
         return applyAmenitiesFilter(stationsInBound, filters.getValue());
     }

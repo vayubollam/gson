@@ -88,7 +88,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
 
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                StationDetailsDialog.showCard(fragment, stationItem, holder.itemView);
+                StationDetailsDialog.showCard(fragment, stationItem, holder.itemView, true);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }

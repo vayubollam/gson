@@ -55,21 +55,25 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     private StationItem stationItem;
     private int initialAddressLayoutHeight;
     private int initialAddressLayoutBottomMargin;
+    private boolean shouldShowCardHandler;
 
     @Inject
     SessionManager sessionManager;
 
     @Inject
     SuncorApplication application;
-
-    public static void showCard(Fragment fragment, StationItem stationItem, View originalView) {
+    public static void showCard(Fragment fragment, StationItem stationItem, View originalView, boolean shouldShowCardHandler) {
         StationDetailsDialog dialog = new StationDetailsDialog();
         dialog.setInitialHeight(originalView.getHeight());
         int[] position = new int[2];
         originalView.getLocationOnScreen(position);
         dialog.setInitialPosition(position[1]);
         dialog.setStationItem(stationItem);
+        if (fragment.getFragmentManager().findFragmentByTag(StationDetailsDialog.TAG) != null) {
+            return;
+        }
         dialog.show(fragment.getFragmentManager(), StationDetailsDialog.TAG);
+        dialog.shouldShowCardHandler = shouldShowCardHandler;
     }
 
     @Override
@@ -166,7 +170,13 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
                         //close and handle buttons
                         binding.closeButton.setVisibility(v > 0.1 ? View.VISIBLE : View.GONE);
-                        binding.imgBottomSheet.setVisibility(v > 0.1 ? View.INVISIBLE : View.VISIBLE);
+                        if (shouldShowCardHandler) {
+                            binding.imgBottomSheet.setVisibility(v > 0.1 ? View.INVISIBLE : View.VISIBLE);
+                        } else {
+                            binding.imgBottomSheet.setVisibility(View.INVISIBLE);
+                        }
+
+
 
                         //card height
                         binding.cardView.getLayoutParams().height = (int) (((fullHeight - verticalPadding) * v) + (1 - v) * initialHeight);

@@ -165,6 +165,15 @@
     <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
     <string name="customer_support_number">18006680222</string>
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
+    <string name="dashboard_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
+    <string name="dashboard_nearest_no_stations_found">Aucun emplacement trouvé</string>
+    <string name="dashboard_nearest_enable_gps_message">"Petro-Canada utilise les services de localisation pour montrer les établissements près de chez vous  "</string>
+    <string name="dashboard_nearest_try_again">Veuillez réessayer</string>
+    <string name="dashboard_nearest_loading_title">Cherchons la station le plus près</string>
+    <string name="dashboard_nearest_enable_gps_title">Activer les services de localisation</string>
+    <string name="dashboard_nearest_error_body">Nous ne trouvons pas l\'établissement le plus près pour le moment. Veuillez réessayer plus tard.</string>
+    <string name="dashboard_nearest_error_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
+    <string name="dashboard_nearest_error_title">Quelque chose a mal tourné</string>
     <string name="msg_sl006">Station non ajoutée</string>
     <string name="msg_sl007">Station non supprimée</string>
     <string name="login_create_password_header">Nouveau mot de passe</string>

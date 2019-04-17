@@ -1,28 +1,34 @@
 package suncor.com.android.ui.home.dashboard;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.databinding.FragmentDashboardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
@@ -38,24 +45,21 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.home.stationlocator.StationItem;
+import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class DashboardFragment extends BaseFragment {
 
     public static final String DASHBOARD_FRAGMENT_TAG = "dashboard-tag";
     private DashboardViewModel mViewModel;
-    private AppCompatTextView nearStationTitle, distanceText, openHoursText;
-    private MaterialButton directionsButton;
-    private ProgressBar progressBar;
-    private MaterialCardView stationCard;
-    private Location userLocation;
-    private RecyclerView carouselRecyclerView;
     private DashboardAdapter dashboardAdapter;
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
-    private AppCompatTextView welcomeMessage;
-    private FrameLayout welcomeLayout;
+    private FragmentDashboardBinding binding;
+    public static final int REQUEST_CHECK_SETTINGS = 100;
+    ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -72,23 +76,52 @@ public class DashboardFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        progressBar = view.findViewById(R.id.progress_bar);
-        stationCard = view.findViewById(R.id.station_card);
-        nearStationTitle = view.findViewById(R.id.station_title_text);
-        distanceText = view.findViewById(R.id.distance_text);
-        openHoursText = view.findViewById(R.id.txt_station_open);
-        directionsButton = view.findViewById(R.id.directions_button);
-        carouselRecyclerView = view.findViewById(R.id.card_recycler);
-        welcomeMessage = view.findViewById(R.id.welcome_message);
-        welcomeLayout = view.findViewById(R.id.welcome_layout);
-        return view;
+        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding.setVm(mViewModel);
+        binding.setLifecycleOwner(this);
+        binding.setIsLoading(isLoading);
+        binding.tryAgainButton.setOnClickListener(tryAgainLister);
+        binding.stationCard.setOnClickListener(showCardDetail);
+        binding.directionsButton.setOnClickListener(openNavigation);
+        return binding.getRoot();
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.locationServiceEnabled.postValue(LocationUtils.isLocationEnabled(getContext()));
+        setStatusBarColor(getResources().getColor(R.color.dashboard_back));
+
+    }
+
+    OnClickListener tryAgainLister = v -> {
+        isLoading.set(true);
+        if (mViewModel.getUserLocation() != null) {
+            mViewModel.setUserLocation(mViewModel.getUserLocation());
+        } else {
+            mViewModel.locationServiceEnabled.setValue(LocationUtils.isLocationEnabled(getContext()));
+        }
+    };
+
+    OnClickListener openNavigation = v -> {
+        if (mViewModel.stationItem != null) {
+            NavigationAppsHelper.openNavigationApps(getActivity(), mViewModel.stationItem.getStation());
+        }
+    };
+
+    OnClickListener showCardDetail = v -> {
+        if (mViewModel.stationItem != null && !isLoading.get()) {
+            StationDetailsDialog.showCard(this, mViewModel.stationItem, binding.stationCard, false);
+        }
+    };
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -99,83 +132,43 @@ public class DashboardFragment extends BaseFragment {
             animFromLet.setDuration(500);
             Animation animslideUp = AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in);
             animslideUp.setDuration(500);
-            carouselRecyclerView.startAnimation(animFromLet);
-            stationCard.startAnimation(animslideUp);
+            binding.carouselCardRecycler.startAnimation(animFromLet);
+            binding.stationCard.startAnimation(animslideUp);
         }
         dashboardAdapter = new DashboardAdapter(getActivity(), sessionManager);
-        carouselRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
-        helper.attachToRecyclerView(carouselRecyclerView);
-        final int speedScroll = 2500;
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            int count = 0;
-            boolean flag = true;
-
-            @Override
-            public void run() {
-                if (count < dashboardAdapter.getItemCount()) {
-                    if (count == dashboardAdapter.getItemCount() - 1) {
-                        flag = false;
-                    } else if (count == 0) {
-                        flag = true;
-                    }
-                    if (flag) count++;
-                    else count = 0;
-
-                    carouselRecyclerView.smoothScrollToPosition(count);
-                    handler.postDelayed(this, speedScroll);
-                }
-            }
-        };
-
-        //handler.postDelayed(runnable, speedScroll);
-
-        carouselRecyclerView.setAdapter(dashboardAdapter);
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationLiveData.observe(getViewLifecycleOwner(), (location -> {
-                userLocation = location;
-            }));
-        }
-
+        helper.attachToRecyclerView(binding.carouselCardRecycler);
+        binding.carouselCardRecycler.setAdapter(dashboardAdapter);
         Observer<Resource<Station>> stationObserver = resource -> {
-            progressBar.setVisibility(resource.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
-            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                Station station = resource.data;
-                StationItem stationItem = new StationItem(station);
-                stationCard.setVisibility(View.VISIBLE);
-                if (stationItem.isOpen24Hrs()) {
-                    openHoursText.setText(getString(R.string.station_open_24hrs));
-                } else if (stationItem.isOpen()) {
-                    openHoursText.setText(getString(R.string.station_open_generic, stationItem.getCloseHour()));
-                } else {
-                    openHoursText.setText(getString(R.string.station_closed));
-                }
-
-                if (userLocation != null) {
-                    LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                    LatLng origin = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
-                    DirectionsApi.getInstance().enqueuJob(origin, dest)
-                            .observe(getViewLifecycleOwner(), result -> {
-                                progressBar.setVisibility(result.status == Resource.Status.LOADING ? View.VISIBLE : View.GONE);
-                                distanceText.setVisibility(result.status == Resource.Status.LOADING ? View.GONE : View.VISIBLE);
-                                if (result.status == Resource.Status.SUCCESS) {
-                                    distanceText.setText(DirectionsResult.formatDistanceDuration(getContext(), result.data));
-                                    distanceText.setTextColor(getResources().getColor(R.color.black_80));
-                                } else if (result.status == Resource.Status.ERROR) {
-                                    distanceText.setText(R.string.station_distance_unavailable);
-                                    distanceText.setTextColor(getResources().getColor(R.color.black_60));
-                                }
-                            });
-                } else {
-                    distanceText.setVisibility(View.VISIBLE);
-                    distanceText.setText(R.string.station_distance_unavailable);
-                    distanceText.setTextColor(getResources().getColor(R.color.black_60));
-                }
-
-                directionsButton.setOnClickListener((v) -> {
-                    NavigationAppsHelper.openNavigationApps(getActivity(), station);
-                });
+            switch (resource.status) {
+                case LOADING:
+                    isLoading.set(true);
+                    break;
+                case SUCCESS:
+                    isLoading.set(false);
+                    if (resource.data != null) {
+                        Station station = resource.data;
+                        StationItem stationItem = new StationItem(station);
+                        mViewModel.stationItem = stationItem;
+                        binding.setStation(stationItem);
+                        if (stationItem.getDistanceDuration() == null) {
+                            LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+                            LatLng origin = new LatLng(mViewModel.getUserLocation().latitude, mViewModel.getUserLocation().longitude);
+                            DirectionsApi.getInstance().enqueuJob(origin, dest)
+                                    .observe(getViewLifecycleOwner(), result -> {
+                                        if (result.status == Resource.Status.SUCCESS) {
+                                            mViewModel.stationItem.setDistanceDuration(result.data);
+                                        } else if (result.status == Resource.Status.ERROR) {
+                                            mViewModel.stationItem.setDistanceDuration(DirectionsResult.INVALID);
+                                        }
+                                    });
+                        }
+                    }
+                    break;
+                case ERROR:
+                    isLoading.set(false);
+                    break;
             }
         };
 
@@ -185,13 +178,27 @@ public class DashboardFragment extends BaseFragment {
             showWelcomeMessage();
         }
 
+        binding.settingsButton.setOnClickListener(v -> {
+            openLocationSettings();
+        });
+        mViewModel.locationServiceEnabled.observe(this, (aBoolean -> {
+            if (aBoolean) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    isLoading.set(mViewModel.getUserLocation() == null);
+                    locationLiveData.observe(getViewLifecycleOwner(), (location -> {
+                        mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()));
+                    }));
+                }
+            }
+        }));
+
     }
 
     private void showWelcomeMessage() {
         //TODO improve this
-        welcomeLayout.setVisibility(View.VISIBLE);
+        binding.welcomeLayout.setVisibility(View.VISIBLE);
         Profile profile = sessionManager.getProfile();
-        welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName()));
+        binding.welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName()));
     }
 
     @Override
@@ -199,13 +206,62 @@ public class DashboardFragment extends BaseFragment {
         if (sessionManager.isUserLoggedIn()) {
             showWelcomeMessage();
         } else {
-            welcomeLayout.setVisibility(View.GONE);
+            binding.welcomeLayout.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    private void openLocationSettings() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationRequest mLocationRequestBalancedPowerAccuracy = LocationRequest.create();
+        mLocationRequestBalancedPowerAccuracy.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
+                .addLocationRequest(mLocationRequestBalancedPowerAccuracy);
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getContext()).checkLocationSettings(builder.build());
+
+        result.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                mViewModel.locationServiceEnabled.setValue(true);
+
+            } else {
+                try {
+                    LocationSettingsResponse response = result.getResult(ApiException.class);
+
+                } catch (ApiException ex) {
+                    switch (ex.getStatusCode()) {
+                        case LocationSettingsStatusCodes
+                                .RESOLUTION_REQUIRED:
+                            try {
+                                ResolvableApiException resolvableApiException = (ResolvableApiException) ex;
+                                resolvableApiException.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                            } catch (IntentSender.SendIntentException intentException) {
+
+                            } catch (ClassCastException classException) {
+
+                            }
+                            break;
+
+                    }
+
+                }
+            }
+
+
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
+            mViewModel.locationServiceEnabled.setValue(true);
+        }
     }
 }
 

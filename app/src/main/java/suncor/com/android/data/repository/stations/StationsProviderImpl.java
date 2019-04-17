@@ -29,13 +29,13 @@ public class StationsProviderImpl implements StationsProvider {
     private static final String BASE_PATH = "/adapters/suncor/v1/locations";
 
     @Override
-    public LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds) {
+    public LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds, boolean tryNearest) {
         Timber.d("Retrieving stations for :" + bounds);
 
         MutableLiveData<Resource<ArrayList<Station>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterURI = new URI(BASE_PATH + "?southWestLat=" + bounds.southwest.latitude + "&southWestLong=" + bounds.southwest.longitude + "0&northEastLat=" + bounds.northeast.latitude + "&northEastLong=" + bounds.northeast.longitude);
+            URI adapterURI = new URI(BASE_PATH + "?southWestLat=" + bounds.southwest.latitude + "&southWestLong=" + bounds.southwest.longitude + "0&northEastLat=" + bounds.northeast.latitude + "&northEastLong=" + bounds.northeast.longitude + "&tryNearestLocation=" + tryNearest);
             WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.send(new WLResponseListener() {
                 @Override
