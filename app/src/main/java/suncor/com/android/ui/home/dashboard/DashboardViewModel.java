@@ -102,6 +102,7 @@ public class DashboardViewModel extends ViewModel {
             loadNearest.setValue(Event.newEvent(true));
         } else {
             _nearestStation.setValue(Resource.success(null));
+            isLoading.set(false);
         }
     }
 
