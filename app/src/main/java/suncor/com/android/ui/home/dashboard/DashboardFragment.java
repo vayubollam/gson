@@ -29,7 +29,6 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,7 +39,6 @@ import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.databinding.FragmentDashboardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
@@ -55,19 +53,32 @@ import suncor.com.android.utilities.Timber;
 public class DashboardFragment extends BaseFragment {
 
     public static final String DASHBOARD_FRAGMENT_TAG = "dashboard-tag";
+    private static final int REQUEST_CHECK_SETTINGS = 100;
+    @Inject
+    ViewModelFactory viewModelFactory;
     private DashboardViewModel mViewModel;
     private DashboardAdapter dashboardAdapter;
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
     private FragmentDashboardBinding binding;
-    public static final int REQUEST_CHECK_SETTINGS = 100;
-    ObservableBoolean isLoading = new ObservableBoolean(false);
 
-    @Inject
-    ViewModelFactory viewModelFactory;
-
-    @Inject
-    SessionManager sessionManager;
+    private OnClickListener tryAgainLister = v -> {
+        if (mViewModel.getUserLocation() != null) {
+            mViewModel.setUserLocation(mViewModel.getUserLocation());
+        } else {
+            mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
+        }
+    };
+    private OnClickListener openNavigation = v -> {
+        if (mViewModel.stationItem != null) {
+            NavigationAppsHelper.openNavigationApps(getActivity(), mViewModel.stationItem.getStation());
+        }
+    };
+    private OnClickListener showCardDetail = v -> {
+        if (mViewModel.stationItem != null && !mViewModel.isLoading.get()) {
+            StationDetailsDialog.showCard(this, mViewModel.stationItem, binding.stationCard, false);
+        }
+    };
 
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
@@ -87,42 +98,19 @@ public class DashboardFragment extends BaseFragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
-        binding.setIsLoading(isLoading);
+        binding.setIsLoading(mViewModel.isLoading);
         binding.tryAgainButton.setOnClickListener(tryAgainLister);
         binding.stationCard.setOnClickListener(showCardDetail);
         binding.directionsButton.setOnClickListener(openNavigation);
         return binding.getRoot();
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-        mViewModel.locationServiceEnabled.postValue(LocationUtils.isLocationEnabled(getContext()));
+        mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
         setStatusBarColor(getResources().getColor(R.color.dashboard_back));
     }
-
-    OnClickListener tryAgainLister = v -> {
-        isLoading.set(true);
-        if (mViewModel.getUserLocation() != null) {
-            mViewModel.setUserLocation(mViewModel.getUserLocation());
-        } else {
-            mViewModel.locationServiceEnabled.setValue(LocationUtils.isLocationEnabled(getContext()));
-        }
-    };
-
-    OnClickListener openNavigation = v -> {
-        if (mViewModel.stationItem != null) {
-            NavigationAppsHelper.openNavigationApps(getActivity(), mViewModel.stationItem.getStation());
-        }
-    };
-
-    OnClickListener showCardDetail = v -> {
-        if (mViewModel.stationItem != null && !isLoading.get()) {
-            StationDetailsDialog.showCard(this, mViewModel.stationItem, binding.stationCard, false);
-        }
-    };
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -136,56 +124,47 @@ public class DashboardFragment extends BaseFragment {
             binding.carouselCardRecycler.startAnimation(animFromLet);
             binding.stationCard.startAnimation(animslideUp);
         }
-        dashboardAdapter = new DashboardAdapter(getActivity(), sessionManager);
+        dashboardAdapter = new DashboardAdapter(getActivity(), mViewModel);
         binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.carouselCardRecycler);
         binding.carouselCardRecycler.setAdapter(dashboardAdapter);
         Observer<Resource<Station>> stationObserver = resource -> {
-            switch (resource.status) {
-                case LOADING:
-                    isLoading.set(true);
-                    break;
-                case SUCCESS:
-                    isLoading.set(false);
-                    if (resource.data != null) {
-                        Station station = resource.data;
-                        StationItem stationItem = new StationItem(station);
-                        mViewModel.stationItem = stationItem;
-                        binding.setStation(stationItem);
-                        if (stationItem.getDistanceDuration() == null) {
-                            LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                            LatLng origin = new LatLng(mViewModel.getUserLocation().latitude, mViewModel.getUserLocation().longitude);
-                            DirectionsApi.getInstance().enqueuJob(origin, dest)
-                                    .observe(getViewLifecycleOwner(), result -> {
-                                        if (result.status == Resource.Status.SUCCESS) {
-                                            mViewModel.stationItem.setDistanceDuration(result.data);
-                                        } else if (result.status == Resource.Status.ERROR) {
-                                            mViewModel.stationItem.setDistanceDuration(DirectionsResult.INVALID);
-                                        }
-                                    });
-                        }
+            if (resource.status == Resource.Status.SUCCESS) {
+                if (resource.data != null) {
+                    Station station = resource.data;
+                    StationItem stationItem = new StationItem(station);
+                    mViewModel.stationItem = stationItem;
+                    binding.setStation(stationItem);
+                    if (stationItem.getDistanceDuration() == null) {
+                        LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+                        LatLng origin = new LatLng(mViewModel.getUserLocation().latitude, mViewModel.getUserLocation().longitude);
+                        DirectionsApi.getInstance().enqueuJob(origin, dest)
+                                .observe(getViewLifecycleOwner(), result -> {
+                                    if (result.status == Resource.Status.SUCCESS) {
+                                        mViewModel.stationItem.setDistanceDuration(result.data);
+                                    } else if (result.status == Resource.Status.ERROR) {
+                                        mViewModel.stationItem.setDistanceDuration(DirectionsResult.INVALID);
+                                    }
+                                });
                     }
-                    break;
-                case ERROR:
-                    isLoading.set(false);
-                    break;
+                }
             }
         };
 
         mViewModel.nearestStation.observe(getViewLifecycleOwner(), stationObserver);
-        //TODO use this if (mViewModel.getAccountState() == SessionManager.AccountState.JUST_ENROLLED) {
-        if (sessionManager.isUserLoggedIn()) {
+
+        if (mViewModel.isUserLoggedIn()) {
             showWelcomeMessage();
         }
 
         binding.settingsButton.setOnClickListener(v -> {
             openLocationSettings();
         });
-        mViewModel.locationServiceEnabled.observe(this, (aBoolean -> {
-            if (aBoolean) {
+        mViewModel.locationServiceEnabled.observe(this, (enabled -> {
+            if (enabled) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    isLoading.set(mViewModel.getUserLocation() == null);
+                    mViewModel.isLoading.set(mViewModel.getUserLocation() == null);
                     locationLiveData.observe(getViewLifecycleOwner(), (location -> {
                         mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()));
                     }));
@@ -198,24 +177,19 @@ public class DashboardFragment extends BaseFragment {
     private void showWelcomeMessage() {
         //TODO improve this
         binding.welcomeLayout.setVisibility(View.VISIBLE);
-        Profile profile = sessionManager.getProfile();
+        Profile profile = mViewModel.getProfile();
         binding.welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName()));
     }
 
     @Override
     public void onLoginStatusChanged() {
-        if (sessionManager.isUserLoggedIn()) {
+        if (mViewModel.isUserLoggedIn()) {
             showWelcomeMessage();
         } else {
             binding.welcomeLayout.setVisibility(View.GONE);
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
+    
     private void openLocationSettings() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -230,7 +204,7 @@ public class DashboardFragment extends BaseFragment {
         result.addOnCompleteListener(task -> {
             try {
                 LocationSettingsResponse response = result.getResult(ApiException.class);
-                mViewModel.locationServiceEnabled.setValue(true);
+                mViewModel.setLocationServiceEnabled(true);
             } catch (ApiException ex) {
                 switch (ex.getStatusCode()) {
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -256,7 +230,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
-            mViewModel.locationServiceEnabled.setValue(true);
+            mViewModel.setLocationServiceEnabled(true);
         }
     }
 }

@@ -16,7 +16,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
-import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 
@@ -24,32 +23,28 @@ import suncor.com.android.ui.login.LoginActivity;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DashboardHolder> {
 
     private ArrayList<Drawable> images;
-    private Activity activity;
-    private LayoutInflater layoutInflater;
-    private SessionManager sessionManager;
+    private DashboardViewModel dashboardViewModel;
 
 
-    public DashboardAdapter(Activity activity, SessionManager sessionManager) {
-        this.activity = activity;
-        layoutInflater = LayoutInflater.from(activity);
+    public DashboardAdapter(Activity activity, DashboardViewModel viewModel) {
         images = new ArrayList<>();
         images.add(activity.getResources().getDrawable(R.drawable.car_trip));
         images.add(activity.getResources().getDrawable(R.drawable.agriculture));
         images.add(activity.getResources().getDrawable(R.drawable.petro_card));
-        this.sessionManager = sessionManager;
+        this.dashboardViewModel = viewModel;
     }
 
     @NonNull
     @Override
     public DashboardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = layoutInflater.inflate(R.layout.dashboard_card, parent, false);
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.dashboard_card, parent, false);
         return new DashboardHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DashboardHolder holder, int position) {
         holder.img_card.setImageDrawable(images.get(position));
-        if (sessionManager.isUserLoggedIn()) {
+        if (dashboardViewModel.isUserLoggedIn()) {
             holder.sign_in.setVisibility(View.GONE);
             holder.join.setVisibility(View.GONE);
         } else {
