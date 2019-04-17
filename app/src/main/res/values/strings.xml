@@ -174,7 +174,12 @@
     <string name="alert_signed_out_conflicting_login">Your sign-in was used on another device. Please sign-in again.</string>
     <string name="enrllment_card_form_customer_support_number">(800)668-0220</string>
     <string name="dashboard_nearest_no_stations_found">No stations found</string>
-    <string name="dashboard_nearest_no_station_message">We couldn’t find any stations near you.</string>
-    <string name="dashboard_nearest_error_title">Oops</string>
-    <string name="dashboard_nearest_error_body">We couldn’t locate the nearest station at the moment, please try again later.</string>
+    <string name="dashboard_nearest_no_station_message">We couldn\'t locate the nearest station at the moment.</string>
+    <string name="dashboard_nearest_error_title">Something went wrong</string>
+    <string name="dashboard_nearest_error_body">We couldn\'t locate the nearest station at the moment, please try again later.</string>
+    <string name="dashboard_nearest_try_again">try again</string>
+    <string name="dashboard_nearest_enable_gps_message">Petro-Canada uses locations services to show relevant information for you.</string>
+    <string name="dashboard_nearest_enable_gps_title">Enable Location Services</string>
+    <string name="dashboard_nearest_loading_title">Finding nearest location</string>
+    <string name="dashboard_nearest_error_try_again">try again</string>
 </resources>

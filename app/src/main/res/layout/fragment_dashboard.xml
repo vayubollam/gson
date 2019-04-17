@@ -25,7 +25,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/dashboard_back"
         android:paddingTop="16dp"
         tools:context="suncor.com.android.ui.home.dashboard.DashboardFragment">
 
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="Enable Location Services"
+                    android:text="@string/dashboard_nearest_enable_gps_title"
                     android:textAppearance="@style/Body" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -171,7 +171,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="20dp"
                     android:lineSpacingMultiplier="1.71"
-                    android:text="Petro-Canada app uses the location services to enhance your experience."
+                    android:text="@string/dashboard_nearest_enable_gps_message"
                     android:textAppearance="@style/Caption1"
                     android:textColor="@color/black_80" />
 
@@ -186,6 +186,7 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
+                    android:textAllCaps="true"
                     android:text="@string/station_location_alert_settings"
                     android:textAppearance="@style/Caption1" />
             </LinearLayout>
@@ -238,7 +239,8 @@
                     android:paddingEnd="10dp"
                     android:layout_gravity="bottom"
                     android:paddingBottom="6dp"
-                    android:text="TRY AGAIN"
+                    android:textAllCaps="true"
+                    android:text="@{vm.nearestStation.status == Resource.Status.ERROR ? @string/dashboard_nearest_error_try_again : @string/dashboard_nearest_try_again}"
                     android:textAppearance="@style/Caption1" />
             </LinearLayout>
 
@@ -257,7 +259,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="40dp"
                     android:fontFamily="@font/gibson_semibold"
-                    android:text="Finding nearest location…"
+                    android:text="@string/dashboard_nearest_loading_title"
                     android:textAppearance="@style/Body" />
 
                 <ProgressBar

@@ -101,6 +101,9 @@ public class DashboardViewModel extends ViewModel {
     public void setUserLocation(LatLng userLocation) {
         if (getUserLocation() != null && SphericalUtil.computeDistanceBetween(getUserLocation(), new LatLng(userLocation.latitude, userLocation.longitude)) < 10) {
             this.userLocation = userLocation;
+            if (!canadaUSbounds.contains(userLocation)) {
+                _nearestStation.setValue(Resource.success(null));
+            }
             return;
         }
         this.userLocation = userLocation;

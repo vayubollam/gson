@@ -170,11 +170,15 @@ public class StationsViewModel extends ViewModel {
             stationsInBound = new ArrayList<>(cachedStations);
         } else {
             stationsInBound = new ArrayList<>();
-            for (StationItem stationItem : cachedStations) {
-                if (_mapBounds.getValue().contains(new LatLng(stationItem.getStation().getAddress().getLatitude(), stationItem.getStation().getAddress().getLongitude()))) {
-                    stationsInBound.add(stationItem);
+            //app crashes when cachedStations is null
+            if (cachedStations != null) {
+                for (StationItem stationItem : cachedStations) {
+                    if (_mapBounds.getValue().contains(new LatLng(stationItem.getStation().getAddress().getLatitude(), stationItem.getStation().getAddress().getLongitude()))) {
+                        stationsInBound.add(stationItem);
+                    }
                 }
             }
+
         }
         return applyAmenitiesFilter(stationsInBound, filters.getValue());
     }

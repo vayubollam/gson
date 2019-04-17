@@ -48,6 +48,7 @@ import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class DashboardFragment extends BaseFragment {
 
@@ -87,13 +88,17 @@ public class DashboardFragment extends BaseFragment {
         binding.setIsLoading(isLoading);
         binding.tryAgainButton.setOnClickListener(tryAgainLister);
         binding.stationCard.setOnClickListener(showCardDetail);
+        binding.directionsButton.setOnClickListener(openNavigation);
         return binding.getRoot();
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
         mViewModel.locationServiceEnabled.postValue(LocationUtils.isLocationEnabled(getContext()));
+        setStatusBarColor(getResources().getColor(R.color.dashboard_back));
+
     }
 
     OnClickListener tryAgainLister = v -> {
@@ -105,13 +110,17 @@ public class DashboardFragment extends BaseFragment {
         }
     };
 
+    OnClickListener openNavigation = v -> {
+        if (mViewModel.stationItem != null) {
+            NavigationAppsHelper.openNavigationApps(getActivity(), mViewModel.stationItem.getStation());
+        }
+    };
+
     OnClickListener showCardDetail = v -> {
         if (mViewModel.stationItem != null && !isLoading.get()) {
             StationDetailsDialog.showCard(this, mViewModel.stationItem, binding.stationCard, false);
         }
     };
-
-
 
 
     @Override
