@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -54,6 +55,7 @@ public class DashboardFragment extends BaseFragment {
 
     public static final String DASHBOARD_FRAGMENT_TAG = "dashboard-tag";
     private static final int REQUEST_CHECK_SETTINGS = 100;
+    private static final int PERMISSION_REQUEST_CODE = 1;
     @Inject
     ViewModelFactory viewModelFactory;
     private DashboardViewModel mViewModel;
@@ -108,7 +110,11 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
+        } else {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+        }
         setStatusBarColor(getResources().getColor(R.color.dashboard_back));
     }
 
@@ -168,10 +174,23 @@ public class DashboardFragment extends BaseFragment {
                     locationLiveData.observe(getViewLifecycleOwner(), (location -> {
                         mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()));
                     }));
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
                 }
             }
         }));
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
+            } else {
+                Toast.makeText(getContext(), "Permission not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void showWelcomeMessage() {
@@ -189,7 +208,7 @@ public class DashboardFragment extends BaseFragment {
             binding.welcomeLayout.setVisibility(View.GONE);
         }
     }
-    
+
     private void openLocationSettings() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

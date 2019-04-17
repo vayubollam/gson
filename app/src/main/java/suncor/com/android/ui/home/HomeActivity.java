@@ -1,8 +1,5 @@
 package suncor.com.android.ui.home;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,9 +7,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -33,8 +27,6 @@ import suncor.com.android.ui.home.stationlocator.StationsFragment;
 import static suncor.com.android.ui.home.dashboard.DashboardFragment.DASHBOARD_FRAGMENT_TAG;
 
 public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-    //request code for requesting permissions
-    private final static int PERMISSION_REQUEST_CODE = 1;
     public static final String LOGGED_OUT_EXTRA = "logged_out_extra";
     public static final int LOGGED_OUT_DUE_CONFLICTING_LOGIN = 0;
     public static final int LOGGED_OUT_DUE_INACTIVITY = 1;
@@ -74,9 +66,6 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             mainDivider.startAnimation(animslideUp);
             application.setSplashShown(true);
         }
-        //check for runtime permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            checkforPermission();
 
         openFragment(R.id.menu_home);
 
@@ -84,27 +73,6 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
         }
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
-
-    private void checkforPermission() {
-
-        String[] permissionList = new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.INTERNET
-        };
-        List<String> listPermissionsNeeded = new ArrayList<>();
-
-        for (String permission : permissionList) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (this.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED)
-                    listPermissionsNeeded.add(permission);
-            }
-        }
-        if (!listPermissionsNeeded.isEmpty())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                this.requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), PERMISSION_REQUEST_CODE);
-            }
-
     }
 
     @Override
