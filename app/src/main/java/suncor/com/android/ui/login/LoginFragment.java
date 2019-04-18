@@ -116,6 +116,7 @@ public class LoginFragment extends DaggerFragment {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener((v) -> getActivity().finish());
+        binding.emailLayout.getEditText().requestFocus();
         return binding.getRoot();
     }
 }

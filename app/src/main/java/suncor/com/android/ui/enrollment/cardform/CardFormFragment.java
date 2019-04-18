@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -43,7 +44,6 @@ public class CardFormFragment extends DaggerFragment {
 
 
     private CardFormViewModel viewModel;
-    private boolean isKeyboardShown;
     private float appBarElevation;
     @Inject
     ViewModelFactory viewModelFactory;
@@ -118,7 +118,7 @@ public class CardFormFragment extends DaggerFragment {
         binding.appBar.setNavigationOnClickListener((v) -> {
             Navigation.findNavController(getView()).navigateUp();
         });
-        binding.scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > binding.appBar.getBottom()) {
                 binding.appBar.setTitle(getString(R.string.enrollment_cardform_header));
                 ViewCompat.setElevation(binding.appBar, appBarElevation);

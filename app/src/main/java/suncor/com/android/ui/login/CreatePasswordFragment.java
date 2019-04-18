@@ -85,6 +85,7 @@ public class CreatePasswordFragment extends DaggerFragment {
             getFragmentManager().popBackStack();
         });
         binding.mainLayout.getLayoutTransition().disableTransitionType(LayoutTransition.CHANGE_APPEARING);
+        binding.passwordInput.getEditText().requestFocus();
 
         return binding.getRoot();
     }
