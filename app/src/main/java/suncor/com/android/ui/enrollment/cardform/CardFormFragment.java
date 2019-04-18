@@ -74,14 +74,14 @@ public class CardFormFragment extends DaggerFragment {
                 if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE) || cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_USER_INFO_NOT_MATCHED)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.enrollment_card_form_invalid_title))
-                            .setMessage(getString(R.string.enrollment_card_form_invalid_message))
-                            .setRightButton(getString(R.string.enrollment_card_form_try_again), (v) -> {
+                    dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
+                            .setMessage(getString(R.string.enrollment_cardform_invalid_card_dialog_message))
+                            .setRightButton(getString(R.string.enrollment_cardform_invalid_card_dialog_try_again), (v) -> {
                                 binding.cardInput.getEditText().requestFocus();
                                 showKeyBoard();
                                 dialog.dismiss();
                             })
-                            .setCenterButton(getString(R.string.enrollment_card_form_get_new_card), (v) -> {
+                            .setCenterButton(getString(R.string.enrollment_cardform_invalid_card_dialog_callus), (v) -> {
                                 callCostumerSupport(getString(R.string.customer_support_number));
                                 dialog.dismiss();
                             })
@@ -89,14 +89,14 @@ public class CardFormFragment extends DaggerFragment {
                 } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.enrollment_card_form_existing_title))
-                            .setMessage(getString(R.string.enrollment_card_form_exisiting_message))
-                            .setRightButton(getString(R.string.enrollment_card_form_sign_in), (v) -> {
+                    dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
+                            .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
+                            .setRightButton(getString(R.string.enrollment_cardform_existing_card_dialog_sign_in), (v) -> {
                                 getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
                                 getActivity().finish();
                                 dialog.dismiss();
                             })
-                            .setCenterButton(getString(R.string.enrollment_card_form_existing_use_different_card), (v) -> {
+                            .setCenterButton(getString(R.string.enrollment_cardform_existing_card_use_different_card), (v) -> {
                                 binding.cardInput.getEditText().requestFocus();
                                 showKeyBoard();
                                 dialog.dismiss();
