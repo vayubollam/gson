@@ -2,7 +2,6 @@ package suncor.com.android.ui.home.dashboard;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 
@@ -90,19 +89,22 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public void setUserLocation(LatLng userLocation) {
-        if (getUserLocation() != null && SphericalUtil.computeDistanceBetween(getUserLocation(), new LatLng(userLocation.latitude, userLocation.longitude)) < 10) {
+        if (this.userLocation != null && LocationUtils.calculateDistance(this.userLocation, userLocation) < 10) {
             this.userLocation = userLocation;
+
             if (!LAT_LNG_BOUNDS.contains(userLocation)) {
                 _nearestStation.setValue(Resource.success(null));
+            } else if (_nearestStation.getValue() != null && _nearestStation.getValue().status != Resource.Status.SUCCESS) {
+                loadNearest.setValue(Event.newEvent(true));
             }
-            return;
-        }
-        this.userLocation = userLocation;
-        if (LAT_LNG_BOUNDS.contains(userLocation)) {
-            loadNearest.setValue(Event.newEvent(true));
         } else {
-            _nearestStation.setValue(Resource.success(null));
-            isLoading.set(false);
+            this.userLocation = userLocation;
+            if (LAT_LNG_BOUNDS.contains(userLocation)) {
+                loadNearest.setValue(Event.newEvent(true));
+            } else {
+                _nearestStation.setValue(Resource.success(null));
+                isLoading.set(false);
+            }
         }
     }
 
