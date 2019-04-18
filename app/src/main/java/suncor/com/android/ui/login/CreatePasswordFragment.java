@@ -51,8 +51,7 @@ public class CreatePasswordFragment extends DaggerFragment {
         viewModel.api.observe(this, (r) -> {
             if (r.status == Resource.Status.LOADING) {
                 binding.passwordInput.getEditText().clearFocus();
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+                hideKeyboard();
             } else if (r.status == Resource.Status.SUCCESS) {
                 if (getActivity() != null) {
                     getActivity().finish();
@@ -75,6 +74,11 @@ public class CreatePasswordFragment extends DaggerFragment {
         });
     }
 
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,10 +86,15 @@ public class CreatePasswordFragment extends DaggerFragment {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener((v) -> {
+            hideKeyboard();
             getFragmentManager().popBackStack();
         });
         binding.mainLayout.getLayoutTransition().disableTransitionType(LayoutTransition.CHANGE_APPEARING);
-        binding.passwordInput.getEditText().requestFocus();
+        binding.getRoot().post(() -> {
+            binding.passwordInput.getEditText().requestFocus();
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(binding.passwordInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
+        });
 
         return binding.getRoot();
     }

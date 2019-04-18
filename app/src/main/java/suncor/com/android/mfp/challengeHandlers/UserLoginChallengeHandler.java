@@ -2,6 +2,7 @@ package suncor.com.android.mfp.challengeHandlers;
 
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAuthorizationManager;
+import com.worklight.wlclient.api.WLErrorCode;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLLoginResponseListener;
 import com.worklight.wlclient.api.challengehandler.SecurityCheckChallengeHandler;
@@ -125,7 +126,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 public void onFailure(WLFailResponse wlFailResponse) {
                     //TODO handle failures related to connection issues
                     Timber.d("Login Preemptive Failure");
-                    if (listener != null) {
+                    if (listener != null && !WLErrorCode.CHALLENGE_HANDLING_CANCELED.getDescription().equals(wlFailResponse.getErrorMsg())) {
                         listener.onLoginFailed(SigninResponse.generalFailure());
                     }
                 }
