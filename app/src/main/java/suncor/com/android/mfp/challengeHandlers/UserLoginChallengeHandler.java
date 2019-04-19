@@ -125,7 +125,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     //TODO handle failures related to connection issues
-                    Timber.d("Login Preemptive Failure");
+                    Timber.d("Login Preemptive Failure, error: " + wlFailResponse.toString());
                     if (listener != null && !WLErrorCode.CHALLENGE_HANDLING_CANCELED.getDescription().equals(wlFailResponse.getErrorMsg())) {
                         listener.onLoginFailed(SigninResponse.generalFailure());
                     }

@@ -21,6 +21,8 @@ import suncor.com.android.utilities.LocationUtils;
 
 public class FavouritesViewModel extends ViewModel {
 
+    private final StationsComparator stationsComparator = new StationsComparator();
+
     private FavouriteRepository favouriteRepository;
     private MediatorLiveData<Resource<ArrayList<StationItem>>> _stations = new MediatorLiveData<>();
     public LiveData<Resource<ArrayList<StationItem>>> stations = _stations;
@@ -39,8 +41,7 @@ public class FavouritesViewModel extends ViewModel {
                     StationItem stationItem = new StationItem(station, null);
                     stationItems.add(stationItem);
                 }
-                StationsComparator comparator = new StationsComparator();
-                Collections.sort(stationItems, comparator);
+                Collections.sort(stationItems, stationsComparator);
                 _stations.setValue(Resource.success(stationItems));
             } else if (resource.status == Resource.Status.ERROR) {
                 _stations.setValue(Resource.error(resource.message));
@@ -67,13 +68,14 @@ public class FavouritesViewModel extends ViewModel {
             throw new IllegalStateException("remove shouldn't be called before the stations are loaded");
         }
         ArrayList<StationItem> stationItems = stations.getValue().data;
-        int index = stationItems.indexOf(stationItem);
-        stationItems.remove(index);
+        stationItems.remove(stationItem);
         _stations.postValue(Resource.success(stationItems));
         return Transformations.map(favouriteRepository.removeFavourite(stationItem.getStation()), r -> {
             if (r.status == Resource.Status.ERROR) {
-                _stations.getValue().data.add(index, stationItem);
-                _stations.postValue(stations.getValue());
+                ArrayList<StationItem> stations = _stations.getValue().data;
+                stations.add(stationItem);
+                Collections.sort(stations, stationsComparator);
+                _stations.postValue(Resource.success(stations));
             }
             return r;
         });
