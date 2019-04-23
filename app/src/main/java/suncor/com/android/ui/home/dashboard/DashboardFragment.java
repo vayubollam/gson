@@ -53,7 +53,6 @@ import suncor.com.android.utilities.Timber;
 
 public class DashboardFragment extends BaseFragment {
 
-    public static final String DASHBOARD_FRAGMENT_TAG = "dashboard-tag";
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;
     @Inject

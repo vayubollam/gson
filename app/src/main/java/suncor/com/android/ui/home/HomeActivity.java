@@ -1,7 +1,6 @@
 package suncor.com.android.ui.home;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -10,31 +9,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import javax.inject.Inject;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.ui.common.KeepStateNavigator;
 import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.common.SessionAwareActivity;
-import suncor.com.android.ui.home.dashboard.DashboardFragment;
-import suncor.com.android.ui.home.profile.ProfileFragment;
-import suncor.com.android.ui.home.stationlocator.StationsFragment;
 
-import static suncor.com.android.ui.home.dashboard.DashboardFragment.DASHBOARD_FRAGMENT_TAG;
-
-public class HomeActivity extends SessionAwareActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends SessionAwareActivity {
     public static final String LOGGED_OUT_EXTRA = "logged_out_extra";
     public static final int LOGGED_OUT_DUE_CONFLICTING_LOGIN = 0;
     public static final int LOGGED_OUT_DUE_INACTIVITY = 1;
-
-    private BottomNavigationView bottom_navigation;
-
     @Inject
     SuncorApplication application;
+    private BottomNavigationView bottom_navigation;
+    private Fragment navHostFragment;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +50,6 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
 
 
         bottom_navigation = findViewById(R.id.bottom_navigation);
-
-        bottom_navigation.setOnNavigationItemSelectedListener(this);
         View mainDivider = findViewById(R.id.mainDivider);
         if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
@@ -67,20 +59,19 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             application.setSplashShown(true);
         }
 
-        openFragment(R.id.menu_home);
+        navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getFragmentManager(), R.id.nav_host_fragment));
+        navController.setGraph(R.navigation.home_nav_graph);
+
+        NavigationUI.setupWithNavController(bottom_navigation, navController);
 
         if (!isLoggedIn()) {
-            bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
+            bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
         }
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        openFragment(menuItem.getItemId());
-        return true;
-    }
-
 
     @Override
     protected void onLogout() {
@@ -91,7 +82,7 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             }
         }
 
-        bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(false);
+        bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
     }
 
     @Override
@@ -103,50 +94,10 @@ public class HomeActivity extends SessionAwareActivity implements BottomNavigati
             }
         }
 
-        bottom_navigation.getMenu().findItem(R.id.menu_profile).setVisible(true);
+        bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
     }
 
-    public void openFragment(@IdRes int menuItemId) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
-        if (fragment != null) {
-            fragmentTransaction.detach(fragment);
-        }
-
-        switch (menuItemId) {
-            case R.id.menu_home:
-                fragment = fragmentManager.findFragmentByTag(DASHBOARD_FRAGMENT_TAG);
-                if (fragment != null) {
-                    fragmentTransaction.attach(fragment);
-                } else {
-                    fragment = new DashboardFragment();
-                    fragmentTransaction.add(R.id.frame_layout_home, fragment, DASHBOARD_FRAGMENT_TAG);
-                }
-                break;
-            case R.id.menu_stations:
-                fragment = fragmentManager.findFragmentByTag(StationsFragment.STATIONS_FRAGMENT_TAG);
-                if (fragment != null) {
-                    fragmentTransaction.attach(fragment);
-                } else {
-                    fragment = new StationsFragment();
-                    fragmentTransaction.add(R.id.frame_layout_home, fragment, StationsFragment.STATIONS_FRAGMENT_TAG);
-                }
-                break;
-            case R.id.menu_profile:
-                fragment = fragmentManager.findFragmentByTag(ProfileFragment.PROFILE_FRAGMENT_TAG);
-                if (fragment != null) {
-                    fragmentTransaction.attach(fragment);
-                } else {
-                    fragment = new ProfileFragment();
-                    fragmentTransaction.add(R.id.frame_layout_home, fragment, ProfileFragment.PROFILE_FRAGMENT_TAG);
-                }
-                break;
-        }
-
-        fragmentTransaction.setPrimaryNavigationFragment(fragment);
-        fragmentTransaction.setReorderingAllowed(true);
-        fragmentTransaction.commit();
-        bottom_navigation.getMenu().findItem(menuItemId).setChecked(true);
+    public NavController getNavController() {
+        return navController;
     }
 }
