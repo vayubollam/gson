@@ -69,6 +69,7 @@ public class CreatePasswordFragment extends DaggerFragment {
                 } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity());
                     dialog.setOnDismissListener(dialogInterface -> getActivity().finish());
+                    dialog.show();
                 }
             }
         });
