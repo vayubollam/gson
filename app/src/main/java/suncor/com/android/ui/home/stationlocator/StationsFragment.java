@@ -75,8 +75,6 @@ import suncor.com.android.utilities.LocationUtils;
 public class StationsFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
 
-    public static final String STATIONS_FRAGMENT_TAG = "stations-tag";
-
     private final static int MINIMUM_ZOOM_LEVEL = 10;
 
     private StationsViewModel mViewModel;
@@ -507,7 +505,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             return;
         }
         searchFragment = new SearchFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
         ft.add(android.R.id.content, searchFragment, SearchFragment.SEARCH_FRAGMENT_TAG);
         ft.addToBackStack(null);
@@ -551,7 +549,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
                 return;
             }
             favouritesFragment = new FavouritesFragment();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
             ft.add(android.R.id.content, favouritesFragment, FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
             ft.addToBackStack(null);

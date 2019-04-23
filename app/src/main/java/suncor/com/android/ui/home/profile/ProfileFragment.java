@@ -27,7 +27,6 @@ import suncor.com.android.ui.home.common.BaseFragment;
 
 public class ProfileFragment extends BaseFragment {
 
-    public static String PROFILE_FRAGMENT_TAG = "profile";
     ProgressBar signOutBP;
 
     @Inject
@@ -84,7 +83,7 @@ public class ProfileFragment extends BaseFragment {
         sessionManager.logout().observe(this, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 signOutBP.setVisibility(View.GONE);
-                ((HomeActivity) getActivity()).openFragment(R.id.menu_home);
+                ((HomeActivity) getActivity()).getNavController().navigate(R.id.home_tab);
             } else if (result.status == Resource.Status.ERROR) {
                 signOutBP.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();
