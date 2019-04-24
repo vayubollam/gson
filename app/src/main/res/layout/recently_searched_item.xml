@@ -32,6 +32,7 @@
             android:id="@+id/txt_suggestion_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:ellipsize="end"
             android:lineSpacingMultiplier="1.21"
             android:maxLines="1"
@@ -41,9 +42,9 @@
             tools:text="Toronto, On" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:src="@drawable/horizontal_divider" />
     </LinearLayout>
 </layout>

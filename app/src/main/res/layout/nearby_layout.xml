@@ -17,42 +17,50 @@
         android:id="@+id/nearby_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_4"
         android:orientation="vertical"
         app:visibleGone="@{vm.query.isEmpty() &amp;&amp; (vm.nearbyStations.status == Status.LOADING || (vm.nearbyStations.status == Status.SUCCESS &amp;&amp; !vm.nearbyStations.data.isEmpty()))}">
 
         <LinearLayout
+            android:id="@+id/nearby_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/SectionTitle"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="1"
-                android:text="@string/suggestions_fragment_nearby_title"
-                android:textAllCaps="true" />
+                android:background="@color/black_4"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="16dp"
-                android:indeterminateTint="@color/red"
-                app:visibleInvisible="@{vm.nearbyStations.status == Status.LOADING}" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/SectionTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/suggestions_fragment_nearby_title"
+                    android:textAllCaps="true" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="16dp"
+                    android:indeterminateTint="@color/red"
+                    app:visibleInvisible="@{vm.nearbyStations.status == Status.LOADING}" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/horizontal_divider" />
+
         </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/horizontal_divider" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -60,7 +68,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/search_nearby_item" />
-
 
     </LinearLayout>
 </layout>

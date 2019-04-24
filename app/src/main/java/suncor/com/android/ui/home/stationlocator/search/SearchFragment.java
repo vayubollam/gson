@@ -104,6 +104,9 @@ public class SearchFragment extends DaggerFragment {
 
         recentSearch.set(false);
         binding.setRecentSearch(recentSearch);
+
+        binding.scrollView.addStickyHeader(binding.recentlySearchedLayout.recentSearchHeader);
+        binding.scrollView.addStickyHeader(binding.nearbyLayout.nearbyHeader);
         return binding.getRoot();
     }
 
@@ -147,16 +150,16 @@ public class SearchFragment extends DaggerFragment {
                     if (resouce.status == Resource.Status.SUCCESS) {
                         parentViewModel.setUserLocation(resouce.data, StationsViewModel.UserLocationType.SEARCH);
                         parentViewModel.setTextQuery(placeSuggestion.getPrimaryText());
-                        viewModel.addToRecentSearched(new RecentSearch(placeSuggestion.getPrimaryText(),placeSuggestion.getSecondaryText(),resouce.data, placeSuggestion.getPlaceId()));
+                        viewModel.addToRecentSearched(new RecentSearch(placeSuggestion.getPrimaryText(), placeSuggestion.getSecondaryText(), resouce.data, placeSuggestion.getPlaceId()));
                         goBack();
                     }
                 });
     }
 
     private void RecentSearchClicked(RecentSearch recentSearch) {
-                        parentViewModel.setUserLocation(recentSearch.getCoordinate(), StationsViewModel.UserLocationType.SEARCH);
-                        parentViewModel.setTextQuery(recentSearch.getPrimaryText());
-                        goBack();
+        parentViewModel.setUserLocation(recentSearch.getCoordinate(), StationsViewModel.UserLocationType.SEARCH);
+        parentViewModel.setTextQuery(recentSearch.getPrimaryText());
+        goBack();
     }
 
     private void nearbyItemClicked(StationItem station) {

@@ -35,8 +35,8 @@ public class SearchViewModel extends ViewModel {
     private LatLng userLocation;
     private float regionRatio = 1f;
     private ArrayList<RecentSearch> recentSearches = new ArrayList<>();
-    UserLocalSettings userLocalSettings ;
-    Gson gson;
+    private UserLocalSettings userLocalSettings;
+    protected Gson gson;
 
     @Inject
     public SearchViewModel(StationsProvider stationsProvider, PlaceSuggestionsProvider suggestionsProvider, Gson gson, UserLocalSettings userLocalSettings) {
@@ -92,15 +92,14 @@ public class SearchViewModel extends ViewModel {
     }
 
     public void addToRecentSearched(RecentSearch recentSearch) {
-        if (recentSearches.contains(recentSearch)){
+        if (recentSearches.contains(recentSearch)) {
             recentSearches.remove(recentSearch);
         }
-        recentSearches.add(0,recentSearch);
-        if (recentSearches.size()> 3)
-            userLocalSettings.setString("recentlySearched", gson.toJson(this.recentSearches.subList(0,3)));
+        recentSearches.add(0, recentSearch);
+        if (recentSearches.size() > 3)
+            userLocalSettings.setString("recentlySearched", gson.toJson(this.recentSearches.subList(0, 3)));
         else
             userLocalSettings.setString("recentlySearched", gson.toJson(this.recentSearches));
-
     }
 
     public LiveData<Resource<LatLng>> getCoordinatesOfPlace(PlaceSuggestion suggestion) {

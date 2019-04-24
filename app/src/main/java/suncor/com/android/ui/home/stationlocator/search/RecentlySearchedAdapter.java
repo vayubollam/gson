@@ -1,6 +1,7 @@
 package suncor.com.android.ui.home.stationlocator.search;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import suncor.com.android.databinding.RecentlySearchedItemBinding;
 import suncor.com.android.utilities.Consumer;
 
 public class RecentlySearchedAdapter extends RecyclerView.Adapter<RecentlySearchedAdapter.RecentlySearchedHolder> {
-    private  Consumer<RecentSearch> clickCallback;
+    private Consumer<RecentSearch> clickCallback;
     private ArrayList<RecentSearch> recentSearches;
 
 
@@ -38,6 +39,8 @@ public class RecentlySearchedAdapter extends RecyclerView.Adapter<RecentlySearch
         holder.binding.getRoot().setOnClickListener((v) -> {
             clickCallback.accept(recentSearch);
         });
+
+        holder.binding.divider.setVisibility(position == getItemCount() - 1 ? View.GONE : View.VISIBLE);
     }
 
     @Override
