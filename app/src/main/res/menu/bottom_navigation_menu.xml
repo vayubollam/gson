@@ -12,6 +12,12 @@
         android:iconTint="@color/black_60"
         android:title="@string/navigation_stations_tab" />
     <item
+        android:id="@+id/cards_tab"
+        android:icon="@drawable/ic_cards"
+        android:iconTint="@color/black_60"
+        android:title="@string/navigation_cards_tab"
+        />
+    <item
         android:id="@+id/profile_tab"
         android:icon="@drawable/ic_profile"
         android:iconTint="@color/black_60"

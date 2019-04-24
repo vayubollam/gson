@@ -10,6 +10,7 @@ import suncor.com.android.di.viewmodel.ViewModelKey;
 import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 import suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
+import suncor.com.android.ui.home.cards.CardsViewModel;
 import suncor.com.android.ui.home.dashboard.DashboardViewModel;
 import suncor.com.android.ui.home.profile.help.FAQViewModel;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
@@ -54,6 +55,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FavouritesViewModel.class)
     protected abstract ViewModel favouritesViewModel(FavouritesViewModel favouritesViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CardsViewModel.class)
+    protected abstract ViewModel cardsViewModel(CardsViewModel cardsViewModel);
 
 
     //EnrollmentActivity ViewModels
