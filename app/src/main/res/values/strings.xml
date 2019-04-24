@@ -196,4 +196,5 @@
     <string name="profile_get_help_call">Call</string>
     <string name="profile_get_help_email">Email</string>
     <string name="navigation_cards_tab">Cards</string>
+    <string name="cards_fragment_title">Cards</string>
 </resources>

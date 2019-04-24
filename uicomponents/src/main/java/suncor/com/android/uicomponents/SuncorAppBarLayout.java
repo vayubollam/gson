@@ -2,6 +2,7 @@ package suncor.com.android.uicomponents;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class SuncorAppBarLayout extends AppBarLayout {
     private AppCompatTextView expandedTitleTextView;
     private AppCompatTextView collapsedTitleTextView;
     private AppCompatImageButton navigationButton;
+    private AppCompatImageButton rightButton;
     private int expandedTitleTopMargin;
 
     private boolean isDragable = true;
@@ -66,6 +68,7 @@ public class SuncorAppBarLayout extends AppBarLayout {
         expandedTitleTextView = findViewById(R.id.expanded_title);
         collapsedTitleTextView = findViewById(R.id.collapsed_title);
         navigationButton = findViewById(R.id.navigation_button);
+        rightButton = findViewById(R.id.right_button);
         expandedTitleTopMargin = getResources().getDimensionPixelSize(R.dimen.app_bar_layout_expanded_title_top_margin);
 
         if (getBackground() != null) {
@@ -96,9 +99,12 @@ public class SuncorAppBarLayout extends AppBarLayout {
             expandedTitleTextView.setTextAppearance(context, titleTextAppearance);
         }
 
-        if (a.hasValue(R.styleable.SuncorAppBarLayout_navigationIcon)) {
-            toolbar.setNavigationIcon(a.getResourceId(R.styleable.SuncorAppBarLayout_navigationIcon, -1));
+        if (a.hasValue(R.styleable.SuncorAppBarLayout_rightButtonIcon)) {
+            rightButton.setImageDrawable(a.getDrawable(R.styleable.SuncorAppBarLayout_rightButtonIcon));
+            rightButton.setVisibility(VISIBLE);
         }
+
+        navigationButton.setVisibility(a.getBoolean(R.styleable.SuncorAppBarLayout_navigationVisibility, true) ? VISIBLE : GONE);
 
         if (a.hasValue(R.styleable.SuncorAppBarLayout_statusBarScrim)) {
             collapsingToolbarLayout.setStatusBarScrimColor(a.getColor(R.styleable.SuncorAppBarLayout_statusBarScrim, -1));
@@ -200,5 +206,14 @@ public class SuncorAppBarLayout extends AppBarLayout {
      */
     public void setNavigationOnClickListener(OnClickListener listener) {
         navigationButton.setOnClickListener(listener);
+    }
+
+    public void setRightButtonIcon(Drawable drawable) {
+        rightButton.setImageDrawable(drawable);
+        rightButton.setVisibility(VISIBLE);
+    }
+
+    public void setRightButtonOnClickListener(OnClickListener listener) {
+        rightButton.setOnClickListener(listener);
     }
 }
