@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="suncor.com.android.model.Resource.Status" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:visibleGone="@{vm.query.isEmpty() &amp;&amp; !vm.isRecentSearchEmpty()}"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:id="@+id/recently_searched_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_4"
+            android:orientation="vertical"
+            app:visibleGone="@{vm.query.isEmpty() || !vm.isRecentSearchEmpty()}"
+            tools:visibility="visible">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/SectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/station_recently_searched" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+
+
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/horizontal_divider" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recently_searched_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/recently_searched_item" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

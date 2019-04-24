@@ -28,6 +28,7 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSearchBinding;
 import suncor.com.android.databinding.NearbyLayoutBinding;
+import suncor.com.android.databinding.RecentlySearchedLayoutBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
@@ -67,13 +68,13 @@ public class SearchFragment extends DaggerFragment {
 
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
-
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         nearbySearchBinding = binding.nearbyLayout;
         SuggestionsLayoutBinding suggestionsLayoutBinding = binding.suggestionsLayout;
-
+        RecentlySearchedLayoutBinding recentlySearchedLayoutBinding = binding.recentlySearchedLayout;
         binding.setVm(viewModel);
         binding.setLifecycleOwner(getActivity());
+        recentlySearchedLayoutBinding.setLifecycleOwner(getActivity());
         suggestionsLayoutBinding.setLifecycleOwner(getActivity());
         nearbySearchBinding.setLifecycleOwner(getActivity());
 
@@ -84,9 +85,13 @@ public class SearchFragment extends DaggerFragment {
         suggestionsAdapter = new SuggestionsAdapter(this::placeSuggestionClicked);
         suggestionsLayoutBinding.sugestionsRecycler.setAdapter(suggestionsAdapter);
 
+        recentlySearchedLayoutBinding.recentlySearchedRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        RecentlySearchedAdapter recentlySearchedAdapter = new RecentlySearchedAdapter(this::RecentSearchClicked, viewModel.getRecentSearches());
+        recentlySearchedLayoutBinding.recentlySearchedRecycler.setAdapter(recentlySearchedAdapter);
+
+
         nearbySearchBinding.nearbyRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        //listener
         binding.backButton.setOnClickListener((v) -> {
             goBack();
         });
@@ -142,9 +147,16 @@ public class SearchFragment extends DaggerFragment {
                     if (resouce.status == Resource.Status.SUCCESS) {
                         parentViewModel.setUserLocation(resouce.data, StationsViewModel.UserLocationType.SEARCH);
                         parentViewModel.setTextQuery(placeSuggestion.getPrimaryText());
+                        viewModel.addToRecentSearched(new RecentSearch(placeSuggestion.getPrimaryText(),placeSuggestion.getSecondaryText(),resouce.data, placeSuggestion.getPlaceId()));
                         goBack();
                     }
                 });
+    }
+
+    private void RecentSearchClicked(RecentSearch recentSearch) {
+                        parentViewModel.setUserLocation(recentSearch.getCoordinate(), StationsViewModel.UserLocationType.SEARCH);
+                        parentViewModel.setTextQuery(recentSearch.getPrimaryText());
+                        goBack();
     }
 
     private void nearbyItemClicked(StationItem station) {

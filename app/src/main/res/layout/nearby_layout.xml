@@ -12,6 +12,7 @@
             type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
     </data>
 
+
     <LinearLayout
         android:id="@+id/nearby_linear_layout"
         android:layout_width="match_parent"
