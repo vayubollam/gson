@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="recentlysearched"
+            type="suncor.com.android.ui.home.stationlocator.search.RecentSearch" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_suggestion_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.44"
+            android:maxLines="1"
+            android:text="@{recentlysearched.primaryText}"
+            android:textAppearance="@style/Body"
+            tools:text="22 Indian db" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_suggestion_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.21"
+            android:maxLines="1"
+            android:text="@{recentlysearched.secondaryText}"
+            android:textAppearance="@style/Caption1"
+            android:textColor="@color/black_60"
+            tools:text="Toronto, On" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/horizontal_divider" />
+    </LinearLayout>
+</layout>
+
+

@@ -115,7 +115,7 @@ public class Station {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || !(obj instanceof Station)) {
+        if (!(obj instanceof Station)) {
             return false;
         }
         return ((Station) obj).id.equals(this.id);

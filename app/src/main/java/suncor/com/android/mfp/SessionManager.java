@@ -78,6 +78,7 @@ public class SessionManager implements SessionChangeListener {
         authorizationManager.logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
+                userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED,null);
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -201,6 +202,8 @@ public class SessionManager implements SessionChangeListener {
     @Override
     public void onLoginSuccess(Profile profile) {
         Timber.d("login succeeded");
+        if (loginOngoing)
+            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED,null);
         if (!profile.equals(this.profile)) {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);
