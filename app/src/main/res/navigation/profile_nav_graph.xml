@@ -12,10 +12,9 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_profileFragment_to_questionsFragment"
-            app:destination="@id/questionsFragment" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
-    <fragment
-        android:id="@+id/questionsFragment"
-        android:name="suncor.com.android.ui.home.profile.QuestionsFragment"
-        android:label="QuestionsFragment" />
 </navigation>

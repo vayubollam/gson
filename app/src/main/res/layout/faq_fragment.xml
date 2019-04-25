@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dragable="true"
+            android:id="@+id/app_bar"
+            app:title="@string/profile_faq_get_help_title" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/questions_recycler"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:layout_width="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="wrap_content" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

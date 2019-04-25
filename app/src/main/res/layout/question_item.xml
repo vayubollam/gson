@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="?selectableItemBackground"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"
+            android:layout_width="match_parent"
+            android:lineSpacingMultiplier="1.44"
+            android:maxLines="3"
+
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:ellipsize="end"
+            android:textAppearance="@style/Body"
+            android:textAlignment="textStart"
+            tools:text="How do I see the balance or activation status?"
+            android:id="@+id/question_txt"
+            android:switchTextAppearance="@style/Body"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:paddingStart="16dp"
+            android:src="@drawable/horizontal_divider"
+            android:layout_height="1dp" />
+
+    </LinearLayout>
+</layout>

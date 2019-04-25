@@ -189,4 +189,7 @@
     <string name="dashboard_nearest_enable_gps_title">Enable Location Services</string>
     <string name="dashboard_nearest_loading_title">Finding nearest location</string>
     <string name="dashboard_nearest_error_try_again">try again</string>
+    <string name="profile_faq_get_help_title">Get Help</string>
+    <string name="profile_top_questions">Top Questions</string>
+    <string name="profile_get_help_footer">Need help? Get in touch with us.</string>
 </resources>

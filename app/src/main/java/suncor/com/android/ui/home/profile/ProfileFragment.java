@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -17,7 +16,11 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import suncor.com.android.R;
+import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
@@ -26,8 +29,7 @@ import suncor.com.android.ui.home.common.BaseFragment;
 
 
 public class ProfileFragment extends BaseFragment {
-
-    ProgressBar signOutBP;
+    FragmentProfileBinding binding;
 
     @Inject
     SessionManager sessionManager;
@@ -40,14 +42,13 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        binding = FragmentProfileBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        signOutBP = getView().findViewById(R.id.sign_out_PB);
 
         try {
             Properties properties = new Properties();
@@ -66,7 +67,7 @@ public class ProfileFragment extends BaseFragment {
             //Show nothing
         }
 
-        view.findViewById(R.id.signout_button).setOnClickListener((v) -> {
+        binding.signoutButton.setOnClickListener((v) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
                     .setPositiveButton(getString(R.string.profil_sign_out_dialog_positive_button), (dialog, which) -> {
@@ -76,18 +77,36 @@ public class ProfileFragment extends BaseFragment {
             builder.create().show();
 
         });
+        binding.getHelpButton.setOnClickListener(v -> {
+            launchGetHelpFragment();
+        });
     }
 
     private void signUserOut() {
-        signOutBP.setVisibility(View.VISIBLE);
+        binding.signOutPB.setVisibility(View.VISIBLE);
         sessionManager.logout().observe(this, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
-                signOutBP.setVisibility(View.GONE);
+                binding.signOutPB.setVisibility(View.GONE);
                 ((HomeActivity) getActivity()).getNavController().navigate(R.id.home_tab);
             } else if (result.status == Resource.Status.ERROR) {
-                signOutBP.setVisibility(View.GONE);
+                binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();
             }
         });
+
+    }
+
+    public void launchGetHelpFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        Fragment getHelpFragment = fragmentManager.findFragmentByTag(FAQFragment.FAQ_FRAGMENT_TAG);
+        if (getHelpFragment != null && getHelpFragment.isAdded()) {
+            return;
+        }
+        getHelpFragment = new FAQFragment();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        ft.add(android.R.id.content, getHelpFragment, FAQFragment.FAQ_FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }
