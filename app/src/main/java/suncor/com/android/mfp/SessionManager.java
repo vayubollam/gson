@@ -122,7 +122,6 @@ public class SessionManager implements SessionChangeListener {
         authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
             @Override
             public void onSuccess(AccessToken accessToken) {
-                userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED,null);
                 Timber.d("Access token received, user is logged in");
                 loginState.postValue(LoginState.LOGGED_IN);
             }
@@ -203,6 +202,8 @@ public class SessionManager implements SessionChangeListener {
     @Override
     public void onLoginSuccess(Profile profile) {
         Timber.d("login succeeded");
+        if (loginOngoing)
+            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED,null);
         if (!profile.equals(this.profile)) {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);

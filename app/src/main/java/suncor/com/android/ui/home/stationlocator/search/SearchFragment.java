@@ -159,6 +159,8 @@ public class SearchFragment extends DaggerFragment {
     private void RecentSearchClicked(RecentSearch recentSearch) {
         parentViewModel.setUserLocation(recentSearch.getCoordinate(), StationsViewModel.UserLocationType.SEARCH);
         parentViewModel.setTextQuery(recentSearch.getPrimaryText());
+        viewModel.addToRecentSearched(new RecentSearch(recentSearch.getPrimaryText(), recentSearch.getSecondaryText(), recentSearch.getCoordinate(), recentSearch.getPlaceId()));
+
         goBack();
     }
 
