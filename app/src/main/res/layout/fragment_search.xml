@@ -81,23 +81,32 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
-            <View
-                visibleGone="@{recentSearch}"
+            <suncor.com.android.uicomponents.StickyHeaderScrollView
+                android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@drawable/horizontal_divider" />
+                android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/nearby_layout"
-                layout="@layout/nearby_layout"
-                app:vm="@{vm}" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <include
-                android:id="@+id/suggestions_layout"
-                layout="@layout/suggestions_layout"
-                app:vm="@{vm}" />
+                    <include
+                        android:id="@+id/recently_searched_layout"
+                        layout="@layout/recently_searched_layout"
+                        app:vm="@{vm}" />
 
+                    <include
+                        android:id="@+id/nearby_layout"
+                        layout="@layout/nearby_layout"
+                        app:vm="@{vm}" />
+
+                    <include
+                        android:id="@+id/suggestions_layout"
+                        layout="@layout/suggestions_layout"
+                        app:vm="@{vm}" />
+                </LinearLayout>
+            </suncor.com.android.uicomponents.StickyHeaderScrollView>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

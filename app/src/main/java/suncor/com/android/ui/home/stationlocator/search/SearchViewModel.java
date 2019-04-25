@@ -2,8 +2,10 @@ package suncor.com.android.ui.home.stationlocator.search;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.inject.Inject;
@@ -19,6 +21,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class SearchViewModel extends ViewModel {
 
@@ -31,13 +34,22 @@ public class SearchViewModel extends ViewModel {
     private PlaceSuggestionsProvider suggestionsProvider;
     private LatLng userLocation;
     private float regionRatio = 1f;
+    private ArrayList<RecentSearch> recentSearches = new ArrayList<>();
+    private UserLocalSettings userLocalSettings;
+    protected Gson gson;
 
     @Inject
-    public SearchViewModel(StationsProvider stationsProvider, PlaceSuggestionsProvider suggestionsProvider) {
+    public SearchViewModel(StationsProvider stationsProvider, PlaceSuggestionsProvider suggestionsProvider, Gson gson, UserLocalSettings userLocalSettings) {
         this.stationsProvider = stationsProvider;
+        this.userLocalSettings = userLocalSettings;
+        this.gson = gson;
         this.suggestionsProvider = suggestionsProvider;
         query.setValue("");
         placeSuggestions = Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
+        String recent = userLocalSettings.getString(UserLocalSettings.RECENTLY_SEARCHED);
+        if (recent != null) {
+            this.recentSearches.addAll(Arrays.asList(gson.fromJson(recent, RecentSearch[].class)));
+        }
     }
 
     private void refreshNearbyStations(LatLng mapCenter) {
@@ -75,6 +87,21 @@ public class SearchViewModel extends ViewModel {
         refreshNearbyStations(userLocation);
     }
 
+    public boolean isRecentSearchEmpty() {
+        return recentSearches.size() == 0;
+    }
+
+    public void addToRecentSearched(RecentSearch recentSearch) {
+        if (recentSearches.contains(recentSearch)) {
+            recentSearches.remove(recentSearch);
+        }
+        recentSearches.add(0, recentSearch);
+        if (recentSearches.size() > 3)
+            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, gson.toJson(this.recentSearches.subList(0, 3)));
+        else
+            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, gson.toJson(this.recentSearches));
+    }
+
     public LiveData<Resource<LatLng>> getCoordinatesOfPlace(PlaceSuggestion suggestion) {
         return suggestionsProvider.getCoordinatesOfPlace(suggestion);
     }
@@ -85,5 +112,13 @@ public class SearchViewModel extends ViewModel {
 
     public void setSearchQuery(String input) {
         query.setValue(input);
+    }
+
+    public ArrayList<RecentSearch> getRecentSearches() {
+        return recentSearches;
+    }
+
+    public void setRecentSearches(ArrayList<RecentSearch> recentSearches) {
+        this.recentSearches = recentSearches;
     }
 }
