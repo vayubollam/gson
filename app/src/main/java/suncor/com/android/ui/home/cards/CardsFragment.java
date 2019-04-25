@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -18,6 +16,7 @@ import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
 
 public class CardsFragment extends DaggerFragment {
 
@@ -26,32 +25,38 @@ public class CardsFragment extends DaggerFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
+    private CardsListAdapter petroCanadaCardsAdapter;
+    private CardsListAdapter partnerCardsAdapter;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
+        petroCanadaCardsAdapter = new CardsListAdapter();
+        partnerCardsAdapter = new CardsListAdapter();
+
+        viewModel.cardsLiveData.observe(this, (result) -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                petroCanadaCardsAdapter.setCards(viewModel.getPetroCanadaCards());
+                partnerCardsAdapter.setCards(viewModel.getPartnerCards());
+            }
+        });
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCardsBinding.inflate(inflater, container, false);
+        binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
+        ItemDecorator listDecorator = new ItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
 
+        binding.petroCanadaCardsList.setAdapter(petroCanadaCardsAdapter);
+        binding.petroCanadaCardsList.addItemDecoration(listDecorator);
 
-        PetroCanadaCardsAdapter adapter = new PetroCanadaCardsAdapter();
-        binding.petroCanadaCardsList.setAdapter(adapter);
-        ItemDecorator decorator = new ItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
-        binding.petroCanadaCardsList.addItemDecoration(decorator);
-
-
-        ArrayList<CardItem> cards = new ArrayList<>();
-        cards.add(new CardItem("Fuel Savings Reward", "100 Litres"));
-        cards.add(new CardItem("Fuel Savings Reward", "100 Litres"));
-        cards.add(new CardItem("Fuel Savings Reward", "100 Litres"));
-        cards.add(new CardItem("Fuel Savings Reward", "100 Litres"));
-        cards.add(new CardItem("Fuel Savings Reward", "100 Litres"));
-        adapter.setCards(cards);
+        binding.partnerCardsList.setAdapter(partnerCardsAdapter);
+        binding.partnerCardsList.addItemDecoration(listDecorator);
 
         return binding.getRoot();
     }

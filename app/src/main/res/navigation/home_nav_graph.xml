@@ -18,7 +18,7 @@
     <keep_state_fragment
         android:id="@+id/cards_tab"
         android:name="suncor.com.android.ui.home.cards.CardsContainerFragment"
-        android:label="StationsFragment"
+        android:label="CardsContainerFragment"
         tools:layout="@layout/fragment_stations" />
 
     <keep_state_fragment
