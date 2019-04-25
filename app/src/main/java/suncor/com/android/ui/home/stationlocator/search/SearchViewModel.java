@@ -46,7 +46,7 @@ public class SearchViewModel extends ViewModel {
         this.suggestionsProvider = suggestionsProvider;
         query.setValue("");
         placeSuggestions = Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
-        String recent = userLocalSettings.getString("recentlySearched");
+        String recent = userLocalSettings.getString(UserLocalSettings.RECENTLY_SEARCHED);
         if (recent != null) {
             this.recentSearches.addAll(Arrays.asList(gson.fromJson(recent, RecentSearch[].class)));
         }
@@ -97,9 +97,9 @@ public class SearchViewModel extends ViewModel {
         }
         recentSearches.add(0, recentSearch);
         if (recentSearches.size() > 3)
-            userLocalSettings.setString("recentlySearched", gson.toJson(this.recentSearches.subList(0, 3)));
+            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, gson.toJson(this.recentSearches.subList(0, 3)));
         else
-            userLocalSettings.setString("recentlySearched", gson.toJson(this.recentSearches));
+            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, gson.toJson(this.recentSearches));
     }
 
     public LiveData<Resource<LatLng>> getCoordinatesOfPlace(PlaceSuggestion suggestion) {

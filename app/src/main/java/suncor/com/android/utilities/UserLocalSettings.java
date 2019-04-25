@@ -10,7 +10,7 @@ import suncor.com.android.SuncorApplication;
 
 @Singleton
 public class UserLocalSettings {
-
+    public static final String RECENTLY_SEARCHED = "recentlySearched";
     private SharedPreferences preferences;
 
 
