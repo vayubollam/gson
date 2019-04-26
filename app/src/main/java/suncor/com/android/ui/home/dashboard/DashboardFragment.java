@@ -196,7 +196,7 @@ public class DashboardFragment extends BaseFragment {
         //TODO improve this
         binding.welcomeLayout.setVisibility(View.VISIBLE);
         Profile profile = mViewModel.getProfile();
-        binding.welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName()));
+        binding.welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName(), mViewModel.getRewardedPoints()));
     }
 
     @Override

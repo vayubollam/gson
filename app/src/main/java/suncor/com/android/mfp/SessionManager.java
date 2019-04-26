@@ -58,6 +58,7 @@ public class SessionManager implements SessionChangeListener {
 
     @Inject
     SuncorApplication application;
+    private int rewardedPoints = -1;
 
     @Inject
     public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings) {
@@ -78,7 +79,7 @@ public class SessionManager implements SessionChangeListener {
         authorizationManager.logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
-                userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED,null);
+                userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -203,7 +204,7 @@ public class SessionManager implements SessionChangeListener {
     public void onLoginSuccess(Profile profile) {
         Timber.d("login succeeded");
         if (loginOngoing)
-            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED,null);
+            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
         if (!profile.equals(this.profile)) {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);
@@ -241,6 +242,15 @@ public class SessionManager implements SessionChangeListener {
             application.startActivity(intent);
         }
         cancelLogin();
+    }
+
+    public void setRewardedPoints(int rewardedPoints) {
+        this.rewardedPoints = rewardedPoints;
+    }
+
+    //Only when accountState is JUST_ENROLLED
+    public int getRewardedPoints() {
+        return rewardedPoints;
     }
 
     public enum LoginState {

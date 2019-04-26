@@ -111,4 +111,8 @@ public class DashboardViewModel extends ViewModel {
     public Profile getProfile() {
         return sessionManager.getProfile();
     }
+
+    public int getRewardedPoints() {
+        return sessionManager.getRewardedPoints();
+    }
 }

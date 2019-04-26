@@ -29,9 +29,9 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ADAPTER_PATH = "/adapters/suncor/v1/enrollments";
 
     @Override
-    public LiveData<Resource<Boolean>> registerAccount(NewEnrollment account) {
+    public LiveData<Resource<Integer>> registerAccount(NewEnrollment account) {
         Timber.d("Call enrollments API, account: " + account.getEmail());
-        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        MutableLiveData<Resource<Integer>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH);
@@ -41,7 +41,13 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     Timber.d("Enrollments API success");
-                    result.postValue(Resource.success(true));
+                    try {
+                        int rewardedPoints = wlResponse.getResponseJSON().getInt("enrollmentPoints");
+                        result.postValue(Resource.success(rewardedPoints));
+                    } catch (JSONException e) {
+                        Timber.e(e.toString());
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                    }
                 }
 
                 @Override

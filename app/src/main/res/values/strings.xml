@@ -150,7 +150,7 @@
     <string name="enrollment_postalcode_matching_province_error">Postal code does not match the province selected.</string>
     <string name="enrollment_create_account_message">Creating your\nPetro-Points account</string>
     <string name="enrollment_account_created_message">Account created</string>
-    <string name="dashboard_enrolled_welcome_message">Thanks for joining, %s.\nEnjoy 2,500 points on us!</string>
+    <string name="dashboard_enrolled_welcome_message">Thanks for joining, %s.\nEnjoy %,d points on us!</string>
     <string name="station_location_alert_settings">Settings</string>
     <string name="msg_sl005_title">Something went wrong</string>
     <string name="msg_sl005_message">We can\'t seem to load your favourites right now.</string>

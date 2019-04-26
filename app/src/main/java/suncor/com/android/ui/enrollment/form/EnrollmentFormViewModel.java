@@ -97,7 +97,7 @@ public class EnrollmentFormViewModel extends ViewModel {
             }
         });
 
-        LiveData<Resource<Boolean>> joinApiData = Transformations.switchMap(join, (event) -> {
+        LiveData<Resource<Integer>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 Timber.d("Start sign up process");
                 NewEnrollment account = new NewEnrollment(
@@ -132,6 +132,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                             if (r.data.getStatus() == SigninResponse.Status.SUCCESS) {
                                 Timber.d("Login succeeded");
                                 sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
+                                sessionManager.setRewardedPoints(result.data);
                                 return Resource.success(true);
                             } else {
                                 Timber.d("Login failed, status: " + r.data.getStatus());
@@ -146,7 +147,11 @@ public class EnrollmentFormViewModel extends ViewModel {
                 });
             } else {
                 MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
-                intermediateLivedata.setValue(result);
+                if (result.status == Resource.Status.LOADING) {
+                    intermediateLivedata.setValue(Resource.loading());
+                } else {
+                    intermediateLivedata.setValue(Resource.error(result.message));
+                }
                 return intermediateLivedata;
             }
         });

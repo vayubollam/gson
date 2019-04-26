@@ -9,7 +9,7 @@ import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.SecurityQuestion;
 
 public interface EnrollmentsApi {
-    LiveData<Resource<Boolean>> registerAccount(NewEnrollment account);
+    LiveData<Resource<Integer>> registerAccount(NewEnrollment account);
 
     LiveData<Resource<EmailState>> checkEmail(String email);
 
