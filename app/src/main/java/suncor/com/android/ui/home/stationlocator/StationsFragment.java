@@ -75,7 +75,6 @@ import suncor.com.android.utilities.LocationUtils;
 public class StationsFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
 
-    private final static int MINIMUM_ZOOM_LEVEL = 10;
 
     private StationsViewModel mViewModel;
     private LocationLiveData locationLiveData;
@@ -240,7 +239,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         this.mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-        mGoogleMap.setMinZoomPreference(MINIMUM_ZOOM_LEVEL);
         mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnCameraMoveStartedListener(this);
