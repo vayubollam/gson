@@ -47,26 +47,26 @@ public class CardItem {
                 case FSR:
                     backgroundColor = Color.parseColor(cardDetail.getCpl() == 0.10f ? "#FF6D6E6F" : "#FFAB252C");
                     title = R.string.cards_fsr_label;
-                    balanceTemplate = R.string.cards_fsr_balance_template;
+                    balanceTemplate = cardDetail.getBalance() == 1 ? R.string.cards_fsr_balance_template_singular : R.string.cards_fsr_balance_template_plural;
                     balanceValue = cardDetail.getBalance() != -1 ? String.valueOf(cardDetail.getBalance()) : null;
                     break;
                 case SP:
                     backgroundColor = Color.parseColor("#FF232C32");
                     title = R.string.cards_sp_label;
-                    balanceTemplate = R.string.cards_sp_balance_template;
+                    balanceTemplate = cardDetail.getBalance() == 1 ? R.string.cards_sp_balance_template_singular : R.string.cards_sp_balance_template_plural;
                     balanceValue = cardDetail.getBalance() != -1 ? String.valueOf(cardDetail.getBalance()) : null;
                     break;
                 case WAG:
                     backgroundColor = Color.parseColor("#FF143557");
                     title = R.string.cards_wag_label;
-                    balanceTemplate = R.string.cards_wag_balance_template;
+                    balanceTemplate = cardDetail.getBalance() == 1 ? R.string.cards_wag_balance_template_singular : R.string.cards_wag_balance_template_plural;
                     balanceValue = cardDetail.getBalance() != -1 ? String.valueOf(cardDetail.getBalance()) : null;
 
                     break;
                 case PPC:
                     backgroundColor = Color.parseColor("#FFE4E4E5");
                     title = R.string.cards_ppc_label;
-                    balanceTemplate = R.string.cards_ppc_balance_template;
+                    balanceTemplate = cardDetail.getBalance() == 1 ? R.string.cards_ppc_balance_template_singular : R.string.cards_ppc_balance_template_plural;
                     balanceValue = cardDetail.getBalance() != -1 ? String.valueOf(cardDetail.getBalance()) : null;
                     textColor = Color.BLACK;
                     break;

@@ -14,10 +14,19 @@ public class CardsApiMock implements CardsApi {
     @Override
     public LiveData<Resource<ArrayList<CardDetail>>> retrieveCards() {
         MutableLiveData<Resource<ArrayList<CardDetail>>> result = new MutableLiveData<>();
-        ArrayList<CardDetail> cards = new ArrayList<>();
-        Gson gson = new Gson();
-        cards.addAll(Arrays.asList(gson.fromJson(responseJson, CardDetail[].class)));
-        result.postValue(Resource.success(cards));
+        result.postValue(Resource.loading());
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(500);
+                ArrayList<CardDetail> cards = new ArrayList<>();
+                Gson gson = new Gson();
+                cards.addAll(Arrays.asList(gson.fromJson(responseJson, CardDetail[].class)));
+                result.postValue(Resource.success(cards));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
         return result;
     }
 

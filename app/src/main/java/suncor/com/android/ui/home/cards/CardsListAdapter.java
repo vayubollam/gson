@@ -28,12 +28,10 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
         public boolean onTouch(View v, MotionEvent event) {
             int action = event.getAction();
             if (action == MotionEvent.ACTION_DOWN) {
-                v.animate().scaleX(0.97f).start();
-                v.animate().scaleY(0.97f).start();
+                v.animate().scaleX(0.97f).scaleY(0.97f).setDuration(100).start();
             } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 v.animate().cancel();
-                v.animate().scaleX(1f).start();
-                v.animate().scaleY(1f).start();
+                v.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
             }
 
             return v.onTouchEvent(event);

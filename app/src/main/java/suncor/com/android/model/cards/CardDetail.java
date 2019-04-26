@@ -1,14 +1,17 @@
 package suncor.com.android.model.cards;
 
 public class CardDetail {
+
+    public static final int INVALID_BALANCE = -1;
+
     private CardType cardType;
     private String cardNumber;
     private String cardNumberEncrypted;
     private String serviceId;
-    private int pointsBalance = -1;
-    private int litresRemaining = -1;
-    private int unitsRemaining = -1;
-    private int daysRemaining = -1;
+    private int pointsBalance = INVALID_BALANCE;
+    private int litresRemaining = INVALID_BALANCE;
+    private int unitsRemaining = INVALID_BALANCE;
+    private int daysRemaining = INVALID_BALANCE;
     private float cpl;
 
     public CardType getCardType() {

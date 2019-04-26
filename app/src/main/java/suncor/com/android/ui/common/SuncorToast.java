@@ -1,6 +1,7 @@
 package suncor.com.android.ui.common;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class SuncorToast {
 
     public static Toast makeText(Context context, String text, int duration) {
         Toast toast = new Toast(context);
+        toast.setGravity(Gravity.BOTTOM, 0, context.getResources().getDimensionPixelOffset(R.dimen.suncor_toast_bottom_margin));
         View view = LayoutInflater.from(context).inflate(R.layout.toast_ui, null);
         TextView textView = view.findViewById(R.id.text);
         textView.setText(text);

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="suncor.com.android.utilities.ConnectionUtil" />
+
+        <variable
+            name="model"
+            type="suncor.com.android.ui.common.ErrorView" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fitsSystemWindows="false"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_alert"
+            android:tint="@color/black_20" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Title2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.36"
+            android:text="@{model.title}"
+            android:textColor="@color/black_80" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="34dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="24dp"
+            android:lineSpacingMultiplier="1.44"
+            android:text="@{model.message}"
+            android:textAlignment="center"
+            android:textColor="@color/black_60"
+            android:textSize="18sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addFavoriteBackButton"
+            style="@style/FilledButton.Red.L"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:onClick="@{(v) -> model.buttonCallback.run()}"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="@{model.buttonText}"
+            android:textSize="17sp" />
+    </LinearLayout>
+</layout>

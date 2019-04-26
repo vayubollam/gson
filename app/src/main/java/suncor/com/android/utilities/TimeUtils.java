@@ -1,5 +1,6 @@
 package suncor.com.android.utilities;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -15,5 +16,10 @@ public class TimeUtils {
         }
 
         return formatter.format(calendar.getTime()).toLowerCase();
+    }
+
+    public static String formatDate(Calendar calendar) {
+        DateFormat formatter = SimpleDateFormat.getDateInstance(SimpleDateFormat.LONG);
+        return formatter.format(calendar.getTime());
     }
 }

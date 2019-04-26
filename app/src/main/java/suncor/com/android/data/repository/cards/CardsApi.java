@@ -7,5 +7,5 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 
 public interface CardsApi {
-    public LiveData<Resource<ArrayList<CardDetail>>> retrieveCards();
+    LiveData<Resource<ArrayList<CardDetail>>> retrieveCards();
 }
