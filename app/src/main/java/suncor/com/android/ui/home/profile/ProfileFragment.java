@@ -26,6 +26,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.ui.home.profile.help.FAQFragment;
 
 
 public class ProfileFragment extends BaseFragment {

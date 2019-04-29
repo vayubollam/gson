@@ -11,7 +11,7 @@ import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 import suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.home.dashboard.DashboardViewModel;
-import suncor.com.android.ui.home.profile.FAQViewModel;
+import suncor.com.android.ui.home.profile.help.FAQViewModel;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.ui.home.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.home.stationlocator.search.SearchViewModel;

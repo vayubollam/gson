@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.profile;
+package suncor.com.android.ui.home.profile.help;
 
 import com.google.gson.Gson;
 
@@ -21,6 +21,9 @@ import suncor.com.android.utilities.Timber;
 
 public class FAQViewModel extends ViewModel {
     private ArrayList<Question> questions;
+    private Question selectedQuestion;
+
+
 
     @Inject
     public FAQViewModel(SuncorApplication suncorApplication, Gson gson) {
@@ -45,5 +48,13 @@ public class FAQViewModel extends ViewModel {
 
     public void setQuestions(ArrayList<Question> questions) {
         this.questions = questions;
+    }
+
+    public Question getSelectedQuestion() {
+        return selectedQuestion;
+    }
+
+    public void setSelectedQuestion(Question selectedQuestion) {
+        this.selectedQuestion = selectedQuestion;
     }
 }

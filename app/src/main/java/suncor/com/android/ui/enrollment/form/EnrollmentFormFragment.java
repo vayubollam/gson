@@ -2,14 +2,12 @@ package suncor.com.android.ui.enrollment.form;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -26,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -43,6 +40,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.common.SuncorURLSpan;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.home.HomeActivity;
@@ -225,7 +223,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         String url = getString(R.string.enrollment_terms_url);
         String agreement = getString(R.string.enrollment_terms_agreement, terms);
         SpannableString span = new SpannableString(agreement);
-        span.setSpan(new SuncorURLSpan(url), agreement.indexOf(terms), agreement.indexOf(terms) + terms.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        span.setSpan(new SuncorURLSpan(url, getContext()), agreement.indexOf(terms), agreement.indexOf(terms) + terms.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.termsAgreement.setText(span);
         binding.termsAgreement.setMovementMethod(LinkMovementMethod.getInstance());
     }
@@ -322,20 +320,5 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     }
 
 
-    private class SuncorURLSpan extends android.text.style.URLSpan {
-
-        SuncorURLSpan(String url) {
-            super(url);
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            super.updateDrawState(ds);
-            ds.setUnderlineText(false);
-            Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.gibson_semibold);
-            ds.setTypeface(typeface);
-            ds.setColor(getResources().getColor(R.color.red));
-        }
-    }
 
 }
