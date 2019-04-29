@@ -322,7 +322,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     }
 
 
-    private class SuncorURLSpan extends android.text.style.URLSpan {
+    public class SuncorURLSpan extends android.text.style.URLSpan {
 
         SuncorURLSpan(String url) {
             super(url);

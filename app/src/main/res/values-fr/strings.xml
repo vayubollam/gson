@@ -186,4 +186,7 @@
     <string name="profile_top_questions">Questions les plus fréquentes</string>
     <string name="profile_faq_get_help_title">Obtenir de l\'aide</string>
     <string name="profile_get_help_footer">Besoin d\'aide? Communiquez avec nous.</string>
+    <string name="customer_support_email">custsvs@suncor.com</string>
+    <string name="profile_get_help_call">Appel</string>
+    <string name="profile_get_help_email">Courriel</string>
 </resources>

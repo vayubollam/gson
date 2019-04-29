@@ -180,7 +180,6 @@
     <string name="login_create_password_duplicated_alert_title">Invalid password</string>
     <string name="login_create_password_duplicated_alert_message">Your new password can\'t be the same as your temporary password.</string>
     <string name="enrollment_form_header_ghost">Almost there. Complete your registration and receive 2,500 points.</string>
-    <string name="enrllment_card_form_customer_support_number">(800)668-0220</string>
     <string name="dashboard_nearest_no_stations_found">No stations found</string>
     <string name="dashboard_nearest_no_station_message">We couldn\'t locate the nearest station at the moment.</string>
     <string name="dashboard_nearest_error_title">Something went wrong</string>
@@ -193,4 +192,7 @@
     <string name="profile_faq_get_help_title">Get Help</string>
     <string name="profile_top_questions">Top Questions</string>
     <string name="profile_get_help_footer">Need help? Get in touch with us.</string>
+    <string name="customer_support_email">custsvs@suncor.com</string>
+    <string name="profile_get_help_call">Call</string>
+    <string name="profile_get_help_email">Email</string>
 </resources>
