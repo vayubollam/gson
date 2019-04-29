@@ -42,15 +42,6 @@ public class SessionAwareActivity extends DaggerAppCompatActivity {
         sessionManager.checkLoginState();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(loginRequiredReceiver);
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(loginReceiver);
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(logoutReceiver);
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(errorReceiver);
-    }
-
     protected boolean isLoggedIn() {
         return currentLoginStatus;
     }
