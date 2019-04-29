@@ -36,7 +36,7 @@
     <string name="login_email_field_label">Courriel</string>
     <string name="login_password_field">Mot de passe</string>
     <string name="station_hours_list_title">Heures</string>
-    <string name="safety_message">N’oubliez pas d’agir de façon responsable. N\'utilisez pas votre téléphone en conduisant!</string>
+    <string name="safety_message">N’oubliez pas d’agir de façon responsable. N\'utilisez pas votre téléphone en conduisant.</string>
     <string name="login_forgot_password_button">Mot de passe oublié</string>
     <string name="login_email_field_error">Veuillez entrer une adresse de courriel</string>
     <string name="login_password_field_error">Le mot de passe est requis</string>
@@ -63,7 +63,7 @@
     <string name="ok">OK</string>
     <string name="error">Erreur</string>
     <string name="login_invalid_credentials_reset_password">Réinitialisez votre mot de passe</string>
-    <string name="drive_safely">Conduisez de façon sécuritaire</string>
+    <string name="drive_safely">CONDUISEZ DE FAÇON SÉCURITAIRE</string>
     <string name="login_soft_lock_alert_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
     <string name="favourites_add_station_button">Ajouter un établissement</string>
     <string name="login_invalid_credentials_dialog_1st_message">L\'adresse courriel ou le mot de passe que vous avez entré n\'est pas correct. Veuillez réessayer.</string>
