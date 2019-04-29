@@ -1,11 +1,9 @@
 package suncor.com.android.ui.home.profile.help;
 
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextPaint;
 import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +13,13 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFaqresponseBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.ui.common.SuncorURLSpan;
 
 public class FAQResponse extends DaggerFragment {
     public static final String FAQ_RESPONSE_TAG = "faq_response";
@@ -50,7 +48,7 @@ public class FAQResponse extends DaggerFragment {
             int start = s.getSpanStart(span);
             int end = s.getSpanEnd(span);
             s.removeSpan(span);
-            span = new SuncorURLSpan(span.getURL());
+            span = new SuncorURLSpan(span.getURL(), getContext());
             s.setSpan(span, start, end, 0);
         }
         binding.answerTxt.setText(s);
@@ -58,19 +56,5 @@ public class FAQResponse extends DaggerFragment {
         binding.navigationButton.setOnClickListener(v -> getFragmentManager().popBackStack());
     }
 
-    private class SuncorURLSpan extends android.text.style.URLSpan {
 
-        SuncorURLSpan(String url) {
-            super(url);
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            super.updateDrawState(ds);
-            ds.setUnderlineText(false);
-            Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.gibson_semibold);
-            ds.setTypeface(typeface);
-            ds.setColor(getResources().getColor(R.color.red));
-        }
-    }
 }
