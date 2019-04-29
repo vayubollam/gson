@@ -16,6 +16,7 @@ import java.util.zip.GZIPInputStream;
 
 import javax.inject.Inject;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -61,10 +62,7 @@ public class MFPRequestInterceptor implements Interceptor {
                         mainHandler.post(() -> sessionManager.logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories
                             if (result.status == Resource.Status.SUCCESS) {
-                                Intent intent = new Intent(application, HomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN);
-                                application.startActivity(intent);
+                                LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(HomeActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN));
                             }
                         }));
                     }
