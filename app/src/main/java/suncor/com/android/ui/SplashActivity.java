@@ -56,16 +56,17 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (application.isSplashShown()) {
+            openHomeActivity();
+            return;
+        }
+
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().getDecorView()
                 .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         sessionManager.checkLoginState();
 
-        if (application.isSplashShown()) {
-            openHomeActivity();
-            return;
-        }
         setContentView(R.layout.activity_splash);
         backgroundImage = findViewById(R.id.img_splash_full_screen);
         imageRetail = findViewById(R.id.img_retail);

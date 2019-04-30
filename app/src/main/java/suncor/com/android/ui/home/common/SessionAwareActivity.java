@@ -39,7 +39,6 @@ public class SessionAwareActivity extends DaggerAppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        sessionManager.checkLoginState();
     }
 
     protected boolean isLoggedIn() {
