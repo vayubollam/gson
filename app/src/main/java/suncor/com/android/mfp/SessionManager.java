@@ -58,6 +58,7 @@ public class SessionManager implements SessionChangeListener {
 
     @Inject
     SuncorApplication application;
+
     private int rewardedPoints = -1;
 
     @Inject
@@ -80,6 +81,7 @@ public class SessionManager implements SessionChangeListener {
             @Override
             public void onSuccess() {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+                challengeHandler.clearSavedCredentials();
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -203,8 +205,9 @@ public class SessionManager implements SessionChangeListener {
     @Override
     public void onLoginSuccess(Profile profile) {
         Timber.d("login succeeded");
-        if (loginOngoing)
+        if (loginOngoing) {
             userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+        }
         if (!profile.equals(this.profile)) {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);
