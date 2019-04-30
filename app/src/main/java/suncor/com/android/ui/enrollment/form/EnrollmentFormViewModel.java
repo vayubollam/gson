@@ -87,7 +87,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                 temp.setValue(Resource.success(EnrollmentsApi.EmailState.UNCHECKED));
                 return temp;
             } else {
-                return Transformations.map(enrollmentsApi.checkEmail(emailInputField.getText()), (r) -> {
+                return Transformations.map(enrollmentsApi.checkEmail(emailInputField.getText(), cardStatus != null ? cardStatus.getCardNumber() : null), (r) -> {
                     //to avoid further checks, save the state to the email field
                     if (r.status != Resource.Status.LOADING) {
                         emailInputField.setVerificationState(EmailInputField.VerificationState.CHECKED);

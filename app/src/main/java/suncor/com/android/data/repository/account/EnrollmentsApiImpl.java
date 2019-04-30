@@ -69,7 +69,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
     }
 
     @Override
-    public LiveData<Resource<EmailState>> checkEmail(String email) {
+    public LiveData<Resource<EmailState>> checkEmail(String email, String petroCanadaId) {
         Timber.d("validating email: " + email);
         MutableLiveData<Resource<EmailState>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
@@ -77,6 +77,9 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
             URI adapterPath = new URI(ADAPTER_PATH.concat("/email-validation"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.addHeader("x-email", email);
+            if (petroCanadaId != null) {
+                request.addHeader("x-petro-points-id", petroCanadaId);
+            }
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {

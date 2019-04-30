@@ -11,7 +11,7 @@ import suncor.com.android.model.account.SecurityQuestion;
 public interface EnrollmentsApi {
     LiveData<Resource<Integer>> registerAccount(NewEnrollment account);
 
-    LiveData<Resource<EmailState>> checkEmail(String email);
+    LiveData<Resource<EmailState>> checkEmail(String email, String petroCanadaId);
 
     LiveData<Resource<ArrayList<SecurityQuestion>>> fetchSecurityQuestions();
 
