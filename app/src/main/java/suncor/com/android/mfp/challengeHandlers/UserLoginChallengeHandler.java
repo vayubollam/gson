@@ -18,6 +18,7 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.utilities.KeyStoreStorage;
 import suncor.com.android.utilities.Timber;
 
 /**
@@ -33,12 +34,18 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private static final String ERROR_CODE = "errorCode";
     private static final String PUBWEB = "pubWeb";
     private static final String RETRY_TIMEOUT = "retryTimeout";
+    private static final String CREDENTIALS_KEY = "credentials";
 
     private boolean isChallenged = false;
     private SessionChangeListener listener;
 
+    private JSONObject credentials;
+
     @Inject
     SuncorApplication application;
+
+    @Inject
+    KeyStoreStorage keyStoreStorage;
 
     @Inject
     public UserLoginChallengeHandler() {
@@ -52,9 +59,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         try {
             isChallenged = true;
             if (jsonObject.has("useCase")) {
+                clearSavedCredentials();
                 String errorCode = jsonObject.getString(ERROR_CODE);
                 JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
-
                 switch (errorCode) {
                     case ErrorCodes.ERR_ACCOUNT_BAD_PASSWORD:
                         if (pubWebResponse.has(REMAINING_ATTEMPTS)) {
@@ -79,8 +86,15 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 }
             } else {
                 //Which means the token is either invalid or has expired
-                Timber.d("Challenge without a useCase, user either is not logged in, or token expired");
-                listener.onTokenInvalid();
+                String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
+                if (savedCredentials != null) {
+                    Timber.d("Challenge without a useCase, try login using saved credentials");
+                    JSONObject credentials = new JSONObject(savedCredentials);
+                    login(credentials);
+                } else {
+                    Timber.d("Challenge without a useCase, user either is not logged in, or token expired");
+                    listener.onTokenInvalid();
+                }
             }
         } catch (JSONException e) {
             Timber.e(e, "parsing challenge response failed");
@@ -105,6 +119,10 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         isChallenged = false;
         try {
             //Save the current user
+            if (credentials != null) {
+                //save credentials using KeyStore
+                keyStoreStorage.store(CREDENTIALS_KEY, credentials.toString());
+            }
             String profile = identity.getJSONObject("user").getString("attributes");
             listener.onLoginSuccess(new Gson().fromJson(profile, Profile.class));
         } catch (JSONException e) {
@@ -113,6 +131,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     }
 
     public void login(JSONObject credentials) {
+        this.credentials = credentials;
         if (isChallenged) {
             submitChallengeAnswer(credentials);
         } else {
@@ -142,5 +161,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     public void setSessionChangeListener(SessionChangeListener sessionManager) {
         listener = sessionManager;
+    }
+
+    public void clearSavedCredentials() {
+        keyStoreStorage.remove(CREDENTIALS_KEY);
     }
 }

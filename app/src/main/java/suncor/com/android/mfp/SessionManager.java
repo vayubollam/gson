@@ -3,14 +3,18 @@ package suncor.com.android.mfp;
 import android.content.Intent;
 
 import com.google.gson.Gson;
-import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLLogoutResponseListener;
-import com.worklight.wlclient.auth.AccessToken;
+import com.worklight.wlclient.api.WLResourceRequest;
+import com.worklight.wlclient.api.WLResponse;
+import com.worklight.wlclient.api.WLResponseListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -58,6 +62,10 @@ public class SessionManager implements SessionChangeListener {
 
     @Inject
     SuncorApplication application;
+
+    @Inject
+    Gson gson;
+
     private int rewardedPoints = -1;
 
     @Inject
@@ -80,6 +88,7 @@ public class SessionManager implements SessionChangeListener {
             @Override
             public void onSuccess() {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+                challengeHandler.clearSavedCredentials();
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -120,22 +129,28 @@ public class SessionManager implements SessionChangeListener {
 
     public void checkLoginState() {
         Timber.d("Checking login status");
-        authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
-            @Override
-            public void onSuccess(AccessToken accessToken) {
-                Timber.d("Access token received, user is logged in");
-                loginState.postValue(LoginState.LOGGED_IN);
-            }
 
-            @Override
-            public void onFailure(WLFailResponse wlFailResponse) {
-                //TODO handle this according to errors, an error due to connection error shouldn't clear login state
-                Timber.w("Access token cannot be retrieved");
-                Timber.w(wlFailResponse.toString());
-                loginState.postValue(LoginState.LOGGED_OUT);
-                setProfile(null);
-            }
-        });
+        try {
+            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    Timber.d("Profile received, response: " + wlResponse.getResponseText());
+                    Profile profile = gson.fromJson(wlResponse.getResponseText(), Profile.class);
+                    onLoginSuccess(profile);
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.w("Access token cannot be retrieved");
+                    Timber.w(wlFailResponse.toString());
+                    loginState.postValue(LoginState.LOGGED_OUT);
+                    setProfile(null);
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e);
+        }
     }
 
     public void cancelLogin() {
@@ -203,8 +218,9 @@ public class SessionManager implements SessionChangeListener {
     @Override
     public void onLoginSuccess(Profile profile) {
         Timber.d("login succeeded");
-        if (loginOngoing)
+        if (loginOngoing) {
             userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+        }
         if (!profile.equals(this.profile)) {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);
