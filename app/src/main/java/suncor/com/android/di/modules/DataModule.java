@@ -13,6 +13,8 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.data.repository.account.EnrollmentsApiImpl;
+import suncor.com.android.data.repository.cards.CardsApi;
+import suncor.com.android.data.repository.cards.CardsApiImpl;
 import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.data.repository.favourite.FavouriteRepositoryImpl;
 import suncor.com.android.data.repository.stations.StationsProvider;
@@ -48,6 +50,12 @@ public class DataModule {
     @Singleton
     UsersApi providesUsersApi() {
         return new UsersApiImpl();
+    }
+
+    @Provides
+    @Singleton
+    CardsApi providesCardsRepository(Gson gson) {
+        return new CardsApiImpl(gson);
     }
 
     @Provides

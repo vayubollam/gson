@@ -114,7 +114,11 @@ public class DashboardFragment extends BaseFragment {
         } else {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
         }
-        setStatusBarColor(getResources().getColor(R.color.dashboard_back));
+    }
+
+    @Override
+    protected int getStatusBarColor() {
+        return getResources().getColor(R.color.black_4);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class BaseFragment extends DaggerFragment {
 
     private FragmentManager.OnBackStackChangedListener backStackListener = () -> {
         if (isVisible()) {
-            setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            setStatusBarColor();
         }
     };
 
@@ -36,16 +36,19 @@ public class BaseFragment extends DaggerFragment {
     @Override
     public void onStart() {
         super.onStart();
-        setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        setStatusBarColor();
         getView().requestApplyInsets();
     }
 
+    protected int getStatusBarColor() {
+        return getResources().getColor(R.color.colorPrimaryDark);
+    }
 
     protected boolean isStatusBarTransparent() {
         return false;
     }
 
-    protected void setStatusBarColor(int statusBarColor) {
+    protected void setStatusBarColor() {
         if (isStatusBarTransparent()) {
             getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
             getActivity().getWindow()
@@ -53,7 +56,7 @@ public class BaseFragment extends DaggerFragment {
                     .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         } else {
-            getActivity().getWindow().setStatusBarColor(statusBarColor);
+            getActivity().getWindow().setStatusBarColor(getStatusBarColor());
             getActivity().getWindow()
                     .getDecorView()
                     .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

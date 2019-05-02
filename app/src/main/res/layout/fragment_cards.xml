@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="suncor.com.android.ui.home.cards.CardsViewModel.ViewState" />
+
+        <import type="suncor.com.android.utilities.TimeUtils" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.home.cards.CardsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_4">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_4"
+            app:elevation="0dp"
+            app:expandable="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationVisibility="false"
+            app:rightButtonIcon="@drawable/ic_add" />
+
+        <suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="16dp"
+                        android:lineSpacingMultiplier="1.31"
+                        android:text="@string/cards_fragment_title"
+                        android:textAppearance="@style/Title1" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:visibleGone="@{vm.viewState != ViewState.FAILED &amp;&amp; vm.viewState != ViewState.LOADING}">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/petro_points_card"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/petro_points_card"
+                            app:layout_constraintDimensionRatio="1.58"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
+                            android:fontFamily="@font/gibson_semibold"
+                            android:text="@string/cards_fragment_you_have"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toTopOf="@id/petro_points_balance"
+                            app:layout_constraintEnd_toEndOf="@id/petro_points_balance"
+                            app:layout_constraintStart_toStartOf="@id/petro_points_balance" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/petro_points_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.petroPointsCard != null ? context.getString(vm.petroPointsCard.balanceTemplate, vm.petroPointsCard.balanceValue): ``}"
+                            android:textColor="@color/white"
+                            android:textSize="36sp"
+                            app:fontFamily="@font/gibson_semibold"
+                            app:layout_constraintBottom_toBottomOf="@id/petro_points_card"
+                            app:layout_constraintEnd_toEndOf="@id/petro_points_card"
+                            app:layout_constraintStart_toStartOf="@id/petro_points_card"
+                            app:layout_constraintTop_toTopOf="@id/petro_points_card"
+                            app:layout_constraintVertical_bias="0.6"
+                            tools:text="100,500 points" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/petro_points_balance_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:fontFamily="@font/gibson_semibold"
+                            android:text="@{vm.petroPointsCard != null ? context.getString(vm.petroPointsCard.monetaryBalanceTemplate, vm.petroPointsCard.monetaryBalanceValue): ``}"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="@id/petro_points_balance"
+                            app:layout_constraintStart_toStartOf="@id/petro_points_balance"
+                            app:layout_constraintTop_toBottomOf="@id/petro_points_balance"
+                            tools:text="or $100 off" />
+
+                        <FrameLayout
+                            android:id="@+id/petro_canada_card_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="20dp"
+                            android:paddingEnd="16dp"
+                            app:layout_constraintTop_toBottomOf="@id/petro_points_card">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone"
+                                app:visibleGone="@{!vm.petroCanadaCards.isEmpty() || !vm.partnerCards.isEmpty()}">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/petro_canada_cards_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/cards_fragment_petrocanada_cards_header"
+                                    android:textAppearance="@style/Title1"
+                                    app:visibleGone="@{!vm.petroCanadaCards.isEmpty()}" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/petro_canada_cards_list"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    app:layout_constraintTop_toBottomOf="@id/petro_canada_cards_title"
+                                    app:visibleGone="@{!vm.petroCanadaCards.isEmpty()}"
+                                    tools:listitem="@layout/petro_canada_card_item" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/partner_cards_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:text="@string/cards_fragment_partner_cards_header"
+                                    android:textAppearance="@style/Title1"
+                                    app:visibleGone="@{!vm.partnerCards.isEmpty()}" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/partner_cards_list"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    app:layout_constraintTop_toBottomOf="@id/partner_cards_title"
+                                    app:visibleGone="@{!vm.partnerCards.isEmpty()}"
+                                    tools:listitem="@layout/petro_canada_card_item" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                app:visibleGone="@{vm.petroCanadaCards.isEmpty()}">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/cards_fragment_add_card_header"
+                                    android:textAppearance="@style/Title1" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:gravity="center"
+                                    android:lineSpacingMultiplier="1.57"
+                                    android:paddingStart="4dp"
+                                    android:paddingEnd="4dp"
+                                    android:text="@string/cards_fragment_add_card_description"
+                                    android:textAppearance="@style/Caption1" />
+
+                                <Button
+                                    style="@style/FilledButton.Red.M"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:text="@string/cards_fragment_add_card_button" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:layout_marginBottom="32dp"
+                            android:text="@{vm.dateOfUpdate != null ? @string/cards_fragment_update_date(TimeUtils.formatDate(vm.dateOfUpdate), TimeUtils.formatTime(vm.dateOfUpdate)) : ``}"
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_40"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/petro_canada_card_layout" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:visibleGone="@{vm.viewState == ViewState.LOADING}"
+                        tools:visibility="gone">
+
+                        <ProgressBar
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="invisible"
+                        app:visibleGone="@{vm.viewState == ViewState.FAILED}">
+
+                        <include
+                            android:id="@+id/error_layout"
+                            layout="@layout/layout_error" />
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

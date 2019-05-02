@@ -16,6 +16,12 @@
         android:label="StationsFragment"
         tools:layout="@layout/fragment_stations" />
     <keep_state_fragment
+        android:id="@+id/cards_tab"
+        android:name="suncor.com.android.ui.home.cards.CardsContainerFragment"
+        android:label="CardsContainerFragment"
+        tools:layout="@layout/fragment_stations" />
+
+    <keep_state_fragment
         android:id="@+id/profile_tab"
         android:name="suncor.com.android.ui.home.profile.ProfileContainerFragment"
         android:label="ProfileContainerFragment" />
