@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_phone_label"
                     android:inputType="phone"
-                    android:maxLength="14"
+                    android:maxLength="12"
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"
                     app:text="@={vm.phoneField.text}"
