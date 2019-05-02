@@ -1,20 +1,20 @@
 package suncor.com.android.ui.home.cards;
 
-import android.annotation.SuppressLint;
-
 import java.text.NumberFormat;
 
+import androidx.annotation.StringRes;
 import suncor.com.android.R;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 
 public class PetroPointsCard {
+    @StringRes
     private int balanceTemplate;
     private String balanceValue;
+    @StringRes
     private int monetaryBalanceTemplate;
     private String monetaryBalanceValue;
 
-    @SuppressLint("DefaultLocale")
     public PetroPointsCard(CardDetail cardDetail) {
         if (cardDetail.getCardType() != CardType.PPTS) {
             throw new IllegalArgumentException("this constructor is only PPTS for cards");
@@ -24,7 +24,7 @@ public class PetroPointsCard {
         numberFormat.setGroupingUsed(true);
         balanceValue = numberFormat.format(cardDetail.getBalance());
         monetaryBalanceTemplate = R.string.cards_ppts_monetary_balance_template;
-        monetaryBalanceValue = String.format("$%d", cardDetail.getBalance() / 1000);
+        monetaryBalanceValue = String.valueOf(cardDetail.getBalance() / 1000);
     }
 
     public int getBalanceTemplate() {

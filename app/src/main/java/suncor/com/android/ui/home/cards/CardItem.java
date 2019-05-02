@@ -2,14 +2,20 @@ package suncor.com.android.ui.home.cards;
 
 import android.graphics.Color;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.StringRes;
 import suncor.com.android.R;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 
 public class CardItem {
+    @StringRes
     private int title;
+    @StringRes
     private int balanceTemplate;
+    @ColorInt
     private int backgroundColor;
+    @ColorInt
     private int textColor = Color.WHITE;
     private String balanceValue;
     private CardType cardType;

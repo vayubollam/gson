@@ -10,7 +10,7 @@
             type="suncor.com.android.ui.home.cards.CardItem" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/petro_canada_cards_height"
         android:background="@drawable/petro_canada_card_background"
@@ -18,36 +18,39 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="@drawable/petro_canada_card_foreground"
-        android:orientation="vertical"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/petro_canada_cards_padding"
         app:elevation="4dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/card_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="1"
             android:text="@{item.title}"
             android:textColor="@{item.textColor}"
             android:textSize="14sp"
             app:fontFamily="@font/gibson_regular"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="Fuel Savings Reward" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/card_balance"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:lines="1"
             android:text="@{item.balanceValue != null? context.getString(item.balanceTemplate, item.balanceValue) : ``}"
             android:textColor="@{item.textColor}"
             android:textSize="16sp"
             app:fontFamily="@font/gibson_semibold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="100 Litres" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

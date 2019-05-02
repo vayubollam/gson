@@ -14,28 +14,32 @@
             type="suncor.com.android.ui.home.cards.CardsViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_4">
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black_4"
+            app:elevation="0dp"
             app:expandable="false"
+            app:layout_constraintTop_toTopOf="parent"
             app:navigationVisibility="false"
-            app:rightButtonIcon="@drawable/ic_add"
-            app:statusBarScrim="@color/black_4" />
+            app:rightButtonIcon="@drawable/ic_add" />
 
         <suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?actionBarSize"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
@@ -244,5 +248,5 @@
             </androidx.core.widget.NestedScrollView>
         </suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

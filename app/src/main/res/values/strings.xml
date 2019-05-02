@@ -215,18 +215,18 @@
     <string name="cards_sp_label">Season Pass</string>
     <string name="cards_sp_balance_template_plural">%s days</string>
     <string name="cards_sp_balance_template_singular">%s day</string>
-    <string name="cards_wag_label"><![CDATA[Wash & Go]]></string>
     <string name="cards_wag_balance_template_plural">%s washes</string>
     <string name="cards_wag_balance_template_singular">%s wash</string>
 
     <string name="cards_partners_more_balance">Collecting More Rewards points%s</string>
     <string name="cards_ppts_balance_template">%s points</string>
-    <string name="cards_ppts_monetary_balance_template">or %s off</string>
-    <string name="cards_fragment_add_card_header">Add your card or partners.</string>
-    <string name="cards_fragment_add_card_description">Register your Petro-Canada cards to protect your balance and access key features. Plus, link your Petro-Points partner cards to earn more with every purchase.</string>
+    <string name="cards_ppts_monetary_balance_template">or $%s off</string>
+    <string name="cards_fragment_add_card_header">Add your card</string>
+    <string name="cards_fragment_add_card_description">Register your Petro-Canada cards to protect your balance and access key features.</string>
     <string name="cards_fragment_add_card_button">Add a card</string>
     <string name="cards_fragment_try_again">try again</string>
     <string name="cards_fragment_you_have">You have</string>
     <string name="msg_cm003">Couldn\'t update your balance</string>
     <string name="cards_fragment_update_date">As of %1s at %2s</string>
+    <string name="cards_wag_label">Wash &amp; Go</string>
 </resources>

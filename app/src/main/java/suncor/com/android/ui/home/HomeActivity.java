@@ -74,6 +74,7 @@ public class HomeActivity extends SessionAwareActivity {
 
         if (!isLoggedIn()) {
             bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
+            bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
         }
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
@@ -100,6 +101,7 @@ public class HomeActivity extends SessionAwareActivity {
         }
 
         bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
+        bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
     }
 
     @Override
@@ -112,6 +114,7 @@ public class HomeActivity extends SessionAwareActivity {
         }
 
         bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
+        bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(true);
     }
 
     public NavController getNavController() {

@@ -1,7 +1,9 @@
 package suncor.com.android.ui.home.cards;
 
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,9 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
@@ -30,11 +35,14 @@ public class CardsFragment extends BaseFragment implements SwipeRefreshLayout.On
     ViewModelFactory viewModelFactory;
     private CardsListAdapter petroCanadaCardsAdapter;
     private CardsListAdapter partnerCardsAdapter;
+    private float appBarElevation;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter();
         partnerCardsAdapter = new CardsListAdapter();
@@ -52,6 +60,7 @@ public class CardsFragment extends BaseFragment implements SwipeRefreshLayout.On
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,8 +78,26 @@ public class CardsFragment extends BaseFragment implements SwipeRefreshLayout.On
         binding.partnerCardsList.addItemDecoration(listDecorator);
 
         binding.refreshLayout.setColorSchemeResources(R.color.red);
-
         binding.refreshLayout.setOnRefreshListener(this);
+
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int[] headerLocation = new int[2];
+            int[] appBarLocation = new int[2];
+
+            binding.header.getLocationInWindow(headerLocation);
+            binding.appBar.getLocationInWindow(appBarLocation);
+            int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
+            int headerBottom = headerLocation[1] + binding.header.getMeasuredHeight() - binding.header.getPaddingBottom();
+
+            if (headerBottom <= appBarBottom) {
+                binding.appBar.setTitle(binding.header.getText());
+                ViewCompat.setElevation(binding.appBar, appBarElevation);
+                binding.appBar.findViewById(R.id.collapsed_title).setAlpha(Math.min(1, (float) (appBarBottom - headerBottom) / 100));
+            } else {
+                binding.appBar.setTitle("");
+                ViewCompat.setElevation(binding.appBar, 0);
+            }
+        });
 
         return binding.getRoot();
     }

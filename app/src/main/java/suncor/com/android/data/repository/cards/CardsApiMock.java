@@ -17,7 +17,7 @@ public class CardsApiMock implements CardsApi {
         result.postValue(Resource.loading());
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(500);
+                Thread.sleep(2000);
                 ArrayList<CardDetail> cards = new ArrayList<>();
                 Gson gson = new Gson();
                 cards.addAll(Arrays.asList(gson.fromJson(responseJson, CardDetail[].class)));

@@ -40,30 +40,34 @@ public class CardsRepository {
                     return resource;
                 }
 
-                boolean balanceUpdateFailed = true;
+                boolean balanceUpdated = false;
+                boolean hasPetroCanadaCards = false;
                 for (CardDetail newCard : resource.data) {
-                    CardDetail oldCard = findCardByCardNumber(cachedCards, newCard.getCardNumber());
+                    CardDetail oldCard = findCardIn(cachedCards, newCard);
                     if (newCard.getCardCategory() != CardDetail.CardCategory.PETRO_CANADA) {
                         //the balance update is only for petro-canada cards
                         cachedCards.remove(oldCard);
                         cachedCards.add(newCard);
-                    } else if (newCard.getBalance() != CardDetail.INVALID_BALANCE) {
-                        balanceUpdateFailed = false;
-                        cachedCards.remove(oldCard);
-                        cachedCards.add(newCard);
-                    } else if (oldCard == null) {
-                        //if the card has just been added, we will add it even if has no balance
-                        cachedCards.add(newCard);
+                    } else {
+                        hasPetroCanadaCards = true;
+                        if (newCard.getBalance() != CardDetail.INVALID_BALANCE) {
+                            balanceUpdated = true;
+                            cachedCards.remove(oldCard);
+                            cachedCards.add(newCard);
+                        } else if (oldCard == null) {
+                            //if the card has just been added, we will add it even if has no balance
+                            cachedCards.add(newCard);
+                        }
                     }
                 }
                 //clearing old cards
                 for (int i = cachedCards.size() - 1; i >= 0; i--) {
-                    if (findCardByCardNumber(resource.data, cachedCards.get(i).getCardNumber()) == null) {
+                    if (findCardIn(resource.data, cachedCards.get(i)) == null) {
                         cachedCards.remove(i);
                     }
                 }
                 timeOfLastUpdate = Calendar.getInstance();
-                if (balanceUpdateFailed) {
+                if (hasPetroCanadaCards && !balanceUpdated) {
                     return Resource.error(BALANCE_UPDATE_FAILED, cachedCards);
                 } else {
                     return Resource.success(cachedCards);
@@ -77,9 +81,11 @@ public class CardsRepository {
         return timeOfLastUpdate;
     }
 
-    private static CardDetail findCardByCardNumber(ArrayList<CardDetail> cards, String cardNumber) {
+    private static CardDetail findCardIn(ArrayList<CardDetail> cards, CardDetail otherCard) {
         for (CardDetail card : cards) {
-            if (card.getCardNumber().equals(cardNumber)) {
+            if (card.getCardNumber() != null && card.getCardNumber().equals(otherCard.getCardNumber())) {
+                return card;
+            } else if (card.getCardNumber() == null && otherCard.getCardNumber() == null && card.getCardType() == otherCard.getCardType()) {
                 return card;
             }
         }
