@@ -13,10 +13,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerFragment;
-import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFaqresponseBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.SuncorURLSpan;
@@ -32,7 +30,7 @@ public class FAQResponse extends DaggerFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         faqViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(FAQViewModel.class);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_faqresponse, container, false);
+        binding = FragmentFaqresponseBinding.inflate(inflater, container, false);
         binding.setQuestion(faqViewModel.getSelectedQuestion());
         return binding.getRoot();
     }
@@ -53,7 +51,7 @@ public class FAQResponse extends DaggerFragment {
         }
         binding.answerTxt.setText(s);
         binding.okButton.setOnClickListener(v -> getFragmentManager().popBackStack());
-        binding.navigationButton.setOnClickListener(v -> getFragmentManager().popBackStack());
+        binding.appBar.setNavigationOnClickListener(v -> getFragmentManager().popBackStack());
     }
 
 

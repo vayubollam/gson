@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,20 +17,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
-import suncor.com.android.databinding.FaqFragmentBinding;
+import suncor.com.android.databinding.FragmentFaqBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Question;
 
 public class FAQFragment extends DaggerFragment {
     public static final String FAQ_FRAGMENT_TAG = "FAQ_FRAGMENT";
-    private FaqFragmentBinding binding;
+    private FragmentFaqBinding binding;
     private FAQViewModel faqViewModel;
     @Inject
     ViewModelFactory viewModelFactory;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.faq_fragment, container, false);
+        binding = FragmentFaqBinding.inflate(inflater, container, false);
         faqViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(FAQViewModel.class);
         return binding.getRoot();
     }

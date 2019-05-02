@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,32 +10,26 @@
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:clipToPadding="false"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
+        android:clipToPadding="false"
         android:orientation="vertical"
         tools:context="suncor.com.android.ui.home.profile.help.FAQResponse">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/navigation_button"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:background="@drawable/circular_ripple"
-            android:minWidth="44dp"
-            android:minHeight="44dp"
-            android:padding="0dp"
-            android:src="@drawable/ic_back_red" />
+            app:elevation="0dp"
+            app:expandable="false" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/back_button"
-            android:layout_marginTop="26dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
             android:layout_marginEnd="16dp"
             android:lineSpacingMultiplier="1.36"
             android:text="@{question.question}"
@@ -46,13 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginRight="16dp"
+            android:autoLink="web"
+            android:clickable="true"
             android:lineSpacingMultiplier="1.44"
             android:textAlignment="textStart"
             android:textAppearance="@style/Body"
-            android:autoLink="web"
-            android:clickable="true"
             tools:text="You can claim missing points by contacting Customer Service at 1-800-668-0220 with the following conditions:" />
 
         <androidx.legacy.widget.Space
@@ -64,11 +59,11 @@
             android:id="@+id/ok_button"
             style="@style/OutlinedButton.L"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:layout_gravity="bottom"
             android:text="OK" />
     </LinearLayout>
 </layout>

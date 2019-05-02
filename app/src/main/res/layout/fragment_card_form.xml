@@ -11,7 +11,7 @@
             type="suncor.com.android.ui.enrollment.cardform.CardFormViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,17 +19,14 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
-            app:expandable="false"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:title="@string/enrollment_cardform_header" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:fillViewport="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar">
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/main_layout"
@@ -38,28 +35,17 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:lineSpacingMultiplier="1.31"
-                    android:text="@string/enrollment_cardform_header"
-                    android:textAppearance="@style/Title1"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/card_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:hint="@string/enrollment_cardform_card_label"
                     android:inputType="phone"
                     android:maxLength="19"
                     app:error="@{vm.cardNumberField.error}"
                     app:focusChanged="@{(v,b) -> vm.cardNumberField.setHasFocus(b)}"
                     app:layout_constraintBottom_toTopOf="@id/postalcode_input"
-                    app:layout_constraintTop_toBottomOf="@id/header"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
                     app:text="@={vm.cardNumberField.text}" />
 
@@ -103,8 +89,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
             android:background="@color/white"
+            android:clickable="true"
+            android:visibility="gone"
             app:visibleGone="@{vm.verifyCard.status == Resource.Status.LOADING | vm.verifyCard.status == Resource.Status.SUCCESS}">
 
             <TextView
@@ -138,17 +125,17 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
+                android:src="@drawable/ic_check"
                 android:tint="@color/red"
-                app:visibleGone="@{vm.verifyCard.status == Resource.Status.SUCCESS}"
-                android:src="@drawable/ic_check" />
+                app:visibleGone="@{vm.verifyCard.status == Resource.Status.SUCCESS}" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:layout_centerInParent="true"
                 android:src="@drawable/circular_ring"
-                app:visibleGone="@{vm.verifyCard.status == Resource.Status.SUCCESS}"
-                android:layout_centerInParent="true" />
+                app:visibleGone="@{vm.verifyCard.status == Resource.Status.SUCCESS}" />
         </RelativeLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

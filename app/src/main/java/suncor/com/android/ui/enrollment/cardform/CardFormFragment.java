@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -44,7 +41,6 @@ public class CardFormFragment extends DaggerFragment {
 
 
     private CardFormViewModel viewModel;
-    private float appBarElevation;
     @Inject
     ViewModelFactory viewModelFactory;
     FragmentCardFormBinding binding;
@@ -57,7 +53,6 @@ public class CardFormFragment extends DaggerFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardFormViewModel.class);
-        appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
 
         viewModel.verifyCard.observe(this, cardStatusResource -> {
             if (cardStatusResource.status == Resource.Status.LOADING) {
@@ -117,15 +112,6 @@ public class CardFormFragment extends DaggerFragment {
         binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener((v) -> {
             Navigation.findNavController(getView()).navigateUp();
-        });
-        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY > binding.appBar.getBottom()) {
-                binding.appBar.setTitle(getString(R.string.enrollment_cardform_header));
-                ViewCompat.setElevation(binding.appBar, appBarElevation);
-            } else {
-                binding.appBar.setTitle("");
-                ViewCompat.setElevation(binding.appBar, 0);
-            }
         });
 
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
