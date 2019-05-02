@@ -129,7 +129,10 @@ public class SessionManager implements SessionChangeListener {
 
     public void checkLoginState() {
         Timber.d("Checking login status");
+        retrieveProfile();
+    }
 
+    private void retrieveProfile() {
         try {
             WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
             request.send(new WLResponseListener() {
@@ -137,7 +140,8 @@ public class SessionManager implements SessionChangeListener {
                 public void onSuccess(WLResponse wlResponse) {
                     Timber.d("Profile received, response: " + wlResponse.getResponseText());
                     Profile profile = gson.fromJson(wlResponse.getResponseText(), Profile.class);
-                    onLoginSuccess(profile);
+                    setProfile(profile);
+                    loginState.postValue(LoginState.LOGGED_IN);
                 }
 
                 @Override
@@ -186,7 +190,7 @@ public class SessionManager implements SessionChangeListener {
             userLocalSettings.removeKey(SHARED_PREF_USER);
         } else {
             this.profile = profile;
-            userLocalSettings.setString(SHARED_PREF_USER, new Gson().toJson(profile));
+            userLocalSettings.setString(SHARED_PREF_USER, gson.toJson(profile));
             accountState = AccountState.REGULAR_LOGIN;
         }
     }
@@ -218,9 +222,10 @@ public class SessionManager implements SessionChangeListener {
     @Override
     public void onLoginSuccess(Profile profile) {
         Timber.d("login succeeded");
-        if (loginOngoing) {
-            userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+        if (!loginOngoing) {
+            return;
         }
+        userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
         if (!profile.equals(this.profile)) {
             Timber.d("user's email: " + profile.getEmail());
             setProfile(profile);
@@ -229,6 +234,8 @@ public class SessionManager implements SessionChangeListener {
             }
             loginState.postValue(LoginState.LOGGED_IN);
             loginOngoing = false;
+
+            retrieveProfile();
         }
     }
 
