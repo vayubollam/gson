@@ -6,7 +6,7 @@ import suncor.com.android.ui.home.cards.CardsFragment;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
 import suncor.com.android.ui.home.profile.ProfileFragment;
 import suncor.com.android.ui.home.profile.help.FAQFragment;
-import suncor.com.android.ui.home.profile.help.FAQResponse;
+import suncor.com.android.ui.home.profile.help.FAQResponseFragment;
 import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
 import suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment;
@@ -39,5 +39,5 @@ abstract class HomeFragmentsModule {
     abstract FAQFragment contributesFAQFragment();
 
     @ContributesAndroidInjector
-    abstract FAQResponse contributesFAQResponse();
+    abstract FAQResponseFragment contributesFAQResponse();
 }

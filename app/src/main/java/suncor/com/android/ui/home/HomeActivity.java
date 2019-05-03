@@ -116,8 +116,4 @@ public class HomeActivity extends SessionAwareActivity {
         bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
         bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(true);
     }
-
-    public NavController getNavController() {
-        return navController;
-    }
 }

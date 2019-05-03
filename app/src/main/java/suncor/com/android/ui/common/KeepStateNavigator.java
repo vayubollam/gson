@@ -3,6 +3,9 @@ package suncor.com.android.ui.common;
 import android.content.Context;
 import android.os.Bundle;
 
+import java.lang.reflect.Field;
+import java.util.ArrayDeque;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +21,7 @@ public class KeepStateNavigator extends FragmentNavigator {
     private final int containerId;
     private FragmentManager manager;
     private Context context;
+    ArrayDeque<Integer> mBackStack;
 
 
     public KeepStateNavigator(@NonNull Context context, @NonNull FragmentManager manager, int containerId) {
@@ -25,11 +29,23 @@ public class KeepStateNavigator extends FragmentNavigator {
         this.manager = manager;
         this.context = context;
         this.containerId = containerId;
+        try {
+            Field field = this.getClass().getSuperclass().getDeclaredField("mBackStack");
+            field.setAccessible(true);
+            mBackStack = (ArrayDeque<Integer>) field.get(this);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Nullable
     @Override
     public NavDestination navigate(@NonNull Destination destination, @Nullable Bundle args, @Nullable NavOptions navOptions, @Nullable Navigator.Extras navigatorExtras) {
+        if (!destination.getArguments().containsKey("root"))
+            return super.navigate(destination, args, navOptions, navigatorExtras);
+        mBackStack.clear();
         String tag = destination.getLabel().toString();
         FragmentTransaction transaction = manager.beginTransaction();
 
@@ -46,6 +62,8 @@ public class KeepStateNavigator extends FragmentNavigator {
         } else {
             transaction.attach(fragment);
         }
+
+        mBackStack.add(destination.getId());
 
         transaction.setPrimaryNavigationFragment(fragment);
         transaction.setReorderingAllowed(true);
