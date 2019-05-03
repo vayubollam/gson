@@ -27,6 +27,7 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.EmailInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PasswordInputField;
+import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
 import suncor.com.android.utilities.Timber;
@@ -57,7 +58,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField cityField = new InputField(R.string.enrollment_city_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
-    private InputField phoneField = new InputField();
+    private PhoneInputField phoneField = new PhoneInputField(R.string.enrollment_phone_field_invalid_format);
     private ObservableBoolean newsAndOffersField = new ObservableBoolean();
 
     private SecurityQuestion selectedQuestion;
@@ -111,7 +112,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                         cityField.getText(),
                         selectedProvince.getId(),
                         postalCodeField.getText().replace(" ", ""), //Replace the space characters
-                        phoneField.getText().replaceAll("[^\\d]", ""), //Replace all characters except digits
+                        phoneField.getText(),
                         newsAndOffersField.get(),
                         selectedQuestion.getId(),
                         securityAnswerField.getText()
@@ -258,6 +259,10 @@ public class EnrollmentFormViewModel extends ViewModel {
         }
         if (firstItemWithError == -1) {
             //proceed to join
+            if (!phoneField.isValid()) {
+                phoneField.setShowError(true);
+                return -1;
+            }
             join.postValue(Event.newEvent(true));
         }
         return firstItemWithError;
@@ -316,7 +321,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         return postalCodeField;
     }
 
-    public InputField getPhoneField() {
+    public PhoneInputField getPhoneField() {
         return phoneField;
     }
 
@@ -366,6 +371,7 @@ public class EnrollmentFormViewModel extends ViewModel {
             postalCodeField.setText(cardStatus.getAddress().getPostalCode());
             if (cardStatus.getAddress().getPhone() != null) {
                 phoneField.setText(cardStatus.getAddress().getPhone());
+
             }
         } else {
             lastNameField.setText(cardStatus.getUserInfo().getLastName());

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -47,6 +46,7 @@ import suncor.com.android.ui.home.HomeActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
+import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
 
@@ -101,6 +101,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                 }
             }
         });
+
 
         //show and hide autocomplete layout
         viewModel.showAutocompleteLayout.observe(this, (show) -> {
@@ -176,7 +177,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         requiredFields.add(binding.cityInput);
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
-        binding.phoneInput.getEditText().addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher(binding.phoneInput.getEditText()));
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
         binding.provinceInput.setOnClickListener(v -> {
@@ -205,9 +206,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
 
     @Override
     public void onResume() {
-
         super.onResume();
-
     }
 
     @Override
@@ -288,6 +287,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         }
         if (view == binding.streetAddressInput) {
             viewModel.getStreetAddressField().setHasFocus(hasFocus);
+        }
+        if (view == binding.phoneInput) {
+            viewModel.getPhoneField().setHasFocus(hasFocus);
         }
 
     }
