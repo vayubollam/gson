@@ -134,7 +134,7 @@ public class SessionManager implements SessionChangeListener {
 
     private void retrieveProfile() {
         try {
-            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
+            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {

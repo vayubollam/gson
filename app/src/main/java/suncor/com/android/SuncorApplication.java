@@ -18,7 +18,7 @@ import suncor.com.android.utilities.Timber;
 
 public class SuncorApplication extends DaggerApplication {
 
-    public static final int DEFAULT_TIMEOUT = 15_000;
+    public static final int DEFAULT_TIMEOUT = 20_000;
 
 
     private boolean splashShown = false;

@@ -435,13 +435,13 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         int drawable;
         if (isSelected) {
             if (isFavourite) {
-                drawable = R.drawable.ic_pin_favourite_selected;//TODO set it red
+                drawable = R.drawable.ic_pin_favourite_selected;
             } else {
                 drawable = R.drawable.ic_pin_selected;
             }
         } else {
             if (isFavourite) {
-                drawable = R.drawable.ic_pin_favourite;//TODO set it red
+                drawable = R.drawable.ic_pin_favourite;
             } else {
                 drawable = R.drawable.ic_pin;
             }
