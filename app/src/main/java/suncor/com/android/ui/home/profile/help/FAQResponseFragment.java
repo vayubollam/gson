@@ -14,21 +14,20 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.databinding.FragmentFaqresponseBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.SuncorURLSpan;
 
-public class FAQResponse extends DaggerFragment {
-    public static final String FAQ_RESPONSE_TAG = "faq_response";
+public class FAQResponseFragment extends DaggerFragment {
     private FragmentFaqresponseBinding binding;
     private FAQViewModel faqViewModel;
     @Inject
     ViewModelFactory viewModelFactory;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         faqViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(FAQViewModel.class);
         binding = FragmentFaqresponseBinding.inflate(inflater, container, false);
         binding.setQuestion(faqViewModel.getSelectedQuestion());
@@ -50,9 +49,8 @@ public class FAQResponse extends DaggerFragment {
             s.setSpan(span, start, end, 0);
         }
         binding.answerTxt.setText(s);
-        binding.okButton.setOnClickListener(v -> getFragmentManager().popBackStack());
-        binding.appBar.setNavigationOnClickListener(v -> getFragmentManager().popBackStack());
+        binding.okButton.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
     }
-
 
 }

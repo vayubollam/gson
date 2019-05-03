@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
@@ -37,8 +38,6 @@ import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.utilities.LocationUtils;
 
 public class SearchFragment extends DaggerFragment {
-
-    public static final String SEARCH_FRAGMENT_TAG = "Search_Fragment";
     private SearchViewModel viewModel;
     private StationsViewModel parentViewModel;
     private FragmentSearchBinding binding;
@@ -178,7 +177,7 @@ public class SearchFragment extends DaggerFragment {
             imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         } catch (NullPointerException ignored) {
         }
-        getFragmentManager().popBackStack();
+        Navigation.findNavController(getView()).popBackStack();
     }
 
     @Override

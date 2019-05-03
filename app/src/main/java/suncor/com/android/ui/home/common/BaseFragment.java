@@ -3,8 +3,10 @@ package suncor.com.android.ui.home.common;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
@@ -38,6 +40,15 @@ public class BaseFragment extends DaggerFragment {
         super.onStart();
         setStatusBarColor();
         getView().requestApplyInsets();
+    }
+
+    //A hackish solution to this issue: https://issuetracker.google.com/issues/37036000
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        if (!enter) {
+            ViewCompat.setTranslationZ(getView(), -100);
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
     protected int getStatusBarColor() {

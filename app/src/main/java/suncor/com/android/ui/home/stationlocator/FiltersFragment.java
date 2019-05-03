@@ -17,14 +17,12 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFiltersBinding;
 import suncor.com.android.model.station.Station;
 
 public class FiltersFragment extends Fragment {
-
-
-    public static final String FILTERS_FRAGMENT_TAG = "filters-tag";
     private FragmentFiltersBinding binding;
     private HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private StationsViewModel parentViewModel;
@@ -55,7 +53,7 @@ public class FiltersFragment extends Fragment {
                 }
             }
             parentViewModel.setCurrentFilters(filters);
-            getFragmentManager().popBackStack();
+            Navigation.findNavController(getView()).popBackStack();
         });
         binding.clearButton.setOnClickListener((v) -> {
             for (CheckBox checkBox : checkBoxes.values()) {
@@ -63,7 +61,7 @@ public class FiltersFragment extends Fragment {
             }
         });
         binding.appBar.setNavigationOnClickListener((v) -> {
-            getFragmentManager().popBackStack();
+            Navigation.findNavController(getView()).popBackStack();
         });
         return binding.getRoot();
     }

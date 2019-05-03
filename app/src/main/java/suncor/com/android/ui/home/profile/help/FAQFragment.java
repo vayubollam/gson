@@ -9,10 +9,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
@@ -22,7 +20,6 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Question;
 
 public class FAQFragment extends DaggerFragment {
-    public static final String FAQ_FRAGMENT_TAG = "FAQ_FRAGMENT";
     private FragmentFaqBinding binding;
     private FAQViewModel faqViewModel;
     @Inject
@@ -41,7 +38,7 @@ public class FAQFragment extends DaggerFragment {
         super.onViewCreated(view, savedInstanceState);
         binding.questionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.questionsRecycler.setAdapter(new FAQAdapter(faqViewModel.getQuestions(), getContext(), (this::selectQuestion)));
-        binding.appBar.setNavigationOnClickListener(v -> getFragmentManager().popBackStack());
+        binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
 
     }
 
@@ -51,17 +48,7 @@ public class FAQFragment extends DaggerFragment {
     }
 
     private void launchFAQResponseActivity() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        Fragment faqResponse = fragmentManager.findFragmentByTag(FAQResponse.FAQ_RESPONSE_TAG);
-        if (faqResponse != null && faqResponse.isAdded()) {
-            return;
-        }
-        faqResponse = new FAQResponse();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.add(android.R.id.content, faqResponse, FAQResponse.FAQ_RESPONSE_TAG);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        Navigation.findNavController(getView()).navigate(R.id.action_FAQFragment_to_FAQResponse);
     }
 
 }

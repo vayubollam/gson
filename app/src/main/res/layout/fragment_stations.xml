@@ -182,7 +182,7 @@
                         android:layout_gravity="center"
                         android:background="?selectableItemBackground"
                         android:foregroundGravity="center"
-                        android:onClick="@{() -> eventHandler.locateMe(true)}"
+                        android:onClick="@{() -> eventHandler.locateMe()}"
                         android:src="@drawable/ic_near_me" />
 
                     <androidx.appcompat.widget.AppCompatImageView

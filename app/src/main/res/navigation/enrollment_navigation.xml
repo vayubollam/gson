@@ -15,15 +15,15 @@
             app:destination="@id/enrollment_form_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_card_question_to_card_form_fragment"
             app:destination="@id/card_form_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/card_form_fragment"
@@ -45,24 +45,24 @@
         <action
             android:id="@+id/action_enrollment_form_fragment_to_provinceFragment"
             app:destination="@id/provinceFragment"
-            app:enterAnim="@anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@+id/enrollment_form_fragment" />
         <action
             android:id="@+id/action_enrollment_form_fragment_to_securityQuestionFragment"
             app:destination="@id/securityQuestionFragment"
-            app:enterAnim="@anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@+id/enrollment_form_fragment" />
         <argument
             android:name="cardStatus"
+            android:defaultValue="@null"
             app:argType="suncor.com.android.model.account.CardStatus"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/provinceFragment"

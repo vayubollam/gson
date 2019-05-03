@@ -42,13 +42,10 @@ android {
     productFlavors {
         Dev {
             dimension "version"
-            applicationIdSuffix ".dev"
-            versionNameSuffix "-dev"
+            applicationId "com.suncor.android.SuncorApplicationDev"
         }
         QA {
             dimension "version"
-            applicationIdSuffix ""
-            versionNameSuffix ""
         }
     }
 }
