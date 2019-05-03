@@ -44,14 +44,14 @@ import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.station.Station;
-import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.ui.home.BottomNavigationFragment;
 import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.Timber;
 
-public class DashboardFragment extends BaseFragment {
+public class DashboardFragment extends BottomNavigationFragment {
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;

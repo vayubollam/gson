@@ -16,20 +16,16 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.home.HomeActivity;
-import suncor.com.android.ui.home.common.BaseFragment;
-import suncor.com.android.ui.home.profile.help.FAQFragment;
+import suncor.com.android.ui.home.BottomNavigationFragment;
 
 
-public class ProfileFragment extends BaseFragment {
+public class ProfileFragment extends BottomNavigationFragment {
     FragmentProfileBinding binding;
 
     @Inject
@@ -88,7 +84,7 @@ public class ProfileFragment extends BaseFragment {
         sessionManager.logout().observe(this, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 binding.signOutPB.setVisibility(View.GONE);
-                ((HomeActivity) getActivity()).getNavController().navigate(R.id.home_tab);
+                Navigation.findNavController(getView()).navigate(R.id.home_tab);
             } else if (result.status == Resource.Status.ERROR) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();
@@ -98,16 +94,6 @@ public class ProfileFragment extends BaseFragment {
     }
 
     public void launchGetHelpFragment() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        Fragment getHelpFragment = fragmentManager.findFragmentByTag(FAQFragment.FAQ_FRAGMENT_TAG);
-        if (getHelpFragment != null && getHelpFragment.isAdded()) {
-            return;
-        }
-        getHelpFragment = new FAQFragment();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-        ft.add(android.R.id.content, getHelpFragment, FAQFragment.FAQ_FRAGMENT_TAG);
-        ft.addToBackStack(null);
-        ft.commit();
+        Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
     }
 }

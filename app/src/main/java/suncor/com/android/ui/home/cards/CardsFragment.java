@@ -23,10 +23,10 @@ import suncor.com.android.databinding.FragmentCardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.SuncorToast;
-import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.ui.home.BottomNavigationFragment;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 
-public class CardsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class CardsFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private FragmentCardsBinding binding;
     private CardsViewModel viewModel;

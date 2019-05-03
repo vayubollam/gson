@@ -39,7 +39,6 @@ import suncor.com.android.utilities.UserLocalSettings;
 public class FavouritesFragment extends DaggerFragment {
 
     private static final String SHOW_FAVS_HINT = "show_favs_hint";
-    public static String FAVOURITES_FRAGMENT_TAG = "FAVOURITES_FRAGMENT";
     private FavouritesViewModel mViewModel;
     private FavouritesAdapter favouritesAdapter;
     private FragmentFavouritesBinding binding;

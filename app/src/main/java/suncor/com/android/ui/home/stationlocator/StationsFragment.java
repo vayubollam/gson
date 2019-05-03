@@ -8,8 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -24,7 +22,6 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -49,10 +46,10 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableBoolean;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,14 +62,12 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.home.common.BaseFragment;
-import suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment;
-import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
+import suncor.com.android.ui.home.BottomNavigationFragment;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.LocationUtils;
 
 
-public class StationsFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
+public class StationsFragment extends BottomNavigationFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
 
 
@@ -169,9 +164,9 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
         snapHelper.attachToRecyclerView(binding.cardRecycler);
 
         FragmentManager fm = getChildFragmentManager();
-        SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentByTag("mapFragment");
+        NavigationSupportMapFragment mapFragment = (NavigationSupportMapFragment) fm.findFragmentByTag("mapFragment");
         if (mapFragment == null) {
-            mapFragment = new SupportMapFragment();
+            mapFragment = new NavigationSupportMapFragment();
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.mapFragmentContainer, mapFragment, "mapFragment");
             ft.commit();
@@ -198,9 +193,9 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (mViewModel.userLocation.getValue() == null || mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.SEARCH) {
+        if (mViewModel.userLocation.getValue() == null) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locateMe(false);
+                locateMe();
             } else {
                 //TODO remove this
                 AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
@@ -320,24 +315,6 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
             stationAdapter.setUserLocation(latLng);
             locationLiveData.removeObserver(this::gotoMyLocation);
         }
-    }
-
-    //checking the user connectivity
-    private boolean haveNetworkConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
     }
 
     @Override
@@ -483,40 +460,20 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
     }
 
     public void launchFiltersFragment() {
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment filtersFragment = fragmentManager.findFragmentByTag(FiltersFragment.FILTERS_FRAGMENT_TAG);
-        if (filtersFragment != null && filtersFragment.isAdded()) {
-            return;
-        }
-        filtersFragment = new FiltersFragment();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
-        ft.add(android.R.id.content, filtersFragment, FiltersFragment.FILTERS_FRAGMENT_TAG);
-        ft.addToBackStack(null);
-        ft.commit();
+        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_filtersFragment);
     }
 
     public void launchSearchFragment() {
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment searchFragment = fragmentManager.findFragmentByTag(SearchFragment.SEARCH_FRAGMENT_TAG);
-        if (searchFragment != null && searchFragment.isAdded()) {
-            return;
-        }
-        searchFragment = new SearchFragment();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
-        ft.add(android.R.id.content, searchFragment, SearchFragment.SEARCH_FRAGMENT_TAG);
-        ft.addToBackStack(null);
-        ft.commit();
+        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_searchFragment);
+
     }
 
     public void clearSearchText() {
         mViewModel.setTextQuery("");
-        locateMe(false);
+        locateMe();
     }
 
-    //TODO check if we can remove the showDialog parameter
-    public void locateMe(boolean showDialog) {
+    public void locateMe() {
         if (LocationUtils.isLocationEnabled(getContext())) {
             //start by loading only if the current location is not initialized or not GPS
             boolean alreadyHasGPSLocation = mViewModel.userLocation.getValue() != null && mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS;
@@ -541,17 +498,7 @@ public class StationsFragment extends BaseFragment implements GoogleMap.OnMarker
 
     public void showFavourites() {
         if (sessionManager.isUserLoggedIn()) {
-            FragmentManager fragmentManager = getFragmentManager();
-            Fragment favouritesFragment = fragmentManager.findFragmentByTag(FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
-            if (favouritesFragment != null && favouritesFragment.isAdded()) {
-                return;
-            }
-            favouritesFragment = new FavouritesFragment();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down);
-            ft.add(android.R.id.content, favouritesFragment, FavouritesFragment.FAVOURITES_FRAGMENT_TAG);
-            ft.addToBackStack(null);
-            ft.commit();
+            Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_favouritesFragment);
         } else {
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))
