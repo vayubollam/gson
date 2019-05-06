@@ -181,7 +181,9 @@ public class CardsViewModel extends ViewModel {
                             return 1;
                     }
                 } else {
-                    return 0;
+                    if (card1.getCardType() == CardType.FSR || card1.getCardType() == CardType.PPC) {
+                        return (int) ((card1.getCpl() - card2.getCpl()) * 10);
+                    }
                 }
             } else if (card1.getCardCategory() == CardDetail.CardCategory.PARTNER) {
                 if (card1.getCardType() != card2.getCardType()) {

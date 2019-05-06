@@ -46,6 +46,14 @@ public class CardsApiMock implements CardsApi {
             "                        \"cpl\": 0.05\n" +
             "                    },\n" +
             "                    {\n" +
+            "                        \"cardType\": \"FSR\",\n" +
+            "                        \"cardNumber\": \"706988500050292052\",\n" +
+            "                        \"cardNumberEncrypted\": \"25AbCF1v1Or4s1D4s0kJEA==\",\n" +
+            "                        \"serviceId\": \"25LawF1v1Or4s1D4s0kJEA==\",\n" +
+            "                        \"litresRemaining\": 12,\n" +
+            "                        \"cpl\": 0.1\n" +
+            "                    },\n" +
+            "                    {\n" +
             "                        \"cardType\": \"PPC\",\n" +
             "                        \"cardNumber\": \"706999700401020280\",\n" +
             "                        \"cardNumberEncrypted\": \"25AbCF1v1Or4s1D4s0kJEA==\",\n" +
