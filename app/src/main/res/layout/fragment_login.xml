@@ -92,10 +92,11 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_forgot_password"
-                        style="@style/FilledButton.White.S"
+                        style="@style/FilledButton.White.L"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/gibson_semibold"
+                        android:onClick="@{() -> vm.requestResetPassword()}"
                         android:text="@string/login_forgot_password_button"
                         android:textSize="12sp" />
 

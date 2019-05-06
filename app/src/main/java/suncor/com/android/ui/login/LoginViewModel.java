@@ -61,7 +61,7 @@ public class LoginViewModel extends ViewModel {
                                     R.string.login_invalid_credentials_dialog_title,
                                     new ErrorMessage(R.string.login_invalid_credentials_dialog_2nd_message, remainingAttempts, SessionManager.LOCK_TIME_MINUTES),
                                     R.string.login_invalid_credentials_reset_password,
-                                    () -> passwordResetEvent.postValue(Event.newEvent(true))
+                                    this::requestResetPassword
                             )));
                         }
                         break;
@@ -70,7 +70,7 @@ public class LoginViewModel extends ViewModel {
                                 R.string.login_soft_lock_alert_title,
                                 new ErrorMessage(R.string.login_soft_lock_alert_message, SessionManager.LOGIN_ATTEMPTS, response.getTimeOut()),
                                 R.string.login_invalid_credentials_reset_password,
-                                () -> passwordResetEvent.postValue(Event.newEvent(true))
+                                this::requestResetPassword
                         )));
                         break;
                     case HARD_LOCKED:
@@ -151,7 +151,10 @@ public class LoginViewModel extends ViewModel {
             isValid = false;
         }
         return isValid;
+    }
 
+    public void requestResetPassword() {
+        passwordResetEvent.postValue(Event.newEvent(true));
     }
 
     public interface ErrorAlertCallback {

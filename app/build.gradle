@@ -43,9 +43,15 @@ android {
         Dev {
             dimension "version"
             applicationId "com.suncor.android.SuncorApplicationDev"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
         QA {
             dimension "version"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
+        }
+        Prod {
+            dimension "version"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://www.petro-canada.ca/\"")
         }
     }
 }

@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerFragment;
+import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -71,9 +73,11 @@ public class LoginFragment extends DaggerFragment {
         });
 
         viewModel.getPasswordResetEvent().observe(this, (event -> {
-            if (event.getContentIfNotHandled() != null) {
-                Toast.makeText(getContext(), "Reset password", Toast.LENGTH_SHORT).show();
-            }
+            String resetPasswordPath = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr/personnel/mot-de-passe-oublie" : "en/personal/forgot-password";
+            String url = BuildConfig.SUNCOR_WEBSITE.concat(resetPasswordPath);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
         }));
 
         viewModel.getCallCustomerService().observe(this, event -> {
