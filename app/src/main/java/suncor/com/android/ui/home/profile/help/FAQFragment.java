@@ -13,13 +13,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFaqBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Question;
+import suncor.com.android.ui.home.common.BaseFragment;
 
-public class FAQFragment extends DaggerFragment {
+public class FAQFragment extends BaseFragment {
     private FragmentFaqBinding binding;
     private FAQViewModel faqViewModel;
     @Inject

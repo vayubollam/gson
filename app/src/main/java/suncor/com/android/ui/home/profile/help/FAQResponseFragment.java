@@ -15,12 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.databinding.FragmentFaqresponseBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.SuncorURLSpan;
+import suncor.com.android.ui.home.common.BaseFragment;
 
-public class FAQResponseFragment extends DaggerFragment {
+public class FAQResponseFragment extends BaseFragment {
     private FragmentFaqresponseBinding binding;
     private FAQViewModel faqViewModel;
     @Inject
