@@ -28,11 +28,10 @@ import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 
 public class CardsFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private FragmentCardsBinding binding;
-    private CardsViewModel viewModel;
-
     @Inject
     ViewModelFactory viewModelFactory;
+    private FragmentCardsBinding binding;
+    private CardsViewModel viewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
     private CardsListAdapter partnerCardsAdapter;
     private float appBarElevation;
@@ -48,7 +47,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         partnerCardsAdapter = new CardsListAdapter();
 
         viewModel.viewState.observe(this, (result) -> {
-            if (result == CardsViewModel.ViewState.SUCCESS || result == CardsViewModel.ViewState.BALANCE_FAILED) {
+            if (result == CardsViewModel.ViewState.SUCCESS || result == CardsViewModel.ViewState.BALANCE_FAILED || result == CardsViewModel.ViewState.FAILED) {
                 petroCanadaCardsAdapter.setCards(viewModel.getPetroCanadaCards().getValue());
                 partnerCardsAdapter.setCards(viewModel.getPartnerCards().getValue());
                 binding.refreshLayout.setRefreshing(false);
@@ -100,6 +99,12 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        viewModel.onAttached();
     }
 
     @Override

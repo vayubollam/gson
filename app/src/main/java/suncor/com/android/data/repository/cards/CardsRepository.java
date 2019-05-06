@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 
@@ -22,8 +23,13 @@ public class CardsRepository {
     private Calendar timeOfLastUpdate;
 
     @Inject
-    public CardsRepository(CardsApi cardsApi) {
+    public CardsRepository(CardsApi cardsApi, SessionManager sessionManager) {
         this.cardsApi = cardsApi;
+        sessionManager.getLoginState().observeForever((state) -> {
+            if (state == SessionManager.LoginState.LOGGED_OUT && cachedCards != null) {
+                cachedCards.clear();
+            }
+        });
     }
 
     public LiveData<Resource<ArrayList<CardDetail>>> getCards(boolean forceRefresh) {

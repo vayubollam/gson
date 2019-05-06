@@ -87,7 +87,9 @@ public class CardsViewModel extends ViewModel {
                     break;
             }
         });
+    }
 
+    public void onAttached() {
         retrieveCardsEvent.setValue(Event.newEvent(true));
     }
 
