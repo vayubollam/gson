@@ -221,6 +221,7 @@
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"
                     app:text="@={vm.phoneField.text}"
+                    app:error="@{vm.phoneField.error}"
                     app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
 
@@ -327,6 +328,7 @@
                     android:layout_height="288dp"
                     android:layout_marginStart="-8dp"
                     android:layout_marginEnd="-8dp"
+                    tools:visibility="gone"
                     app:isLoading="@{vm.autocompleteResults.status == Resource.Status.LOADING}"
                     app:layout_constraintTop_toTopOf="@id/street_address_input" />
             </androidx.constraintlayout.widget.ConstraintLayout>

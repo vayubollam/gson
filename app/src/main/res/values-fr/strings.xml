@@ -222,4 +222,5 @@
     <string name="customer_support_email">custsvs@suncor.com</string>
     <string name="profile_get_help_call">Appel</string>
     <string name="profile_get_help_email">Courriel</string>
+    <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
 </resources>

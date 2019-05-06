@@ -102,6 +102,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             }
         });
 
+
         //show and hide autocomplete layout
         viewModel.showAutocompleteLayout.observe(this, (show) -> {
             if (getActivity() == null || binding.appBar.isExpanded()) {
@@ -205,9 +206,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
 
     @Override
     public void onResume() {
-
         super.onResume();
-
     }
 
     @Override
@@ -288,6 +287,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         }
         if (view == binding.streetAddressInput) {
             viewModel.getStreetAddressField().setHasFocus(hasFocus);
+        }
+        if (view == binding.phoneInput) {
+            viewModel.getPhoneField().setHasFocus(hasFocus);
         }
 
     }
