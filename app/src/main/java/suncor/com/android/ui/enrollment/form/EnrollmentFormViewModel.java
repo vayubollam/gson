@@ -258,11 +258,12 @@ public class EnrollmentFormViewModel extends ViewModel {
             }
         }
         if (firstItemWithError == -1) {
-            //proceed to join
             if (!phoneField.isValid()) {
                 phoneField.setShowError(true);
                 return -1;
             }
+
+            //proceed to join
             join.postValue(Event.newEvent(true));
         }
         return firstItemWithError;
