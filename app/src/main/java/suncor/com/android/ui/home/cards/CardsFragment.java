@@ -47,10 +47,12 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         partnerCardsAdapter = new CardsListAdapter();
 
         viewModel.viewState.observe(this, (result) -> {
-            if (result == CardsViewModel.ViewState.SUCCESS || result == CardsViewModel.ViewState.BALANCE_FAILED || result == CardsViewModel.ViewState.FAILED) {
+            if (result != CardsViewModel.ViewState.REFRESHING) {
+                binding.refreshLayout.setRefreshing(false);
+            }
+            if (result == CardsViewModel.ViewState.SUCCESS || result == CardsViewModel.ViewState.BALANCE_FAILED) {
                 petroCanadaCardsAdapter.setCards(viewModel.getPetroCanadaCards().getValue());
                 partnerCardsAdapter.setCards(viewModel.getPartnerCards().getValue());
-                binding.refreshLayout.setRefreshing(false);
 
                 if (result == CardsViewModel.ViewState.BALANCE_FAILED) {
                     SuncorToast.makeText(getContext(), R.string.msg_cm003, Toast.LENGTH_LONG).show();

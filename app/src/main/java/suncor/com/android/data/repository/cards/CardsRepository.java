@@ -78,8 +78,14 @@ public class CardsRepository {
                 } else {
                     return Resource.success(cachedCards);
                 }
+            } else if (resource.status == Resource.Status.ERROR) {
+                if (cachedCards != null) {
+                    cachedCards.clear();
+                }
+                return resource;
+            } else {
+                return resource;
             }
-            return resource;
         });
     }
 
