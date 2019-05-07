@@ -2,6 +2,7 @@ package suncor.com.android.ui.home.dashboard;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -13,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -29,6 +29,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -49,6 +50,7 @@ import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
+import suncor.com.android.utilities.PermissionManager;
 import suncor.com.android.utilities.Timber;
 
 public class DashboardFragment extends BottomNavigationFragment {
@@ -62,6 +64,7 @@ public class DashboardFragment extends BottomNavigationFragment {
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
     private FragmentDashboardBinding binding;
+    PermissionManager permissionManager;
 
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
@@ -90,6 +93,7 @@ public class DashboardFragment extends BottomNavigationFragment {
         super.onCreate(savedInstanceState);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
+        permissionManager = new PermissionManager(getContext());
 
     }
 
@@ -109,11 +113,47 @@ public class DashboardFragment extends BottomNavigationFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
-        } else {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
-        }
+        permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+            @Override
+            public void onNeedPermission() {
+                showRequestLocationDialog(false);
+            }
+
+            @Override
+            public void onPermissionPreviouslyDenied() {
+                //in case in the future we would show any rational
+            }
+
+            @Override
+            public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                showRequestLocationDialog(true);
+            }
+
+            @Override
+            public void onPermissionGranted() {
+                mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
+            }
+        });
+    }
+
+    void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                .setTitle("Enable Location Services")
+                .setMessage("Petro-Canda uses location services to show stations nearby")
+                .setPositiveButton("Ok", (dialog, v) -> {
+
+                    if (previouselyDeniedWithNeverASk) {
+                        PermissionManager.openAppSettings(getActivity());
+                    } else {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+                    }
+                    dialog.dismiss();
+
+                })
+                .setNegativeButton("Cancel", null);
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override
@@ -168,17 +208,34 @@ public class DashboardFragment extends BottomNavigationFragment {
         }
 
         binding.settingsButton.setOnClickListener(v -> {
-            openLocationSettings();
+            permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+                @Override
+                public void onNeedPermission() {
+                    showRequestLocationDialog(false);
+                }
+
+                @Override
+                public void onPermissionPreviouslyDenied() {
+                    //in case in the future we would show any rational 
+                    showRequestLocationDialog(false);
+                }
+
+                @Override
+                public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                    showRequestLocationDialog(true);
+                }
+
+                @Override
+                public void onPermissionGranted() {
+                    openLocationSettings();
+                }
+            });
         });
         mViewModel.locationServiceEnabled.observe(this, (enabled -> {
             if (enabled) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mViewModel.isLoading.set(mViewModel.getUserLocation() == null);
-                    locationLiveData.observe(getViewLifecycleOwner(), (location -> {
-                        mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()));
-                    }));
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+                    locationLiveData.observe(getViewLifecycleOwner(), (location -> mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()))));
                 }
             }
         }));
@@ -188,9 +245,12 @@ public class DashboardFragment extends BottomNavigationFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
-            } else {
-                Toast.makeText(getContext(), "Permission not granted", Toast.LENGTH_SHORT).show();
+                if (LocationUtils.isLocationEnabled(getContext())) {
+                    mViewModel.setLocationServiceEnabled(true);
+                } else {
+                    openLocationSettings();
+                }
+
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -211,6 +271,19 @@ public class DashboardFragment extends BottomNavigationFragment {
             binding.welcomeLayout.setVisibility(View.GONE);
         }
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
+            if (LocationUtils.isLocationEnabled(getContext())) {
+                mViewModel.setLocationServiceEnabled(true);
+            } else {
+                openLocationSettings();
+            }
+        }
+    }
+
 
     private void openLocationSettings() {
         LocationRequest locationRequest = LocationRequest.create();
@@ -247,13 +320,6 @@ public class DashboardFragment extends BottomNavigationFragment {
                 }
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
-            mViewModel.setLocationServiceEnabled(true);
-        }
     }
 }
 
