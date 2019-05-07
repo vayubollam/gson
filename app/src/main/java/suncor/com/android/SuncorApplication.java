@@ -1,5 +1,6 @@
 package suncor.com.android;
 
+import com.worklight.common.Logger;
 import com.worklight.wlclient.HttpClientManager;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLClient;
@@ -60,6 +61,9 @@ public class SuncorApplication extends DaggerApplication {
         MFPRequestInterceptor.attachRequestInterceptor(requestInterceptor, HttpClientManager.getInstance());
         MfpLogging.logDeviceInfo(this);
         WLAuthorizationManager.getInstance().setLoginTimeout(DEFAULT_TIMEOUT / 1000);
+        if (BuildConfig.DEBUG) {
+            Logger.setLevel(Logger.LEVEL.DEBUG);
+        }
     }
 
 

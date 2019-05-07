@@ -47,6 +47,7 @@ android {
         }
         QA {
             dimension "version"
+            applicationId "com.suncor.android.SuncorApplicationQA"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
         Prod {
