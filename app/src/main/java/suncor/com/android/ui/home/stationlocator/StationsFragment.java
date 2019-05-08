@@ -1,8 +1,10 @@
 package suncor.com.android.ui.home.stationlocator;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,6 +20,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +38,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 
@@ -65,12 +75,16 @@ import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.home.BottomNavigationFragment;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.PermissionManager;
+import suncor.com.android.utilities.Timber;
 
 
 public class StationsFragment extends BottomNavigationFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
 
 
+    private static final int PERMISSION_REQUEST_CODE = 124;
+    private static final int REQUEST_CHECK_SETTINGS = 125;
     private StationsViewModel mViewModel;
     private LocationLiveData locationLiveData;
     private GoogleMap mGoogleMap;
@@ -87,6 +101,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
+    private PermissionManager permissionManager;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -130,6 +145,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 }
             }
         });
+        permissionManager = new PermissionManager(getContext());
     }
 
     @Override
@@ -193,17 +209,6 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (mViewModel.userLocation.getValue() == null) {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locateMe();
-            } else {
-                //TODO remove this
-                AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-                adb.setMessage("Location Permission Not Granted");
-                adb.setPositiveButton("OK", null);
-                adb.show();
-            }
-        }
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -218,6 +223,43 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
             @Override
             public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+        checkAndLocate();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    public void checkAndLocate() {
+        permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+            @Override
+            public void onNeedPermission() {
+                showRequestLocationDialog(false);
+            }
+
+            @Override
+            public void onPermissionPreviouslyDenied() {
+                showRequestLocationDialog(false);
+            }
+
+            @Override
+            public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                showRequestLocationDialog(true);
+
+            }
+
+            @Override
+            public void onPermissionGranted() {
+                if (LocationUtils.isLocationEnabled(getContext())) {
+                    locateMe();
+                } else {
+                    openLocationSettings();
+                }
 
             }
         });
@@ -305,6 +347,9 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!isAdded())
             return;
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
+            locateMe();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -342,6 +387,21 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             userScrolledMap = true;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (LocationUtils.isLocationEnabled(getContext())) {
+                locateMe();
+            } else {
+                openLocationSettings();
+            }
+
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
 
     private void updateCards(Resource<ArrayList<StationItem>> result) {
         binding.bottomSheet.requestLayout();
@@ -470,30 +530,56 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     public void clearSearchText() {
         mViewModel.setTextQuery("");
-        locateMe();
+        permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+            @Override
+            public void onNeedPermission() {
+
+            }
+
+            @Override
+            public void onPermissionPreviouslyDenied() {
+
+            }
+
+            @Override
+            public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+
+            }
+
+            @Override
+            public void onPermissionGranted() {
+                if (LocationUtils.isLocationEnabled(getContext())) {
+                    locateMe();
+                }
+            }
+        });
     }
 
     public void locateMe() {
-        if (LocationUtils.isLocationEnabled(getContext())) {
             //start by loading only if the current location is not initialized or not GPS
             boolean alreadyHasGPSLocation = mViewModel.userLocation.getValue() != null && mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS;
             isLoading.set(!alreadyHasGPSLocation);
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
             }
-        } else {
-            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-            adb.setTitle(R.string.enable_location_dialog_title);
-            adb.setMessage(R.string.enable_location_dialog_message);
-            adb.setNegativeButton(R.string.cancel, null);
-            adb.setPositiveButton(R.string.station_location_alert_settings, (dialog, which) -> {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                dialog.dismiss();
-            });
-            AlertDialog alertDialog = adb.create();
-            alertDialog.setCanceledOnTouchOutside(false);
-            alertDialog.show();
-        }
+    }
+
+    private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
+        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+        adb.setTitle(R.string.enable_location_dialog_title);
+        adb.setMessage(R.string.enable_location_dialog_message);
+        adb.setNegativeButton(R.string.cancel, null);
+        adb.setPositiveButton(R.string.ok, (dialog, which) -> {
+            if (previouselyDeniedWithNeverASk) {
+                PermissionManager.openAppSettings(getActivity());
+            } else {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+            }
+            dialog.dismiss();
+        });
+        AlertDialog alertDialog = adb.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
     public void showFavourites() {
@@ -516,6 +602,42 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                     })
                     .show(getFragmentManager(), ModalDialog.TAG);
         }
+    }
+
+    private void openLocationSettings() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationRequest mLocationRequestBalancedPowerAccuracy = LocationRequest.create();
+        mLocationRequestBalancedPowerAccuracy.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
+                .addLocationRequest(mLocationRequestBalancedPowerAccuracy);
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getContext()).checkLocationSettings(builder.build());
+
+        result.addOnCompleteListener(task -> {
+            try {
+                LocationSettingsResponse response = result.getResult(ApiException.class);
+            } catch (ApiException ex) {
+                switch (ex.getStatusCode()) {
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        try {
+                            ResolvableApiException resolvableApiException = (ResolvableApiException) ex;
+                            startIntentSenderForResult(resolvableApiException.getResolution().getIntentSender(), REQUEST_CHECK_SETTINGS, null, 0, 0, 0, null);
+                        } catch (IntentSender.SendIntentException intentException) {
+                            Timber.w(intentException);
+                        } catch (ClassCastException classException) {
+                            Timber.w(classException);
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way to fix the
+                        // settings so we won't show the dialog.
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        break;
+                }
+            }
+        });
     }
 }
 

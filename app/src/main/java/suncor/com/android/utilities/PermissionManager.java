@@ -30,7 +30,6 @@ public class PermissionManager {
                 listener.onPermissionPreviouslyDenied();
             } else {
                 if (permissionPrefs.isFirstTimeAsking(permission)) {
-                    permissionPrefs.firstTimeAsking(permission, false);
                     listener.onNeedPermission();
                 } else {
                     listener.onPermissionPreviouslyDeniedWithNeverAskAgain();
@@ -39,6 +38,10 @@ public class PermissionManager {
         } else {
             listener.onPermissionGranted();
         }
+    }
+
+    public void setFirstTimeAsking(String permission, boolean firsttime) {
+        permissionPrefs.firstTimeAsking(permission, firsttime);
     }
 
     private boolean shouldAskPermission(Context context, String permission) {
