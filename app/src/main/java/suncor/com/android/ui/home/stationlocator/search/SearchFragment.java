@@ -3,7 +3,6 @@ package suncor.com.android.ui.home.stationlocator.search;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -112,12 +112,7 @@ public class SearchFragment extends DaggerFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (LocationUtils.isLocationEnabled(getContext())) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-            }
+        if (LocationUtils.isLocationEnabled(getContext()) && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationLiveData.observe(this, location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);
