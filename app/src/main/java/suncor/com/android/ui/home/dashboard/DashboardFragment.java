@@ -136,7 +136,10 @@ public class DashboardFragment extends BottomNavigationFragment {
             binding.carouselCardRecycler.startAnimation(animFromLet);
             binding.stationCard.startAnimation(animslideUp);
         }
-        checkAndRequestPermission();
+        if (!permissionManager.isAlertShown()) {
+            permissionManager.setAlertShown(true);
+            checkAndRequestPermission();
+        }
         dashboardAdapter = new DashboardAdapter(getActivity(), mViewModel);
         binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();

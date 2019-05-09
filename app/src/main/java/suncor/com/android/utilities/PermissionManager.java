@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import suncor.com.android.SuncorApplication;
 
 public class PermissionManager {
+    private static final String LOCATION_ALERT = "location_alter";
     SuncorApplication context;
     UserLocalSettings userLocalSettings;
 
@@ -47,6 +48,15 @@ public class PermissionManager {
     public void setFirstTimeAsking(String permission, boolean firsttime) {
         firstTimeAsking(permission, firsttime);
     }
+
+    public boolean isAlertShown() {
+        return userLocalSettings.getBool(LOCATION_ALERT, false);
+    }
+
+    public void setAlertShown(boolean isShown) {
+        userLocalSettings.setBool(LOCATION_ALERT, isShown);
+    }
+
 
     private boolean shouldAskPermission(Context context, String permission) {
         if (shouldAskPermission()) {
