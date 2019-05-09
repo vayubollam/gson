@@ -8,16 +8,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
+import javax.inject.Inject;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import suncor.com.android.SuncorApplication;
 
 public class PermissionManager {
-    Context context;
-    PermissionPrefs permissionPrefs;
+    SuncorApplication context;
+    UserLocalSettings userLocalSettings;
 
-    public PermissionManager(Context context) {
+    @Inject
+    public PermissionManager(SuncorApplication context, UserLocalSettings userLocalSettings) {
         this.context = context;
-        this.permissionPrefs = new PermissionPrefs(context);
+        this.userLocalSettings = userLocalSettings;
     }
 
     public boolean shouldAskPermission() {
@@ -29,7 +33,7 @@ public class PermissionManager {
             if (ActivityCompat.shouldShowRequestPermissionRationale((AppCompatActivity) context, permission)) {
                 listener.onPermissionPreviouslyDenied();
             } else {
-                if (permissionPrefs.isFirstTimeAsking(permission)) {
+                if (isFirstTimeAsking(permission)) {
                     listener.onNeedPermission();
                 } else {
                     listener.onPermissionPreviouslyDeniedWithNeverAskAgain();
@@ -41,7 +45,7 @@ public class PermissionManager {
     }
 
     public void setFirstTimeAsking(String permission, boolean firsttime) {
-        permissionPrefs.firstTimeAsking(permission, firsttime);
+        firstTimeAsking(permission, firsttime);
     }
 
     private boolean shouldAskPermission(Context context, String permission) {
@@ -77,6 +81,14 @@ public class PermissionManager {
 
         activity.startActivity(applicationDetailsSettingsIntent);
 
+    }
+
+    private void firstTimeAsking(String permission, boolean isFirstTime) {
+        userLocalSettings.setBool(permission, isFirstTime);
+    }
+
+    private boolean isFirstTimeAsking(String permission) {
+        return userLocalSettings.getBool(permission, true);
     }
 
 }

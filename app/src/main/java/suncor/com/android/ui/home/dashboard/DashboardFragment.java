@@ -3,9 +3,7 @@ package suncor.com.android.ui.home.dashboard;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,15 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 
@@ -49,7 +39,6 @@ import suncor.com.android.ui.home.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
-import suncor.com.android.utilities.Timber;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -64,6 +53,7 @@ public class DashboardFragment extends BottomNavigationFragment {
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
     private FragmentDashboardBinding binding;
+    @Inject
     PermissionManager permissionManager;
 
     private OnClickListener tryAgainLister = v -> {
@@ -93,7 +83,6 @@ public class DashboardFragment extends BottomNavigationFragment {
         super.onCreate(savedInstanceState);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
-        permissionManager = new PermissionManager(getContext());
 
     }
 
@@ -203,7 +192,7 @@ public class DashboardFragment extends BottomNavigationFragment {
 
                 @Override
                 public void onPermissionGranted() {
-                    openLocationSettings();
+                    LocationUtils.openLocationSettings(DashboardFragment.this, REQUEST_CHECK_SETTINGS);
                 }
             });
         });
@@ -224,7 +213,7 @@ public class DashboardFragment extends BottomNavigationFragment {
                 if (LocationUtils.isLocationEnabled(getContext())) {
                     mViewModel.setLocationServiceEnabled(true);
                 } else {
-                    openLocationSettings();
+                    LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
                 }
 
             }
@@ -252,7 +241,7 @@ public class DashboardFragment extends BottomNavigationFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
-                mViewModel.setLocationServiceEnabled(true);
+            mViewModel.setLocationServiceEnabled(true);
 
         }
     }
@@ -279,41 +268,6 @@ public class DashboardFragment extends BottomNavigationFragment {
             }
         });
     }
-    private void openLocationSettings() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationRequest mLocationRequestBalancedPowerAccuracy = LocationRequest.create();
-        mLocationRequestBalancedPowerAccuracy.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
-                .addLocationRequest(mLocationRequestBalancedPowerAccuracy);
-        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getContext()).checkLocationSettings(builder.build());
-
-        result.addOnCompleteListener(task -> {
-            try {
-                LocationSettingsResponse response = result.getResult(ApiException.class);
-                mViewModel.setLocationServiceEnabled(true);
-            } catch (ApiException ex) {
-                switch (ex.getStatusCode()) {
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        try {
-                            ResolvableApiException resolvableApiException = (ResolvableApiException) ex;
-                            startIntentSenderForResult(resolvableApiException.getResolution().getIntentSender(), REQUEST_CHECK_SETTINGS, null, 0, 0, 0, null);
-                        } catch (IntentSender.SendIntentException intentException) {
-                            Timber.w(intentException);
-                        } catch (ClassCastException classException) {
-                            Timber.w(classException);
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        // Location settings are not satisfied. However, we have no way to fix the
-                        // settings so we won't show the dialog.
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        break;
-                }
-            }
-        });
-    }
 }
 
