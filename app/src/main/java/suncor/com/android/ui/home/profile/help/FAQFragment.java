@@ -1,6 +1,9 @@
 package suncor.com.android.ui.home.profile.help;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
@@ -39,6 +43,15 @@ public class FAQFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.questionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        int[] ATTRS = new int[]{android.R.attr.listDivider};
+        TypedArray a = getContext().obtainStyledAttributes(ATTRS);
+        Drawable divider = a.getDrawable(0);
+        int inset = getResources().getDimensionPixelSize(R.dimen.question_right_padding);
+        InsetDrawable insetDivider = new InsetDrawable(divider, inset, 0, 0, 0);
+        a.recycle();
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(insetDivider);
+        binding.questionsRecycler.addItemDecoration(dividerItemDecoration);
         binding.questionsRecycler.setAdapter(new FAQAdapter(faqViewModel.getQuestions(), getContext(), (this::selectQuestion)));
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.callUsButton.setOnClickListener(v ->

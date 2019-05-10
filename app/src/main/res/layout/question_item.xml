@@ -17,9 +17,8 @@
             android:layout_width="match_parent"
             android:lineSpacingMultiplier="1.44"
             android:maxLines="3"
-
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
+            android:paddingEnd="@dimen/question_right_padding"
+            android:paddingStart="@dimen/question_right_padding"
             android:ellipsize="end"
             android:textAppearance="@style/Body"
             android:textAlignment="textStart"
@@ -27,12 +26,6 @@
             android:id="@+id/question_txt"
             android:switchTextAppearance="@style/Body"
             android:layout_height="wrap_content" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:paddingStart="16dp"
-            android:src="@drawable/horizontal_divider"
-            android:layout_height="1dp" />
 
     </LinearLayout>
 </layout>

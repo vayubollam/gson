@@ -18,21 +18,38 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix"
+            android:layout_height="match_parent"
             android:fillViewport="true"
-            android:layout_height="match_parent">
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/questions_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:paddingTop="36dp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/question_right_padding"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:lineHeight="26sp"
+                    android:paddingTop="36dp"
+                    android:text="@string/profile_top_questions"
+                    android:textAppearance="@style/Body" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:paddingStart="@dimen/question_right_padding"
+                    android:src="@drawable/horizontal_divider" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/questions_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
@@ -42,13 +59,13 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="40dp"
                     android:layout_marginEnd="50dp"
                     android:layout_marginBottom="32dp"
                     android:lineSpacingMultiplier="1.43"
                     android:text="@string/profile_get_help_footer"
-                    android:layout_gravity="bottom"
                     android:textAlignment="center"
                     android:textAppearance="@style/Caption1"
                     android:textColor="@color/black_60" />
