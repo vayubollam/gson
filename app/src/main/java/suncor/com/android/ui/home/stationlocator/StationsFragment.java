@@ -192,13 +192,6 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             return insets;
         });
 
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
@@ -215,13 +208,17 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
             }
         });
-        checkAndLocate();
+
+        return binding.getRoot();
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
-
+        if (mViewModel.userLocation.getValue() == null) {
+            checkAndLocate();
+        }
     }
 
     public void checkAndLocate() {
