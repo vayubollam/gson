@@ -1,5 +1,9 @@
 package suncor.com.android.ui.home.profile.help;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
@@ -37,8 +42,26 @@ public class FAQFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.questionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        Drawable divider = getResources().getDrawable(R.drawable.horizontal_divider);
+        int inset = getResources().getDimensionPixelSize(R.dimen.faq_question_padding);
+        InsetDrawable insetDivider = new InsetDrawable(divider, inset, 0, 0, 0);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(insetDivider);
+        binding.questionsRecycler.addItemDecoration(dividerItemDecoration);
         binding.questionsRecycler.setAdapter(new FAQAdapter(faqViewModel.getQuestions(), getContext(), (this::selectQuestion)));
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.callUsButton.setOnClickListener(v ->
+        {
+            String phone = getContext().getResources().getString(R.string.customer_support_number);
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+            getContext().startActivity(intent);
+        });
+        binding.emailButton.setOnClickListener(v ->
+        {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", getContext().getResources().getString(R.string.customer_support_email), null));
+            getContext().startActivity(Intent.createChooser(emailIntent, null));
+        });
 
     }
 

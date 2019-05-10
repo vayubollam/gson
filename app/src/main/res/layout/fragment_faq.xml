@@ -16,17 +16,90 @@
             app:dragable="true"
             app:title="@string/profile_faq_get_help_title" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/questions_recycler"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:paddingTop="36dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/faq_question_padding"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:lineHeight="26sp"
+                    android:paddingTop="36dp"
+                    android:text="@string/profile_top_questions"
+                    android:textAppearance="@style/Body" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:paddingStart="@dimen/faq_question_padding"
+                    android:src="@drawable/horizontal_divider" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/questions_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="32dp"
+                    android:lineSpacingMultiplier="1.43"
+                    android:text="@string/profile_get_help_footer"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60" />
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/call_us_button"
+                        style="@style/OutlinedButton.M"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/profile_get_help_call" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/email_button"
+                        style="@style/OutlinedButton.M"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/profile_get_help_email" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
