@@ -1,5 +1,7 @@
 package suncor.com.android.ui.home.profile.help;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,18 @@ public class FAQFragment extends BaseFragment {
         binding.questionsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.questionsRecycler.setAdapter(new FAQAdapter(faqViewModel.getQuestions(), getContext(), (this::selectQuestion)));
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.callUsButton.setOnClickListener(v ->
+        {
+            String phone = getContext().getResources().getString(R.string.customer_support_number);
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+            getContext().startActivity(intent);
+        });
+        binding.emailButton.setOnClickListener(v ->
+        {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", getContext().getResources().getString(R.string.customer_support_email), null));
+            getContext().startActivity(Intent.createChooser(emailIntent, null));
+        });
 
     }
 
