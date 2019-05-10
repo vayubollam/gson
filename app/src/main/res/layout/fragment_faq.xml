@@ -30,7 +30,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/question_right_padding"
+                    android:paddingStart="@dimen/faq_question_padding"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:lineHeight="26sp"
@@ -41,7 +41,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:paddingStart="@dimen/question_right_padding"
+                    android:paddingStart="@dimen/faq_question_padding"
                     android:src="@drawable/horizontal_divider" />
 
                 <androidx.recyclerview.widget.RecyclerView
