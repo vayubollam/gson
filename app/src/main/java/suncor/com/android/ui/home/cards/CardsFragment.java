@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsBinding;
@@ -99,6 +100,8 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
                 ViewCompat.setElevation(binding.appBar, 0);
             }
         });
+
+        binding.petroPointsCard.setOnClickListener((v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_cardsDetailsFragment));
 
         return binding.getRoot();
     }
