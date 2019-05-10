@@ -136,10 +136,8 @@ public class DashboardFragment extends BottomNavigationFragment {
             binding.carouselCardRecycler.startAnimation(animFromLet);
             binding.stationCard.startAnimation(animslideUp);
         }
-        if (!permissionManager.isAlertShown()) {
-            permissionManager.setAlertShown(true);
-            checkAndRequestPermission();
-        }
+        checkAndRequestPermission();
+
         dashboardAdapter = new DashboardAdapter(getActivity(), mViewModel);
         binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -253,7 +251,10 @@ public class DashboardFragment extends BottomNavigationFragment {
         permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
             public void onNeedPermission() {
-                showRequestLocationDialog(false);
+                if (!permissionManager.isAlertShown()) {
+                    permissionManager.setAlertShown(true);
+                    showRequestLocationDialog(false);
+                }
             }
 
             @Override
