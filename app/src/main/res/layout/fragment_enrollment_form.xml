@@ -218,10 +218,10 @@
                     android:hint="@string/enrollment_phone_label"
                     android:inputType="phone"
                     android:maxLength="12"
+                    app:error="@{vm.phoneField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"
                     app:text="@={vm.phoneField.text}"
-                    app:error="@{vm.phoneField.error}"
                     app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
 
 
@@ -328,9 +328,9 @@
                     android:layout_height="288dp"
                     android:layout_marginStart="-8dp"
                     android:layout_marginEnd="-8dp"
-                    tools:visibility="gone"
                     app:isLoading="@{vm.autocompleteResults.status == Resource.Status.LOADING}"
-                    app:layout_constraintTop_toTopOf="@id/street_address_input" />
+                    app:layout_constraintTop_toTopOf="@id/street_address_input"
+                    tools:visibility="gone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </suncor.com.android.uicomponents.ExtendedNestedScrollView>
 
@@ -341,7 +341,7 @@
             android:background="@color/white"
             android:clickable="true"
             android:elevation="8dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:visibleGone="@{ vm.joinLiveData.status == Resource.Status.LOADING || vm.joinLiveData.status == Resource.Status.SUCCESS }">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -372,13 +372,14 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_profile"
                     android:tint="@color/red"
-                    app:visibleGone="@{vm.joinLiveData.status == Resource.Status.LOADING}" />
+                    app:visibleGone="@{vm.joinLiveData.status == Resource.Status.LOADING}"
+                    tools:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_check"
+                    android:src="@drawable/ic_check_thick"
                     android:tint="@color/red"
                     app:visibleGone="@{vm.joinLiveData.status == Resource.Status.SUCCESS}" />
 
