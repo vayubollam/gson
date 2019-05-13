@@ -102,6 +102,7 @@ public class HomeActivity extends SessionAwareActivity {
 
         bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
         bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
+        navController.navigate(R.id.home_tab);
     }
 
     @Override
