@@ -52,6 +52,9 @@
             android:name="root"
             android:defaultValue="true"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_cards_tab_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment" />
 
     </keep_state_fragment>
 
@@ -98,4 +101,8 @@
         android:id="@+id/FAQResponse"
         android:name="suncor.com.android.ui.home.profile.help.FAQResponseFragment"
         android:label="FAQResponse" />
+    <keep_state_fragment
+        android:id="@+id/cardsDetailsFragment"
+        android:name="suncor.com.android.ui.home.cards.CardsDetailsFragment"
+        android:label="CardsDetailsFragment" />
 </navigation>

@@ -4,14 +4,20 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import suncor.com.android.ui.common.cards.CardFormat;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
+
 public class CardNumberFormattingTextWatcher implements TextWatcher {
     private EditText editText;
-    private int firstSpacePosition = 4;
-    private int secondSpacePosition = 9;
-    private int thirdSpacePosition = 13;
+    private CardFormat cardFormat;
 
     public CardNumberFormattingTextWatcher(EditText editText) {
         this.editText = editText;
+    }
+
+    public CardNumberFormattingTextWatcher(EditText editText, CardFormat cardFormat) {
+        this.editText = editText;
+        this.cardFormat = cardFormat;
     }
 
     @Override
@@ -27,23 +33,9 @@ public class CardNumberFormattingTextWatcher implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         editText.removeTextChangedListener(this);
-        // Remove spacing char
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == ' ' || s.charAt(i) == '-') {
-                s.replace(i, i + 1, "");
-            }
+        if (cardFormat != null) {
+            CardFormatUtils.formatForViewing(s, cardFormat);
         }
-
-        if (s.length() > thirdSpacePosition) {
-            s.insert(thirdSpacePosition, " ");
-        }
-        if (s.length() > secondSpacePosition) {
-            s.insert(secondSpacePosition, " ");
-        }
-        if (s.length() > firstSpacePosition) {
-            s.insert(firstSpacePosition, " ");
-        }
-
         editText.addTextChangedListener(this);
     }
 }

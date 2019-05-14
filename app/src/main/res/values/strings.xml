@@ -203,9 +203,20 @@
     <string name="cards_fsr_label">Fuel Savings Reward</string>
     <string name="cards_fsr_balance_template_plural">%s litres</string>
     <string name="cards_fsr_balance_template_singular">%s litre</string>
+
+    <plurals name="cards_fsr_balance_template">
+        <item quantity="one">%d litre</item>
+        <item quantity="other">%d litres</item>
+    </plurals>
+
     <string name="cards_ppc_label">Preferred Price</string>
     <string name="cards_ppc_balance_template_plural">%s litres</string>
     <string name="cards_ppc_balance_template_singular">%s litre</string>
+
+    <plurals name="cards_ppc_balance_template">
+        <item quantity="one">%d litre</item>
+        <item quantity="other">%d litres</item>
+    </plurals>
 
     <string name="cards_hbc_label">Hudson\'s Bay Rewards</string>
     <string name="cards_partners_balance_template">%s more points</string>
@@ -216,8 +227,20 @@
     <string name="cards_sp_label">Season Pass</string>
     <string name="cards_sp_balance_template_plural">%s days</string>
     <string name="cards_sp_balance_template_singular">%s day</string>
+    <plurals name="cards_sp_balance_template">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+
     <string name="cards_wag_balance_template_plural">%s washes</string>
     <string name="cards_wag_balance_template_singular">%s wash</string>
+
+    <plurals name="cards_wag_balance_template">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
 
     <string name="cards_partners_more_balance">Collecting More Rewards points%s</string>
     <string name="cards_ppts_balance_template">%s points</string>
@@ -230,4 +253,19 @@
     <string name="msg_cm003">Couldn\'t update your balance</string>
     <string name="cards_fragment_update_date">As of %1s at %2s</string>
     <string name="cards_wag_label">Wash &amp; Go</string>
+    <string name="cards_ppts_label">Petro-Points</string>
+    <string name="cards_sp_expiration">Expires on %s</string>
+    <string name="cards_wag_no_expiry">No expiry date</string>
+    <string name="cards_fsr_balance_conversion">save %d¢ per litre</string>
+    <string name="cards_ppc_balance_conversion">save %d¢ per litre</string>
+    <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser 5 ¢ le litre sur 200 litres d\'essence.\n-\nRechargez votre carte à petro-points.com.</string>
+    <string name="cards_wag_description">Use at any SuperWash or GlideWash location.</string>
+    <string name="cards_sp_description">Use at any SuperWash or GlideWash location.</string>
+    <string name="cards_ppc_description">Save on fuel every time your swipe your Preferred Price card.</string>
+    <string name="cards_rbc_description">Our RBC–Petro‑Canada program helps you save on fuel and earn points faster.</string>
+    <string name="cards_caa_description">You can also exchange your points for CAA Dollars or a new 1-year basic CAA Membership.</string>
+    <string name="cards_bcaa_description">You can also exchange your points for CAA Dollars.</string>
+    <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay, Home Outfitters and thebay.com.</string>
+    <string name="cards_more_description">You\'re collecting 1 More Rewards point for every $1 spent at our Petro‑Canada locations.</string>
+    <string name="cards_rbc_balance_details">Save 3¢ per litre</string>
 </resources>
