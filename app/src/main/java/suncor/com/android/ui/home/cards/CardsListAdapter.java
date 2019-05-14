@@ -14,7 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
-import suncor.com.android.databinding.PetroCanadaCardItemBinding;
+import suncor.com.android.databinding.PetroCanadaSmallCardItemBinding;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Timber;
 
@@ -41,7 +41,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
     @NonNull
     @Override
     public PetroCanadaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        PetroCanadaCardItemBinding binding = PetroCanadaCardItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        PetroCanadaSmallCardItemBinding binding = PetroCanadaSmallCardItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new PetroCanadaViewHolder(binding);
     }
 
@@ -88,9 +88,9 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
     }
 
     class PetroCanadaViewHolder extends RecyclerView.ViewHolder {
-        PetroCanadaCardItemBinding binding;
+        PetroCanadaSmallCardItemBinding binding;
 
-        public PetroCanadaViewHolder(PetroCanadaCardItemBinding binding) {
+        public PetroCanadaViewHolder(PetroCanadaSmallCardItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+<layout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/barcode"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_gravity="center"
-        android:scaleType="fitCenter"
-        android:layout_margin="16dp" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:background="@color/black_4"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <include layout="@layout/petro_canada_expanded_card_item"
+            android:id="@+id/card"/>
+    </LinearLayout>
+</layout>

@@ -28,6 +28,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.common.input.CardNumberFormattingTextWatcher;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.login.LoginActivity;
@@ -115,7 +116,7 @@ public class CardFormFragment extends DaggerFragment {
         });
 
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
-        binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText()));
+        binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText(), CardFormatUtils.PPTS_FORMAT));
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         return binding.getRoot();

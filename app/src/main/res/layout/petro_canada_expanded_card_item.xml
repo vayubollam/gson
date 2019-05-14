@@ -1,85 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:background="@color/black_4">
+<layout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/card_image"
-        android:layout_width="160dp"
-        android:layout_height="100dp"
-        android:elevation="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/petro_points_card" />
+    <data>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="@font/Menlo-Regular"
-        android:textColor="@color/white"
-        android:textSize="10sp"
-        android:translationZ="12dp"
-        app:fontFamily="@font/gibson_semibold"
-        app:layout_constraintBottom_toBottomOf="@id/card_image"
-        app:layout_constraintEnd_toEndOf="@id/card_image"
-        app:layout_constraintStart_toStartOf="@id/card_image"
-        tools:text="7069  22761  9857  012" />
+        <import type="suncor.com.android.model.cards.CardType" />
 
+        <variable
+            name="card"
+            type="suncor.com.android.ui.home.cards.ExpandedCardItem" />
 
-    <androidx.cardview.widget.CardView
+        <variable
+            name="hideMoreButton"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="50dp"
-        android:background="@color/white"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        tools:background="@color/black_4">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/card_image"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:elevation="12dp"
+            android:src="@{card.cardImage}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/petro_points_card" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@{card.cardNumber}"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:translationZ="12dp"
+            app:fontFamily="@font/menlo_regular"
+            app:layout_constraintBottom_toBottomOf="@id/card_image"
+            app:layout_constraintEnd_toEndOf="@id/card_image"
+            app:layout_constraintStart_toStartOf="@id/card_image"
+            app:visibleGone="@{card.cardType == CardType.PPTS}"
+            tools:text="7069 22761 9857 012" />
+
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/white"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/more_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="?selectableItemBackground"
-                android:src="@drawable/ic_more"
-                android:tint="@color/black_60"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/card_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="74dp"
-                android:paddingBottom="4dp"
-                android:textAppearance="@style/Title2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Petro-Points" />
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/more_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_more"
+                    android:tint="@color/black_60"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibleGone="@{!hideMoreButton &amp;&amp; card.cardType != CardType.PPTS}" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/Body"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_name"
-                tools:text="7069  22761  9857  012" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/card_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="74dp"
+                    android:paddingBottom="4dp"
+                    android:text="@{card.cardName}"
+                    android:textAppearance="@style/Title2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Petro-Points" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/card_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{card.cardNumber}"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_name"
+                    tools:text="7069 22761 9857 012" />
 
-    </androidx.cardview.widget.CardView>
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@id/card_number" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/balance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:gravity="center"
+                            android:lineSpacingMultiplier="1.12"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
+                            android:text="@{card.balance}"
+                            android:textAppearance="@style/Headline2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:visibleGone="@{card.balance != null}"
+                            tools:text="100,500 points" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/balance_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingMultiplier="1.12"
+                            android:text="@{card.balanceDetails}"
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_60"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/balance"
+                            app:visibleGone="@{card.balance != null &amp;&amp; card.isBalanceDetailsVisible}"
+                            tools:text="or $100 off" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/alert_image"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_alert"
+                            android:tint="@color/black_20"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/balance"
+                            app:visibleGone="@{card.balance == null}" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/balance_unavailable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Balance unavailable at the moment."
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_20"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/alert_image"
+                            app:visibleGone="@{card.balance == null}" />
+
+                        <androidx.constraintlayout.widget.Barrier
+                            android:id="@+id/balance_barriere"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:barrierDirection="bottom"
+                            app:constraint_referenced_ids="balance,balance_details,alert_image,balance_unavailable" />
+
+                        <View
+                            android:id="@+id/divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="24dp"
+                            android:background="@drawable/horizontal_divider"
+                            app:layout_constraintTop_toBottomOf="@id/balance_barriere" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/card_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:gravity="center"
+                            android:lineSpacingMultiplier="1.57"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="@{card.cardDescription}"
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_60"
+                            app:layout_constraintTop_toBottomOf="@id/divider_2"
+                            tools:text="With Season Pass card you can wash your car every day (one wash per day) for 90 days.\nReload from 30 to 360 daily washes.\n—\nScan your card at the car wash entrance." />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/barcode_image"
+                            android:layout_width="193dp"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="24dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
