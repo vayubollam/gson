@@ -1,6 +1,7 @@
 package suncor.com.android.mfp;
 
 import android.content.Intent;
+import android.os.Handler;
 
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -59,9 +60,11 @@ public class SessionManager implements SessionChangeListener {
     };
 
     private boolean loginOngoing = false;
+    private boolean isRetrievingProfile = false;
 
-    @Inject
-    SuncorApplication application;
+    private Handler mainHandler;
+
+    private SuncorApplication application;
 
     @Inject
     Gson gson;
@@ -69,16 +72,18 @@ public class SessionManager implements SessionChangeListener {
     private int rewardedPoints = -1;
 
     @Inject
-    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings) {
+    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings, SuncorApplication application) {
         this.challengeHandler = challengeHandler;
         challengeHandler.setSessionChangeListener(this);
         this.authorizationManager = authorizationManager;
         this.userLocalSettings = userLocationSettings;
+        this.application = application;
         String profileString = userLocationSettings.getString(SHARED_PREF_USER);
         if (profileString != null && !profileString.isEmpty()) {
             profile = new Gson().fromJson(profileString, Profile.class);
             accountState = AccountState.REGULAR_LOGIN;
         }
+        mainHandler = new Handler(application.getMainLooper());
     }
 
     public LiveData<Resource<Boolean>> logout() {
@@ -129,10 +134,19 @@ public class SessionManager implements SessionChangeListener {
 
     public void checkLoginState() {
         Timber.d("Checking login status");
-        retrieveProfile();
+        retrieveProfile().observeForever(result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                setProfile(result.data);
+                loginState.postValue(LoginState.LOGGED_IN);
+            } else {
+                setProfile(null);
+                loginState.postValue(LoginState.LOGGED_OUT);
+            }
+        });
     }
 
-    private void retrieveProfile() {
+    private MutableLiveData<Resource<Profile>> retrieveProfile() {
+        MutableLiveData<Resource<Profile>> result = new MutableLiveData<>();
         try {
             WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.send(new WLResponseListener() {
@@ -140,21 +154,21 @@ public class SessionManager implements SessionChangeListener {
                 public void onSuccess(WLResponse wlResponse) {
                     Timber.d("Profile received, response: " + wlResponse.getResponseText());
                     Profile profile = gson.fromJson(wlResponse.getResponseText(), Profile.class);
-                    setProfile(profile);
-                    loginState.postValue(LoginState.LOGGED_IN);
+                    result.postValue(Resource.success(profile));
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.w("Access token cannot be retrieved");
+                    Timber.w("Profile cannot be retrieved");
                     Timber.w(wlFailResponse.toString());
-                    loginState.postValue(LoginState.LOGGED_OUT);
-                    setProfile(null);
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
         } catch (URISyntaxException e) {
             Timber.e(e);
         }
+
+        return result;
     }
 
     public void cancelLogin() {
@@ -222,21 +236,34 @@ public class SessionManager implements SessionChangeListener {
     @Override
     public void onLoginSuccess(Profile profile) {
         Timber.d("login succeeded");
-        if (!loginOngoing) {
+        Timber.d("user's email: " + profile.getEmail());
+        if (!loginOngoing || isRetrievingProfile) {
             return;
         }
-        userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
-        if (!profile.equals(this.profile)) {
-            Timber.d("user's email: " + profile.getEmail());
-            setProfile(profile);
-            if (loginObservable != null) {
-                loginObservable.postValue(Resource.success(SigninResponse.success()));
-            }
-            loginState.postValue(LoginState.LOGGED_IN);
-            loginOngoing = false;
 
-            retrieveProfile();
-        }
+        userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+        mainHandler.post(() -> {
+            retrieveProfile().observeForever(result -> {
+                isRetrievingProfile = false;
+                if (loginOngoing) {
+                    loginOngoing = false;
+
+                    if (result.status == Resource.Status.SUCCESS) {
+                        setProfile(result.data);
+                        loginState.postValue(LoginState.LOGGED_IN);
+                        if (loginObservable != null) {
+                            loginObservable.postValue(Resource.success(SigninResponse.success()));
+                        }
+                    } else {
+                        setProfile(null);
+                        loginState.postValue(LoginState.LOGGED_OUT);
+                        if (loginObservable != null) {
+                            loginObservable.postValue(Resource.success(SigninResponse.generalFailure()));
+                        }
+                    }
+                }
+            });
+        });
     }
 
     @Override
