@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import suncor.com.android.databinding.FragmentAddCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.ui.common.input.CardNumberFormattingTextWatcher;
 import suncor.com.android.ui.home.common.BaseFragment;
 
 public class AddCardFragment extends BaseFragment {
@@ -36,7 +35,7 @@ public class AddCardFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAddCardBinding.inflate(inflater, container, false);
-        binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText()));
+        //binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText()));
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> {
