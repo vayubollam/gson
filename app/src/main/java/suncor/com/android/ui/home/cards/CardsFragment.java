@@ -70,6 +70,10 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.cards_fragment_try_again, () -> viewModel.retryAgain()));
+        binding.cardsLayout.post(() -> {
+            //give the cards layout a minimum height, to anchor the date to the bottom screen
+            binding.cardsLayout.setMinHeight(binding.scrollView.getHeight() - binding.appBar.getHeight());
+        });
 
         ItemDecorator listDecorator = new ItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
 

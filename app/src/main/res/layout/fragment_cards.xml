@@ -41,11 +41,11 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:fillViewport="true">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -56,18 +56,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="20dp"
+                        android:layout_marginBottom="16dp"
                         android:lineSpacingMultiplier="1.31"
                         android:text="@string/cards_fragment_title"
-                        android:textAppearance="@style/Title1"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textAppearance="@style/Title1" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cards_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_weight="1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/header"
+                        android:layout_height="wrap_content"
                         app:visibleGone="@{vm.viewState != ViewState.FAILED &amp;&amp; vm.viewState != ViewState.LOADING}">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -233,10 +230,7 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/header"
+                        android:layout_height="match_parent"
                         app:visibleGone="@{vm.viewState == ViewState.LOADING}"
                         tools:visibility="gone">
 
@@ -248,18 +242,15 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="16dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/header"
+                        android:layout_height="match_parent"
+                        android:visibility="invisible"
                         app:visibleGone="@{vm.viewState == ViewState.FAILED}">
 
                         <include
                             android:id="@+id/error_layout"
                             layout="@layout/layout_error" />
                     </FrameLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout>
 
