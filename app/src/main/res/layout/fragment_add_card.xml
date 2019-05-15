@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.home.cards.add.AddCardViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/cards_add_fragment_header" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/card_number_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.44"
+                    android:text="@string/cards_add_fragment_card_subcopy"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibleGone="@{!vm.showCvvField}" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/card_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/cards_add_fragment_card_field_label"
+                    android:inputType="phone"
+                    android:maxLength="23"
+                    app:error="@{vm.cardNumberInputField.error}"
+                    app:layout_constraintTop_toBottomOf="@id/card_number_header"
+                    app:text="@={vm.cardNumberInputField.text}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cvv_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:lineSpacingMultiplier="1.44"
+                    android:text="@string/cards_add_fragment_cvv_subcopy"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintTop_toBottomOf="@id/card_input" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/cvv_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/cards_add_fragment_cvv_field_label"
+                    android:maxLength="23"
+                    app:layout_constraintTop_toBottomOf="@id/cvv_header" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/help_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_help"
+                    android:tint="@color/black_60"
+                    app:layout_constraintBottom_toBottomOf="@id/cvv_input"
+                    app:layout_constraintEnd_toEndOf="@id/cvv_input"
+                    app:layout_constraintTop_toTopOf="@id/cvv_input" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="cvv_header,cvv_input,help_button"
+                    app:visibleGone="@{vm.showCvvField}" />
+
+                <Space
+                    android:id="@+id/guideline"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/continue_button"
+                    app:layout_constraintTop_toBottomOf="@id/cvv_input"
+                    app:layout_constraintVertical_chainStyle="spread_inside" />
+
+                <Button
+                    android:id="@+id/continue_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="32dp"
+                    android:onClick="@{v -> vm.continueButtonClicked()}"
+                    android:text="@{vm.showCvvField? `Complete` : @string/cards_add_fragment_continue_button}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/guideline" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

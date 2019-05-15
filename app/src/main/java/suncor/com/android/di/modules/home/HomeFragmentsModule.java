@@ -4,6 +4,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import suncor.com.android.ui.home.cards.CardsDetailsFragment;
 import suncor.com.android.ui.home.cards.CardsFragment;
+import suncor.com.android.ui.home.cards.add.AddCardFragment;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
 import suncor.com.android.ui.home.profile.ProfileFragment;
 import suncor.com.android.ui.home.profile.help.FAQFragment;
@@ -38,6 +39,9 @@ abstract class HomeFragmentsModule {
 
     @ContributesAndroidInjector
     abstract CardsDetailsFragment contributesCardsDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract AddCardFragment contributesAddCardFragment();
 
     @ContributesAndroidInjector
     abstract FAQFragment contributesFAQFragment();
