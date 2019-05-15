@@ -148,7 +148,8 @@ public class SessionManager implements SessionChangeListener {
     private MutableLiveData<Resource<Profile>> retrieveProfile() {
         MutableLiveData<Resource<Profile>> result = new MutableLiveData<>();
         try {
-            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            //We use 30s as the timeout for this request, as it's times out a lot, and causes logout
+            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
