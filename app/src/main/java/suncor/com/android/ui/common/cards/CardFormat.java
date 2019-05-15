@@ -4,17 +4,13 @@ import java.util.regex.Pattern;
 
 public class CardFormat {
     private Pattern matcherPattern;
-    private Pattern validationPattern;
     private int[] format;
+    private int length;
 
-    public CardFormat(Pattern matcherPattern, Pattern validationPattern, int[] format) {
+    public CardFormat(Pattern matcherPattern, int[] format, int length) {
         this.matcherPattern = matcherPattern;
-        this.validationPattern = validationPattern;
         this.format = format;
-    }
-
-    public Pattern getValidationPattern() {
-        return validationPattern;
+        this.length = length;
     }
 
     public Pattern getMatcherPattern() {
@@ -23,5 +19,19 @@ public class CardFormat {
 
     public int[] getFormat() {
         return format;
+    }
+
+    /**
+     * @return the required length without any spaces
+     */
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * @return the length after formatting the card number
+     */
+    public int getFormattedLength() {
+        return length + format.length - 1;
     }
 }

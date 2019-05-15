@@ -237,4 +237,13 @@
     <string name="cards_ppc_balance_conversion">Économie de %d ¢ le litre</string>
     <string name="cards_ppts_label">Petro-Points</string>
     <string name="msg_cm003">Nous n\'avons pu mettre à jour votre solde</string>
+    <string name="cards_add_fragment_header">Ajouter une carte</string>
+    <string name="cards_add_fragment_card_subcopy">Entrez le numéro situé au recto ou au verso de votre carte.</string>
+    <string name="cards_add_fragment_card_field_label">Numéro de carte</string>
+    <string name="cards_add_fragment_continue_button">Continuer</string>
+    <string name="cards_add_fragment_card_field_empty_error">Veuillez entrer le numéro de carte.</string>
+    <string name="cards_add_fragment_card_field_format_error">Veuillez entrer un numéro de carte valide.</string>
+    <string name="cards_add_fragment_cvv_subcopy">Entrez le code de sécurité situé au verso de votre carte.</string>
+    <string name="cards_add_fragment_cvv_subcopy_more">Entrez le code d\'activation situé au verso de votre carte.</string>
+    <string name="cards_add_fragment_cvv_field_label">Code de sécurité</string>
 </resources>

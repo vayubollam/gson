@@ -101,9 +101,16 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
             }
         });
 
+        binding.appBar.setRightButtonOnClickListener((v) -> navigateToAddCard());
+        binding.addCardButton.setOnClickListener((v) -> navigateToAddCard());
+
         binding.petroPointsCard.setOnClickListener((v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_cardsDetailsFragment));
 
         return binding.getRoot();
+    }
+
+    private void navigateToAddCard() {
+        Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_addCardFragment);
     }
 
     @Override

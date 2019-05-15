@@ -7,30 +7,35 @@ import java.util.regex.Pattern;
 
 public class CardFormatUtils {
     private final static Pattern PPTS_MATCHER = Pattern.compile("^7069$");
-    private final static Pattern PPTS_VALIDATION = Pattern.compile("^7069[\\d]{12}$");
 
     private final static Pattern FSR_MATCHER = Pattern.compile("^7069885\\d*$");
-    private final static Pattern FSR_VALIDATION = Pattern.compile("^7069885[\\d]{11}$");
 
     private final static Pattern WAG_SP_MATCHER = Pattern.compile("^70698100\\d*$");
-    private final static Pattern WAG_SP_VALIDATION = Pattern.compile("^70698100[\\d]{11}$");
 
     private final static Pattern PPC_MATCHER = Pattern.compile("^7069(997(00|900|95|10|20|005|986|5|7)|89(20|21|31))\\d*$");
-    private final static Pattern PPC_VALIDATION = Pattern.compile("^7069(997(00|900|95|10|20|005|986|5|7)|89(20|21|31))\\d$");
+
+    private final static Pattern FSR_SHORT_MATCHER = Pattern.compile("^885\\d*$");
+
+    private final static Pattern WAG_SP_SHORT_MATCHER = Pattern.compile("^8100\\d*$");
+
+    private final static Pattern PPC_SHORT_MATCHER = Pattern.compile("^(997(00|900|95|10|20|005|986|5|7)|89(20|21|31))\\d*$");
 
     private final static Pattern PARTNER_MATCHER = Pattern.compile("^\\d+$");
-    private final static Pattern PARTNER_VALIDATION = Pattern.compile("^\\d{16}$");
 
 
-    public final static CardFormat PPTS_FORMAT = new CardFormat(PPTS_MATCHER, PPTS_VALIDATION, new int[]{4, 5, 4, 3});
-    public final static CardFormat FSR_FORMAT = new CardFormat(FSR_MATCHER, FSR_VALIDATION, new int[]{4, 3, 3, 3, 1, 4});
-    public final static CardFormat WAG_SP_FORMAT = new CardFormat(WAG_SP_MATCHER, WAG_SP_VALIDATION, new int[]{4, 5, 5, 4});
-    public static final CardFormat PPC_FORMAT = new CardFormat(PPC_MATCHER, PPC_VALIDATION, new int[]{4, 3, 3, 3, 1, 4});
+    public final static CardFormat PPTS_FORMAT = new CardFormat(PPTS_MATCHER, new int[]{4, 5, 4, 3}, 16);
+    public final static CardFormat FSR_FORMAT = new CardFormat(FSR_MATCHER, new int[]{4, 3, 3, 3, 1, 4}, 18);
+    public final static CardFormat WAG_SP_FORMAT = new CardFormat(WAG_SP_MATCHER, new int[]{4, 5, 5, 4}, 18);
+    public static final CardFormat PPC_FORMAT = new CardFormat(PPC_MATCHER, new int[]{4, 3, 3, 3, 1, 4}, 18);
 
-    public static final CardFormat PARTNER_CARD_FORMAT = new CardFormat(PARTNER_MATCHER, PARTNER_VALIDATION, new int[]{4, 5, 4, 4});
+    public final static CardFormat FSR_SHORT_FORMAT = new CardFormat(FSR_SHORT_MATCHER, new int[]{3, 3, 3, 1, 4}, 14);
+    public final static CardFormat WAG_SP_SHORT_FORMAT = new CardFormat(WAG_SP_SHORT_MATCHER, new int[]{5, 5, 4}, 14);
+    public static final CardFormat PPC_SHORT_FORMAT = new CardFormat(PPC_SHORT_MATCHER, new int[]{3, 3, 3, 1, 4}, 14);
+
+    public static final CardFormat PARTNER_CARD_FORMAT = new CardFormat(PARTNER_MATCHER, new int[]{4, 5, 4, 4}, 18);
 
 
-    private final static CardFormat[] PETRO_CANADA_CARDS = new CardFormat[]{FSR_FORMAT, WAG_SP_FORMAT, PPTS_FORMAT};
+    private final static CardFormat[] PETRO_CANADA_CARDS = new CardFormat[]{FSR_FORMAT, FSR_SHORT_FORMAT, WAG_SP_FORMAT, WAG_SP_SHORT_FORMAT, PPC_FORMAT, PPC_SHORT_FORMAT};
 
 
     public static String formatForViewing(CharSequence cardNumber) {

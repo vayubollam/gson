@@ -55,6 +55,12 @@
         <action
             android:id="@+id/action_cards_tab_to_cardsDetailsFragment"
             app:destination="@id/cardsDetailsFragment" />
+        <action
+            android:id="@+id/action_cards_tab_to_addCardFragment"
+            app:destination="@id/addCardFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
 
     </keep_state_fragment>
 
@@ -105,4 +111,9 @@
         android:id="@+id/cardsDetailsFragment"
         android:name="suncor.com.android.ui.home.cards.CardsDetailsFragment"
         android:label="CardsDetailsFragment" />
+    <keep_state_fragment
+        android:id="@+id/addCardFragment"
+        android:name="suncor.com.android.ui.home.cards.add.AddCardFragment"
+        android:label="AddCardFragment"
+        tools:layout="@layout/fragment_add_card" />
 </navigation>

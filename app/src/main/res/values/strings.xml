@@ -268,4 +268,14 @@
     <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay, Home Outfitters and thebay.com.</string>
     <string name="cards_more_description">You\'re collecting 1 More Rewards point for every $1 spent at our Petro‑Canada locations.</string>
     <string name="cards_rbc_balance_details">Save 3¢ per litre</string>
+    <string name="cards_add_fragment_header">Add a card</string>
+    <string name="cards_add_fragment_card_subcopy">Enter the number located on the front or back of your card.</string>
+    <string name="cards_add_fragment_card_field_label">Card number</string>
+    <string name="cards_add_fragment_continue_button">Continue</string>
+    <string name="cards_add_fragment_cvv_field_label">Security code</string>
+    <string name="cards_add_fragment_cvv_subcopy">Enter the the security code located on the back of your card.</string>
+    <string name="cards_add_fragment_cvv_subcopy_more">Enter the activation code (AC#) located on the back of your card.</string>
+    <string name="cards_add_fragment_card_field_empty_error">Please enter the card number.</string>
+    <string name="cards_add_fragment_card_field_format_error">Please enter a valid card number.</string>
+
 </resources>
