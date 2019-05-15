@@ -278,6 +278,8 @@
     <string name="cards_add_fragment_cvv_subcopy_more">Enter the activation code (AC#) located on the back of your card.</string>
     <string name="cards_add_fragment_card_field_empty_error">Please enter the card number.</string>
     <string name="cards_add_fragment_card_field_format_error">Please enter a valid card number.</string>
+    <string name="cards_add_fragment_help_dialog_title">Security code</string>
+    <string name="cards_add_fragment_help_dialog_message">Your security code is a 3 digit number located on the back of your card.</string>
 
     <string name="profile_about_button">About</string>
     <string name="profile_address_button">Address</string>

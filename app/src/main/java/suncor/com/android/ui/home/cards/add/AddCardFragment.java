@@ -11,8 +11,10 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.home.common.BaseFragment;
@@ -38,6 +40,7 @@ public class AddCardFragment extends BaseFragment {
         //binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText()));
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+        binding.helpButton.setOnClickListener(v -> showCvvHelp());
         binding.appBar.setNavigationOnClickListener(v -> {
             hideKeyBoard();
             Navigation.findNavController(getView()).popBackStack();
@@ -47,6 +50,14 @@ public class AddCardFragment extends BaseFragment {
         showKeyBoard();
 
         return binding.getRoot();
+    }
+
+    private void showCvvHelp() {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.cards_add_fragment_help_dialog_title)
+                .setView(getLayoutInflater().inflate(R.layout.cvv_help_layout, null))
+                .setPositiveButton(R.string.ok, null)
+                .show();
     }
 
     private void hideKeyBoard() {

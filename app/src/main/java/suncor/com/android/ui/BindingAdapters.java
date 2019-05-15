@@ -10,6 +10,7 @@ import android.view.View;
 import java.util.HashMap;
 
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
@@ -147,6 +148,17 @@ public class BindingAdapters {
     @BindingAdapter(value = "elevation")
     public static void updateElevation(View view, int elevation) {
         ViewCompat.setElevation(view, elevation);
+    }
+
+    @BindingAdapter(value = {"android:layout_marginEnd"})
+    public static void setLayoutMargin(View view, float marginEnd) {
+        if (view.getLayoutParams() instanceof ConstraintLayout.LayoutParams) {
+            ConstraintLayout.LayoutParams parameter =
+                    (ConstraintLayout.LayoutParams) view.getLayoutParams();
+            parameter.setMargins(parameter.leftMargin, parameter.topMargin, (int) marginEnd,
+                    parameter.bottomMargin);
+            view.setLayoutParams(parameter);
+        }
     }
 
 }
