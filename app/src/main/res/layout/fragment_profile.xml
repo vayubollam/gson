@@ -1,91 +1,241 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black_4"
-    android:clipToPadding="false"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="suncor.com.android.ui.home.profile.ProfileFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/Headline2"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="8dp"
-        android:padding="16dp"
-        android:text="@string/profile_fragment_title" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:orientation="vertical">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/horizontal_divider"
-            android:layout_marginStart="16dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/get_help_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
-            android:text="@string/profile_faq_get_help_title"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Body" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent=".5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/horizontal_divider"
-            android:layout_marginStart="16dp" />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/signout_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
-            android:text="@string/profile_sign_out_button"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Body" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.3"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/profile_backdrop"
+                        android:translationZ="10dp"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="0dp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/horizontal_divider"
-            android:layout_marginStart="16dp" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/full_name_output"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="16dp"
+                        android:ellipsize="end"
+                        android:lineSpacingMultiplier="1.25"
+                        android:text="Profile"
+                        android:textAppearance="@style/Headline1"
+                        app:autoSizeMaxTextSize="42sp"
+                        app:autoSizeMinTextSize="26sp"
+                        app:autoSizeTextType="uniform"
+                        app:layout_constraintBottom_toTopOf="@id/email_output"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        tools:text="user name" />
 
-        <TextView
-            android:id="@+id/lblBuildDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:text="Build Date: __BUILD_DATE__" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/email_output"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/gibson_regular"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/full_name_output"
+                        app:layout_constraintTop_toBottomOf="@+id/full_name_output"
+                        tools:text="User email" />
 
-        <TextView
-            android:id="@+id/lblBuildSHA"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:text="Build SHA: __BUILD_SHA__" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutCompat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/transaction_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_transactions_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/personal_informations_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_personnal_informations_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/address_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_address_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/preferences_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_preferences_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/get_help_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_faq_get_help_title"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/about_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_about_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/signout_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_sign_out_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="14dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <TextView
+                        android:id="@+id/lblBuildDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Build Date: __BUILD_DATE__" />
+
+                    <TextView
+                        android:id="@+id/lblBuildSHA"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:text="Build SHA: __BUILD_SHA__" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
         <ProgressBar
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
             android:id="@+id/sign_out_PB"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-</LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+    </FrameLayout>
 </layout>

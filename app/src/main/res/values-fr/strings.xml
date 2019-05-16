@@ -69,6 +69,7 @@
     <string name="login_invalid_credentials_dialog_1st_message">L\'adresse courriel ou le mot de passe que vous avez entré n\'est pas correct. Veuillez réessayer.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="profile_sign_out_button">Déconnexion</string>
+    <string name="profile_about_button">À propos</string>
     <string name="discover_your_next_adventure">DÉCOUVREZ VOTRE \nCOIN DE PARADIS</string>
     <string name="enrollment_card_question">Avez-vous une carte Petro\u2011Points?</string>
     <string name="enrollment_card_question_body">Utilisez vos points contre des économies sur l\'essence, des lavages d\'auto ou des articles de dépanneur.</string>
@@ -246,4 +247,8 @@
     <string name="cards_add_fragment_cvv_subcopy">Entrez le code de sécurité situé au verso de votre carte.</string>
     <string name="cards_add_fragment_cvv_subcopy_more">Entrez le code d\'activation situé au verso de votre carte.</string>
     <string name="cards_add_fragment_cvv_field_label">Code de sécurité</string>
+    <string name="profile_transactions_button">Transactions</string>
+    <string name="profile_personnal_informations_button">Renseignements personnels</string>
+    <string name="profile_address_button">Adresse</string>
+    <string name="profile_preferences_button">Préférences</string>
 </resources>

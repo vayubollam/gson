@@ -46,23 +46,10 @@ public class ProfileFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        try {
-            Properties properties = new Properties();
-            AssetManager assetManager = getActivity().getAssets();
-            InputStream inputStream = assetManager.open("buildSettings.properties");
-            properties.load(inputStream);
-            String buildDate = properties.getProperty("buildDate");
-            String buildSHA = properties.getProperty("buildSHA");
-
-            TextView lblBuildDate = view.findViewById(R.id.lblBuildDate);
-            TextView lblBuildSHA = view.findViewById(R.id.lblBuildSHA);
-
-            lblBuildDate.setText("Build Date: " + buildDate);
-            lblBuildSHA.setText("Build SHA: " + buildSHA);
-        } catch (Exception e) {
-            //Show nothing
-        }
+        String fullName= capitalize(sessionManager.getProfile().getFirstName()) + " " + capitalize(sessionManager.getProfile().getLastName());
+        binding.fullNameOutput.setText(fullName);
+        binding.emailOutput.setText(sessionManager.getProfile().getEmail());
+        initBuild();
 
         binding.signoutButton.setOnClickListener((v) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
@@ -95,5 +82,26 @@ public class ProfileFragment extends BottomNavigationFragment {
 
     public void launchGetHelpFragment() {
         Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
+    }
+    public String capitalize (String string){
+        return string.substring(0,1).toUpperCase()+ string.substring(1);
+    }
+    public void initBuild (){
+        try {
+            Properties properties = new Properties();
+            AssetManager assetManager = getActivity().getAssets();
+            InputStream inputStream = assetManager.open("buildSettings.properties");
+            properties.load(inputStream);
+            String buildDate = properties.getProperty("buildDate");
+            String buildSHA = properties.getProperty("buildSHA");
+
+            TextView lblBuildDate = getView().findViewById(R.id.lblBuildDate);
+            TextView lblBuildSHA = getView().findViewById(R.id.lblBuildSHA);
+
+            lblBuildDate.setText("Build Date: " + buildDate);
+            lblBuildSHA.setText("Build SHA: " + buildSHA);
+        } catch (Exception e) {
+            //Show nothing
+        }
     }
 }

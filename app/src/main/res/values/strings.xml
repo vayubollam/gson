@@ -63,6 +63,7 @@
     <string name="favourites_add_station_button">Add a station</string>
     <string name="profile_fragment_title">Profile</string>
     <string name="profile_sign_out_button">Sign out</string>
+
     <string name="station_distance_unavailable">Distance not available</string>
     <string name="login_prompt_title">Sign-in or join to favourite</string>
     <string name="login_prompt_message">Sign in to your Petro-Points account to access all features, including favourites.</string>
@@ -278,4 +279,9 @@
     <string name="cards_add_fragment_card_field_empty_error">Please enter the card number.</string>
     <string name="cards_add_fragment_card_field_format_error">Please enter a valid card number.</string>
 
+    <string name="profile_about_button">About</string>
+    <string name="profile_address_button">Address</string>
+    <string name="profile_preferences_button">Preferences</string>
+    <string name="profile_personnal_informations_button">Personal information</string>
+    <string name="profile_transactions_button">Transactions</string>
 </resources>
