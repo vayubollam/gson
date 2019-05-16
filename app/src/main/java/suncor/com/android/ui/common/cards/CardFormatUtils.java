@@ -8,13 +8,16 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class CardFormatUtils {
-    private final static Pattern PPTS_MATCHER = Pattern.compile("^7069$");
 
-    private final static Pattern FSR_MATCHER = Pattern.compile("^7069885\\d*$");
+    public final static String CARDS_PREFIX = "7069";
 
-    private final static Pattern WAG_SP_MATCHER = Pattern.compile("^70698100\\d*$");
+    private final static Pattern PPTS_MATCHER = Pattern.compile("^" + CARDS_PREFIX + "$");
 
-    private final static Pattern PPC_MATCHER = Pattern.compile("^7069(997(00|900|95|10|20|005|986|5|7)|89(20|21|31))\\d*$");
+    private final static Pattern FSR_MATCHER = Pattern.compile("^" + CARDS_PREFIX + "885\\d*$");
+
+    private final static Pattern WAG_SP_MATCHER = Pattern.compile("^" + CARDS_PREFIX + "8100\\d*$");
+
+    private final static Pattern PPC_MATCHER = Pattern.compile("^" + CARDS_PREFIX + "(997(00|900|95|10|20|005|986|5|7)|89(20|21|31))\\d*$");
 
     private final static Pattern FSR_SHORT_MATCHER = Pattern.compile("^885\\d*$");
 

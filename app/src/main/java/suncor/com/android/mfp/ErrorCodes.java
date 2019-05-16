@@ -26,4 +26,6 @@ public class ErrorCodes {
     public static final String ERR_INVALID_CARD_ERROR_CODE = "SUNCOR016";
     public static final String ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE = "SUNCOR017";
     public static final String ERR_USER_INFO_NOT_MATCHED = "SUNCOR018";
+
+    public static final String ERR_LIKING_CARD_FAILED = "SUNCOR020";
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
 
 @Singleton
@@ -86,6 +87,15 @@ public class CardsRepository {
             } else {
                 return resource;
             }
+        });
+    }
+
+    public LiveData<Resource<CardDetail>> addCard(AddCardRequest cardRequest) {
+        return Transformations.map(cardsApi.addCard(cardRequest), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                cachedCards.add(result.data);
+            }
+            return result;
         });
     }
 

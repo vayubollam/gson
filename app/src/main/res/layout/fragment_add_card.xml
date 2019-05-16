@@ -6,6 +6,10 @@
         <variable
             name="vm"
             type="suncor.com.android.ui.home.cards.add.AddCardViewModel" />
+
+        <import type="suncor.com.android.ui.home.cards.ExpandedCardItem" />
+
+        <import type="suncor.com.android.model.Resource" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -118,6 +122,88 @@
                     app:layout_constraintTop_toBottomOf="@id/guideline" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            android:visibility="gone"
+            app:visibleGone="@{vm.addCardApiResult.status == Resource.Status.LOADING | vm.addCardApiResult.status == Resource.Status.SUCCESS}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/verifying_card_pd"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="24dp"
+                android:text="@{vm.addCardApiResult.status == Resource.Status.SUCCESS ? @string/enrollment_cardform_card_verified : @string/cards_add_fragment_adding}"
+                android:textAppearance="@style/Title1" />
+
+            <ProgressBar
+                android:id="@+id/verifying_card_pd"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+
+                android:indeterminateTint="@color/red" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_card"
+                android:tint="@color/red"
+                app:visibleGone="@{vm.addCardApiResult.status == Resource.Status.LOADING}" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_check_thick"
+                android:tint="@color/red"
+                app:visibleGone="@{vm.addCardApiResult.status == Resource.Status.SUCCESS}" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/circular_ring"
+                app:visibleGone="@{vm.addCardApiResult.status == Resource.Status.SUCCESS}" />
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_4"
+            android:clickable="true"
+            android:paddingStart="12dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="16dp"
+            android:visibility="gone"
+            app:visibleGone="@{vm.showCard}">
+
+            <FrameLayout
+                android:id="@+id/card_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/done_button"
+                style="@style/FilledButton.Red.L"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/cards_add_fragment_done_button"
+                app:layout_constraintBottom_toBottomOf="@id/card_layout"
+                app:layout_constraintEnd_toEndOf="@id/card_layout"
+                app:layout_constraintStart_toStartOf="@id/card_layout" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

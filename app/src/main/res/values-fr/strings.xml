@@ -251,4 +251,10 @@
     <string name="profile_personnal_informations_button">Renseignements personnels</string>
     <string name="profile_address_button">Adresse</string>
     <string name="profile_preferences_button">Préférences</string>
+    <string name="cards_add_fragment_help_dialog_title">Code de sécurité</string>
+    <string name="cards_add_fragment_help_dialog_message">Votre code de sécurité à 3 chiffres est situé au verso de votre carte.</string>
+    <string name="cards_add_fragment_adding">Ajoutez une carte</string>
+    <string name="cards_add_fragment_added">Carte ajoutée</string>
+    <string name="cards_add_fragment_invalid_card_title">"Erreur de carte "</string>
+    <string name="cards_add_fragment_invalid_card_message">Nous n\'avons pu valider les renseignements de votre carte. Veuillez vérifier que vous avez entré les bons renseignements.</string>
 </resources>
