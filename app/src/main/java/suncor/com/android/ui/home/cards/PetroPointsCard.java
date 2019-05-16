@@ -1,11 +1,10 @@
 package suncor.com.android.ui.home.cards;
 
-import java.text.NumberFormat;
-
 import androidx.annotation.StringRes;
 import suncor.com.android.R;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 
 public class PetroPointsCard {
     @StringRes
@@ -20,11 +19,9 @@ public class PetroPointsCard {
             throw new IllegalArgumentException("this constructor is only PPTS for cards");
         }
         balanceTemplate = R.string.cards_ppts_balance_template;
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setGroupingUsed(true);
-        balanceValue = numberFormat.format(cardDetail.getBalance());
+        balanceValue = CardFormatUtils.formatBalance(cardDetail.getBalance());
         monetaryBalanceTemplate = R.string.cards_ppts_monetary_balance_template;
-        monetaryBalanceValue = String.valueOf(cardDetail.getBalance() / 1000);
+        monetaryBalanceValue = CardFormatUtils.formatBalance(cardDetail.getBalance() / 1000);
     }
 
     public int getBalanceTemplate() {

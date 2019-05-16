@@ -206,8 +206,8 @@
     <string name="cards_fsr_balance_template_singular">%s litre</string>
 
     <plurals name="cards_fsr_balance_template">
-        <item quantity="one">%d litre</item>
-        <item quantity="other">%d litres</item>
+        <item quantity="one">%s litre</item>
+        <item quantity="other">%s litres</item>
     </plurals>
 
     <string name="cards_ppc_label">Preferred Price</string>
@@ -215,8 +215,8 @@
     <string name="cards_ppc_balance_template_singular">%s litre</string>
 
     <plurals name="cards_ppc_balance_template">
-        <item quantity="one">%d litre</item>
-        <item quantity="other">%d litres</item>
+        <item quantity="one">%s litre</item>
+        <item quantity="other">%s litres</item>
     </plurals>
 
     <string name="cards_hbc_label">Hudson\'s Bay Rewards</string>
@@ -229,8 +229,8 @@
     <string name="cards_sp_balance_template_plural">%s days</string>
     <string name="cards_sp_balance_template_singular">%s day</string>
     <plurals name="cards_sp_balance_template">
-        <item quantity="one">%d day</item>
-        <item quantity="other">%d days</item>
+        <item quantity="one">%s day</item>
+        <item quantity="other">%s days</item>
     </plurals>
 
 

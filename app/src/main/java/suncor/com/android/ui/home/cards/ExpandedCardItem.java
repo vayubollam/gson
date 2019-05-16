@@ -73,15 +73,15 @@ public class ExpandedCardItem {
                     cardImage = context.getDrawable(R.drawable.petro_points_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PPTS_FORMAT);
                     cardName = context.getString(R.string.cards_ppts_label);
-                    balance = context.getString(R.string.cards_ppts_balance_template, Integer.toString(balanceValue));
-                    balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, String.valueOf(balanceValue / 1000));
+                    balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(balanceValue));
+                    balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(balanceValue / 1000));
                     break;
                 case FSR:
                     cardImage = context.getDrawable(cardDetail.getCpl() == 0.05f ? R.drawable.fsr_5cent_card : R.drawable.fsr_10cent_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.FSR_FORMAT);
                     cardName = context.getString(R.string.cards_fsr_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_fsr_balance_template, balanceValue, balanceValue)
+                            context.getResources().getQuantityString(R.plurals.cards_fsr_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     balanceDetails = context.getString(R.string.cards_fsr_balance_conversion, (int) (cardDetail.getCpl() * 100));
                     cardDescription = context.getString(R.string.cards_fsr_description);
@@ -91,27 +91,27 @@ public class ExpandedCardItem {
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.WAG_SP_FORMAT);
                     cardName = context.getString(R.string.cards_sp_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_sp_balance_template, balanceValue, balanceValue)
+                            context.getResources().getQuantityString(R.plurals.cards_sp_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
-                    balanceDetails = context.getString(R.string.cards_sp_expiration, "Feb 28, 2019");//TODO
                     cardDescription = context.getString(R.string.cards_sp_description);
+                    isBalanceDetailsVisible = false;
                     break;
                 case WAG:
                     cardImage = context.getDrawable(R.drawable.wag_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.WAG_SP_FORMAT);
                     cardName = context.getString(R.string.cards_wag_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_wag_balance_template, balanceValue, balanceValue)
+                            context.getResources().getQuantityString(R.plurals.cards_wag_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
-                    balanceDetails = context.getString(R.string.cards_wag_no_expiry);
                     cardDescription = context.getString(R.string.cards_wag_description);
+                    isBalanceDetailsVisible = false;
                     break;
                 case PPC:
                     cardImage = context.getDrawable(R.drawable.preferred_price_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PPC_FORMAT);
                     cardName = context.getString(R.string.cards_ppc_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_ppc_balance_template, balanceValue, balanceValue)
+                            context.getResources().getQuantityString(R.plurals.cards_ppc_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     balanceDetails = context.getString(R.string.cards_ppc_balance_conversion, (int) (cardDetail.getCpl() * 100));
                     cardDescription = context.getString(R.string.cards_ppc_description);

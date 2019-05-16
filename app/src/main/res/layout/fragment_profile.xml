@@ -25,25 +25,20 @@
                     android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHeight_percent=".5"
+                    app:layout_constraintHeight_percent=".48"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:alpha="0.3"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/profile_backdrop"
-                        android:translationZ="10dp"
-                        tools:layout_editor_absoluteX="0dp"
-                        tools:layout_editor_absoluteY="0dp" />
+                        android:src="@drawable/profile_gradient" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/full_name_output"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:ellipsize="end"
                         android:lineSpacingMultiplier="1.25"
@@ -53,6 +48,7 @@
                         app:autoSizeMinTextSize="26sp"
                         app:autoSizeTextType="uniform"
                         app:layout_constraintBottom_toTopOf="@id/email_output"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_chainStyle="packed"
@@ -228,8 +224,8 @@
             android:id="@+id/sign_out_PB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
             android:layout_gravity="center"
+            android:layout_marginTop="60dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -2,6 +2,8 @@ package suncor.com.android.ui.common.cards;
 
 import android.text.Editable;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -94,7 +96,6 @@ public class CardFormatUtils {
         }
     }
 
-
     public static CardFormat findCardFormat(CharSequence cardNumber) {
         String cleanedNumber = clean(cardNumber);
         for (CardFormat format : PETRO_CANADA_CARDS) {
@@ -103,6 +104,13 @@ public class CardFormatUtils {
             }
         }
         return null;
+    }
+
+    public static String formatBalance(int balance) {
+        NumberFormat numberFormat =  DecimalFormat.getInstance();
+        numberFormat.setGroupingUsed(true);
+
+        return numberFormat.format(balance);
     }
 
     private static String clean(CharSequence cardNumber) {
