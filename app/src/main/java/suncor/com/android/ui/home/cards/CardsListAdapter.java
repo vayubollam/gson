@@ -8,20 +8,28 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.PetroCanadaSmallCardItemBinding;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
 public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.PetroCanadaViewHolder> {
 
     private Context context;
     private ArrayList<CardItem> cards = new ArrayList<>();
+    Consumer<CardDetail> callback;
+
+    public CardsListAdapter(Consumer<CardDetail> callback) {
+        this.callback = callback;
+    }
+
     private View.OnTouchListener cardsTouchListener = new View.OnTouchListener() {
 
         @Override
@@ -74,8 +82,8 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
         });
 
         holder.binding.executePendingBindings();
+        holder.binding.getRoot().setOnClickListener(v -> callback.accept(cards.get(position).getCardDetail()));
     }
-
     @Override
     public int getItemCount() {
         return cards.size();

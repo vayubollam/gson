@@ -1,18 +1,22 @@
 package suncor.com.android.data.repository.cards;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Transformations;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 
 @Singleton
 public class CardsRepository {
@@ -22,6 +26,8 @@ public class CardsRepository {
     private CardsApi cardsApi;
     private ArrayList<CardDetail> cachedCards;
     private Calendar timeOfLastUpdate;
+
+    private CardsComparator cardsComparator = new CardsComparator();
 
     @Inject
     public CardsRepository(CardsApi cardsApi, SessionManager sessionManager) {
@@ -36,6 +42,7 @@ public class CardsRepository {
     public LiveData<Resource<ArrayList<CardDetail>>> getCards(boolean forceRefresh) {
         MediatorLiveData<Resource<ArrayList<CardDetail>>> result = new MediatorLiveData<>();
         if (!forceRefresh && cachedCards != null && !cachedCards.isEmpty()) {
+            Collections.sort(cachedCards, cardsComparator);
             result.postValue(Resource.success(cachedCards));
             return result;
         }
@@ -73,6 +80,9 @@ public class CardsRepository {
                         cachedCards.remove(i);
                     }
                 }
+
+                Collections.sort(cachedCards, cardsComparator);
+
                 timeOfLastUpdate = Calendar.getInstance();
                 if (hasPetroCanadaCards && !balanceUpdated) {
                     return Resource.error(BALANCE_UPDATE_FAILED, cachedCards);
@@ -113,5 +123,71 @@ public class CardsRepository {
         }
 
         return null;
+    }
+
+    private class CardsComparator implements Comparator<CardDetail> {
+
+        @Override
+        public int compare(CardDetail card1, CardDetail card2) {
+            if (card1.getCardCategory() != card2.getCardCategory()) {
+                switch (card1.getCardCategory()) {
+                    case PPTS:
+                        return -1;
+                    case PETRO_CANADA:
+                        if (card2.getCardCategory() == CardDetail.CardCategory.PPTS) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    case PARTNER:
+                        return 1;
+                }
+            } else if (card1.getCardCategory() == CardDetail.CardCategory.PETRO_CANADA) {
+                if (card1.getCardType() != card2.getCardType()) {
+                    switch (card1.getCardType()) {
+                        case FSR:
+                            return -1;
+                        case WAG:
+                            if (card2.getCardType() == CardType.FSR) {
+                                return 1;
+                            } else {
+                                return -1;
+                            }
+                        case SP:
+                            if (card2.getCardType() == CardType.FSR || card2.getCardType() == CardType.WAG) {
+                                return 1;
+                            } else {
+                                return -1;
+                            }
+                        case PPC:
+                            return 1;
+                    }
+                } else {
+                    if (card1.getCardType() == CardType.FSR || card1.getCardType() == CardType.PPC) {
+                        return (int) ((card1.getCpl() - card2.getCpl()) * 10);
+                    }
+                }
+            } else if (card1.getCardCategory() == CardDetail.CardCategory.PARTNER) {
+                if (card1.getCardType() != card2.getCardType()) {
+                    CardType card2Type = card2.getCardType();
+                    switch (card1.getCardType()) {
+                        case RBC:
+                            return -1;
+                        case MORE:
+                            return card2Type == CardType.RBC ? 1 : -1;
+                        case HBC:
+                            return card2Type == CardType.RBC || card2Type == CardType.MORE ? 1 : -1;
+                        case CAA:
+                        case BCAA:
+                            return 1;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+
+            //which means card1==card2 and is ppts
+            return 0;
+        }
     }
 }

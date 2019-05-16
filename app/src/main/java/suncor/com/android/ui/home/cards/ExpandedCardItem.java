@@ -3,6 +3,7 @@ package suncor.com.android.ui.home.cards;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import com.google.zxing.BarcodeFormat;
@@ -24,6 +25,7 @@ public class ExpandedCardItem {
     private String cardDescription;
     private String cardNumber;
     private CardType cardType;
+    private Drawable barCode;
     private CardDetail.CardCategory cardCategory;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
@@ -73,6 +75,9 @@ public class ExpandedCardItem {
                     cardImage = context.getDrawable(R.drawable.petro_points_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PPTS_FORMAT);
                     cardName = context.getString(R.string.cards_ppts_label);
+                    balance = context.getString(R.string.cards_ppts_balance_template, Integer.toString(balanceValue));
+                    balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, String.valueOf(balanceValue / 1000));
+                    barCode = new BitmapDrawable(context.getResources(), generateBarcode(cardDetail));
                     balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(balanceValue));
                     balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(balanceValue / 1000));
                     break;
@@ -154,6 +159,10 @@ public class ExpandedCardItem {
 
     public boolean isBalanceDetailsVisible() {
         return isBalanceDetailsVisible;
+    }
+
+    public Drawable getBarCode() {
+        return barCode;
     }
 
     private Bitmap generateBarcode(CardDetail cardDetail) {

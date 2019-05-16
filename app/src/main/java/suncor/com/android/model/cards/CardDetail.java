@@ -1,5 +1,7 @@
 package suncor.com.android.model.cards;
 
+import androidx.annotation.Nullable;
+
 public class CardDetail {
 
     public static final int INVALID_BALANCE = -1;
@@ -57,6 +59,18 @@ public class CardDetail {
                 return CardCategory.PETRO_CANADA;
             default:
                 return CardCategory.PARTNER;
+        }
+    }
+
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof CardDetail)) {
+            return false;
+        } else {
+            CardDetail cardDetail = (CardDetail) obj;
+            return (cardDetail.getCardType() == CardType.RBC && this.getCardType() == CardType.RBC)
+                    || cardDetail.getCardNumber().equals(this.getCardNumber());
         }
     }
 

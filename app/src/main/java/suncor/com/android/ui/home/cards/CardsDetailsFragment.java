@@ -1,33 +1,83 @@
 package suncor.com.android.ui.home.cards;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
-import suncor.com.android.data.repository.cards.CardsApiMock;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.home.common.BaseFragment;
 
 public class CardsDetailsFragment extends BaseFragment {
-
-    private AppCompatImageView barCodeImage;
+    private FragmentCardsDetailsBinding binding;
+    CardDetailsViewModel viewModel;
+    private int clickedCardIndex;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentCardsDetailsBinding binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
-        CardsApiMock mock = new CardsApiMock();
-        mock.retrieveCards().observe(this, result -> {
-            if (result.status == Resource.Status.SUCCESS) {
-                binding.card.setCard(new ExpandedCardItem(getContext(), result.data.get(8)));
-                binding.card.executePendingBindings();
+        binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getClickeCardIndex();
+    }
+
+    @Override
+    protected int getStatusBarColor() {
+        return getResources().getColor(R.color.black_4);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
+        CardsDeatilsAdapter cardsDeatilsAdapter = new CardsDeatilsAdapter();
+        binding.cardDetailRecycler.setAdapter(cardsDeatilsAdapter);
+        binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
+        cardsDeatilsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
+
+        viewModel.cards.observe(this, arrayListResource -> {
+            if (arrayListResource.status == Resource.Status.SUCCESS) {
+                ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
+                for (CardDetail cardDetail : arrayListResource.data) {
+                    expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
+                }
+                if (expandedCardItems.size() > 0) {
+                    cardsDeatilsAdapter.setCardItems(expandedCardItems);
+                    cardsDeatilsAdapter.notifyDataSetChanged();
+                    new Handler().postDelayed(() -> binding.cardDetailRecycler.smoothScrollToPosition(clickedCardIndex), 300);
+                }
+
             }
         });
-        return binding.getRoot();
+        binding.buttonClose.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+
     }
 }
