@@ -56,7 +56,12 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManager.checkLoginState();
+
+        AppStart appStartMode = checkAppStart();
+
+        if (appStartMode != AppStart.FIRST_TIME) {
+            sessionManager.checkLoginState();
+        }
 
         if (application.isSplashShown()) {
             openHomeActivity();
@@ -74,7 +79,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         textLayout = findViewById(R.id.text_layout);
         AppCompatTextView splashText1 = findViewById(R.id.splash_text_1);
         AppCompatTextView splashText2 = findViewById(R.id.splash_text_2);
-        switch (checkAppStart()) {
+        switch (appStartMode) {
             case NORMAL:
                 splashText2.setVisibility(View.GONE);
                 break;
