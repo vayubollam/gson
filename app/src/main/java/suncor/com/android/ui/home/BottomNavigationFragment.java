@@ -16,7 +16,7 @@ public class BottomNavigationFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
         // apply a bottom margin = height of bottom navigation + height of divider
-        params.bottomMargin = (int) (getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_height) + getResources().getDisplayMetrics().density);
+        params.bottomMargin = (int) (getResources().getDimensionPixelSize(R.dimen.suncor_bottom_navigation_height) + getResources().getDisplayMetrics().density);
         view.setLayoutParams(params);
     }
 }

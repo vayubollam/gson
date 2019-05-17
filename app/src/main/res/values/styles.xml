@@ -361,4 +361,12 @@
         <item name="expandedTitleAppearance">@style/Title1</item>
     </style>
 
+    <style name="Widget.MaterialComponents.BottomNavigationView.SuncorBottomNavigationView">
+        <item name="android:fontFamily">@font/gibson_regular</item>
+        <item name="itemTextAppearanceActive">@style/Caption1</item>
+        <item name="itemTextAppearanceInactive">@style/Caption1</item>
+        <item name="itemIconTint">@color/bottom_nav_item_tint</item>
+        <item name="itemTextColor">@color/bottom_nav_item_tint</item>
+    </style>
+
 </resources>
