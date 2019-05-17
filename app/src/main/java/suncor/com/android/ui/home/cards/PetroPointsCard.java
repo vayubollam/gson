@@ -1,42 +1,29 @@
 package suncor.com.android.ui.home.cards;
 
-import androidx.annotation.StringRes;
+import android.content.Context;
+
 import suncor.com.android.R;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 
 public class PetroPointsCard {
-    @StringRes
-    private int balanceTemplate;
-    private String balanceValue;
-    @StringRes
-    private int monetaryBalanceTemplate;
-    private String monetaryBalanceValue;
+    private String balance;
+    private String monetaryBalance;
 
-    public PetroPointsCard(CardDetail cardDetail) {
+    public PetroPointsCard(Context context, CardDetail cardDetail) {
         if (cardDetail.getCardType() != CardType.PPTS) {
             throw new IllegalArgumentException("this constructor is only PPTS for cards");
         }
-        balanceTemplate = R.string.cards_ppts_balance_template;
-        balanceValue = CardFormatUtils.formatBalance(cardDetail.getBalance());
-        monetaryBalanceTemplate = R.string.cards_ppts_monetary_balance_template;
-        monetaryBalanceValue = CardFormatUtils.formatBalance(cardDetail.getBalance() / 1000);
+        balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(cardDetail.getBalance()));
+        monetaryBalance = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(cardDetail.getBalance() / 1000));
     }
 
-    public int getBalanceTemplate() {
-        return balanceTemplate;
+    public String getMonetaryBalance() {
+        return monetaryBalance;
     }
 
-    public String getBalanceValue() {
-        return balanceValue;
-    }
-
-    public int getMonetaryBalanceTemplate() {
-        return monetaryBalanceTemplate;
-    }
-
-    public String getMonetaryBalanceValue() {
-        return monetaryBalanceValue;
+    public String getBalance() {
+        return balance;
     }
 }

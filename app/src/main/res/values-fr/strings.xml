@@ -190,7 +190,7 @@
     <string name="profile_faq_get_help_title">Obtenir de l\'aide</string>
     <string name="profile_get_help_footer">Besoin d\'aide? Communiquez avec nous.</string>
 
-    <string name="cards_partners_more_balance">Obtenez de points More Rewards%s</string>
+    <string name="cards_partners_more_balance">Obtenez de points More Rewards</string>
     <string name="cards_bcaa_label">BCAA</string>
     <string name="cards_caa_label">CAA</string>
     <string name="cards_fragment_add_card_button">Ajouter une carte</string>
@@ -201,24 +201,18 @@
     <string name="cards_fragment_try_again">Veuillez essayer de nouveau</string>
     <string name="cards_fragment_update_date">Au %1s à %2s</string>
     <string name="cards_fragment_you_have">Vous avez</string>
-    <string name="cards_fsr_balance_template_plural">%s litres</string>
-    <string name="cards_fsr_balance_template_singular">%s litre</string>
     <string name="cards_fsr_label">Carte Économie sur l\'essence en prime</string>
     <string name="cards_hbc_label">Primes La Baie d\'Hudson</string>
     <string name="cards_more_label">More Rewards</string>
     <string name="cards_partners_balance_template">%s plus de points</string>
-    <string name="cards_ppc_balance_template_plural">%s litres</string>
-    <string name="cards_ppc_balance_template_singular">%s litre</string>
     <string name="cards_ppc_label">Prix Préférentiel</string>
+    <string name="cards_ppc_expanded_label">Carte Prix Préférentiel</string>
     <string name="cards_ppts_balance_template">%s points</string>
     <string name="cards_ppts_monetary_balance_template">ou %s $ de rabais</string>
     <string name="cards_rbc_label">RBC</string>
-    <string name="cards_sp_balance_template_plural">%s jours</string>
-    <string name="cards_sp_balance_template_singular">%s jour</string>
     <string name="cards_sp_label">Carte accès</string>
-    <string name="cards_wag_balance_template_plural">%s lavages</string>
-    <string name="cards_wag_balance_template_singular">%s lavage</string>
     <string name="cards_wag_label">Lavez Partez</string>
+    <string name="cards_wag_expanded_label">Carte Lavez Partez</string>
 
     <string name="customer_support_email">custsvs@suncor.com</string>
     <string name="profile_get_help_call">Appel</string>
@@ -266,4 +260,5 @@
     <string name="cards_add_fragment_added">Carte ajoutée</string>
     <string name="cards_add_fragment_invalid_card_title">"Erreur de carte "</string>
     <string name="cards_add_fragment_invalid_card_message">Nous n\'avons pu valider les renseignements de votre carte. Veuillez vérifier que vous avez entré les bons renseignements.</string>
+    <string name="cards_fsr_expanded_label">Économie sur l\'essence en prime</string>
 </resources>

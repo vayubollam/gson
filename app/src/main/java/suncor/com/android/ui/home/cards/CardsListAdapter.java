@@ -21,7 +21,7 @@ import suncor.com.android.utilities.Consumer;
 public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.PetroCanadaViewHolder> {
 
     private Context context;
-    private ArrayList<CardItem> cards = new ArrayList<>();
+    private ArrayList<CardListItem> cards = new ArrayList<>();
     Consumer<CardDetail> callback;
 
     public CardsListAdapter(Consumer<CardDetail> callback) {
@@ -59,12 +59,13 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
 
         holder.binding.executePendingBindings();
     }
+
     @Override
     public int getItemCount() {
         return cards.size();
     }
 
-    public void setCards(List<CardItem> cards) {
+    public void setCards(List<CardListItem> cards) {
         this.cards.clear();
         this.cards.addAll(cards);
         notifyDataSetChanged();

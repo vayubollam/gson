@@ -63,7 +63,7 @@ public class ExpandedCardItem {
                 case MORE:
                     cardImage = context.getDrawable(R.drawable.more_rewards_card);
                     cardName = context.getString(R.string.cards_more_label);
-                    balance = context.getString(R.string.cards_partners_more_balance, "");
+                    balance = context.getString(R.string.cards_partners_more_balance);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PARTNER_CARD_FORMAT);
                     cardDescription = context.getString(R.string.cards_more_description);
                     break;
@@ -82,7 +82,7 @@ public class ExpandedCardItem {
                 case FSR:
                     cardImage = context.getDrawable(cardDetail.getCpl() == 0.05f ? R.drawable.fsr_5cent_card : R.drawable.fsr_10cent_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.FSR_FORMAT);
-                    cardName = context.getString(R.string.cards_fsr_label);
+                    cardName = context.getString(R.string.cards_fsr_expanded_label);
                     balance = balanceValue != -1 ?
                             context.getResources().getQuantityString(R.plurals.cards_fsr_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
@@ -102,7 +102,7 @@ public class ExpandedCardItem {
                 case WAG:
                     cardImage = context.getDrawable(R.drawable.wag_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.WAG_SP_FORMAT);
-                    cardName = context.getString(R.string.cards_wag_label);
+                    cardName = context.getString(R.string.cards_wag_expanded_label);
                     balance = balanceValue != -1 ?
                             context.getResources().getQuantityString(R.plurals.cards_wag_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
@@ -112,7 +112,7 @@ public class ExpandedCardItem {
                 case PPC:
                     cardImage = context.getDrawable(R.drawable.preferred_price_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PPC_FORMAT);
-                    cardName = context.getString(R.string.cards_ppc_label);
+                    cardName = context.getString(R.string.cards_ppc_expanded_label);
                     balance = balanceValue != -1 ?
                             context.getResources().getQuantityString(R.plurals.cards_ppc_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;

@@ -24,9 +24,9 @@ public class CardsViewModel extends ViewModel {
     private MediatorLiveData<ViewState> _viewState = new MediatorLiveData<>();
     public LiveData<ViewState> viewState = _viewState;
 
-    private MutableLiveData<PetroPointsCard> petroPointsCard = new MutableLiveData<>();
-    private MutableLiveData<List<CardItem>> petroCanadaCards = new MutableLiveData<>();
-    private MutableLiveData<List<CardItem>> partnerCards = new MutableLiveData<>();
+    private MutableLiveData<CardDetail> petroPointsCard = new MutableLiveData<>();
+    private MutableLiveData<List<CardDetail>> petroCanadaCards = new MutableLiveData<>();
+    private MutableLiveData<List<CardDetail>> partnerCards = new MutableLiveData<>();
 
     private MutableLiveData<Event<Boolean>> retrieveCardsEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> refreshCardsEvent = new MutableLiveData<>();
@@ -96,20 +96,20 @@ public class CardsViewModel extends ViewModel {
 
     private void saveCards(ArrayList<CardDetail> cards) {
         this.cards = cards;
-        petroPointsCard.postValue(new PetroPointsCard(cards.get(0)));
+        petroPointsCard.setValue(cards.get(0));
 
-        ArrayList<CardItem> petroCanadaCardsList = new ArrayList<>();
+        ArrayList<CardDetail> petroCanadaCardsList = new ArrayList<>();
         for (CardDetail item : cards) {
             if (item.getCardCategory() == CardDetail.CardCategory.PETRO_CANADA) {
-                petroCanadaCardsList.add(new CardItem(item));
+                petroCanadaCardsList.add(item);
             }
         }
         petroCanadaCards.setValue(petroCanadaCardsList);
 
-        ArrayList<CardItem> partnerCardsList = new ArrayList<>();
+        ArrayList<CardDetail> partnerCardsList = new ArrayList<>();
         for (CardDetail item : cards) {
             if (item.getCardCategory() == CardDetail.CardCategory.PARTNER) {
-                partnerCardsList.add(new CardItem(item));
+                partnerCardsList.add(item);
             }
         }
         partnerCards.setValue(partnerCardsList);
@@ -117,15 +117,15 @@ public class CardsViewModel extends ViewModel {
         dateOfUpdate.setValue(repository.getTimeOfLastUpdate());
     }
 
-    public LiveData<PetroPointsCard> getPetroPointsCard() {
+    public LiveData<CardDetail> getPetroPointsCard() {
         return petroPointsCard;
     }
 
-    public LiveData<List<CardItem>> getPetroCanadaCards() {
+    public LiveData<List<CardDetail>> getPetroCanadaCards() {
         return petroCanadaCards;
     }
 
-    public LiveData<List<CardItem>> getPartnerCards() {
+    public LiveData<List<CardDetail>> getPartnerCards() {
         return partnerCards;
     }
 

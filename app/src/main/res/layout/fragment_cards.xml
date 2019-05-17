@@ -12,6 +12,10 @@
         <variable
             name="vm"
             type="suncor.com.android.ui.home.cards.CardsViewModel" />
+
+        <variable
+            name="pptsCard"
+            type="suncor.com.android.ui.home.cards.PetroPointsCard" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,7 +100,7 @@
                             android:id="@+id/petro_points_balance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{vm.petroPointsCard != null ? context.getString(vm.petroPointsCard.balanceTemplate, vm.petroPointsCard.balanceValue): ``}"
+                            android:text="@{pptsCard.balance}"
                             android:textColor="@color/white"
                             android:textSize="36sp"
                             app:fontFamily="@font/gibson_semibold"
@@ -113,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:fontFamily="@font/gibson_semibold"
-                            android:text="@{vm.petroPointsCard != null ? context.getString(vm.petroPointsCard.monetaryBalanceTemplate, vm.petroPointsCard.monetaryBalanceValue): ``}"
+                            android:text="@{pptsCard.monetaryBalance}"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="@id/petro_points_balance"

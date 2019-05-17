@@ -202,8 +202,7 @@
     <string name="cards_fragment_petrocanada_cards_header">Petro-Canada cards</string>
     <string name="cards_fragment_partner_cards_header">Petro-Points partners</string>
     <string name="cards_fsr_label">Fuel Savings Reward</string>
-    <string name="cards_fsr_balance_template_plural">%s litres</string>
-    <string name="cards_fsr_balance_template_singular">%s litre</string>
+    <string name="cards_fsr_expanded_label">Fuel Savings Reward</string>
 
     <plurals name="cards_fsr_balance_template">
         <item quantity="one">%s litre</item>
@@ -211,8 +210,7 @@
     </plurals>
 
     <string name="cards_ppc_label">Preferred Price</string>
-    <string name="cards_ppc_balance_template_plural">%s litres</string>
-    <string name="cards_ppc_balance_template_singular">%s litre</string>
+    <string name="cards_ppc_expanded_label">Preferred Price card</string>
 
     <plurals name="cards_ppc_balance_template">
         <item quantity="one">%s litre</item>
@@ -226,24 +224,17 @@
     <string name="cards_rbc_label">RBC</string>
     <string name="cards_more_label">More Rewards</string>
     <string name="cards_sp_label">Season Pass</string>
-    <string name="cards_sp_balance_template_plural">%s days</string>
-    <string name="cards_sp_balance_template_singular">%s day</string>
     <plurals name="cards_sp_balance_template">
         <item quantity="one">%s day</item>
         <item quantity="other">%s days</item>
     </plurals>
-
-
-    <string name="cards_wag_balance_template_plural">%s washes</string>
-    <string name="cards_wag_balance_template_singular">%s wash</string>
-
     <plurals name="cards_wag_balance_template">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
 
 
-    <string name="cards_partners_more_balance">Collecting More Rewards points%s</string>
+    <string name="cards_partners_more_balance">Collecting More Rewards points</string>
     <string name="cards_ppts_balance_template">%s points</string>
     <string name="cards_ppts_monetary_balance_template">or $%s off</string>
     <string name="cards_fragment_add_card_header">Add your card</string>
@@ -254,6 +245,7 @@
     <string name="msg_cm003">Couldn\'t update your balance</string>
     <string name="cards_fragment_update_date">As of %1s at %2s</string>
     <string name="cards_wag_label">Wash &amp; Go</string>
+    <string name="cards_wag_expanded_label">Wash &amp; Go</string>
     <string name="cards_ppts_label">Petro-Points</string>
     <string name="cards_fsr_balance_conversion">save %d¢ per litre</string>
     <string name="cards_ppc_balance_conversion">save %d¢ per litre</string>
