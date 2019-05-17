@@ -6,6 +6,9 @@ import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Timber;
 
@@ -54,6 +58,43 @@ public class CardsApiImpl implements CardsApi {
             });
         } catch (URISyntaxException e) {
             Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardDetail>> addCard(AddCardRequest cardRequest) {
+        Timber.d("Add card: " + cardRequest.getCardNumber());
+        MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(ADAPTER_PATH);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
+            JSONObject body = new JSONObject(gson.toJson(cardRequest));
+            request.send(body, new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Post cards API success, response:\n" + jsonText);
+
+                    CardDetail card = gson.fromJson(jsonText, CardDetail.class);
+                    result.postValue(Resource.success(card));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Post cards API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        } catch (JSONException e) {
+            e.printStackTrace();
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }
 

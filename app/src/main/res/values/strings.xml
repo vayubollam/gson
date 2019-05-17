@@ -255,8 +255,6 @@
     <string name="cards_fragment_update_date">As of %1s at %2s</string>
     <string name="cards_wag_label">Wash &amp; Go</string>
     <string name="cards_ppts_label">Petro-Points</string>
-    <string name="cards_sp_expiration">Expires on %s</string>
-    <string name="cards_wag_no_expiry">No expiry date</string>
     <string name="cards_fsr_balance_conversion">save %d¢ per litre</string>
     <string name="cards_ppc_balance_conversion">save %d¢ per litre</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser 5 ¢ le litre sur 200 litres d\'essence.\n-\nRechargez votre carte à petro-points.com.</string>
@@ -278,6 +276,13 @@
     <string name="cards_add_fragment_cvv_subcopy_more">Enter the activation code (AC#) located on the back of your card.</string>
     <string name="cards_add_fragment_card_field_empty_error">Please enter the card number.</string>
     <string name="cards_add_fragment_card_field_format_error">Please enter a valid card number.</string>
+    <string name="cards_add_fragment_help_dialog_title">Security code</string>
+    <string name="cards_add_fragment_help_dialog_message">Your security code is a 3 digit number located on the back of your card.</string>
+    <string name="cards_add_fragment_invalid_card_title">Card error</string>
+    <string name="cards_add_fragment_invalid_card_message">We couldn\'t validate your card details. Please check that the details entered are correct.</string>
+    <string name="cards_add_fragment_done_button">Done</string>
+    <string name="cards_add_fragment_adding">Adding card</string>
+    <string name="cards_add_fragment_added">Card added</string>
 
     <string name="profile_about_button">About</string>
     <string name="profile_address_button">Address</string>

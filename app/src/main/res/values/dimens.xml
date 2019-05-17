@@ -24,4 +24,8 @@
 
     <dimen name="petro_canada_cards_padding">12dp</dimen>
     <dimen name="suncor_toast_bottom_margin">80dp</dimen>
+
+    <dimen name="help_icon_end_margin">16dp</dimen>
+    <dimen name="help_icon_end_margin_with_error">44dp</dimen>
+
 </resources>

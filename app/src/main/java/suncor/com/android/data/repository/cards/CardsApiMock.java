@@ -8,6 +8,7 @@ import java.util.Arrays;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
 
 public class CardsApiMock implements CardsApi {
@@ -22,6 +23,25 @@ public class CardsApiMock implements CardsApi {
                 Gson gson = new Gson();
                 cards.addAll(Arrays.asList(gson.fromJson(responseJson, CardDetail[].class)));
                 result.postValue(Resource.success(cards));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardDetail>> addCard(AddCardRequest request) {
+        MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(2000);
+                ArrayList<CardDetail> cards = new ArrayList<>();
+                Gson gson = new Gson();
+                cards.addAll(Arrays.asList(gson.fromJson(responseJson, CardDetail[].class)));
+                result.postValue(Resource.success(cards.get(1)));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
