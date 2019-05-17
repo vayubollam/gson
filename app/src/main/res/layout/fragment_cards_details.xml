@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="numCards"
+            type="Integer" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,12 +34,13 @@
         <suncor.com.android.uicomponents.pagerindicator.CircleIndicator
             android:id="@+id/page_indicator"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="20dp"
             app:ci_drawable="@drawable/black_radius"
             app:ci_drawable_unselected="@drawable/white_radius"
             app:ci_height="8dp"
             app:ci_width="8dp"
-            android:layout_marginBottom="16dp"
+            app:visibleGone="@{numCards!=1}"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toTopOf="@+id/button_close"
             app:layout_constraintTop_toBottomOf="@+id/card_detail_recycler"></suncor.com.android.uicomponents.pagerindicator.CircleIndicator>
 
@@ -43,9 +50,13 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginStart="84dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="84dp"
             android:layout_marginBottom="16dp"
             android:text="Close"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/page_indicator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

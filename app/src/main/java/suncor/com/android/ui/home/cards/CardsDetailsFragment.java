@@ -1,7 +1,6 @@
 package suncor.com.android.ui.home.cards;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,9 @@ public class CardsDetailsFragment extends BaseFragment {
                 if (expandedCardItems.size() > 0) {
                     cardsDeatilsAdapter.setCardItems(expandedCardItems);
                     cardsDeatilsAdapter.notifyDataSetChanged();
-                    new Handler().postDelayed(() -> binding.cardDetailRecycler.smoothScrollToPosition(clickedCardIndex), 300);
+                    binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
+                    binding.setNumCards(expandedCardItems.size());
+                    binding.executePendingBindings();
                 }
 
             }

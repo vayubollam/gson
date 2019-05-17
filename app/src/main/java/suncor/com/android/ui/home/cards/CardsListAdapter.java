@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,7 +17,6 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.PetroCanadaSmallCardItemBinding;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Consumer;
-import suncor.com.android.utilities.Timber;
 
 public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.PetroCanadaViewHolder> {
 
@@ -29,22 +27,6 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
     public CardsListAdapter(Consumer<CardDetail> callback) {
         this.callback = callback;
     }
-
-    private View.OnTouchListener cardsTouchListener = new View.OnTouchListener() {
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            int action = event.getAction();
-            if (action == MotionEvent.ACTION_DOWN) {
-                v.animate().scaleX(0.97f).scaleY(0.97f).setDuration(100).start();
-            } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
-                v.animate().cancel();
-                v.animate().scaleX(1f).scaleY(1f).setDuration(100).start();
-            }
-
-            return v.onTouchEvent(event);
-        }
-    };
 
     @NonNull
     @Override
@@ -73,16 +55,9 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
             view.setPadding(0, 0, 0, view.getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
         }
 
-        if (cards.get(position).getCardCategory() == CardDetail.CardCategory.PETRO_CANADA) {
-            view.setOnTouchListener(cardsTouchListener);
-        }
-
-        view.setOnClickListener((v) -> {
-            Timber.d("Click still working");
-        });
+        view.setOnClickListener(v -> callback.accept(cards.get(position).getCardDetail()));
 
         holder.binding.executePendingBindings();
-        holder.binding.getRoot().setOnClickListener(v -> callback.accept(cards.get(position).getCardDetail()));
     }
     @Override
     public int getItemCount() {
