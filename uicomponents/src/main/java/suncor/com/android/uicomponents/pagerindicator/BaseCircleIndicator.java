@@ -1,8 +1,6 @@
 package suncor.com.android.uicomponents.pagerindicator;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -29,10 +27,6 @@ class BaseCircleIndicator extends LinearLayout {
     protected int mIndicatorBackgroundResId;
     protected int mIndicatorUnselectedBackgroundResId;
 
-    protected Animator mAnimatorOut;
-    protected Animator mAnimatorIn;
-    protected Animator mImmediateAnimatorOut;
-    protected Animator mImmediateAnimatorIn;
 
     protected int mLastPosition = -1;
 
@@ -76,8 +70,6 @@ class BaseCircleIndicator extends LinearLayout {
                 typedArray.getDimensionPixelSize(R.styleable.BaseCircleIndicator_ci_height, -1);
         config.margin =
                 typedArray.getDimensionPixelSize(R.styleable.BaseCircleIndicator_ci_margin, -1);
-        config.animatorResId = typedArray.getResourceId(R.styleable.BaseCircleIndicator_ci_animator,
-                R.animator.scale_with_alpha);
         config.animatorReverseResId =
                 typedArray.getResourceId(R.styleable.BaseCircleIndicator_ci_animator_reverse, 0);
         config.backgroundResId =
@@ -100,14 +92,6 @@ class BaseCircleIndicator extends LinearLayout {
         mIndicatorHeight = (config.height < 0) ? miniSize : config.height;
         mIndicatorMargin = (config.margin < 0) ? miniSize : config.margin;
 
-        mAnimatorOut = createAnimatorOut(config);
-        mImmediateAnimatorOut = createAnimatorOut(config);
-        mImmediateAnimatorOut.setDuration(0);
-
-        mAnimatorIn = createAnimatorIn(config);
-        mImmediateAnimatorIn = createAnimatorIn(config);
-        mImmediateAnimatorIn.setDuration(0);
-
         mIndicatorBackgroundResId =
                 (config.backgroundResId == 0) ? R.drawable.white_radius : config.backgroundResId;
         mIndicatorUnselectedBackgroundResId =
@@ -118,39 +102,19 @@ class BaseCircleIndicator extends LinearLayout {
         setGravity(config.gravity >= 0 ? config.gravity : Gravity.CENTER);
     }
 
-    protected Animator createAnimatorOut(Config config) {
-        return AnimatorInflater.loadAnimator(getContext(), config.animatorResId);
-    }
-
-    protected Animator createAnimatorIn(Config config) {
-        Animator animatorIn;
-        if (config.animatorReverseResId == 0) {
-            animatorIn = AnimatorInflater.loadAnimator(getContext(), config.animatorResId);
-            animatorIn.setInterpolator(new ReverseInterpolator());
-        } else {
-            animatorIn = AnimatorInflater.loadAnimator(getContext(), config.animatorReverseResId);
-        }
-        return animatorIn;
-    }
-
     protected void createIndicators(int count, int currentPosition) {
         int orientation = getOrientation();
         for (int i = 0; i < count; i++) {
             if (currentPosition == i) {
-                addIndicator(orientation, mIndicatorBackgroundResId, mImmediateAnimatorOut);
+                addIndicator(orientation, mIndicatorBackgroundResId);
             } else {
-                addIndicator(orientation, mIndicatorUnselectedBackgroundResId,
-                        mImmediateAnimatorIn);
+                addIndicator(orientation, mIndicatorUnselectedBackgroundResId);
             }
         }
     }
 
-    protected void addIndicator(int orientation, @DrawableRes int backgroundDrawableId,
-                                Animator animator) {
-        if (animator.isRunning()) {
-            animator.end();
-            animator.cancel();
-        }
+    protected void addIndicator(int orientation, @DrawableRes int backgroundDrawableId) {
+
         View indicator = new View(getContext());
         indicator.setBackgroundResource(backgroundDrawableId);
         addView(indicator, mIndicatorWidth, mIndicatorHeight);
@@ -165,34 +129,20 @@ class BaseCircleIndicator extends LinearLayout {
         }
 
         indicator.setLayoutParams(lp);
-        animator.setTarget(indicator);
-        animator.start();
     }
 
     protected void internalPageSelected(int position) {
 
-        if (mAnimatorIn.isRunning()) {
-            mAnimatorIn.end();
-            mAnimatorIn.cancel();
-        }
 
-        if (mAnimatorOut.isRunning()) {
-            mAnimatorOut.end();
-            mAnimatorOut.cancel();
-        }
 
         View currentIndicator;
         if (mLastPosition >= 0 && (currentIndicator = getChildAt(mLastPosition)) != null) {
             currentIndicator.setBackgroundResource(mIndicatorUnselectedBackgroundResId);
-            mAnimatorIn.setTarget(currentIndicator);
-            mAnimatorIn.start();
         }
 
         View selectedIndicator = getChildAt(position);
         if (selectedIndicator != null) {
             selectedIndicator.setBackgroundResource(mIndicatorBackgroundResId);
-            mAnimatorOut.setTarget(selectedIndicator);
-            mAnimatorOut.start();
         }
     }
 

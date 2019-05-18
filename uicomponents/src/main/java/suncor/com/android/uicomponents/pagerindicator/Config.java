@@ -14,8 +14,6 @@ public class Config {
     int height = -1;
     int margin = -1;
     @AnimatorRes
-    int animatorResId = R.animator.scale_with_alpha;
-    @AnimatorRes
     int animatorReverseResId = 0;
     @DrawableRes
     int backgroundResId = R.drawable.white_radius;
@@ -47,11 +45,6 @@ public class Config {
 
         public Builder margin(int margin) {
             mConfig.margin = margin;
-            return this;
-        }
-
-        public Builder animator(@AnimatorRes int animatorResId) {
-            mConfig.animatorResId = animatorResId;
             return this;
         }
 
