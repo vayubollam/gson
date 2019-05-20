@@ -289,4 +289,16 @@
     <string name="profile_preferences_button">Preferences</string>
     <string name="profile_personnal_informations_button">Personal information</string>
     <string name="profile_transactions_button">Transactions</string>
+    <string name="profile_personnal_informations_header">Personal information</string>
+    <string name="profile_personnal_informations_firstName">First name</string>
+    <string name="profile_personnal_informations_lastName">Last name</string>
+    <string name="profile_personnal_informations_phone">Phone (optional)</string>
+    <string name="profile_personnal_informations_email">Email</string>
+    <string name="profile_personnal_informations_subcopy1">To make changes to your personal information please contact our Customer Service. &lt; Call 1 (800) 668-0220 &gt;</string>
+    <string name="profile_personnal_informations_subcopy2">Please note, in order to protect your account, if you change your email address you will not be able to redeem points online or in-store for 24 hours.</string>
+    <string name="profile_personnal_informations_subcopyEmail">Changing your email will require you to sign in again.</string>
+    <string name="profile_personnal_informations_button1">Save</string>
+
+
+
 </resources>

@@ -28,6 +28,10 @@ public class Profile {
         return lastName;
     }
 
+    public String getPhone()  {
+        return phone;
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof Profile)) {

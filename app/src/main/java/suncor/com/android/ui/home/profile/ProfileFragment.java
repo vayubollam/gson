@@ -64,6 +64,9 @@ public class ProfileFragment extends BottomNavigationFragment {
         binding.getHelpButton.setOnClickListener(v -> {
             launchGetHelpFragment();
         });
+        binding.personalInformationsButton.setOnClickListener( v -> {
+                lunchPersonalInfoFragment();
+        });
     }
 
     private void signUserOut() {
@@ -82,6 +85,9 @@ public class ProfileFragment extends BottomNavigationFragment {
 
     public void launchGetHelpFragment() {
         Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
+    }
+    public void lunchPersonalInfoFragment(){
+        Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
     }
     public String capitalize (String string){
         return string.substring(0,1).toUpperCase()+ string.substring(1);
