@@ -6,12 +6,12 @@ import androidx.annotation.StringRes;
 import androidx.databinding.Bindable;
 
 public class PostalCodeField extends InputField {
-    private static final Pattern POSTAL_CODE_PATTERN = Pattern.compile("^[A-Za-z]\\d[A-Za-z][ -]?\\d[A-Za-z]\\d$");
+    private static final Pattern POSTAL_CODE_PATTERN = Pattern.compile("^[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] ?[0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]$");
 
 
     @StringRes
-    int formatError;
-    int matchingProvinceError = -1;
+    private int formatError;
+    private int matchingProvinceError = -1;
     private boolean hasFocus;
     private String firstCharacterValidation;
 
@@ -50,7 +50,7 @@ public class PostalCodeField extends InputField {
                     !isFormatValid() ? formatError :
                             !isMatchingProvince() ? matchingProvinceError : -1;
 
-    }
+        }
     }
 
     public void setHasFocus(boolean hasFocus) {
@@ -70,11 +70,10 @@ public class PostalCodeField extends InputField {
     }
 
     private boolean isMatchingProvince() {
-        if(matchingProvinceError == -1 || firstCharacterValidation == null)
-        {
+        if (matchingProvinceError == -1 || firstCharacterValidation == null) {
             return true;
         }
-        String first = getText().substring(0,1).toUpperCase();
+        String first = getText().substring(0, 1).toUpperCase();
         return firstCharacterValidation.contains(first);
     }
 
