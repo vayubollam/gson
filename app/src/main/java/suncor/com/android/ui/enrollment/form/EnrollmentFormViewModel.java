@@ -24,6 +24,7 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.model.canadapost.CanadaPostDetails;
 import suncor.com.android.model.canadapost.CanadaPostSuggestion;
 import suncor.com.android.ui.common.Event;
+import suncor.com.android.ui.common.input.CityInputField;
 import suncor.com.android.ui.common.input.EmailInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PasswordInputField;
@@ -51,7 +52,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField securityQuestionField = new InputField();
     private InputField securityAnswerField = new InputField();
     private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error);
-    private InputField cityField = new InputField(R.string.enrollment_city_error);
+    private CityInputField cityField = new CityInputField(R.string.enrollment_city_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
     private PhoneInputField phoneField = new PhoneInputField(R.string.enrollment_phone_field_invalid_format);

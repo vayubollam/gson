@@ -1,9 +1,13 @@
 package suncor.com.android.ui.common.input;
 
+import java.util.regex.Pattern;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class StreetAddressInputField extends InputField {
+
+    private static final Pattern STREET_ADDRESS_PATTERN = Pattern.compile("^[#.0-9a-zA-Z\\s,-]+$");
 
     private boolean hasFocus;
     private MutableLiveData<String> textLiveData = new MutableLiveData<>();
@@ -30,6 +34,11 @@ public class StreetAddressInputField extends InputField {
             textLiveData.postValue(text);
         }
         super.setText(text);
+    }
+
+    @Override
+    public boolean isValid() {
+        return super.isValid() && STREET_ADDRESS_PATTERN.matcher(getText()).matches();
     }
 
     public void setTextSilent(String text) {
