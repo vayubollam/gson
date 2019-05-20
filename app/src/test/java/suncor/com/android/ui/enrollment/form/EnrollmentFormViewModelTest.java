@@ -176,7 +176,7 @@ public class EnrollmentFormViewModelTest {
     public void testEmailValidation_ValidEmail() {
         MutableLiveData<Resource<EnrollmentsApi.EmailState>> successValidation = new MutableLiveData<>();
         successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.VALID));
-        when(api.checkEmail("email@suncor.com")).thenReturn(successValidation);
+        when(api.checkEmail("email@suncor.com", null)).thenReturn(successValidation);
 
         Observer<Resource<EnrollmentsApi.EmailState>> dummyObserver = emailStateResource -> {
             //Just to active the livedata
@@ -196,7 +196,7 @@ public class EnrollmentFormViewModelTest {
     public void testEmailValidation_OnFocus() {
         MutableLiveData<Resource<EnrollmentsApi.EmailState>> successValidation = new MutableLiveData<>();
         successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.VALID));
-        when(api.checkEmail("email@suncor.com")).thenReturn(successValidation);
+        when(api.checkEmail("email@suncor.com", null)).thenReturn(successValidation);
 
         Observer<Resource<EnrollmentsApi.EmailState>> dummyObserver = emailStateResource -> {
             //Just to active the livedata
@@ -215,7 +215,7 @@ public class EnrollmentFormViewModelTest {
     public void testEmailValidation_InValidEmail() {
         MutableLiveData<Resource<EnrollmentsApi.EmailState>> successValidation = new MutableLiveData<>();
         successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.INVALID));
-        when(api.checkEmail("email@suncor.com")).thenReturn(successValidation);
+        when(api.checkEmail("email@suncor.com", null)).thenReturn(successValidation);
 
         Observer<Resource<EnrollmentsApi.EmailState>> dummyObserver = emailStateResource -> {
             //Just to active the livedata
