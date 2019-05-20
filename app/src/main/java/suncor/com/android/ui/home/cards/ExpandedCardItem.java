@@ -75,8 +75,6 @@ public class ExpandedCardItem {
                     cardImage = context.getDrawable(R.drawable.petro_points_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PPTS_FORMAT);
                     cardName = context.getString(R.string.cards_ppts_label);
-                    balance = context.getString(R.string.cards_ppts_balance_template, Integer.toString(balanceValue));
-                    balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, String.valueOf(balanceValue / 1000));
                     barCode = new BitmapDrawable(context.getResources(), generateBarcode(cardDetail));
                     balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(balanceValue));
                     balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(balanceValue / 1000));

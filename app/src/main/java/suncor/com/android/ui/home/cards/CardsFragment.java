@@ -45,7 +45,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
 
-        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CardsViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
         partnerCardsAdapter = new CardsListAdapter(this::cardClick);
 
@@ -66,8 +66,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
 
     private void cardClick(CardDetail cardDetail) {
         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
-        int n = viewModel.getIndexofCardDetail(cardDetail);
-        action.setClickeCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        action.setClickedCardIndex(viewModel.getIndexofCardDetail(cardDetail));
         Navigation.findNavController(getView()).navigate(action);
     }
     @RequiresApi(api = Build.VERSION_CODES.M)

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import suncor.com.android.R;
 import suncor.com.android.databinding.PetroCanadaExpandedCardItemBinding;
 
-public class CardsDeatilsAdapter extends RecyclerView.Adapter<CardsDeatilsAdapter.CardsDetailHolder> {
+public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapter.CardsDetailHolder> {
     ArrayList<ExpandedCardItem> cardItems = new ArrayList<>();
 
 

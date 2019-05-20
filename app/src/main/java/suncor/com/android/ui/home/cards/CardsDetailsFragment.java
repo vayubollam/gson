@@ -43,7 +43,7 @@ public class CardsDetailsFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getClickeCardIndex();
+        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getClickedCardIndex();
     }
 
     @Override
@@ -57,10 +57,10 @@ public class CardsDetailsFragment extends BaseFragment {
         binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        CardsDeatilsAdapter cardsDeatilsAdapter = new CardsDeatilsAdapter();
-        binding.cardDetailRecycler.setAdapter(cardsDeatilsAdapter);
+        CardsDetailsAdapter cardsDetailsAdapter = new CardsDetailsAdapter();
+        binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
-        cardsDeatilsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
+        cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
 
         viewModel.cards.observe(this, arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
@@ -69,8 +69,8 @@ public class CardsDetailsFragment extends BaseFragment {
                     expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
                 }
                 if (expandedCardItems.size() > 0) {
-                    cardsDeatilsAdapter.setCardItems(expandedCardItems);
-                    cardsDeatilsAdapter.notifyDataSetChanged();
+                    cardsDetailsAdapter.setCardItems(expandedCardItems);
+                    cardsDetailsAdapter.notifyDataSetChanged();
                     binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
                     binding.setNumCards(expandedCardItems.size());
                     binding.executePendingBindings();
