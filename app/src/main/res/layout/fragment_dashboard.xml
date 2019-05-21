@@ -36,6 +36,7 @@
             android:layout_above="@+id/station_card"
             android:clipToPadding="false"
             android:paddingLeft="12dp"
+            tools:listitem="@layout/dashboard_card"
             android:paddingRight="12dp" />
 
         <com.google.android.material.card.MaterialCardView

@@ -114,6 +114,7 @@
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:fillViewport="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider">
 
@@ -126,7 +127,7 @@
                             android:id="@+id/balance"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="@dimen/expanded_card_balance_margin"
                             android:gravity="center"
                             android:lineSpacingMultiplier="1.12"
                             android:paddingStart="16dp"
@@ -190,7 +191,7 @@
                             android:id="@+id/divider_2"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="@dimen/expanded_card_balance_margin"
                             android:background="@drawable/horizontal_divider"
                             app:layout_constraintTop_toBottomOf="@id/balance_barriere" />
 
@@ -213,10 +214,12 @@
                             android:id="@+id/barcode_image"
                             android:layout_width="193dp"
                             android:layout_height="44dp"
-                            android:layout_marginTop="24dp"
+                            android:src="@{card.barCode}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/divider_2" />
+                            app:layout_constraintTop_toBottomOf="@id/divider_2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:visibleGone="@{card.cardType==CardType.PPTS}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>

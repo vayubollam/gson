@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -19,9 +17,13 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.home.BottomNavigationFragment;
@@ -44,8 +46,8 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
-        petroCanadaCardsAdapter = new CardsListAdapter();
-        partnerCardsAdapter = new CardsListAdapter();
+        petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
+        partnerCardsAdapter = new CardsListAdapter(this::cardClick);
 
         viewModel.viewState.observe(this, (result) -> {
             if (result != CardsViewModel.ViewState.REFRESHING) {
@@ -62,6 +64,11 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         });
     }
 
+    private void cardClick(CardDetail cardDetail) {
+        CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
+        action.setClickedCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        Navigation.findNavController(getView()).navigate(action);
+    }
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override

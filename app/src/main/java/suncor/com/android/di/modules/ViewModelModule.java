@@ -2,6 +2,7 @@ package suncor.com.android.di.modules;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
@@ -10,6 +11,7 @@ import suncor.com.android.di.viewmodel.ViewModelKey;
 import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 import suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
+import suncor.com.android.ui.home.cards.CardDetailsViewModel;
 import suncor.com.android.ui.home.cards.CardsViewModel;
 import suncor.com.android.ui.home.cards.add.AddCardViewModel;
 import suncor.com.android.ui.home.dashboard.DashboardViewModel;
@@ -99,5 +101,10 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FAQViewModel.class)
     protected abstract ViewModel faqViewModel(FAQViewModel faqViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CardDetailsViewModel.class)
+    protected abstract ViewModel cardDetailViewModel(CardDetailsViewModel cardDetailsViewModel);
 
 }

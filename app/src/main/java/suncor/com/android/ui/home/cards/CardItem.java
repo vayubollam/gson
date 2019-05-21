@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.StringRes;
+
 import suncor.com.android.R;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
@@ -21,8 +22,10 @@ public class CardItem {
     private String balanceValue;
     private CardType cardType;
     private CardDetail.CardCategory cardCategory;
+    private CardDetail cardDetail;
 
     public CardItem(CardDetail cardDetail) {
+        this.cardDetail = cardDetail;
         this.cardType = cardDetail.getCardType();
         this.cardCategory = cardDetail.getCardCategory();
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
@@ -103,6 +106,10 @@ public class CardItem {
 
     public CardType getCardType() {
         return cardType;
+    }
+
+    public CardDetail getCardDetail() {
+        return cardDetail;
     }
 
     public int getTitle() {

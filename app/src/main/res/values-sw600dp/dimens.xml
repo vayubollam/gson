@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="expanded_card_balance_margin">32dp</dimen>
+    <dimen name="expanded_card_bottom_margin">24dp</dimen>
+    <dimen name="expanded_card_pagination_margin">16dp</dimen>
+</resources>

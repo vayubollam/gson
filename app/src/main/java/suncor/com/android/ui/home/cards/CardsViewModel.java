@@ -1,28 +1,25 @@
 package suncor.com.android.ui.home.cards;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import suncor.com.android.data.repository.cards.CardsRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
-import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.Event;
 
 
 public class CardsViewModel extends ViewModel {
 
-    private final CardsComparator comparator = new CardsComparator();
     private final CardsRepository repository;
     private MediatorLiveData<ViewState> _viewState = new MediatorLiveData<>();
     public LiveData<ViewState> viewState = _viewState;
@@ -98,7 +95,6 @@ public class CardsViewModel extends ViewModel {
     }
 
     private void saveCards(ArrayList<CardDetail> cards) {
-        Collections.sort(cards, comparator);
         this.cards = cards;
         petroPointsCard.postValue(new PetroPointsCard(cards.get(0)));
 
@@ -145,69 +141,7 @@ public class CardsViewModel extends ViewModel {
         LOADING, FAILED, SUCCESS, REFRESHING, BALANCE_FAILED
     }
 
-    private class CardsComparator implements Comparator<CardDetail> {
-
-        @Override
-        public int compare(CardDetail card1, CardDetail card2) {
-            if (card1.getCardCategory() != card2.getCardCategory()) {
-                switch (card1.getCardCategory()) {
-                    case PPTS:
-                        return -1;
-                    case PETRO_CANADA:
-                        if (card2.getCardCategory() == CardDetail.CardCategory.PPTS) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    case PARTNER:
-                        return 1;
-                }
-            } else if (card1.getCardCategory() == CardDetail.CardCategory.PETRO_CANADA) {
-                if (card1.getCardType() != card2.getCardType()) {
-                    switch (card1.getCardType()) {
-                        case FSR:
-                            return -1;
-                        case WAG:
-                            if (card2.getCardType() == CardType.FSR) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        case SP:
-                            if (card2.getCardType() == CardType.FSR || card2.getCardType() == CardType.WAG) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        case PPC:
-                            return 1;
-                    }
-                } else {
-                    if (card1.getCardType() == CardType.FSR || card1.getCardType() == CardType.PPC) {
-                        return (int) ((card1.getCpl() - card2.getCpl()) * 10);
-                    }
-                }
-            } else if (card1.getCardCategory() == CardDetail.CardCategory.PARTNER) {
-                if (card1.getCardType() != card2.getCardType()) {
-                    CardType card2Type = card2.getCardType();
-                    switch (card1.getCardType()) {
-                        case RBC:
-                            return -1;
-                        case MORE:
-                            return card2Type == CardType.RBC ? 1 : -1;
-                        case HBC:
-                            return card2Type == CardType.RBC || card2Type == CardType.MORE ? 1 : -1;
-                        case CAA:
-                        case BCAA:
-                            return 1;
-                    }
-                } else {
-                    return 0;
-                }
-            }
-
-            //which means card1==card2 and is ppts
-            return 0;
-        }
+    public int getIndexofCardDetail(CardDetail cardDetail) {
+        return cards.indexOf(cardDetail);
     }
 }
