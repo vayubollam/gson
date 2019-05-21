@@ -36,11 +36,20 @@ public class LoginFragment extends DaggerFragment {
 
     }
 
+    public static LoginFragment newInstance(boolean fromEnrollment) {
+        Bundle args = new Bundle();
+        args.putBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, fromEnrollment);
+        LoginFragment fragment = new LoginFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
-
+        boolean fromEnrollment = getArguments().getBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, false);
+        viewModel.setLoginFromEnrollment(fromEnrollment);
         viewModel.getLoginFailedEvent().observe(this, (event) -> {
             LoginViewModel.LoginFailResponse response = event.getContentIfNotHandled();
             if (response != null) {

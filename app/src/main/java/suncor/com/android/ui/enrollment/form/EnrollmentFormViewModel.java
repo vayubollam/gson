@@ -34,13 +34,14 @@ import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
+    final static String LOGIN_FAILED = "login_failed";
+
     public LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData;
 
     public LiveData<Resource<Boolean>> joinLiveData;
-    private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
-
     //autocomplete fields
     public MutableLiveData<Boolean> showAutocompleteLayout = new MutableLiveData<>();
+    private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
     private MediatorLiveData<Resource<CanadaPostSuggestion[]>> autocompleteResults;
     private LiveData<Resource<CanadaPostDetails>> placeDetailsApiCall;
     private MutableLiveData<CanadaPostSuggestion> findMoreSuggestions = new MutableLiveData<>();
@@ -66,6 +67,7 @@ public class EnrollmentFormViewModel extends ViewModel {
 
     private ArrayList<InputField> requiredFields = new ArrayList<>();
     private CardStatus cardStatus;
+    private MutableLiveData<Event<Boolean>> navigateToLogin = new MutableLiveData<>();
 
     @Inject
     public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider) {
@@ -137,11 +139,15 @@ public class EnrollmentFormViewModel extends ViewModel {
                                 return Resource.success(true);
                             } else {
                                 Timber.d("Login failed, status: " + r.data.getStatus());
-                                return Resource.error(r.data.getStatus().toString());
+                                sessionManager.setRewardedPoints(result.data);
+                                navigateToLogin.postValue(Event.newEvent(true));
+                                return Resource.error(LOGIN_FAILED);
                             }
                         case ERROR:
                             Timber.d("Login failed");
-                            return Resource.error(r.message);
+                            sessionManager.setRewardedPoints(result.data);
+                            navigateToLogin.postValue(Event.newEvent(true));
+                            return Resource.error(LOGIN_FAILED);
                         default:
                             return Resource.loading();
                     }
@@ -158,6 +164,10 @@ public class EnrollmentFormViewModel extends ViewModel {
         });
 
         initAutoComplete(canadaPostAutocompleteProvider);
+    }
+
+    public LiveData<Event<Boolean>> getNavigateToLogin() {
+        return navigateToLogin;
     }
 
     private void initAutoComplete(CanadaPostAutocompleteProvider provider) {
