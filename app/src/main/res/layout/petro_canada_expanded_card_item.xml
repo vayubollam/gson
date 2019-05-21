@@ -7,7 +7,7 @@
 
         <variable
             name="card"
-            type="suncor.com.android.ui.home.cards.ExpandedCardItem" />
+            type="suncor.com.android.ui.home.cards.details.ExpandedCardItem" />
 
         <variable
             name="hideMoreButton"
@@ -19,8 +19,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
         tools:background="@color/black_4">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -56,9 +54,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="50dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/white"
             app:cardCornerRadius="4dp"
-            app:cardElevation="8dp"
+            app:cardElevation="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -84,6 +85,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="74dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
                     android:paddingBottom="4dp"
                     android:text="@{card.cardName}"
                     android:textAppearance="@style/Title2"
@@ -172,7 +178,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Balance unavailable at the moment."
+                            android:text="@string/msg_cm004"
                             android:textAppearance="@style/Caption1"
                             android:textColor="@color/black_20"
                             app:layout_constraintEnd_toEndOf="parent"

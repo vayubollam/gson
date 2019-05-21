@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="suncor.com.android.ui.home.cards.CardItem" />
+            type="suncor.com.android.ui.home.cards.list.CardListItem" />
     </data>
 
     <LinearLayout
@@ -46,7 +46,7 @@
             android:ellipsize="end"
             android:gravity="end"
             android:lines="1"
-            android:text="@{item.balanceValue != null? context.getString(item.balanceTemplate, item.balanceValue) : ``}"
+            android:text="@{item.balance != null? item.balance : ``}"
             android:textColor="@{item.textColor}"
             android:textSize="16sp"
             app:fontFamily="@font/gibson_semibold"

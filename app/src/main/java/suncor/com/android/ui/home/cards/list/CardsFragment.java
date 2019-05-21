@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.cards;
+package suncor.com.android.ui.home.cards.list;
 
 import android.graphics.Rect;
 import android.os.Build;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -17,9 +21,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -54,8 +55,19 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
                 binding.refreshLayout.setRefreshing(false);
             }
             if (result == CardsViewModel.ViewState.SUCCESS || result == CardsViewModel.ViewState.BALANCE_FAILED) {
-                petroCanadaCardsAdapter.setCards(viewModel.getPetroCanadaCards().getValue());
-                partnerCardsAdapter.setCards(viewModel.getPartnerCards().getValue());
+                binding.setPptsCard(new PetroPointsCard(getContext(), viewModel.getPetroPointsCard().getValue()));
+
+                ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
+                for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
+                    petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                }
+                petroCanadaCardsAdapter.setCards(petroCanadaCards);
+
+                ArrayList<CardListItem> partnerCards = new ArrayList<>();
+                for (CardDetail cardDetail : viewModel.getPartnerCards().getValue()) {
+                    partnerCards.add(new CardListItem(getContext(), cardDetail));
+                }
+                partnerCardsAdapter.setCards(partnerCards);
 
                 if (result == CardsViewModel.ViewState.BALANCE_FAILED) {
                     SuncorToast.makeText(getContext(), R.string.msg_cm003, Toast.LENGTH_LONG).show();
@@ -69,6 +81,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         action.setClickedCardIndex(viewModel.getIndexofCardDetail(cardDetail));
         Navigation.findNavController(getView()).navigate(action);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override

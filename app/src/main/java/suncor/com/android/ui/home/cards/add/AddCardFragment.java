@@ -22,7 +22,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.home.cards.ExpandedCardItem;
+import suncor.com.android.ui.home.cards.details.ExpandedCardItem;
 import suncor.com.android.ui.home.common.BaseFragment;
 
 public class AddCardFragment extends BaseFragment {

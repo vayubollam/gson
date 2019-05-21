@@ -45,7 +45,7 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/cards_tab"
-        android:name="suncor.com.android.ui.home.cards.CardsFragment"
+        android:name="suncor.com.android.ui.home.cards.list.CardsFragment"
         android:label="CardsContainerFragment"
         tools:layout="@layout/fragment_stations">
         <argument
@@ -118,7 +118,7 @@
         android:label="FAQResponse" />
     <keep_state_fragment
         android:id="@+id/cardsDetailsFragment"
-        android:name="suncor.com.android.ui.home.cards.CardsDetailsFragment"
+        android:name="suncor.com.android.ui.home.cards.details.CardsDetailsFragment"
         android:label="CardsDetailsFragment">
         <argument
             android:name="clickedCardIndex"

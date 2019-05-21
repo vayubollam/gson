@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.cards;
+package suncor.com.android.ui.home.cards.list;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.PetroCanadaSmallCardItemBinding;
 import suncor.com.android.model.cards.CardDetail;
@@ -21,7 +20,7 @@ import suncor.com.android.utilities.Consumer;
 public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.PetroCanadaViewHolder> {
 
     private Context context;
-    private ArrayList<CardItem> cards = new ArrayList<>();
+    private ArrayList<CardListItem> cards = new ArrayList<>();
     Consumer<CardDetail> callback;
 
     public CardsListAdapter(Consumer<CardDetail> callback) {
@@ -59,12 +58,13 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
 
         holder.binding.executePendingBindings();
     }
+
     @Override
     public int getItemCount() {
         return cards.size();
     }
 
-    public void setCards(List<CardItem> cards) {
+    public void setCards(List<CardListItem> cards) {
         this.cards.clear();
         this.cards.addAll(cards);
         notifyDataSetChanged();
