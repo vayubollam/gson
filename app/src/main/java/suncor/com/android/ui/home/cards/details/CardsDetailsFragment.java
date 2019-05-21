@@ -1,9 +1,13 @@
-package suncor.com.android.ui.home.cards;
+package suncor.com.android.ui.home.cards.details;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,11 +16,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -31,11 +30,18 @@ public class CardsDetailsFragment extends BaseFragment {
     @Inject
     ViewModelFactory viewModelFactory;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
 
         return binding.getRoot();
     }

@@ -261,4 +261,5 @@
     <string name="cards_add_fragment_invalid_card_title">"Erreur de carte "</string>
     <string name="cards_add_fragment_invalid_card_message">Nous n\'avons pu valider les renseignements de votre carte. Veuillez vérifier que vous avez entré les bons renseignements.</string>
     <string name="cards_fsr_expanded_label">Économie sur l\'essence en prime</string>
+    <string name="msg_cm004">Le solde n\'est pas disponible.</string>
 </resources>

@@ -17,6 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.data.repository.cards.CardsRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.ui.home.cards.list.CardsViewModel;
 
 public class CardsViewModelTest {
 

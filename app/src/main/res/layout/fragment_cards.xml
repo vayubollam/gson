@@ -5,17 +5,17 @@
 
     <data>
 
-        <import type="suncor.com.android.ui.home.cards.CardsViewModel.ViewState" />
+        <import type="suncor.com.android.ui.home.cards.list.CardsViewModel.ViewState" />
 
         <import type="suncor.com.android.utilities.TimeUtils" />
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.home.cards.CardsViewModel" />
+            type="suncor.com.android.ui.home.cards.list.CardsViewModel" />
 
         <variable
             name="pptsCard"
-            type="suncor.com.android.ui.home.cards.PetroPointsCard" />
+            type="suncor.com.android.ui.home.cards.list.PetroPointsCard" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

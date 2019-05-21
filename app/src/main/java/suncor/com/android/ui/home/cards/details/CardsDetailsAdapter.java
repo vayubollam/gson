@@ -1,14 +1,13 @@
-package suncor.com.android.ui.home.cards;
+package suncor.com.android.ui.home.cards.details;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.PetroCanadaExpandedCardItemBinding;
 

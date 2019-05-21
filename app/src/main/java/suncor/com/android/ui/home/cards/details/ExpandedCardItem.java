@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.cards;
+package suncor.com.android.ui.home.cards.details;
 
 import android.content.Context;
 import android.graphics.Bitmap;

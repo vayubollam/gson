@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.cards;
+package suncor.com.android.ui.home.cards.list;
 
 import android.content.Context;
 

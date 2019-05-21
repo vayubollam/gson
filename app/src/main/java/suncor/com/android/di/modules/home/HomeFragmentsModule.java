@@ -2,9 +2,9 @@ package suncor.com.android.di.modules.home;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import suncor.com.android.ui.home.cards.CardsDetailsFragment;
-import suncor.com.android.ui.home.cards.CardsFragment;
 import suncor.com.android.ui.home.cards.add.AddCardFragment;
+import suncor.com.android.ui.home.cards.details.CardsDetailsFragment;
+import suncor.com.android.ui.home.cards.list.CardsFragment;
 import suncor.com.android.ui.home.dashboard.DashboardFragment;
 import suncor.com.android.ui.home.profile.PersonalInfoFragment;
 import suncor.com.android.ui.home.profile.ProfileFragment;
