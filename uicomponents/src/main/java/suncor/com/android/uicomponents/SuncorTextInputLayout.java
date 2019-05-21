@@ -171,15 +171,21 @@ public class SuncorTextInputLayout extends LinearLayout {
 
         errorColor = a.getColor(R.styleable.SuncorTextInputLayout_errorColor, Color.RED);
 
+
+        inputFrame.setEnabled(a.getBoolean(R.styleable.SuncorTextInputLayout_android_enabled, true));
+        editText.setEnabled(a.getBoolean(R.styleable.SuncorTextInputLayout_android_enabled, true));
+
         a.recycle();
 
         editText.addTextChangedListener(textWatcher);
 
-        inputFrame.setOnClickListener((v) -> {
-            editText.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-        });
+        if (inputFrame.isEnabled()) {
+            inputFrame.setOnClickListener((v) -> {
+                editText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+            });
+        }
     }
 
     public void setError(@StringRes int error) {
@@ -246,11 +252,15 @@ public class SuncorTextInputLayout extends LinearLayout {
 
     private void updateBackground() {
         if (shouldShowError) {
-            inputFrame.setBackgroundResource(R.drawable.textfield_activated);
-            inputFrame.setBackgroundTintList(ColorStateList.valueOf(errorColor));
+            Drawable errorBackground = getResources().getDrawable(R.drawable.textfield_activated);
+            errorBackground.setTint(errorColor);
+            inputFrame.setBackground(errorBackground);
+        } else if (!inputFrame.isEnabled()) {
+            Drawable drawable = getResources().getDrawable(R.drawable.textfield_default);
+            drawable.setTint(getResources().getColor(R.color.black_8));
+            inputFrame.setBackground(drawable);
         } else {
             inputFrame.setBackgroundResource(R.drawable.input_field_background);
-            inputFrame.setBackgroundTintList(null);
         }
     }
 

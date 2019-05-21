@@ -10,7 +10,6 @@
         android:layout_height="72dp"
         android:addStatesFromChildren="true"
         android:background="@drawable/input_field_background"
-        android:backgroundTint="@color/black_60"
         android:paddingEnd="16dp">
 
         <androidx.appcompat.widget.AppCompatEditText

@@ -4,6 +4,7 @@
     <declare-styleable name="SuncorTextInputLayout">
         <attr name="android:hint" format="string" />
         <attr name="android:maxLength" format="integer" />
+        <attr name="android:enabled" format="boolean" />
         <!-- textAppearance of the hint. When the hint is expanded the it will have the same size as the editText -->
         <attr name="hintTextAppearance" format="reference" />
         <attr name="hintTextColor" format="color" />
