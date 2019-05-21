@@ -1,7 +1,6 @@
 package suncor.com.android.mfp;
 
 import android.content.Intent;
-import android.os.Handler;
 
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -27,6 +26,7 @@ import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.ui.home.HomeActivity;
+import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
 
@@ -62,8 +62,6 @@ public class SessionManager implements SessionChangeListener {
     private boolean loginOngoing = false;
     private boolean isRetrievingProfile = false;
 
-    private Handler mainHandler;
-
     private SuncorApplication application;
 
     @Inject
@@ -83,7 +81,6 @@ public class SessionManager implements SessionChangeListener {
             profile = new Gson().fromJson(profileString, Profile.class);
             accountState = AccountState.REGULAR_LOGIN;
         }
-        mainHandler = new Handler(application.getMainLooper());
     }
 
     public LiveData<Resource<Boolean>> logout() {
@@ -134,19 +131,16 @@ public class SessionManager implements SessionChangeListener {
 
     public void checkLoginState() {
         Timber.d("Checking login status");
-        retrieveProfile().observeForever(result -> {
-            if (result.status == Resource.Status.SUCCESS) {
-                setProfile(result.data);
-                loginState.postValue(LoginState.LOGGED_IN);
-            } else {
-                setProfile(null);
-                loginState.postValue(LoginState.LOGGED_OUT);
-            }
+        retrieveProfile((profile) -> {
+            setProfile(profile);
+            loginState.postValue(LoginState.LOGGED_IN);
+        }, (error) -> {
+            setProfile(null);
+            loginState.postValue(LoginState.LOGGED_OUT);
         });
     }
 
-    private MutableLiveData<Resource<Profile>> retrieveProfile() {
-        MutableLiveData<Resource<Profile>> result = new MutableLiveData<>();
+    private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
         try {
             //We use 30s as the timeout for this request, as it's times out a lot, and causes logout
             WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
@@ -155,21 +149,19 @@ public class SessionManager implements SessionChangeListener {
                 public void onSuccess(WLResponse wlResponse) {
                     Timber.d("Profile received, response: " + wlResponse.getResponseText());
                     Profile profile = gson.fromJson(wlResponse.getResponseText(), Profile.class);
-                    result.postValue(Resource.success(profile));
+                    onSuccess.accept(profile);
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.w("Profile cannot be retrieved");
                     Timber.w(wlFailResponse.toString());
-                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                    onError.accept(wlFailResponse);
                 }
             });
         } catch (URISyntaxException e) {
             Timber.e(e);
         }
-
-        return result;
     }
 
     public void cancelLogin() {
@@ -239,35 +231,36 @@ public class SessionManager implements SessionChangeListener {
     }
 
     @Override
-    public void onLoginSuccess(Profile profile) {
+    public void onLoginSuccess(Profile account) {
         Timber.d("login succeeded");
-        Timber.d("user's email: " + profile.getEmail());
+        Timber.d("user's email: " + account.getEmail());
         if (!loginOngoing || isRetrievingProfile) {
             return;
         }
 
         userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
-        mainHandler.post(() -> {
-            retrieveProfile().observeForever(result -> {
-                isRetrievingProfile = false;
-                if (loginOngoing) {
-                    loginOngoing = false;
+        retrieveProfile((profile) -> {
+            isRetrievingProfile = false;
+            if (loginOngoing) {
+                loginOngoing = false;
 
-                    if (result.status == Resource.Status.SUCCESS) {
-                        setProfile(result.data);
-                        loginState.postValue(LoginState.LOGGED_IN);
-                        if (loginObservable != null) {
-                            loginObservable.postValue(Resource.success(SigninResponse.success()));
-                        }
-                    } else {
-                        setProfile(null);
-                        loginState.postValue(LoginState.LOGGED_OUT);
-                        if (loginObservable != null) {
-                            loginObservable.postValue(Resource.success(SigninResponse.generalFailure()));
-                        }
-                    }
+                setProfile(profile);
+                loginState.postValue(LoginState.LOGGED_IN);
+                if (loginObservable != null) {
+                    loginObservable.postValue(Resource.success(SigninResponse.success()));
                 }
-            });
+            }
+        }, (error) -> {
+            isRetrievingProfile = false;
+            if (loginOngoing) {
+                loginOngoing = false;
+
+                setProfile(null);
+                loginState.postValue(LoginState.LOGGED_OUT);
+                if (loginObservable != null) {
+                    loginObservable.postValue(Resource.success(SigninResponse.generalFailure()));
+                }
+            }
         });
     }
 
