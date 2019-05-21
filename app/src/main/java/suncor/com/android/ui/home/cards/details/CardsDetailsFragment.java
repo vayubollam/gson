@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +13,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -29,45 +31,15 @@ public class CardsDetailsFragment extends BaseFragment {
     private int clickedCardIndex;
     @Inject
     ViewModelFactory viewModelFactory;
+    private static float MAX_BRIGHTNESS = 1f;
+    private float previousBrightness = MAX_BRIGHTNESS;
+    private CardsDetailsAdapter cardsDetailsAdapter;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
-
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getClickedCardIndex();
-    }
-
-    @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        CardsDetailsAdapter cardsDetailsAdapter = new CardsDetailsAdapter();
-        binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
-        binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
-        cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
-
         viewModel.cards.observe(this, arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
                 ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
@@ -84,7 +56,51 @@ public class CardsDetailsFragment extends BaseFragment {
 
             }
         });
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
+        binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
+        cardsDetailsAdapter = new CardsDetailsAdapter();
+        binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
+        binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
+        cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
         binding.buttonClose.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getClickedCardIndex();
+        WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
+        previousBrightness = attributes.screenBrightness;
+        attributes.screenBrightness = MAX_BRIGHTNESS;
+        getActivity().getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
+        attributes.screenBrightness = previousBrightness;
+        getActivity().getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    protected int getStatusBarColor() {
+        return getResources().getColor(R.color.black_4);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
 
     }
 }

@@ -29,7 +29,7 @@
     <dimen name="help_icon_end_margin_with_error">44dp</dimen>
     <dimen name="expanded_card_balance_margin">24dp</dimen>
     <dimen name="expanded_card_bottom_margin">16dp</dimen>
-    <dimen name="expanded_card_pagination_margin">8dp</dimen>
+    <dimen name="expanded_card_pagination_margin">4dp</dimen>
     <dimen name="suncor_bottom_navigation_height">48dp</dimen>
 
 </resources>
