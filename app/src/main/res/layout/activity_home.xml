@@ -27,9 +27,9 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.SuncorBottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/suncor_bottom_navigation_height"
         android:fadingEdge="vertical"
         android:translationZ="-10dp"
         app:itemHorizontalTranslationEnabled="true"
