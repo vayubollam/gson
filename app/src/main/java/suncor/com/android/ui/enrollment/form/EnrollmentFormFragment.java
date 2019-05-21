@@ -93,7 +93,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                         startActivity(intent);
                     }
                 }, 1000);
-            } else if (r.status == Resource.Status.ERROR) {
+            } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else {
@@ -138,6 +138,15 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         viewModel.getAutocompleteRetrievalStatus().observe(this, resource -> {
             hideKeyBoard();
             binding.streetAddressInput.getEditText().clearFocus();
+        });
+
+        viewModel.getNavigateToLogin().observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
+                startActivity(intent);
+                getActivity().finish();
+            }
         });
     }
 
@@ -320,7 +329,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             imm.showSoftInput(input.getEditText(), InputMethodManager.SHOW_IMPLICIT);
         }
     }
-
 
 
 }

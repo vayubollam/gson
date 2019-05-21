@@ -8,12 +8,14 @@ import suncor.com.android.R;
 
 public class LoginActivity extends DaggerAppCompatActivity {
 
+    public final static String LOGIN_FROM_ENROLLMENT_EXTRA = "suncor.com.android.fromenrollment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment, new LoginFragment());
+        ft.add(R.id.fragment, LoginFragment.newInstance(getIntent().getBooleanExtra(LOGIN_FROM_ENROLLMENT_EXTRA, false)));
         ft.commit();
     }
 }

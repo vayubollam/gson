@@ -26,6 +26,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> passwordResetEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> callCustomerService = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> createPasswordEvent = new MutableLiveData<>();
+    private boolean isLoginFromEnrollment;
 
     @Inject
     public LoginViewModel(SessionManager sessionManager) {
@@ -45,6 +46,7 @@ public class LoginViewModel extends ViewModel {
                 SigninResponse response = result.data;
                 switch (response.getStatus()) {
                     case SUCCESS:
+                        sessionManager.setAccountState(isLoginFromEnrollment ? SessionManager.AccountState.JUST_ENROLLED : SessionManager.AccountState.REGULAR_LOGIN);
                         loginSuccessEvent.postValue(Event.newEvent(true));
                         break;
                     case WRONG_CREDENTIALS:
@@ -100,6 +102,10 @@ public class LoginViewModel extends ViewModel {
                 )));
             }
         });
+    }
+
+    public void setLoginFromEnrollment(boolean loginFromEnrollment) {
+        isLoginFromEnrollment = loginFromEnrollment;
     }
 
     public MutableLiveData<Event<Boolean>> getCreatePasswordEvent() {
