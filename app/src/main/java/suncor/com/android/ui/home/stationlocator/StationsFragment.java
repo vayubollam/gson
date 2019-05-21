@@ -67,6 +67,9 @@ import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
 
+import static android.Manifest.permission;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 
 public class StationsFragment extends BottomNavigationFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
@@ -222,7 +225,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     }
 
     public void checkAndLocate() {
-        permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+        permissionManager.checkPermission(getContext(), permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
             public void onNeedPermission() {
                 showRequestLocationDialog(false);
@@ -244,7 +247,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 if (LocationUtils.isLocationEnabled(getContext())) {
                     locateMe();
                 } else {
-                    LocationUtils.openLocationSettings(StationsFragment.this, REQUEST_CHECK_SETTINGS);
+                    showRequestLocationDialog(false);
                 }
 
             }
@@ -515,7 +518,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     public void clearSearchText() {
         mViewModel.setTextQuery("");
-        permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+        permissionManager.checkPermission(getContext(), permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
             public void onNeedPermission() {
 
@@ -544,7 +547,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         //start by loading only if the current location is not initialized or not GPS
         boolean alreadyHasGPSLocation = mViewModel.userLocation.getValue() != null && mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS;
         isLoading.set(!alreadyHasGPSLocation);
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
         }
     }
@@ -555,10 +558,15 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, null);
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
+                LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
+                return;
+            }
+
             if (previouselyDeniedWithNeverASk) {
                 PermissionManager.openAppSettings(getActivity());
             } else {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+                requestPermissions(new String[]{permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
             }
             dialog.dismiss();
         });

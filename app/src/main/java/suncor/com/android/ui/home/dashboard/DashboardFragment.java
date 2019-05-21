@@ -83,7 +83,7 @@ public class DashboardFragment extends BottomNavigationFragment {
         super.onCreate(savedInstanceState);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel.class);
-
+        mViewModel.nearestStation.observe(this, stationObserver);
     }
 
     @Override
@@ -106,6 +106,11 @@ public class DashboardFragment extends BottomNavigationFragment {
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, null);
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
+                LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
+                return;
+            }
+
             permissionManager.setFirstTimeAsking(Manifest.permission.ACCESS_FINE_LOCATION, false);
             if (previouselyDeniedWithNeverASk) {
                 PermissionManager.openAppSettings(getActivity());
@@ -143,31 +148,6 @@ public class DashboardFragment extends BottomNavigationFragment {
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.carouselCardRecycler);
         binding.carouselCardRecycler.setAdapter(dashboardAdapter);
-        Observer<Resource<Station>> stationObserver = resource -> {
-            if (resource.status == Resource.Status.SUCCESS) {
-                if (resource.data != null) {
-                    Station station = resource.data;
-                    StationItem stationItem = new StationItem(station);
-                    mViewModel.stationItem = stationItem;
-                    binding.setStation(stationItem);
-                    if (stationItem.getDistanceDuration() == null) {
-                        LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                        LatLng origin = new LatLng(mViewModel.getUserLocation().latitude, mViewModel.getUserLocation().longitude);
-                        DirectionsApi.getInstance().enqueuJob(origin, dest)
-                                .observe(getViewLifecycleOwner(), result -> {
-                                    if (result.status == Resource.Status.SUCCESS) {
-                                        mViewModel.stationItem.setDistanceDuration(result.data);
-                                    } else if (result.status == Resource.Status.ERROR) {
-                                        mViewModel.stationItem.setDistanceDuration(DirectionsResult.INVALID);
-                                    }
-                                });
-                    }
-                }
-            }
-        };
-
-        mViewModel.nearestStation.observe(getViewLifecycleOwner(), stationObserver);
-
         if (mViewModel.isUserLoggedIn()) {
             showWelcomeMessage();
         }
@@ -193,7 +173,7 @@ public class DashboardFragment extends BottomNavigationFragment {
 
                 @Override
                 public void onPermissionGranted() {
-                    LocationUtils.openLocationSettings(DashboardFragment.this, REQUEST_CHECK_SETTINGS);
+                    showRequestLocationDialog(false);
                 }
             });
         });
@@ -246,6 +226,30 @@ public class DashboardFragment extends BottomNavigationFragment {
 
         }
     }
+
+    Observer<Resource<Station>> stationObserver = resource -> {
+        if (resource.status == Resource.Status.SUCCESS) {
+            if (resource.data != null) {
+                Station station = resource.data;
+                StationItem stationItem = new StationItem(station);
+                mViewModel.stationItem = stationItem;
+                binding.setStation(stationItem);
+                if (stationItem.getDistanceDuration() == null) {
+                    LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+                    LatLng origin = new LatLng(mViewModel.getUserLocation().latitude, mViewModel.getUserLocation().longitude);
+                    DirectionsApi.getInstance().enqueuJob(origin, dest)
+                            .observe(getViewLifecycleOwner(), result -> {
+                                if (result.status == Resource.Status.SUCCESS) {
+                                    mViewModel.stationItem.setDistanceDuration(result.data);
+                                } else if (result.status == Resource.Status.ERROR) {
+                                    mViewModel.stationItem.setDistanceDuration(DirectionsResult.INVALID);
+                                }
+                            });
+                }
+            }
+        }
+    };
+
 
     private void checkAndRequestPermission() {
         permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
