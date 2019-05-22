@@ -302,6 +302,24 @@
     <string name="profile_personnal_informations_subcopyEmail">Changing your email will require you to sign in again.</string>
     <string name="profile_personnal_informations_button1">Save</string>
     <string name="msg_cm004">Balance unavailable.</string>
+    <string name="profile_personnal_informations_email_empty_inline_error">Please enter an email.</string>
+    <string name="profile_personnal_informations_email_format_inline_error">Please enter a valid email address.</string>
+    <string name="profile_personnal_informations_phone_field_invalid_format">Please enter a valid phone number (e.g. 416-123-4567)</string>
+    <string name="profile_personnal_informations_email_empty_alert_title">Email required</string>
+    <string name="profile_personnal_informations_email_invalid_alert_title">Invalid email</string>
+    <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
+    <string name="profile_personnal_informations_email_invalid_alert_message">Please use a different email account.</string>
+    <string name="profile_personnal_informations_email_alert_title">Sign out?</string>
+    <string name="profile_personnal_informations_email_alert_message">Changing your email will require you to sign in again.</string>
+    <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
+    <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
+    <string name="profile_personnal_informations_failure_alert_title">Personal information changes were not saved.</string>
+    <string name="profile_personnal_informations_email_duplicate_alert_message">Please use a different email account or undo.</string>
+    <string name="profile_personnal_informations_email_restricted_alert_message">Please enter a different email account</string>
+    <string name="profile_personnal_informations_failure_alert_message">Please try again later.</string>
+    <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>
+    <string name="profile_personnal_informations_email_duplicate_different_email_button">Use different email</string>
+    <string name="profile_personnal_informations_update_toast">Your personal info has been updated.</string>
     <string name="cards_details_close">Close</string>
 
 

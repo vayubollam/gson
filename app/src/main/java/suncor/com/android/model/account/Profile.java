@@ -28,8 +28,40 @@ public class Profile {
         return lastName;
     }
 
-    public String getPhone()  {
+    public String getPhone() {
         return phone;
+    }
+
+    public String getPetroPointsNumber() {
+        return petroPointsNumber;
+    }
+
+    public int getPointsBalance() {
+        return pointsBalance;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public boolean isEmailOffers() {
+        return emailOffers;
+    }
+
+    public boolean isTextOffers() {
+        return textOffers;
     }
 
     @Override

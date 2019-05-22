@@ -134,7 +134,7 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/personalInfoFragment"
-        android:name="suncor.com.android.ui.home.profile.PersonalInfoFragment"
+        android:name="suncor.com.android.ui.home.profile.info.PersonalInfoFragment"
         android:label="PersonalInfoFragment"
         tools:layout="@layout/fragment_personal_info" />
 

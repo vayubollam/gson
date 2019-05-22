@@ -3,11 +3,16 @@ package suncor.com.android.model.account;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.JsonAdapter;
+
+import suncor.com.android.utilities.EmptyStringTypeAdapter;
+
 public class Address implements Parcelable {
     private String streetAddress;
     private String city;
     private String province;
     private String postalCode;
+    @JsonAdapter(EmptyStringTypeAdapter.class)
     private String phone;
 
     public Address() {

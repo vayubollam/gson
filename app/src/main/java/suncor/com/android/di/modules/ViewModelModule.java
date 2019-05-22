@@ -15,6 +15,7 @@ import suncor.com.android.ui.home.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.home.cards.list.CardsViewModel;
 import suncor.com.android.ui.home.dashboard.DashboardViewModel;
 import suncor.com.android.ui.home.profile.help.FAQViewModel;
+import suncor.com.android.ui.home.profile.info.PersonalInfoViewModel;
 import suncor.com.android.ui.home.stationlocator.StationsViewModel;
 import suncor.com.android.ui.home.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.home.stationlocator.search.SearchViewModel;
@@ -67,6 +68,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AddCardViewModel.class)
     protected abstract ViewModel addCardViewModel(AddCardViewModel cardsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PersonalInfoViewModel.class)
+    protected abstract ViewModel addPersonalInfoViewModel(PersonalInfoViewModel cardsViewModel);
 
 
     //EnrollmentActivity ViewModels
