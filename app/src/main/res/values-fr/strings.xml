@@ -262,4 +262,23 @@
     <string name="cards_add_fragment_invalid_card_message">Nous n\'avons pu valider les renseignements de votre carte. Veuillez vérifier que vous avez entré les bons renseignements.</string>
     <string name="cards_fsr_expanded_label">Économie sur l\'essence en prime</string>
     <string name="msg_cm004">Le solde n\'est pas disponible.</string>
+
+    <plurals name="cards_sp_balance_template">
+        <item quantity="one">%s jour</item>
+        <item quantity="other">%s jours</item>
+    </plurals>
+    <plurals name="cards_wag_balance_template">
+        <item quantity="one">%s jour</item>
+        <item quantity="other">%s jours</item>
+    </plurals>
+
+    <plurals name="cards_ppc_balance_template">
+        <item quantity="one">%s litre</item>
+        <item quantity="other">%s litres</item>
+    </plurals>
+
+    <plurals name="cards_fsr_balance_template">
+        <item quantity="one">%s litre</item>
+        <item quantity="other">%s litres</item>
+    </plurals>
 </resources>

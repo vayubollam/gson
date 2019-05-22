@@ -229,8 +229,8 @@
         <item quantity="other">%s days</item>
     </plurals>
     <plurals name="cards_wag_balance_template">
-        <item quantity="one">%d day</item>
-        <item quantity="other">%d days</item>
+        <item quantity="one">%s day</item>
+        <item quantity="other">%s days</item>
     </plurals>
 
 
