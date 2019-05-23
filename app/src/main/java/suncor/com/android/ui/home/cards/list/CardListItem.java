@@ -55,28 +55,28 @@ public class CardListItem {
                     backgroundColor = Color.parseColor(cardDetail.getCpl() == 0.10f ? "#FF6D6E6F" : "#FFAB252C");
                     title = R.string.cards_fsr_label;
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_fsr_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_litres_balance, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     break;
                 case SP:
                     backgroundColor = Color.parseColor("#FF232C32");
                     title = R.string.cards_sp_label;
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_sp_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_days_balance, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     break;
                 case WAG:
                     backgroundColor = Color.parseColor("#FF143557");
                     title = R.string.cards_wag_label;
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_wag_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_washes_balance, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     break;
                 case PPC:
                     backgroundColor = Color.parseColor("#FFE4E4E5");
                     title = R.string.cards_ppc_label;
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_ppc_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_litres_balance, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     textColor = Color.BLACK;
                     break;

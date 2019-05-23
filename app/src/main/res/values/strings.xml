@@ -204,18 +204,9 @@
     <string name="cards_fsr_label">Fuel Savings Reward</string>
     <string name="cards_fsr_expanded_label">Fuel Savings Reward</string>
 
-    <plurals name="cards_fsr_balance_template">
-        <item quantity="one">%s litre</item>
-        <item quantity="other">%s litres</item>
-    </plurals>
 
     <string name="cards_ppc_label">Preferred Price</string>
     <string name="cards_ppc_expanded_label">Preferred Price card</string>
-
-    <plurals name="cards_ppc_balance_template">
-        <item quantity="one">%s litre</item>
-        <item quantity="other">%s litres</item>
-    </plurals>
 
     <string name="cards_hbc_label">Hudson\'s Bay Rewards</string>
     <string name="cards_partners_balance_template">%s more points</string>
@@ -224,15 +215,35 @@
     <string name="cards_rbc_label">RBC</string>
     <string name="cards_more_label">More Rewards</string>
     <string name="cards_sp_label">Season Pass</string>
-    <plurals name="cards_sp_balance_template">
-        <item quantity="one">%s day</item>
-        <item quantity="other">%s days</item>
+    <plurals name="cards_litres_balance">
+        <item quantity="one">%s litre</item>
+        <item quantity="other">%s litres</item>
     </plurals>
-    <plurals name="cards_wag_balance_template">
+
+    <plurals name="cards_expanded_litres_balance">
+        <item quantity="one">%s litre left</item>
+        <item quantity="other">%s litres left</item>
+    </plurals>
+
+    <plurals name="cards_days_balance">
         <item quantity="one">%s day</item>
         <item quantity="other">%s days</item>
     </plurals>
 
+    <plurals name="cards_days_balance_expanded">
+        <item quantity="one">%s day left</item>
+        <item quantity="other">%s days left</item>
+    </plurals>
+
+    <plurals name="cards_washes_balance">
+        <item quantity="one">%s wash</item>
+        <item quantity="other">%s washes</item>
+    </plurals>
+
+    <plurals name="cards_washes_balance_expanded">
+        <item quantity="one">%s wash left</item>
+        <item quantity="other">%s washes left</item>
+    </plurals>
 
     <string name="cards_partners_more_balance">Collecting More Rewards points</string>
     <string name="cards_ppts_balance_template">%s points</string>
@@ -247,9 +258,9 @@
     <string name="cards_wag_label">Wash &amp; Go</string>
     <string name="cards_wag_expanded_label">Wash &amp; Go</string>
     <string name="cards_ppts_label">Petro-Points</string>
-    <string name="cards_fsr_balance_conversion">save %d¢ per litre</string>
-    <string name="cards_ppc_balance_conversion">save %d¢ per litre</string>
-    <string name="cards_fsr_description">Our Fuel Savings Rewards card helps you save 10¢ per litre on 200 litres of fuel.\n-\nReload your card at petro-points.com.</string>
+    <string name="cards_fsr_balance_conversion">Save %d¢ per litre</string>
+    <string name="cards_ppc_balance_conversion">Save %d¢ per litre</string>
+    <string name="cards_fsr_description">Our Fuel Savings Rewards card helps you save %d¢ per litre on 200 litres of fuel.\n\u2014\nReload your card at petro-points.com.</string>
     <string name="cards_wag_description">Use at any SuperWash or GlideWash location.</string>
     <string name="cards_sp_description">Use at any SuperWash or GlideWash location.</string>
     <string name="cards_ppc_description">Save on fuel every time your swipe your Preferred Price card.</string>
@@ -291,6 +302,7 @@
     <string name="profile_personnal_informations_subcopyEmail">Changing your email will require you to sign in again.</string>
     <string name="profile_personnal_informations_button1">Save</string>
     <string name="msg_cm004">Balance unavailable.</string>
+    <string name="cards_details_close">Close</string>
 
 
 </resources>
