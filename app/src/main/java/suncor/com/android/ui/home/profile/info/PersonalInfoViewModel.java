@@ -42,7 +42,6 @@ public class PersonalInfoViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> _navigateToProfile = new MutableLiveData<>();
     public LiveData<Event<Boolean>> navigateToProfile = _navigateToProfile;
 
-    private LiveData<Resource<Boolean>> apiObservable;
     private MutableLiveData<Event> updateProfileEvent = new MutableLiveData<>();
     private MutableLiveData<Event> signOutEvent = new MutableLiveData<>();
     private boolean isUpdatingEmail;
@@ -57,16 +56,27 @@ public class PersonalInfoViewModel extends ViewModel {
         lastNameField.setText(profile.getLastName());
         phoneField.setText(profile.getPhone());
         emailInputField.setText(profile.getEmail());
-        apiObservable = Transformations.switchMap(updateProfileEvent, event -> {
+        LiveData<Resource<Boolean>> apiObservable = Transformations.switchMap(updateProfileEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 ProfileRequest request = new ProfileRequest(profile);
-                if (isUpdatingEmail) {
+                boolean profileShouldBeUpdated = false;
+                if (!emailInputField.getText().equals(profile.getEmail())) {
+                    isUpdatingEmail = true;
                     request.setEmail(emailInputField.getText());
+                    profileShouldBeUpdated = true;
                 }
                 if (!phoneField.getText().equals(profile.getPhone())) {
                     request.setPhoneNumber(phoneField.getText().replace("-", ""));
+                    profileShouldBeUpdated = true;
                 }
-                return profilesApi.updateProfile(request);
+                if (profileShouldBeUpdated) {
+                    return profilesApi.updateProfile(request);
+                } else {
+                    //Generate a loading event to navigate to previous screen
+                    MutableLiveData<Resource<Boolean>> loadingLiveData = new MutableLiveData<>();
+                    loadingLiveData.setValue(Resource.loading());
+                    return loadingLiveData;
+                }
             } else {
                 return emptyLiveData;
             }
@@ -86,6 +96,8 @@ public class PersonalInfoViewModel extends ViewModel {
                         signOutEvent.setValue(Event.newEvent(true));
                     } else {
                         profileSharedViewModel.postToast(R.string.profile_personnal_informations_update_toast);
+                        //Update the saved profile of the app
+                        sessionManager.getProfile().setPhone(phoneField.getText());
                     }
                     break;
                 case ERROR:
@@ -126,6 +138,7 @@ public class PersonalInfoViewModel extends ViewModel {
             }
         });
 
+        //Handle signOutEvent after changing email with success
         _navigateToSignIn.addSource(
                 Transformations.switchMap(signOutEvent, event -> {
                     if (event.getContentIfNotHandled() != null) {
@@ -217,21 +230,16 @@ public class PersonalInfoViewModel extends ViewModel {
                     alert.message = R.string.profile_personnal_informations_email_alert_message;
                     alert.positiveButton = R.string.profile_personnal_informations_email_alert_signout_button;
                     alert.negativeButton = R.string.cancel;
-                    alert.positiveButtonClick = () -> {
-                        callUpdateProfile(true);
-                    };
+                    alert.positiveButtonClick = this::callUpdateProfile;
                     profileSharedViewModel.postAlert(alert);
                 } else {
-                    callUpdateProfile(false);
+                    callUpdateProfile();
                 }
             }
         }
     }
 
-    private void callUpdateProfile(boolean updateEmail) {
-        if (updateEmail) {
-            isUpdatingEmail = true;
-        }
+    private void callUpdateProfile() {
         updateProfileEvent.setValue(Event.newEvent(true));
     }
 
