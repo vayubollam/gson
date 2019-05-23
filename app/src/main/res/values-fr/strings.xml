@@ -218,7 +218,7 @@
     <string name="profile_get_help_call">Appel</string>
     <string name="profile_get_help_email">Courriel</string>
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
-    <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser 5 ¢ le litre sur 200 litres d\'essence.\n-\nRechargez votre carte à petro-points.com.</string>
+    <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">Acceptée dans tous les établissements avec lave-auto SuperDoux et GlideWash.</string>
     <string name="cards_sp_description">Acceptée dans tous les établissements avec lave-auto SuperDoux et GlideWash.</string>
     <string name="cards_ppc_description">Économisez chaque fois que vous utilisez votre Carte Prix Préférentiel.</string>
@@ -263,22 +263,34 @@
     <string name="cards_fsr_expanded_label">Économie sur l\'essence en prime</string>
     <string name="msg_cm004">Le solde n\'est pas disponible.</string>
 
-    <plurals name="cards_sp_balance_template">
-        <item quantity="one">%s jour</item>
-        <item quantity="other">%s jours</item>
-    </plurals>
-    <plurals name="cards_wag_balance_template">
-        <item quantity="one">%s jour</item>
-        <item quantity="other">%s jours</item>
-    </plurals>
-
-    <plurals name="cards_ppc_balance_template">
+    <plurals name="cards_litres_balance">
         <item quantity="one">%s litre</item>
         <item quantity="other">%s litres</item>
     </plurals>
 
-    <plurals name="cards_fsr_balance_template">
-        <item quantity="one">%s litre</item>
-        <item quantity="other">%s litres</item>
+    <plurals name="cards_expanded_litres_balance">
+        <item quantity="one">%s litre restant</item>
+        <item quantity="other">%s litres restants</item>
     </plurals>
+
+    <plurals name="cards_days_balance">
+        <item quantity="one">%s jour</item>
+        <item quantity="other">%s jours</item>
+    </plurals>
+
+    <plurals name="cards_days_balance_expanded">
+        <item quantity="one">%s jour restant</item>
+        <item quantity="other">%s jours restants</item>
+    </plurals>
+
+    <plurals name="cards_washes_balance">
+        <item quantity="one">%s lavage</item>
+        <item quantity="other">%s lavages</item>
+    </plurals>
+
+    <plurals name="cards_washes_balance_expanded">
+        <item quantity="one">%s lavage restant</item>
+        <item quantity="other">%s lavages restants</item>
+    </plurals>
+
 </resources>

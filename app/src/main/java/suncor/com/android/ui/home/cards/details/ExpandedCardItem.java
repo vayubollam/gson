@@ -84,17 +84,18 @@ public class ExpandedCardItem {
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.FSR_FORMAT);
                     cardName = context.getString(R.string.cards_fsr_expanded_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_fsr_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_expanded_litres_balance, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
-                    balanceDetails = context.getString(R.string.cards_fsr_balance_conversion, (int) (cardDetail.getCpl() * 100));
-                    cardDescription = context.getString(R.string.cards_fsr_description);
+                    int cpl = (int) (cardDetail.getCpl() * 100);
+                    balanceDetails = context.getString(R.string.cards_fsr_balance_conversion, cpl);
+                    cardDescription = context.getString(R.string.cards_fsr_description, cpl);
                     break;
                 case SP:
                     cardImage = context.getDrawable(R.drawable.seasons_pass_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.WAG_SP_FORMAT);
                     cardName = context.getString(R.string.cards_sp_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_sp_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_days_balance_expanded, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     cardDescription = context.getString(R.string.cards_sp_description);
                     isBalanceDetailsVisible = false;
@@ -104,7 +105,7 @@ public class ExpandedCardItem {
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.WAG_SP_FORMAT);
                     cardName = context.getString(R.string.cards_wag_expanded_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_wag_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_washes_balance_expanded, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     cardDescription = context.getString(R.string.cards_wag_description);
                     isBalanceDetailsVisible = false;
@@ -114,7 +115,7 @@ public class ExpandedCardItem {
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PPC_FORMAT);
                     cardName = context.getString(R.string.cards_ppc_expanded_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_ppc_balance_template, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            context.getResources().getQuantityString(R.plurals.cards_expanded_litres_balance, balanceValue, CardFormatUtils.formatBalance(balanceValue))
                             : null;
                     balanceDetails = context.getString(R.string.cards_ppc_balance_conversion, (int) (cardDetail.getCpl() * 100));
                     cardDescription = context.getString(R.string.cards_ppc_description);

@@ -41,8 +41,9 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:ellipsize="end"
+                        android:gravity="bottom"
                         android:lineSpacingMultiplier="1.25"
-                        android:text="Profile"
+                        android:maxLines="2"
                         android:textAppearance="@style/Headline1"
                         app:autoSizeMaxTextSize="42sp"
                         app:autoSizeMinTextSize="26sp"
@@ -56,15 +57,20 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/email_output"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:ellipsize="end"
                         android:fontFamily="@font/gibson_regular"
+                        android:gravity="start"
+                        android:maxLines="1"
                         android:textAppearance="@style/Body"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@id/full_name_output"
                         app:layout_constraintTop_toBottomOf="@+id/full_name_output"
-                        tools:text="User email" />
+                        tools:text="email@test.com" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -78,6 +78,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
+                            android:foreground="@drawable/petro_points_card_ripple"
                             android:src="@drawable/petro_points_card"
                             app:layout_constraintDimensionRatio="1.58"
                             app:layout_constraintEnd_toEndOf="parent"
