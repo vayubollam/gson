@@ -10,5 +10,18 @@
             <solid android:color="#FFAB252C" />
         </shape>
     </item>
-    <item android:drawable="?selectableItemBackground" />
+    <item>
+        <ripple android:color="?android:attr/colorControlHighlight">
+            <item android:id="@android:id/mask">
+                <shape android:shape="rectangle">
+                    <corners
+                        android:bottomLeftRadius="0dp"
+                        android:bottomRightRadius="0dp"
+                        android:topLeftRadius="11dp"
+                        android:topRightRadius="11dp" />
+                    <solid android:color="#000000" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
 </layer-list>
