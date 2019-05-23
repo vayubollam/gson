@@ -199,7 +199,7 @@ pipeline {
 
                     slackMessage = "*!!! Android ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
                     "*Failed on Tag: ${androidTagName}*\n" +
-                    "https://bitbucket.org/suncor-android/mobileapp-ios/src/${androidTagName}\n" +
+                    "https://bitbucket.org/rfmp-suncor/suncor-android/commits/tag/${androidTagName}\n" +
                     "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
                     "${env.BUILD_URL}console"
                 }
