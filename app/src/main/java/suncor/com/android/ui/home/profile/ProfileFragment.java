@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -16,17 +17,20 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.home.BottomNavigationFragment;
 
 
 public class ProfileFragment extends BottomNavigationFragment {
-    FragmentProfileBinding binding;
+    private FragmentProfileBinding binding;
+    private ProfileSharedViewModel profileSharedViewModel;
 
     @Inject
     SessionManager sessionManager;
@@ -34,6 +38,43 @@ public class ProfileFragment extends BottomNavigationFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        profileSharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
+        profileSharedViewModel.alertObservable.observe(getActivity(), event -> {
+            ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
+            if (alert != null) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                if (alert.title != -1) {
+                    dialog.setTitle(alert.title);
+                }
+                if (alert.message != -1) {
+                    dialog.setMessage(alert.message);
+                }
+                if (alert.positiveButton != -1) {
+                    dialog.setPositiveButton(alert.positiveButton, (i, w) -> {
+                        if (alert.positiveButtonClick != null) {
+                            alert.positiveButtonClick.run();
+                        }
+                        i.dismiss();
+                    });
+                }
+                if (alert.negativeButton != -1) {
+                    dialog.setNegativeButton(alert.negativeButton, (i, w) -> {
+                        if (alert.negativeButtonClick != null) {
+                            alert.negativeButtonClick.run();
+                        }
+                        i.dismiss();
+                    });
+                }
+                dialog.show();
+            }
+        });
+
+        profileSharedViewModel.toastObservable.observe(this, event -> {
+            Integer message = event.getContentIfNotHandled();
+            if (message != null) {
+                SuncorToast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -46,7 +87,7 @@ public class ProfileFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String fullName= capitalize(sessionManager.getProfile().getFirstName()) + " " + capitalize(sessionManager.getProfile().getLastName());
+        String fullName = capitalize(sessionManager.getProfile().getFirstName()) + " " + capitalize(sessionManager.getProfile().getLastName());
         binding.fullNameOutput.setText(fullName);
         binding.emailOutput.setText(sessionManager.getProfile().getEmail());
         initBuild();
@@ -64,8 +105,8 @@ public class ProfileFragment extends BottomNavigationFragment {
         binding.getHelpButton.setOnClickListener(v -> {
             launchGetHelpFragment();
         });
-        binding.personalInformationsButton.setOnClickListener( v -> {
-                lunchPersonalInfoFragment();
+        binding.personalInformationsButton.setOnClickListener(v -> {
+            lunchPersonalInfoFragment();
         });
     }
 
@@ -86,13 +127,16 @@ public class ProfileFragment extends BottomNavigationFragment {
     public void launchGetHelpFragment() {
         Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
     }
-    public void lunchPersonalInfoFragment(){
+
+    public void lunchPersonalInfoFragment() {
         Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
     }
-    public String capitalize (String string){
-        return string.substring(0,1).toUpperCase()+ string.substring(1);
+
+    public String capitalize(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
-    public void initBuild (){
+
+    public void initBuild() {
         try {
             Properties properties = new Properties();
             AssetManager assetManager = getActivity().getAssets();

@@ -17,6 +17,8 @@ import suncor.com.android.data.repository.cards.CardsApi;
 import suncor.com.android.data.repository.cards.CardsApiImpl;
 import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.data.repository.favourite.FavouriteRepositoryImpl;
+import suncor.com.android.data.repository.profiles.ProfilesApi;
+import suncor.com.android.data.repository.profiles.ProfilesApiImpl;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.data.repository.stations.StationsProviderImpl;
 import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
@@ -63,6 +65,11 @@ public class DataModule {
     PlacesClient providesPlacesClient(SuncorApplication application) {
         Places.initialize(application, BuildConfig.MAP_API_KEY);
         return Places.createClient(application);
+    }
+
+    @Provides
+    ProfilesApi providesProfilesApi() {
+        return new ProfilesApiImpl();
     }
 
     //Not singleton because a fresh token is needed each time the screen is opened

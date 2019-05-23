@@ -2,11 +2,30 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="suncor.com.android.ui.home.profile.PersonalInfoFragment">
+    tools:context="suncor.com.android.ui.home.profile.info.PersonalInfoFragment">
+
+    <data>
+
+        <import type="suncor.com.android.utilities.ConnectionUtil" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.home.profile.info.PersonalInfoViewModel" />
+
+        <variable
+            name="isEditing"
+            type="Boolean" />
+
+        <variable
+            name="showEmailSubcopy"
+            type="Boolean" />
+
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:background="@color/white"
         android:clickable="true"
         android:orientation="vertical">
@@ -41,7 +60,8 @@
                     android:hint="@string/profile_personnal_informations_firstName"
                     app:layout_constraintBottom_toTopOf="@id/postalcode_input"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:text="@{vm.firstNameField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/lastname_input"
@@ -49,59 +69,108 @@
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:hint="@string/profile_personnal_informations_lastName"
-                    app:layout_constraintTop_toBottomOf="@id/firstname_input" />
+                    app:layout_constraintTop_toBottomOf="@id/firstname_input"
+                    app:text="@{vm.lastNameField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/phone_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/profile_personnal_informations_phone"
-                    app:layout_constraintTop_toBottomOf="@id/lastname_input" />
+                    android:maxLength="12"
+                    app:afterTextChanged="@{(i, t) -> vm.phoneTextChanged(t.toString())}"
+                    app:error="@{vm.phoneField.error}"
+                    app:focusChanged="@{(i, f) -> vm.phoneField.setHasFocus(f)}"
+                    app:layout_constraintTop_toBottomOf="@id/lastname_input"
+                    app:text="@={vm.phoneField.text}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/email_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/profile_personnal_informations_email"
-                    app:layout_constraintTop_toBottomOf="@id/phone_input" />
+                    android:maxLength="100"
+                    app:afterTextChanged="@{(i, t) -> vm.emailTextChanged(t.toString())}"
+                    app:error="@{vm.emailInputField.error}"
+                    app:focusChanged="@{(i, f) -> vm.emailInputField.setHasFocus(f)}"
+                    app:layout_constraintTop_toBottomOf="@id/phone_input"
+                    app:text="@={vm.emailInputField.text}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/email_subcopy_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_alert"
+                    android:tint="@color/black_60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/email_input"
+                    app:visibleGone="@{showEmailSubcopy}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/subcopyEmail"
-                    android:layout_width="match_parent"
+                    android:id="@+id/email_subcopy_text"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_alert_black"
-                    android:drawablePadding="16dp"
-                    android:paddingLeft="4dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center_vertical"
+                    android:lineSpacingMultiplier="1.57"
+                    android:minHeight="20dp"
                     android:text="@string/profile_personnal_informations_subcopyEmail"
                     android:textAppearance="@style/Caption1"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/email_input" />
+                    android:textColor="@color/black_60"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/email_subcopy_icon"
+                    app:layout_constraintTop_toTopOf="@id/email_subcopy_icon"
+                    app:visibleGone="@{showEmailSubcopy}" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/subcopy1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/subcopy1_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginTop="16dp"
-                    android:drawableLeft="@drawable/ic_alert_black"
-                    android:drawablePadding="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:text="@string/profile_personnal_informations_subcopy1"
-                    android:textAppearance="@style/Caption2"
-                    app:layout_constraintTop_toBottomOf="@id/subcopyEmail" />
+                    android:src="@drawable/ic_alert"
+                    android:tint="@color/black_60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/email_subcopy_icon" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/subcopy2"
-                    android:layout_width="match_parent"
+                    android:id="@+id/subcopy1_text"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:drawableLeft="@drawable/ic_alert_black"
-                    android:drawablePadding="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:layout_marginStart="8dp"
+                    android:lineSpacingMultiplier="1.57"
+                    android:minHeight="20dp"
+                    android:text="@string/profile_personnal_informations_subcopy1"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/subcopy1_icon"
+                    app:layout_constraintTop_toTopOf="@id/subcopy1_icon" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/subcopy2_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_alert"
+                    android:tint="@color/black_60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/subcopy1_text" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/subcopy2_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:lineSpacingMultiplier="1.57"
+                    android:minHeight="20dp"
                     android:text="@string/profile_personnal_informations_subcopy2"
-                    android:textAppearance="@style/Caption2"
-                    app:layout_constraintTop_toBottomOf="@id/subcopy1" />
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/subcopy2_icon"
+                    app:layout_constraintTop_toTopOf="@id/subcopy2_icon" />
 
 
                 <com.google.android.material.button.MaterialButton
@@ -109,15 +178,24 @@
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:onClick="@{v -> vm.save(ConnectionUtil.haveNetworkConnection(context))}"
                     android:text="@string/profile_personnal_informations_button1"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/subcopy2" />
+                    app:layout_constraintTop_toBottomOf="@id/subcopy2_text"
+                    app:visibleGone="@{isEditing}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
 
+        <ProgressBar
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:background="@drawable/white_circle"
+            app:visibleInvisible="@{vm.isLoading}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

@@ -341,7 +341,7 @@
             android:background="@color/white"
             android:clickable="true"
             android:elevation="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:visibleGone="@{ vm.joinLiveData.status == Resource.Status.LOADING || vm.joinLiveData.status == Resource.Status.SUCCESS }">
 
             <androidx.appcompat.widget.AppCompatTextView

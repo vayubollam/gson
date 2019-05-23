@@ -28,4 +28,6 @@ public class ErrorCodes {
     public static final String ERR_USER_INFO_NOT_MATCHED = "SUNCOR018";
 
     public static final String ERR_LIKING_CARD_FAILED = "SUNCOR020";
+
+    public static final String ERR_RESTRICTED_DOMAIN = "SUNCOR024";
 }

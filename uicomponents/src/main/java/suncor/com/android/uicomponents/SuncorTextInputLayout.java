@@ -232,7 +232,11 @@ public class SuncorTextInputLayout extends LinearLayout {
     }
 
     public void setText(CharSequence text) {
-        editText.setText(text);
+        if (text == null) {
+            text = "";
+        }
+        Editable editTextEditable = editText.getEditableText();
+        editTextEditable.replace(0, editTextEditable.length(), text);
     }
 
     public CharSequence getText() {
