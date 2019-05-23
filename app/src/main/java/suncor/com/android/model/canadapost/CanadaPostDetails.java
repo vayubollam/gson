@@ -3,6 +3,8 @@ package suncor.com.android.model.canadapost;
 import com.google.gson.annotations.SerializedName;
 
 public class CanadaPostDetails {
+    @SerializedName("Error")
+    private String error;
     @SerializedName("Id")
     private String id;
     @SerializedName("Language")
@@ -23,6 +25,10 @@ public class CanadaPostDetails {
     private String provinceCode;
     @SerializedName("PostalCode")
     private String postalCode;
+
+    public String getError() {
+        return error;
+    }
 
     public String getLine1() {
         return line1;

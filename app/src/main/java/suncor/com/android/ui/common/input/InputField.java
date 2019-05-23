@@ -46,6 +46,9 @@ public class InputField extends BaseObservable {
     }
 
     public void setText(String text) {
+        if (text == null) {
+            text = "";
+        }
         if (!text.equals(this.text)) {
             this.text = text;
             setShowError(false);

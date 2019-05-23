@@ -143,7 +143,11 @@ public class CanadaPostAutocompleteProvider {
                         if (placeDetails == null) {
                             placeDetails = addresses.items[0];
                         }
-                        result.postValue(Resource.success(placeDetails));
+                        if (placeDetails.getError() != null) {
+                            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        } else {
+                            result.postValue(Resource.success(placeDetails));
+                        }
                     } catch (JsonSyntaxException e) {
                         Timber.w("Deserializing place details failed", e);
                         result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
