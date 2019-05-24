@@ -23,7 +23,7 @@ public class UsersApiImpl implements UsersApi {
 
 
     @Override
-    public LiveData<Resource<Boolean>> createPassword(String email, String password) {
+    public LiveData<Resource<Boolean>> createPassword(String email, String password, String emailEncrypted) {
         Timber.d("create password for account: " + email);
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
@@ -32,6 +32,7 @@ public class UsersApiImpl implements UsersApi {
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject();
             body.put("email", email);
+            body.put("emailEncrypted", emailEncrypted);
             body.put("newPassword", password);
             request.send(body, new WLResponseListener() {
                 @Override

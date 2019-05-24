@@ -26,15 +26,18 @@ import suncor.com.android.ui.common.Alerts;
 public class CreatePasswordFragment extends DaggerFragment {
 
     private static final String EMAIL_EXTRA = "email";
+    private static final String ENCRYPTED_EMAIL_EXTRA = "encrypted_email";
+
     @Inject
     ViewModelFactory viewModelFactory;
     private CreatePasswordViewModel viewModel;
     private FragmentCreatePasswordBinding binding;
 
-    public static CreatePasswordFragment newInstance(String email) {
+    public static CreatePasswordFragment newInstance(String email, String encryptedEmail) {
         CreatePasswordFragment fragment = new CreatePasswordFragment();
         Bundle bundle = new Bundle();
         bundle.putString(EMAIL_EXTRA, email);
+        bundle.putString(ENCRYPTED_EMAIL_EXTRA, encryptedEmail);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -47,6 +50,7 @@ public class CreatePasswordFragment extends DaggerFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CreatePasswordViewModel.class);
         viewModel.setEmail(getArguments().getString(EMAIL_EXTRA));
+        viewModel.setEmailEncrypted(getArguments().getString(ENCRYPTED_EMAIL_EXTRA));
 
         viewModel.api.observe(this, (r) -> {
             if (r.status == Resource.Status.LOADING) {

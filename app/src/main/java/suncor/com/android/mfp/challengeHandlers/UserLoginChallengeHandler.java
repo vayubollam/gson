@@ -79,7 +79,12 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                         listener.onLoginFailed(SigninResponse.hardLocked());
                         break;
                     case ErrorCodes.ERR_PASSWORD_CHANGE_REQUIRED:
-                        listener.onLoginFailed(SigninResponse.passwordReset());
+                        if (!jsonObject.has("emailEncrypted")) {
+                            listener.onLoginFailed(SigninResponse.generalFailure());
+                        } else {
+                            String encryptedEmail = jsonObject.getString("emailEncrypted");
+                            listener.onLoginFailed(SigninResponse.passwordReset(encryptedEmail));
+                        }
                         break;
                     default:
                         listener.onLoginFailed(SigninResponse.generalFailure());

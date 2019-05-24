@@ -5,5 +5,5 @@ import suncor.com.android.model.Resource;
 
 public interface UsersApi {
 
-    LiveData<Resource<Boolean>> createPassword(String email, String password);
+    LiveData<Resource<Boolean>> createPassword(String email, String password, String emailEncrypted);
 }

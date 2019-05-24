@@ -25,7 +25,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> loginEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> passwordResetEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> callCustomerService = new MutableLiveData<>();
-    private MutableLiveData<Event<Boolean>> createPasswordEvent = new MutableLiveData<>();
+    private MutableLiveData<Event<String>> createPasswordEvent = new MutableLiveData<>();
     private boolean isLoginFromEnrollment;
 
     @Inject
@@ -90,7 +90,7 @@ public class LoginViewModel extends ViewModel {
                         )));
                         break;
                     case PASSWORD_RESET:
-                        createPasswordEvent.postValue(Event.newEvent(true));
+                        createPasswordEvent.postValue(Event.newEvent(response.getAdditionalData()));
                         break;
                 }
 
@@ -108,7 +108,7 @@ public class LoginViewModel extends ViewModel {
         isLoginFromEnrollment = loginFromEnrollment;
     }
 
-    public MutableLiveData<Event<Boolean>> getCreatePasswordEvent() {
+    public MutableLiveData<Event<String>> getCreatePasswordEvent() {
         return createPasswordEvent;
     }
 
