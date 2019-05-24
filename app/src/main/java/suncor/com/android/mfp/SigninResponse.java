@@ -4,6 +4,7 @@ public class SigninResponse {
     private Status status;
     private int remainingAttempts;
     private int timeOut;
+    private String additionalData;
 
     private SigninResponse(Status status, int data) {
         this.status = status;
@@ -44,12 +45,18 @@ public class SigninResponse {
         return new SigninResponse(Status.HARD_LOCKED, -1);
     }
 
-    public static SigninResponse passwordReset() {
-        return new SigninResponse(Status.PASSWORD_RESET, -1);
+    public static SigninResponse passwordReset(String encryptedEmail) {
+        SigninResponse response = new SigninResponse(Status.PASSWORD_RESET, -1);
+        response.additionalData = encryptedEmail;
+        return response;
     }
 
     public static SigninResponse generalFailure() {
         return new SigninResponse(Status.OTHER_FAILURE, -1);
+    }
+
+    public String getAdditionalData() {
+        return additionalData;
     }
 
     public int getTimeOut() {

@@ -18,16 +18,17 @@ import suncor.com.android.utilities.Timber;
 
 public class CreatePasswordViewModel extends ViewModel {
 
+    public LiveData<Resource<Boolean>> api;
     private PasswordInputField passwordField = new PasswordInputField(R.string.login_create_password_empty_error);
     private String email;
+    private String emailEncrypted;
     private MutableLiveData<Event<Boolean>> buttonClickEvent = new MutableLiveData<>();
-    public LiveData<Resource<Boolean>> api;
 
     @Inject
     public CreatePasswordViewModel(SessionManager sessionManager, UsersApi usersApi) {
         LiveData<Resource<Boolean>> passwordsApiCall = Transformations.switchMap(buttonClickEvent, (event) -> {
             if (event.getContentIfNotHandled() != null) {
-                return usersApi.createPassword(email, passwordField.getText());
+                return usersApi.createPassword(email, passwordField.getText(), emailEncrypted);
             } else {
                 return new MutableLiveData<>();
             }
@@ -60,6 +61,10 @@ public class CreatePasswordViewModel extends ViewModel {
                 return intermediateLivedata;
             }
         });
+    }
+
+    public void setEmailEncrypted(String emailEncrypted) {
+        this.emailEncrypted = emailEncrypted;
     }
 
     public PasswordInputField getPasswordField() {

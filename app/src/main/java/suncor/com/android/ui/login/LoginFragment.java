@@ -99,9 +99,10 @@ public class LoginFragment extends DaggerFragment {
         });
 
         viewModel.getCreatePasswordEvent().observe(this, event -> {
-            if (event.getContentIfNotHandled() != null) {
+            String encryptedEmail = event.getContentIfNotHandled();
+            if (encryptedEmail != null) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment, CreatePasswordFragment.newInstance(viewModel.getEmailInputField().getText()));
+                ft.replace(R.id.fragment, CreatePasswordFragment.newInstance(viewModel.getEmailInputField().getText(), encryptedEmail));
                 ft.addToBackStack(null);
                 ft.commit();
             }
