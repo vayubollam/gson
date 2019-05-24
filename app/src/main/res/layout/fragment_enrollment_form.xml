@@ -104,7 +104,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/email_input"
                     app:layout_constraintEnd_toEndOf="@id/email_input"
                     app:layout_constraintTop_toTopOf="@id/email_input"
-                    app:visibleGone="@{vm.emailCheckLiveData.status == Resource.Status.LOADING}" />
+                    app:visibleGone="@{vm.isValidatingEmail}" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/password_input"

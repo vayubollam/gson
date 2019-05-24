@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
@@ -75,11 +74,8 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
         }
 
-        viewModel.emailCheckLiveData.observe(this, (r) -> {
-            //Ignore all results except success answers
-            if (r.status == Resource.Status.SUCCESS && r.data == EnrollmentsApi.EmailState.INVALID) {
-                showDuplicateEmailAlert();
-            }
+        viewModel.getShowDuplicateEmailEvent().observe(this, (r) -> {
+            showDuplicateEmailAlert();
         });
 
         //enrollments api call result
@@ -242,7 +238,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         hideKeyBoard();
         if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
             viewModel.hideAutoCompleteLayout();
-        } else if (viewModel.oneItemFilled()) {
+        } else if (viewModel.isOneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);

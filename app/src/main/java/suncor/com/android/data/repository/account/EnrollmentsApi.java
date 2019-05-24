@@ -19,6 +19,6 @@ public interface EnrollmentsApi {
 
 
     enum EmailState {
-        VALID, INVALID, UNCHECKED
+        VALID, ALREADY_REGISTERED, RESTRICTED, UNCHECKED
     }
 }

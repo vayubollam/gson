@@ -162,14 +162,14 @@ public class EnrollmentFormViewModelTest {
 
     @Test
     public void testOneItemFilledFalse() {
-        Assert.assertFalse(viewModel.oneItemFilled());
+        Assert.assertFalse(viewModel.isOneItemFilled());
     }
 
     @Test
     public void testOneItemFilledTrue() {
         viewModel.getFirstNameField().setText("name");
 
-        Assert.assertTrue(viewModel.oneItemFilled());
+        Assert.assertTrue(viewModel.isOneItemFilled());
     }
 
     @Test
@@ -214,7 +214,7 @@ public class EnrollmentFormViewModelTest {
     @Test
     public void testEmailValidation_InValidEmail() {
         MutableLiveData<Resource<EnrollmentsApi.EmailState>> successValidation = new MutableLiveData<>();
-        successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.INVALID));
+        successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.ALREADY_REGISTERED));
         when(api.checkEmail("email@suncor.com", null)).thenReturn(successValidation);
 
         Observer<Resource<EnrollmentsApi.EmailState>> dummyObserver = emailStateResource -> {
@@ -228,6 +228,6 @@ public class EnrollmentFormViewModelTest {
         viewModel.getEmailInputField().setText("email@suncor.com");
         viewModel.getEmailInputField().setHasFocus(false);
 
-        Assert.assertEquals(EnrollmentsApi.EmailState.INVALID, viewModel.emailCheckLiveData.getValue().data);
+        Assert.assertEquals(EnrollmentsApi.EmailState.ALREADY_REGISTERED, viewModel.emailCheckLiveData.getValue().data);
     }
 }
