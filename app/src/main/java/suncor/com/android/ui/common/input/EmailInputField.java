@@ -2,6 +2,7 @@ package suncor.com.android.ui.common.input;
 
 import java.util.regex.Pattern;
 
+import androidx.annotation.StringRes;
 import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,13 +12,26 @@ public class EmailInputField extends InputField {
 
     private static final Pattern EMAIL_ADDRESS = Pattern.compile("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}");
 
+    @StringRes
     private final int formatError;
+    @StringRes
+    private final int restrictedError;
+
+    private boolean isRestricted = false;
     private MutableLiveData<Event<Boolean>> hasFocus = new MutableLiveData<>();
     private VerificationState verificationState = VerificationState.UNCHECKED;
 
-    public EmailInputField(int emptyError, int formatError) {
+    public EmailInputField(int emptyError, @StringRes int formatError, @StringRes int restrictedError) {
         super(emptyError);
         this.formatError = formatError;
+        this.restrictedError = restrictedError;
+    }
+
+    public void setRestricted(boolean restricted) {
+        isRestricted = restricted;
+        if (isRestricted) {
+            setShowError(true);
+        }
     }
 
     public VerificationState getVerificationState() {
@@ -31,12 +45,14 @@ public class EmailInputField extends InputField {
     @Override
 
     @Bindable
+    @StringRes
     public int getError() {
         if (!getShowError()) {
             return -1;
         } else {
-            return !super.isValid() ? super.getError() :
-                    !formatValid() ? formatError : -1;
+            return isRestricted ? restrictedError
+                    : isEmpty() ? super.getError()
+                    : !formatValid() ? formatError : -1;
         }
     }
 
@@ -44,6 +60,7 @@ public class EmailInputField extends InputField {
     public void setText(String text) {
         if (!text.equals(this.getText())) {
             verificationState = VerificationState.UNCHECKED;
+            isRestricted = false;
         }
         super.setText(text);
     }
@@ -61,7 +78,7 @@ public class EmailInputField extends InputField {
 
     @Override
     public boolean isValid() {
-        return super.isValid() && formatValid();
+        return super.isValid() && formatValid() && !isRestricted;
     }
 
     private boolean formatValid() {

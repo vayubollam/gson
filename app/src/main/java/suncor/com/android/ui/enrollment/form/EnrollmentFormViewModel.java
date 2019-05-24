@@ -35,23 +35,18 @@ import suncor.com.android.utilities.Timber;
 public class EnrollmentFormViewModel extends ViewModel {
 
     final static String LOGIN_FAILED = "login_failed";
-
-    public LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData;
-
     public LiveData<Resource<Boolean>> joinLiveData;
     //autocomplete fields
     public MutableLiveData<Boolean> showAutocompleteLayout = new MutableLiveData<>();
-    private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
     private MediatorLiveData<Resource<CanadaPostSuggestion[]>> autocompleteResults;
     private LiveData<Resource<CanadaPostDetails>> placeDetailsApiCall;
     private MutableLiveData<CanadaPostSuggestion> findMoreSuggestions = new MutableLiveData<>();
     private MutableLiveData<CanadaPostSuggestion> retrieveSuggestionDetails = new MutableLiveData<>();
-    private ArrayList<Province> provincesList;
-
     //Input fields
+    private ArrayList<InputField> requiredFields = new ArrayList<>();
     private InputField firstNameField = new InputField(R.string.enrollment_first_name_error);
     private InputField lastNameField = new InputField(R.string.enrollment_last_name_error);
-    private EmailInputField emailInputField = new EmailInputField(R.string.enrollment_email_empty_error, R.string.enrollment_email_format_error);
+    private EmailInputField emailInputField = new EmailInputField(R.string.enrollment_email_empty_error, R.string.enrollment_email_format_error, R.string.enrollment_email_restricted_error);
     private PasswordInputField passwordField = new PasswordInputField(R.string.enrollment_password_empty_error);
     private InputField securityQuestionField = new InputField();
     private InputField securityAnswerField = new InputField();
@@ -62,12 +57,18 @@ public class EnrollmentFormViewModel extends ViewModel {
     private PhoneInputField phoneField = new PhoneInputField(R.string.enrollment_phone_field_invalid_format);
     private ObservableBoolean newsAndOffersField = new ObservableBoolean();
 
+    private MutableLiveData<Event<Boolean>> navigateToLogin = new MutableLiveData<>();
+    private MutableLiveData<Event<Boolean>> showDuplicateEmailEvent = new MutableLiveData<>();
+    private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> isValidatingEmail = new MutableLiveData<>();
+
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
-
-    private ArrayList<InputField> requiredFields = new ArrayList<>();
     private CardStatus cardStatus;
-    private MutableLiveData<Event<Boolean>> navigateToLogin = new MutableLiveData<>();
+
+    private ArrayList<Province> provincesList;
+
 
     @Inject
     public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider) {
@@ -80,7 +81,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
 
-        emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
+        LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
             Boolean hasFocus = event.getContentIfNotHandled();
             //If it's focused, or has already been checked, or email is invalid, return empty livedata
             if (hasFocus == null || hasFocus
@@ -90,13 +91,22 @@ public class EnrollmentFormViewModel extends ViewModel {
                 temp.setValue(Resource.success(EnrollmentsApi.EmailState.UNCHECKED));
                 return temp;
             } else {
-                return Transformations.map(enrollmentsApi.checkEmail(emailInputField.getText(), cardStatus != null ? cardStatus.getCardNumber() : null), (r) -> {
-                    //to avoid further checks, save the state to the email field
-                    if (r.status != Resource.Status.LOADING) {
-                        emailInputField.setVerificationState(EmailInputField.VerificationState.CHECKED);
+                return enrollmentsApi.checkEmail(emailInputField.getText(), cardStatus != null ? cardStatus.getCardNumber() : null);
+            }
+        });
+        emailCheckLiveData.observeForever(r -> {
+            if (r.status == Resource.Status.LOADING) {
+                isValidatingEmail.setValue(true);
+            } else {
+                isValidatingEmail.setValue(false);
+                emailInputField.setVerificationState(EmailInputField.VerificationState.CHECKED);
+                if (r.status == Resource.Status.SUCCESS) {
+                    if (r.data == EnrollmentsApi.EmailState.ALREADY_REGISTERED) {
+                        showDuplicateEmailEvent.postValue(Event.newEvent(true));
+                    } else if (r.data == EnrollmentsApi.EmailState.RESTRICTED) {
+                        emailInputField.setRestricted(true);
                     }
-                    return r;
-                });
+                }
             }
         });
 
@@ -166,10 +176,6 @@ public class EnrollmentFormViewModel extends ViewModel {
         initAutoComplete(canadaPostAutocompleteProvider);
     }
 
-    public LiveData<Event<Boolean>> getNavigateToLogin() {
-        return navigateToLogin;
-    }
-
     private void initAutoComplete(CanadaPostAutocompleteProvider provider) {
         autocompleteResults = new MediatorLiveData<>();
         LiveData<Resource<CanadaPostSuggestion[]>> suggestionsOnTextChange = Transformations.switchMap(streetAddressField.getTextLiveData(), text -> {
@@ -224,19 +230,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         });
     }
 
-    public LiveData<Resource<CanadaPostSuggestion[]>> getAutocompleteResults() {
-        return autocompleteResults;
-    }
-
-    public LiveData<Resource<CanadaPostDetails>> getAutocompleteRetrievalStatus() {
-        return placeDetailsApiCall;
-    }
-
-    public ObservableBoolean getNewsAndOffersField() {
-        return newsAndOffersField;
-    }
-
-    public boolean oneItemFilled() {
+    public boolean isOneItemFilled() {
         for (InputField input : requiredFields) {
             if (!input.isEmpty()) {
                 return true;
@@ -285,6 +279,30 @@ public class EnrollmentFormViewModel extends ViewModel {
         } else {
             retrieveSuggestionDetails.postValue(suggestion);
         }
+    }
+
+    public LiveData<Resource<CanadaPostSuggestion[]>> getAutocompleteResults() {
+        return autocompleteResults;
+    }
+
+    public LiveData<Resource<CanadaPostDetails>> getAutocompleteRetrievalStatus() {
+        return placeDetailsApiCall;
+    }
+
+    public MutableLiveData<Event<Boolean>> getShowDuplicateEmailEvent() {
+        return showDuplicateEmailEvent;
+    }
+
+    public MutableLiveData<Boolean> getIsValidatingEmail() {
+        return isValidatingEmail;
+    }
+
+    public LiveData<Event<Boolean>> getNavigateToLogin() {
+        return navigateToLogin;
+    }
+
+    public ObservableBoolean getNewsAndOffersField() {
+        return newsAndOffersField;
     }
 
     public InputField getFirstNameField() {

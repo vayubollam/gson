@@ -29,7 +29,7 @@ public class PersonalInfoViewModel extends ViewModel {
     private InputField firstNameField = new InputField();
     private InputField lastNameField = new InputField();
     private PhoneInputField phoneField = new PhoneInputField(R.string.profile_personnal_informations_phone_field_invalid_format);
-    private EmailInputField emailInputField = new EmailInputField(R.string.profile_personnal_informations_email_empty_inline_error, R.string.profile_personnal_informations_email_format_inline_error);
+    private EmailInputField emailInputField = new EmailInputField(R.string.profile_personnal_informations_email_empty_inline_error, R.string.profile_personnal_informations_email_format_inline_error, R.string.profile_personnal_informations_email_restricted_inline_error);
     private MutableLiveData<Event> _showSaveButtonEvent = new MutableLiveData<>();
     public LiveData<Event> showSaveButtonEvent = _showSaveButtonEvent;
 
@@ -117,6 +117,7 @@ public class PersonalInfoViewModel extends ViewModel {
                             emailInputField.notifyPropertyChanged(BR.text);
                         };
                     } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(result.message)) {
+                        emailInputField.setRestricted(true);
                         alert.message = R.string.profile_personnal_informations_email_restricted_alert_message;
                         alert.positiveButton = R.string.ok;
                         alert.positiveButtonClick = () -> {

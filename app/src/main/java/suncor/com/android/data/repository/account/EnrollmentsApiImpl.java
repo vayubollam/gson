@@ -91,8 +91,12 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                     }
                     try {
                         boolean isAlreadyRegistered = json.getBoolean("isAlreadyRegistered");
+                        boolean isRestricted = json.getBoolean("isRestrictedDomain");
+
                         if (isAlreadyRegistered) {
-                            result.postValue(Resource.success(EmailState.INVALID));
+                            result.postValue(Resource.success(EmailState.ALREADY_REGISTERED));
+                        } else if (isRestricted) {
+                            result.postValue(Resource.success(EmailState.RESTRICTED));
                         } else {
                             result.postValue(Resource.success(EmailState.VALID));
                         }
@@ -108,7 +112,8 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
-        } catch (URISyntaxException e) {
+        } catch (
+                URISyntaxException e) {
             Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }

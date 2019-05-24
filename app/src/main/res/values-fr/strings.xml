@@ -311,5 +311,8 @@
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
     <string name="profile_personnal_informations_update_toast">Vos renseignements personnels ont été mis à jour.</string>
+    <string name="profile_personnal_informations_email_restricted_inline_error">Veuillez utiliser un autre adresse courriel.</string>
+    <string name="enrollment_email_restricted_error">Veuillez utiliser un autre adresse courriel.</string>
+    <string name="enrollment_email_format_error">Veuillez entrer une adresse courriel valide.</string>
 
 </resources>
