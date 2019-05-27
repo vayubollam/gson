@@ -130,8 +130,7 @@
         android:id="@+id/addCardFragment"
         android:name="suncor.com.android.ui.home.cards.add.AddCardFragment"
         android:label="AddCardFragment"
-        tools:layout="@layout/fragment_add_card">
-    </keep_state_fragment>
+        tools:layout="@layout/fragment_add_card" />
     <keep_state_fragment
         android:id="@+id/personalInfoFragment"
         android:name="suncor.com.android.ui.home.profile.info.PersonalInfoFragment"

@@ -23,6 +23,8 @@ public class KeepStateNavigator extends FragmentNavigator {
     private Context context;
     ArrayDeque<Integer> mBackStack;
 
+    Fragment activeTab;
+
 
     public KeepStateNavigator(@NonNull Context context, @NonNull FragmentManager manager, int containerId) {
         super(context, manager, containerId);
@@ -45,13 +47,17 @@ public class KeepStateNavigator extends FragmentNavigator {
     public NavDestination navigate(@NonNull Destination destination, @Nullable Bundle args, @Nullable NavOptions navOptions, @Nullable Navigator.Extras navigatorExtras) {
         if (!destination.getArguments().containsKey("root"))
             return super.navigate(destination, args, navOptions, navigatorExtras);
+
+        while (mBackStack.size() > 1) {
+            popBackStack();
+        }
+
         mBackStack.clear();
         String tag = destination.getLabel().toString();
         FragmentTransaction transaction = manager.beginTransaction();
 
-        Fragment currentFragment = manager.getPrimaryNavigationFragment();
-        if (currentFragment != null) {
-            transaction.detach(currentFragment);
+        if (activeTab != null) {
+            transaction.detach(activeTab);
         }
 
         Fragment fragment = manager.findFragmentByTag(tag);
@@ -69,8 +75,8 @@ public class KeepStateNavigator extends FragmentNavigator {
         transaction.setReorderingAllowed(true);
         transaction.commit();
 
+        activeTab = fragment;
 
         return destination;
     }
-
 }

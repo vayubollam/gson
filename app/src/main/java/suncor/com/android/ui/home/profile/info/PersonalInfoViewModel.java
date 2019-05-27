@@ -151,7 +151,7 @@ public class PersonalInfoViewModel extends ViewModel {
                     if (signOutResult.status == Resource.Status.SUCCESS) {
                         _isLoading.postValue(false);
                         _navigateToSignIn.postValue(Event.newEvent(true));
-                    } else {
+                    } else if (signOutResult.status == Resource.Status.ERROR) {
                         Alert alert = new Alert();
                         alert.title = R.string.msg_e001_title;
                         alert.message = R.string.msg_e001_message;
@@ -182,7 +182,7 @@ public class PersonalInfoViewModel extends ViewModel {
     }
 
     public void phoneTextChanged(String text) {
-        if (!text.equals(phoneField.getText())) {
+        if (!text.replace("-", "").equals(phoneField.getText().replace("-", ""))) {
             _showSaveButtonEvent.setValue(Event.newEvent(true));
         }
     }
