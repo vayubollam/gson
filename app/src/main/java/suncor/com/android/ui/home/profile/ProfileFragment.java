@@ -87,6 +87,9 @@ public class ProfileFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (sessionManager.getProfile() == null) {
+            return;
+        }
         String fullName = capitalize(sessionManager.getProfile().getFirstName()) + " " + capitalize(sessionManager.getProfile().getLastName());
         binding.fullNameOutput.setText(fullName);
         binding.emailOutput.setText(sessionManager.getProfile().getEmail());

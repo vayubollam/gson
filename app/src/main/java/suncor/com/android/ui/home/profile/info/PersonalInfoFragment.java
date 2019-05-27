@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -100,6 +101,7 @@ public class PersonalInfoFragment extends BaseFragment {
             if (event.getContentIfNotHandled() != null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                Navigation.findNavController(getView()).navigate(R.id.home_tab);
             }
         });
     }
@@ -108,7 +110,7 @@ public class PersonalInfoFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentPersonalInfoBinding.inflate(inflater, container, false);
-        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher(binding.phoneInput.getEditText()));
+        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         return binding.getRoot();

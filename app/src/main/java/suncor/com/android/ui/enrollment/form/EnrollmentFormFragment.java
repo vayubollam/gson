@@ -182,7 +182,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         requiredFields.add(binding.cityInput);
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
-        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher(binding.phoneInput.getEditText()));
+        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
         binding.provinceInput.setOnClickListener(v -> {
