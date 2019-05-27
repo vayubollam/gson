@@ -9,12 +9,10 @@
         android:clickable="true"
         android:fitsSystemWindows="true">
 
-        <!-- TODO remove dragable="false" -->
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:dragable="false"
             app:statusBarScrim="@color/white"
             app:title="@string/filters_fragment_title" />
 
