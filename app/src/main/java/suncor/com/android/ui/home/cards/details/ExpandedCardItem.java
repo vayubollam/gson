@@ -172,7 +172,7 @@ public class ExpandedCardItem {
         try {
             int width = 400;
             int height = 88;
-            BitMatrix bitMatrix = multiFormatWriter.encode(petroPointsCardNumber, BarcodeFormat.CODE_128, width, height);
+            BitMatrix bitMatrix = multiFormatWriter.encode(dataForBarCode, BarcodeFormat.UPC_A, width, height);
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
