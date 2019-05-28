@@ -10,7 +10,7 @@ import suncor.com.android.ui.common.Event;
 
 public class EmailInputField extends InputField {
 
-    private static final Pattern EMAIL_ADDRESS = Pattern.compile("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}");
+    private static final Pattern EMAIL_ADDRESS = Pattern.compile("^([a-zA-Z0-9_\\-])([a-zA-Z0-9_\\-.+]*)@(\\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}|((([a-zA-Z0-9\\-]+)\\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])])$");
 
     @StringRes
     private final int formatError;
@@ -43,7 +43,6 @@ public class EmailInputField extends InputField {
     }
 
     @Override
-
     @Bindable
     @StringRes
     public int getError() {

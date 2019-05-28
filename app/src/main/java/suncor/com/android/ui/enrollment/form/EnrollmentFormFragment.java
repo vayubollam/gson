@@ -293,6 +293,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         if (view == binding.streetAddressInput) {
             viewModel.getStreetAddressField().setHasFocus(hasFocus);
         }
+        if (view == binding.cityInput) {
+            viewModel.getCityField().setHasFocus(hasFocus);
+        }
         if (view == binding.phoneInput) {
             viewModel.getPhoneField().setHasFocus(hasFocus);
         }
