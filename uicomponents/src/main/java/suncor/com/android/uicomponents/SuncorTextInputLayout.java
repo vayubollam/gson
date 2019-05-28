@@ -148,10 +148,6 @@ public class SuncorTextInputLayout extends LinearLayout {
                     ColorStateList.valueOf(a.getColor(R.styleable.SuncorTextInputLayout_passwordToggleTint, -1)));
         }
 
-        Drawable errorDrawable = a.getDrawable(R.styleable.SuncorTextInputLayout_errorDrawable);
-        if (errorDrawable != null) {
-            errorImage.setImageDrawable(errorDrawable);
-        }
 
         if (a.hasValue(R.styleable.SuncorTextInputLayout_android_maxLength)) {
             InputFilter[] FilterArray = new InputFilter[1];
@@ -171,6 +167,11 @@ public class SuncorTextInputLayout extends LinearLayout {
 
         errorColor = a.getColor(R.styleable.SuncorTextInputLayout_errorColor, Color.RED);
 
+        Drawable errorDrawable = a.getDrawable(R.styleable.SuncorTextInputLayout_errorDrawable);
+        if (errorDrawable != null) {
+            errorDrawable.setTint(errorColor);
+            errorImage.setImageDrawable(errorDrawable);
+        }
 
         inputFrame.setEnabled(a.getBoolean(R.styleable.SuncorTextInputLayout_android_enabled, true));
         editText.setEnabled(a.getBoolean(R.styleable.SuncorTextInputLayout_android_enabled, true));

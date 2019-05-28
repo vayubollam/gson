@@ -88,8 +88,9 @@ public class AddCardViewModel extends ViewModel {
         } else {
             if (!cvvInputField.isValid()) {
                 cvvInputField.setShowError(true);
+            } else {
+                addCardEvent.postValue(Event.newEvent(true));
             }
-            addCardEvent.postValue(Event.newEvent(true));
         }
     }
 }
