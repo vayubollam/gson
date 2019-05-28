@@ -80,7 +80,6 @@
                     android:maxLength="12"
                     app:afterTextChanged="@{(i, t) -> vm.phoneTextChanged(t.toString())}"
                     app:error="@{vm.phoneField.error}"
-                    app:focusChanged="@{(i, f) -> vm.phoneField.setHasFocus(f)}"
                     app:layout_constraintTop_toBottomOf="@id/lastname_input"
                     app:text="@={vm.phoneField.text}" />
 
@@ -92,7 +91,6 @@
                     android:maxLength="100"
                     app:afterTextChanged="@{(i, t) -> vm.emailTextChanged(t.toString())}"
                     app:error="@{vm.emailInputField.error}"
-                    app:focusChanged="@{(i, f) -> vm.emailInputField.setHasFocus(f)}"
                     app:layout_constraintTop_toBottomOf="@id/phone_input"
                     app:text="@={vm.emailInputField.text}" />
 

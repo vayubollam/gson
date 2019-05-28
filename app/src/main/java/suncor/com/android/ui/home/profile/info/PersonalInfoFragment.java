@@ -113,6 +113,8 @@ public class PersonalInfoFragment extends BaseFragment {
         binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+        binding.phoneInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.phoneInput, f));
+        binding.emailInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.emailInput, f));
         return binding.getRoot();
     }
 
@@ -131,5 +133,23 @@ public class PersonalInfoFragment extends BaseFragment {
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    public void onFocusChange(View view, boolean hasFocus) {
+        if (view == binding.phoneInput) {
+            viewModel.getPhoneField().setHasFocus(hasFocus);
+        } else if (view == binding.emailInput) {
+            viewModel.getEmailInputField().setHasFocus(hasFocus);
+        }
+        if (hasFocus) {
+            binding.scrollView.postDelayed(() -> {
+                int viewYPosition = view.getTop();
+
+                int halfHeight = binding.scrollView.getHeight() / 2 - view.getHeight() / 2;
+                int scrollPosition = Math.max(viewYPosition - halfHeight, 0);
+
+                binding.scrollView.smoothScrollTo(0, scrollPosition);
+            }, 200);
+        }
     }
 }

@@ -81,6 +81,11 @@ public class ProfileFragment extends BottomNavigationFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
+        binding.getRoot().post(() -> {
+            int fullScreenHeight = binding.getRoot().getHeight();
+            binding.headerLayout.getLayoutParams().height = fullScreenHeight / 2;
+            binding.headerLayout.requestLayout();
+        });
         return binding.getRoot();
     }
 

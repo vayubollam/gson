@@ -59,17 +59,14 @@ public class PersonalInfoViewModel extends ViewModel {
         LiveData<Resource<Boolean>> apiObservable = Transformations.switchMap(updateProfileEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 ProfileRequest request = new ProfileRequest(profile);
-                boolean profileShouldBeUpdated = false;
-                if (!emailInputField.getText().equals(profile.getEmail())) {
-                    isUpdatingEmail = true;
-                    request.setEmail(emailInputField.getText());
-                    profileShouldBeUpdated = true;
-                }
-                if (!phoneField.getText().equals(profile.getPhone())) {
-                    request.setPhoneNumber(phoneField.getText().replace("-", ""));
-                    profileShouldBeUpdated = true;
-                }
+                isUpdatingEmail = !emailInputField.getText().equals(profile.getEmail());
+                boolean isSamePhoneNumber = samePhoneNumber(phoneField.getText());
+                boolean profileShouldBeUpdated = isUpdatingEmail || !isSamePhoneNumber;
+
                 if (profileShouldBeUpdated) {
+                    request.setEmail(emailInputField.getText());
+                    request.setPhoneNumber(phoneField.getText().replace("-", ""));
+
                     return profilesApi.updateProfile(request);
                 } else {
                     //Generate a loading event to navigate to previous screen
@@ -161,6 +158,16 @@ public class PersonalInfoViewModel extends ViewModel {
                 });
     }
 
+    private boolean samePhoneNumber(String text) {
+        String fromProfile;
+        if (profile.getPhone() == null) {
+            fromProfile = "";
+        } else {
+            fromProfile = profile.getPhone().replace("-", "");
+        }
+        return text.replace("-", "").equals(fromProfile);
+    }
+
     public void setProfileSharedViewModel(ProfileSharedViewModel profileSharedViewModel) {
         this.profileSharedViewModel = profileSharedViewModel;
     }
@@ -182,7 +189,7 @@ public class PersonalInfoViewModel extends ViewModel {
     }
 
     public void phoneTextChanged(String text) {
-        if (!text.replace("-", "").equals(phoneField.getText().replace("-", ""))) {
+        if (!samePhoneNumber(text)) {
             _showSaveButtonEvent.setValue(Event.newEvent(true));
         }
     }
