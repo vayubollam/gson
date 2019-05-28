@@ -323,6 +323,8 @@
     <string name="cards_details_close">Close</string>
     <string name="enrollment_email_restricted_error">Please use a different email account.</string>
     <string name="profile_personnal_informations_email_restricted_inline_error">Please use a different email account.</string>
+    <string name="enrollment_street_format_error">Invalid street address</string>
+    <string name="enrollment_city_format_error">Invalid city</string>
 
 
 </resources>

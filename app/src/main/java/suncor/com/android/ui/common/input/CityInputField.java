@@ -3,12 +3,33 @@ package suncor.com.android.ui.common.input;
 import java.util.regex.Pattern;
 
 import androidx.annotation.StringRes;
+import androidx.databinding.Bindable;
 
 public class CityInputField extends InputField {
     private static final Pattern CITY_PATTERN = Pattern.compile("^[.0-9a-zA-Z\\s-]+$");
+    @StringRes
+    private final int formatError;
 
-    public CityInputField(@StringRes int error) {
+    public CityInputField(@StringRes int error, @StringRes int formatError) {
         super(error);
+        this.formatError = formatError;
+    }
+
+    public void setHasFocus(boolean hasFocus) {
+        if (!hasFocus && !isEmpty() && !isValid()) {
+            setShowError(true);
+        }
+    }
+
+    @Bindable
+    @StringRes
+    public int getError() {
+        if (!getShowError()) {
+            return -1;
+        } else {
+            return isEmpty() ? super.getError()
+                    : !isValid() ? formatError : -1;
+        }
     }
 
     @Override

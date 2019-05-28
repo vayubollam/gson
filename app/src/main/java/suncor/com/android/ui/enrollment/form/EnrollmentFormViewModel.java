@@ -51,8 +51,8 @@ public class EnrollmentFormViewModel extends ViewModel {
     private PasswordInputField passwordField = new PasswordInputField(R.string.enrollment_password_empty_error);
     private InputField securityQuestionField = new InputField();
     private InputField securityAnswerField = new InputField();
-    private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error);
-    private CityInputField cityField = new CityInputField(R.string.enrollment_city_error);
+    private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error, R.string.enrollment_street_format_error);
+    private CityInputField cityField = new CityInputField(R.string.enrollment_city_error, R.string.enrollment_city_format_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
     private PhoneInputField phoneField = new PhoneInputField(R.string.enrollment_phone_field_invalid_format);
@@ -339,7 +339,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         return streetAddressField;
     }
 
-    public InputField getCityField() {
+    public CityInputField getCityField() {
         return cityField;
     }
 

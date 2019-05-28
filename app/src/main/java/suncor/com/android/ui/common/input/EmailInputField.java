@@ -43,7 +43,6 @@ public class EmailInputField extends InputField {
     }
 
     @Override
-
     @Bindable
     @StringRes
     public int getError() {
