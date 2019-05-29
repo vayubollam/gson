@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="suncor.com.android.model.Resource.Status" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.home.profile.transcations.TransactionsViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_4"
+        tools:context="suncor.com.android.ui.home.profile.transcations.TransactionsFragment">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/transaction_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black_4"
+            app:title="Transactions" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{(vm.transactionsLiveData.status == Status.ERROR &amp;&amp;  vm.transactions.getValue().keySet().size()==0) ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <include
+                        android:id="@+id/transaction_first_month"
+                        layout="@layout/transaction_history_month_item"
+                        app:index="@{0}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:month="@{vm.getCurrentMonth(0)}"
+                        app:vm="@{vm}" />
+
+                    <include
+                        android:id="@+id/transaction_second_month"
+                        layout="@layout/transaction_history_month_item"
+                        app:index="@{0}"
+                        app:month="@{vm.getCurrentMonth(1)}"
+                        app:vm="@{vm}" />
+
+                    <include
+                        android:id="@+id/transaction_third_month"
+                        layout="@layout/transaction_history_month_item"
+                        app:index="@{2}"
+                        app:month="@{vm.getCurrentMonth(2)}"
+                        app:vm="@{vm}" />
+
+                    <include
+                        android:id="@+id/transaction_fourth_month"
+                        layout="@layout/transaction_history_month_item"
+                        app:index="@{3}"
+                        app:month="@{vm.getCurrentMonth(3)}"
+                        app:vm="@{vm}" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/view_previous_month_button"
+                        style="@style/LinkButton.Red.ML"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:text="VIEW PREVIOUS MONTH"
+                        app:visibleGone="@{vm.transactionsLiveData.status!=Status.LOADING &amp;&amp; vm.transactions.getValue().keySet().size()!=4}"
+                        tools:layout_editor_absoluteY="8dp" />
+
+                    <ProgressBar
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="32dp"
+                        app:visibleGone="@{vm.transactionsLiveData.status == Status.LOADING &amp;&amp; vm.transactions.getValue().keySet().size()!=0}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/status_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp"
+                    android:fitsSystemWindows="false"
+                    android:orientation="vertical"
+                    android:visibility="@{(vm.transactionsLiveData.status == Status.ERROR &amp;&amp;  vm.transactions.getValue().keySet().size()==0) ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="88dp"
+                        android:layout_height="88dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_alert"
+                        android:tint="@color/black_20" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Title2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.36"
+                        android:text="@string/msg_e001_title"
+                        android:textColor="@color/black_80" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="34dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="24dp"
+                        android:lineSpacingMultiplier="1.44"
+                        android:text="@string/msg_e001_message"
+                        android:textAlignment="center"
+                        android:textColor="@color/black_60"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/addFavoriteBackButton"
+                        style="@style/FilledButton.Red.L"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="32dp"
+                        android:onClick="@{(v) ->vm.loadTransactions()}"
+                        android:paddingStart="32dp"
+                        android:paddingEnd="32dp"
+                        android:text="try again"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginEnd="80dp"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibleGone="@{vm.transactionsLiveData.status == Status.LOADING &amp;&amp; vm.transactions.getValue().keySet().size()==0}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_24_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:text="Transactions may take up to 24h to appear."
+                    android:textAlignment="center"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_40"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout3" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

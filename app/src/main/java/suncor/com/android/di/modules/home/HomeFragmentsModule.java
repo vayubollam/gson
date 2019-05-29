@@ -11,6 +11,7 @@ import suncor.com.android.ui.home.profile.help.FAQFragment;
 import suncor.com.android.ui.home.profile.help.FAQResponseFragment;
 import suncor.com.android.ui.home.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.home.profile.preferences.PreferencesFragment;
+import suncor.com.android.ui.home.profile.transcations.TransactionsFragment;
 import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.home.stationlocator.StationsFragment;
 import suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment;
@@ -57,4 +58,7 @@ abstract class HomeFragmentsModule {
     @ContributesAndroidInjector
     abstract PreferencesFragment contributesPreferencesFragment();
 
+
+    @ContributesAndroidInjector
+    abstract TransactionsFragment contributTransactionFragment();
 }

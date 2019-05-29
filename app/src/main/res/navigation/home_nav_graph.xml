@@ -88,6 +88,9 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
         <action
+            android:id="@+id/action_profile_tab_to_transactionsFragment"
+            app:destination="@+id/transactionsFragment" />
+        <action
             android:id="@+id/action_profile_tab_to_preferencesFragment"
             app:destination="@id/preferencesFragment"
             app:enterAnim="@anim/slide_in_right"
@@ -136,12 +139,17 @@
         android:id="@+id/addCardFragment"
         android:name="suncor.com.android.ui.home.cards.add.AddCardFragment"
         android:label="AddCardFragment"
-        tools:layout="@layout/fragment_add_card" />
+        tools:layout="@layout/fragment_add_card">
+    </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/personalInfoFragment"
         android:name="suncor.com.android.ui.home.profile.info.PersonalInfoFragment"
         android:label="PersonalInfoFragment"
         tools:layout="@layout/fragment_personal_info" />
+    <keep_state_fragment
+        android:id="@+id/transactionsFragment"
+        android:name="suncor.com.android.ui.home.profile.transcations.TransactionsFragment"
+        android:label="TransactionsFragment" />
     <keep_state_fragment
         android:id="@+id/preferencesFragment"
         android:name="suncor.com.android.ui.home.profile.preferences.PreferencesFragment"
