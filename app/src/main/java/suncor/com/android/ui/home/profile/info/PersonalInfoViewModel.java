@@ -115,7 +115,7 @@ public class PersonalInfoViewModel extends ViewModel {
                         };
                     } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(result.message)) {
                         emailInputField.setRestricted(true);
-                        alert.message = R.string.profile_personnal_informations_email_restricted_alert_message;
+                        alert.title = R.string.profile_personnal_informations_email_restricted_alert_message;
                         alert.positiveButton = R.string.ok;
                         alert.positiveButtonClick = () -> {
                             emailInputField.setText("");
