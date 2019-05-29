@@ -319,12 +319,20 @@
     <string name="profile_personnal_informations_failure_alert_message">Please try again later.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Use different email</string>
-    <string name="profile_personnal_informations_update_toast">Your personal info has been updated.</string>
+    <string name="profile_update_toast">Your personal info has been updated.</string>
     <string name="cards_details_close">Close</string>
     <string name="enrollment_email_restricted_error">Please use a different email account.</string>
     <string name="profile_personnal_informations_email_restricted_inline_error">Please use a different email account.</string>
     <string name="enrollment_street_format_error">Invalid street address</string>
     <string name="enrollment_city_format_error">Invalid city</string>
+    <string name="profile_preferences_header">Change my preferences.</string>
+    <string name="profile_preferences_email_header">Email</string>
+    <string name="profile_preferences_enable_email_offers_message">Yes, I’d like to receive news, offers and partner discounts from Petro\u2011Points.</string>
+    <string name="profile_preferences_disable_email_offers_message">No, I’m not interested in news, offers and partner discounts from Petro\u2011Points.</string>
+    <string name="profile_preferences_text_header">Text messages</string>
+    <string name="profile_preferences_enable_text_offers_message">Yes, I’d like to receive special offers and alerts via SMS from Petro\u2011Points.</string>
+    <string name="profile_preferences_disable_text_offers_message">No, I’m not interested in special offers and alerts via SMS from Petro\u2011Points.</string>
+    <string name="profile_preferences_address">Petro‑Points – P.O. Box 59257 Westwood Mall\nMississauga, ON.  Canada.  L4T 4J1\nTel: 1 (800) 668-0220  .  TTY: 1 (888) 290-7377</string>
 
 
 </resources>

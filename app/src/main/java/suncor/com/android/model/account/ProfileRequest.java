@@ -18,8 +18,12 @@ public class ProfileRequest {
         offers.email = profile.isEmailOffers();
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailOffers(boolean emailOffers) {
+        this.offers.email = emailOffers;
+    }
+
+    public void setTextOffers(boolean textOffers) {
+        this.offers.text = textOffers;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -28,6 +32,10 @@ public class ProfileRequest {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     static class Offers {

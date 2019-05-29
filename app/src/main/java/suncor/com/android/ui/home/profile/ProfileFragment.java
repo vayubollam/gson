@@ -110,12 +110,9 @@ public class ProfileFragment extends BottomNavigationFragment {
             builder.create().show();
 
         });
-        binding.getHelpButton.setOnClickListener(v -> {
-            launchGetHelpFragment();
-        });
-        binding.personalInformationsButton.setOnClickListener(v -> {
-            lunchPersonalInfoFragment();
-        });
+        binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
+        binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment));
+        binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment));
     }
 
     private void signUserOut() {
@@ -130,14 +127,6 @@ public class ProfileFragment extends BottomNavigationFragment {
             }
         });
 
-    }
-
-    public void launchGetHelpFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
-    }
-
-    public void lunchPersonalInfoFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
     }
 
     public String capitalize(String string) {

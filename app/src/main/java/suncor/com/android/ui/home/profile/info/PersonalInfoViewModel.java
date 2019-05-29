@@ -92,7 +92,7 @@ public class PersonalInfoViewModel extends ViewModel {
                     if (isUpdatingEmail) {
                         signOutEvent.setValue(Event.newEvent(true));
                     } else {
-                        profileSharedViewModel.postToast(R.string.profile_personnal_informations_update_toast);
+                        profileSharedViewModel.postToast(R.string.profile_update_toast);
                         //Update the saved profile of the app
                         sessionManager.getProfile().setPhone(phoneField.getText());
                     }

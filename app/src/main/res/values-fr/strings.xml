@@ -310,11 +310,19 @@
     <string name="profile_personnal_informations_failure_alert_message">Veuillez réessayer plus tard.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
-    <string name="profile_personnal_informations_update_toast">Vos renseignements personnels ont été mis à jour.</string>
+    <string name="profile_update_toast">Vos renseignements personnels ont été mis à jour.</string>
     <string name="profile_personnal_informations_email_restricted_inline_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_restricted_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_format_error">Veuillez entrer une adresse courriel valide.</string>
     <string name="enrollment_street_format_error">Adresse invalide</string>
     <string name="enrollment_city_format_error">Ville invalide</string>
+    <string name="profile_preferences_email_header">Courriel</string>
+    <string name="profile_preferences_enable_email_offers_message">Oui, j’aimerais recevoir des nouvelles et des offres de Petro\u2011Points ainsi que des rabais auprès de ses partenaires.</string>
+    <string name="profile_preferences_disable_email_offers_message">Non, je ne suis pas intéressé à recevoir des nouvelles et des offres de Petro\u2011Points ainsi que des rabais auprès de ses partenaires.</string>
+    <string name="profile_preferences_text_header">Message texte</string>
+    <string name="profile_preferences_enable_text_offers_message">Oui, j\'aimerais recevoir des offres spéciales et des alertes par SMS de Petro\u2011Points.</string>
+    <string name="profile_preferences_disable_text_offers_message">Non, je ne suis pas intéressé à recevoir des offres spéciales et des alertes par SMS de Petro\u2011Points.</string>
+    <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668-0222  .  TTY : 1 (888) 290-7377\t</string>
+    <string name="profile_preferences_header">Changer mes préférences.</string>
 
 </resources>

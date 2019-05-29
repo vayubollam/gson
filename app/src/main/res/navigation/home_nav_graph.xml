@@ -87,6 +87,12 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_preferencesFragment"
+            app:destination="@id/preferencesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_left" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
@@ -136,5 +142,9 @@
         android:name="suncor.com.android.ui.home.profile.info.PersonalInfoFragment"
         android:label="PersonalInfoFragment"
         tools:layout="@layout/fragment_personal_info" />
+    <keep_state_fragment
+        android:id="@+id/preferencesFragment"
+        android:name="suncor.com.android.ui.home.profile.preferences.PreferencesFragment"
+        android:label="PreferencesFragment" />
 
 </navigation>
