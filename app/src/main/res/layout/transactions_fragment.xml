@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black_4"
-            app:title="Transactions" />
+            app:title="@string/transactions_header" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -85,8 +85,11 @@
                         style="@style/LinkButton.Red.ML"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="@{(v) ->vm.loadTransactions()}"
                         android:layout_marginTop="32dp"
-                        android:text="VIEW PREVIOUS MONTH"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/transactions_view_previous_month"
                         app:visibleGone="@{vm.transactionsLiveData.status!=Status.LOADING &amp;&amp; vm.transactions.getValue().keySet().size()!=4}"
                         tools:layout_editor_absoluteY="8dp" />
 
@@ -152,9 +155,7 @@
                         android:onClick="@{(v) ->vm.loadTransactions()}"
                         android:paddingStart="32dp"
                         android:paddingEnd="32dp"
-                        android:text="try again"
-                        android:layout_marginStart="80dp"
-                        android:layout_marginEnd="80dp"
+                        android:text="@string/transactions_try_again"
                         android:textSize="17sp" />
                 </LinearLayout>
 
@@ -176,7 +177,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="32dp"
-                    android:text="Transactions may take up to 24h to appear."
+                    android:text="@string/transactions_24_hours_statment"
                     android:textAlignment="center"
                     android:textAppearance="@style/Caption1"
                     android:textColor="@color/black_40"

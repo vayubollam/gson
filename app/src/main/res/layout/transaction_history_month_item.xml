@@ -36,7 +36,8 @@
             android:textAllCaps="true"
             android:textAppearance="@style/Caption1"
             android:textColor="@color/black_60"
-            tools:text="@{vm.getMonthName(month)}" />
+            android:text="@{month==vm.getCurrentMonth(0) ? @string/transactions_current_month_name : vm.getMonthName(month)}"
+            tools:text="MARCH" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -58,7 +59,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             app:visibleGone="@{vm.transactions.getValue().get(month).size()==0}"
-            android:text="No transactions"
+            android:text="@string/transactions_no_transactions"
             android:textAlignment="center"
             android:textAppearance="@style/Body"
             android:textColor="@color/black_40" />

@@ -310,6 +310,14 @@
     <string name="profile_personnal_informations_failure_alert_message">Veuillez réessayer plus tard.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
+    <string name="profile_personnal_informations_update_toast">Vos renseignements personnels ont été mis à jour.</string>
+    <string name="transactions_24_hours_statment">Les transactions peuvent prendre jusqu’à 24 heures avant d’apparaître.</string>
+    <string name="transactions_current_month_name">Ce mois-ci</string>
+    <string name="transactions_no_transactions">Aucune transaction</string>
+    <string name="transactions_view_previous_month">Consulter le mois précédent</string>
+    <string name="transactions_points_generic">%1s Points</string>
+    <string name="transactions_try_again">Essayez de nouveau</string>
+    <string name="transactions_header">Transaction</string>
     <string name="profile_update_toast">Vos renseignements personnels ont été mis à jour.</string>
     <string name="profile_personnal_informations_email_restricted_inline_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_restricted_error">Veuillez utiliser un autre adresse courriel.</string>

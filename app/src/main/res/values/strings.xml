@@ -321,6 +321,13 @@
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Use different email</string>
     <string name="profile_update_toast">Your personal info has been updated.</string>
     <string name="cards_details_close">Close</string>
+    <string name="transactions_header">Transactions</string>
+    <string name="transactions_current_month_name">This month</string>
+    <string name="transactions_view_previous_month">View previous month</string>
+    <string name="transactions_try_again">try again</string>
+    <string name="transactions_24_hours_statment">Transactions may take up to 24 hours to appear.</string>
+    <string name="transactions_points_generic">%1s Points</string>
+    <string name="transactions_no_transactions">No transactions</string>
     <string name="enrollment_email_restricted_error">Please use a different email account.</string>
     <string name="profile_personnal_informations_email_restricted_inline_error">Please use a different email account.</string>
     <string name="enrollment_street_format_error">Invalid street address</string>

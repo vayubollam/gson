@@ -97,7 +97,6 @@ public class TransactionsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.viewPreviousMonthButton.setOnClickListener(v -> mViewModel.loadTransactions());
         binding.transactionToolBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
 
     }

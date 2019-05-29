@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static suncor.com.android.model.cards.Transaction.TransactionType.REDEMPTION;
-
 public class Transaction implements Comparable<Transaction> {
     private TransactionType transactionType;
     private String date;
@@ -108,18 +106,8 @@ public class Transaction implements Comparable<Transaction> {
     }
 
     public String getFormattedBasePoints() {
-        switch (transactionType) {
-            case PURCHASE:
-            case BONUS:
-                return "+" + NumberFormat.getInstance().format(getBasePoints());
-            case REDEMPTION:
-                return "-" + NumberFormat.getInstance().format(getBasePoints());
-            case CUSTOMER_SERVICE_ADJ:
-                return getBasePoints() > 0 ? "+" + NumberFormat.getInstance().format(getBasePoints()) : NumberFormat.getInstance().format(getBasePoints());
-            default:
-                return NumberFormat.getInstance().format(getBasePoints());
-        }
 
+        return NumberFormat.getInstance().format(getBasePoints());
     }
 
     public String getFormattedBonusPoints() {
@@ -127,10 +115,17 @@ public class Transaction implements Comparable<Transaction> {
     }
 
     public String getFormattedTotalPoints() {
-        if (getTransactionType() != REDEMPTION) {
-            return "+" + NumberFormat.getInstance().format(getTotalPoints()) + " Points";
+        switch (transactionType) {
+            case PURCHASE:
+            case BONUS:
+                return "+" + NumberFormat.getInstance().format(getTotalPoints());
+            case REDEMPTION:
+                return NumberFormat.getInstance().format(getTotalPoints());
+            case CUSTOMER_SERVICE_ADJ:
+                return getTotalPoints() > 0 ? "+" + NumberFormat.getInstance().format(getTotalPoints()) : NumberFormat.getInstance().format(getTotalPoints());
+            default:
+                return NumberFormat.getInstance().format(getTotalPoints());
         }
-        return NumberFormat.getInstance().format(getTotalPoints()) + " Points";
     }
 
     public String getFormattedPurchaseAmount() {
@@ -155,7 +150,7 @@ public class Transaction implements Comparable<Transaction> {
         if (o == null) {
             return 0;
         } else {
-            return getDate().compareTo(o.getDate());
+            return o.getDate().compareTo(getDate());
         }
     }
 
