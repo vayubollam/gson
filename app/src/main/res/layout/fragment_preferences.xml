@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="suncor.com.android.ui.home.profile.info.PersonalInfoFragment">
+
+    <data>
+
+        <import type="suncor.com.android.utilities.ConnectionUtil" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.home.profile.preferences.PreferencesViewModel" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dragable="true"
+            app:title="@string/profile_preferences_header" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/email_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/profile_preferences_email_header"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/enable_offers_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:checked="@={vm.emailOffers}"
+                    app:layout_constraintStart_toStartOf="@id/email_header"
+                    app:layout_constraintTop_toBottomOf="@id/email_header" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/enable_offers_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/profile_preferences_enable_email_offers_message"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/enable_offers_checkbox"
+                    app:layout_constraintTop_toTopOf="@id/enable_offers_checkbox" />
+
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/disable_offers_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:checked="@={!vm.emailOffers}"
+                    app:layout_constraintStart_toStartOf="@id/email_header"
+                    app:layout_constraintTop_toBottomOf="@id/enable_offers_message" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/disable_offers_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/profile_preferences_disable_email_offers_message"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/disable_offers_checkbox"
+                    app:layout_constraintTop_toTopOf="@id/disable_offers_checkbox" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sms_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/profile_preferences_text_header"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/disable_offers_message" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/enable_sms_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:checked="@={vm.textOffers}"
+                    app:layout_constraintStart_toStartOf="@id/sms_header"
+                    app:layout_constraintTop_toBottomOf="@id/sms_header" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/enable_sms_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/profile_preferences_enable_text_offers_message"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/enable_sms_checkbox"
+                    app:layout_constraintTop_toTopOf="@id/enable_sms_checkbox" />
+
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/disable_sms_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:checked="@={!vm.textOffers}"
+                    app:layout_constraintStart_toStartOf="@id/email_header"
+                    app:layout_constraintTop_toBottomOf="@id/enable_sms_message" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/disable_sms_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/profile_preferences_disable_text_offers_message"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/disable_sms_checkbox"
+                    app:layout_constraintTop_toTopOf="@id/disable_sms_checkbox" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/horizontal_divider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/disable_sms_message" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="@string/profile_preferences_address"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/continue_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:onClick="@{v -> vm.save(ConnectionUtil.haveNetworkConnection(context))}"
+                    android:text="@string/profile_personnal_informations_button1"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/address"
+                    app:visibleGone="@{vm.isEditing}" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
