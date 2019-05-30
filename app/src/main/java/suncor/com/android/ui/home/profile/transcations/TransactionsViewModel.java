@@ -11,7 +11,6 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -130,9 +129,7 @@ public class TransactionsViewModel extends ViewModel {
     }
 
     public int getCurrentMonth(int monthsToRemove) {
-        Date referenceDate = new Date();
         Calendar c = Calendar.getInstance();
-        c.setTime(referenceDate);
         c.add(Calendar.MONTH, -monthsToRemove);
         return c.get(Calendar.MONTH) + 1;
     }

@@ -23,6 +23,7 @@ import suncor.com.android.databinding.TransactionsFragmentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.home.common.BaseFragment;
 
 
@@ -56,6 +57,7 @@ public class TransactionsFragment extends BaseFragment {
         binding.transactionFourthMonth.transactionRecycler.addItemDecoration(dividerItemDecoration);
         binding.setLifecycleOwner(this);
         binding.setVm(mViewModel);
+        binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.transactions_try_again, () -> mViewModel.loadTransactions()));
         return binding.getRoot();
     }
 
@@ -87,7 +89,7 @@ public class TransactionsFragment extends BaseFragment {
             }
         });
         mViewModel.transactionsLiveData.observe(this, arrayListResource -> {
-            if (arrayListResource.status == Resource.Status.ERROR && mViewModel.transactions != null) {
+            if (arrayListResource.status == Resource.Status.ERROR && mViewModel.transactions.getValue() != null) {
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
             }
         });
