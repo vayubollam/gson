@@ -92,6 +92,15 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
+                } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
+                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                        binding.emailInput.setText("");
+                        d.dismiss();
+                        focusOnItem(binding.emailInput);
+                    });
+                    dialog.show();
                 } else {
                     Alerts.prepareGeneralErrorDialog(getActivity()).show();
                 }
@@ -100,7 +109,9 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
 
 
         //show and hide autocomplete layout
-        viewModel.showAutocompleteLayout.observe(this, (show) -> {
+        viewModel.showAutocompleteLayout.observe(this, (show) ->
+
+        {
             if (getActivity() == null || binding.appBar.isExpanded()) {
                 return;
             }
@@ -124,26 +135,38 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         });
 
         //binding autocomplete results to adapter
-        viewModel.getAutocompleteResults().observe(this, (resource -> {
-            if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
-                addressAutocompleteAdapter.setSuggestions(resource.data);
-                binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
-            }
-        }));
+        viewModel.getAutocompleteResults().
 
-        viewModel.getAutocompleteRetrievalStatus().observe(this, resource -> {
-            hideKeyBoard();
-            binding.streetAddressInput.getEditText().clearFocus();
-        });
+                observe(this, (resource ->
 
-        viewModel.getNavigateToLogin().observe(this, event -> {
-            if (event.getContentIfNotHandled() != null) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
+                {
+                    if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
+                        addressAutocompleteAdapter.setSuggestions(resource.data);
+                        binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
+                    }
+                }));
+
+        viewModel.getAutocompleteRetrievalStatus().
+
+                observe(this, resource ->
+
+                {
+                    hideKeyBoard();
+                    binding.streetAddressInput.getEditText().clearFocus();
+                });
+
+        viewModel.getNavigateToLogin().
+
+                observe(this, event ->
+
+                {
+                    if (event.getContentIfNotHandled() != null) {
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
     }
 
     private void showDuplicateEmailAlert() {

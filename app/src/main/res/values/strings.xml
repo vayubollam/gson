@@ -115,6 +115,7 @@
     <string name="enrollment_province_error">Province is required.</string>
     <string name="enrollment_postalcode_error">Postal code is required.</string>
     <string name="enrollment_postalcode_format_error">The postal code you entered isn\'t valid.</string>
+    <string name="enrollment_email_restricted_alert_title">Please enter a different email account</string>
 
     <string name="enrollment_email_format_error">Please enter a valid email address.</string>
     <string name="discover_your_next_adventure">FIND YOUR HAPPY PLACE</string>
@@ -315,7 +316,6 @@
     <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
     <string name="profile_personnal_informations_failure_alert_title">Personal information changes were not saved.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Please use a different email account or undo.</string>
-    <string name="profile_personnal_informations_email_restricted_alert_message">Please enter a different email account</string>
     <string name="profile_personnal_informations_failure_alert_message">Please try again later.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Use different email</string>
@@ -333,6 +333,5 @@
     <string name="profile_preferences_enable_text_offers_message">Yes, I’d like to receive special offers and alerts via SMS from Petro\u2011Points.</string>
     <string name="profile_preferences_disable_text_offers_message">No, I’m not interested in special offers and alerts via SMS from Petro\u2011Points.</string>
     <string name="profile_preferences_address">Petro‑Points – P.O. Box 59257 Westwood Mall\nMississauga, ON.  Canada.  L4T 4J1\nTel: 1 (800) 668-0220  .  TTY: 1 (888) 290-7377</string>
-
-
+    <string name="profile_personnal_informations_email_restricted_alert_message">Please enter a different email account.</string>
 </resources>
