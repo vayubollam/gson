@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="transaction"
+            type="suncor.com.android.model.cards.Transaction" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/transaction_date"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@{transaction.getFormattedDate()}"
+            android:textAppearance="@style/Body"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/transaction_point"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Mar 26, 2019" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/transaction_point"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@{@string/transactions_points_generic(transaction.getFormattedTotalPoints())}"
+            android:textAppearance="@style/Body"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="+220 points" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/transaction_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:paddingEnd="16dp"
+            android:singleLine="true"
+            android:text="@{transaction.locationAddress}"
+            android:textAppearance="@style/Caption1"
+            android:textColor="@color/black_60"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/transaction_date"
+            tools:text="2329 Stoufville Side Road" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/transaction_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{transaction.getFormattedPurchaseAmount()}"
+            android:textAlignment="textEnd"
+            android:textAppearance="@style/Caption1"
+            android:textColor="@color/black_60"
+            app:layout_constraintLeft_toRightOf="@+id/transaction_location"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/transaction_point"
+            tools:text="$20.20" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -24,6 +24,8 @@ import suncor.com.android.data.repository.stations.StationsProviderImpl;
 import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.data.repository.suggestions.GooglePlaceSuggestionsProvider;
 import suncor.com.android.data.repository.suggestions.PlaceSuggestionsProvider;
+import suncor.com.android.data.repository.transcations.TransactionApi;
+import suncor.com.android.data.repository.transcations.TransactionApiImpl;
 import suncor.com.android.data.repository.users.UsersApi;
 import suncor.com.android.data.repository.users.UsersApiImpl;
 import suncor.com.android.mfp.SessionManager;
@@ -94,5 +96,11 @@ public class DataModule {
     @Singleton
     CanadaPostAutocompleteProvider providesCanadaPostAutocompleteProvider(Gson gson, OkHttpClient okHttpClient) {
         return new CanadaPostAutocompleteProvider(gson, okHttpClient);
+    }
+
+    @Provides
+    @Singleton
+    TransactionApi provideTransactionApi() {
+        return new TransactionApiImpl();
     }
 }
