@@ -91,6 +91,15 @@ public class PreferencesViewModel extends ViewModel {
         return isEditing;
     }
 
+    public void setEmailOffers(boolean value){
+        emailOffers.set(value);
+    }
+
+    public void setTextOffers(boolean value){
+        textOffers.set(value);
+    }
+
+
     public void setProfileSharedViewModel(ProfileSharedViewModel profileSharedViewModel) {
         this.profileSharedViewModel = profileSharedViewModel;
     }

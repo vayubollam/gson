@@ -69,6 +69,7 @@
                     android:layout_marginTop="2dp"
                     android:text="@string/profile_preferences_enable_email_offers_message"
                     android:textAppearance="@style/Body"
+                    android:onClick="@{v -> vm.setEmailOffers(true)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/enable_offers_checkbox"
                     app:layout_constraintTop_toTopOf="@id/enable_offers_checkbox" />
@@ -90,6 +91,7 @@
                     android:layout_marginTop="2dp"
                     android:text="@string/profile_preferences_disable_email_offers_message"
                     android:textAppearance="@style/Body"
+                    android:onClick="@{v -> vm.setEmailOffers(false)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/disable_offers_checkbox"
                     app:layout_constraintTop_toTopOf="@id/disable_offers_checkbox" />
@@ -121,6 +123,7 @@
                     android:layout_marginTop="2dp"
                     android:text="@string/profile_preferences_enable_text_offers_message"
                     android:textAppearance="@style/Body"
+                    android:onClick="@{v -> vm.setTextOffers(true)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/enable_sms_checkbox"
                     app:layout_constraintTop_toTopOf="@id/enable_sms_checkbox" />
@@ -142,6 +145,7 @@
                     android:layout_marginTop="2dp"
                     android:text="@string/profile_preferences_disable_text_offers_message"
                     android:textAppearance="@style/Body"
+                    android:onClick="@{v -> vm.setTextOffers(false)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/disable_sms_checkbox"
                     app:layout_constraintTop_toTopOf="@id/disable_sms_checkbox" />
