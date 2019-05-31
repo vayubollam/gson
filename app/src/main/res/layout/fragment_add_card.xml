@@ -117,7 +117,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="32dp"
                     android:onClick="@{v -> vm.continueButtonClicked()}"
-                    android:text="@{safeUnbox(vm.showCvvField)? `Complete` : @string/cards_add_fragment_continue_button}"
+                    android:text="@string/cards_add_fragment_continue_button"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/guideline" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -128,7 +128,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:clickable="true"
-            android:visibility="visible"
+            android:visibility="gone"
             app:visibleGone="@{vm.addCardApiResult.status == Resource.Status.LOADING | vm.addCardApiResult.status == Resource.Status.SUCCESS}">
 
             <TextView
