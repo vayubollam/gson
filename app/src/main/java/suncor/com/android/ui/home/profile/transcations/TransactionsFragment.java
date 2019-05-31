@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +24,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.home.common.BaseFragment;
+import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
 
 
 public class TransactionsFragment extends BaseFragment {
@@ -45,8 +45,7 @@ public class TransactionsFragment extends BaseFragment {
         Drawable divider = getResources().getDrawable(R.drawable.horizontal_divider);
         int inset = getResources().getDimensionPixelSize(R.dimen.faq_question_padding);
         InsetDrawable insetDivider = new InsetDrawable(divider, inset, 0, 0, 0);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(insetDivider);
+        DividerItemDecoratorHideLastItem dividerItemDecoration = new DividerItemDecoratorHideLastItem(insetDivider);
         binding.transactionFirstMonth.transactionRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.transactionFirstMonth.transactionRecycler.addItemDecoration(dividerItemDecoration);
         binding.transactionSecondMonth.transactionRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
