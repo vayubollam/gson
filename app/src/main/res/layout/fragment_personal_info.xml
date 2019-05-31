@@ -77,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/profile_personnal_informations_phone"
+                    android:inputType="phone"
                     android:maxLength="12"
                     app:afterTextChanged="@{(i, t) -> vm.phoneTextChanged(t.toString())}"
                     app:error="@{vm.phoneField.error}"
