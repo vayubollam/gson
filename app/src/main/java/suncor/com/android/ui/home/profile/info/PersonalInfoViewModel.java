@@ -141,7 +141,7 @@ public class PersonalInfoViewModel extends ViewModel {
 
                 if (profileShouldBeUpdated) {
                     request.setEmail(emailInputField.getText());
-                    request.setPhoneNumber(phoneField.getText().replace("-", ""));
+                    request.setPhoneNumber(phoneField.getText());
 
                     return profilesApi.updateProfile(request);
                 } else {
