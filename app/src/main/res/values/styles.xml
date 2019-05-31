@@ -307,7 +307,7 @@
         <item name="android:textColorSecondary">@color/black_80</item>
         <item name="buttonBarButtonStyle">@style/DialogButtonStyle</item>
         <item name="android:windowTitleStyle">@style/DialogWindowTitleStyle</item>
-        <item name="windowFixedWidthMinor">75%</item>
+        <item name="windowFixedWidthMinor">80%</item>
         <item name="android:titleCondensed">All</item>
     </style>
 

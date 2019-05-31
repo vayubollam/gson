@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import javax.inject.Inject;
@@ -20,9 +21,11 @@ import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.home.common.BaseFragment;
 import suncor.com.android.ui.home.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 
@@ -52,6 +55,25 @@ public class PersonalInfoFragment extends BaseFragment {
         viewModel.getEmailInputField().getHasFocusObservable().observe(this, event -> {
             if (event.getContentIfNotHandled()) {
                 binding.setShowEmailSubcopy(true);
+            }
+        });
+
+        viewModel.bottomSheetAlertObservable.observe(this, event -> {
+            ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
+            if (alert != null) {
+                ModalDialog dialog = new ModalDialog();
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(alert.title))
+                        .setMessage(getString(alert.message))
+                        .setCenterButton(getString(alert.positiveButton), (v) -> {
+                            alert.positiveButtonClick.run();
+                            dialog.dismiss();
+                        })
+                        .setRightButton(getString(alert.negativeButton), (v) -> {
+                            alert.negativeButtonClick.run();
+                            dialog.dismiss();
+                        })
+                        .show(getFragmentManager(), ModalDialog.TAG);
             }
         });
 
@@ -115,6 +137,15 @@ public class PersonalInfoFragment extends BaseFragment {
         binding.setLifecycleOwner(this);
         binding.phoneInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.phoneInput, f));
         binding.emailInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.emailInput, f));
+        binding.emailInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
+        binding.emailInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.save(ConnectionUtil.haveNetworkConnection(getContext()));
+                return true;
+            }
+            return false;
+        });
+
         return binding.getRoot();
     }
 
