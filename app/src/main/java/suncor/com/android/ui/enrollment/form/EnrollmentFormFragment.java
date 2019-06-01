@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +35,6 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
-import suncor.com.android.ui.common.SuncorURLSpan;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.home.HomeActivity;
@@ -241,19 +237,8 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        initTerms();
     }
 
-
-    private void initTerms() {
-        String terms = getString(R.string.enrollment_terms);
-        String url = getString(R.string.enrollment_terms_url);
-        String agreement = getString(R.string.enrollment_terms_agreement, terms);
-        SpannableString span = new SpannableString(agreement);
-        span.setSpan(new SuncorURLSpan(url, getContext()), agreement.indexOf(terms), agreement.indexOf(terms) + terms.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.termsAgreement.setText(span);
-        binding.termsAgreement.setMovementMethod(LinkMovementMethod.getInstance());
-    }
 
     @SuppressWarnings({"PointlessBooleanExpression"})
     @Override

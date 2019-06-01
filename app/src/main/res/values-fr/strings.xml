@@ -91,11 +91,9 @@
     <string name="enrollment_phone_label">Numéro de téléphone (facultatif)</string>
     <string name="enrollment_news_label">Oui, j\'aimerais recevoir des nouvelles, des offres et des rabais chez les partenaires de Petro‑Points.</string>
     <string name="enrollment_news_unsubscribe_hint">Vous pouvez vous désinscrire en tout temps.</string>
-    <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les %s</string>
-    <string name="enrollment_terms">Conditions du programme Petro‑Points</string>
+    <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
-    <string name="enrollment_terms_url">https://www.petro-canada.ca/fr/personnel/conditions#petropoints</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
     <string name="enrollment_email_empty_error">Veuillez entrer une adresse.</string>
@@ -246,7 +244,8 @@
     <string name="profile_address_button">Adresse</string>
     <string name="profile_preferences_button">Préférences</string>
     <string name="profile_personnal_informations_subcopy2">Pour protéger votre compte, si vous modifiez votre adresse courriel, vous ne pourrez pas échanger de points en ligne ou au dépanneur pendant une période de 24 heures.</string>
-    <string name="profile_personnal_informations_subcopy1"><![CDATA[Pour modifier vos renseignements personnels, communiquez avec notre Service à la clientèle.<Composez le 1-800-668-0222>]]></string>
+    <string name="profile_personnal_informations_subcopy1">Pour modifier vos renseignements personnels, communiquez avec notre <a href="tel:18006680222">Service à la clientèle</a>.</string>
+
     <string name="profile_personnal_informations_subcopyEmail">Pour modifier votre courriel, vous devrez ouvrir une autre session.</string>
     <string name="profile_personnal_informations_email">Adresse courriel</string>
     <string name="profile_personnal_informations_phone">Numéro de téléphone (facultatif)</string>

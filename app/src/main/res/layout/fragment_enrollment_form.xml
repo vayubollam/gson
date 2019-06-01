@@ -285,7 +285,7 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/fingerprint_checkbox" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <suncor.com.android.ui.common.LinkableTextView
                     android:id="@+id/terms_agreement"
                     style="@style/Caption1"
                     android:layout_width="match_parent"
@@ -294,6 +294,8 @@
                     android:lineSpacingMultiplier="1.57"
                     android:paddingRight="2dp"
                     android:textAppearance="@style/Caption1"
+                    android:textColorLink="@color/red"
+                    android:text="@string/enrollment_terms_agreement"
                     app:layout_constraintTop_toBottomOf="@id/fingerprint_hint"
                     tools:text="@string/enrollment_terms_agreement" />
 
