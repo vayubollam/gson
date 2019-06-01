@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import javax.inject.Inject;
 
 import afu.org.checkerframework.checker.nullness.qual.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import suncor.com.android.SuncorApplication;
