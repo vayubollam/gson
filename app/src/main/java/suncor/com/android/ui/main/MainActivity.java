@@ -68,7 +68,7 @@ public class MainActivity extends SessionAwareActivity {
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getFragmentManager(), R.id.nav_host_fragment));
-        navController.setGraph(R.navigation.home_nav_graph);
+        navController.setGraph(R.navigation.main_nav_graph);
 
         NavigationUI.setupWithNavController(bottom_navigation, navController);
 

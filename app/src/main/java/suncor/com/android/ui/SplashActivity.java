@@ -64,7 +64,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         }
 
         if (application.isSplashShown()) {
-            openHomeActivity();
+            openMainActivity();
             return;
         }
 
@@ -146,7 +146,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         animSetXY.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                openHomeActivity();
+                openMainActivity();
             }
         });
         animSetXY.start();
@@ -178,7 +178,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         }
     }
 
-    private void openHomeActivity() {
+    private void openMainActivity() {
         delayHandler.removeCallbacksAndMessages(null);
         Intent homeIntent = new Intent(this, MainActivity.class);
         startActivity(homeIntent);

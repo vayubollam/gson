@@ -5,7 +5,7 @@ import dagger.android.ContributesAndroidInjector;
 import suncor.com.android.ui.main.MainActivity;
 
 @Module
-public abstract class HomeActivityModule {
-    @ContributesAndroidInjector(modules = {HomeFragmentsModule.class})
-    abstract MainActivity contributeHomeActivity();
+public abstract class MainActivityModule {
+    @ContributesAndroidInjector(modules = {MainActivityFragmentsModule.class})
+    abstract MainActivity contributeMainActivity();
 }

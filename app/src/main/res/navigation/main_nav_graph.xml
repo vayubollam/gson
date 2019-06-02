@@ -46,7 +46,7 @@
     <keep_state_fragment
         android:id="@+id/cards_tab"
         android:name="suncor.com.android.ui.main.cards.list.CardsFragment"
-        android:label="CardsContainerFragment"
+        android:label="CardsFragment"
         tools:layout="@layout/fragment_stations">
         <argument
             android:name="root"
@@ -70,7 +70,7 @@
     <keep_state_fragment
         android:id="@+id/profile_tab"
         android:name="suncor.com.android.ui.main.profile.ProfileFragment"
-        android:label="ProfileContainerFragment">
+        android:label="ProfileFragment">
         <argument
             android:name="root"
             android:defaultValue="true"

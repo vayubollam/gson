@@ -18,7 +18,7 @@ import suncor.com.android.ui.main.stationlocator.favourites.FavouritesFragment;
 import suncor.com.android.ui.main.stationlocator.search.SearchFragment;
 
 @Module
-abstract class HomeFragmentsModule {
+abstract class MainActivityFragmentsModule {
     @ContributesAndroidInjector
     abstract StationsFragment contributeStationsFragment();
 

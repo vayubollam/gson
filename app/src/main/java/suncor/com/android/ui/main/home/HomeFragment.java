@@ -134,7 +134,7 @@ public class HomeFragment extends BottomNavigationFragment {
         super.onViewCreated(view, savedInstanceState);
         if (!inAnimationShown) {
             inAnimationShown = true;
-            Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right_dashboard);
+            Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right_home);
             animFromLet.setDuration(500);
             Animation animslideUp = AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in);
             animslideUp.setDuration(500);
