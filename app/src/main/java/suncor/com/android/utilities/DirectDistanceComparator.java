@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Comparator;
 
-import suncor.com.android.ui.home.stationlocator.StationItem;
+import suncor.com.android.ui.main.stationlocator.StationItem;
 
 public class DirectDistanceComparator implements Comparator<StationItem> {
 

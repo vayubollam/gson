@@ -9,7 +9,7 @@
 
         <variable
             name="stationItem"
-            type="suncor.com.android.ui.home.stationlocator.StationItem" />
+            type="suncor.com.android.ui.main.stationlocator.StationItem" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

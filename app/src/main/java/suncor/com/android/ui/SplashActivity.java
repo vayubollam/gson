@@ -27,7 +27,7 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.ui.home.HomeActivity;
+import suncor.com.android.ui.main.MainActivity;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
@@ -180,7 +180,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     private void openHomeActivity() {
         delayHandler.removeCallbacksAndMessages(null);
-        Intent homeIntent = new Intent(this, HomeActivity.class);
+        Intent homeIntent = new Intent(this, MainActivity.class);
         startActivity(homeIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();

@@ -18,7 +18,7 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.home.stationlocator.search.PlaceSuggestion;
+import suncor.com.android.ui.main.stationlocator.search.PlaceSuggestion;
 
 public class GooglePlaceSuggestionsProvider implements PlaceSuggestionsProvider {
 

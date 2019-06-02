@@ -11,7 +11,7 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.home.stationlocator.search.SearchViewModel" />
+            type="suncor.com.android.ui.main.stationlocator.search.SearchViewModel" />
     </data>
 
     <LinearLayout

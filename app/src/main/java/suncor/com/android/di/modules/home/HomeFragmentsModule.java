@@ -2,20 +2,20 @@ package suncor.com.android.di.modules.home;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import suncor.com.android.ui.home.cards.add.AddCardFragment;
-import suncor.com.android.ui.home.cards.details.CardsDetailsFragment;
-import suncor.com.android.ui.home.cards.list.CardsFragment;
-import suncor.com.android.ui.home.dashboard.DashboardFragment;
-import suncor.com.android.ui.home.profile.ProfileFragment;
-import suncor.com.android.ui.home.profile.help.FAQFragment;
-import suncor.com.android.ui.home.profile.help.FAQResponseFragment;
-import suncor.com.android.ui.home.profile.info.PersonalInfoFragment;
-import suncor.com.android.ui.home.profile.preferences.PreferencesFragment;
-import suncor.com.android.ui.home.profile.transcations.TransactionsFragment;
-import suncor.com.android.ui.home.stationlocator.StationDetailsDialog;
-import suncor.com.android.ui.home.stationlocator.StationsFragment;
-import suncor.com.android.ui.home.stationlocator.favourites.FavouritesFragment;
-import suncor.com.android.ui.home.stationlocator.search.SearchFragment;
+import suncor.com.android.ui.main.cards.add.AddCardFragment;
+import suncor.com.android.ui.main.cards.details.CardsDetailsFragment;
+import suncor.com.android.ui.main.cards.list.CardsFragment;
+import suncor.com.android.ui.main.home.HomeFragment;
+import suncor.com.android.ui.main.profile.ProfileFragment;
+import suncor.com.android.ui.main.profile.help.FAQFragment;
+import suncor.com.android.ui.main.profile.help.FAQResponseFragment;
+import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
+import suncor.com.android.ui.main.profile.transcations.TransactionsFragment;
+import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
+import suncor.com.android.ui.main.stationlocator.StationsFragment;
+import suncor.com.android.ui.main.stationlocator.favourites.FavouritesFragment;
+import suncor.com.android.ui.main.stationlocator.search.SearchFragment;
 
 @Module
 abstract class HomeFragmentsModule {
@@ -29,7 +29,7 @@ abstract class HomeFragmentsModule {
     abstract StationDetailsDialog contributeStationDetailsDialog();
 
     @ContributesAndroidInjector
-    abstract DashboardFragment contributeDashboardFragment();
+    abstract HomeFragment contributeHomeFragment();
 
     @ContributesAndroidInjector
     abstract SearchFragment contributesSearchFragment();

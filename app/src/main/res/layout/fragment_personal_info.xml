@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="suncor.com.android.ui.home.profile.info.PersonalInfoFragment">
+    tools:context="suncor.com.android.ui.main.profile.info.PersonalInfoFragment">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.home.profile.info.PersonalInfoViewModel" />
+            type="suncor.com.android.ui.main.profile.info.PersonalInfoViewModel" />
 
         <variable
             name="isEditing"

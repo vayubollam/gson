@@ -15,7 +15,7 @@
         android:clickable="true"
         android:clipToPadding="false"
         android:orientation="vertical"
-        tools:context="suncor.com.android.ui.home.profile.help.FAQResponseFragment">
+        tools:context="suncor.com.android.ui.main.profile.help.FAQResponseFragment">
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/app_bar"

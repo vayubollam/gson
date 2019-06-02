@@ -25,7 +25,7 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
-import suncor.com.android.ui.home.HomeActivity;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
@@ -283,9 +283,9 @@ public class SessionManager implements SessionChangeListener {
     public void onTokenInvalid() {
         if (profile != null) {
             setProfile(null);
-            Timber.d("token expired, navigate to home");
-            Intent intent = new Intent(application, HomeActivity.class);
-            //intent.putExtra(HomeActivity.LOGGED_OUT_EXTRA, HomeActivity.LOGGED_OUT_DUE_INACTIVITY);
+            Timber.d("token expired, navigate to main");
+            Intent intent = new Intent(application, MainActivity.class);
+            //intent.putExtra(MainActivity.LOGGED_OUT_EXTRA, MainActivity.LOGGED_OUT_DUE_INACTIVITY);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             application.startActivity(intent);
         }
