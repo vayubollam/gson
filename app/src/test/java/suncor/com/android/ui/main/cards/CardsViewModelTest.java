@@ -1,4 +1,4 @@
-package suncor.com.android.ui.home.cards;
+package suncor.com.android.ui.main.cards;
 
 import com.google.gson.Gson;
 
@@ -17,7 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.data.repository.cards.CardsRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
-import suncor.com.android.ui.home.cards.list.CardsViewModel;
+import suncor.com.android.ui.main.cards.list.CardsViewModel;
 
 public class CardsViewModelTest {
 

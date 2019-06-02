@@ -43,7 +43,7 @@ public class CreatePasswordViewModelTest {
     @Test
     public void testSamePassword() {
         MutableLiveData<Resource<Boolean>> apiResponse = new MutableLiveData<>();
-        apiResponse.postValue(Resource.error(ErrorCodes.ERR_PASSWORD_DUPLICATED));
+        apiResponse.setValue(Resource.error(ErrorCodes.ERR_PASSWORD_DUPLICATED));
         when(api.createPassword("email@suncor.com", "Pass123!", "encrypted")).thenReturn(apiResponse);
         Observer<Resource<Boolean>> dummyObserver = event -> {
             //Just to active the livedata
@@ -51,6 +51,7 @@ public class CreatePasswordViewModelTest {
         viewModel.api.observeForever(dummyObserver);
         viewModel.getPasswordField().setText("Pass123!");
         viewModel.setEmail("email@suncor.com");
+        viewModel.setEmailEncrypted("encrypted");
         viewModel.validateAndContinue();
 
         Assert.assertEquals(ErrorCodes.ERR_PASSWORD_DUPLICATED, viewModel.api.getValue().message);
@@ -71,6 +72,7 @@ public class CreatePasswordViewModelTest {
         viewModel.api.observeForever(dummyObserver);
         viewModel.getPasswordField().setText("Pass123!");
         viewModel.setEmail("email@suncor.com");
+        viewModel.setEmailEncrypted("encrypted");
         viewModel.validateAndContinue();
 
         Assert.assertEquals(Resource.Status.SUCCESS, viewModel.api.getValue().status);
