@@ -102,10 +102,9 @@ public class HomeFragment extends BottomNavigationFragment {
         FragmentHomeSignedinBinding binding = FragmentHomeSignedinBinding.inflate(inflater, container, false);
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
-        binding.setIsLoading(mViewModel.isLoading);
-        binding.tryAgainButton.setOnClickListener(tryAgainLister);
-        binding.stationCard.setOnClickListener(showCardDetail);
-        nearestCard = binding.stationCard;
+        binding.nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
+        nearestCard = binding.nearestCard.stationCard;
+        nearestCard.setOnClickListener(showCardDetail);
         rewardsAdapter = new RewardsAdapter(getActivity(), mViewModel);
         binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -118,17 +117,16 @@ public class HomeFragment extends BottomNavigationFragment {
         FragmentHomeGuestBinding binding = FragmentHomeGuestBinding.inflate(inflater, container, false);
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
-        binding.setIsLoading(mViewModel.isLoading);
-        binding.tryAgainButton.setOnClickListener(tryAgainLister);
-        binding.stationCard.setOnClickListener(showCardDetail);
-        nearestCard = binding.stationCard;
+        binding.nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
+        nearestCard = binding.nearestCard.stationCard;
+        nearestCard.setOnClickListener(showCardDetail);
         rewardsAdapter = new RewardsAdapter(getActivity(), mViewModel);
         binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.carouselCardRecycler);
         binding.carouselCardRecycler.setAdapter(rewardsAdapter);
 
-        binding.settingsButton.setOnClickListener(v -> {
+        binding.nearestCard.settingsButton.setOnClickListener(v -> {
             permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
                 @Override
                 public void onNeedPermission() {
