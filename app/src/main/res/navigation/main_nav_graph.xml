@@ -9,7 +9,7 @@
         android:id="@+id/home_tab"
         android:name="suncor.com.android.ui.main.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_home_guest">
         <argument
             android:name="root"
             android:defaultValue="true"

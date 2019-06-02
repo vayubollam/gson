@@ -13,8 +13,10 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.station.Station;
@@ -26,15 +28,17 @@ public class HomeViewModel extends ViewModel {
 
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(20, -180), new LatLng(90, -50));
     private final static int DISTANCE_API = 25000;
-    public StationItem stationItem;
     public ObservableBoolean isLoading = new ObservableBoolean(false);
-    private MediatorLiveData<Resource<Station>> _nearestStation = new MediatorLiveData<>();
-    public LiveData<Resource<Station>> nearestStation = _nearestStation;
+    private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
+    public LiveData<Resource<StationItem>> nearestStation = _nearestStation;
     private MutableLiveData<Boolean> _locationServiceEnabled = new MutableLiveData<>();
     public LiveData<Boolean> locationServiceEnabled = _locationServiceEnabled;
     private MutableLiveData<Event<Boolean>> loadNearest = new MutableLiveData<>();
     private SessionManager sessionManager;
     private LatLng userLocation;
+
+    private MutableLiveData<Event<Station>> _openNavigationApps = new MutableLiveData<>();
+    public LiveData<Event<Station>> openNavigationApps = _openNavigationApps;
 
     @Inject
     public HomeViewModel(SessionManager sessionManager, StationsProvider stationsProvider) {
@@ -63,11 +67,34 @@ public class HomeViewModel extends ViewModel {
                     if (resource.data == null || resource.data.isEmpty()) {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
-                        _nearestStation.setValue(Resource.success(resource.data.get(0)));
+                        _nearestStation.setValue(Resource.success(new StationItem(resource.data.get(0))));
                     }
                     break;
             }
         }));
+
+        LiveData<Resource<DirectionsResult>> directionsResultLiveData = Transformations.switchMap(_nearestStation, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data.getDistanceDuration() == null) {
+                LatLng dest = new LatLng(resource.data.getStation().getAddress().getLatitude(), resource.data.getStation().getAddress().getLongitude());
+                LatLng origin = new LatLng(userLocation.latitude, userLocation.longitude);
+                return DirectionsApi.getInstance().enqueuJob(origin, dest);
+            } else {
+                return new MutableLiveData<>();
+            }
+        });
+
+        directionsResultLiveData.observeForever(resource -> {
+            if (resource.status == Resource.Status.LOADING) {
+                return;
+            }
+            StationItem item = nearestStation.getValue().data;
+            if (resource.status == Resource.Status.SUCCESS) {
+                item.setDistanceDuration(resource.data);
+            } else if (resource.status == Resource.Status.ERROR) {
+                item.setDistanceDuration(DirectionsResult.INVALID);
+            }
+            _nearestStation.setValue(Resource.success(item));
+        });
     }
 
 
@@ -106,6 +133,11 @@ public class HomeViewModel extends ViewModel {
                 isLoading.set(false);
             }
         }
+    }
+
+    public void openNavigationApps() {
+        Station nearestStation = _nearestStation.getValue().data.getStation();
+        _openNavigationApps.setValue(Event.newEvent(nearestStation));
     }
 
     public Profile getProfile() {

@@ -14,10 +14,6 @@
             type="suncor.com.android.ui.main.home.HomeViewModel" />
 
         <variable
-            name="station"
-            type="suncor.com.android.ui.main.stationlocator.StationItem" />
-
-        <variable
             name="isLoading"
             type="androidx.databinding.ObservableBoolean" />
     </data>
@@ -36,8 +32,8 @@
             android:layout_above="@+id/station_card"
             android:clipToPadding="false"
             android:paddingLeft="12dp"
-            tools:listitem="@layout/dashboard_card"
-            android:paddingRight="12dp" />
+            android:paddingRight="12dp"
+            tools:listitem="@layout/dashboard_card" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/station_card"
@@ -76,7 +72,7 @@
                     android:layout_marginLeft="6dp"
                     android:layout_marginTop="20dp"
                     android:layout_toRightOf="@id/img_car_station"
-                    app:visibleGone="@{station.distanceDuration==null}" />
+                    app:visibleGone="@{vm.nearestStation.data.distanceDuration==null}" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/img_car_station"
@@ -100,11 +96,11 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@{DirectionsResult.formatDistanceDuration(context, station.distanceDuration)}"
-                    android:textColor="@{station.distanceDuration == DirectionsResult.INVALID ? @color/black_60 : @color/black_80}"
+                    android:text="@{DirectionsResult.formatDistanceDuration(context, vm.nearestStation.data.distanceDuration)}"
+                    android:textColor="@{vm.nearestStation.data.distanceDuration == DirectionsResult.INVALID ? @color/black_60 : @color/black_80}"
                     android:textSize="14sp"
                     app:layout_constraintTop_toBottomOf="@+id/station_title_text"
-                    app:visibleGone="@{station.distanceDuration != null}"
+                    app:visibleGone="@{vm.nearestStation.data.distanceDuration != null}"
                     tools:text="0.5 Km away . 2 min drive" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -126,7 +122,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@{station.isOpen24Hrs()?@string/station_open_24hrs:station.isOpen()?@string/station_open_generic(station.getCloseHour()) : @string/station_closed}"
+                    android:text="@{vm.nearestStation.data.isOpen24Hrs()?@string/station_open_24hrs:vm.nearestStation.data.isOpen()?@string/station_open_generic(vm.nearestStation.data.getCloseHour()) : @string/station_closed}"
                     android:textAppearance="@style/Caption1"
                     tools:text="Open, closes at 12:00 AM" />
 
@@ -138,6 +134,7 @@
                     android:layout_below="@+id/open_hours_text"
                     android:layout_marginLeft="-8dp"
                     android:layout_marginTop="20dp"
+                    android:onClick="@{v -> vm.openNavigationApps()}"
                     android:paddingStart="8dp"
                     android:paddingLeft="8dp"
                     android:text="@string/station_directions_button" />
