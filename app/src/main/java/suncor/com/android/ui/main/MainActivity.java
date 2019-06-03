@@ -67,7 +67,7 @@ public class MainActivity extends SessionAwareActivity {
         navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getFragmentManager(), R.id.nav_host_fragment));
+        navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getChildFragmentManager(), R.id.nav_host_fragment));
         navController.setGraph(R.navigation.main_nav_graph);
 
         NavigationUI.setupWithNavController(bottom_navigation, navController);
@@ -94,7 +94,7 @@ public class MainActivity extends SessionAwareActivity {
     @Override
     protected void onLogout() {
         super.onLogout();
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+        for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
             if (fragment instanceof BaseFragment) {
                 ((BaseFragment) fragment).onLoginStatusChanged();
             }
@@ -107,7 +107,7 @@ public class MainActivity extends SessionAwareActivity {
     @Override
     protected void onLoginSuccess() {
         super.onLoginSuccess();
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+        for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
             if (fragment instanceof BaseFragment) {
                 ((BaseFragment) fragment).onLoginStatusChanged();
             }

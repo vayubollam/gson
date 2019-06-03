@@ -98,7 +98,7 @@
             app:destination="@id/preferencesFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popExitAnim="@anim/slide_out_right" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
