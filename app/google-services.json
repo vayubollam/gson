@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "134274868264",
+    "firebase_url": "https://petro-canada-qa.firebaseio.com",
+    "project_id": "petro-canada-qa",
+    "storage_bucket": "petro-canada-qa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134274868264:android:8f3cf2c8348b6e29",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationQA"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134274868264-r0nfemu5ip84ioagpeuid13ea9glju4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKcM231H7W_FC4L7aWqVRnIAkqpLc4uBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134274868264-r0nfemu5ip84ioagpeuid13ea9glju4c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134274868264-8r7vsofsh7hbgdiudtk7bq66cm7160it.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.qa.iossuncoreapplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
