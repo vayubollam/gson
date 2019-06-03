@@ -10,7 +10,7 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.home.stationlocator.StationsViewModel" />
+            type="suncor.com.android.ui.main.stationlocator.StationsViewModel" />
 
         <variable
             name="isVisible"

@@ -11,14 +11,14 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.home.profile.transcations.TransactionsViewModel" />
+            type="suncor.com.android.ui.main.profile.transcations.TransactionsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_4"
-        tools:context="suncor.com.android.ui.home.profile.transcations.TransactionsFragment">
+        tools:context="suncor.com.android.ui.main.profile.transcations.TransactionsFragment">
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/transaction_tool_bar"

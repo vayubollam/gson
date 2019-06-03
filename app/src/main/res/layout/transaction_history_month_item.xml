@@ -15,7 +15,7 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.home.profile.transcations.TransactionsViewModel" />
+            type="suncor.com.android.ui.main.profile.transcations.TransactionsViewModel" />
     </data>
 
     <LinearLayout

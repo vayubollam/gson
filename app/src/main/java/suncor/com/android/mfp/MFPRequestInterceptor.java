@@ -24,7 +24,7 @@ import okio.Buffer;
 import okio.BufferedSource;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.home.HomeActivity;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.Timber;
 
 public class MFPRequestInterceptor implements Interceptor {
@@ -62,7 +62,7 @@ public class MFPRequestInterceptor implements Interceptor {
                         mainHandler.post(() -> sessionManager.logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories
                             if (result.status == Resource.Status.SUCCESS) {
-                                LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(HomeActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN));
+                                LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(MainActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN));
                             }
                         }));
                     }

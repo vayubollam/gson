@@ -11,17 +11,17 @@ import suncor.com.android.di.viewmodel.ViewModelKey;
 import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 import suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
-import suncor.com.android.ui.home.cards.add.AddCardViewModel;
-import suncor.com.android.ui.home.cards.details.CardDetailsViewModel;
-import suncor.com.android.ui.home.cards.list.CardsViewModel;
-import suncor.com.android.ui.home.dashboard.DashboardViewModel;
-import suncor.com.android.ui.home.profile.help.FAQViewModel;
-import suncor.com.android.ui.home.profile.info.PersonalInfoViewModel;
-import suncor.com.android.ui.home.profile.transcations.TransactionsViewModel;
-import suncor.com.android.ui.home.profile.preferences.PreferencesViewModel;
-import suncor.com.android.ui.home.stationlocator.StationsViewModel;
-import suncor.com.android.ui.home.stationlocator.favourites.FavouritesViewModel;
-import suncor.com.android.ui.home.stationlocator.search.SearchViewModel;
+import suncor.com.android.ui.main.cards.add.AddCardViewModel;
+import suncor.com.android.ui.main.cards.details.CardDetailsViewModel;
+import suncor.com.android.ui.main.cards.list.CardsViewModel;
+import suncor.com.android.ui.main.home.HomeViewModel;
+import suncor.com.android.ui.main.profile.help.FAQViewModel;
+import suncor.com.android.ui.main.profile.info.PersonalInfoViewModel;
+import suncor.com.android.ui.main.profile.transcations.TransactionsViewModel;
+import suncor.com.android.ui.main.profile.preferences.PreferencesViewModel;
+import suncor.com.android.ui.main.stationlocator.StationsViewModel;
+import suncor.com.android.ui.main.stationlocator.favourites.FavouritesViewModel;
+import suncor.com.android.ui.main.stationlocator.search.SearchViewModel;
 import suncor.com.android.ui.login.CreatePasswordViewModel;
 import suncor.com.android.ui.login.LoginViewModel;
 
@@ -41,7 +41,7 @@ public abstract class ViewModelModule {
      *
      * */
 
-    //HomeActivity ViewModels
+    //MainActivity ViewModels
     @Binds
     @IntoMap
     @ViewModelKey(StationsViewModel.class)
@@ -49,8 +49,8 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(DashboardViewModel.class)
-    protected abstract ViewModel dashboardViewModel(DashboardViewModel dashboardViewModel);
+    @ViewModelKey(HomeViewModel.class)
+    protected abstract ViewModel homeViewModel(HomeViewModel homeViewModel);
 
     @Binds
     @IntoMap

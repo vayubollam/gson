@@ -5,7 +5,7 @@
 
         <variable
             name="recentlysearched"
-            type="suncor.com.android.ui.home.stationlocator.search.RecentSearch" />
+            type="suncor.com.android.ui.main.stationlocator.search.RecentSearch" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

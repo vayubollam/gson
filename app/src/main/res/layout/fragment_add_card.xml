@@ -5,9 +5,9 @@
 
         <variable
             name="vm"
-            type="suncor.com.android.ui.home.cards.add.AddCardViewModel" />
+            type="suncor.com.android.ui.main.cards.add.AddCardViewModel" />
 
-        <import type="suncor.com.android.ui.home.cards.details.ExpandedCardItem" />
+        <import type="suncor.com.android.ui.main.cards.details.ExpandedCardItem" />
 
         <import type="suncor.com.android.model.Resource" />
     </data>

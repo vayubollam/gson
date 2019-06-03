@@ -37,7 +37,7 @@ import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.home.HomeActivity;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
@@ -79,8 +79,8 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             if (r.status == Resource.Status.SUCCESS) {
                 getView().postDelayed(() -> {
                     if (getActivity() != null) {
-                        //Go to home screen to show the welcome message
-                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                        //Go to main screen to show the welcome message
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }

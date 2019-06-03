@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity

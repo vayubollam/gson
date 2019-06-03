@@ -15,6 +15,7 @@ import suncor.com.android.data.repository.account.EnrollmentsApi;
 import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.InputField;
 
 import static org.mockito.Mockito.when;
@@ -116,7 +117,7 @@ public class EnrollmentFormViewModelTest {
     @Test
     public void testPostalCodeFormatValid() {
         viewModel.getPostalCodeField().setHasFocus(true);
-        viewModel.getPostalCodeField().setText("K7T 9O6");
+        viewModel.getPostalCodeField().setText("L6K 6L8");
         viewModel.getPostalCodeField().setHasFocus(false);
 
         Assert.assertEquals(-1, viewModel.getPostalCodeField().getError());
@@ -126,7 +127,7 @@ public class EnrollmentFormViewModelTest {
     public void testPostalCodeMatchingProvinceError() {
         viewModel.getPostalCodeField().setHasFocus(true);
         viewModel.getPostalCodeField().setFirstCharacterValidation("T"); //for Alberta
-        viewModel.getPostalCodeField().setText("Y7Y 7U7");
+        viewModel.getPostalCodeField().setText("L6K 6L8");
         viewModel.getPostalCodeField().setHasFocus(false);
 
 
@@ -136,8 +137,8 @@ public class EnrollmentFormViewModelTest {
     @Test
     public void testPostalCodeMatchingProvinceValid() {
         viewModel.getPostalCodeField().setHasFocus(true);
-        viewModel.getPostalCodeField().setFirstCharacterValidation("T"); //for Alberta
-        viewModel.getPostalCodeField().setText("T7Y 7U7");
+        viewModel.getPostalCodeField().setFirstCharacterValidation("L"); //for Alberta
+        viewModel.getPostalCodeField().setText("L6K 6L8");
         viewModel.getPostalCodeField().setHasFocus(false);
 
 
@@ -178,18 +179,19 @@ public class EnrollmentFormViewModelTest {
         successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.VALID));
         when(api.checkEmail("email@suncor.com", null)).thenReturn(successValidation);
 
-        Observer<Resource<EnrollmentsApi.EmailState>> dummyObserver = emailStateResource -> {
-            //Just to active the livedata
-        };
 
-        viewModel.emailCheckLiveData.observeForever(dummyObserver);
+        viewModel.getShowDuplicateEmailEvent().observeForever(ignored -> {
+        });
+        viewModel.getIsValidatingEmail().observeForever(ignored -> {
+        });
 
         viewModel.getEmailInputField().setHasFocus(true);
 
         viewModel.getEmailInputField().setText("email@suncor.com");
         viewModel.getEmailInputField().setHasFocus(false);
 
-        Assert.assertEquals(EnrollmentsApi.EmailState.VALID, viewModel.emailCheckLiveData.getValue().data);
+        Assert.assertEquals(false, viewModel.getIsValidatingEmail().getValue());
+        Assert.assertNull(viewModel.getShowDuplicateEmailEvent().getValue());
     }
 
     @Test
@@ -198,17 +200,37 @@ public class EnrollmentFormViewModelTest {
         successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.VALID));
         when(api.checkEmail("email@suncor.com", null)).thenReturn(successValidation);
 
-        Observer<Resource<EnrollmentsApi.EmailState>> dummyObserver = emailStateResource -> {
+        Observer<Boolean> dummyObserver = emailStateResource -> {
             //Just to active the livedata
         };
 
-        viewModel.emailCheckLiveData.observeForever(dummyObserver);
+        viewModel.getIsValidatingEmail().observeForever(dummyObserver);
 
         viewModel.getEmailInputField().setHasFocus(true);
 
         viewModel.getEmailInputField().setText("email@suncor.com");
 
-        Assert.assertEquals(EnrollmentsApi.EmailState.UNCHECKED, viewModel.emailCheckLiveData.getValue().data);
+        Assert.assertEquals(false, viewModel.getIsValidatingEmail().getValue());
+    }
+
+    @Test
+    public void testEmailValidation_FocusOut() {
+        MutableLiveData<Resource<EnrollmentsApi.EmailState>> loading = new MutableLiveData<>();
+        loading.setValue(Resource.loading());
+        when(api.checkEmail("email@suncor.com", null)).thenReturn(loading);
+
+        Observer<Boolean> dummyObserver = emailStateResource -> {
+            //Just to active the livedata
+        };
+
+        viewModel.getIsValidatingEmail().observeForever(dummyObserver);
+
+        viewModel.getEmailInputField().setHasFocus(true);
+        viewModel.getEmailInputField().setText("email@suncor.com");
+        viewModel.getEmailInputField().setHasFocus(false);
+
+
+        Assert.assertEquals(true, viewModel.getIsValidatingEmail().getValue());
     }
 
     @Test
@@ -217,17 +239,17 @@ public class EnrollmentFormViewModelTest {
         successValidation.setValue(Resource.success(EnrollmentsApi.EmailState.ALREADY_REGISTERED));
         when(api.checkEmail("email@suncor.com", null)).thenReturn(successValidation);
 
-        Observer<Resource<EnrollmentsApi.EmailState>> dummyObserver = emailStateResource -> {
+        Observer<Event<Boolean>> dummyObserver = emailStateResource -> {
             //Just to active the livedata
         };
 
-        viewModel.emailCheckLiveData.observeForever(dummyObserver);
+        viewModel.getShowDuplicateEmailEvent().observeForever(dummyObserver);
 
         viewModel.getEmailInputField().setHasFocus(true);
 
         viewModel.getEmailInputField().setText("email@suncor.com");
         viewModel.getEmailInputField().setHasFocus(false);
 
-        Assert.assertEquals(EnrollmentsApi.EmailState.ALREADY_REGISTERED, viewModel.emailCheckLiveData.getValue().data);
+        Assert.assertNotNull(viewModel.getShowDuplicateEmailEvent().getValue());
     }
 }

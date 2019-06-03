@@ -11,7 +11,7 @@ import suncor.com.android.di.modules.CommonUIsModule;
 import suncor.com.android.di.modules.DataModule;
 import suncor.com.android.di.modules.ViewModelModule;
 import suncor.com.android.di.modules.enrollment.EnrollmentActivityModule;
-import suncor.com.android.di.modules.home.HomeActivityModule;
+import suncor.com.android.di.modules.home.MainActivityModule;
 import suncor.com.android.di.modules.login.LoginActivityModule;
 
 @Component(modules = {
@@ -20,7 +20,7 @@ import suncor.com.android.di.modules.login.LoginActivityModule;
         ViewModelModule.class,
         CommonUIsModule.class,
         LoginActivityModule.class,
-        HomeActivityModule.class,
+        MainActivityModule.class,
         EnrollmentActivityModule.class,
         AndroidSupportInjectionModule.class})
 
