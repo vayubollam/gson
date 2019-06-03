@@ -58,6 +58,7 @@ public class AddCardFragment extends BaseFragment {
             binding.cardLayout.setVisibility(View.VISIBLE);
             PetroCanadaExpandedCardItemBinding expandedCardItemBinding = PetroCanadaExpandedCardItemBinding.inflate(getLayoutInflater(), binding.cardLayout, true);
             expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
+            expandedCardItemBinding.setHideMoreButton(true);
             expandedCardItemBinding.executePendingBindings();
         });
 

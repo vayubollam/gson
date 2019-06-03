@@ -39,6 +39,7 @@ ext {
     workManagerVersion = "1.0.0"
     daggerVersion = "2.17"
     firebaseVersion = "16.0.9"
+    crashlyticsVersion = "2.10.1"
     mockitoVersion = "2.25.1"
     junitVersion = "4.12"
     espressoVersion = "3.1.1"
