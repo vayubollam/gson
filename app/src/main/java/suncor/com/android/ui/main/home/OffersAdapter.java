@@ -20,13 +20,13 @@ import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 
 
-public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.DashboardHolder> {
+public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.DashboardHolder> {
 
     private ArrayList<Drawable> images;
     private HomeViewModel homeViewModel;
 
 
-    public RewardsAdapter(Activity activity, HomeViewModel viewModel) {
+    public OffersAdapter(Activity activity, HomeViewModel viewModel) {
         images = new ArrayList<>();
         images.add(activity.getResources().getDrawable(R.drawable.car_trip));
         images.add(activity.getResources().getDrawable(R.drawable.agriculture));

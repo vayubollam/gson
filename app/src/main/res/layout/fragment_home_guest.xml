@@ -19,7 +19,7 @@
         tools:context="suncor.com.android.ui.main.home.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/carousel_card_recycler"
+            android:id="@+id/offers_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/nearest_card"

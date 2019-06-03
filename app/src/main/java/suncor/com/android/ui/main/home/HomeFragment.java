@@ -18,8 +18,8 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -28,6 +28,7 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentHomeGuestBinding;
 import suncor.com.android.databinding.FragmentHomeSignedinBinding;
+import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.BottomNavigationFragment;
@@ -45,13 +46,13 @@ public class HomeFragment extends BottomNavigationFragment {
     @Inject
     ViewModelFactory viewModelFactory;
     private HomeViewModel mViewModel;
-    private RewardsAdapter rewardsAdapter;
+    private OffersAdapter offersAdapter;
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
     @Inject
     PermissionManager permissionManager;
 
-    private CardView nearestCard;
+    private HomeNearestCardBinding nearestCard;
 
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
@@ -63,9 +64,10 @@ public class HomeFragment extends BottomNavigationFragment {
 
     private OnClickListener showCardDetail = v -> {
         if (mViewModel.nearestStation.getValue().data != null && !mViewModel.isLoading.get()) {
-            StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard, false);
+            StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
         }
     };
+    private boolean systemMarginsAlreadyApplied;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,42 +93,16 @@ public class HomeFragment extends BottomNavigationFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        View view;
         if (!mViewModel.isUserLoggedIn()) {
-            return setupGuestLayout(inflater, container);
+            view = setupGuestLayout(inflater, container);
         } else {
-            return setupSignedInLayout(inflater, container);
+            view = setupSignedInLayout(inflater, container);
         }
-    }
 
-    private View setupSignedInLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
-        FragmentHomeSignedinBinding binding = FragmentHomeSignedinBinding.inflate(inflater, container, false);
-        binding.setVm(mViewModel);
-        binding.setLifecycleOwner(this);
-        binding.nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
-        nearestCard = binding.nearestCard.stationCard;
-        nearestCard.setOnClickListener(showCardDetail);
-        rewardsAdapter = new RewardsAdapter(getActivity(), mViewModel);
-        binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        PagerSnapHelper helper = new PagerSnapHelper();
-        helper.attachToRecyclerView(binding.carouselCardRecycler);
-        binding.carouselCardRecycler.setAdapter(rewardsAdapter);
-        return binding.getRoot();
-    }
-
-    private View setupGuestLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
-        FragmentHomeGuestBinding binding = FragmentHomeGuestBinding.inflate(inflater, container, false);
-        binding.setVm(mViewModel);
-        binding.setLifecycleOwner(this);
-        binding.nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
-        nearestCard = binding.nearestCard.stationCard;
-        nearestCard.setOnClickListener(showCardDetail);
-        rewardsAdapter = new RewardsAdapter(getActivity(), mViewModel);
-        binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        PagerSnapHelper helper = new PagerSnapHelper();
-        helper.attachToRecyclerView(binding.carouselCardRecycler);
-        binding.carouselCardRecycler.setAdapter(rewardsAdapter);
-
-        binding.nearestCard.settingsButton.setOnClickListener(v -> {
+        nearestCard.getRoot().setOnClickListener(showCardDetail);
+        nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
+        nearestCard.settingsButton.setOnClickListener(v -> {
             permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
                 @Override
                 public void onNeedPermission() {
@@ -151,19 +127,62 @@ public class HomeFragment extends BottomNavigationFragment {
             });
         });
 
+        return view;
+    }
+
+    private View setupSignedInLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        FragmentHomeSignedinBinding binding = FragmentHomeSignedinBinding.inflate(inflater, container, false);
+        binding.setVm(mViewModel);
+        binding.setLifecycleOwner(this);
+        nearestCard = binding.nearestCard;
+        offersAdapter = new OffersAdapter(getActivity(), mViewModel);
+        binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(binding.offersRecyclerview);
+        binding.offersRecyclerview.setAdapter(offersAdapter);
+
+        systemMarginsAlreadyApplied = false;
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+            if (!systemMarginsAlreadyApplied) {
+                systemMarginsAlreadyApplied = true;
+                int systemsTopMargin = insets.getSystemWindowInsetTop();
+                ((ViewGroup.MarginLayoutParams) binding.headerGreetings.getLayoutParams()).topMargin += systemsTopMargin;
+                binding.headerGreetings.getParent().requestLayout();
+            }
+            return insets;
+        });
+
+        return binding.getRoot();
+    }
+
+    private View setupGuestLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        FragmentHomeGuestBinding binding = FragmentHomeGuestBinding.inflate(inflater, container, false);
+        binding.setVm(mViewModel);
+        binding.setLifecycleOwner(this);
+        nearestCard = binding.nearestCard;
+        offersAdapter = new OffersAdapter(getActivity(), mViewModel);
+        binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(binding.offersRecyclerview);
+        binding.offersRecyclerview.setAdapter(offersAdapter);
+
         if (!inAnimationShown && !mViewModel.isUserLoggedIn()) {
             inAnimationShown = true;
             Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right_home);
             animFromLet.setDuration(500);
             Animation animslideUp = AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in);
             animslideUp.setDuration(500);
-            binding.carouselCardRecycler.startAnimation(animFromLet);
-            nearestCard.startAnimation(animslideUp);
+            binding.offersRecyclerview.startAnimation(animFromLet);
+            nearestCard.getRoot().startAnimation(animslideUp);
         }
 
         return binding.getRoot();
     }
 
+    @Override
+    protected boolean isStatusBarTransparent() {
+        return mViewModel.isUserLoggedIn();
+    }
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
@@ -198,6 +217,20 @@ public class HomeFragment extends BottomNavigationFragment {
     public void onStart() {
         super.onStart();
         checkAndRequestPermission();
+
+        if (mViewModel.isUserLoggedIn()) {
+            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
     }
 
     @Override
