@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
+if (getGradle().getStartParameter().getTaskRequests().toString().contains("QA")) {
+    apply plugin: 'io.fabric'
+}
+
 repositories {
     jcenter()
 }
