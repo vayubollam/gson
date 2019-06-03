@@ -41,13 +41,13 @@ public class CardsRepository {
     public LiveData<Resource<ArrayList<CardDetail>>> getCards(boolean forceRefresh) {
         MediatorLiveData<Resource<ArrayList<CardDetail>>> result = new MediatorLiveData<>();
         if (!forceRefresh && cachedCards != null && !cachedCards.isEmpty()) {
-            Collections.sort(cachedCards, cardsComparator);
             result.postValue(Resource.success(cachedCards));
             return result;
         }
         return Transformations.map(cardsApi.retrieveCards(), resource -> {
             if (resource.status == Resource.Status.SUCCESS) {
                 if (cachedCards == null) {
+                    Collections.sort(resource.data, cardsComparator);
                     cachedCards = resource.data;
                     timeOfLastUpdate = Calendar.getInstance();
                     return resource;
