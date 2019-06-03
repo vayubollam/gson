@@ -86,11 +86,10 @@ public class SessionManager implements SessionChangeListener {
     public LiveData<Resource<Boolean>> logout() {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
-        authorizationManager.logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
+        challengeHandler.logout(new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
-                challengeHandler.clearSavedCredentials();
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);

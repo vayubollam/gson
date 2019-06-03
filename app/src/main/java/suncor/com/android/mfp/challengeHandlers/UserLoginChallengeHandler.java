@@ -5,6 +5,7 @@ import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLErrorCode;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLLoginResponseListener;
+import com.worklight.wlclient.api.WLLogoutResponseListener;
 import com.worklight.wlclient.api.challengehandler.SecurityCheckChallengeHandler;
 
 import org.json.JSONException;
@@ -166,6 +167,26 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     public void setSessionChangeListener(SessionChangeListener sessionManager) {
         listener = sessionManager;
+    }
+
+
+    public void logout(WLLogoutResponseListener listener) {
+        //Remove saved credentials
+        String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
+        keyStoreStorage.remove(CREDENTIALS_KEY);
+        WLAuthorizationManager.getInstance().logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
+            @Override
+            public void onSuccess() {
+                listener.onSuccess();
+            }
+
+            @Override
+            public void onFailure(WLFailResponse wlFailResponse) {
+                listener.onFailure(wlFailResponse);
+                //restore saved credentials if the logout fails
+                keyStoreStorage.store(CREDENTIALS_KEY, savedCredentials);
+            }
+        });
     }
 
     public void clearSavedCredentials() {
