@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -13,15 +17,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.main.common.BaseFragment;
 
@@ -39,24 +37,24 @@ public class CardsDetailsFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
+        boolean isForScan = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsForScan();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+        viewModel.setForScan(isForScan);
+        viewModel.retrieveCards();
         viewModel.cards.observe(this, arrayListResource -> {
-            if (arrayListResource.status == Resource.Status.SUCCESS) {
-                ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
-                for (CardDetail cardDetail : arrayListResource.data) {
-                    expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
-                }
-                if (expandedCardItems.size() > 0) {
-                    cardsDetailsAdapter.setCardItems(expandedCardItems);
-                    cardsDetailsAdapter.notifyDataSetChanged();
-                    binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
-                    binding.setNumCards(expandedCardItems.size());
-                    binding.executePendingBindings();
-                }
-
+            ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
+            for (CardDetail cardDetail : arrayListResource) {
+                expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
+            }
+            if (expandedCardItems.size() > 0) {
+                cardsDetailsAdapter.setCardItems(expandedCardItems);
+                cardsDetailsAdapter.notifyDataSetChanged();
+                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
+                binding.setNumCards(expandedCardItems.size());
+                binding.executePendingBindings();
             }
         });
-
     }
 
     @Nullable
@@ -77,7 +75,6 @@ public class CardsDetailsFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getClickedCardIndex();
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         previousBrightness = attributes.screenBrightness;
         attributes.screenBrightness = MAX_BRIGHTNESS;

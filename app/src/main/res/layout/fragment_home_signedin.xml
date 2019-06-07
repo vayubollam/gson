@@ -41,9 +41,10 @@
                         android:layout_height="match_parent"
                         android:foreground="@drawable/home_header_gradient"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/desmond_simon_744203_unsplash"
+                        android:src="@{context.getDrawable(vm.headerImage)}"
                         app:layout_constraintBottom_toBottomOf="@id/greeting_bottom_to_image"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/desmond_simon_744203_unsplash" />
 
                 </FrameLayout>
 
@@ -81,6 +82,7 @@
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:lineSpacingMultiplier="1.44"
+                    android:onClick="@{v -> vm.navigateToPetroPoints()}"
                     android:shadowColor="@color/black_80"
                     android:shadowDx="2"
                     android:shadowDy="1"
@@ -107,7 +109,8 @@
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/cards_default_radius"
                     app:cardElevation="2dp"
-                    app:layout_constraintTop_toBottomOf="@id/greeting_bottom_to_cards">
+                    app:layout_constraintTop_toBottomOf="@id/greeting_bottom_to_cards"
+                    app:visibleGone="@{vm.shouldShowEnrollmentRewardsCard()}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -172,20 +175,22 @@
             android:layout_gravity="bottom|right"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
+            android:onClick="@{v -> vm.navigateToPetroPoints()}"
             app:cardCornerRadius="4dp"
-            app:cardElevation="4dp">
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/red"
+                android:background="@drawable/scan_btn"
+                android:foreground="?selectableItemBackground"
                 android:gravity="center">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_adding_card"
+                    android:src="@drawable/ic_barcode"
                     android:tint="@color/white" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -194,7 +199,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/gibson_semibold"
                     android:gravity="center"
-                    android:text="Scan card"
+                    android:text="@string/home_signedin_scan_button"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="12sp" />

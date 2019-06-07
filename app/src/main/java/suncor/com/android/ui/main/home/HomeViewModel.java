@@ -4,6 +4,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
 
@@ -42,10 +44,14 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<Event<Station>> _openNavigationApps = new MutableLiveData<>();
     public LiveData<Event<Station>> openNavigationApps = _openNavigationApps;
 
+    private MutableLiveData<Event<Boolean>> _navigateToPetroPoints = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> navigateToPetroPoints = _navigateToPetroPoints;
+
     private MutableLiveData<Event<Boolean>> _dismissEnrollmentRewardsCardEvent = new MutableLiveData<>();
     public LiveData<Event<Boolean>> dismissEnrollmentRewardsCardEvent = _dismissEnrollmentRewardsCardEvent;
 
     public ObservableInt greetingsMessage = new ObservableInt();
+    public ObservableInt headerImage = new ObservableInt();
 
     @Inject
     public HomeViewModel(SessionManager sessionManager, StationsProvider stationsProvider) {
@@ -103,7 +109,28 @@ public class HomeViewModel extends ViewModel {
             _nearestStation.setValue(Resource.success(item));
         });
 
-        greetingsMessage.set(R.string.home_signedin_greetings_morning);
+        initGreetings();
+    }
+
+    private void initGreetings() {
+        Calendar now = GregorianCalendar.getInstance();
+        Calendar noon = GregorianCalendar.getInstance();
+        noon.set(Calendar.HOUR_OF_DAY, 12);
+        noon.set(Calendar.MINUTE, 0);
+        Calendar evening = GregorianCalendar.getInstance();
+        evening.set(Calendar.HOUR_OF_DAY, 17);
+        evening.set(Calendar.MINUTE, 0);
+
+        if (now.before(noon)) {
+            greetingsMessage.set(R.string.home_signedin_greetings_morning);
+            headerImage.set(R.drawable.desmond_simon_744203_unsplash);
+        } else if (now.before(evening)) {
+            greetingsMessage.set(R.string.home_signedin_greetings_afternoon);
+            headerImage.set(R.drawable.desmond_simon_744203_unsplash);
+        } else {
+            greetingsMessage.set(R.string.home_signedin_greetings_evening);
+            headerImage.set(R.drawable.desmond_simon_744203_unsplash);
+        }
     }
 
 
@@ -170,6 +197,10 @@ public class HomeViewModel extends ViewModel {
     public void dismissEnrollmentRewardsCard() {
         sessionManager.setAccountState(SessionManager.AccountState.REGULAR_LOGIN);
         _dismissEnrollmentRewardsCardEvent.setValue(Event.newEvent(true));
+    }
+
+    public void navigateToPetroPoints() {
+        _navigateToPetroPoints.setValue(Event.newEvent(true));
     }
 
     public int getRewardedPoints() {

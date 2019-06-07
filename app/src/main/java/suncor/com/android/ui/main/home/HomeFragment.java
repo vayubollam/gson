@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -113,6 +114,13 @@ public class HomeFragment extends BottomNavigationFragment {
                 constraintSet.applyTo(mainLayout);
             }
         });
+        mViewModel.navigateToPetroPoints.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                HomeFragmentDirections.ActionHomeTabToCardsDetailsFragment action = HomeFragmentDirections.actionHomeTabToCardsDetailsFragment();
+                action.setIsForScan(true);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
     }
 
     @Override
@@ -194,8 +202,9 @@ public class HomeFragment extends BottomNavigationFragment {
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             int totalTranslation = binding.greetingBottomToCards.getHeight();
-            float greetingsParallax = (float) totalTranslation / binding.enrollmentGreetingsCard.getTop();
-            float greetingsTranslation = Math.min(totalTranslation, scrollY * greetingsParallax);
+            View barrierView = binding.enrollmentGreetingsCard.getVisibility() != View.GONE ? binding.enrollmentGreetingsCard : binding.nearestCard.getRoot();
+            float parallaxEffectValue = (float) totalTranslation / barrierView.getTop();
+            float greetingsTranslation = Math.min(totalTranslation, scrollY * parallaxEffectValue);
             binding.headerGreetings.setTranslationY(greetingsTranslation);
             binding.headerPetropoints.setTranslationY(greetingsTranslation);
             binding.headerImage.setTranslationY((float) (scrollY * 0.5));

@@ -18,6 +18,12 @@ public class CardDetail {
     //Defaulting to 5cent if the balance service is down
     private float cpl = 0.05f;
 
+    public CardDetail(CardType cardType, String cardNumber, int pointsBalance) {
+        this.cardType = cardType;
+        this.cardNumber = cardNumber;
+        this.pointsBalance = pointsBalance;
+    }
+
     public CardType getCardType() {
         return cardType;
     }

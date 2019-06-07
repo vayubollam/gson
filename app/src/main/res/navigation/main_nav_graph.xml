@@ -14,6 +14,12 @@
             android:name="root"
             android:defaultValue="true"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_home_tab_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/stations_tab"
@@ -133,17 +139,20 @@
         android:name="suncor.com.android.ui.main.cards.details.CardsDetailsFragment"
         android:label="CardsDetailsFragment">
         <argument
-            android:name="clickedCardIndex"
+            android:name="cardIndex"
             android:defaultValue="0"
             app:argType="integer" />
+        <argument
+            android:name="isForScan"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </keep_state_fragment>
 
     <keep_state_fragment
         android:id="@+id/addCardFragment"
         android:name="suncor.com.android.ui.main.cards.add.AddCardFragment"
         android:label="AddCardFragment"
-        tools:layout="@layout/fragment_add_card">
-    </keep_state_fragment>
+        tools:layout="@layout/fragment_add_card" />
     <keep_state_fragment
         android:id="@+id/personalInfoFragment"
         android:name="suncor.com.android.ui.main.profile.info.PersonalInfoFragment"
