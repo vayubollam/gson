@@ -340,4 +340,9 @@
     <string name="profile_preferences_address">Petro‑Points – P.O. Box 59257 Westwood Mall\nMississauga, ON.  Canada.  L4T 4J1\nTel: 1 (800) 668-0220  .  TTY: 1 (888) 290-7377</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Please enter a different email account.</string>
     <string name="profile_personnal_informations_update_toast">Your personal info has been updated.</string>
+    <string name="home_signedin_greetings_morning">Good Morning\n%s!</string>
+    <string name="home_signedin_greetings_afternoon">Good Afternoon\n%s!</string>
+    <string name="home_signedin_greetings_evening">Good Evening\n%s!</string>
+    <string name="home_signedin_petropoints_balance">You have %s points or $%d off</string>
+    <string name="home_signedin_scan_button">Scan card</string>
 </resources>

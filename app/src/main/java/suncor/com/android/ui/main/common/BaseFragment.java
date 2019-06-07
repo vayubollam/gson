@@ -62,16 +62,23 @@ public class BaseFragment extends DaggerFragment {
 
     protected void setStatusBarColor() {
         if (isStatusBarTransparent()) {
-            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
+            int flags = getActivity().getWindow()
+                    .getDecorView().getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
             getActivity().getWindow()
                     .getDecorView()
-                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                    .setSystemUiVisibility(flags);
+            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         } else {
             getActivity().getWindow().setStatusBarColor(getStatusBarColor());
+            int flags = getActivity().getWindow()
+                    .getDecorView().getSystemUiVisibility();
+            flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
             getActivity().getWindow()
                     .getDecorView()
-                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    .setSystemUiVisibility(flags);
         }
     }
 }

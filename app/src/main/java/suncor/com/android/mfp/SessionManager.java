@@ -63,23 +63,23 @@ public class SessionManager implements SessionChangeListener {
     private boolean isRetrievingProfile = false;
 
     private SuncorApplication application;
-
-    @Inject
-    Gson gson;
+    private Gson gson;
 
     private int rewardedPoints = -1;
 
     @Inject
-    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings, SuncorApplication application) {
+    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager,
+                          UserLocalSettings userLocationSettings, SuncorApplication application, Gson gson) {
         this.challengeHandler = challengeHandler;
         challengeHandler.setSessionChangeListener(this);
         this.authorizationManager = authorizationManager;
         this.userLocalSettings = userLocationSettings;
         this.application = application;
+        this.gson = gson;
         String profileString = userLocationSettings.getString(SHARED_PREF_USER);
         if (profileString != null && !profileString.isEmpty()) {
             profile = new Gson().fromJson(profileString, Profile.class);
-            accountState = AccountState.REGULAR_LOGIN;
+            setProfile(profile);
         }
     }
 
@@ -201,7 +201,9 @@ public class SessionManager implements SessionChangeListener {
         } else {
             this.profile = profile;
             userLocalSettings.setString(SHARED_PREF_USER, gson.toJson(profile));
-            accountState = AccountState.REGULAR_LOGIN;
+            if (accountState == null) {
+                accountState = AccountState.REGULAR_LOGIN;
+            }
         }
     }
 

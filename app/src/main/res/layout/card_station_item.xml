@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:theme="@style/Widget.MaterialComponents.CardView"
-            app:cardCornerRadius="@dimen/station_card_radius">
+            app:cardCornerRadius="@dimen/cards_default_radius">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_bottom_sheet"
