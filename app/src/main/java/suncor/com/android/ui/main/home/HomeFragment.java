@@ -238,7 +238,7 @@ public class HomeFragment extends BottomNavigationFragment {
     }
 
     @Override
-    protected boolean isStatusBarTransparent() {
+    protected boolean isFullScreen() {
         return mViewModel.isUserLoggedIn();
     }
 
@@ -264,11 +264,6 @@ public class HomeFragment extends BottomNavigationFragment {
         AlertDialog alertDialog = adb.create();
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
-    }
-
-    @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
     }
 
     @Override

@@ -1,23 +1,18 @@
 package suncor.com.android.ui.main.common;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.FragmentManager;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 
 public class BaseFragment extends DaggerFragment {
 
-    private FragmentManager.OnBackStackChangedListener backStackListener = () -> {
-        if (isVisible()) {
-            setStatusBarColor();
-        }
-    };
+    private boolean insetsApplyed;
 
     public void onLoginStatusChanged() {
 
@@ -26,19 +21,34 @@ public class BaseFragment extends DaggerFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().addOnBackStackChangedListener(backStackListener);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (!isFullScreen()) {
+            insetsApplyed = false;
+            ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+                if (!insetsApplyed) {
+                    insetsApplyed = true;
+                    int systemsTopMargin = insets.getSystemWindowInsetTop();
+                    view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + systemsTopMargin, view.getPaddingRight(), view.getPaddingBottom());
+                }
+                return insets;
+            });
+
+
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getFragmentManager().removeOnBackStackChangedListener(backStackListener);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        setStatusBarColor();
         getView().requestApplyInsets();
     }
 
@@ -52,33 +62,7 @@ public class BaseFragment extends DaggerFragment {
         return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.colorPrimaryDark);
-    }
-
-    protected boolean isStatusBarTransparent() {
+    protected boolean isFullScreen() {
         return false;
-    }
-
-    protected void setStatusBarColor() {
-        if (isStatusBarTransparent()) {
-            int flags = getActivity().getWindow()
-                    .getDecorView().getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-            getActivity().getWindow()
-                    .getDecorView()
-                    .setSystemUiVisibility(flags);
-            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
-
-        } else {
-            getActivity().getWindow().setStatusBarColor(getStatusBarColor());
-            int flags = getActivity().getWindow()
-                    .getDecorView().getSystemUiVisibility();
-            flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-            getActivity().getWindow()
-                    .getDecorView()
-                    .setSystemUiVisibility(flags);
-        }
     }
 }

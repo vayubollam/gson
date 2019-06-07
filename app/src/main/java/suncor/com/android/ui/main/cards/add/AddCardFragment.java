@@ -64,9 +64,9 @@ public class AddCardFragment extends BaseFragment {
 
         viewModel.showCard.observe(this, show -> {
             if (show) {
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
+                binding.getRoot().setBackgroundColor(getResources().getColor(R.color.black_4));
             } else {
-                setStatusBarColor();
+                binding.getRoot().setBackgroundColor(getResources().getColor(R.color.white));
             }
         });
     }

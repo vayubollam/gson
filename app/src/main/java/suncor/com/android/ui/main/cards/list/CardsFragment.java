@@ -144,11 +144,6 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
     }
 
     @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
-    }
-
-    @Override
     public void onRefresh() {
         viewModel.refreshBalance();
     }
