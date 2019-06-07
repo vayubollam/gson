@@ -182,7 +182,7 @@ public class HomeFragment extends BottomNavigationFragment {
 //            }
 //        });
 
-        offersAdapter = new OffersAdapter(getActivity(), mViewModel);
+        offersAdapter = new OffersAdapter(getActivity(), true);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -218,7 +218,7 @@ public class HomeFragment extends BottomNavigationFragment {
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
         nearestCard = binding.nearestCard;
-        offersAdapter = new OffersAdapter(getActivity(), mViewModel);
+        offersAdapter = new OffersAdapter(getActivity(), false);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);

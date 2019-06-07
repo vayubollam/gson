@@ -38,7 +38,7 @@ ext {
     playServicesVersion = "16.0.0"
     tagManagerVersion = "16.0.8"
     legacyLibraryVersion = "1.0.0"
-    materialLibraryVersion = "1.0.0"
+    materialLibraryVersion = "1.1.0-alpha07"
     googlePlacesVersion = "1.0.0"
     gsonVersion = "2.8.5"
     mfpVersion = "8.0.+"

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="androidx.constraintlayout.widget.ConstraintLayout.LayoutParams" />
+
+        <variable
+            name="item"
+            type="suncor.com.android.ui.main.home.OfferCard" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="12dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/banner_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="@drawable/offers_gradient"
+                    android:scaleType="matrix"
+                    android:src="@{item.image}"
+                    tools:src="@drawable/car_trip" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/card_welcome"
+                    style="@style/Headline2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="left"
+                    android:shadowColor="@color/black_80"
+                    android:shadowDx="2"
+                    android:shadowDy="1"
+                    android:shadowRadius="8"
+                    android:text="@{item.text}"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@id/left_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="@string/welcome_to_petro_canda_on_the_go" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/left_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:minWidth="120dp"
+                    android:onClick="@{v -> item.leftButton.action.run()}"
+                    android:text="@{item.leftButton.text}"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    app:icon="@{item.leftButton.rightDrawable}"
+                    app:iconGravity="end"
+                    app:iconTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@{item.rightButton != null? @id/right_button : -1}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Sign in" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/right_button"
+                    style="@style/FilledButton.White.L"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:minWidth="120dp"
+                    android:onClick="@{v -> item.rightButton.action.run()}"
+                    android:text="@{item.rightButton.text}"
+                    android:textSize="14sp"
+                    app:autoSizeMaxTextSize="14sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    app:icon="@{item.rightButton.rightDrawable}"
+                    app:iconGravity="end"
+                    app:iconTint="@color/black_100"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/left_button"
+                    app:visibleGone="@{item.rightButton != null}" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+</layout>
