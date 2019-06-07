@@ -8,19 +8,21 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 
@@ -39,6 +41,11 @@ public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<Event<Station>> _openNavigationApps = new MutableLiveData<>();
     public LiveData<Event<Station>> openNavigationApps = _openNavigationApps;
+
+    private MutableLiveData<Event<Boolean>> _dismissEnrollmentRewardsCardEvent = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> dismissEnrollmentRewardsCardEvent = _dismissEnrollmentRewardsCardEvent;
+
+    public ObservableInt greetingsMessage = new ObservableInt();
 
     @Inject
     public HomeViewModel(SessionManager sessionManager, StationsProvider stationsProvider) {
@@ -95,6 +102,8 @@ public class HomeViewModel extends ViewModel {
             }
             _nearestStation.setValue(Resource.success(item));
         });
+
+        greetingsMessage.set(R.string.home_signedin_greetings_morning);
     }
 
 
@@ -140,8 +149,27 @@ public class HomeViewModel extends ViewModel {
         _openNavigationApps.setValue(Event.newEvent(nearestStation));
     }
 
-    public Profile getProfile() {
-        return sessionManager.getProfile();
+    public String getUserFirstName() {
+        String firstName = sessionManager.getProfile().getFirstName();
+        return firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+    }
+
+    public String getPetroPointsBalance() {
+        return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+    }
+
+    public int getPetroPointsBalanceConverted() {
+        return sessionManager.getProfile().getPointsBalance() / 1000;
+    }
+
+
+    public boolean shouldShowEnrollmentRewardsCard() {
+        return sessionManager.getAccountState() == SessionManager.AccountState.JUST_ENROLLED;
+    }
+
+    public void dismissEnrollmentRewardsCard() {
+        sessionManager.setAccountState(SessionManager.AccountState.REGULAR_LOGIN);
+        _dismissEnrollmentRewardsCardEvent.setValue(Event.newEvent(true));
     }
 
     public int getRewardedPoints() {

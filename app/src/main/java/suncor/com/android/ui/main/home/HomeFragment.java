@@ -3,7 +3,9 @@ package suncor.com.android.ui.main.home;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,12 +20,20 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.AutoTransition;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentHomeGuestBinding;
@@ -88,6 +98,21 @@ public class HomeFragment extends BottomNavigationFragment {
                 NavigationAppsHelper.openNavigationApps(getActivity(), station);
             }
         });
+        mViewModel.dismissEnrollmentRewardsCardEvent.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                ConstraintLayout mainLayout = getView().findViewById(R.id.main_layout);
+                TransitionSet set = new TransitionSet();
+                Transition cardSlide = new Slide(Gravity.LEFT);
+                cardSlide.addTarget(R.id.enrollment_greetings_card);
+                set.addTransition(cardSlide);
+                set.addTransition(new AutoTransition());
+                TransitionManager.beginDelayedTransition(mainLayout, set);
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(mainLayout);
+                constraintSet.setVisibility(R.id.enrollment_greetings_card, ConstraintSet.GONE);
+                constraintSet.applyTo(mainLayout);
+            }
+        });
     }
 
     @Override
@@ -100,6 +125,7 @@ public class HomeFragment extends BottomNavigationFragment {
             view = setupSignedInLayout(inflater, container);
         }
 
+        //Setup nearest card click listeners
         nearestCard.getRoot().setOnClickListener(showCardDetail);
         nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
         nearestCard.settingsButton.setOnClickListener(v -> {
@@ -135,6 +161,19 @@ public class HomeFragment extends BottomNavigationFragment {
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
         nearestCard = binding.nearestCard;
+//        nearestCard.getRoot().setOnClickListener((v) -> {
+//            if (mViewModel.nearestStation.getValue().data != null && !mViewModel.isLoading.get()) {
+//                if (binding.scrollView.getScrollY() > binding.nearestCard.getRoot().getTop() - 200) {
+//                    binding.scrollView.smoothScrollTo(0, binding.nearestCard.getRoot().getTop() - 200);
+//                    binding.scrollView.postDelayed(() -> {
+//                        StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
+//                    }, 100);
+//                } else {
+//                    StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
+//                }
+//            }
+//        });
+
         offersAdapter = new OffersAdapter(getActivity(), mViewModel);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -150,6 +189,16 @@ public class HomeFragment extends BottomNavigationFragment {
                 binding.headerGreetings.getParent().requestLayout();
             }
             return insets;
+        });
+
+
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int totalTranslation = binding.greetingBottomToCards.getHeight();
+            float greetingsParallax = (float) totalTranslation / binding.enrollmentGreetingsCard.getTop();
+            float greetingsTranslation = Math.min(totalTranslation, scrollY * greetingsParallax);
+            binding.headerGreetings.setTranslationY(greetingsTranslation);
+            binding.headerPetropoints.setTranslationY(greetingsTranslation);
+            binding.headerImage.setTranslationY((float) (scrollY * 0.5));
         });
 
         return binding.getRoot();
@@ -220,7 +269,9 @@ public class HomeFragment extends BottomNavigationFragment {
 
         if (mViewModel.isUserLoggedIn()) {
             int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
             getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
         }
     }
@@ -229,7 +280,9 @@ public class HomeFragment extends BottomNavigationFragment {
     public void onStop() {
         super.onStop();
         int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
         getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
     }
 
