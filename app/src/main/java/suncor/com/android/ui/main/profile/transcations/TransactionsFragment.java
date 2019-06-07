@@ -14,9 +14,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -40,7 +37,8 @@ public class TransactionsFragment extends BaseFragment {
     @Inject
     ViewModelFactory viewModelFactory;
     private TransactionsFragmentBinding binding;
-
+    private TransactionAdapter transactionAdapter1, transactionAdapter2, transactionAdapter3, transactionAdapter4;
+    private boolean isExpanded = true;
     public static TransactionsFragment newInstance() {
         return new TransactionsFragment();
     }
@@ -76,19 +74,22 @@ public class TransactionsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel.transactions.observe(this, transactionsHashMap -> {
-            HashMap<Integer, ArrayList<Transaction>> hashMap = transactionsHashMap;
             if (transactionsHashMap != null) {
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(0))) {
-                    binding.transactionFirstMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(0)), (this::transactionDetailHandler)));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(0)) && transactionAdapter1 == null) {
+                    transactionAdapter1 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(0)), (this::transactionDetailHandler));
+                    binding.transactionFirstMonth.transactionRecycler.setAdapter(transactionAdapter1);
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(1))) {
-                    binding.transactionSecondMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(1)), (this::transactionDetailHandler)));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(1)) && transactionAdapter2 == null) {
+                    transactionAdapter2 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(1)), (this::transactionDetailHandler));
+                    binding.transactionSecondMonth.transactionRecycler.setAdapter(transactionAdapter2);
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(2))) {
-                    binding.transactionThirdMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(2)), (this::transactionDetailHandler)));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(2)) && transactionAdapter3 == null) {
+                    transactionAdapter3 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(2)), (this::transactionDetailHandler));
+                    binding.transactionThirdMonth.transactionRecycler.setAdapter(transactionAdapter3);
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(3))) {
-                    binding.transactionFourthMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(3)), (this::transactionDetailHandler)));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(3)) && transactionAdapter4 == null) {
+                    transactionAdapter4 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(3)), (this::transactionDetailHandler));
+                    binding.transactionFourthMonth.transactionRecycler.setAdapter(transactionAdapter4);
                 }
 
 
@@ -98,6 +99,9 @@ public class TransactionsFragment extends BaseFragment {
             if (arrayListResource.status == Resource.Status.ERROR && mViewModel.transactions.getValue() != null) {
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
             }
+        });
+        binding.transactionToolBar.post(() -> {
+            binding.transactionToolBar.setExpanded(isExpanded, false);
         });
 
     }
@@ -118,6 +122,11 @@ public class TransactionsFragment extends BaseFragment {
     }
 
     public void transactionDetailHandler(Transaction transaction) {
+        transactionAdapter1 = null;
+        transactionAdapter2 = null;
+        transactionAdapter3 = null;
+        transactionAdapter4 = null;
+        isExpanded = binding.transactionToolBar.isExpanded();
         ActionTransactionsFragmentToTransactionDetailFragment action = actionTransactionsFragmentToTransactionDetailFragment(transaction);
         findNavController(getView()).navigate(action);
 
