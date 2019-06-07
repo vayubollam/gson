@@ -1,5 +1,8 @@
 package suncor.com.android.model.cards;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.text.DateFormat;
@@ -8,8 +11,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
-public class Transaction implements Comparable<Transaction> {
+public class Transaction implements Comparable<Transaction>, Parcelable {
     private TransactionType transactionType;
     private String date;
     private String rewardDescription;
@@ -29,6 +33,7 @@ public class Transaction implements Comparable<Transaction> {
         this.totalPoints = totalPoints;
         this.purchaseAmount = purchaseAmount;
     }
+
 
     public TransactionType getTransactionType() {
         return transactionType;
@@ -105,31 +110,21 @@ public class Transaction implements Comparable<Transaction> {
         this.purchaseAmount = purchaseAmount;
     }
 
-    public String getFormattedBasePoints() {
-
-        return NumberFormat.getInstance().format(getBasePoints());
-    }
-
-    public String getFormattedBonusPoints() {
-        return NumberFormat.getInstance().format(getBonusPoints());
-    }
-
     public String getFormattedTotalPoints() {
-        switch (transactionType) {
-            case PURCHASE:
-            case BONUS:
-                return "+" + NumberFormat.getInstance().format(getTotalPoints());
-            case REDEMPTION:
-                return NumberFormat.getInstance().format(getTotalPoints());
-            case CUSTOMER_SERVICE_ADJ:
-                return getTotalPoints() > 0 ? "+" + NumberFormat.getInstance().format(getTotalPoints()) : NumberFormat.getInstance().format(getTotalPoints());
-            default:
-                return NumberFormat.getInstance().format(getTotalPoints());
-        }
+        String totalPoints = NumberFormat.getInstance(Locale.getDefault()).format(getTotalPoints());
+        return getTotalPoints() > 0 ? "+" + totalPoints : totalPoints;
     }
 
     public String getFormattedPurchaseAmount() {
-        return "$" + NumberFormat.getInstance().format(getPurchaseAmount());
+        String amount = NumberFormat.getNumberInstance(Locale.getDefault()).format(getPurchaseAmount());
+        switch (getTransactionType()) {
+            case PURCHASE:
+                return "$" + amount;
+            case REDEMPTION:
+                return getPurchaseAmount() == 0 ? "" : "$" + amount;
+            default:
+                return "";
+        }
     }
 
     public int getMonth() {
@@ -154,6 +149,24 @@ public class Transaction implements Comparable<Transaction> {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(transactionType.name());
+        dest.writeString(date);
+        dest.writeString(rewardDescription);
+        dest.writeString(locationAddress);
+        dest.writeInt(basePoints);
+        dest.writeInt(bonusPoints);
+        dest.writeInt(totalPoints);
+        dest.writeFloat(purchaseAmount);
+    }
+
+
     public enum TransactionType {
         @SerializedName("redemption")
         REDEMPTION,
@@ -168,6 +181,30 @@ public class Transaction implements Comparable<Transaction> {
         @SerializedName("Petro Points")
         PETRO_POINTS
     }
+
+    protected Transaction(Parcel in) {
+        date = in.readString();
+        rewardDescription = in.readString();
+        locationAddress = in.readString();
+        basePoints = in.readInt();
+        bonusPoints = in.readInt();
+        totalPoints = in.readInt();
+        purchaseAmount = in.readFloat();
+        transactionType = TransactionType.valueOf(in.readString());
+    }
+
+    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel in) {
+            return new Transaction(in);
+        }
+
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
+
 
 
 }

@@ -45,18 +45,20 @@ public class TransactionsViewModel extends ViewModel {
         });
         transactionsLiveData.observeForever(arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
-                if (Objects.requireNonNull(arrayListResource.data).isEmpty()) {
-                    switch (Objects.requireNonNull(transactions.getValue()).keySet().size()) {
-                        case 0:
-                            listHashMap.put(getCurrentMonth(0), new ArrayList<>());
-                            listHashMap.put(getCurrentMonth(1), new ArrayList<>());
-                            break;
-                        case 2:
-                            listHashMap.put(getCurrentMonth(2), new ArrayList<>());
-                            break;
-                        case 3:
-                            listHashMap.put(getCurrentMonth(3), new ArrayList<>());
-                            break;
+                if (arrayListResource.data.isEmpty()) {
+                    if (transactions.getValue() == null) {
+                        listHashMap.put(getCurrentMonth(0), new ArrayList<>());
+                        listHashMap.put(getCurrentMonth(1), new ArrayList<>());
+
+                    } else {
+                        switch (transactions.getValue().keySet().size()) {
+                            case 2:
+                                listHashMap.put(getCurrentMonth(2), new ArrayList<>());
+                                break;
+                            case 3:
+                                listHashMap.put(getCurrentMonth(3), new ArrayList<>());
+                                break;
+                        }
                     }
                     _transactions.setValue(listHashMap);
                     return;

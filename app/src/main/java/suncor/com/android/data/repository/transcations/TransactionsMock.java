@@ -26,11 +26,11 @@ public class TransactionsMock implements TransactionApi {
                 e.printStackTrace();
             }
             String jsonText;
-            if (startMonth == 5) {
+            if (startMonth == 6) {
                 jsonText = "[\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"redemption\",\n" +
-                        "                                \"date\": \"2019-05-11T00:00:00\",\n" +
+                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
                         "                                \"basePoints\": -10000,\n" +
                         "                                \"bonusPoints\": 0,\n" +
                         "                                \"totalPoints\": -10000,\n" +
@@ -40,7 +40,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-05-09T00:00:00\",\n" +
+                        "                                \"date\": \"2019-06-09T00:00:00\",\n" +
                         "                                \"basePoints\": 304,\n" +
                         "                                \"bonusPoints\": 183,\n" +
                         "                                \"totalPoints\": 487,\n" +
@@ -50,7 +50,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-05-11T00:00:00\",\n" +
+                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +
@@ -60,7 +60,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-05-11T00:00:00\",\n" +
+                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +
@@ -70,7 +70,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-05-11T00:00:00\",\n" +
+                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +
@@ -79,11 +79,11 @@ public class TransactionsMock implements TransactionApi {
                         "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
                         "                            }\n" +
                         "                        ]";
-            } else if (startMonth == 3) {
+            } else if (startMonth == 4) {
                 jsonText = "[\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"redemption\",\n" +
-                        "                                \"date\": \"2019-03-09T00:00:00\",\n" +
+                        "                                \"date\": \"2019-04-09T00:00:00\",\n" +
                         "                                \"basePoints\": -10000,\n" +
                         "                                \"bonusPoints\": 0,\n" +
                         "                                \"totalPoints\": -10000,\n" +
@@ -93,7 +93,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-03-09T00:00:00\",\n" +
+                        "                                \"date\": \"2019-04-09T00:00:00\",\n" +
                         "                                \"basePoints\": 304,\n" +
                         "                                \"bonusPoints\": 183,\n" +
                         "                                \"totalPoints\": 487,\n" +
@@ -103,7 +103,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-03-11T00:00:00\",\n" +
+                        "                                \"date\": \"2019-04-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +
@@ -113,7 +113,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-03-11T00:00:00\",\n" +
+                        "                                \"date\": \"2019-04-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +

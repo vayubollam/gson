@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -21,10 +23,15 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.TransactionsFragmentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.cards.Transaction;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
-import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
 import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.profile.transcations.TransactionsFragmentDirections.ActionTransactionsFragmentToTransactionDetailFragment;
+import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
+
+import static androidx.navigation.Navigation.findNavController;
+import static suncor.com.android.ui.main.profile.transcations.TransactionsFragmentDirections.actionTransactionsFragmentToTransactionDetailFragment;
 
 
 public class TransactionsFragment extends BaseFragment {
@@ -66,22 +73,22 @@ public class TransactionsFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(TransactionsViewModel.class);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mViewModel.transactions.observe(this, transactionsHashMap -> {
+            HashMap<Integer, ArrayList<Transaction>> hashMap = transactionsHashMap;
             if (transactionsHashMap != null) {
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(0)) && transactionsHashMap.keySet().size() == 2) {
-                    binding.transactionFirstMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(0))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(0))) {
+                    binding.transactionFirstMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(0)), (this::transactionDetailHandler)));
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(1)) && transactionsHashMap.keySet().size() == 2) {
-                    binding.transactionSecondMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(1))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(1))) {
+                    binding.transactionSecondMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(1)), (this::transactionDetailHandler)));
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(2)) && transactionsHashMap.keySet().size() == 3) {
-                    binding.transactionThirdMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(2))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(2))) {
+                    binding.transactionThirdMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(2)), (this::transactionDetailHandler)));
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(3)) && transactionsHashMap.keySet().size() == 4) {
-                    binding.transactionFourthMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(3))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(3))) {
+                    binding.transactionFourthMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(3)), (this::transactionDetailHandler)));
                 }
 
 
@@ -92,13 +99,27 @@ public class TransactionsFragment extends BaseFragment {
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
             }
         });
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(TransactionsViewModel.class);
     }
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.transactionToolBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.transactionToolBar.setNavigationOnClickListener(v -> findNavController(getView()).popBackStack());
+
+    }
+
+    public void transactionDetailHandler(Transaction transaction) {
+        ActionTransactionsFragmentToTransactionDetailFragment action = actionTransactionsFragmentToTransactionDetailFragment(transaction);
+        findNavController(getView()).navigate(action);
 
     }
 

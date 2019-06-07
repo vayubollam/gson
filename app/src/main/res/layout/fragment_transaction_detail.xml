@@ -1,0 +1,342 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="td"
+            type="suncor.com.android.model.cards.TransactionDetail" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:background="@color/black_4"
+        android:layout_height="match_parent">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:layout_width="match_parent"
+            android:background="@color/black_4"
+            app:title="@{td.getFormattedTitle()}"
+            android:id="@+id/transaction_toolbar"
+            android:layout_height="wrap_content" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                tools:context="suncor.com.android.ui.main.profile.transcations.TransactionDetailFragment">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/points_summary_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="POINTS SUMMARY"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/points_summary_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/points_summary_txt" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_base_points"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Base points"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/txt_base_points_value"
+                    app:layout_constraintTop_toBottomOf="@id/points_summary_divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_base_points_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getFormattedBasePoints()}"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toRightOf="@id/txt_base_points"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/points_summary_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/base_points_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_base_points" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_bonus_points"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Bonus points"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/txt_base_points_value"
+                    app:layout_constraintTop_toBottomOf="@id/base_points_divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_bonus_points_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getFormattedBonusPoints()}"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toRightOf="@id/txt_base_points"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/base_points_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/earned_points_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_bonus_points" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_earned_points"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Points earned"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/txt_base_points_value"
+                    app:layout_constraintTop_toBottomOf="@id/earned_points_divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_earned_points_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getTransaction().getFormattedTotalPoints()}"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toRightOf="@id/txt_base_points"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/earned_points_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/points_summary_section_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_earned_points" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/details_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="POINTS SUMMARY"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintTop_toBottomOf="@+id/points_summary_section_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/details_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/details_txt" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_type_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Transaction type"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/txt_base_points_value"
+                    app:layout_constraintTop_toBottomOf="@id/details_divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_type_value_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getFormattedTransactionType()}"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toRightOf="@id/txt_base_points"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/details_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/date_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_type_txt" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_date_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Date"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/txt_base_points_value"
+                    app:layout_constraintTop_toBottomOf="@id/date_divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_date_value_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getTransaction().getFormattedDate()}"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toRightOf="@id/txt_base_points"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/date_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Amount_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    app:visibleGone="@{!td.getTransaction().getFormattedPurchaseAmount().isEmpty()}"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_date_txt" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_amount_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:visibleGone="@{!td.getTransaction().getFormattedPurchaseAmount().isEmpty()}"
+                    android:layout_marginTop="8dp"
+                    android:text="Amount"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/txt_base_points_value"
+                    app:layout_constraintTop_toBottomOf="@id/Amount_divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_amount_value_value"
+                    app:visibleGone="@{!td.getTransaction().getFormattedPurchaseAmount().isEmpty()}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getTransaction().getFormattedPurchaseAmount()}"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toRightOf="@id/txt_base_points"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/Amount_divider" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/location_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Location"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_amount_txt" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/location_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/location_txt" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_location_value_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getTransaction().locationAddress}"
+                    android:textAlignment="textStart"
+                    android:lineSpacingMultiplier="1.44"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/location_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/location_value_divider"
+                    android:layout_width="match_parent"
+                    app:visibleGone="@{td.getTransaction().rewardDescription!=null &amp;&amp; td.getTransaction().rewardDescription.length()>0}"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_location_value_value" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/reword_desc_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="REWARD DESCRIPTION"
+                    app:visibleGone="@{td.getTransaction().rewardDescription!=null &amp;&amp; td.getTransaction().rewardDescription.length()>0}"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintTop_toBottomOf="@+id/location_value_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/reword_desc_divider"
+                    android:layout_width="match_parent"
+                    app:visibleGone="@{td.getTransaction().rewardDescription!=null &amp;&amp; td.getTransaction().rewardDescription.length()>0}"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/reword_desc_txt" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/transaction_reword_desc_value_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:visibleGone="@{td.getTransaction().rewardDescription!=null &amp;&amp; td.getTransaction().rewardDescription.length()>0}"
+                    android:layout_marginTop="8dp"
+                    android:text="@{td.getTransaction().rewardDescription}"
+                    android:textAlignment="textStart"
+                    android:lineSpacingMultiplier="1.44"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/reword_desc_divider" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/reword_value_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_reword_desc_value_value" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
