@@ -29,11 +29,11 @@ public class NewEnrollment {
     @JsonAdapter(EmptyStringTypeAdapter.class)
     private String petroPointsId;
 
-    private boolean recieveOffers;
+    private boolean receiveOffers;
     private String securityQuestionId;
     private String securityAnswer;
 
-    public NewEnrollment(EnrollmentType type, String petroPointsId, String firstName, String lastName, String email, String password, String streetAddress, String city, String province, String postalCode, String phone, boolean recieveOffers, String securityQuestionId, String securityAnswer) {
+    public NewEnrollment(EnrollmentType type, String petroPointsId, String firstName, String lastName, String email, String password, String streetAddress, String city, String province, String postalCode, String phone, boolean receiveOffers, String securityQuestionId, String securityAnswer) {
         this.type = type;
         this.petroPointsId = petroPointsId;
         this.firstName = firstName;
@@ -45,7 +45,7 @@ public class NewEnrollment {
         this.province = province;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.recieveOffers = recieveOffers;
+        this.receiveOffers = receiveOffers;
         this.securityQuestionId = securityQuestionId;
         this.securityAnswer = securityAnswer;
     }
@@ -130,12 +130,12 @@ public class NewEnrollment {
         this.phone = phone;
     }
 
-    public boolean isRecieveOffers() {
-        return recieveOffers;
+    public boolean isReceiveOffers() {
+        return receiveOffers;
     }
 
-    public void setRecieveOffers(boolean recieveOffers) {
-        this.recieveOffers = recieveOffers;
+    public void setReceiveOffers(boolean receiveOffers) {
+        this.receiveOffers = receiveOffers;
     }
 
     public String getSecurityQuestionId() {
