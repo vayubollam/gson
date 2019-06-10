@@ -1,19 +1,23 @@
 package suncor.com.android.ui.main.home;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
+import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.MainActivity;
 
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
@@ -21,7 +25,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
     private ArrayList<OfferCard> offerCards;
 
 
-    public OffersAdapter(Activity activity, boolean isSignedIn) {
+    public OffersAdapter(MainActivity activity, boolean isSignedIn) {
         offerCards = new ArrayList<>();
         if (!isSignedIn) {
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
@@ -41,7 +45,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_2_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-                            //TODO
                         }
                 ));
         offerCards.add(banner2);
@@ -51,6 +54,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_3_button),
                         () -> {
+                            SuncorToast.makeText(activity, "This will redirect to rewards screen", Toast.LENGTH_SHORT).show();
                             //TODO
                         }
                 ));
@@ -72,7 +76,16 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_5_button),
                         () -> {
-                            //TODO
+                            new AlertDialog.Builder(activity)
+                                    .setTitle("Leaving Petro-Canada?")
+                                    .setMessage("You're about to open another app.")
+                                    .setPositiveButton("Open", (dialog, which) -> {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setData(Uri.parse("https://www.rbcroyalbank.com/petro-canada/cards-25.html"));//TODO
+                                        activity.startActivity(intent);
+                                    })
+                                    .setNegativeButton("Cancel", null)
+                                    .show();
                         }
                 ));
         offerCards.add(banner5);

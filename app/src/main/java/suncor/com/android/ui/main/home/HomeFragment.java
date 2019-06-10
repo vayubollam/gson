@@ -43,6 +43,7 @@ import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -182,7 +183,7 @@ public class HomeFragment extends BottomNavigationFragment {
 //            }
 //        });
 
-        offersAdapter = new OffersAdapter(getActivity(), true);
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -218,7 +219,7 @@ public class HomeFragment extends BottomNavigationFragment {
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
         nearestCard = binding.nearestCard;
-        offersAdapter = new OffersAdapter(getActivity(), false);
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);

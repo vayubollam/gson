@@ -33,7 +33,6 @@ public class MainActivity extends SessionAwareActivity {
     private BottomNavigationView bottom_navigation;
     private Fragment navHostFragment;
     private NavController navController;
-
     private BroadcastReceiver loginConflictReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -50,6 +49,10 @@ public class MainActivity extends SessionAwareActivity {
             }
         }
     };
+
+    public NavController getNavController() {
+        return navController;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
