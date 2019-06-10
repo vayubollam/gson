@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_bottom_sheet"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/dashboard_nearby_card_title" />
+                android:text="@string/home_nearest_card_title" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -131,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/dashboard_nearest_enable_gps_title"
+                android:text="@string/home_nearest_enable_gps_title"
                 android:textAppearance="@style/Body" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -140,7 +140,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
                 android:lineSpacingMultiplier="1.71"
-                android:text="@string/dashboard_nearest_enable_gps_message"
+                android:text="@string/home_nearest_enable_gps_message"
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_80" />
 
@@ -169,7 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@{vm.nearestStation.status == Resource.Status.ERROR ? @string/dashboard_nearest_error_title : @string/dashboard_nearest_no_stations_found}"
+                android:text="@{vm.nearestStation.status == Resource.Status.ERROR ? @string/home_nearest_error_title : @string/home_nearest_no_stations_found}"
                 android:textAppearance="@style/Body"
                 tools:text="Oops" />
 
@@ -179,7 +179,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
                 android:lineSpacingMultiplier="1.71"
-                android:text="@{vm.nearestStation.status == Resource.Status.ERROR ? @string/dashboard_nearest_error_body : @string/dashboard_nearest_no_station_message}"
+                android:text="@{vm.nearestStation.status == Resource.Status.ERROR ? @string/home_nearest_error_body : @string/home_nearest_no_station_message}"
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_80"
                 tools:text="We couldn’t locate the nearest station at the moment, please try again later." />
@@ -192,7 +192,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginStart="-10dp"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@{vm.nearestStation.status == Resource.Status.ERROR ? @string/dashboard_nearest_error_try_again : @string/dashboard_nearest_try_again}"
+                android:text="@{vm.nearestStation.status == Resource.Status.ERROR ? @string/home_nearest_error_try_again : @string/home_nearest_try_again}"
                 tools:text="Try again" />
         </LinearLayout>
 
@@ -210,7 +210,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/dashboard_nearest_loading_title"
+                android:text="@string/home_nearest_loading_title"
                 android:textAppearance="@style/Body" />
 
             <ProgressBar

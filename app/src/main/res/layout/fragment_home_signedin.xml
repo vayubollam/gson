@@ -123,7 +123,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gibson_semibold"
-                            android:text="Thank you for joining"
+                            android:text="@string/home_enrollment_greeting_title"
                             android:textAppearance="@style/Body" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -131,8 +131,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:lineSpacingMultiplier="1.60"
-                            android:text="You just earned 2,500 points by creating a Petro-Canada account."
-                            android:textAppearance="@style/Caption1" />
+                            android:text="@{@string/home_enrollment_greeting(vm.rewardedPoints)}"
+                            android:textAppearance="@style/Caption1"
+                            tools:text="You just earned 2,500 points by creating a Petro-Canada account." />
 
                         <com.google.android.material.button.MaterialButton
                             style="@style/LinkButton.Red.M"
@@ -141,7 +142,7 @@
                             android:layout_marginStart="-12dp"
                             android:layout_marginTop="16dp"
                             android:onClick="@{v -> vm.dismissEnrollmentRewardsCard()}"
-                            android:text="Dismiss" />
+                            android:text="@string/home_enrollment_greeting_dismiss" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

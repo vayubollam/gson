@@ -203,7 +203,7 @@ public class HomeViewModel extends ViewModel {
         _navigateToPetroPoints.setValue(Event.newEvent(true));
     }
 
-    public int getRewardedPoints() {
-        return sessionManager.getRewardedPoints();
+    public String getRewardedPoints() {
+        return CardFormatUtils.formatBalance(sessionManager.getRewardedPoints());
     }
 }
