@@ -17,7 +17,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.cards.CardDetail;
@@ -87,11 +86,6 @@ public class CardsDetailsFragment extends BaseFragment {
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         attributes.screenBrightness = previousBrightness;
         getActivity().getWindow().setAttributes(attributes);
-    }
-
-    @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
     }
 
     @Override

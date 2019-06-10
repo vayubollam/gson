@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -14,17 +16,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.TransactionsFragmentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
-import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
 import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
 
 
 public class TransactionsFragment extends BaseFragment {
@@ -58,11 +57,6 @@ public class TransactionsFragment extends BaseFragment {
         binding.setVm(mViewModel);
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.transactions_try_again, () -> mViewModel.loadTransactions()));
         return binding.getRoot();
-    }
-
-    @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
     }
 
     @Override
