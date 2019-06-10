@@ -104,7 +104,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
     implementation "com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion"
-    compile 'com.google.android.gms:play-services-tagmanager:11.0.4'
+    implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagManagerVersion"
 
     testImplementation "androidx.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
