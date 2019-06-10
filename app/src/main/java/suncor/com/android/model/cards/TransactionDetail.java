@@ -67,6 +67,8 @@ public class TransactionDetail {
             case BONUS:
             case PARTNER_POINTS_TRANSFER:
                 return "0";
+            case REDEMPTION:
+                return getTransaction().getBonusPoints() > 0 ? "+" + bonusPoint : "0";
             default:
                 return bonusPoint;
         }
@@ -79,7 +81,6 @@ public class TransactionDetail {
             case BONUS:
                 return context.getResources().getString(R.string.transaction_type_bonus);
             case PETRO_POINTS:
-                return context.getResources().getString(R.string.transaction_type_pp);
             case CUSTOMER_SERVICE_ADJ:
                 return context.getResources().getString(R.string.transaction_type_csa);
             case PURCHASE:

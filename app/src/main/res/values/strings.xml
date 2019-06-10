@@ -343,13 +343,23 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="transaction_type_ppt">Partner Points Transfer</string>
+    <string name="transaction_type_ppt">Transfer</string>
     <string name="transaction_type_bonus">Bonus</string>
     <string name="transaction_type_pp">Petro Points</string>
-    <string name="transaction_type_csa">Customer Service Adj.</string>
+    <string name="transaction_type_csa">Adjustment</string>
     <string name="transaction_type_purchase">Purchase</string>
     <string name="transaction_type_redemption">Redemption</string>
     <string name="transaction_title_redemption">points redeemed</string>
     <string name="transaction_title_pp">points adjusted</string>
     <string name="transaction_title_pe">points earned</string>
+    <string name="transactions_point_summary_header">Points summary</string>
+    <string name="transaction_details_header">Details</string>
+    <string name="transaction_detail_base_points">Base points</string>
+    <string name="transaction_detail_bonus_points">Bonus points</string>
+    <string name="transaction_detail_total_points">Total points</string>
+    <string name="transaction_detail_transaction_type">Transaction</string>
+    <string name="transaction_detail_date">Date</string>
+    <string name="transaction_detail_amount">Amount</string>
+    <string name="transaction_detail_location_title">Location</string>
+    <string name="transaction_detail_description_title">Description</string>
 </resources>

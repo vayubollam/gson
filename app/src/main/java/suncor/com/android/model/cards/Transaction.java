@@ -174,11 +174,11 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
         PURCHASE,
         @SerializedName("bonus")
         BONUS,
-        @SerializedName("Customer Service Adj")
+        @SerializedName("adjustment")
         CUSTOMER_SERVICE_ADJ,
-        @SerializedName("Partner Points Transfer")
+        @SerializedName("transfer")
         PARTNER_POINTS_TRANSFER,
-        @SerializedName("Petro Points")
+        @SerializedName("points")
         PETRO_POINTS
     }
 
