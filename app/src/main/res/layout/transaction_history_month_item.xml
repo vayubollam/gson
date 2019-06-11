@@ -49,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            app:visibleGone="@{vm.transactions.getValue().get(month).size()!=0}"
             tools:itemCount="4"
             tools:listitem="@layout/transaction_item" />
 

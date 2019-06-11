@@ -48,7 +48,7 @@
                     android:layout_weight="1"
                     android:minHeight="84dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_logo" />
+                    app:srcCompat="@drawable/ppts_logo_eng" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/email_layout"

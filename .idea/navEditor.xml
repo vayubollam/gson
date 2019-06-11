@@ -443,14 +443,35 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="transactionDetailFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1306" />
+                            <option name="y" value="1199" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="transactionsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1212" />
-                            <option name="y" value="1080" />
+                            <option name="x" value="974" />
+                            <option name="y" value="1146" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_transactionsFragment_to_transactionDetailFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
