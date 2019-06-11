@@ -115,6 +115,8 @@ public class ProfileFragment extends BottomNavigationFragment {
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment));
         binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment));
+        binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
+
     }
 
     private void signUserOut() {
