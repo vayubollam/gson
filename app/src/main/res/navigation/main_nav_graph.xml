@@ -20,6 +20,13 @@
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_home_tab_to_youtubeFragment"
+            app:destination="@id/youtubeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/stations_tab"
@@ -194,5 +201,14 @@
         android:name="suncor.com.android.ui.main.profile.about.AboutFragment"
         android:label="PersonalInfoFragment"
         tools:layout="@layout/fragment_about" />
+
+    <keep_state_fragment
+        android:id="@+id/youtubeFragment"
+        android:name="suncor.com.android.ui.common.YoutubeFragment"
+        android:label="YoutubeFragment" >
+        <argument
+            android:name="video_id"
+            app:argType="string" />
+    </keep_state_fragment>
 
 </navigation>

@@ -49,7 +49,7 @@ public class DirectionsApi {
         String str_dest = "destinations=" + dest.latitude + "," + dest.longitude;
         String sensor = "sensor=false";
         String mode = "mode = driving";
-        String mapKey = "key=" + BuildConfig.MAP_API_KEY;
+        String mapKey = "key=" + BuildConfig.GOOGLE_API_KEY;
         String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + mapKey;
 
 

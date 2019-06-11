@@ -45,6 +45,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_2_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
+                            HomeFragmentDirections.ActionHomeTabToYoutubeFragment action = HomeFragmentDirections.actionHomeTabToYoutubeFragment("bXkNP6MDfzg");
+                            activity.getNavController().navigate(action);
                         }
                 ));
         offerCards.add(banner2);
@@ -107,9 +109,13 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         binding.setItem(card);
         binding.executePendingBindings();
         binding.bannerImage.post(() -> {
+            //Apply a matrix to simulate center_top
             Matrix matrix = binding.bannerImage.getImageMatrix();
-            float scaleFactor = binding.bannerImage.getWidth() / (float) card.getImage().getIntrinsicWidth();
-            matrix.setScale(scaleFactor, scaleFactor, 0, 0);
+            float scaleXFactor = binding.bannerImage.getWidth() / (float) card.getImage().getIntrinsicWidth();
+            float scaleYFactor = binding.bannerImage.getHeight() / (float) card.getImage().getIntrinsicHeight();
+            float scaleFactor = Math.max(scaleXFactor, scaleYFactor);
+            float pivotPoint = 2 * (card.getImage().getIntrinsicWidth() * scaleFactor - binding.bannerImage.getWidth());
+            matrix.setScale(scaleFactor, scaleFactor, pivotPoint, 0);
             binding.bannerImage.setImageMatrix(matrix);
         });
     }
