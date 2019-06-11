@@ -333,6 +333,14 @@
     <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668-0222  .  TTY : 1 (888) 290-7377\t</string>
     <string name="profile_preferences_header">Changer mes préférences.</string>
     <string name="cards_add_fragment_done_button">Fini</string>
+    <string name="profile_about_app_version">Version de l\'application</string>
+    <string name="profile_about_legal">Avis juridique</string>
+    <string name="profile_about_privacy_policy">Protection des renseignements personnels</string>
+    <string name="profile_about_header">À propos</string>
+    <string name="profile_about_legal_header">Avis juridique</string>
+    <string name="profile_about_privacy_policy_header">Conditions</string>
+    <string name="profile_about_legal_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
+    <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="home_signedin_scan_button">Scannez</string>
 
 </resources>
