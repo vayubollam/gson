@@ -328,7 +328,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     }
 
     @Override
-    protected boolean isStatusBarTransparent() {
+    protected boolean isFullScreen() {
         return true;
     }
 

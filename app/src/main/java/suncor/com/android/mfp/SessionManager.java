@@ -63,34 +63,33 @@ public class SessionManager implements SessionChangeListener {
     private boolean isRetrievingProfile = false;
 
     private SuncorApplication application;
-
-    @Inject
-    Gson gson;
+    private Gson gson;
 
     private int rewardedPoints = -1;
 
     @Inject
-    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings, SuncorApplication application) {
+    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager,
+                          UserLocalSettings userLocationSettings, SuncorApplication application, Gson gson) {
         this.challengeHandler = challengeHandler;
         challengeHandler.setSessionChangeListener(this);
         this.authorizationManager = authorizationManager;
         this.userLocalSettings = userLocationSettings;
         this.application = application;
+        this.gson = gson;
         String profileString = userLocationSettings.getString(SHARED_PREF_USER);
         if (profileString != null && !profileString.isEmpty()) {
             profile = new Gson().fromJson(profileString, Profile.class);
-            accountState = AccountState.REGULAR_LOGIN;
+            setProfile(profile);
         }
     }
 
     public LiveData<Resource<Boolean>> logout() {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
-        authorizationManager.logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
+        challengeHandler.logout(new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
                 userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
-                challengeHandler.clearSavedCredentials();
                 setProfile(null);
                 accountState = null;
                 loginState.postValue(LoginState.LOGGED_OUT);
@@ -202,7 +201,9 @@ public class SessionManager implements SessionChangeListener {
         } else {
             this.profile = profile;
             userLocalSettings.setString(SHARED_PREF_USER, gson.toJson(profile));
-            accountState = AccountState.REGULAR_LOGIN;
+            if (accountState == null) {
+                accountState = AccountState.REGULAR_LOGIN;
+            }
         }
     }
 

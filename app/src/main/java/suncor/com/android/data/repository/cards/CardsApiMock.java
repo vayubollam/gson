@@ -52,7 +52,7 @@ public class CardsApiMock implements CardsApi {
 
     private String responseJson = "[{\n" +
             "                        \"cardType\": \"PPTS\",\n" +
-            "                        \"cardNumber\": \"706988500050292051\",\n" +
+            "                        \"cardNumber\": \"7069885000502920\",\n" +
             "                        \"cardNumberEncrypted\": \"25AbCF1v1Or4s1D4s0kJEA==\",\n" +
             "                        \"serviceId\": \"11LawF1v1Or4s1D4s0kJEA==\",\n" +
             "                        \"pointsBalance\": 12345\n" +

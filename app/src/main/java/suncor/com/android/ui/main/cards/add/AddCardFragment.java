@@ -58,14 +58,15 @@ public class AddCardFragment extends BaseFragment {
             binding.cardLayout.setVisibility(View.VISIBLE);
             PetroCanadaExpandedCardItemBinding expandedCardItemBinding = PetroCanadaExpandedCardItemBinding.inflate(getLayoutInflater(), binding.cardLayout, true);
             expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
+            expandedCardItemBinding.setHideMoreButton(true);
             expandedCardItemBinding.executePendingBindings();
         });
 
         viewModel.showCard.observe(this, show -> {
             if (show) {
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
+                binding.getRoot().setBackgroundColor(getResources().getColor(R.color.black_4));
             } else {
-                setStatusBarColor();
+                binding.getRoot().setBackgroundColor(getResources().getColor(R.color.white));
             }
         });
     }

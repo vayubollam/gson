@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -26,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.LocationLiveData;
-import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSearchBinding;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.RecentlySearchedLayoutBinding;
@@ -64,9 +62,6 @@ public class SearchFragment extends DaggerFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         nearbySearchBinding = binding.nearbyLayout;
         SuggestionsLayoutBinding suggestionsLayoutBinding = binding.suggestionsLayout;
@@ -173,14 +168,6 @@ public class SearchFragment extends DaggerFragment {
         } catch (NullPointerException ignored) {
         }
         Navigation.findNavController(getView()).popBackStack();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
-
     }
 
     private void showKeyBoard() {

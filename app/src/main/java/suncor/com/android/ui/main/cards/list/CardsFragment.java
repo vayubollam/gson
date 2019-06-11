@@ -78,7 +78,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
 
     private void cardClick(CardDetail cardDetail) {
         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
-        action.setClickedCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
         Navigation.findNavController(getView()).navigate(action);
     }
 
@@ -141,11 +141,6 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
     public void onStart() {
         super.onStart();
         viewModel.onAttached();
-    }
-
-    @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
     }
 
     @Override
