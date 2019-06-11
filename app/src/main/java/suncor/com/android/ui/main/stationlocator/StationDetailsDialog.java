@@ -115,6 +115,11 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight));
         binding.cardView.getLayoutParams().height = initialHeight;
+
+        if (!shouldShowCardHandler) {
+            binding.imgBottomSheet.setVisibility(View.INVISIBLE);
+        }
+
         dialog.setContentView(binding.getRoot());
 
         binding.closeButton.setOnClickListener((v) -> {

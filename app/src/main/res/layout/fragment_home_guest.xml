@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.home.HomeViewModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_4"
+        android:paddingTop="16dp"
+        tools:context="suncor.com.android.ui.main.home.HomeFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/offers_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/nearest_card"
+            android:clipToPadding="false"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            tools:listitem="@layout/dashboard_card" />
+
+        <include
+            android:id="@+id/nearest_card"
+            layout="@layout/home_nearest_card"
+            android:layout_width="match_parent"
+            android:layout_height="166dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            app:vm="@{vm}" />
+
+        <FrameLayout
+            android:id="@+id/welcome_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            android:elevation="8dp"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/welcome_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Title1" />
+        </FrameLayout>
+
+    </RelativeLayout>
+</layout>
