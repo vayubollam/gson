@@ -35,8 +35,4 @@ public class TransactionDetailFragment extends BaseFragment {
         return binding.getRoot();
     }
 
-    @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
-    }
 }
