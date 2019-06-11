@@ -105,6 +105,12 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_aboutFragment"
+            app:destination="@+id/aboutFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
@@ -183,5 +189,10 @@
             app:argType="suncor.com.android.model.cards.Transaction"
             app:nullable="true" />
     </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/aboutFragment"
+        android:name="suncor.com.android.ui.main.profile.about.AboutFragment"
+        android:label="PersonalInfoFragment"
+        tools:layout="@layout/fragment_about" />
 
 </navigation>
