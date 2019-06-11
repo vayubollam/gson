@@ -19,7 +19,8 @@
         android:layout_height="166dp"
         android:clipChildren="false"
         app:cardCornerRadius="@dimen/cards_default_radius"
-        app:cardElevation="2dp">
+        app:cardElevation="2dp"
+        app:rippleColor="@android:color/transparent">
 
         <RelativeLayout
             android:layout_width="match_parent"

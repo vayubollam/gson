@@ -41,10 +41,12 @@ import suncor.com.android.databinding.FragmentHomeGuestBinding;
 import suncor.com.android.databinding.FragmentHomeSignedinBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
+import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -75,7 +77,8 @@ public class HomeFragment extends BottomNavigationFragment {
     };
 
     private OnClickListener showCardDetail = v -> {
-        if (mViewModel.nearestStation.getValue().data != null && !mViewModel.isLoading.get()) {
+        Resource<StationItem> resource = mViewModel.nearestStation.getValue();
+        if (resource != null && resource.data != null && !mViewModel.isLoading.get()) {
             StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
         }
     };

@@ -79,14 +79,14 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_5_button),
                         () -> {
                             new AlertDialog.Builder(activity)
-                                    .setTitle("Leaving Petro-Canada?")
-                                    .setMessage("You're about to open another app.")
-                                    .setPositiveButton("Open", (dialog, which) -> {
+                                    .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
+                                    .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
+                                    .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setData(Uri.parse("https://www.rbcroyalbank.com/petro-canada/cards-25.html"));//TODO
+                                        intent.setData(Uri.parse(activity.getString(R.string.rbc_url)));
                                         activity.startActivity(intent);
                                     })
-                                    .setNegativeButton("Cancel", null)
+                                    .setNegativeButton(R.string.cancel, null)
                                     .show();
                         }
                 ));
