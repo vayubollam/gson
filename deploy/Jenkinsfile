@@ -13,8 +13,8 @@ pipeline {
 	environment {
 		PERFECTO_TOKEN = credentials("PerfectoToken")
 		MFP_URL = credentials("MobileSecret${env.BUILD_ENV}URL")
-        MFP_USERNAME = credentials("MFPSecret${env.BUILD_ENV}User")
-        MFP_PASSWORD = credentials("MFPSecret${env.BUILD_ENV}Password")
+        MFP_USERNAME = credentials("MobileSecret${env.BUILD_ENV}User")
+        MFP_PASSWORD = credentials("MobileSecret${env.BUILD_ENV}Password")
 	}
 
 	stages {
