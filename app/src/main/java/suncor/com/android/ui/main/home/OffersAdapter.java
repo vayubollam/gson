@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
+import suncor.com.android.ui.YoutubePlayerActivity;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
@@ -45,8 +46,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_2_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-                            HomeFragmentDirections.ActionHomeTabToYoutubeFragment action = HomeFragmentDirections.actionHomeTabToYoutubeFragment("bXkNP6MDfzg");
-                            activity.getNavController().navigate(action);
+                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "IbLyOW5YqZ0");
+                            activity.startActivity(intent);
                         }
                 ));
         offerCards.add(banner2);
@@ -68,7 +70,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_4_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-                            //TODO
+                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "xsa9QjRgy5w");
+                            activity.startActivity(intent);
                         }
                 ));
         offerCards.add(banner4);

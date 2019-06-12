@@ -6,4 +6,9 @@
     android:orientation="vertical"
     android:padding="4dp">
 
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/youtube_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"/>
 </FrameLayout>

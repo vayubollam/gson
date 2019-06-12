@@ -39,6 +39,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".ui.YoutubePlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
             android:name=".ui.enrollment.EnrollmentActivity"
             android:screenOrientation="portrait" />
 
