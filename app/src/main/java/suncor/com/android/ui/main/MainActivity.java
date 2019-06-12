@@ -22,6 +22,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
 import suncor.com.android.ui.main.common.BaseFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
@@ -64,6 +65,8 @@ public class MainActivity extends SessionAwareActivity {
         getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         setContentView(R.layout.activity_main);
+        AndroidBug5497Workaround.assistActivity(this);
+
         bottom_navigation = findViewById(R.id.bottom_navigation);
         View mainDivider = findViewById(R.id.mainDivider);
         if (!application.isSplashShown()) {
