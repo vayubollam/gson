@@ -65,7 +65,7 @@ public class DataModule {
     @Provides
     @Singleton
     PlacesClient providesPlacesClient(SuncorApplication application) {
-        Places.initialize(application, BuildConfig.MAP_API_KEY);
+        Places.initialize(application, BuildConfig.GOOGLE_API_KEY);
         return Places.createClient(application);
     }
 

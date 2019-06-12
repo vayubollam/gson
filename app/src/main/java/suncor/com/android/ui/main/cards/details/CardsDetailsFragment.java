@@ -28,8 +28,7 @@ public class CardsDetailsFragment extends BaseFragment {
     private int clickedCardIndex;
     @Inject
     ViewModelFactory viewModelFactory;
-    private static float MAX_BRIGHTNESS = 1f;
-    private float previousBrightness = MAX_BRIGHTNESS;
+    private float previousBrightness;
     private CardsDetailsAdapter cardsDetailsAdapter;
 
 
@@ -72,11 +71,11 @@ public class CardsDetailsFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onStart() {
+        super.onStart();
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         previousBrightness = attributes.screenBrightness;
-        attributes.screenBrightness = MAX_BRIGHTNESS;
+        attributes.screenBrightness = 1f;
         getActivity().getWindow().setAttributes(attributes);
     }
 

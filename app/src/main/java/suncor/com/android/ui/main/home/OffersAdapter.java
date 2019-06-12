@@ -1,82 +1,141 @@
 package suncor.com.android.ui.main.home;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.material.button.MaterialButton;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
+import suncor.com.android.databinding.OffersCardItemBinding;
+import suncor.com.android.ui.YoutubePlayerActivity;
+import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.MainActivity;
 
 
-public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.DashboardHolder> {
+public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
 
-    private ArrayList<Drawable> images;
-    private HomeViewModel homeViewModel;
+    private ArrayList<OfferCard> offerCards;
 
 
-    public OffersAdapter(Activity activity, HomeViewModel viewModel) {
-        images = new ArrayList<>();
-        images.add(activity.getResources().getDrawable(R.drawable.car_trip));
-        images.add(activity.getResources().getDrawable(R.drawable.agriculture));
-        images.add(activity.getResources().getDrawable(R.drawable.petro_card));
-        this.homeViewModel = viewModel;
+    public OffersAdapter(MainActivity activity, boolean isSignedIn) {
+        offerCards = new ArrayList<>();
+        if (!isSignedIn) {
+            OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
+                    activity.getDrawable(R.drawable.banner_1_signin),
+                    new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
+                        activity.startActivity(new Intent(activity, EnrollmentActivity.class));
+                    }),
+                    new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
+                        activity.startActivity(new Intent(activity, LoginActivity.class));
+                    }));
+            offerCards.add(banner1);
+        }
+
+        OfferCard banner2 = new OfferCard(activity.getString(R.string.offers_banner_2_text),
+                activity.getDrawable(R.drawable.banner_2_brand_vik),
+                new OfferCard.OfferButton(
+                        activity.getString(R.string.offers_banner_2_button),
+                        activity.getDrawable(R.drawable.ic_play_video),
+                        () -> {
+                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "IbLyOW5YqZ0");
+                            activity.startActivity(intent);
+                        }
+                ));
+        offerCards.add(banner2);
+
+        OfferCard banner3 = new OfferCard(activity.getString(R.string.offers_banner_3_text),
+                activity.getDrawable(R.drawable.banner_3_ppts),
+                new OfferCard.OfferButton(
+                        activity.getString(R.string.offers_banner_3_button),
+                        () -> {
+                            SuncorToast.makeText(activity, "This will redirect to rewards screen", Toast.LENGTH_SHORT).show();
+                            //TODO
+                        }
+                ));
+        offerCards.add(banner3);
+
+        OfferCard banner4 = new OfferCard(activity.getString(R.string.offers_banner_4_text),
+                activity.getDrawable(R.drawable.banner_4_ev),
+                new OfferCard.OfferButton(
+                        activity.getString(R.string.offers_banner_4_button),
+                        activity.getDrawable(R.drawable.ic_play_video),
+                        () -> {
+                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "xsa9QjRgy5w");
+                            activity.startActivity(intent);
+                        }
+                ));
+        offerCards.add(banner4);
+
+        OfferCard banner5 = new OfferCard(activity.getString(R.string.offers_banner_5_text),
+                activity.getDrawable(R.drawable.banner_5_rbc),
+                new OfferCard.OfferButton(
+                        activity.getString(R.string.offers_banner_5_button),
+                        () -> {
+                            new AlertDialog.Builder(activity)
+                                    .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
+                                    .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
+                                    .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setData(Uri.parse(activity.getString(R.string.rbc_url)));
+                                        activity.startActivity(intent);
+                                    })
+                                    .setNegativeButton(R.string.cancel, null)
+                                    .show();
+                        }
+                ));
+        offerCards.add(banner5);
+
     }
 
     @NonNull
     @Override
-    public DashboardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.dashboard_card, parent, false);
-        return new DashboardHolder(rootView);
+    public OffersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        OffersCardItemBinding binding = OffersCardItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+
+        return new OffersViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DashboardHolder holder, int position) {
-        holder.img_card.setImageDrawable(images.get(position));
-        if (homeViewModel.isUserLoggedIn()) {
-            holder.sign_in.setVisibility(View.GONE);
-            holder.join.setVisibility(View.GONE);
-        } else {
-            holder.sign_in.setVisibility(View.VISIBLE);
-            holder.join.setVisibility(View.VISIBLE);
-            holder.sign_in.setOnClickListener(v -> {
-                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), LoginActivity.class));
-            });
-            holder.join.setOnClickListener(v -> {
-                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), EnrollmentActivity.class));
-            });
-        }
-
+    public void onBindViewHolder(@NonNull OffersViewHolder holder, int position) {
+        OffersCardItemBinding binding = holder.binding;
+        OfferCard card = offerCards.get(position);
+        binding.setItem(card);
+        binding.executePendingBindings();
+        binding.bannerImage.post(() -> {
+            //Apply a matrix to simulate center_top
+            Matrix matrix = binding.bannerImage.getImageMatrix();
+            float scaleXFactor = binding.bannerImage.getWidth() / (float) card.getImage().getIntrinsicWidth();
+            float scaleYFactor = binding.bannerImage.getHeight() / (float) card.getImage().getIntrinsicHeight();
+            float scaleFactor = Math.max(scaleXFactor, scaleYFactor);
+            float pivotPoint = 2 * (card.getImage().getIntrinsicWidth() * scaleFactor - binding.bannerImage.getWidth());
+            matrix.setScale(scaleFactor, scaleFactor, pivotPoint, 0);
+            binding.bannerImage.setImageMatrix(matrix);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return offerCards.size();
     }
 
-    public class DashboardHolder extends RecyclerView.ViewHolder {
+    public class OffersViewHolder extends RecyclerView.ViewHolder {
 
-        private AppCompatImageView img_card;
-        private AppCompatTextView card_welcome;
-        private MaterialButton join, sign_in;
+        OffersCardItemBinding binding;
 
-        public DashboardHolder(@NonNull View itemView) {
-            super(itemView);
-            img_card = itemView.findViewById(R.id.img_dashboard);
-            card_welcome = itemView.findViewById(R.id.card_welcome);
-            join = itemView.findViewById(R.id.card_dashboard_join);
-            sign_in = itemView.findViewById(R.id.card_dashboard_Sign_In);
+        public OffersViewHolder(OffersCardItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

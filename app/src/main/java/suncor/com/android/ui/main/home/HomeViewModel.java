@@ -87,7 +87,7 @@ public class HomeViewModel extends ViewModel {
         }));
 
         LiveData<Resource<DirectionsResult>> directionsResultLiveData = Transformations.switchMap(_nearestStation, resource -> {
-            if (resource.status == Resource.Status.SUCCESS && resource.data.getDistanceDuration() == null) {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null && resource.data.getDistanceDuration() == null) {
                 LatLng dest = new LatLng(resource.data.getStation().getAddress().getLatitude(), resource.data.getStation().getAddress().getLongitude());
                 LatLng origin = new LatLng(userLocation.latitude, userLocation.longitude);
                 return DirectionsApi.getInstance().enqueuJob(origin, dest);

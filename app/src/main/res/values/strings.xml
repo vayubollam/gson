@@ -355,9 +355,20 @@
     <string name="home_signedin_greetings_evening">Good Evening\n%s!</string>
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off</string>
     <string name="home_signedin_scan_button">Scan card</string>
+    <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
+    <string name="offers_banner_2_text">Vik Heer, a member of your community.</string>
+    <string name="offers_banner_2_button">Meet Vik</string>
+    <string name="offers_banner_3_text">Petro\u2011Points™ = Free gas.</string>
+    <string name="offers_banner_3_button">Learn more</string>
+    <string name="offers_banner_4_text">See our EV Fast Charge come to life.</string>
+    <string name="offers_banner_4_button">Watch</string>
+    <string name="offers_banner_5_text">Save 3¢/litre on every fill-up.</string>
+    <string name="offers_banner_5_button">Get started</string>
+    <string name="offers_leaving_app_alert_title">You are leaving our App.</string>
+    <string name="offers_leaving_app_alert_message">We will open your browser.</string>
+    <string name="offers_leaving_app_alert_button">Open</string>
+    <string name="rbc_url">https://www.rbcroyalbank.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="transaction_type_ppt">Transfer</string>
     <string name="transaction_type_bonus">Bonus</string>
     <string name="transaction_type_pp">Petro Points</string>

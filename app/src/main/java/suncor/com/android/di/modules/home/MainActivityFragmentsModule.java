@@ -60,7 +60,6 @@ abstract class MainActivityFragmentsModule {
     @ContributesAndroidInjector
     abstract PreferencesFragment contributesPreferencesFragment();
 
-
     @ContributesAndroidInjector
     abstract TransactionsFragment contributesTransactionFragment();
 

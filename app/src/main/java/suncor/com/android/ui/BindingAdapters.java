@@ -161,4 +161,18 @@ public class BindingAdapters {
         }
     }
 
+    @BindingAdapter(value = {"layout_constraintWidth_default"})
+    public static void setConstraintWidthDefault(View view, int matchConstraint) {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        params.matchConstraintDefaultWidth = matchConstraint;
+        view.setLayoutParams(params);
+    }
+
+    @BindingAdapter(value = {"layout_constraintEnd_toStartOf"})
+    public static void setConstraineEndToStartOf(View view, int id) {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        params.endToStart = id;
+        view.setLayoutParams(params);
+    }
+
 }

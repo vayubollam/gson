@@ -360,5 +360,18 @@
     <string name="profile_about_legal_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="home_signedin_scan_button">Scannez</string>
+    <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
+    <string name="offers_banner_2_text">Vik Heer, un membre de votre collectivité.</string>
+    <string name="offers_banner_2_button">Voici Vik</string>
+    <string name="offers_banner_3_text">Petro\u2011Points🅪 = Essence gratuite.</string>
+    <string name="offers_banner_3_button">En savoir plus</string>
+    <string name="offers_banner_4_text">Voyez notre réseau de recharge rapide prendre forme.</string>
+    <string name="offers_banner_4_button">Voir la vidéo</string>
+    <string name="offers_banner_5_text">Économisez 3 ¢/litre sur gaz.</string>
+    <string name="offers_banner_5_button">Pour commencer</string>
+    <string name="offers_leaving_app_alert_title">Vous quittez notre application.</string>
+    <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
+    <string name="offers_leaving_app_alert_button">Continuer</string>
+    <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
 
 </resources>
