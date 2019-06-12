@@ -380,5 +380,6 @@
     <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
     <string name="offers_leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
+    <string name="transaction_type_pp">Petro Points</string>
 
 </resources>

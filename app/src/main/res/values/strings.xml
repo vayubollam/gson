@@ -348,13 +348,10 @@
     <string name="profile_about_legal_link">https://www.petro-canada.ca/en/legal-privacy</string>
     <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/en/legal-privacy</string>
 
-
-    <string name="home_signedin_greetings_morning">Good Morning\n%s!</string>
-    <string name="home_signedin_greetings_afternoon">Good Afternoon\n%s!</string>
-    <string name="home_signedin_greetings_evening">Good Evening\n%s!</string>
     <string name="home_signedin_greetings_morning">Good morning,\n%s!</string>
     <string name="home_signedin_greetings_afternoon">Good afternoon,\n%s!</string>
     <string name="home_signedin_greetings_evening">Good evening,\n%s!</string>
+
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off</string>
     <string name="home_signedin_scan_button">Scan card</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
@@ -390,7 +387,7 @@
     <string name="transaction_detail_amount">Amount</string>
     <string name="transaction_detail_location_title">Location</string>
     <string name="transaction_detail_description_title">Description</string>
-    <string name="home_enrollment_greeting">Your %s points will take approximately 15 minutes to appear.</string>
+    <string name="home_enrollment_greeting">Your %s points will take approximately 15 minutes to appear. A physical card will arrive in the mail in 7–10 days.</string>
     <string name="home_enrollment_greeting_title">Thank you for joining Petro\u2011Points.</string>
     <string name="home_enrollment_greeting_dismiss">Dismiss</string>
 </resources>

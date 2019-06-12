@@ -123,13 +123,13 @@ public class HomeViewModel extends ViewModel {
 
         if (now.before(noon)) {
             greetingsMessage.set(R.string.home_signedin_greetings_morning);
-            headerImage.set(R.drawable.desmond_simon_744203_unsplash);
+            headerImage.set(R.drawable.home_backdrop_morning);
         } else if (now.before(evening)) {
             greetingsMessage.set(R.string.home_signedin_greetings_afternoon);
-            headerImage.set(R.drawable.desmond_simon_744203_unsplash);
+            headerImage.set(R.drawable.home_backdrop_afternoon);
         } else {
             greetingsMessage.set(R.string.home_signedin_greetings_evening);
-            headerImage.set(R.drawable.desmond_simon_744203_unsplash);
+            headerImage.set(R.drawable.home_backdrop_evening);
         }
     }
 
