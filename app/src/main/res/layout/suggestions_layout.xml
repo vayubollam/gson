@@ -75,6 +75,30 @@
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/place_suggestion_item" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:visibleGone="@{vm.placeSuggestions.status == Status.SUCCESS}"
+                android:src="@drawable/horizontal_divider" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:paddingTop="6dp"
+                android:paddingStart="16dp"
+                android:paddingBottom="6dp"
+                android:scaleType="fitStart"
+                app:visibleGone="@{vm.placeSuggestions.status == Status.SUCCESS}"
+                android:background="@color/white"
+                android:src="@drawable/places_powered_by_google_dark"
+                android:tint="@color/black_80"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:visibleGone="@{vm.placeSuggestions.status == Status.SUCCESS}"
+                android:src="@drawable/horizontal_divider" />
+
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
