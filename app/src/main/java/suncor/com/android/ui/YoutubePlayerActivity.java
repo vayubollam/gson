@@ -2,6 +2,7 @@ package suncor.com.android.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -20,8 +21,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_youtube_player);
         youtubePlayer = findViewById(R.id.youtube_player);
         youtubePlayer.initialize(BuildConfig.GOOGLE_API_KEY, this);
