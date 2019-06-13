@@ -50,7 +50,7 @@
     </plurals>
 
     <string name="favourites_no_result_text">Vous pouvez utiliser vos Favoris pour trouver rapidement le lave-auto que vous aimez ou le dépanneur offrant votre saveur préférée de barbotine.</string>
-    <string name="dashboard_nearby_card_title">À proximité</string>
+    <string name="home_nearest_card_title">À proximité</string>
     <string name="suggestions_fragment_nearby_title">À proximité</string>
     <string name="filters_apply_button">Appliquer</string>
     <string name="filters_clear_button">Effacer filtres</string>
@@ -165,15 +165,15 @@
     <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
     <string name="customer_support_number">18006680222</string>
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
-    <string name="dashboard_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
-    <string name="dashboard_nearest_no_stations_found">Aucun emplacement trouvé</string>
-    <string name="dashboard_nearest_enable_gps_message">"Petro-Canada utilise les services de localisation pour montrer les établissements près de chez vous  "</string>
-    <string name="dashboard_nearest_try_again">Veuillez réessayer</string>
-    <string name="dashboard_nearest_loading_title">Cherchons la station le plus près</string>
-    <string name="dashboard_nearest_enable_gps_title">Activer les services de localisation</string>
-    <string name="dashboard_nearest_error_body">Nous ne trouvons pas l\'établissement le plus près pour le moment. Veuillez réessayer plus tard.</string>
-    <string name="dashboard_nearest_error_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
-    <string name="dashboard_nearest_error_title">Quelque chose a mal tourné</string>
+    <string name="home_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
+    <string name="home_nearest_no_stations_found">Aucun emplacement trouvé</string>
+    <string name="home_nearest_enable_gps_message">"Petro-Canada utilise les services de localisation pour montrer les établissements près de chez vous  "</string>
+    <string name="home_nearest_try_again">Veuillez réessayer</string>
+    <string name="home_nearest_loading_title">Cherchons la station le plus près</string>
+    <string name="home_nearest_enable_gps_title">Activer les services de localisation</string>
+    <string name="home_nearest_error_body">Nous ne trouvons pas l\'établissement le plus près pour le moment. Veuillez réessayer plus tard.</string>
+    <string name="home_nearest_error_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
+    <string name="home_nearest_error_title">Quelque chose a mal tourné</string>
     <string name="msg_sl006">Station non ajoutée</string>
     <string name="msg_sl007">Station non supprimée</string>
     <string name="login_create_password_header">Nouveau mot de passe</string>
@@ -360,6 +360,13 @@
     <string name="profile_about_legal_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="home_signedin_scan_button">Scannez</string>
+    <string name="home_signedin_greetings_morning">Bonjour,\n%s!</string>
+    <string name="home_signedin_greetings_afternoon">Bonjour,\n%s!</string>
+    <string name="home_signedin_greetings_evening">Bonsoir,\n%s!</string>
+    <string name="home_signedin_petropoints_balance">Vous avez %s points ou %d $ de rabais.</string>
+    <string name="home_enrollment_greeting">Vos %s points apparaîtront dans environ 15 minutes.</string>
+    <string name="home_enrollment_greeting_title">Merci de faire partie du programme Petro\u2011Points.</string>
+    <string name="home_enrollment_greeting_dismiss">Fermer</string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
     <string name="offers_banner_2_text">Vik Heer, un membre de votre collectivité.</string>
     <string name="offers_banner_2_button">Voici Vik</string>
@@ -373,5 +380,6 @@
     <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
     <string name="offers_leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
+    <string name="transaction_type_pp">Petro Points</string>
 
 </resources>
