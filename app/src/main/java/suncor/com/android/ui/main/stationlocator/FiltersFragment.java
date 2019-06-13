@@ -21,8 +21,9 @@ import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFiltersBinding;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.main.common.BaseFragment;
 
-public class FiltersFragment extends Fragment {
+public class FiltersFragment extends BaseFragment {
     private FragmentFiltersBinding binding;
     private HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private StationsViewModel parentViewModel;
