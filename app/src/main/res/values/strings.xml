@@ -352,9 +352,6 @@
     <string name="home_signedin_greetings_afternoon">Good afternoon,\n%s!</string>
     <string name="home_signedin_greetings_evening">Good evening,\n%s!</string>
 
-    <string name="home_signedin_greetings_morning">Good Morning\n%s!</string>
-    <string name="home_signedin_greetings_afternoon">Good Afternoon\n%s!</string>
-    <string name="home_signedin_greetings_evening">Good Evening\n%s!</string>
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off</string>
     <string name="home_signedin_scan_button">Scan card</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
