@@ -1,6 +1,5 @@
 package suncor.com.android.ui.enrollment.form;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -214,12 +213,12 @@ public class EnrollmentFormViewModel extends ViewModel {
                 autocompleteResults.setValue(Resource.loading());
             } else if (result.status == Resource.Status.SUCCESS) {
                 CanadaPostDetails placeDetails = result.data;
-                String streetAddress = removeAccents(placeDetails.getLine1());
+                String streetAddress = placeDetails.getLine1();
                 streetAddressField.setTextSilent(streetAddress);
                 streetAddressField.notifyPropertyChanged(BR.text);
                 postalCodeField.setText(placeDetails.getPostalCode());
                 postalCodeField.notifyPropertyChanged(BR.text);
-                String city = removeAccents(placeDetails.getCity());
+                String city = placeDetails.getCity();
                 cityField.setText(city);
                 cityField.notifyPropertyChanged(BR.text);
                 Province province = Province.findProvince(provincesList, placeDetails.getProvinceCode());
@@ -414,10 +413,5 @@ public class EnrollmentFormViewModel extends ViewModel {
 
     public void setProvincesList(ArrayList<Province> provinces) {
         this.provincesList = provinces;
-    }
-
-    private String removeAccents(String text) {
-        return Normalizer.normalize(text, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "");
     }
 }
