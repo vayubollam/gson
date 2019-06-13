@@ -22,7 +22,6 @@ import suncor.com.android.ui.main.common.BaseFragment;
 
 public class AboutFragment extends BaseFragment {
     private FragmentAboutBinding binding;
-    public static final String TAG = "WebDialog";
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -48,7 +47,7 @@ public class AboutFragment extends BaseFragment {
     }
     void showDialog(String url, String header) {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
-        webDialogFragment.show(getFragmentManager(), TAG);
+        webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
     }
 
     @Override

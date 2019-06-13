@@ -13,10 +13,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -35,6 +31,11 @@ import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import javax.inject.Inject;
+
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentHomeGuestBinding;
@@ -43,6 +44,7 @@ import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.common.webview.WebDialogFragment;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
@@ -65,7 +67,6 @@ public class HomeFragment extends BottomNavigationFragment {
     private boolean inAnimationShown;
     @Inject
     PermissionManager permissionManager;
-
     private HomeNearestCardBinding nearestCard;
 
     private OnClickListener tryAgainLister = v -> {
@@ -140,6 +141,7 @@ public class HomeFragment extends BottomNavigationFragment {
         //Setup nearest card click listeners
         nearestCard.getRoot().setOnClickListener(showCardDetail);
         nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
+
         nearestCard.settingsButton.setOnClickListener(v -> {
             permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
                 @Override
@@ -227,6 +229,8 @@ public class HomeFragment extends BottomNavigationFragment {
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
         binding.offersRecyclerview.setAdapter(offersAdapter);
+        binding.privacyPolicy.setOnClickListener(v -> showDialog(getString(R.string.profile_about_privacy_policy_link), getString(R.string.profile_about_legal_header)));
+        binding.termsConditions.setOnClickListener(v -> showDialog(getString(R.string.profile_about_legal_link), getString(R.string.profile_about_privacy_policy_header)));
 
         if (!inAnimationShown && !mViewModel.isUserLoggedIn()) {
             inAnimationShown = true;
@@ -241,6 +245,10 @@ public class HomeFragment extends BottomNavigationFragment {
         return binding.getRoot();
     }
 
+    void showDialog(String url, String header) {
+        WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
+        webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
+    }
     @Override
     protected boolean isFullScreen() {
         return mViewModel.isUserLoggedIn();

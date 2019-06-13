@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout">
 
     <data>
 
@@ -11,7 +12,7 @@
 
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_4"
@@ -21,21 +22,55 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/offers_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/nearest_card"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
             android:clipToPadding="false"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            tools:listitem="@layout/offers_card_item" />
+            tools:listitem="@layout/offers_card_item"
+            app:layout_constraintBottom_toTopOf="@+id/nearest_card"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             android:id="@+id/nearest_card"
             layout="@layout/home_nearest_card"
             android:layout_width="match_parent"
             android:layout_height="166dp"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/privacy_policy"
             app:vm="@{vm}" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/terms_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/gibson_semibold"
+            android:text="@string/home_tab_terms_amp_conditions"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black_60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/privacy_policy"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/privacy_policy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/gibson_semibold"
+            android:text="@string/home_tab_privacy_policy"
+            android:textAlignment="textStart"
+            android:textColor="@color/black_60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/terms_conditions" />
 
         <FrameLayout
             android:id="@+id/welcome_layout"
@@ -54,5 +89,5 @@
                 android:textAppearance="@style/Title1" />
         </FrameLayout>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -18,6 +18,8 @@ import suncor.com.android.databinding.FragmentWebDialogBinding;
 
 public class WebDialogFragment extends DialogFragment {
 
+    public static final String TAG = WebDialogFragment.class.getSimpleName();
+
     public static final String HEADER = "header";
     public static final String URL = "url";
     private FragmentWebDialogBinding binding;

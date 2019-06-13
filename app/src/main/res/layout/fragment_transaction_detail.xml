@@ -12,13 +12,13 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_4">
+        android:background="@color/white">
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/transaction_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black_4"
+            android:background="@color/white"
             app:title="@{td.getFormattedTitle()}" />
 
         <androidx.core.widget.NestedScrollView
