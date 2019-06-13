@@ -254,6 +254,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="aboutFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="addCardFragment">
                     <value>
                       <LayoutPositions>
@@ -344,11 +356,6 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_home_tab_to_youtubeFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -390,6 +397,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_profile_tab_to_FAQFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_aboutFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -486,18 +498,6 @@
                               </value>
                             </entry>
                           </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="youtubeFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="345" />
-                            <option name="y" value="-285" />
-                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

@@ -96,9 +96,9 @@
         <action
             android:id="@+id/action_profile_tab_to_transactionsFragment"
             app:destination="@+id/transactionsFragment"
-            app:enterAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_down" />
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_profile_tab_to_preferencesFragment"
             app:destination="@id/preferencesFragment"
