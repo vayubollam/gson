@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowInsets;
 import android.widget.FrameLayout;
 
 public class AndroidBug5497Workaround {
@@ -38,29 +37,18 @@ public class AndroidBug5497Workaround {
     private void possiblyResizeChildOfContent() {
         int usableHeightNow = computeUsableHeight();
         if (usableHeightNow != usableHeightPrevious) {
-            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight() - computeNavBarHeight();
+            int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
 
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
             if (heightDifference > (usableHeightSansKeyboard / 4)) {
                 // keyboard probably just became visible
-                frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                frameLayoutParams.height = usableHeightNow;
             } else {
                 // keyboard probably just became hidden
-                frameLayoutParams.height = usableHeightSansKeyboard;
+                frameLayoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT;
             }
             mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
-        }
-    }
-
-    private int computeNavBarHeight() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            WindowInsets insets = activity.getWindow().getDecorView().getRootWindowInsets();
-            return insets.getStableInsetBottom();
-        } else {
-            Rect r = new Rect();
-            mChildOfContent.getWindowVisibleDisplayFrame(r);
-            return mChildOfContent.getRootView().getBottom() - r.bottom;
         }
     }
 
