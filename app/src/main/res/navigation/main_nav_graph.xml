@@ -149,7 +149,7 @@
             android:defaultValue="0"
             app:argType="integer" />
         <argument
-            android:name="isForScan"
+            android:name="isCardFromProfile"
             android:defaultValue="false"
             app:argType="boolean" />
     </keep_state_fragment>

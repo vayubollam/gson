@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.cards.list;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,14 +13,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.cards.CardsRepository;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.Event;
 
 
 public class CardsViewModel extends ViewModel {
 
     private final CardsRepository repository;
+    private final Profile profile;
     private MediatorLiveData<ViewState> _viewState = new MediatorLiveData<>();
     public LiveData<ViewState> viewState = _viewState;
 
@@ -33,9 +38,12 @@ public class CardsViewModel extends ViewModel {
     private ArrayList<CardDetail> cards;
 
     @Inject
-    public CardsViewModel(CardsRepository repository) {
+    public CardsViewModel(CardsRepository repository, SessionManager sessionManager) {
         this.repository = repository;
-        _viewState.setValue(ViewState.LOADING);
+
+        profile = sessionManager.getProfile();
+        cards = new ArrayList<>();
+
         MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>();
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
@@ -58,6 +66,8 @@ public class CardsViewModel extends ViewModel {
             //even in error state, we may get some data
             if (result.data != null) {
                 saveCards(result.data);
+            } else {
+                loadBalanceFromProfile();
             }
         });
 
@@ -67,7 +77,8 @@ public class CardsViewModel extends ViewModel {
                     _viewState.setValue(ViewState.SUCCESS);
                     break;
                 case LOADING:
-                    if (cards != null && !cards.isEmpty()) {
+                    ViewState currentState = _viewState.getValue();
+                    if (currentState != null && currentState != ViewState.FAILED) {
                         //Which means pull to refresh
                         _viewState.setValue(ViewState.REFRESHING);
                     } else {
@@ -85,6 +96,11 @@ public class CardsViewModel extends ViewModel {
         });
     }
 
+    private void loadBalanceFromProfile() {
+        CardDetail petroPointsCard = new CardDetail(CardType.PPTS, profile.getPetroPointsNumber(), profile.getPointsBalance());
+        saveCards(Collections.singletonList(petroPointsCard));
+    }
+
     public void onAttached() {
         retrieveCardsEvent.setValue(Event.newEvent(true));
     }
@@ -93,8 +109,10 @@ public class CardsViewModel extends ViewModel {
         return dateOfUpdate;
     }
 
-    private void saveCards(ArrayList<CardDetail> cards) {
-        this.cards = cards;
+    private void saveCards(List<CardDetail> cards) {
+        this.cards.clear();
+        this.cards.addAll(cards);
+
         petroPointsCard.setValue(cards.get(0));
 
         ArrayList<CardDetail> petroCanadaCardsList = new ArrayList<>();

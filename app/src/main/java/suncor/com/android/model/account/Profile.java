@@ -1,6 +1,7 @@
 package suncor.com.android.model.account;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 public class Profile {
     private String email;

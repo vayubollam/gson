@@ -21,6 +21,11 @@ public class GenericErrorView extends BaseObservable implements ErrorView {
     }
 
     @Override
+    public boolean hasErrorIcon() {
+        return true;
+    }
+
+    @Override
     @Bindable
     public String getTitle() {
         return ConnectionUtil.haveNetworkConnection(context) ? context.getString(R.string.msg_e001_title) : context.getString(R.string.msg_e002_title);
