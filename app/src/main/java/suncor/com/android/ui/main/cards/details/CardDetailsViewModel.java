@@ -21,7 +21,7 @@ public class CardDetailsViewModel extends ViewModel {
     private final CardsRepository cardsRepository;
     MediatorLiveData<List<CardDetail>> _cards = new MediatorLiveData<>();
     LiveData<List<CardDetail>> cards = _cards;
-    private boolean isForScan;
+    private boolean isCardFromProfile;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -29,12 +29,12 @@ public class CardDetailsViewModel extends ViewModel {
         this.sessionManager = sessionManager;
     }
 
-    public void setForScan(boolean forScan) {
-        isForScan = forScan;
+    public void setCardFromProfile(boolean cardFromProfile) {
+        isCardFromProfile = cardFromProfile;
     }
 
     public void retrieveCards() {
-        if (isForScan) {
+        if (isCardFromProfile) {
             Profile profile = sessionManager.getProfile();
             CardDetail petroPointsCard = new CardDetail(CardType.PPTS, profile.getPetroPointsNumber(), profile.getPointsBalance());
             _cards.setValue(Collections.singletonList(petroPointsCard));

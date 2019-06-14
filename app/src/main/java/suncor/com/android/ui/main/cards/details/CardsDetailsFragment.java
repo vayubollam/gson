@@ -36,9 +36,9 @@ public class CardsDetailsFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
-        boolean isForScan = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsForScan();
+        boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
-        viewModel.setForScan(isForScan);
+        viewModel.setCardFromProfile(loadCardFromProfile);
         viewModel.retrieveCards();
         viewModel.cards.observe(this, arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
