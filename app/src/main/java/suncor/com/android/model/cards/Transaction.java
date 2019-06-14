@@ -121,7 +121,7 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
             case PURCHASE:
                 return "$" + amount;
             case REDEMPTION:
-                return getPurchaseAmount() == 0 ? "" : "$" + amount;
+                return getBonusPoints() == 0 ? "" : "$" + amount;
             default:
                 return "";
         }
