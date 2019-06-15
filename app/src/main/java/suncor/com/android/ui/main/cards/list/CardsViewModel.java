@@ -63,11 +63,13 @@ public class CardsViewModel extends ViewModel {
         apiCall.addSource(refreshCall, apiCall::setValue);
 
         apiCall.observeForever((result) -> {
-            //even in error state, we may get some data
-            if (result.data != null) {
-                saveCards(result.data);
-            } else {
-                loadBalanceFromProfile();
+            if (result.status != Resource.Status.LOADING) {
+                //even in error state, we may get some data
+                if (result.data != null) {
+                    saveCards(result.data);
+                } else {
+                    loadBalanceFromProfile();
+                }
             }
         });
 

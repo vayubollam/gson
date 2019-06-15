@@ -1,0 +1,284 @@
+@font-face { 
+  font-family: Gibson;
+  src: url('../font/Gibson-Regular.otf');
+}
+
+@font-face { 
+  font-family: GibsonSemi;
+  src: url('../font/Gibson-SemiBold.otf');
+} 
+
+body {
+    margin: 0;
+}
+
+/* Petro Canada Shared: Font, Color */
+.pc-red {
+  color: rgba(236, 28, 47, 1);
+}
+
+.pc-white {
+  color: rgba(255, 255, 255, 1);
+}
+
+.pc-black-80 {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.pc-black-60 {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.head-line-1 {
+  font-family: GibsonSemi;
+  font-weight: bold;
+  font-size: 34px;
+
+}
+
+.head-line-2 {
+  font-family: GibsonSemi;
+  font-size: 34px;
+}
+
+.title-1 {
+  font-family: Gibson;
+  font-size: 26px;
+  line-height: 34px;
+}
+
+.title-bold-1 {
+  font-family: GibsonSemi;
+  font-size: 26px;
+  line-height: 34px;
+}
+
+.title-2 {
+  font-family: Gibson;
+  font-size: 22px;
+  line-height: 22px;
+}
+
+.title-bold-2 {
+  font-family: GibsonSemi;
+  font-size: 22px;
+  line-height: 30px;
+}
+
+.petro-body {
+  font-family: Gibson;
+  font-size: 18px;
+  line-height:26px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.petro-body-bold {
+  font-family: GibsonSemi;
+  font-size: 18px;
+  line-height:26px;
+}
+
+.caption-1 {
+  font-family: Gibson;
+  font-size: 14px;
+  line-height: 18px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.caption-2 {
+  font-family: Gibson;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.caption-bold-2 {
+  font-family: GibsonSemi;
+  font-size: 16px;
+}
+
+/* Shared Styling */
+
+.article-image-layout {
+  text-align: center;
+  padding: 0;
+  font-family: Gibson;
+}
+
+.article-text-layout {
+  text-align: center;
+  padding: 64px 20px;
+  font-family: Gibson;
+}
+
+.text-in-image{
+  position: relative;
+}
+
+.text-in-image img {
+  width: 100%;
+}
+
+.text-in-image .text{
+  position: absolute;
+  z-index: 999;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 40px 20px
+}
+
+.panel-card-image {
+  width: 162px;
+}
+
+/* Panel Styling */
+
+/* (Panel-1) rewards-discover */
+#rewards-discover-description {
+  margin-top: 24px;
+}
+
+/* (Panel-2) rewards-dollar-to-points */
+#rewards-dollar-to-points-title {
+  margin-bottom: 17px;
+}
+
+#rewards-dollar-to-points-image {
+  width: 90%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.rewards-redeem {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* (Panel-3) rewards-redeem */
+#rewards-redeem-title {
+  margin-bottom: 48px;
+}
+
+#rewards-redeem-tip {
+  margin-bottom: 24px;
+}
+
+/* (Panel-4) rewards-in-store-purchase */
+#rewards-in-store-purchase-title {
+  margin-bottom: 32px;
+}
+
+#rewards-in-store-purchase-ticket-image, 
+#rewards-in-store-purchase-fsr-image,
+#rewards-in-store-purchase-travel-image,
+#rewards-in-store-purchase-wag-image,
+#rewards-in-store-purchase-sp-image {
+  margin-bottom: 32px;
+}
+
+#rewards-in-store-purchase-ticket-title,
+#rewards-in-store-purchase-fsr-title,
+#rewards-in-store-purchase-travel-title,
+#rewards-in-store-purchase-wag-title,
+#rewards-in-store-purchase-sp-title {
+  margin-bottom: 4px;
+}
+
+#rewards-in-store-purchase-ticket-description,
+#rewards-in-store-purchase-fsr-description,
+#rewards-in-store-purchase-travel-description,
+#rewards-in-store-purchase-wag-description {
+  margin-bottom: 32px;
+}
+
+/* (Panel-5) rewards-egift */
+.rewards-egift {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+#rewards-egift-title {
+  margin-bottom: 32px;
+}
+
+#rewards-egift-hbc-image,
+#rewards-egift-ultimate-image,
+#rewards-egift-retail-image,
+#rewards-egift-cineplex-image {
+  margin-bottom: 32px;
+}
+
+#rewards-egift-hbc-title,
+#rewards-egift-ultimate-title,
+#rewards-egift-retail-title,
+#rewards-egift-cineplex-title {
+  margin-bottom: 4px;
+}
+
+#rewards-egift-hbc-description,
+#rewards-egift-ultimate-description,
+#rewards-egift-retail-description {
+  margin-bottom: 32px;
+}
+
+/* (Panel-6) rewards-link */
+#rewards-link-title,
+#rewards-link-description {
+  margin-bottom: 24px;
+}
+
+#rewards-link-rbc-image,
+#rewards-link-hbc-image,
+#rewards-link-caa-image,
+#rewards-link-bcaa-image,
+#rewards-link-more-image {
+  margin-bottom: 19px;
+}
+
+#rewards-link-rbc-title,
+#rewards-link-hbc-title,
+#rewards-link-caa-title,
+#rewards-link-bcaa-title,
+#rewards-link-more-title {
+  margin-bottom: 4px;
+}
+
+#rewards-link-rbc-description,
+#rewards-link-hbc-description,
+#rewards-link-caa-description,
+#rewards-link-bcaa-description {
+  margin-bottom: 32px;
+}
+
+/* (Panel-7) rewards-partners */
+.rewards-partners {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+#rewards-partners-title,
+#rewards-partners-partner-1-image,
+#rewards-partners-partner-2-image,
+#rewards-partners-partner-3-image,
+#rewards-partners-partner-1-description,
+#rewards-partners-partner-2-description {
+  margin-bottom: 32px;
+}
+
+/* (Panel-8) rewards-exchange */
+#rewards-exchange-title,
+#rewards-exchange-description {
+  margin-bottom: 24px;
+}
+
+#rewards-exchange-image {
+  width: 90%;
+}
+
+/* (Panel-9) rewards-join */
+#rewards-join-title {
+  margin-bottom: 24px;
+}
+
+#rewards-join-description {
+  margin-bottom: 48px;
+}

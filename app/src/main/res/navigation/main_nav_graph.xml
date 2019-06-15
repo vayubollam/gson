@@ -22,6 +22,17 @@
             app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
     <keep_state_fragment
+        android:id="@+id/rewards_tab"
+        android:name="suncor.com.android.ui.main.rewards.RewardsFragment"
+        android:label="RewardsFragment"
+        tools:layout="@layout/fragment_rewards">
+        <argument
+            android:name="root"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </keep_state_fragment>
+
+    <keep_state_fragment
         android:id="@+id/stations_tab"
         android:name="suncor.com.android.ui.main.stationlocator.StationsFragment"
         android:label="StationsFragment"
