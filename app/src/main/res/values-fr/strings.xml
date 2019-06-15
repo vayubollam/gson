@@ -360,8 +360,8 @@
     <string name="profile_about_legal_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="home_signedin_scan_button">Scannez</string>
-    <string name="home_tab_privacy_policy"> \u0020 \u0020 Avis juridique</string>
-    <string name="home_tab_terms_amp_conditions"><![CDATA[Conditions \u0020 ·]]></string>
+    <string name="home_tab_privacy_policy">Avis juridique</string>
+    <string name="home_tab_terms_amp_conditions">Conditions</string>
     <string name="home_signedin_greetings_morning">Bonjour,\n%s!</string>
     <string name="home_signedin_greetings_afternoon">Bonjour,\n%s!</string>
     <string name="home_signedin_greetings_evening">Bonsoir,\n%s!</string>
