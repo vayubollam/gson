@@ -115,6 +115,7 @@ public class MainActivity extends SessionAwareActivity {
 
         bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
         bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
+        bottom_navigation.getMenu().findItem(R.id.rewards_tab).setVisible(true);
     }
 
     @Override
@@ -128,5 +129,6 @@ public class MainActivity extends SessionAwareActivity {
 
         bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
         bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(true);
+        bottom_navigation.getMenu().findItem(R.id.rewards_tab).setVisible(false);
     }
 }

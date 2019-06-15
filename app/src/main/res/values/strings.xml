@@ -392,4 +392,6 @@
     <string name="home_enrollment_greeting">Your %s points will take up to 15 minutes to appear.</string>
     <string name="home_enrollment_greeting_title">Thank you for joining Petro\u2011Points.</string>
     <string name="home_enrollment_greeting_dismiss">Dismiss</string>
+    <string name="navigation_rewards_tab">Petro-Points</string>
+    <string name="rewards_guest_join_button">Sign up and start saving</string>
 </resources>
