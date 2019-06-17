@@ -19,7 +19,7 @@ import suncor.com.android.databinding.FragmentRewardsBinding;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 
-public class RewardsFragment extends BottomNavigationFragment {
+public class RewardsGuestFragment extends BottomNavigationFragment {
 
     private FragmentRewardsBinding binding;
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();

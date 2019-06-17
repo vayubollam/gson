@@ -23,7 +23,7 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/rewards_tab"
-        android:name="suncor.com.android.ui.main.rewards.RewardsFragment"
+        android:name="suncor.com.android.ui.main.rewards.RewardsGuestFragment"
         android:label="RewardsFragment"
         tools:layout="@layout/fragment_rewards">
         <argument
@@ -60,6 +60,17 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/rewards_signedin_tab"
+        android:name="suncor.com.android.ui.main.rewards.RewardsSignedInFragment"
+        android:label="RedeemFragment"
+        tools:layout="@layout/fragment_rewards_signedin">
+        <argument
+            android:name="root"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </keep_state_fragment>
+
     <keep_state_fragment
         android:id="@+id/cards_tab"
         android:name="suncor.com.android.ui.main.cards.list.CardsFragment"

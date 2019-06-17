@@ -41,8 +41,6 @@
                         android:layout_height="match_parent"
                         android:scaleType="center"
                         android:src="@{context.getDrawable(vm.headerImage)}"
-                        app:layout_constraintBottom_toBottomOf="@id/greeting_bottom_to_image"
-                        app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/home_backdrop_morning" />
 
                 </FrameLayout>

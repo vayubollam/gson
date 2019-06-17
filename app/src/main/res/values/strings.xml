@@ -406,4 +406,6 @@
     <string name="msg_cm001_message">Your cards are unavailable at the moment.</string>
     <string name="msg_cm001_button">Please try again</string>
     <string name="cards_partners_balance_value">20%</string>
+    <string name="navigation_rewards_signedin_tab">Redeem</string>
+    <string name="rewards_signedin_fragment_header">Rewards</string>
 </resources>
