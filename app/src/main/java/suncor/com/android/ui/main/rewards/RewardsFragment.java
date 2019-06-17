@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import java.util.Locale;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableBoolean;
+
+import java.util.Locale;
+
 import suncor.com.android.databinding.FragmentRewardsBinding;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
@@ -29,7 +30,7 @@ public class RewardsFragment extends BottomNavigationFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsBinding.inflate(inflater, container, false);
         binding.setIsWebviewLoading(isWebViewLoading);
-        if (webView == null) {
+        if (webView == null || isWebViewLoading.get()) {
             initWebView();
         } else {
             binding.layout.removeView(binding.webview);
