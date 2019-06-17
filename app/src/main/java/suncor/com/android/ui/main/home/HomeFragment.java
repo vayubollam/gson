@@ -240,6 +240,8 @@ public class HomeFragment extends BottomNavigationFragment {
             animslideUp.setDuration(500);
             binding.offersRecyclerview.startAnimation(animFromLet);
             nearestCard.getRoot().startAnimation(animslideUp);
+            binding.termsConditions.startAnimation(animslideUp);
+            binding.privacyPolicy.startAnimation(animslideUp);
         }
 
         return binding.getRoot();

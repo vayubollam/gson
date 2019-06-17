@@ -1,5 +1,8 @@
 package suncor.com.android.data.repository.cards;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
@@ -14,8 +17,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -96,6 +97,38 @@ public class CardsApiImpl implements CardsApi {
         } catch (JSONException e) {
             e.printStackTrace();
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardDetail>> removeCard(CardDetail cardDetail) {
+        Timber.d("Removing card: " + cardDetail.getCardNumber());
+        MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(ADAPTER_PATH);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT);
+            request.addHeader("x-card-number", cardDetail.getCardNumber());
+            request.addHeader("x-service-id", cardDetail.getServiceId());
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    result.postValue(Resource.success(cardDetail));
+                    Timber.d("card was deleted: " + cardDetail.getCardNumber());
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("card deletion failed due to: " + wlFailResponse.getErrorMsg());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            result.postValue(Resource.error(e.getMessage()));
+            Timber.d("card deletion failed due to: " + e.getMessage());
         }
 
         return result;

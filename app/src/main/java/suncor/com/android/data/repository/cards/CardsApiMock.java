@@ -1,12 +1,13 @@
 package suncor.com.android.data.repository.cards;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
@@ -48,6 +49,11 @@ public class CardsApiMock implements CardsApi {
         });
         thread.start();
         return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardDetail>> removeCard(CardDetail cardDetail) {
+        return null;
     }
 
     private String responseJson = "[{\n" +

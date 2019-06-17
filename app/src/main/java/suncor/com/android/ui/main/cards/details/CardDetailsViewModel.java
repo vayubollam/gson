@@ -1,13 +1,15 @@
 package suncor.com.android.ui.main.cards.details;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.ViewModel;
+
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.ViewModel;
+import suncor.com.android.data.repository.cards.CardsApi;
 import suncor.com.android.data.repository.cards.CardsRepository;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -24,7 +26,7 @@ public class CardDetailsViewModel extends ViewModel {
     private boolean isForScan;
 
     @Inject
-    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
+    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, CardsApi cardsApi) {
         this.cardsRepository = cardsRepository;
         this.sessionManager = sessionManager;
     }
@@ -45,5 +47,9 @@ public class CardDetailsViewModel extends ViewModel {
                 }
             });
         }
+    }
+
+    public LiveData<Resource<CardDetail>> deleteCard(CardDetail cardDetail) {
+        return cardsRepository.removeCard(cardDetail);
     }
 }
