@@ -27,9 +27,9 @@
             android:clipToPadding="false"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            tools:listitem="@layout/offers_card_item"
             app:layout_constraintBottom_toTopOf="@+id/nearest_card"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/offers_card_item" />
 
         <include
             android:id="@+id/nearest_card"
@@ -39,38 +39,51 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/privacy_policy"
+            app:layout_constraintBottom_toTopOf="@+id/terms_conditions"
             app:vm="@{vm}" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/terms_conditions"
-            android:layout_width="0dp"
+            style="@style/LinkButton.Black.S"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/gibson_semibold"
             android:text="@string/home_tab_terms_amp_conditions"
             android:textAlignment="textEnd"
+            android:textAllCaps="false"
             android:textColor="@color/black_60"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/privacy_policy"
+            app:layout_constraintEnd_toStartOf="@id/period"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/privacy_policy"
-            android:layout_width="0dp"
+            android:id="@+id/period"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
+            android:layout_margin="4dp"
+            android:text="·"
+            android:textAppearance="@style/Caption1"
+            app:layout_constraintBottom_toBottomOf="@id/terms_conditions"
+            app:layout_constraintEnd_toStartOf="@id/privacy_policy"
+            app:layout_constraintStart_toEndOf="@id/terms_conditions"
+            app:layout_constraintTop_toTopOf="@id/terms_conditions" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/privacy_policy"
+            style="@style/LinkButton.Black.S"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/gibson_semibold"
             android:text="@string/home_tab_privacy_policy"
             android:textAlignment="textStart"
+            android:textAllCaps="false"
             android:textColor="@color/black_60"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/terms_conditions" />
+            app:layout_constraintStart_toEndOf="@id/period" />
 
         <FrameLayout
             android:id="@+id/welcome_layout"

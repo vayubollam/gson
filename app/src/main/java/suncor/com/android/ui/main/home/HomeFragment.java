@@ -122,7 +122,7 @@ public class HomeFragment extends BottomNavigationFragment {
         mViewModel.navigateToPetroPoints.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 HomeFragmentDirections.ActionHomeTabToCardsDetailsFragment action = HomeFragmentDirections.actionHomeTabToCardsDetailsFragment();
-                action.setIsForScan(true);
+                action.setIsCardFromProfile(true);
                 Navigation.findNavController(getView()).navigate(action);
             }
         });

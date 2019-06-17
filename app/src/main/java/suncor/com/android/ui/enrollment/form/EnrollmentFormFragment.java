@@ -37,8 +37,8 @@ import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
@@ -105,9 +105,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
 
 
         //show and hide autocomplete layout
-        viewModel.showAutocompleteLayout.observe(this, (show) ->
-
-        {
+        viewModel.showAutocompleteLayout.observe(this, (show) -> {
             if (getActivity() == null || binding.appBar.isExpanded()) {
                 return;
             }
@@ -131,38 +129,29 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         });
 
         //binding autocomplete results to adapter
-        viewModel.getAutocompleteResults().
+        viewModel.getAutocompleteResults().observe(this, (resource ->
+        {
+            if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
+                addressAutocompleteAdapter.setSuggestions(resource.data);
+                binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
+            }
+        }));
 
-                observe(this, (resource ->
+        viewModel.getAutocompleteRetrievalStatus().observe(this, resource ->
+        {
+            hideKeyBoard();
+            binding.streetAddressInput.getEditText().clearFocus();
+        });
 
-                {
-                    if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
-                        addressAutocompleteAdapter.setSuggestions(resource.data);
-                        binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
-                    }
-                }));
-
-        viewModel.getAutocompleteRetrievalStatus().
-
-                observe(this, resource ->
-
-                {
-                    hideKeyBoard();
-                    binding.streetAddressInput.getEditText().clearFocus();
-                });
-
-        viewModel.getNavigateToLogin().
-
-                observe(this, event ->
-
-                {
-                    if (event.getContentIfNotHandled() != null) {
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                });
+        viewModel.getNavigateToLogin().observe(this, event ->
+        {
+            if (event.getContentIfNotHandled() != null) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
     }
 
     private void showDuplicateEmailAlert() {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -22,7 +23,8 @@
             android:layout_height="88dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_alert"
-            android:tint="@color/black_20" />
+            android:tint="@color/black_20"
+            app:visibleGone="@{model.hasErrorIcon()}"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/Title2"

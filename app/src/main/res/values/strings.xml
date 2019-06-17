@@ -387,8 +387,8 @@
     <string name="transaction_detail_amount">Amount</string>
     <string name="transaction_detail_location_title">Location</string>
     <string name="transaction_detail_description_title">Description</string>
-    <string name="home_tab_terms_amp_conditions"><![CDATA[Terms & Conditions \u0020 ·]]></string>
-    <string name="home_tab_privacy_policy"> \u0020 \u0020 Legal &amp; privacy</string>
+    <string name="home_tab_terms_amp_conditions">Terms &amp; Conditions</string>
+    <string name="home_tab_privacy_policy">Legal &amp; privacy</string>
     <string name="home_enrollment_greeting">Your %s points will take up to 15 minutes to appear.</string>
     <string name="home_enrollment_greeting_title">Thank you for joining Petro\u2011Points.</string>
     <string name="home_enrollment_greeting_dismiss">Dismiss</string>
@@ -400,4 +400,6 @@
     <string name="card_remove_bottom_sheet_message">Removes the card from your account</string>
     <string name="card_remove_bottom_sheet_cancel">Cancel</string>
     <string name="removing_card">Removing card</string>
+    <string name="navigation_rewards_tab">Petro-Points</string>
+    <string name="rewards_guest_join_button">Sign up and start saving</string>
 </resources>

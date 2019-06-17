@@ -7,6 +7,11 @@
         android:iconTint="@color/black_60"
         android:title="@string/navigation_home_tab" />
     <item
+        android:id="@+id/rewards_tab"
+        android:icon="@drawable/ic_rewards"
+        android:iconTint="@color/black_60"
+        android:title="@string/navigation_rewards_tab" />
+    <item
         android:id="@+id/stations_tab"
         android:icon="@drawable/ic_locations"
         android:iconTint="@color/black_60"
@@ -15,8 +20,7 @@
         android:id="@+id/cards_tab"
         android:icon="@drawable/ic_cards"
         android:iconTint="@color/black_60"
-        android:title="@string/navigation_cards_tab"
-        />
+        android:title="@string/navigation_cards_tab" />
     <item
         android:id="@+id/profile_tab"
         android:icon="@drawable/ic_profile"
