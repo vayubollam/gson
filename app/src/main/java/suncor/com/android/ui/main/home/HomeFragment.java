@@ -251,6 +251,7 @@ public class HomeFragment extends BottomNavigationFragment {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
         webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
     }
+
     @Override
     protected boolean isFullScreen() {
         return mViewModel.isUserLoggedIn();
@@ -286,11 +287,13 @@ public class HomeFragment extends BottomNavigationFragment {
         checkAndRequestPermission();
 
         if (mViewModel.isUserLoggedIn()) {
-            int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            }
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+            getView().post(() -> {
+                int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                }
+                getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+            });
         }
     }
 

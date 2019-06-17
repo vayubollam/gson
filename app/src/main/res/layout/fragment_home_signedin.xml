@@ -120,6 +120,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gibson_semibold"
+                            android:lineSpacingMultiplier="1.44"
                             android:text="@string/home_enrollment_greeting_title"
                             android:textAppearance="@style/Body" />
 

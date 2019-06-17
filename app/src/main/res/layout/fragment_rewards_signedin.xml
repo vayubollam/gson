@@ -13,9 +13,12 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_4">
+        android:background="@color/black_4"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true">
@@ -37,7 +40,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@drawable/petro_points_card" />
+                        android:src="@drawable/member_rewards_banner" />
 
                 </FrameLayout>
 
@@ -106,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:background="@color/white"
+            android:elevation="4dp"
             android:visibility="invisible">
 
             <androidx.appcompat.widget.AppCompatImageButton

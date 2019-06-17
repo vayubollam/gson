@@ -27,7 +27,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
     @Override
     public void onBindViewHolder(@NonNull RewardsViewHolder holder, int position) {
         Context context = holder.binding.getRoot().getContext();
-        int imageId = context.getResources().getIdentifier(rewards[position].getImage(), "drawable", context.getPackageName());
+        int imageId = context.getResources().getIdentifier(rewards[position].getLargeImage(), "drawable", context.getPackageName());
         holder.binding.setReward(rewards[position]);
         holder.binding.setImage(context.getDrawable(imageId));
         holder.binding.executePendingBindings();

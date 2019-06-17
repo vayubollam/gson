@@ -5,7 +5,8 @@ public class Reward {
     private String subtitle;
     private String points;
     private String description;
-    private String image;
+    private String smallImage;
+    private String largeImage;
 
     public String getTitle() {
         return title;
@@ -23,7 +24,11 @@ public class Reward {
         return description;
     }
 
-    public String getImage() {
-        return image;
+    public String getLargeImage() {
+        return largeImage;
+    }
+
+    public String getSmallImage() {
+        return smallImage;
     }
 }
