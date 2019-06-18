@@ -396,8 +396,8 @@
     <string name="cards_remove_card_alert_message">This will remove the card from your account and any remaining balance will no longer be protected.</string>
     <string name="cards_remove_card_alert_remove">Remove</string>
     <string name="cards_remove_card_alert_cancel">Cancel</string>
-    <string name="card_remove_bottom_sheet_title">Remove</string>
-    <string name="card_remove_bottom_sheet_message">Removes the card from your account</string>
+    <string name="card_remove_bottom_sheet_title">Remove card</string>
+    <string name="card_remove_bottom_sheet_message">Remove this card from my account.</string>
     <string name="card_remove_bottom_sheet_cancel">Cancel</string>
     <string name="removing_card">Removing card</string>
     <string name="navigation_rewards_tab">Petro-Points</string>

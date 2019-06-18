@@ -77,6 +77,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:background="@android:color/transparent"
                 android:src="@drawable/ic_bin_red" />
 
             <ProgressBar

@@ -147,8 +147,8 @@ public class CardsDetailsFragment extends BaseFragment {
                 @Override
                 public void onAnimationEnd(android.animation.Animator animation) {
                     propertyAnimator.setListener(null);
-                    propertyAnimator.scaleX(0);
-                    propertyAnimator.scaleY(0);
+                    view.setScaleX(1);
+                    view.setScaleY(1);
                     dispatchRemoveFinished(holder);
                 }
 

@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import suncor.com.android.data.repository.cards.CardsApi;
 import suncor.com.android.data.repository.cards.CardsRepository;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -26,7 +25,7 @@ public class CardDetailsViewModel extends ViewModel {
     private boolean isCardFromProfile;
 
     @Inject
-    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, CardsApi cardsApi) {
+    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
         this.cardsRepository = cardsRepository;
         this.sessionManager = sessionManager;
     }
