@@ -29,6 +29,8 @@ public class CardsViewModel extends ViewModel {
     private MediatorLiveData<ViewState> _viewState = new MediatorLiveData<>();
     public LiveData<ViewState> viewState = _viewState;
 
+    private ViewState pendingViewState;
+
     private MutableLiveData<CardDetail> petroPointsCard = new MutableLiveData<>();
     private MutableLiveData<List<CardDetail>> petroCanadaCards = new MutableLiveData<>();
     private MutableLiveData<List<CardDetail>> partnerCards = new MutableLiveData<>();
@@ -48,7 +50,7 @@ public class CardsViewModel extends ViewModel {
         MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>();
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
-                _viewState.setValue(ViewState.LOADING);
+                pendingViewState = ViewState.LOADING;
                 return repository.getCards(false);
             }
             return new MutableLiveData<>();
@@ -56,7 +58,7 @@ public class CardsViewModel extends ViewModel {
 
         LiveData<Resource<ArrayList<CardDetail>>> refreshCall = Transformations.switchMap(refreshCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
-                _viewState.setValue(ViewState.REFRESHING);
+                pendingViewState = ViewState.REFRESHING;
                 return repository.getCards(true);
             }
             return new MutableLiveData<>();
@@ -80,6 +82,9 @@ public class CardsViewModel extends ViewModel {
             switch (result.status) {
                 case SUCCESS:
                     _viewState.setValue(ViewState.SUCCESS);
+                    break;
+                case LOADING:
+                    _viewState.setValue(pendingViewState);
                     break;
                 case ERROR:
                     if (result.data == null) {
