@@ -19,7 +19,7 @@
     "points": "Starting at 10,000 points",
     "title": "Fuel Savings Reward",
     "subtitle": "Save 5¢ or 10¢ on 200 litres.",
-    "description": "You can grab a new Fuel Savings Reward card in-store. Simply bring your Petro-Points card and Fuel Savings Reward card up to the counter and we’ll do the rest. Once your card is out of litres simply visit petro-canada.ca, log-in to your Petro-Points account and under My Cards you can reload it.",
+    "description": "You can grab a new Fuel Savings Reward card in-store. Simply bring your Petro-Points card and Fuel Savings Reward card up to the counter and we’ll do the rest. Once your card is out of litres simply visit <a href=\"http://petro-canada.ca\">petro-canada.ca</a>, log-in to your Petro-Points account and under My Cards you can reload it.",
     "largeImage": "member_large_cards_fsr",
     "smallImage": "member_small_cards_fsr"
   },
@@ -27,7 +27,7 @@
     "points": "Starting at 10,000 points",
     "title": "eGift cards",
     "subtitle": "Apparel, dining, entertainment and more.",
-    "description": "You can redeem eGift cards online at <petro-canada.ca>. Simply log-in to your Petro-Points account and visit the Redeem section. Then all you have to do is select the card and value you want. Your eGift card can be emailed to you or printed. Enjoy!",
+    "description": "You can redeem eGift cards online at <a href=\"http://petro-canada.ca\">petro-canada.ca</a>. Simply log-in to your Petro-Points account and visit the Redeem section. Then all you have to do is select the card and value you want. Your eGift card can be emailed to you or printed. Enjoy!",
     "largeImage": "member_large_cards_egift",
     "smallImage": "member_small_cards_egift"
   },
@@ -35,7 +35,7 @@
     "points": "Starting at 10,000 points",
     "title": "Travel",
     "subtitle": "Redeem Petro‑Points for travel.",
-    "description": "Redeem your points for travel when booking your next vacation through our <a href=\"https://www.petro-canada.ca/api/petrocanadaaccounts/RedirectToItravel?ds=14FD20E1EE1F4F419E53D59F9ED0E037\">members-only</a> website or directly through itravel2000.com.",
+    "description": "Redeem your points for travel when booking your next vacation through our <a href=\"https://www.petro-canada.ca/api/petrocanadaaccounts/RedirectToItravel?ds=14FD20E1EE1F4F419E53D59F9ED0E037\">members-only</a> website or directly through <a href=\"http://itravel2000.com\">itravel2000.com</a>.",
     "largeImage": "member_large_cards_travel",
     "smallImage": "member_small_cards_itravel2000"
   },

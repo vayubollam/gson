@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +41,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsSignedinBinding.inflate(inflater, container, false);
-        RewardsAdapter rewardsAdapter = new RewardsAdapter(viewModel.getRewards());
+        RewardsAdapter rewardsAdapter = new RewardsAdapter(viewModel.getRewards(), this::rewardClicked);
         binding.rewardsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.rewardsList.setAdapter(rewardsAdapter);
 
@@ -88,14 +89,26 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             binding.headerImage.setTranslationY((float) (scrollY * 0.5));
         });
 
+        //adapt header visibility after navigation
+        if (isHeaderVisible) {
+            binding.headerLayout.setVisibility(View.VISIBLE);
+            enableLightStatusBar();
+        }
+
         return binding.getRoot();
+    }
+
+    private void rewardClicked(Reward reward) {
+        RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(reward);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        getView().post(this::disableLightStatusBar);
+        if (!isHeaderVisible) {
+            getView().post(this::disableLightStatusBar);
+        }
     }
 
     @Override

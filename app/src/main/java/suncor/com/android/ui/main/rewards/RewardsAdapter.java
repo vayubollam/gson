@@ -8,13 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import suncor.com.android.databinding.RewardsListItemBinding;
+import suncor.com.android.utilities.Consumer;
 
 public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsViewHolder> {
 
+    private final Consumer<Reward> clickListener;
     private Reward[] rewards;
 
-    public RewardsAdapter(Reward[] rewards) {
+    public RewardsAdapter(Reward[] rewards, Consumer<Reward> clickListener) {
         this.rewards = rewards;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -31,6 +34,8 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
         holder.binding.setReward(rewards[position]);
         holder.binding.setImage(context.getDrawable(imageId));
         holder.binding.executePendingBindings();
+
+        holder.itemView.setOnClickListener(v -> clickListener.accept(rewards[position]));
     }
 
     @Override
