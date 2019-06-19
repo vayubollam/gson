@@ -30,6 +30,7 @@ public class ExpandedCardItem {
     private Drawable barCode;
     private CardDetail.CardCategory cardCategory;
     private CardDetail cardDetail;
+    private boolean isRemovable = true;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
@@ -38,6 +39,7 @@ public class ExpandedCardItem {
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
             balance = context.getString(R.string.cards_partners_balance_template, "20%");
             isBalanceDetailsVisible = false;
+            isRemovable = false;
             switch (cardType) {
                 case HBC:
                     cardImage = context.getDrawable(R.drawable.hudsons_bay_card);
@@ -82,6 +84,7 @@ public class ExpandedCardItem {
                     barCode = new BitmapDrawable(context.getResources(), generateBarcode(cardDetail));
                     balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(balanceValue));
                     balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(balanceValue / 1000));
+                    isRemovable = false;
                     break;
                 case FSR:
                     cardImage = context.getDrawable(cardDetail.getCpl() == 0.05f ? R.drawable.fsr_5cent_card : R.drawable.fsr_10cent_card);
@@ -201,5 +204,9 @@ public class ExpandedCardItem {
             return false;
         }
         return ((ExpandedCardItem) obj).cardDetail.equals(getCardDetail());
+    }
+
+    public boolean isRemovable() {
+        return isRemovable;
     }
 }

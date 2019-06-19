@@ -1,5 +1,11 @@
 package suncor.com.android.ui.main.cards.list;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -7,11 +13,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.cards.CardsRepository;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -47,6 +48,7 @@ public class CardsViewModel extends ViewModel {
         MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>();
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
+                _viewState.setValue(ViewState.LOADING);
                 return repository.getCards(false);
             }
             return new MutableLiveData<>();
@@ -54,6 +56,7 @@ public class CardsViewModel extends ViewModel {
 
         LiveData<Resource<ArrayList<CardDetail>>> refreshCall = Transformations.switchMap(refreshCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
+                _viewState.setValue(ViewState.REFRESHING);
                 return repository.getCards(true);
             }
             return new MutableLiveData<>();
@@ -77,15 +80,6 @@ public class CardsViewModel extends ViewModel {
             switch (result.status) {
                 case SUCCESS:
                     _viewState.setValue(ViewState.SUCCESS);
-                    break;
-                case LOADING:
-                    ViewState currentState = _viewState.getValue();
-                    if (currentState != null && currentState != ViewState.FAILED) {
-                        //Which means pull to refresh
-                        _viewState.setValue(ViewState.REFRESHING);
-                    } else {
-                        _viewState.setValue(ViewState.LOADING);
-                    }
                     break;
                 case ERROR:
                     if (result.data == null) {
