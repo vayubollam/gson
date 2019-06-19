@@ -14,7 +14,10 @@ import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
 import suncor.com.android.ui.main.profile.transcations.TransactionDetailFragment;
 import suncor.com.android.ui.main.profile.transcations.TransactionsFragment;
-import suncor.com.android.ui.main.rewards.RewardsFragment;
+import suncor.com.android.ui.main.rewards.RewardsDetailsFragment;
+import suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment;
+import suncor.com.android.ui.main.rewards.RewardsGuestFragment;
+import suncor.com.android.ui.main.rewards.RewardsSignedInFragment;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationsFragment;
@@ -75,5 +78,15 @@ abstract class MainActivityFragmentsModule {
     abstract AboutFragment contributesAboutFragment();
 
     @ContributesAndroidInjector
-    abstract RewardsFragment contributesRewardsFragment();
+    abstract RewardsGuestFragment contributesRewardsFragment();
+
+    @ContributesAndroidInjector
+    abstract RewardsSignedInFragment contributesRedeemFragment();
+
+    @ContributesAndroidInjector
+    abstract RewardsDetailsFragment contributesRewardsDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract RewardsDiscoveryFragment contributesRewardsDiscoveryFragment();
+
 }

@@ -10,16 +10,17 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import javax.inject.Inject;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
@@ -31,7 +32,7 @@ public class MainActivity extends SessionAwareActivity {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     @Inject
     SuncorApplication application;
-    private BottomNavigationView bottom_navigation;
+    private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
     private BroadcastReceiver loginConflictReceiver = new BroadcastReceiver() {
@@ -67,12 +68,13 @@ public class MainActivity extends SessionAwareActivity {
         setContentView(R.layout.activity_main);
         AndroidBug5497Workaround.assistActivity(this);
 
-        bottom_navigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
         View mainDivider = findViewById(R.id.mainDivider);
         if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
             animslideUp.setDuration(500);
-            bottom_navigation.startAnimation(animslideUp);
+            bottomNavigation.startAnimation(animslideUp);
             mainDivider.startAnimation(animslideUp);
             application.setSplashShown(true);
         }
@@ -83,12 +85,8 @@ public class MainActivity extends SessionAwareActivity {
         navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getChildFragmentManager(), R.id.nav_host_fragment));
         navController.setGraph(R.navigation.main_nav_graph);
 
-        NavigationUI.setupWithNavController(bottom_navigation, navController);
+        NavigationUI.setupWithNavController(bottomNavigation, navController);
 
-        if (!isLoggedIn()) {
-            bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
-            bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
-        }
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
@@ -113,9 +111,12 @@ public class MainActivity extends SessionAwareActivity {
             }
         }
 
-        bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
-        bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
-        bottom_navigation.getMenu().findItem(R.id.rewards_tab).setVisible(true);
+        bottomNavigation.getMenu().clear();
+        bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_guest);
+
+//        bottomNavigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
+//        bottomNavigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
+//        bottomNavigation.getMenu().findItem(R.id.rewards_tab).setVisible(true);
     }
 
     @Override
@@ -127,8 +128,11 @@ public class MainActivity extends SessionAwareActivity {
             }
         }
 
-        bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
-        bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(true);
-        bottom_navigation.getMenu().findItem(R.id.rewards_tab).setVisible(false);
+        bottomNavigation.getMenu().clear();
+        bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
+
+//        bottomNavigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
+//        bottomNavigation.getMenu().findItem(R.id.cards_tab).setVisible(true);
+//        bottomNavigation.getMenu().findItem(R.id.rewards_tab).setVisible(false);
     }
 }

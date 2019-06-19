@@ -23,7 +23,7 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/rewards_tab"
-        android:name="suncor.com.android.ui.main.rewards.RewardsFragment"
+        android:name="suncor.com.android.ui.main.rewards.RewardsGuestFragment"
         android:label="RewardsFragment"
         tools:layout="@layout/fragment_rewards">
         <argument
@@ -60,6 +60,39 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/rewards_signedin_tab"
+        android:name="suncor.com.android.ui.main.rewards.RewardsSignedInFragment"
+        android:label="RewardsSignedInFragment"
+        tools:layout="@layout/fragment_rewards_signedin">
+        <argument
+            android:name="root"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_rewardsDetailsFragment"
+            app:destination="@id/rewardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down">
+            <argument
+                android:name="isCardFromProfile"
+                android:defaultValue="true" />
+        </action>
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_rewardsDiscoveryFragment"
+            app:destination="@id/rewardsDiscoveryFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+    </keep_state_fragment>
+
     <keep_state_fragment
         android:id="@+id/cards_tab"
         android:name="suncor.com.android.ui.main.cards.list.CardsFragment"
@@ -205,4 +238,18 @@
         android:name="suncor.com.android.ui.main.profile.about.AboutFragment"
         android:label="PersonalInfoFragment"
         tools:layout="@layout/fragment_about" />
+    <keep_state_fragment
+        android:id="@+id/rewardsDetailsFragment"
+        android:name="suncor.com.android.ui.main.rewards.RewardsDetailsFragment"
+        android:label="RewardsDetailsFragment">
+        <argument
+            android:name="reward"
+            app:argType="suncor.com.android.ui.main.rewards.Reward" />
+
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/rewardsDiscoveryFragment"
+        android:name="suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment"
+        android:label="RewardsDiscoveryFragment" />
+
 </navigation>

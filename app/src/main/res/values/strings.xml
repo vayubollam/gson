@@ -406,4 +406,11 @@
     <string name="msg_cm001_message">Your cards are unavailable at the moment.</string>
     <string name="msg_cm001_button">Please try again</string>
     <string name="cards_partners_balance_value">20%</string>
+    <string name="navigation_rewards_signedin_tab">Redeem</string>
+    <string name="rewards_signedin_fragment_header">Rewards</string>
+    <string name="rewards_signedin_how_to_redeem_title">How to redeem</string>
+    <string name="rewards_signedin_petropoints_balance">You have\n%s points</string>
+    <string name="rewards_signedin_petropoints_value">or $%d off</string>
+    <string name="rewards_signedin_header_balance">You have %s points</string>
+    <string name="rewards_signedin_discoery_title">Petro-Points</string>
 </resources>

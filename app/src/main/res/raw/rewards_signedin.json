@@ -1,0 +1,58 @@
+[
+  {
+    "points": "Starting at 1,000 points",
+    "title": "Free gas and more",
+    "subtitle": "Use your points for dollars off fuel, car wash, or store purchases.",
+    "description": "You can redeem your points for dollars of anything. Simply go in-store and bring your Petro-Points card up to the counter and we’ll do the rest.",
+    "largeImage": "member_large_cards_dollarsoff",
+    "smallImage": "member_small_cards_dollarsoff"
+  },
+  {
+    "points": "10,000 points",
+    "title": "Car wash ticket",
+    "subtitle": "Get our best wash package.",
+    "description": "You can redeem your points for a car wash ticket in-store. Simply bring your Petro-Points card up to the counter and we’ll do the rest. You can use your ticket right away or save it for another day.",
+    "largeImage": "member_large_cards_cwticket",
+    "smallImage": "member_small_cards_cw_ticket"
+  },
+  {
+    "points": "Starting at 10,000 points",
+    "title": "Fuel Savings Reward",
+    "subtitle": "Save 5¢ or 10¢ on 200 litres.",
+    "description": "You can grab a new Fuel Savings Reward card in-store. Simply bring your Petro-Points card and Fuel Savings Reward card up to the counter and we’ll do the rest. Once your card is out of litres simply visit <a href=\"http://petro-canada.ca\">petro-canada.ca</a>, log-in to your Petro-Points account and under My Cards you can reload it.",
+    "largeImage": "member_large_cards_fsr",
+    "smallImage": "member_small_cards_fsr"
+  },
+  {
+    "points": "Starting at 10,000 points",
+    "title": "eGift cards",
+    "subtitle": "Apparel, dining, entertainment and more.",
+    "description": "You can redeem eGift cards online at <a href=\"http://petro-canada.ca\">petro-canada.ca</a>. Simply log-in to your Petro-Points account and visit the Redeem section. Then all you have to do is select the card and value you want. Your eGift card can be emailed to you or printed. Enjoy!",
+    "largeImage": "member_large_cards_egift",
+    "smallImage": "member_small_cards_egift"
+  },
+  {
+    "points": "Starting at 10,000 points",
+    "title": "Travel",
+    "subtitle": "Redeem Petro‑Points for travel.",
+    "description": "Redeem your points for travel when booking your next vacation through our <a href=\"https://www.petro-canada.ca/api/petrocanadaaccounts/RedirectToItravel?ds=14FD20E1EE1F4F419E53D59F9ED0E037\">members-only</a> website or directly through <a href=\"http://itravel2000.com\">itravel2000.com</a>.",
+    "largeImage": "member_large_cards_travel",
+    "smallImage": "member_small_cards_itravel2000"
+  },
+  {
+    "points": "50,000 points",
+    "title": "Wash & Go",
+    "subtitle": "Pre-loaded with 5 of our best washes.",
+    "description": "You can grab a new Wash & Go card in-store. Simply bring your Petro-Points card and Wash & Go card up to the counter and we’ll do the rest. Your card never expires so use your washes at your pace.",
+    "largeImage": "member_large_cards_washandgo",
+    "smallImage": "member_small_cards_washandgo"
+  },
+  {
+    "points": "185,000 points",
+    "title": "Season Pass",
+    "subtitle": "Wash once a day for 90 days.",
+    "description": "You can grab a new Season Pass in-store. Simply bring your Petro-Points card and Season Pass up to the counter and we’ll do the rest. Your days will start counting down once you tap or swipe your Season Pass at the car wash entrance the first time. Enjoy 90 days of clean!",
+    "largeImage": "member_large_cards_seasonpass",
+    "smallImage": "member_small_cards_seasonpass"
+  }
+]
