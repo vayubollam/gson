@@ -37,7 +37,7 @@ public class ExpandedCardItem {
         this.cardType = cardDetail.getCardType();
         this.cardCategory = cardDetail.getCardCategory();
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
-            balance = context.getString(R.string.cards_partners_balance_template, "20%");
+            balance = context.getString(R.string.cards_partners_balance_template, context.getString(R.string.cards_partners_balance_value));
             isBalanceDetailsVisible = false;
             isRemovable = false;
             switch (cardType) {

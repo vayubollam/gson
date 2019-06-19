@@ -291,6 +291,9 @@
         <item quantity="one">%s lavage restant</item>
         <item quantity="other">%s lavages restants</item>
     </plurals>
+
+    <string name="cards_partners_balance_value">20 %</string>
+
     <string name="cards_details_close">Fermer</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_format_inline_error">Veuillez entrer une adresse courriel valide.</string>
