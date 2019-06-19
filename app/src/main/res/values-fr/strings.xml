@@ -399,4 +399,9 @@
     <string name="msg_cm001_title">Quelque chose a mal tourné de notre côté</string>
     <string name="msg_cm001_message">Vos cartes ne sont pas disponibles a ce moment.</string>
     <string name="msg_cm001_button">Veuillez essayer à nouveau</string>
+    <string name="rewards_signedin_discoery_title">Petro-Points</string>
+    <string name="rewards_signedin_petropoints_balance">Vous avez %s points</string>
+    <string name="rewards_signedin_petropoints_value">ou %d $ de rabais</string>
+    <string name="rewards_signedin_how_to_redeem_title">Comment échanger</string>
+    <string name="rewards_signedin_header_balance">Vous avez %s points</string>
 </resources>
