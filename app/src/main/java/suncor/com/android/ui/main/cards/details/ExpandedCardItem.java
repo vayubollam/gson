@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.Nullable;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -27,8 +29,10 @@ public class ExpandedCardItem {
     private CardType cardType;
     private Drawable barCode;
     private CardDetail.CardCategory cardCategory;
+    private CardDetail cardDetail;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
+        this.cardDetail = cardDetail;
         this.cardType = cardDetail.getCardType();
         this.cardCategory = cardDetail.getCardCategory();
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
@@ -185,5 +189,17 @@ public class ExpandedCardItem {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public CardDetail getCardDetail() {
+        return cardDetail;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof ExpandedCardItem)) {
+            return false;
+        }
+        return ((ExpandedCardItem) obj).cardDetail.equals(getCardDetail());
     }
 }

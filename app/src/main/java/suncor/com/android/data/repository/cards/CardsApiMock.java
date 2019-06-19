@@ -1,17 +1,19 @@
 package suncor.com.android.data.repository.cards;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
 
 public class CardsApiMock implements CardsApi {
+    ArrayList<CardDetail> cardDetails;
     @Override
     public LiveData<Resource<ArrayList<CardDetail>>> retrieveCards() {
         MutableLiveData<Resource<ArrayList<CardDetail>>> result = new MutableLiveData<>();
@@ -22,6 +24,7 @@ public class CardsApiMock implements CardsApi {
                 ArrayList<CardDetail> cards = new ArrayList<>();
                 Gson gson = new Gson();
                 cards.addAll(Arrays.asList(gson.fromJson(responseJson, CardDetail[].class)));
+                cardDetails = cards;
                 result.postValue(Resource.success(cards));
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -42,6 +45,24 @@ public class CardsApiMock implements CardsApi {
                 Gson gson = new Gson();
                 cards.addAll(Arrays.asList(gson.fromJson(responseJson, CardDetail[].class)));
                 result.postValue(Resource.success(cards.get(1)));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardDetail>> removeCard(CardDetail cardDetail) {
+        MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(2000);
+                cardDetails.remove(cardDetail);
+                result.postValue(Resource.success(cardDetail));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -392,6 +392,14 @@
     <string name="home_enrollment_greeting">Your %s points will take up to 15 minutes to appear.</string>
     <string name="home_enrollment_greeting_title">Thank you for joining Petro\u2011Points.</string>
     <string name="home_enrollment_greeting_dismiss">Dismiss</string>
+    <string name="cards_remove_card_alert_title">Are you sure?</string>
+    <string name="cards_remove_card_alert_message">This will remove the card from your account and any remaining balance will no longer be protected.</string>
+    <string name="cards_remove_card_alert_remove">Remove</string>
+    <string name="cards_remove_card_alert_cancel">Cancel</string>
+    <string name="card_remove_bottom_sheet_title">Remove card</string>
+    <string name="card_remove_bottom_sheet_message">Remove this card from my account.</string>
+    <string name="card_remove_bottom_sheet_cancel">Cancel</string>
+    <string name="removing_card">Removing card</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
     <string name="rewards_guest_join_button">Sign up and start saving</string>
 </resources>

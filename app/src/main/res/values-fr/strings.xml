@@ -385,5 +385,12 @@
     <string name="transaction_type_pp">Petro Points</string>
     <string name="rewards_guest_join_button">Inscrivez-vous et commencez à économiser</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
-
+    <string name="cards_remove_card_alert_title">Êtes-vous sûr?</string>
+    <string name="cards_remove_card_alert_message">Cela supprimera la carte de votre compte et tout solde résiduel ne sera plus protégé.</string>
+    <string name="cards_remove_card_alert_remove">Supprimer</string>
+    <string name="cards_remove_card_alert_cancel">Annuler</string>
+    <string name="card_remove_bottom_sheet_cancel">Annuler</string>
+    <string name="card_remove_bottom_sheet_title">Supprimer la carte</string>
+    <string name="card_remove_bottom_sheet_message">Retirer cette carte de mon compte.</string>
+    <string name="removing_card">Retrait de la carte</string>
 </resources>

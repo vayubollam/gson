@@ -1,5 +1,9 @@
 package suncor.com.android.data.repository.cards;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -8,9 +12,6 @@ import java.util.Comparator;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Transformations;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
@@ -104,6 +105,15 @@ public class CardsRepository {
             if (result.status == Resource.Status.SUCCESS) {
                 cachedCards.add(result.data);
                 Collections.sort(cachedCards, cardsComparator);
+            }
+            return result;
+        });
+    }
+
+    public LiveData<Resource<CardDetail>> removeCard(CardDetail cardDetail) {
+        return Transformations.map(cardsApi.removeCard(cardDetail), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                cachedCards.remove(result.data);
             }
             return result;
         });
