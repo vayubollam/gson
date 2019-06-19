@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -21,6 +17,11 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -99,7 +100,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         binding = FragmentCardsBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        binding.errorLayout.setModel(new CardsErrorView(getContext(), R.string.cards_fragment_try_again, () -> viewModel.retryAgain()));
+        binding.errorLayout.setModel(new CardsErrorView(getContext(), () -> viewModel.retryAgain()));
         binding.cardsLayout.post(() -> {
             //give the cards layout a minimum height, to anchor the date to the bottom screen
             binding.cardsLayout.setMinHeight(binding.scrollView.getHeight() - binding.appBar.getHeight());

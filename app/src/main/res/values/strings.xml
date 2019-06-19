@@ -402,4 +402,7 @@
     <string name="removing_card">Removing card</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
     <string name="rewards_guest_join_button">Sign up and start saving</string>
+    <string name="msg_cm001_title">Something went wrong</string>
+    <string name="msg_cm001_message">Your cards are unavailable at the moment.</string>
+    <string name="msg_cm001_button">Please try again</string>
 </resources>

@@ -393,4 +393,7 @@
     <string name="card_remove_bottom_sheet_title">Supprimer la carte</string>
     <string name="card_remove_bottom_sheet_message">Retirer cette carte de mon compte.</string>
     <string name="removing_card">Retrait de la carte</string>
+    <string name="msg_cm001_title">Quelque chose a mal tourné de notre côté</string>
+    <string name="msg_cm001_message">Vos cartes ne sont pas disponibles a ce moment.</string>
+    <string name="msg_cm001_button">Veuillez essayer à nouveau</string>
 </resources>
