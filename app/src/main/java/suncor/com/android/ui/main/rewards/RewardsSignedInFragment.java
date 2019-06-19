@@ -41,6 +41,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsSignedinBinding.inflate(inflater, container, false);
+        binding.setVm(viewModel);
         RewardsAdapter rewardsAdapter = new RewardsAdapter(viewModel.getRewards(), this::rewardClicked);
         binding.rewardsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.rewardsList.setAdapter(rewardsAdapter);

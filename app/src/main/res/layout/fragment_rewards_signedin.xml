@@ -62,10 +62,11 @@
                     android:shadowDx="2"
                     android:shadowDy="1"
                     android:shadowRadius="8"
-                    android:text="You have\n10,500 points"
+                    android:text="@{@string/rewards_signedin_petropoints_balance(vm.petroPoints)}"
                     android:textAppearance="@style/Headline2"
                     android:textColor="@color/white"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="You have\n10,500 points" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/balance_value"
@@ -80,10 +81,11 @@
                     android:shadowDx="2"
                     android:shadowDy="1"
                     android:shadowRadius="8"
-                    android:text="or $2 off"
+                    android:text="@{@string/rewards_signedin_petropoints_value(vm.petroPointsValue)}"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/white"
-                    app:layout_constraintTop_toBottomOf="@id/balance_petropoints" />
+                    app:layout_constraintTop_toBottomOf="@id/balance_petropoints"
+                    tools:text="or $2 off" />
 
                 <Space
                     android:id="@+id/balance_bottom_to_cards"
@@ -150,12 +152,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="You have 10,500 points"
+                android:text="@{@string/rewards_signedin_header_balance(vm.petroPoints)}"
                 android:textAppearance="@style/Caption1.Red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider" />
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                tools:text="You have 10,500 points" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.card.MaterialCardView
