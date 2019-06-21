@@ -405,4 +405,6 @@
     <string name="rewards_signedin_how_to_redeem_title">Comment échanger</string>
     <string name="rewards_signedin_header_balance">Vous avez %s points</string>
     <string name="navigation_rewards_signedin_tab">Échanger</string>
+    <string name="cards_add_fragment_cvv_field_empty_error">Veuillez entrer le code de sécurité.</string>
+    <string name="cards_add_fragment_cvv_field_format_error">Votre code de sécurité est erroné.</string>
 </resources>
