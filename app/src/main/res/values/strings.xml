@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">Petro-Canada</string>
     <string name="navigation_home_tab">Home</string>
     <string name="navigation_stations_tab">Locations</string>
-    <string name="navigation_profile_tab">Profile</string>
+    <string name="navigation_profile_tab">Account</string>
     <string name="enable_location_dialog_title">Enable Location Services</string>
     <string name="enable_location_dialog_message">Petro-Canada uses locations services to show stations around you.</string>
     <string name="ok">OK</string>
