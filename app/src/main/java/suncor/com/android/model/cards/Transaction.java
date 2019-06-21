@@ -55,7 +55,7 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
+        return DateFormat.getDateInstance(DateFormat.LONG).format(date);
     }
 
     public void setDate(String date) {
