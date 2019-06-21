@@ -6,7 +6,7 @@ import androidx.annotation.StringRes;
 import androidx.databinding.Bindable;
 
 public class CityInputField extends InputField {
-    private static final Pattern CITY_PATTERN = Pattern.compile("^[a-zA-ZÀ-ÿ\\s,-]+$");
+    private static final Pattern CITY_PATTERN = Pattern.compile("^[a-zA-ZÀ-ÿ\\s,'-]+$");
     @StringRes
     private final int formatError;
 
