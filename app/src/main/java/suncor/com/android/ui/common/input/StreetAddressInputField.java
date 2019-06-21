@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 public class StreetAddressInputField extends InputField {
 
-    private static final Pattern STREET_ADDRESS_PATTERN = Pattern.compile("^[#.0-9a-zA-ZÀ-ÿ\\s,-]+$");
+    private static final Pattern STREET_ADDRESS_PATTERN = Pattern.compile("^[#.0-9a-zA-ZÀ-ÿ\\s,'-]+$");
     @StringRes
     private final int formatError;
 
