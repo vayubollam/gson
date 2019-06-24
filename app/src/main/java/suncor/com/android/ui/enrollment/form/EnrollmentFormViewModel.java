@@ -1,15 +1,16 @@
 package suncor.com.android.ui.enrollment.form;
 
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.repository.account.EnrollmentsApi;
@@ -126,6 +127,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                         selectedProvince.getId(),
                         postalCodeField.getText().replace(" ", ""), //Replace the space characters
                         phoneField.getText(),
+                        newsAndOffersField.get(),
                         newsAndOffersField.get(),
                         selectedQuestion.getId(),
                         securityAnswerField.getText()

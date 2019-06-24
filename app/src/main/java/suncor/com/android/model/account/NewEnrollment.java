@@ -7,12 +7,6 @@ import suncor.com.android.utilities.EmptyStringTypeAdapter;
 
 public class NewEnrollment {
 
-    public enum EnrollmentType {
-        @SerializedName("new") NEW,
-        @SerializedName("ghost") GHOST,
-        @SerializedName("existing") EXISTING
-    }
-
     private EnrollmentType type;
     private String firstName;
     private String lastName;
@@ -22,18 +16,16 @@ public class NewEnrollment {
     private String city;
     private String province;
     private String postalCode;
-
     @JsonAdapter(EmptyStringTypeAdapter.class)
     private String phone;
-
     @JsonAdapter(EmptyStringTypeAdapter.class)
     private String petroPointsId;
-
-    private boolean receiveOffers;
+    private boolean receiveEmailOffers;
+    private boolean receiveTextOffers;
     private String securityQuestionId;
     private String securityAnswer;
 
-    public NewEnrollment(EnrollmentType type, String petroPointsId, String firstName, String lastName, String email, String password, String streetAddress, String city, String province, String postalCode, String phone, boolean receiveOffers, String securityQuestionId, String securityAnswer) {
+    public NewEnrollment(EnrollmentType type, String petroPointsId, String firstName, String lastName, String email, String password, String streetAddress, String city, String province, String postalCode, String phone, boolean receiveEmailOffers, boolean receiveTextOffers, String securityQuestionId, String securityAnswer) {
         this.type = type;
         this.petroPointsId = petroPointsId;
         this.firstName = firstName;
@@ -45,9 +37,26 @@ public class NewEnrollment {
         this.province = province;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.receiveOffers = receiveOffers;
+        this.receiveEmailOffers = receiveEmailOffers;
+        this.receiveTextOffers = receiveTextOffers;
         this.securityQuestionId = securityQuestionId;
         this.securityAnswer = securityAnswer;
+    }
+
+    public boolean isReceiveEmailOffers() {
+        return receiveEmailOffers;
+    }
+
+    public void setReceiveEmailOffers(boolean receiveEmailOffers) {
+        this.receiveEmailOffers = receiveEmailOffers;
+    }
+
+    public boolean isReceiveTextOffers() {
+        return receiveTextOffers;
+    }
+
+    public void setReceiveTextOffers(boolean receiveTextOffers) {
+        this.receiveTextOffers = receiveTextOffers;
     }
 
     public EnrollmentType getType() {
@@ -130,14 +139,6 @@ public class NewEnrollment {
         this.phone = phone;
     }
 
-    public boolean isReceiveOffers() {
-        return receiveOffers;
-    }
-
-    public void setReceiveOffers(boolean receiveOffers) {
-        this.receiveOffers = receiveOffers;
-    }
-
     public String getSecurityQuestionId() {
         return securityQuestionId;
     }
@@ -152,5 +153,11 @@ public class NewEnrollment {
 
     public void setSecurityAnswer(String securityAnswer) {
         this.securityAnswer = securityAnswer;
+    }
+
+    public enum EnrollmentType {
+        @SerializedName("new") NEW,
+        @SerializedName("ghost") GHOST,
+        @SerializedName("existing") EXISTING
     }
 }
