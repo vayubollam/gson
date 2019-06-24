@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="navigation_profile_tab">Profil</string>
-    <string name="navigation_stations_tab">Établissements</string>
+    <string name="navigation_profile_tab">Comptes</string>
+    <string name="navigation_stations_tab">Stations</string>
     <string name="station_search_hint">Recherche</string>
     <string name="station_distance_generic">%.1f km de vous</string>
     <string name="station_duration_generic">%1s en auto</string>
@@ -405,4 +405,6 @@
     <string name="rewards_signedin_how_to_redeem_title">Comment échanger</string>
     <string name="rewards_signedin_header_balance">Vous avez %s points</string>
     <string name="navigation_rewards_signedin_tab">Échanger</string>
+    <string name="cards_add_fragment_cvv_field_empty_error">Veuillez entrer le code de sécurité.</string>
+    <string name="cards_add_fragment_cvv_field_format_error">Votre code de sécurité est erroné.</string>
 </resources>

@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">Petro-Canada</string>
     <string name="navigation_home_tab">Home</string>
     <string name="navigation_stations_tab">Locations</string>
-    <string name="navigation_profile_tab">Profile</string>
+    <string name="navigation_profile_tab">Account</string>
     <string name="enable_location_dialog_title">Enable Location Services</string>
     <string name="enable_location_dialog_message">Petro-Canada uses locations services to show stations around you.</string>
     <string name="ok">OK</string>
@@ -413,4 +413,6 @@
     <string name="rewards_signedin_petropoints_value">or $%d off</string>
     <string name="rewards_signedin_header_balance">You have %s points</string>
     <string name="rewards_signedin_discoery_title">Petro-Points</string>
+    <string name="cards_add_fragment_cvv_field_empty_error">Please enter a security code.</string>
+    <string name="cards_add_fragment_cvv_field_format_error">Your security code is wrong.</string>
 </resources>
