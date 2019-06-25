@@ -93,8 +93,8 @@
     <string name="enrollment_phone_label">Phone (optional)</string>
     <string name="enrollment_address_category">Address</string>
     <string name="enrollment_preferences_category">Preferences and terms</string>
-    <string name="enrollment_news_label">Yes, I\'d like to receive news, offers and partner discounts from Petro-Points.</string>
-    <string name="enrollment_news_unsubscribe_hint">You can unsubscribe at any time.</string>
+    <string name="enrollment_email_offers_label">Yes, I\'d like to receive news, offers and partner discounts from Petro-Points.</string>
+    <string name="enrollment_email_offers_hint">You can unsubscribe at any time.</string>
     <string name="enrollment_fingerprint_label">I\'d like to use Touch ID to sign in</string>
     <string name="enrollment_fingerprint_hint">Use Touch ID to sign in, authorize purchases, reload your Petro-Canada cards and more.</string>
     <string name="enrollment_terms_agreement">By creating an account, I agree to the Petro-Points <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
@@ -415,4 +415,6 @@
     <string name="rewards_signedin_discoery_title">Petro-Points</string>
     <string name="cards_add_fragment_cvv_field_empty_error">Please enter a security code.</string>
     <string name="cards_add_fragment_cvv_field_format_error">Your security code is wrong.</string>
+    <string name="enrollment_sms_offers_label">Yes, I would like to receive special offers and SMS alerts from Petro\u2011Points.</string>
+    <string name="enrollment_sms_offers_hint">You can unsubscribe at any time.</string>
 </resources>

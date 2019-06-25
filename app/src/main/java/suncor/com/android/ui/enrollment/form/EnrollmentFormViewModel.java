@@ -57,20 +57,16 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
     private PhoneInputField phoneField = new PhoneInputField(R.string.enrollment_phone_field_invalid_format);
-    private ObservableBoolean newsAndOffersField = new ObservableBoolean();
-
+    private ObservableBoolean emailOffersField = new ObservableBoolean();
+    private ObservableBoolean smsOffersField = new ObservableBoolean();
     private MutableLiveData<Event<Boolean>> navigateToLogin = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> showDuplicateEmailEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
-
     private MutableLiveData<Boolean> isValidatingEmail = new MutableLiveData<>();
-
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
-
     private ArrayList<Province> provincesList;
-
 
     @Inject
     public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider) {
@@ -127,8 +123,8 @@ public class EnrollmentFormViewModel extends ViewModel {
                         selectedProvince.getId(),
                         postalCodeField.getText().replace(" ", ""), //Replace the space characters
                         phoneField.getText(),
-                        newsAndOffersField.get(),
-                        newsAndOffersField.get(),
+                        emailOffersField.get(),
+                        smsOffersField.get(),
                         selectedQuestion.getId(),
                         securityAnswerField.getText()
                 );
@@ -306,8 +302,12 @@ public class EnrollmentFormViewModel extends ViewModel {
         return navigateToLogin;
     }
 
-    public ObservableBoolean getNewsAndOffersField() {
-        return newsAndOffersField;
+    public ObservableBoolean getEmailOffersField() {
+        return emailOffersField;
+    }
+
+    public ObservableBoolean getSmsOffersField() {
+        return smsOffersField;
     }
 
     public InputField getFirstNameField() {
@@ -405,7 +405,6 @@ public class EnrollmentFormViewModel extends ViewModel {
             postalCodeField.setText(cardStatus.getAddress().getPostalCode());
             if (cardStatus.getAddress().getPhone() != null) {
                 phoneField.setText(cardStatus.getAddress().getPhone());
-
             }
         } else {
             lastNameField.setText(cardStatus.getUserInfo().getLastName());

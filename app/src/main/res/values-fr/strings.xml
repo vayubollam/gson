@@ -89,8 +89,8 @@
     <string name="enrollment_postalcode_label">Code postal</string>
     <string name="enrollment_postalcode_matching_province_error">Le code postal saisi ne correspond pas à la province sélectionnée.</string>
     <string name="enrollment_phone_label">Numéro de téléphone (facultatif)</string>
-    <string name="enrollment_news_label">Oui, j\'aimerais recevoir des nouvelles, des offres et des rabais chez les partenaires de Petro‑Points.</string>
-    <string name="enrollment_news_unsubscribe_hint">Vous pouvez vous désinscrire en tout temps.</string>
+    <string name="enrollment_email_offers_label">Oui, j\'aimerais recevoir des nouvelles, des offres et des rabais chez les partenaires de Petro‑Points.</string>
+    <string name="enrollment_email_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
@@ -407,4 +407,6 @@
     <string name="navigation_rewards_signedin_tab">Échanger</string>
     <string name="cards_add_fragment_cvv_field_empty_error">Veuillez entrer le code de sécurité.</string>
     <string name="cards_add_fragment_cvv_field_format_error">Votre code de sécurité est erroné.</string>
+    <string name="enrollment_sms_offers_label">Oui, j’aimerais recevoir des offres spéciales et des alertes par SMS de Petro\\u2011Points.</string>
+    <string name="enrollment_sms_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
 </resources>
