@@ -237,28 +237,54 @@
                     app:layout_constraintTop_toBottomOf="@id/phone_input" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/news_checkbox"
+                    android:id="@+id/email_offers_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:checked="@={vm.newsAndOffersField}"
+                    android:checked="@={vm.emailOffersField}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.21"
                     android:paddingTop="4dp"
-                    android:text="@string/enrollment_news_label"
+                    android:text="@string/enrollment_email_offers_label"
                     android:textAppearance="@style/Caption1"
                     app:layout_constraintTop_toBottomOf="@id/preferences_category_title" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/news_hint"
+                    android:id="@+id/email_offers_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="44dp"
                     android:layout_marginTop="2dp"
                     android:lineSpacingMultiplier="1.17"
-                    android:text="@string/enrollment_news_unsubscribe_hint"
+                    android:text="@string/enrollment_email_offers_hint"
                     android:textAppearance="@style/Caption2"
-                    app:layout_constraintTop_toBottomOf="@id/news_checkbox" />
+                    app:layout_constraintTop_toBottomOf="@id/email_offers_checkbox" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/sms_offers_checkbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:checked="@={vm.smsOffersField}"
+                    android:gravity="top"
+                    android:lineSpacingMultiplier="1.21"
+                    android:paddingTop="4dp"
+                    android:text="@string/enrollment_sms_offers_label"
+                    android:textAppearance="@style/Caption1"
+                    app:layout_constraintTop_toBottomOf="@id/email_offers_hint"
+                    app:visibleGone="@{vm.phoneField.text != null &amp;&amp; !vm.phoneField.text.isEmpty()}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/sms_offers_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginTop="2dp"
+                    android:lineSpacingMultiplier="1.17"
+                    android:text="@string/enrollment_sms_offers_hint"
+                    android:textAppearance="@style/Caption2"
+                    app:layout_constraintTop_toBottomOf="@id/sms_offers_checkbox"
+                    app:visibleGone="@{vm.phoneField.text != null &amp;&amp; !vm.phoneField.text.isEmpty()}" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/fingerprint_checkbox"
@@ -271,7 +297,7 @@
                     android:text="@string/enrollment_fingerprint_label"
                     android:textAppearance="@style/Caption1"
                     android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/news_hint" />
+                    app:layout_constraintTop_toBottomOf="@id/sms_offers_hint" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/fingerprint_hint"
@@ -293,9 +319,9 @@
                     android:layout_marginTop="24dp"
                     android:lineSpacingMultiplier="1.57"
                     android:paddingRight="2dp"
+                    android:text="@string/enrollment_terms_agreement"
                     android:textAppearance="@style/Caption1"
                     android:textColorLink="@color/red"
-                    android:text="@string/enrollment_terms_agreement"
                     app:layout_constraintTop_toBottomOf="@id/fingerprint_hint"
                     tools:text="@string/enrollment_terms_agreement" />
 

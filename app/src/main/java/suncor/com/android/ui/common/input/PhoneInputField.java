@@ -2,6 +2,8 @@ package suncor.com.android.ui.common.input;
 
 import java.util.regex.Pattern;
 
+import suncor.com.android.BR;
+
 public class PhoneInputField extends InputField {
     public PhoneInputField(int error) {
         super(error);
@@ -20,5 +22,11 @@ public class PhoneInputField extends InputField {
         return isEmpty() || PHONE_NUMBER.matcher(getText()).matches();
     }
 
-
+    @Override
+    public void setText(String text) {
+        if (text != null && !text.equals(getText())) {
+            notifyPropertyChanged(BR.text);
+        }
+        super.setText(text);
+    }
 }
