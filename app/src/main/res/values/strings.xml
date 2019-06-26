@@ -348,11 +348,11 @@
     <string name="profile_about_legal_link">https://www.petro-canada.ca/en/legal-privacy</string>
     <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/en/legal-privacy</string>
 
-    <string name="home_signedin_greetings_morning">Good morning,\n%s!</string>
-    <string name="home_signedin_greetings_afternoon">Good afternoon,\n%s!</string>
-    <string name="home_signedin_greetings_evening">Good evening,\n%s!</string>
+    <string name="home_signedin_greetings_morning">Good morning,\n%s.</string>
+    <string name="home_signedin_greetings_afternoon">Good afternoon,\n%s.</string>
+    <string name="home_signedin_greetings_evening">Good evening,\n%s.</string>
 
-    <string name="home_signedin_petropoints_balance">You have %s points or $%d off</string>
+    <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
     <string name="home_signedin_scan_button">Scan card</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
     <string name="offers_banner_2_text">Vik Heer, a member of your community.</string>
@@ -390,7 +390,7 @@
     <string name="home_tab_terms_amp_conditions">Terms &amp; Conditions</string>
     <string name="home_tab_privacy_policy">Legal &amp; privacy</string>
     <string name="home_enrollment_greeting">Your %s points will take up to 15 minutes to appear.</string>
-    <string name="home_enrollment_greeting_title">Thank you for joining Petro\u2011Points.</string>
+    <string name="home_enrollment_greeting_title">Thank you!</string>
     <string name="home_enrollment_greeting_dismiss">Dismiss</string>
     <string name="cards_remove_card_alert_title">Are you sure?</string>
     <string name="cards_remove_card_alert_message">This will remove the card from your account and any remaining balance will no longer be protected.</string>
