@@ -311,9 +311,9 @@
     <string name="profile_personnal_informations_email_alert_message">Changing your email will require you to sign in again.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
-    <string name="profile_personnal_informations_failure_alert_title">Personal information changes were not saved.</string>
+    <string name="msg_am001_title">Changes were not saved.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Please use a different email account or undo.</string>
-    <string name="profile_personnal_informations_failure_alert_message">Please try again later.</string>
+    <string name="msg_am001_message">Please try again later.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Use different email</string>
     <string name="profile_update_toast">Your personal info has been updated.</string>

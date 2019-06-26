@@ -306,10 +306,10 @@
     <string name="profile_personnal_informations_email_alert_message">Pour modifier votre courriel, vous devrez ouvrir une autre session.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Déconnexion</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">Cette adresse courriel est déjà liée à un compte</string>
-    <string name="profile_personnal_informations_failure_alert_title">Les modifications des renseignements personnels n\'ont pas été sauvegardées.</string>
+    <string name="msg_am001_title">Les modifications n\'ont pas été sauvegardées.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Veuillez utiliser un autre adresse courriel ou annuler.</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Veuillez utiliser un autre adresse courriel.</string>
-    <string name="profile_personnal_informations_failure_alert_message">Veuillez réessayer plus tard.</string>
+    <string name="msg_am001_message">Veuillez réessayer plus tard.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
     <string name="profile_personnal_informations_update_toast">Vos renseignements personnels ont été mis à jour.</string>
