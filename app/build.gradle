@@ -11,11 +11,11 @@ repositories {
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
-        applicationId "com.suncor.android.SuncorApplication"
+        applicationId "com.petrocanada.my_petro_canada"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 3
-        versionName "3.0"
+        versionName "3.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY

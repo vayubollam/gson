@@ -137,7 +137,7 @@
                 android:layout_above="@+id/verifying_card_pd"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="24dp"
-                android:text="@{vm.addCardApiResult.status == Resource.Status.SUCCESS ? @string/enrollment_cardform_card_verified : @string/cards_add_fragment_adding}"
+                android:text="@{vm.addCardApiResult.status == Resource.Status.SUCCESS ? @string/cards_add_fragment_added : @string/cards_add_fragment_adding}"
                 android:textAppearance="@style/Title1" />
 
             <ProgressBar

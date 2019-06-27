@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/profile_preferences_email_header"
+                    android:layout_marginTop="16dp"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

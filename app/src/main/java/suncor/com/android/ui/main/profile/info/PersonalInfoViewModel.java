@@ -80,8 +80,8 @@ public class PersonalInfoViewModel extends ViewModel {
                 case ERROR:
                     _isLoading.setValue(false);
                     Alert alert = new Alert();
-                    alert.title = R.string.profile_personnal_informations_failure_alert_title;
-                    alert.message = R.string.profile_personnal_informations_failure_alert_message;
+                    alert.title = R.string.msg_am001_title;
+                    alert.message = R.string.msg_am001_message;
                     alert.positiveButton = R.string.ok;
                     profileSharedViewModel.postAlert(alert);
                     break;
@@ -176,8 +176,8 @@ public class PersonalInfoViewModel extends ViewModel {
                 case ERROR:
                     _isLoading.setValue(false);
                     Alert alert = new Alert();
-                    alert.title = R.string.profile_personnal_informations_failure_alert_title;
-                    alert.message = R.string.profile_personnal_informations_failure_alert_message;
+                    alert.title = R.string.msg_am001_title;
+                    alert.message = R.string.msg_am001_message;
                     alert.positiveButton = R.string.ok;
                     profileSharedViewModel.postAlert(alert);
                     break;
