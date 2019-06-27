@@ -356,7 +356,7 @@
     <string name="transactions_point_summary_header">Résumé de points</string>
     <string name="profile_about_app_version">Version de l\'application</string>
     <string name="profile_about_legal">Avis juridique</string>
-    <string name="profile_about_privacy_policy">Protection des renseignements personnels</string>
+    <string name="profile_about_privacy_policy">Confidentialité</string>
     <string name="profile_about_header">À propos</string>
     <string name="profile_about_legal_header">Avis juridique</string>
     <string name="profile_about_privacy_policy_header">Conditions</string>

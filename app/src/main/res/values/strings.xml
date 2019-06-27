@@ -132,7 +132,7 @@
     <string name="profil_sign_out_alert_title">Sign out of Petro-Canada</string>
     <string name="profil_sign_out_dialog_positive_button">Sign Out</string>
     <string name="profil_sign_out_dialog_negative_button">Cancel</string>
-    <string name="msg_e001_title">Something went wrong</string>
+    <string name="msg_e001_title">Something went wrong on our side</string>
     <string name="msg_e001_message">Please try again later.</string>
     <string name="msg_e002_title">No internet connection</string>
     <string name="msg_e002_message">Go online and try again.</string>
