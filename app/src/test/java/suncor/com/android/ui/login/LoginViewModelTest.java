@@ -8,7 +8,6 @@ import org.junit.rules.TestRule;
 import org.mockito.Mockito;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import suncor.com.android.R;
@@ -17,10 +16,7 @@ import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Event;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
-
-import androidx.fragment.*;
 
 public class LoginViewModelTest {
     private LoginViewModel viewModel;
@@ -68,10 +64,10 @@ public class LoginViewModelTest {
         viewModel.onClickSignIn();
 
         LoginViewModel.LoginFailResponse loginFailResponse = viewModel.getLoginFailedEvent().getValue().getContentIfNotHandled();
-        loginFailResponse.callback.call();
+        loginFailResponse.negativeButtonCallBack.call();
         Assert.assertEquals(R.string.login_hard_lock_alert_title, loginFailResponse.title);
         Assert.assertEquals(R.string.login_hard_lock_alert_message, loginFailResponse.message.content);
-        Assert.assertEquals(R.string.login_hard_lock_alert_call_button, loginFailResponse.buttonTitle);
+        Assert.assertEquals(R.string.login_hard_lock_alert_call_button, loginFailResponse.negativeButtonTitle);
         Assert.assertTrue(viewModel.getCallCustomerService().getValue().getContentIfNotHandled().booleanValue());
     }
 
@@ -170,11 +166,11 @@ public class LoginViewModelTest {
         viewModel.getPasswordInputField().setText("password");
         viewModel.onClickSignIn();
         LoginViewModel.LoginFailResponse loginFailResponse = viewModel.getLoginFailedEvent().getValue().getContentIfNotHandled();
-        loginFailResponse.callback.call();
+        loginFailResponse.negativeButtonCallBack.call();
         Assert.assertEquals(R.string.login_invalid_credentials_dialog_title, loginFailResponse.title);
         Assert.assertEquals(R.string.login_invalid_credentials_dialog_2nd_message, loginFailResponse.message.content);
         Assert.assertEquals(signinResponse.getRemainingAttempts(), loginFailResponse.message.args[0]);
-        Assert.assertEquals(R.string.login_invalid_credentials_reset_password, loginFailResponse.buttonTitle);
+        Assert.assertEquals(R.string.login_invalid_credentials_reset_password, loginFailResponse.negativeButtonTitle);
         Assert.assertTrue(viewModel.getPasswordResetEvent().getValue().getContentIfNotHandled().booleanValue());
 
 

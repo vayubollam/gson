@@ -9,15 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import java.util.Locale;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.Locale;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
@@ -54,13 +55,7 @@ public class LoginFragment extends DaggerFragment {
             LoginViewModel.LoginFailResponse response = event.getContentIfNotHandled();
             if (response != null) {
 
-                AlertDialog.Builder dialog = createAlert(response.title, response.message);
-                if (response.callback != null) {
-                    dialog.setNegativeButton(response.buttonTitle, (i, w) -> {
-                        response.callback.call();
-                        i.dismiss();
-                    });
-                }
+                AlertDialog.Builder dialog = createAlert(response);
                 dialog.show();
             }
         });
@@ -107,19 +102,40 @@ public class LoginFragment extends DaggerFragment {
                 ft.commit();
             }
         });
+
+        viewModel.getNavigateToHomeEvent().observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                getActivity().finish();
+            }
+        });
     }
 
-    private AlertDialog.Builder createAlert(int title, LoginViewModel.ErrorMessage msg) {
+    private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
-        if (msg.args != null) {
-            message = getString(msg.content, msg.args);
+        if (response.message.args != null) {
+            message = getString(response.message.content, response.message.args);
         } else {
-            message = getString(msg.content);
+            message = getString(response.message.content);
         }
         builder.setMessage(message)
-                .setTitle(title);
-        builder.setPositiveButton(android.R.string.ok, null);
+                .setTitle(response.title);
+        builder.setPositiveButton(response.positiveButtonTitle, ((dialog, which) -> {
+            if (response.positiveButtonCallback != null) {
+                response.positiveButtonCallback.call();
+            }
+            dialog.dismiss();
+        }));
+
+        if (response.negativeButtonTitle != 0) {
+            builder.setNegativeButton(response.negativeButtonTitle, (i, w) -> {
+                if (response.negativeButtonCallBack != null) {
+                    response.negativeButtonCallBack.call();
+                }
+                i.dismiss();
+            });
+        }
+
         return builder;
     }
 
