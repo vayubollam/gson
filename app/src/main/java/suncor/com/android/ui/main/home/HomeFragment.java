@@ -80,7 +80,7 @@ public class HomeFragment extends BottomNavigationFragment {
     private OnClickListener showCardDetail = v -> {
         Resource<StationItem> resource = mViewModel.nearestStation.getValue();
         if (resource != null && resource.data != null && !mViewModel.isLoading.get()) {
-            StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
+            StationDetailsDialog.showCard(this, resource.data, nearestCard.getRoot(), false);
         }
     };
     private boolean systemMarginsAlreadyApplied;

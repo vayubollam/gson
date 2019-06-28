@@ -1,5 +1,13 @@
 package suncor.com.android.ui.main.home;
 
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -9,15 +17,9 @@ import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
 
-import androidx.databinding.ObservableBoolean;
-import androidx.databinding.ObservableInt;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
@@ -32,6 +34,7 @@ public class HomeViewModel extends ViewModel {
 
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(20, -180), new LatLng(90, -50));
     private final static int DISTANCE_API = 25000;
+    private FavouriteRepository favouriteRepository;
     public ObservableBoolean isLoading = new ObservableBoolean(false);
     private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
     public LiveData<Resource<StationItem>> nearestStation = _nearestStation;
@@ -54,9 +57,9 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt headerImage = new ObservableInt();
 
     @Inject
-    public HomeViewModel(SessionManager sessionManager, StationsProvider stationsProvider) {
+    public HomeViewModel(SessionManager sessionManager, StationsProvider stationsProvider, FavouriteRepository favouriteRepository) {
         this.sessionManager = sessionManager;
-
+        this.favouriteRepository = favouriteRepository;
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 LatLngBounds bounds = LocationUtils.calculateSquareBounds(userLocation, DISTANCE_API);
@@ -80,7 +83,7 @@ public class HomeViewModel extends ViewModel {
                     if (resource.data == null || resource.data.isEmpty()) {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
-                        _nearestStation.setValue(Resource.success(new StationItem(resource.data.get(0))));
+                        _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
                     }
                     break;
             }
