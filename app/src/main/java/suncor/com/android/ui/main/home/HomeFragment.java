@@ -91,12 +91,6 @@ public class HomeFragment extends BottomNavigationFragment {
     };
     private boolean systemMarginsAlreadyApplied;
 
-    private BroadcastReceiver retrieveProfileReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Alerts.prepareGeneralErrorDialog(getActivity()).show();
-        }
-    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -308,7 +302,6 @@ public class HomeFragment extends BottomNavigationFragment {
                 getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
             });
         }
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(retrieveProfileReceiver, new IntentFilter(SessionManager.RETRIEVE_PROFILE_FAILED));
     }
 
     @Override
@@ -319,7 +312,6 @@ public class HomeFragment extends BottomNavigationFragment {
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }
         getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(retrieveProfileReceiver);
     }
 
     @Override
