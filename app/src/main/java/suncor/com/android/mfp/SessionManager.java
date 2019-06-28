@@ -2,13 +2,19 @@ package suncor.com.android.mfp;
 
 import android.content.Intent;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.google.gson.Gson;
+import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLLogoutResponseListener;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
+import com.worklight.wlclient.auth.AccessToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,13 +25,12 @@ import java.net.URISyntaxException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
@@ -35,6 +40,8 @@ public class SessionManager implements SessionChangeListener {
 
     public static final int LOCK_TIME_MINUTES = 30;
     public static final int LOGIN_ATTEMPTS = 6;
+    public static final String RETRIEVE_PROFILE_FAILED = "com,ibm.suncor.profile.failed";
+
     private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
     private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
     private final UserLocalSettings userLocalSettings;
@@ -130,18 +137,35 @@ public class SessionManager implements SessionChangeListener {
 
     public void checkLoginState() {
         Timber.d("Checking login status");
-        retrieveProfile((profile) -> {
-            setProfile(profile);
-            loginState.postValue(LoginState.LOGGED_IN);
-        }, (error) -> {
-            setProfile(null);
-            loginState.postValue(LoginState.LOGGED_OUT);
+        authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
+            @Override
+            public void onSuccess(AccessToken accessToken) {
+                Timber.d("Got access token, retrieving profile");
+                retrieveProfile((profile) -> {
+                    setProfile(profile);
+                    loginState.postValue(LoginState.LOGGED_IN);
+                }, (error) -> {
+                    if (ConnectionUtil.haveNetworkConnection(application)) {
+                        LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(RETRIEVE_PROFILE_FAILED));
+                    }
+                    setProfile(null);
+                    loginState.postValue(LoginState.LOGGED_OUT);
+                });
+            }
+
+            @Override
+            public void onFailure(WLFailResponse wlFailResponse) {
+                Timber.d("Cannot retrieve an access token\n" + wlFailResponse.toString());
+                setProfile(null);
+                loginState.postValue(LoginState.LOGGED_OUT);
+            }
         });
+
     }
 
     private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
         try {
-            //We use 30s as the timeout for this request, as it's times out a lot, and causes logout
+            //We use 30s as the timeout for this request, as it times out a lot, and causes logout
             WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
             request.send(new WLResponseListener() {
                 @Override

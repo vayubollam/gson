@@ -2,7 +2,10 @@ package suncor.com.android.ui.main.home;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -22,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -42,8 +46,10 @@ import suncor.com.android.databinding.FragmentHomeGuestBinding;
 import suncor.com.android.databinding.FragmentHomeSignedinBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.webview.WebDialogFragment;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
@@ -84,6 +90,13 @@ public class HomeFragment extends BottomNavigationFragment {
         }
     };
     private boolean systemMarginsAlreadyApplied;
+
+    private BroadcastReceiver retrieveProfileReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Alerts.prepareGeneralErrorDialog(getActivity()).show();
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -295,6 +308,7 @@ public class HomeFragment extends BottomNavigationFragment {
                 getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
             });
         }
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(retrieveProfileReceiver, new IntentFilter(SessionManager.RETRIEVE_PROFILE_FAILED));
     }
 
     @Override
@@ -305,6 +319,7 @@ public class HomeFragment extends BottomNavigationFragment {
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }
         getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(retrieveProfileReceiver);
     }
 
     @Override
