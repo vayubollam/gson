@@ -160,7 +160,6 @@ public class SessionManager implements SessionChangeListener {
                 loginState.postValue(LoginState.LOGGED_OUT);
             }
         });
-
     }
 
     private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
