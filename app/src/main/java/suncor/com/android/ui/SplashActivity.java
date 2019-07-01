@@ -18,10 +18,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
-import javax.inject.Inject;
-
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
@@ -59,13 +60,13 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
         AppStart appStartMode = checkAppStart();
 
-        if (appStartMode != AppStart.FIRST_TIME) {
-            sessionManager.checkLoginState();
-        }
-
         if (application.isSplashShown()) {
             openMainActivity();
             return;
+        }
+
+        if (appStartMode != AppStart.FIRST_TIME) {
+            sessionManager.checkLoginState();
         }
 
         getWindow().setStatusBarColor(Color.TRANSPARENT);
