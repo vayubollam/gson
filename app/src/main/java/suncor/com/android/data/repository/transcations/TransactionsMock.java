@@ -26,11 +26,11 @@ public class TransactionsMock implements TransactionApi {
                 e.printStackTrace();
             }
             String jsonText;
-            if (startMonth == 6) {
+            if (startMonth == 7) {
                 jsonText = "[\n" +
                         "                            {\n" +
-                        "                                \"transactionType\": \"redemption\",\n" +
-                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
+                        "                                \"transactionType\": \"purchase\",\n" +
+                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
                         "                                \"basePoints\": -10000,\n" +
                         "                                \"bonusPoints\": 0,\n" +
                         "                                \"totalPoints\": -10000,\n" +
@@ -40,7 +40,7 @@ public class TransactionsMock implements TransactionApi {
                         "                            },\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-06-09T00:00:00\",\n" +
+                        "                                \"date\": \"2019-07-09T00:00:00\",\n" +
                         "                                \"basePoints\": 304,\n" +
                         "                                \"bonusPoints\": 183,\n" +
                         "                                \"totalPoints\": 487,\n" +
@@ -49,8 +49,8 @@ public class TransactionsMock implements TransactionApi {
                         "                                \"locationAddress\": \"3100 Ellesmere Road, Scarborough ON - M1E4C2\"\n" +
                         "                            },\n" +
                         "                            {\n" +
-                        "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
+                        "                                \"transactionType\": \"purchase\",\n" +
+                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +
@@ -59,27 +59,27 @@ public class TransactionsMock implements TransactionApi {
                         "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
                         "                            },\n" +
                         "                            {\n" +
-                        "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
+                        "                                \"transactionType\": \"purchase\",\n" +
+                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +
-                        "                                \"purchaseAmount\": 0.00,\n" +
+                        "                                \"purchaseAmount\": 8.00,\n" +
                         "                                \"rewardDescription\": \"\",\n" +
                         "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
                         "                            },\n" +
                         "                            {\n" +
-                        "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-06-11T00:00:00\",\n" +
+                        "                                \"transactionType\": \"purchase\",\n" +
+                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
                         "                                \"basePoints\": 0,\n" +
                         "                                \"bonusPoints\": 1000,\n" +
                         "                                \"totalPoints\": 1000,\n" +
-                        "                                \"purchaseAmount\": 0.00,\n" +
+                        "                                \"purchaseAmount\": 0.50,\n" +
                         "                                \"rewardDescription\": \"\",\n" +
                         "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
                         "                            }\n" +
                         "                        ]";
-            } else if (startMonth == 4) {
+            } else if (startMonth == 6) {
                 jsonText = "[\n" +
                         "                            {\n" +
                         "                                \"transactionType\": \"redemption\",\n" +
