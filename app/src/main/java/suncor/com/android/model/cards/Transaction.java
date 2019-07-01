@@ -119,9 +119,9 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
         String amount = NumberFormat.getNumberInstance(Locale.getDefault()).format(getPurchaseAmount());
         switch (getTransactionType()) {
             case PURCHASE:
-                return "$" + amount;
+                return getPurchaseAmount() == 0 ? "" : "$" + amount;
             case REDEMPTION:
-                return getBonusPoints() == 0 ? "" : "$" + amount;
+                return getBonusPoints() == 0 || getPurchaseAmount() == 0 ? "" : "$" + amount;
             default:
                 return "";
         }
@@ -204,7 +204,6 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
             return new Transaction[size];
         }
     };
-
 
 
 }
