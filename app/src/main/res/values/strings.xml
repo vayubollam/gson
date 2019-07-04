@@ -417,4 +417,5 @@
     <string name="cards_add_fragment_cvv_field_format_error">Your security code is wrong.</string>
     <string name="enrollment_sms_offers_label">Yes, I would like to receive special offers and SMS alerts from Petro\u2011Points.</string>
     <string name="enrollment_sms_offers_hint">You can unsubscribe at any time.</string>
+    <string name="rewards_details_close">CLose</string>
 </resources>
