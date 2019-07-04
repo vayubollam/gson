@@ -40,9 +40,19 @@
 
     <string-array name="station_wash_enum">
         <item>carWashBrushTypeTouchless</item>
+        <item>carWashBrandInd</item>
+        <item>carWashBrushTypeFoam</item>
+        <item>carWashBrandSoftcloth</item>
+        <item>carWashBrushTypeSoftcloth</item>
+        <item>carWashBrandOther</item>
     </string-array>
     <string-array name="station_wash_values">
         <item>Touchless</item>
+        <item>Soft Cloth</item>
+        <item>Soft Cloth</item>
+        <item>Soft Cloth</item>
+        <item>Soft Cloth</item>
+        <item>Not accepted</item>
     </string-array>
 
     <string-array name="province_names">

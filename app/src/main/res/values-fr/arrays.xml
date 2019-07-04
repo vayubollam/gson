@@ -23,6 +23,11 @@
 
     <string-array name="station_wash_values">
         <item>Lave-auto (sans contact)</item>
+        <item>Soft Cloth</item>
+        <item>Soft Cloth</item>
+        <item>Soft Cloth</item>
+        <item>Soft Cloth</item>
+        <item>Not accepted</item>
     </string-array>
     <string-array name="province_names">
         <item>Alberta;AB;T</item>

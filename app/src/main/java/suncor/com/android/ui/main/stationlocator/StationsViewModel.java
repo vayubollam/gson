@@ -1,5 +1,10 @@
 package suncor.com.android.ui.main.stationlocator;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -8,10 +13,6 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.repository.favourite.FavouriteRepository;
 import suncor.com.android.data.repository.stations.StationsProvider;
 import suncor.com.android.model.Resource;
@@ -183,15 +184,22 @@ public class StationsViewModel extends ViewModel {
         return applyAmenitiesFilter(stationsInBound, filters.getValue());
     }
 
-    private ArrayList<StationItem> applyAmenitiesFilter(ArrayList<StationItem> stations, ArrayList<String> currentFilter) {
-        if (currentFilter == null || currentFilter.isEmpty()) {
+    private ArrayList<StationItem> applyAmenitiesFilter(ArrayList<StationItem> stations, ArrayList<String> filtersList) {
+        if (filtersList == null || filtersList.isEmpty()) {
             return stations;
         }
         for (StationItem stationItem : new ArrayList<>(stations)) {
-            for (String filter : currentFilter) {
-                if (!stationItem.getStation().getAmenities().contains(filter)) {
-                    stations.remove(stationItem);
-                    break;
+            for (String filter : filtersList) {
+                if (!filter.equals(FiltersFragment.CARWASH_ALL_WASHES_KEY)) {
+                    if (!stationItem.getStation().getAmenities().contains(filter)) {
+                        stations.remove(stationItem);
+                        break;
+                    }
+                } else {
+                    //If the current filter is "All Washes", we just check if the station has some wash options, if not we filter it out.
+                    if (!stationItem.getStation().hasWashOptions()) {
+                        stations.remove(stationItem);
+                    }
                 }
             }
         }

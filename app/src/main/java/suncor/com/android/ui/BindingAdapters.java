@@ -7,8 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import java.util.HashMap;
-
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
@@ -16,6 +14,9 @@ import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
 import androidx.databinding.InverseBindingMethod;
 import androidx.databinding.InverseBindingMethods;
+
+import java.util.HashMap;
+
 import suncor.com.android.model.station.Station;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
@@ -42,10 +43,20 @@ public class BindingAdapters {
                 amenitiesMap = Station.WASH_AMENITIES;
                 break;
         }
-        for (String amenitie : station.getAmenities()) {
-            if (amenitiesMap.containsKey(amenitie)) {
-                buffer.append(amenitiesMap.get(amenitie));
-                buffer.append("\n");
+        if (amenitieType == 0 || amenitieType == 1) {
+            for (String amenitie : station.getAmenities()) {
+                if (amenitiesMap.containsKey(amenitie)) {
+                    buffer.append(amenitiesMap.get(amenitie));
+                    buffer.append("\n");
+                }
+            }
+        } else {
+            for (String amenitie : station.getAmenities()) {
+                //For car wash amenities, there is some duplication, to avoid showing multiple entries, we check if we already inserted it
+                if (amenitiesMap.containsKey(amenitie) && buffer.indexOf(amenitiesMap.get(amenitie)) == -1) {
+                    buffer.append(amenitiesMap.get(amenitie));
+                    buffer.append("\n");
+                }
             }
         }
         view.setText(buffer.toString().trim());
