@@ -1,7 +1,7 @@
 var FR = {
 	"rewardDiscover": {
 		"title": "Obtenez des primes plus rapidement avec nos Petro&#8209;Points.",
-		"description": "Tous les Petro&#8209;Points🅪 ont une valeur égale. Vous pouvez toujours échanger 1 000 points pour économiser 1 $."
+		"description": "Tous les Petro&#8209;Points🅪 ont une valeur égale. Vous pouvez toujours échanger <span style='white-space: nowrap;'>1 000</span> points pour économiser 1 $."
 	},
 	"rewardsDollarToPoints": {
 		"title": "Obtenez des Petro&#8209;Points sur chaque litre ou dollar."
@@ -14,7 +14,7 @@ var FR = {
 	"rewardsInStorePurchase": {
 		"title": "Nous avons des primes que vous voulez.",
 		"ticket": {
-			"title": "10,000 points",
+			"title": "10 000 points",
 			"description": "Billet de lavage &#8209; Nos meilleur lavage."
 		},
 		"fsr": {
@@ -26,11 +26,11 @@ var FR = {
 			"description": "Échanger vos points contre de primes de valeur offertes par nos partenaires comme de voyage.",
 		},
 		"washAndGo": {
-			"title": "50,000 points",
+			"title": "50 000 points",
 			"description": "Lavez Partez &#8209; Préchargée avec 5 de nos meilleurs lavages.",
 		},
 		"seasonPass": {
-			"title": "185,000 points",
+			"title": "185 000 points",
 			"description": "Carte accès &#8209; Un lavage par jour pendant 90 jours.",
 		},
 	},

@@ -106,8 +106,14 @@ body {
 
 .article-text-layout {
   text-align: center;
-  padding: 64px 20px;
+  padding: 64px 40px;
   font-family: Gibson;
+}
+
+.rewards-dollar-to-points,
+.rewards-redeem,
+.rewards-exchange {
+  padding: 64px 20px;
 }
 
 .text-in-image{
@@ -138,6 +144,8 @@ body {
 /* (Panel-1) rewards-discover */
 #rewards-discover-description {
   margin-top: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 /* (Panel-2) rewards-dollar-to-points */
@@ -174,7 +182,7 @@ body {
 #rewards-in-store-purchase-travel-image,
 #rewards-in-store-purchase-wag-image,
 #rewards-in-store-purchase-sp-image {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 #rewards-in-store-purchase-ticket-title,
@@ -205,7 +213,7 @@ body {
 #rewards-egift-ultimate-image,
 #rewards-egift-retail-image,
 #rewards-egift-cineplex-image {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 #rewards-egift-hbc-title,
@@ -222,9 +230,16 @@ body {
 }
 
 /* (Panel-6) rewards-link */
-#rewards-link-title,
-#rewards-link-description {
+#rewards-link-title {
   margin-bottom: 24px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#rewards-link-description {
+  margin-bottom: 40px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 #rewards-link-rbc-image,
@@ -256,18 +271,24 @@ body {
 }
 
 #rewards-partners-title,
-#rewards-partners-partner-1-image,
-#rewards-partners-partner-2-image,
-#rewards-partners-partner-3-image,
 #rewards-partners-partner-1-description,
 #rewards-partners-partner-2-description {
   margin-bottom: 32px;
 }
 
+#rewards-partners-partner-1-image,
+#rewards-partners-partner-2-image,
+#rewards-partners-partner-3-image {
+  margin-bottom: 20px;
+}
+
 /* (Panel-8) rewards-exchange */
-#rewards-exchange-title,
-#rewards-exchange-description {
+#rewards-exchange-title {
   margin-bottom: 24px;
+}
+
+#rewards-exchange-description {
+  margin-bottom: 32px;
 }
 
 #rewards-exchange-image {
