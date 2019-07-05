@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
@@ -190,8 +191,17 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         requiredFields.add(binding.cityInput);
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
-        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
+
+        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
+        binding.phoneInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
+        binding.phoneInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyBoard();
+                return true;
+            }
+            return false;
+        });
 
         binding.provinceInput.setOnClickListener(v -> {
             isExpanded = binding.appBar.isExpanded();
