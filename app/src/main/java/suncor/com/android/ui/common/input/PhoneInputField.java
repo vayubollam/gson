@@ -24,9 +24,20 @@ public class PhoneInputField extends InputField {
 
     @Override
     public void setText(String text) {
-        if (text != null && !text.equals(getText())) {
+        if (!isSameText(text)) {
             notifyPropertyChanged(BR.text);
         }
         super.setText(text);
+    }
+
+    private boolean isSameText(String text) {
+        if (text == null) {
+            return getText() == null;
+        } else {
+            if (getText() == null) {
+                return false;
+            }
+            return text.replace("-", "").equals(getText().replace("-", ""));
+        }
     }
 }
