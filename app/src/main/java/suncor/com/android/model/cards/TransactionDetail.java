@@ -37,8 +37,9 @@ public class TransactionDetail {
                 title = context.getResources().getString(R.string.transaction_title_pe);
                 break;
         }
-        SpannableString titleSpan = new SpannableString(transaction.getTransactionType() == Transaction.TransactionType.REDEMPTION || transaction.getTransactionType() == Transaction.TransactionType.PARTNER_POINTS_TRANSFER ? formattdBasePoints + " " + title : formattedTootlePoints + " " + title);
-        titleSpan.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red)), 0, transaction.getTransactionType() == Transaction.TransactionType.REDEMPTION || transaction.getTransactionType() == Transaction.TransactionType.PARTNER_POINTS_TRANSFER ? formattdBasePoints.length() : formattedTootlePoints.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        String points = transaction.getTransactionType() == Transaction.TransactionType.REDEMPTION || transaction.getTransactionType() == Transaction.TransactionType.PARTNER_POINTS_TRANSFER ? formattdBasePoints : formattedTootlePoints;
+        SpannableString titleSpan = new SpannableString(points + " " + title);
+        titleSpan.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red)), 0, points.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return titleSpan;
 
     }
