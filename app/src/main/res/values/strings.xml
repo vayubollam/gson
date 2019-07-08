@@ -418,4 +418,6 @@
     <string name="enrollment_sms_offers_label">Yes, I would like to receive special offers and SMS alerts from Petro\u2011Points.</string>
     <string name="enrollment_sms_offers_hint">You can unsubscribe at any time.</string>
     <string name="rewards_details_close">CLose</string>
+    <string name="station_filters_all_washes">Any wash</string>
+    <string name="station_filter_touchless_only">Touchless only</string>
 </resources>

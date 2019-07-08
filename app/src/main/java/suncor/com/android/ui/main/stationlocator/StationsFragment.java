@@ -18,6 +18,23 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,22 +54,6 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.ViewCompat;
-import androidx.databinding.Observable;
-import androidx.databinding.ObservableBoolean;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentStationsBinding;
@@ -62,8 +63,8 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
 
@@ -445,10 +446,18 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             binding.filtersLayout.setVisibility(View.VISIBLE);
 
             binding.filtersChipgroup.removeAllViews();
-            for (String amenity : filterList) {
+            for (String filter : filterList) {
+                String filterText;
+                if (filter.equals(FiltersFragment.CARWASH_ALL_WASHES_KEY)) {
+                    filterText = getString(R.string.station_filters_all_washes);
+                } else if (filter.equals(FiltersFragment.CARWASH_TOUCHLESS_KEY)) {
+                    filterText = getString(R.string.station_filter_touchless_only);
+                } else {
+                    filterText = Station.FULL_AMENITIES.get(filter);
+                }
                 Chip chip = new Chip(getActivity());
-                chip.setText(Station.FULL_AMENITIES.get(amenity));
-                chip.setTag(amenity);
+                chip.setText(filterText);
+                chip.setTag(filter);
                 chip.setOnCloseIconClickListener(v -> {
                     ArrayList<String> currentFilters = mViewModel.filters.getValue();
                     currentFilters.remove(v.getTag().toString());
