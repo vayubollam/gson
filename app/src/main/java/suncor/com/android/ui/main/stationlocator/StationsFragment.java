@@ -450,6 +450,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 String filterText;
                 if (filter.equals(FiltersFragment.CARWASH_ALL_WASHES_KEY)) {
                     filterText = getString(R.string.station_filters_all_washes);
+                } else if (filter.equals(FiltersFragment.CARWASH_TOUCHLESS_KEY)) {
+                    filterText = getString(R.string.station_filter_touchless_only);
                 } else {
                     filterText = Station.FULL_AMENITIES.get(filter);
                 }

@@ -28,7 +28,7 @@ public class FiltersFragment extends BaseFragment {
     private HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private StationsViewModel parentViewModel;
 
-    private static final String CARWASH_TOUCHLESS_KEY = "carWashBrushTypeTouchless";
+    public static final String CARWASH_TOUCHLESS_KEY = "carWashBrushTypeTouchless";
     public static final String CARWASH_ALL_WASHES_KEY = "carWashAllWashes";
 
     @Override
@@ -88,7 +88,7 @@ public class FiltersFragment extends BaseFragment {
             checkBoxes.put(amenityKey, checkBox);
         }
 
-        AppCompatCheckBox touchlessCheckBox = getCheckbox(Station.WASH_AMENITIES.get(CARWASH_TOUCHLESS_KEY));
+        AppCompatCheckBox touchlessCheckBox = getCheckbox(getString(R.string.station_filter_touchless_only));
         binding.carwashAmenitiesContainer.addView(touchlessCheckBox);
         binding.carwashAmenitiesContainer.addView(getDivider());
         checkBoxes.put(CARWASH_TOUCHLESS_KEY, touchlessCheckBox);
