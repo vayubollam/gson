@@ -107,6 +107,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/card_name"
+                    app:visibleGone="@{card.cardType != CardType.RBC}"
                     tools:text="7069 22761 9857 012" />
 
                 <View
