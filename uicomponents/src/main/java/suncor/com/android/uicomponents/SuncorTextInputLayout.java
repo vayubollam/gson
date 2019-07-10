@@ -219,6 +219,13 @@ public class SuncorTextInputLayout extends LinearLayout {
         });
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        inputFrame.setEnabled(enabled);
+        editText.setEnabled(enabled);
+    }
+
     public AppCompatEditText getEditText() {
         return editText;
     }
