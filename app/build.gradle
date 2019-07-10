@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
+apply from: "./versionCode.gradle"
+
 if (getGradle().getStartParameter().getTaskRequests().toString().contains("QA")) {
     apply plugin: 'io.fabric'
 }
@@ -76,6 +78,23 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }
 }
+
+android.applicationVariants.all { variant ->
+    def buildType = variant.buildType.name
+
+    if (buildType == "release") {
+        variant.outputs.all { output ->
+            setVersionCodeOverride(generatedVersionCode)
+        }
+
+        //setVersionCodeOverride doesn't update VERSION_CODE of BuildConfig, so we add a new field holding the real value
+        buildConfigField("int", "REAL_VERSION_CODE", "$generatedVersionCode")
+    } else {
+        buildConfigField("int", "REAL_VERSION_CODE", "$versionCode")
+    }
+}
+
+
 configurations {
     all*.exclude group: 'com.google.guava', module: 'listenablefuture'
 }
