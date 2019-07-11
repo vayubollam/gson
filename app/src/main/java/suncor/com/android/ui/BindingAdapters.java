@@ -51,11 +51,17 @@ public class BindingAdapters {
                 }
             }
         } else {
-            for (String amenitie : station.getAmenities()) {
-                //For car wash amenities, there is some duplication, to avoid showing multiple entries, we check if we already inserted it
-                if (amenitiesMap.containsKey(amenitie) && buffer.indexOf(amenitiesMap.get(amenitie)) == -1) {
-                    buffer.append(amenitiesMap.get(amenitie));
-                    buffer.append("\n");
+            //see https://suncoragilecoe.atlassian.net/browse/RMP-1999, brandOther stations will show only this amenity
+            if (station.getAmenities().contains("carWashBrandOther")) {
+                buffer.append(amenitiesMap.get("carWashBrandOther"));
+                buffer.append("\n");
+            } else {
+                for (String amenitie : station.getAmenities()) {
+                    //For car wash amenities, there is some duplication, to avoid showing multiple entries, we check if we already inserted it
+                    if (amenitiesMap.containsKey(amenitie) && buffer.indexOf(amenitiesMap.get(amenitie)) == -1) {
+                        buffer.append(amenitiesMap.get(amenitie));
+                        buffer.append("\n");
+                    }
                 }
             }
         }

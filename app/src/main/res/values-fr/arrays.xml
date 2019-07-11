@@ -22,12 +22,12 @@
     </string-array>
 
     <string-array name="station_wash_values">
-        <item>Lave-auto (sans contact)</item>
-        <item>Soft Cloth</item>
-        <item>Soft Cloth</item>
-        <item>Soft Cloth</item>
-        <item>Soft Cloth</item>
-        <item>Not accepted</item>
+        <item>Sans contact</item>
+        <item>Lanières douces</item>
+        <item>Lanières douces</item>
+        <item>Lanières douces</item>
+        <item>Lanières douces</item>
+        <item>N\'accepte pas la carte accès ou la carte Lavez Partez.</item>
     </string-array>
     <string-array name="province_names">
         <item>Alberta;AB;T</item>
