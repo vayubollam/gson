@@ -116,7 +116,7 @@
     <string name="enrollment_email_restricted_alert_title">Please enter a different email account</string>
 
     <string name="enrollment_email_format_error">Please enter a valid email address.</string>
-    <string name="discover_your_next_adventure">FIND YOUR \n HAPPY PLACE</string>
+    <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>
     <string name="password_validation_text_length">Must be 8-16 characters</string>
     <string name="password_validation_lowercase">At least one lowercase letter</string>
     <string name="password_validation_uppercase">At least one uppercase letter</string>
