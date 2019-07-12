@@ -19,6 +19,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="40dp"
         tools:background="@color/black_4">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -104,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{card.cardNumber}"
                     android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/card_name"

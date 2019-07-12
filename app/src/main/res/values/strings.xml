@@ -75,7 +75,7 @@
     <string name="minutes_distance">min</string>
     <string name="home_nearest_card_title">Nearest</string>
     <string name="suggestions_fragment_nearby_title">Nearest</string>
-    <string name="enrollment_card_question">Do you have a Petro\u2011Points card?</string>
+    <string name="enrollment_card_question">Do you have a \n Petro\u2011Points card?</string>
     <string name="enrollment_card_question_body">You can use your points for dollars off fuel, car wash, or store purchases.</string>
     <string name="enrollment_yes_i_have_a_card_button">Yes, I have a card.</string>
     <string name="enrollment_no_i_don_t_have_a_card_button">No, I don\'t have a card.</string>
@@ -116,7 +116,7 @@
     <string name="enrollment_email_restricted_alert_title">Please enter a different email account</string>
 
     <string name="enrollment_email_format_error">Please enter a valid email address.</string>
-    <string name="discover_your_next_adventure">FIND YOUR HAPPY PLACE</string>
+    <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>
     <string name="password_validation_text_length">Must be 8-16 characters</string>
     <string name="password_validation_lowercase">At least one lowercase letter</string>
     <string name="password_validation_uppercase">At least one uppercase letter</string>

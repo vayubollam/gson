@@ -67,9 +67,9 @@
                     android:maxLength="20"
                     app:error="@{vm.firstNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
-                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
                     app:layout_constraintTop_toBottomOf="@id/personal_category_title"
                     app:text="@={vm.firstNameField.text}"
+                    android:enabled="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
                     tools:layout_editor_absoluteX="16dp" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
@@ -80,7 +80,7 @@
                     android:maxLength="20"
                     app:error="@{vm.lastNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
-                    app:inputType="@{vm.cardStatus.cardType==EnrollmentType.EXISTING ? InputType.TYPE_NULL : InputType.TYPE_CLASS_TEXT }"
+                    android:enabled="@{vm.cardStatus.cardType!=EnrollmentType.EXISTING}"
                     app:layout_constraintTop_toBottomOf="@id/first_name_input"
                     app:text="@={vm.lastNameField.text}" />
 

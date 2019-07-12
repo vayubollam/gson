@@ -87,7 +87,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
             case FIRST_TIME:
                 splashText2.setVisibility(View.VISIBLE);
                 splashText1.setText(R.string.drive_safely);
-                backgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.drive_safely));
+                backgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.safety_image));
                 backgroundImage.setOnClickListener((v) -> {
                     startExitAnimation();
                 });
