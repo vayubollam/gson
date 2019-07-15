@@ -46,6 +46,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     SuncorApplication application;
 
     @Inject
+    Gson gson;
+
+    @Inject
     KeyStoreStorage keyStoreStorage;
 
     @Inject
@@ -130,7 +133,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 keyStoreStorage.store(CREDENTIALS_KEY, credentials.toString());
             }
             String profile = identity.getJSONObject("user").getString("attributes");
-            listener.onLoginSuccess(new Gson().fromJson(profile, Profile.class));
+            listener.onLoginSuccess(gson.fromJson(profile, Profile.class));
         } catch (JSONException e) {
             e.printStackTrace();
         }

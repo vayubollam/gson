@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EnrollmentsApi;
+import suncor.com.android.data.account.EnrollmentsApi;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Address;
 import suncor.com.android.model.account.CardStatus;

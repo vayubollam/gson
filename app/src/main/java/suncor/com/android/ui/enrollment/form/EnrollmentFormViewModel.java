@@ -13,8 +13,8 @@ import javax.inject.Inject;
 
 import suncor.com.android.BR;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EnrollmentsApi;
-import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
+import suncor.com.android.data.account.EnrollmentsApi;
+import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;

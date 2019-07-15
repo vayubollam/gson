@@ -10,7 +10,7 @@ import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import suncor.com.android.BR;
-import suncor.com.android.data.repository.favourite.FavouriteRepository;
+import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Hour;

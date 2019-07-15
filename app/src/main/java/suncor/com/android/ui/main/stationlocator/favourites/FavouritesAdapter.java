@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
-import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.data.DirectionsApi;
 import suncor.com.android.databinding.SwipeableStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;

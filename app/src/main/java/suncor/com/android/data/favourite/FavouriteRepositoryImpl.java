@@ -1,4 +1,7 @@
-package suncor.com.android.data.repository.favourite;
+package suncor.com.android.data.favourite;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -16,8 +19,6 @@ import java.util.ArrayList;
 
 import javax.inject.Singleton;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -30,15 +31,18 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
     private final ArrayList<Station> FAVOURITES = new ArrayList<>();
 
     private SessionManager sessionManager;
+    private Gson gson;
+
     private URI adapterURI;
 
     private MutableLiveData<Boolean> isLoaded = new MutableLiveData<>();
     private boolean loading;
 
-    public FavouriteRepositoryImpl(SessionManager sessionManager) {
+    public FavouriteRepositoryImpl(SessionManager sessionManager, Gson gson) {
         try {
             adapterURI = new URI("/adapters/suncor/v1/favourite-stations");
             this.sessionManager = sessionManager;
+            this.gson = gson;
             isLoaded.setValue(false);
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -79,7 +83,6 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
 
                 try {
                     final JSONArray jsonArray = new JSONArray(jsonText);
-                    Gson gson = new Gson();
                     ArrayList<Station> stations = new ArrayList<>();
                     stations.clear();
                     for (int i = 0; i < jsonArray.length(); i++) {

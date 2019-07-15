@@ -13,7 +13,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.data.repository.favourite.FavouriteRepository;
+import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.stationlocator.StationItem;

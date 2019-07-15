@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.profiles;
+package suncor.com.android.data.profiles;
 
 import androidx.lifecycle.LiveData;
 import suncor.com.android.model.Resource;

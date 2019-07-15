@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import suncor.com.android.data.repository.cards.CardsRepository;
+import suncor.com.android.data.cards.CardsRepository;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;

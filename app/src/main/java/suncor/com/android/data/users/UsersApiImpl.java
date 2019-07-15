@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.users;
+package suncor.com.android.data.users;
 
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;

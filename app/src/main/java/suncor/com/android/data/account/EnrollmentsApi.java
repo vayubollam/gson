@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.account;
+package suncor.com.android.data.account;
 
 import java.util.ArrayList;
 

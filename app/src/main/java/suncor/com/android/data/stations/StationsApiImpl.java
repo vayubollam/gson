@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.stations;
+package suncor.com.android.data.stations;
 
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.gson.Gson;
@@ -24,9 +24,14 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.Timber;
 
 @Singleton
-public class StationsProviderImpl implements StationsProvider {
+public class StationsApiImpl implements StationsApi {
 
     private static final String BASE_PATH = "/adapters/suncor/v1/locations";
+    private Gson gson;
+
+    public StationsApiImpl(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds, boolean tryNearest) {
@@ -44,7 +49,6 @@ public class StationsProviderImpl implements StationsProvider {
                     Timber.d("Locations API response:\n" + jsonText);
 
                     try {
-                        Gson gson = new Gson();
                         Station[] stations = gson.fromJson(jsonText, Station[].class);
                         result.postValue(Resource.success(new ArrayList<>(Arrays.asList(stations))));
                     } catch (JsonSyntaxException e) {

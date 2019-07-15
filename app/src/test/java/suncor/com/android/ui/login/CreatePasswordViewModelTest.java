@@ -11,7 +11,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.users.UsersApi;
+import suncor.com.android.data.users.UsersApi;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.SigninResponse;

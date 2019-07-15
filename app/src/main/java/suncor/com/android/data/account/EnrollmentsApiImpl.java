@@ -1,4 +1,7 @@
-package suncor.com.android.data.repository.account;
+package suncor.com.android.data.account;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -15,8 +18,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -27,6 +28,11 @@ import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ADAPTER_PATH = "/adapters/suncor/v1/enrollments";
+    private Gson gson;
+
+    public EnrollmentsApiImpl(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public LiveData<Resource<Integer>> registerAccount(NewEnrollment account) {
@@ -36,7 +42,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         try {
             URI adapterPath = new URI(ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
-            JSONObject body = new JSONObject(new Gson().toJson(account));
+            JSONObject body = new JSONObject(gson.toJson(account));
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
@@ -136,7 +142,6 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                     String jsonText = wlResponse.getResponseText();
                     Timber.d("Security Question Response:" + jsonText);
                     try {
-                        Gson gson = new Gson();
                         SecurityQuestion[] questions = gson.fromJson(jsonText, SecurityQuestion[].class);
                         result.postValue(Resource.success(new ArrayList<>(Arrays.asList(questions))));
                     } catch (JsonSyntaxException e) {
@@ -178,7 +183,6 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                     String response = wlResponse.getResponseText();
                     Timber.d("card status response:" + response);
                     if (wlResponse.getResponseJSON().keys().hasNext()) {
-                        Gson gson = new Gson();
                         CardStatus cardStatus = gson.fromJson(response, CardStatus.class);
                         result.postValue(Resource.success(cardStatus));
                     } else {

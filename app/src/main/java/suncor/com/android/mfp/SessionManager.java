@@ -85,7 +85,7 @@ public class SessionManager implements SessionChangeListener {
         this.gson = gson;
         String profileString = userLocationSettings.getString(SHARED_PREF_USER);
         if (profileString != null && !profileString.isEmpty()) {
-            profile = new Gson().fromJson(profileString, Profile.class);
+            profile = gson.fromJson(profileString, Profile.class);
             setProfile(profile);
         }
     }
