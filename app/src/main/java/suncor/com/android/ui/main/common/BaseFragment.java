@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 
@@ -36,8 +37,6 @@ public class BaseFragment extends DaggerFragment {
                 }
                 return insets;
             });
-
-
         }
     }
 
