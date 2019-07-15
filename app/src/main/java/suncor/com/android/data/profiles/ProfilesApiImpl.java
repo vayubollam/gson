@@ -1,5 +1,6 @@
-package suncor.com.android.data.repository.users;
+package suncor.com.android.data.profiles;
 
+import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
@@ -16,34 +17,39 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.Profile;
+import suncor.com.android.model.account.ProfileRequest;
+import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
-public class UsersApiImpl implements UsersApi {
-    private final static String ADAPTER_PATH = "/adapters/suncor/v1/users";
-
+public class ProfilesApiImpl implements ProfilesApi {
+    private static final String ADAPTER_PATH = "/adapters/suncor/v1/profiles";
 
     @Override
-    public LiveData<Resource<Boolean>> createPassword(String email, String password, String emailEncrypted) {
-        Timber.d("create password for account: " + email);
+    public void retrieveProfile(Consumer<Profile> successCallback, Consumer<String> errorCallback) {
+        //TODO
+    }
+
+    @Override
+    public LiveData<Resource<Boolean>> updateProfile(ProfileRequest profileRequest) {
+        Timber.d("Updating profile, account: " + profileRequest.getEmail());
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH.concat("/passwords"));
+            URI adapterPath = new URI(ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
-            JSONObject body = new JSONObject();
-            body.put("email", email);
-            body.put("emailEncrypted", emailEncrypted);
-            body.put("newPassword", password);
+            JSONObject body = new JSONObject(new Gson().toJson(profileRequest));
+            Timber.d("Sending request\n" + body.toString());
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
-                    Timber.d("Password created with success");
+                    Timber.d("Update profile with success");
                     result.postValue(Resource.success(true));
                 }
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.d("Passwords API failed, " + wlFailResponse.toString());
+                    Timber.d("Update profile failed, " + wlFailResponse.toString());
                     Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }

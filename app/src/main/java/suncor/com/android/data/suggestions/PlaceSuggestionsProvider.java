@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.suggestions;
+package suncor.com.android.data.suggestions;
 
 import com.google.android.gms.maps.model.LatLng;
 

@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.stations;
+package suncor.com.android.data.stations;
 
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.gson.Gson;
@@ -24,7 +24,7 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.Timber;
 
 @Singleton
-public class StationsProviderImpl implements StationsProvider {
+public class StationsApiImpl implements StationsApi {
 
     private static final String BASE_PATH = "/adapters/suncor/v1/locations";
 

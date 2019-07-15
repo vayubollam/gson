@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
-import suncor.com.android.data.repository.cards.CardsRepository;
+import suncor.com.android.data.cards.CardsRepository;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;

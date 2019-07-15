@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.suggestions;
+package suncor.com.android.data.suggestions;
 
 import android.util.Log;
 

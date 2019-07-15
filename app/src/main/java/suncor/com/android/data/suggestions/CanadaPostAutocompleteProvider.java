@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.suggestions;
+package suncor.com.android.data.suggestions;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;

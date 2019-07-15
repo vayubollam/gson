@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
-import suncor.com.android.data.repository.favourite.FavouriteRepository;
+import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.di.DaggerAppComponent;
 import suncor.com.android.mfp.MFPRequestInterceptor;
 import suncor.com.android.mfp.MfpLogging;

@@ -19,8 +19,8 @@ import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.api.DirectionsApi;
-import suncor.com.android.data.repository.favourite.FavouriteRepository;
-import suncor.com.android.data.repository.stations.StationsProvider;
+import suncor.com.android.data.favourite.FavouriteRepository;
+import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
@@ -57,13 +57,13 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt headerImage = new ObservableInt();
 
     @Inject
-    public HomeViewModel(SessionManager sessionManager, StationsProvider stationsProvider, FavouriteRepository favouriteRepository) {
+    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository) {
         this.sessionManager = sessionManager;
         this.favouriteRepository = favouriteRepository;
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 LatLngBounds bounds = LocationUtils.calculateSquareBounds(userLocation, DISTANCE_API);
-                return stationsProvider.getStations(bounds, true);
+                return stationsApi.getStations(bounds, true);
             } else {
                 return new MutableLiveData<>();
             }

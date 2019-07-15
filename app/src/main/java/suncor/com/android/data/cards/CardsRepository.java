@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.cards;
+package suncor.com.android.data.cards;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;

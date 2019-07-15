@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import suncor.com.android.data.repository.transcations.TransactionApi;
+import suncor.com.android.data.transcations.TransactionApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.Transaction;

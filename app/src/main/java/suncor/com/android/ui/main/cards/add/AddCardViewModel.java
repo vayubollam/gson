@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.data.repository.cards.CardsRepository;
+import suncor.com.android.data.cards.CardsRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;

@@ -1,4 +1,4 @@
-package suncor.com.android.data.repository.transcations;
+package suncor.com.android.data.transcations;
 
 import androidx.lifecycle.LiveData;
 

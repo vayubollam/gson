@@ -11,31 +11,31 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
-import suncor.com.android.data.repository.account.EnrollmentsApi;
-import suncor.com.android.data.repository.account.EnrollmentsApiImpl;
-import suncor.com.android.data.repository.cards.CardsApi;
-import suncor.com.android.data.repository.cards.CardsApiImpl;
-import suncor.com.android.data.repository.favourite.FavouriteRepository;
-import suncor.com.android.data.repository.favourite.FavouriteRepositoryImpl;
-import suncor.com.android.data.repository.profiles.ProfilesApi;
-import suncor.com.android.data.repository.profiles.ProfilesApiImpl;
-import suncor.com.android.data.repository.stations.StationsProvider;
-import suncor.com.android.data.repository.stations.StationsProviderImpl;
-import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
-import suncor.com.android.data.repository.suggestions.GooglePlaceSuggestionsProvider;
-import suncor.com.android.data.repository.suggestions.PlaceSuggestionsProvider;
-import suncor.com.android.data.repository.transcations.TransactionApi;
-import suncor.com.android.data.repository.transcations.TransactionApiImpl;
-import suncor.com.android.data.repository.users.UsersApi;
-import suncor.com.android.data.repository.users.UsersApiImpl;
+import suncor.com.android.data.account.EnrollmentsApi;
+import suncor.com.android.data.account.EnrollmentsApiImpl;
+import suncor.com.android.data.cards.CardsApi;
+import suncor.com.android.data.cards.CardsApiImpl;
+import suncor.com.android.data.favourite.FavouriteRepository;
+import suncor.com.android.data.favourite.FavouriteRepositoryImpl;
+import suncor.com.android.data.profiles.ProfilesApi;
+import suncor.com.android.data.profiles.ProfilesApiImpl;
+import suncor.com.android.data.stations.StationsApi;
+import suncor.com.android.data.stations.StationsApiImpl;
+import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
+import suncor.com.android.data.suggestions.GooglePlaceSuggestionsProvider;
+import suncor.com.android.data.suggestions.PlaceSuggestionsProvider;
+import suncor.com.android.data.transcations.TransactionApi;
+import suncor.com.android.data.transcations.TransactionApiImpl;
+import suncor.com.android.data.users.UsersApi;
+import suncor.com.android.data.users.UsersApiImpl;
 import suncor.com.android.mfp.SessionManager;
 
 @Module
 public class DataModule {
     @Provides
     @Singleton
-    StationsProvider providesStationsProvider() {
-        return new StationsProviderImpl();
+    StationsApi providesStationsProvider() {
+        return new StationsApiImpl();
     }
 
     @Provides
