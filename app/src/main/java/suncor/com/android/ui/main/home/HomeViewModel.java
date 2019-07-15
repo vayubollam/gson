@@ -18,7 +18,7 @@ import java.util.GregorianCalendar;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.data.DirectionsApi;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;

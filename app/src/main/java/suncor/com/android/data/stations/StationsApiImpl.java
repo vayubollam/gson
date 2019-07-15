@@ -27,6 +27,11 @@ import suncor.com.android.utilities.Timber;
 public class StationsApiImpl implements StationsApi {
 
     private static final String BASE_PATH = "/adapters/suncor/v1/locations";
+    private Gson gson;
+
+    public StationsApiImpl(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public LiveData<Resource<ArrayList<Station>>> getStations(LatLngBounds bounds, boolean tryNearest) {
@@ -44,7 +49,6 @@ public class StationsApiImpl implements StationsApi {
                     Timber.d("Locations API response:\n" + jsonText);
 
                     try {
-                        Gson gson = new Gson();
                         Station[] stations = gson.fromJson(jsonText, Station[].class);
                         result.postValue(Resource.success(new ArrayList<>(Arrays.asList(stations))));
                     } catch (JsonSyntaxException e) {

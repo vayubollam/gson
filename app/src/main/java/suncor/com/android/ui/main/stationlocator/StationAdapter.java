@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.data.DirectionsApi;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;

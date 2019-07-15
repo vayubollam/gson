@@ -1,5 +1,8 @@
 package suncor.com.android.data.profiles;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
@@ -12,8 +15,6 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -24,6 +25,11 @@ import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
     private static final String ADAPTER_PATH = "/adapters/suncor/v1/profiles";
+    private Gson gson;
+
+    public ProfilesApiImpl(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public void retrieveProfile(Consumer<Profile> successCallback, Consumer<String> errorCallback) {
@@ -38,7 +44,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         try {
             URI adapterPath = new URI(ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
-            JSONObject body = new JSONObject(new Gson().toJson(profileRequest));
+            JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
             request.send(body, new WLResponseListener() {
                 @Override

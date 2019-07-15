@@ -34,20 +34,20 @@ import suncor.com.android.mfp.SessionManager;
 public class DataModule {
     @Provides
     @Singleton
-    StationsApi providesStationsProvider() {
-        return new StationsApiImpl();
+    StationsApi providesStationsProvider(Gson gson) {
+        return new StationsApiImpl(gson);
     }
 
     @Provides
     @Singleton
-    FavouriteRepository providesFavouriteRepository(SessionManager sessionManager) {
-        return new FavouriteRepositoryImpl(sessionManager);
+    FavouriteRepository providesFavouriteRepository(SessionManager sessionManager, Gson gson) {
+        return new FavouriteRepositoryImpl(sessionManager, gson);
     }
 
     @Provides
     @Singleton
-    EnrollmentsApi providesEnrollmentApi() {
-        return new EnrollmentsApiImpl();
+    EnrollmentsApi providesEnrollmentApi(Gson gson) {
+        return new EnrollmentsApiImpl(gson);
     }
 
     @Provides
@@ -70,8 +70,8 @@ public class DataModule {
     }
 
     @Provides
-    ProfilesApi providesProfilesApi() {
-        return new ProfilesApiImpl();
+    ProfilesApi providesProfilesApi(Gson gson) {
+        return new ProfilesApiImpl(gson);
     }
 
     //Not singleton because a fresh token is needed each time the screen is opened
