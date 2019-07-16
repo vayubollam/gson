@@ -373,10 +373,11 @@
     <string name="home_enrollment_greeting_title">Merci !</string>
     <string name="home_enrollment_greeting_dismiss">Fermer</string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
-    <string name="offers_banner_2_text">Vik Heer, un membre de votre collectivité.</string>
-    <string name="offers_banner_2_button">Voici Vik</string>
-    <string name="offers_banner_3_text">Petro\u2011Points🅪 = Essence gratuite.</string>
-    <string name="offers_banner_3_button">En savoir plus</string>
+    <string name="offers_banner_2_text">Petro\u2011Points🅪 = Essence gratuite.</string>
+    <string name="offers_banner_2_button">En savoir plus</string>
+    <string name="offers_banner_3_text">Élaine Roy, un membre de votre collectivité.</string>
+    <string name="offers_banner_3_button">Voici Élaine</string>
+    <string name="offers_banner_3_link">As0tktgN9Oc</string>
     <string name="offers_banner_4_text">Voyez notre réseau de recharge rapide prendre forme.</string>
     <string name="offers_banner_4_button">Voir la vidéo</string>
     <string name="offers_banner_5_text">Économisez 3 ¢/litre sur gaz.</string>

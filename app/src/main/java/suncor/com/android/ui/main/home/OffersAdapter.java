@@ -41,25 +41,25 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         }
 
         OfferCard banner2 = new OfferCard(activity.getString(R.string.offers_banner_2_text),
-                activity.getDrawable(R.drawable.banner_2_brand_vik),
+                activity.getDrawable(R.drawable.banner_2_ppts),
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_2_button),
-                        activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "IbLyOW5YqZ0");
-                            activity.startActivity(intent);
+                            SuncorToast.makeText(activity, "This will redirect to rewards screen", Toast.LENGTH_SHORT).show();
+                            //TODO
                         }
                 ));
         offerCards.add(banner2);
 
         OfferCard banner3 = new OfferCard(activity.getString(R.string.offers_banner_3_text),
-                activity.getDrawable(R.drawable.banner_3_ppts),
+                activity.getDrawable(R.drawable.banner_3_brand),
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_3_button),
+                        activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-                            SuncorToast.makeText(activity, "This will redirect to rewards screen", Toast.LENGTH_SHORT).show();
-                            //TODO
+                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
+                            activity.startActivity(intent);
                         }
                 ));
         offerCards.add(banner3);
