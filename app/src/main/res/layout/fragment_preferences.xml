@@ -47,9 +47,9 @@
                     android:id="@+id/email_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/profile_preferences_email_header"
-                    android:layout_marginTop="16dp"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -59,11 +59,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:checked="@={vm.emailOffers}"
+                    android:checked="@{vm.emailOffers &amp;&amp; !vm.donotEmail}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
                     android:text="@string/profile_preferences_enable_email_offers_message"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setEmailOffers(checked)}"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="@id/email_header"
                     app:layout_constraintTop_toBottomOf="@id/email_header" />
@@ -73,12 +74,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:checked="@={!vm.emailOffers}"
+                    android:checked="@{!vm.emailOffers &amp;&amp; vm.donotEmail}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
                     android:text="@string/profile_preferences_disable_email_offers_message"
                     android:textAppearance="@style/Body"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setEmailOffers(!checked)}"
                     app:layout_constraintStart_toStartOf="@id/email_header"
                     app:layout_constraintTop_toBottomOf="@id/enable_offers_checkbox" />
 
@@ -99,10 +101,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:checked="@={vm.textOffers}"
+                    android:checked="@{vm.textOffers}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setTextOffers(checked)}"
                     android:text="@string/profile_preferences_enable_text_offers_message"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="@id/sms_header"
@@ -118,6 +121,7 @@
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setTextOffers(!checked)}"
                     android:text="@string/profile_preferences_disable_text_offers_message"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="@id/email_header"
@@ -145,7 +149,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider"
-                    app:layout_constraintVertical_chainStyle="spread_inside"/>
+                    app:layout_constraintVertical_chainStyle="spread_inside" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/save_button"

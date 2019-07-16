@@ -13,16 +13,20 @@ public class ProfileRequest {
         address.setPostalCode(profile.getPostalCode());
         address.setPhone(profile.getPhone());
         address.setProvince(profile.getProvince());
-        offers = new Offers();
-        offers.text = profile.isTextOffers();
-        offers.email = profile.isEmailOffers();
     }
 
     public void setEmailOffers(boolean emailOffers) {
+        if (offers == null) {
+            offers = new Offers();
+        }
         this.offers.email = emailOffers;
     }
 
     public void setTextOffers(boolean textOffers) {
+        if (offers == null) {
+            offers = new Offers();
+        }
+
         this.offers.text = textOffers;
     }
 
@@ -39,7 +43,7 @@ public class ProfileRequest {
     }
 
     static class Offers {
-        boolean email;
-        boolean text;
+        Boolean email;
+        Boolean text;
     }
 }
