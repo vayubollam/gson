@@ -1,12 +1,15 @@
 package suncor.com.android.ui.main.cards.list;
 
+import android.graphics.Outline;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -110,6 +113,14 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
 
         binding.petroCanadaCardsList.setAdapter(petroCanadaCardsAdapter);
         binding.petroCanadaCardsList.addItemDecoration(listDecorator);
+        binding.petroCanadaCardsList.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                Drawable drawable = getResources().getDrawable(R.drawable.petro_canada_card_background);
+                drawable.setBounds(new Rect(0, 0, view.getWidth(), view.getHeight()));
+                drawable.getOutline(outline);
+            }
+        });
 
         binding.partnerCardsList.setAdapter(partnerCardsAdapter);
         binding.partnerCardsList.addItemDecoration(listDecorator);
