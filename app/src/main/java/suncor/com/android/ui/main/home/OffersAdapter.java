@@ -5,7 +5,6 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
 import suncor.com.android.ui.YoutubePlayerActivity;
-import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
@@ -45,8 +43,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_2_button),
                         () -> {
-                            SuncorToast.makeText(activity, "This will redirect to rewards screen", Toast.LENGTH_SHORT).show();
-                            //TODO
+                            if (isSignedIn) activity.getNavController().navigate(R.id.rewards_signedin_tab);
+                            else activity.getNavController().navigate(R.id.rewards_tab);
                         }
                 ));
         offerCards.add(banner2);
