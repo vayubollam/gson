@@ -4,7 +4,6 @@ import android.content.Intent;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAccessTokenListener;
@@ -135,8 +134,9 @@ public class SessionManager implements SessionChangeListener {
         return loginState;
     }
 
-    public void checkLoginState() {
+    public LiveData<AutoLoginState> checkLoginState() {
         Timber.d("Checking login status");
+        MutableLiveData<AutoLoginState> autoLoginState = new MutableLiveData<>();
         authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
             @Override
             public void onSuccess(AccessToken accessToken) {
@@ -144,9 +144,12 @@ public class SessionManager implements SessionChangeListener {
                 retrieveProfile((profile) -> {
                     setProfile(profile);
                     loginState.postValue(LoginState.LOGGED_IN);
+                    autoLoginState.postValue(AutoLoginState.LOGGED_IN);
                 }, (error) -> {
                     if (ConnectionUtil.haveNetworkConnection(application)) {
-                        LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(RETRIEVE_PROFILE_FAILED));
+                        autoLoginState.postValue(AutoLoginState.ERROR);
+                    } else {
+                        autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
                     }
                     setProfile(null);
                     loginState.postValue(LoginState.LOGGED_OUT);
@@ -158,8 +161,10 @@ public class SessionManager implements SessionChangeListener {
                 Timber.d("Cannot retrieve an access token\n" + wlFailResponse.toString());
                 setProfile(null);
                 loginState.postValue(LoginState.LOGGED_OUT);
+                autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
             }
         });
+        return autoLoginState;
     }
 
     private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
@@ -327,6 +332,10 @@ public class SessionManager implements SessionChangeListener {
 
     public enum LoginState {
         LOGGED_IN, LOGGED_OUT
+    }
+
+    public enum AutoLoginState {
+        LOGGED_IN, LOGGED_OUT, ERROR
     }
 
     public enum AccountState {

@@ -23,6 +23,8 @@ import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.ui.SplashActivity;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
 import suncor.com.android.ui.main.common.BaseFragment;
@@ -88,6 +90,10 @@ public class MainActivity extends SessionAwareActivity {
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+        if (getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
+            Alerts.prepareGeneralErrorDialog(this).show();
+        }
     }
 
     @Override
