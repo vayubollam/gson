@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +34,6 @@ import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
@@ -228,14 +227,15 @@ public class HomeFragment extends BottomNavigationFragment {
         binding.setLifecycleOwner(this);
         binding.mainLayout.post(() -> {
             ConstraintLayout.LayoutParams privacyButtonParams = (ConstraintLayout.LayoutParams) binding.privacyPolicy.getLayoutParams();
-            binding.mainLayout.getLayoutParams().height = binding.scrollView.getHeight() + binding.privacyPolicy.getHeight() + privacyButtonParams.bottomMargin;
+            int _8dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+            binding.mainLayout.getLayoutParams().height = binding.scrollView.getHeight() + binding.privacyPolicy.getHeight() + privacyButtonParams.bottomMargin + _8dp;
             binding.mainLayout.requestLayout();
         });
 
-        AtomicBoolean insetsApplyed = new AtomicBoolean(false);
+        systemMarginsAlreadyApplied = false;
         ViewCompat.setOnApplyWindowInsetsListener(binding.mainLayout, (view, insets) -> {
-            if (!insetsApplyed.get()) {
-                insetsApplyed.set(true);
+            if (!systemMarginsAlreadyApplied) {
+                systemMarginsAlreadyApplied = true;
                 int systemsTopMargin = insets.getSystemWindowInsetTop();
                 view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + systemsTopMargin, view.getPaddingRight(), view.getPaddingBottom());
             }

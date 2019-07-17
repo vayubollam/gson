@@ -59,7 +59,6 @@
                     android:layout_marginBottom="24dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/home_tab_terms_amp_conditions"
-                    android:textAlignment="textEnd"
                     android:textAllCaps="false"
                     android:textColor="@color/black_60"
                     app:layout_constraintBottom_toBottomOf="parent"
