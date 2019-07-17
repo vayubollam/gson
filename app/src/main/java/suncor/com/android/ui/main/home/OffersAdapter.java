@@ -5,7 +5,6 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
 import suncor.com.android.ui.YoutubePlayerActivity;
-import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
@@ -41,25 +39,25 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         }
 
         OfferCard banner2 = new OfferCard(activity.getString(R.string.offers_banner_2_text),
-                activity.getDrawable(R.drawable.banner_2_brand_vik),
+                activity.getDrawable(R.drawable.banner_2_ppts),
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_2_button),
-                        activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "IbLyOW5YqZ0");
-                            activity.startActivity(intent);
+                            if (isSignedIn) activity.getNavController().navigate(R.id.rewards_signedin_tab);
+                            else activity.getNavController().navigate(R.id.rewards_tab);
                         }
                 ));
         offerCards.add(banner2);
 
         OfferCard banner3 = new OfferCard(activity.getString(R.string.offers_banner_3_text),
-                activity.getDrawable(R.drawable.banner_3_ppts),
+                activity.getDrawable(R.drawable.banner_3_brand),
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_3_button),
+                        activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-                            SuncorToast.makeText(activity, "This will redirect to rewards screen", Toast.LENGTH_SHORT).show();
-                            //TODO
+                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
+                            activity.startActivity(intent);
                         }
                 ));
         offerCards.add(banner3);
