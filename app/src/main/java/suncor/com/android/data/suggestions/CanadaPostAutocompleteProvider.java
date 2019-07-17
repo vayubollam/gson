@@ -21,7 +21,7 @@ import suncor.com.android.model.canadapost.CanadaPostSuggestion;
 import suncor.com.android.utilities.Timber;
 
 public class CanadaPostAutocompleteProvider {
-    private static final String BASE_URL = "http://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/%s/v2.10/json3.ws";
+    private static final String BASE_URL = "https://ws1.postescanada-canadapost.ca/AddressComplete/Interactive/%s/v2.10/json3.ws";
     private static final String API_KEY = "FJ69-PA18-EJ92-NH91";
 
     private final Gson gson;
