@@ -1,7 +1,6 @@
 package suncor.com.android.model.account;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 
 public class Profile {
     private String email;
@@ -15,6 +14,7 @@ public class Profile {
     private String postalCode;
     private String phone;
     private boolean emailOffers;
+    private boolean doNotEmail;
     private boolean textOffers;
 
     public String getEmail() {
@@ -107,6 +107,14 @@ public class Profile {
 
     public void setTextOffers(boolean textOffers) {
         this.textOffers = textOffers;
+    }
+
+    public boolean isDoNotEmail() {
+        return doNotEmail;
+    }
+
+    public void setDoNotEmail(boolean doNotEmail) {
+        this.doNotEmail = doNotEmail;
     }
 
     @Override
