@@ -91,7 +91,7 @@ public class MainActivity extends SessionAwareActivity {
 
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
-        if (getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
+        if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
             Alerts.prepareGeneralErrorDialog(this).show();
         }
     }
