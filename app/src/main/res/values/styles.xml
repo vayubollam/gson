@@ -12,6 +12,7 @@
         <item name="suncorTextInputStyle">@style/TextInputLayoutStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="suncorAppBarLayoutStyle">@style/AppBarStyle</item>
+        <item name="materialCardViewStyle">@style/CardViewStyle</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
@@ -379,5 +380,9 @@
         <item name="itemTextAppearanceInactive">@style/Caption1</item>
         <item name="itemIconTint">@color/bottom_nav_item_tint</item>
         <item name="itemTextColor">@color/bottom_nav_item_tint</item>
+    </style>
+
+    <style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="android:outlineSpotShadowColor">@color/black_80</item>
     </style>
 </resources>
