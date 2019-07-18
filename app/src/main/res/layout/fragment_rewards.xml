@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="16dp"
-            android:text="@string/rewards_guest_join_button"
-            android:translationZ="10dp" />
+            android:text="@string/rewards_guest_join_button" />
     </FrameLayout>
 </layout>
