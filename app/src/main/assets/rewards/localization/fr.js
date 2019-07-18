@@ -23,7 +23,7 @@ var FR = {
 		},
 		"travel": {
 			"title": "A compter de 10 000",
-			"description": "Échanger vos points contre de primes de valeur offertes par nos partenaires comme de voyage.",
+			"description": "Échangez vos points contre des rabais à l'achat de voyages à itravel2000.com.",
 		},
 		"washAndGo": {
 			"title": "50 000 points",

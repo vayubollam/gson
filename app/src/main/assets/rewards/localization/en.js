@@ -23,7 +23,7 @@ var EN = {
 		},
 		"travel": {
 			"title": "Starting at 10,000 points",
-			"description": "Redeem for valuable partner rewards like travel.",
+			"description": "Redeem your points for travel with itravel2000.com",
 		},
 		"washAndGo": {
 			"title": "50,000 points",
@@ -58,11 +58,11 @@ var EN = {
 		"description": "We’ve partnered with some great Canadian companies. When you link our partners’ cards to your account, you can earn points faster.",
 		"rbc": {
 			"title": "RBC",
-			"description": "Earn 20% more points"
+			"description": "Earn 20% more points."
 		},
 		"hbc": {
 			"title": "Hudson's Bay Rewards",
-			"description": "Earn 20% more points"
+			"description": "Earn 20% more points."
 		},
 		"caa": {
 			"title": "CAA",
@@ -93,7 +93,7 @@ var EN = {
 		"title": "Exchange your points.",
 		"description": "For even more flexibility, you can convert your Petro&#8209;Points with our partners.",
 		"partner1": {
-			"description": "Exchange your points for CAA Dollars or a new 1&#8209;year basic Membership"
+			"description": "Exchange your points for CAA Dollars or a new 1&#8209;year basic Membership (ON. only)"
 		},
 		"partner2": {
 			"description": "1,000 Petro&#8209;Points = one CAA Dollar"
