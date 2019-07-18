@@ -20,6 +20,12 @@
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_home_tab_to_rewardsDiscoveryFragment"
+            app:destination="@id/rewardsDiscoveryFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/rewards_tab"

@@ -6,11 +6,12 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
 import suncor.com.android.ui.YoutubePlayerActivity;
@@ -43,7 +44,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_2_button),
                         () -> {
-                            if (isSignedIn) activity.getNavController().navigate(R.id.rewards_signedin_tab);
+                            if (isSignedIn)
+                                activity.getNavController().navigate(R.id.action_home_tab_to_rewardsDiscoveryFragment);
                             else activity.getNavController().navigate(R.id.rewards_tab);
                         }
                 ));
