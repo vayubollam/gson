@@ -180,7 +180,7 @@
             android:background="@color/black_4"
             android:clickable="true"
             android:paddingStart="12dp"
-            android:paddingTop="12dp"
+            android:paddingTop="40dp"
             android:paddingEnd="12dp"
             android:paddingBottom="16dp"
             android:visibility="gone"

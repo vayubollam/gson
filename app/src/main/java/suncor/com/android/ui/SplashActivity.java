@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -17,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.DataBindingUtil;
 
@@ -26,9 +28,13 @@ import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.databinding.ActivitySplashBinding;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.ConnectionUtil;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
@@ -42,6 +48,9 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     @Inject
     SessionManager sessionManager;
+
+    @Inject
+    SettingsApi settingsApi;
 
     @Inject
     SuncorApplication application;
@@ -63,22 +72,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         if (application.isSplashShown()) {
             openMainActivity(false);
             return;
-        }
-
-        if (appStartMode != AppStart.FIRST_TIME) {
-            sessionManager.checkLoginState().observe(this, loginState -> {
-                binding.profilePd.setVisibility(View.GONE);
-                switch (loginState) {
-                    case LOGGED_IN:
-                    case LOGGED_OUT:
-                        startExitAnimation(false);
-                        break;
-                    case ERROR:
-                        startExitAnimation(true);
-                        break;
-
-                }
-            });
         }
 
         getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -139,15 +132,76 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        if (firstTimeUse) {
+        if (!firstTimeUse) {
+            binding.profilePd.setVisibility(View.VISIBLE);
+        }
+        if (ConnectionUtil.haveNetworkConnection(this)) {
+            settingsApi.retrieveSettings().observe(this, resource -> {
+                if (resource.status == Resource.Status.ERROR) {
+                    binding.profilePd.setVisibility(View.GONE);
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.settings_failure_dialog_title)
+                            .setMessage(R.string.settings_failure_dialog_message)
+                            .setPositiveButton(R.string.settings_failure_dialog_button, (dialog, which) -> {
+                                finish();
+                            })
+                            .setCancelable(false)
+                            .show();
+                }
+                if (resource.status == Resource.Status.SUCCESS) {
+                    handleSettingsResponse(resource.data);
+                }
+            });
+        } else {
             delayHandler.postDelayed(() -> {
                 startExitAnimation(false);
 
             }, delayExit);
-        } else {
-            binding.profilePd.setVisibility(View.VISIBLE);
         }
+    }
 
+    private void handleSettingsResponse(SettingsResponse settingsResponse) {
+        String minVersion = settingsResponse.getSettings().getMinAndroidVersion();
+        String currentVersion = BuildConfig.VERSION_NAME;
+        if (currentVersion.compareTo(minVersion) < 0) {
+            binding.profilePd.setVisibility(View.GONE);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.update_required_dialog_title)
+                    .setMessage(R.string.update_required_dialog_message)
+                    .setPositiveButton(R.string.update_required_dialog_button, (dialog, which) -> {
+                        final String appPackageName = "com.petrocanada.my_petro_canada";
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+                        finish();
+                    })
+                    .setCancelable(false)
+                    .show();
+        } else {
+            if (firstTimeUse) {
+                delayHandler.postDelayed(() -> {
+                    startExitAnimation(false);
+
+                }, delayExit);
+            } else {
+                sessionManager.checkLoginState().observe(this, loginState -> {
+                    binding.profilePd.setVisibility(View.GONE);
+                    switch (loginState) {
+                        case LOGGED_IN:
+                        case LOGGED_OUT:
+                            startExitAnimation(false);
+                            break;
+                        case ERROR:
+                            startExitAnimation(true);
+                            break;
+
+                    }
+                });
+            }
+        }
     }
 
     private void startExitAnimation(boolean loginFailed) {

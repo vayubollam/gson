@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -137,10 +139,28 @@ public class SessionManager implements SessionChangeListener {
     public LiveData<AutoLoginState> checkLoginState() {
         Timber.d("Checking login status");
         MutableLiveData<AutoLoginState> autoLoginState = new MutableLiveData<>();
+
+        //MFP doesn't notify listener about some errors, we need to add a separate timer to timeout after 35 seconds in case we don't get a response before
+        TimerTask timeoutTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                Timber.d("obtain Access Token call timed out without notification from MFP");
+                setProfile(null);
+                loginState.postValue(LoginState.LOGGED_OUT);
+                autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timeoutTask, 30000);
+
+
         authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
             @Override
             public void onSuccess(AccessToken accessToken) {
                 Timber.d("Got access token, retrieving profile");
+                timer.cancel();
                 retrieveProfile((profile) -> {
                     setProfile(profile);
                     loginState.postValue(LoginState.LOGGED_IN);
@@ -158,12 +178,14 @@ public class SessionManager implements SessionChangeListener {
 
             @Override
             public void onFailure(WLFailResponse wlFailResponse) {
+                timer.cancel();
                 Timber.d("Cannot retrieve an access token\n" + wlFailResponse.toString());
                 setProfile(null);
                 loginState.postValue(LoginState.LOGGED_OUT);
                 autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
             }
         });
+
         return autoLoginState;
     }
 
