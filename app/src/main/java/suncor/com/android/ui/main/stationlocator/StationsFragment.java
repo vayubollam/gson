@@ -457,8 +457,9 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 }
                 Chip chip = new Chip(getActivity());
                 chip.setText(filterText);
+                chip.setElevation(8);
                 chip.setTag(filter);
-                chip.setOnCloseIconClickListener(v -> {
+                chip.setOnClickListener(v -> {
                     ArrayList<String> currentFilters = mViewModel.filters.getValue();
                     currentFilters.remove(v.getTag().toString());
                     mViewModel.setCurrentFilters(currentFilters);
@@ -469,6 +470,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             clearFiltersChip.setText(R.string.station_clear_all_filters_chip);
             clearFiltersChip.setTextColor(getResources().getColor(R.color.red));
             clearFiltersChip.setCloseIconVisible(false);
+            clearFiltersChip.setElevation(8);
             clearFiltersChip.setOnClickListener((v) -> {
                 mViewModel.clearFilters();
             });
