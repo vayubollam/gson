@@ -20,11 +20,15 @@
         android:layout_height="match_parent"
         android:background="@color/black_4"
         android:clickable="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:paddingTop="@dimen/page_top_padding">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             android:orientation="vertical"
             tools:alpha="1">
 
@@ -35,6 +39,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="24dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black_20"
                 app:cardCornerRadius="8dp">
 
                 <LinearLayout
@@ -47,14 +53,16 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_gravity="center"
-                        android:layout_margin="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="12dp"
                         android:src="@drawable/ic_back" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/address_search_text"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="4dp"
+                        android:paddingStart="16dp"
                         android:layout_marginEnd="4dp"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
