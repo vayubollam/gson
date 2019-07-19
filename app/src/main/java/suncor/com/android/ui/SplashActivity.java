@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -34,8 +33,8 @@ import suncor.com.android.databinding.ActivitySplashBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
-import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.ConnectionUtil;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
@@ -136,20 +135,29 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         if (!firstTimeUse) {
             binding.profilePd.setVisibility(View.VISIBLE);
         }
-        settingsApi.retrieveSettings().observe(this, resource -> {
-            if (resource.status == Resource.Status.ERROR) {
-                Dialog dialog = Alerts.prepareGeneralErrorDialog(this);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.setOnDismissListener(dialog1 -> {
-                    finish();
-                });
-                dialog.show();
-                binding.profilePd.setVisibility(View.GONE);
-            }
-            if (resource.status == Resource.Status.SUCCESS) {
-                handleSettingsResponse(resource.data);
-            }
-        });
+        if (ConnectionUtil.haveNetworkConnection(this)) {
+            settingsApi.retrieveSettings().observe(this, resource -> {
+                if (resource.status == Resource.Status.ERROR) {
+                    binding.profilePd.setVisibility(View.GONE);
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.settings_failure_dialog_title)
+                            .setMessage(R.string.settings_failure_dialog_message)
+                            .setPositiveButton(R.string.settings_failure_dialog_button, (dialog, which) -> {
+                                finish();
+                            })
+                            .setCancelable(false)
+                            .show();
+                }
+                if (resource.status == Resource.Status.SUCCESS) {
+                    handleSettingsResponse(resource.data);
+                }
+            });
+        } else {
+            delayHandler.postDelayed(() -> {
+                startExitAnimation(false);
+
+            }, delayExit);
+        }
     }
 
     private void handleSettingsResponse(SettingsResponse settingsResponse) {
@@ -158,7 +166,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         if (currentVersion.compareTo(minVersion) < 0) {
             binding.profilePd.setVisibility(View.GONE);
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this)
                     .setTitle(R.string.update_required_dialog_title)
                     .setMessage(R.string.update_required_dialog_message)
                     .setPositiveButton(R.string.update_required_dialog_button, (dialog, which) -> {
@@ -170,8 +178,8 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                         }
                         finish();
                     })
-                    .setCancelable(false);
-            alert.show();
+                    .setCancelable(false)
+                    .show();
         } else {
             if (firstTimeUse) {
                 delayHandler.postDelayed(() -> {
