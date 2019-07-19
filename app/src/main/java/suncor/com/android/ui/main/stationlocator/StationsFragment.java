@@ -459,11 +459,13 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 chip.setText(filterText);
                 chip.setElevation(8);
                 chip.setTag(filter);
-                chip.setOnClickListener(v -> {
+                View.OnClickListener listener = v -> {
                     ArrayList<String> currentFilters = mViewModel.filters.getValue();
                     currentFilters.remove(v.getTag().toString());
                     mViewModel.setCurrentFilters(currentFilters);
-                });
+                };
+                chip.setOnClickListener(listener);
+                chip.setOnCloseIconClickListener(listener);
                 binding.filtersChipgroup.addView(chip);
             }
             Chip clearFiltersChip = new Chip(getActivity());
