@@ -23,9 +23,14 @@ import suncor.com.android.utilities.Timber;
 
 public class TransactionApiImpl implements TransactionApi {
     private final static String BASE_PATH = "/adapters/suncor/v1/transactions";
+    private Gson gson;
+
+    public TransactionApiImpl(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
-    public LiveData<Resource<ArrayList<Transaction>>> getTransactions(String cardId, int startMonth, int monthsBack, Gson gson) {
+    public LiveData<Resource<ArrayList<Transaction>>> getTransactions(String cardId, int startMonth, int monthsBack) {
         Timber.d("Retrieving transactions for card :" + cardId);
         MutableLiveData<Resource<ArrayList<Transaction>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());

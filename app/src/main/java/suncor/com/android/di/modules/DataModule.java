@@ -19,6 +19,8 @@ import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.favourite.FavouriteRepositoryImpl;
 import suncor.com.android.data.profiles.ProfilesApi;
 import suncor.com.android.data.profiles.ProfilesApiImpl;
+import suncor.com.android.data.settings.SettingsApi;
+import suncor.com.android.data.settings.SettingsApiImpl;
 import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.data.stations.StationsApiImpl;
 import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
@@ -100,7 +102,12 @@ public class DataModule {
 
     @Provides
     @Singleton
-    TransactionApi provideTransactionApi() {
-        return new TransactionApiImpl();
+    TransactionApi provideTransactionApi(Gson gson) {
+        return new TransactionApiImpl(gson);
+    }
+
+    @Provides
+    SettingsApi provideSettingsApi(Gson gson) {
+        return new SettingsApiImpl(gson);
     }
 }

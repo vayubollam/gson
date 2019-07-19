@@ -16,7 +16,7 @@ import suncor.com.android.utilities.Timber;
 
 public class TransactionsMock implements TransactionApi {
     @Override
-    public LiveData<Resource<ArrayList<Transaction>>> getTransactions(String cardId, int startMonth, int monthsBack, Gson gson) {
+    public LiveData<Resource<ArrayList<Transaction>>> getTransactions(String cardId, int startMonth, int monthsBack) {
         MutableLiveData<Resource<ArrayList<Transaction>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         Thread thread = new Thread(() -> {
@@ -128,7 +128,7 @@ public class TransactionsMock implements TransactionApi {
 
             try {
                 if (true) {
-                    Transaction[] transactions = gson.fromJson(jsonText, Transaction[].class);
+                    Transaction[] transactions = new Gson().fromJson(jsonText, Transaction[].class);
                     result.postValue(Resource.success(new ArrayList<>(Arrays.asList(transactions))));
                 } else {
                     result.postValue(Resource.error("001"));

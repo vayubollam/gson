@@ -10,5 +10,5 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.Transaction;
 
 public interface TransactionApi {
-    LiveData<Resource<ArrayList<Transaction>>> getTransactions(String cardId, int startMonth, int monthsBack, Gson gson);
+    LiveData<Resource<ArrayList<Transaction>>> getTransactions(String cardId, int startMonth, int monthsBack);
 }

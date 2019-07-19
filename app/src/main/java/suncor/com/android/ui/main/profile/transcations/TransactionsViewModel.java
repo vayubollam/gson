@@ -34,11 +34,11 @@ public class TransactionsViewModel extends ViewModel {
     private HashMap<Integer, ArrayList<Transaction>> listHashMap = new HashMap<>();
 
     @Inject
-    public TransactionsViewModel(SessionManager sessionManager, TransactionApi transactionApi, Gson gson) {
+    public TransactionsViewModel(SessionManager sessionManager, TransactionApi transactionApi) {
         transactionsLiveData = Transformations.switchMap(loadTransactions, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 updateStartEndMonths();
-                return transactionApi.getTransactions(sessionManager.getProfile().getPetroPointsNumber(), startMonth, monthsBack, gson);
+                return transactionApi.getTransactions(sessionManager.getProfile().getPetroPointsNumber(), startMonth, monthsBack);
             } else {
                 return new MutableLiveData<>();
             }
