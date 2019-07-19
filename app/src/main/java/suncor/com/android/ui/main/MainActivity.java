@@ -119,10 +119,6 @@ public class MainActivity extends SessionAwareActivity {
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_guest);
-
-//        bottomNavigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
-//        bottomNavigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
-//        bottomNavigation.getMenu().findItem(R.id.rewards_tab).setVisible(true);
     }
 
     @Override
@@ -136,9 +132,5 @@ public class MainActivity extends SessionAwareActivity {
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
-
-//        bottomNavigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
-//        bottomNavigation.getMenu().findItem(R.id.cards_tab).setVisible(true);
-//        bottomNavigation.getMenu().findItem(R.id.rewards_tab).setVisible(false);
     }
 }
