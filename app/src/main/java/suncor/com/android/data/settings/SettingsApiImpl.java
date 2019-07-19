@@ -45,7 +45,7 @@ public class SettingsApiImpl implements SettingsApi {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.e("Retrieving locations failed due to " + wlFailResponse.toString());
+                    Timber.e("Retrieving settings failed due to " + wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
