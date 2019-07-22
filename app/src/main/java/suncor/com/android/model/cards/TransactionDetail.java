@@ -64,9 +64,9 @@ public class TransactionDetail {
         switch (transaction.getTransactionType()) {
             case PURCHASE:
             case CUSTOMER_SERVICE_ADJ:
+            case BONUS:
             case PETRO_POINTS:
                 return transaction.getBonusPoints() > 0 ? "+" + bonusPoint : bonusPoint;
-            case BONUS:
             case PARTNER_POINTS_TRANSFER:
                 return "0";
             case REDEMPTION:
