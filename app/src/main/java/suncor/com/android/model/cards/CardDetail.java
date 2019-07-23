@@ -41,19 +41,29 @@ public class CardDetail {
     }
 
     public int getBalance() {
+        int balance;
         switch (cardType) {
             case PPTS:
-                return pointsBalance;
+                balance = pointsBalance;
+                break;
             case FSR:
             case PPC:
-                return litresRemaining;
+                balance = litresRemaining;
+                break;
             case WAG:
-                return unitsRemaining;
+                balance = unitsRemaining;
+                break;
             case SP:
-                return daysRemaining;
+                balance = daysRemaining;
+                break;
             default:
                 throw new IllegalStateException("partner cards have no balance");
         }
+
+        if (balance < 0) {
+            balance = INVALID_BALANCE;
+        }
+        return balance;
     }
 
     public CardCategory getCardCategory() {
