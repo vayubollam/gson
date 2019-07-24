@@ -116,7 +116,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         binding.petroCanadaCardsList.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-                Drawable drawable = getResources().getDrawable(R.drawable.petro_canada_card_background);
+                Drawable drawable = getActivity().getDrawable(R.drawable.petro_canada_card_background);
                 drawable.setBounds(new Rect(0, 0, view.getWidth(), view.getHeight()));
                 drawable.getOutline(outline);
             }
