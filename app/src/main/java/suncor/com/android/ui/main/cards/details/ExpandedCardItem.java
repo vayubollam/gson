@@ -44,7 +44,7 @@ public class ExpandedCardItem {
                 case HBC:
                     cardImage = context.getDrawable(R.drawable.hudsons_bay_card);
                     cardName = context.getString(R.string.cards_hbc_label);
-                    cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PARTNER_CARD_FORMAT);
+                    cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.HBC_CARD_FORMAT);
                     cardDescription = context.getString(R.string.cards_hbc_description);
                     break;
                 case CAA:

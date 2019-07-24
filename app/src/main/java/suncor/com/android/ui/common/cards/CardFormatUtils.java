@@ -38,6 +38,7 @@ public class CardFormatUtils {
     public static final CardFormat PPC_SHORT_FORMAT = new CardFormat(PPC_SHORT_MATCHER, new int[]{3, 3, 3, 1, 4}, 14);
 
     public static final CardFormat PARTNER_CARD_FORMAT = new CardFormat(PARTNER_MATCHER, new int[]{4, 5, 4, 4}, 18);
+    public static final CardFormat HBC_CARD_FORMAT = new CardFormat(PARTNER_MATCHER, new int[]{6, 3, 3, 3}, 15);
 
 
     private final static CardFormat[] PETRO_CANADA_CARDS = new CardFormat[]{FSR_FORMAT, FSR_SHORT_FORMAT, WAG_SP_FORMAT, WAG_SP_SHORT_FORMAT, PPC_FORMAT, PPC_SHORT_FORMAT};
