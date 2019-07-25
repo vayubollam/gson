@@ -3,96 +3,29 @@
     "title": "Questions les plus fréquentes",
     "questions": [
       {
+        "id": "how-do-i-scan-my-petro-points-barcode-in-the-app",
         "question": "Comment scanner le code à barres de ma carte Petro-Points dans l’application?",
         "response": "Entrez au dépanneur pour faire scanner le code à barres de la carte."
       },
       {
+        "id": "how-do-i-reload-my-fuel-savings-reward-card",
         "question": "Comment recharger ma carte Économie sur l’essence en prime?",
         "response": "Bientôt - rechargez votre carte avec l'app. Pour le moment, visitez petro-points.com"
       },
       {
+        "id": "how-do-i-reload-my-wash-and-go-card-or-season-pass",
         "question": "Comment recharger ma carte Lavez Partez ou ma carte accès lave-auto?",
         "response": "Bientôt - rechargez vos cartes avec l'app. Pour le moment, visitez petro-canada.ca"
       },
       {
+        "id": "how-do-i-add-my-partner-card-to-my-petro-points-account",
         "question": "Comment ajouter ma carte de partenaire à mon compte Petro-Points (CAA, More Rewards)?",
         "response": "Bientôt - ajoutez vos cartes - partenaire avec l'app. Pour le moment - petro-points.com"
       },
       {
+        "id": "can-i-redeem-my-points-using-the-app",
         "question": "Puis-je échanger mes points au moyen de l'application?",
         "response": "Glissez la carte /ouvrez une session pour l’échange de points – amélioration à venir"
-      }
-    ]
-  },
-  {
-    "title": "Category 1",
-    "questions": [
-      {
-        "question": "respone 1",
-        "response": "Respnse 1"
-      },
-      {
-        "question": "respone 2",
-        "response": "Respnse 2"
-      },
-      {
-        "question": "respone 3",
-        "response": "Respnse 3"
-      }
-    ]
-  },
-  {
-    "title": "Category 2",
-    "questions": [
-      {
-        "question": "respone 1",
-        "response": "Respnse 1"
-      },
-      {
-        "question": "respone 2",
-        "response": "Respnse 2"
-      },
-      {
-        "question": "respone 3",
-        "response": "Respnse 3"
-      },
-      {
-        "question": "respone 4",
-        "response": "Respnse 4"
-      }
-    ]
-  },
-  {
-    "title": "Category 3",
-    "questions": [
-      {
-        "question": "respone 1",
-        "response": "Respnse 1"
-      },
-      {
-        "question": "respone 2",
-        "response": "Respnse 2"
-      },
-      {
-        "question": "respone 3",
-        "response": "Respnse 3"
-      }
-    ]
-  },
-  {
-    "title": "Category 4",
-    "questions": [
-      {
-        "question": "respone 1",
-        "response": "Respnse 1"
-      },
-      {
-        "question": "respone 2",
-        "response": "Respnse 2"
-      },
-      {
-        "question": "respone 3",
-        "response": "Respnse 3"
       }
     ]
   }

@@ -116,7 +116,11 @@ public class ProfileFragment extends BottomNavigationFragment {
         binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment));
         binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment));
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
+    }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-navigation-list";
     }
 
     private void signUserOut() {

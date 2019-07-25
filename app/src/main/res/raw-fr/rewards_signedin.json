@@ -1,5 +1,6 @@
 [
   {
+    "name": "free-gas-and-more",
     "points": "A compter de 1 000",
     "title": "L'essence gratuit et plus",
     "subtitle": "Utilisez vos points pour le gaz, des lavages d'auto ou des articles de dépanneur.",
@@ -8,6 +9,7 @@
     "smallImage": "member_small_cards_dollarsoff"
   },
   {
+    "name": "car-wash-ticket",
     "points": "10 000 points",
     "title": "Billet de lavage",
     "subtitle": "Obtenez nos meilleur lavage, qui comprend toutes les options.",
@@ -16,6 +18,7 @@
     "smallImage": "member_small_cards_cw_ticket"
   },
   {
+    "name": "fuel-savings-reward",
     "points": "A compter de 10 000",
     "title": "Économie sur l'essence en prime",
     "subtitle": "Économisez 5 ¢ ou 10 ¢ le litre sur 200 L d'essence.",
@@ -24,6 +27,7 @@
     "smallImage": "member_small_cards_fsr"
   },
   {
+    "name": "itravel2000",
     "points": "A compter de 10 000",
     "title": "Voyages",
     "subtitle": "Échangez vos Petro‑Points contre des voyages.",
@@ -32,6 +36,7 @@
     "smallImage": "member_small_cards_travel"
   },
   {
+    "name": "egift-cards",
     "points": "A compter de 10 000",
     "title": "Cartes électronique",
     "subtitle": "Vêtements, repas, divertissment et plus.",
@@ -40,6 +45,7 @@
     "smallImage": "member_small_cards_egift"
   },
   {
+    "name": "wash-and-go-card",
     "points": "50 000 points",
     "title": "Carte Lavez Partez",
     "subtitle": "Préchargée avec cinq de nos meilleurs lavages.",
@@ -48,6 +54,7 @@
     "smallImage": "member_small_cards_washandgo"
   },
   {
+    "name": "season-pass",
     "points": "185 000 points",
     "title": "Carte accès",
     "subtitle": "Un lavage par jour pendant 90 jours.",

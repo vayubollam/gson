@@ -130,6 +130,11 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         enableLightStatusBar();
     }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-redeem-info-general";
+    }
+
     private void enableLightStatusBar() {
         int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -1,17 +1,15 @@
 package suncor.com.android.ui.main.profile.about;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Locale;
+import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
@@ -41,10 +39,11 @@ public class AboutFragment extends BaseFragment {
         binding = FragmentAboutBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.appVersionButton.setText(getString(R.string.profile_about_app_version) + ' ' + BuildConfig.VERSION_NAME);
-        binding.legalButton.setOnClickListener(v -> showDialog(getString(R.string.profile_about_legal_link) , getString(R.string.profile_about_legal_header)));
-        binding.privacyPolicyButton.setOnClickListener(v -> showDialog(getString(R.string.profile_about_privacy_policy_link) , getString(R.string.profile_about_privacy_policy_header)));
+        binding.legalButton.setOnClickListener(v -> showDialog(getString(R.string.profile_about_legal_link), getString(R.string.profile_about_legal_header)));
+        binding.privacyPolicyButton.setOnClickListener(v -> showDialog(getString(R.string.profile_about_privacy_policy_link), getString(R.string.profile_about_privacy_policy_header)));
         return binding.getRoot();
     }
+
     void showDialog(String url, String header) {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
         webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
@@ -62,9 +61,7 @@ public class AboutFragment extends BaseFragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
+    protected String getScreenName() {
+        return "my-petro-points-account-about-view";
     }
-
 }

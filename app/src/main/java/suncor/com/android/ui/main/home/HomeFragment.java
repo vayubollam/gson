@@ -327,6 +327,11 @@ public class HomeFragment extends BottomNavigationFragment {
     }
 
     @Override
+    protected String getScreenName() {
+        return "home";
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PERMISSION_GRANTED) {
