@@ -29,4 +29,9 @@ public class RewardsDetailsFragment extends BaseFragment {
 
         return binding.getRoot();
     }
+
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-redeem-info-" + binding.getReward().getName();
+    }
 }

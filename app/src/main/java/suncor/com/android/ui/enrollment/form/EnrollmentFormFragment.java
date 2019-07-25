@@ -13,10 +13,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -27,6 +23,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
@@ -78,6 +81,13 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         //enrollments api call result
         viewModel.joinLiveData.observe(this, (r) -> {
             if (r.status == Resource.Status.SUCCESS) {
+                String screenName;
+                if (viewModel.getCardStatus() != null) {
+                    screenName = "activate-success";
+                } else {
+                    screenName = "sign-up-success";
+                }
+                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
                 getView().postDelayed(() -> {
                     if (getActivity() != null) {
                         //Go to main screen to show the welcome message
@@ -230,6 +240,13 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     @Override
     public void onResume() {
         super.onResume();
+        String screenName;
+        if (viewModel.getCardStatus() != null) {
+            screenName = "activate-i-have-a-card";
+        } else {
+            screenName = "sign-up-i-dont-have-a-card";
+        }
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
     }
 
     @Override

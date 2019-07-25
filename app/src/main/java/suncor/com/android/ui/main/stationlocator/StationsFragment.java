@@ -226,6 +226,11 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         }
     }
 
+    @Override
+    protected String getScreenName() {
+        return "gas-station-locations";
+    }
+
     public void checkAndLocate() {
         permissionManager.checkPermission(getContext(), permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override

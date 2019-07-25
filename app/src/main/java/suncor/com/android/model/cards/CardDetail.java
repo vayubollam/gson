@@ -80,6 +80,30 @@ public class CardDetail {
         }
     }
 
+    public String getCardName() {
+        switch (cardType) {
+            case FSR:
+                return "fsr-" + (cpl == 0.05 ? 5 : 10) + "c";
+            case PPC:
+                return "ppc";
+            case WAG:
+                return "wash-and-go";
+            case SP:
+                return "season-pass";
+            case CAA:
+                return "caa";
+            case BCAA:
+                return "bcaa";
+            case HBC:
+                return "bbc";
+            case MORE:
+                return "more-rewards";
+            case RBC:
+                return "rbc";
+        }
+        return "card";
+    }
+
 
     @Override
     public boolean equals(@Nullable Object obj) {

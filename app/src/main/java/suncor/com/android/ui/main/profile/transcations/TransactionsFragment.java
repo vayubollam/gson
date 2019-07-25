@@ -105,7 +105,6 @@ public class TransactionsFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(TransactionsViewModel.class);
     }
 
@@ -114,7 +113,11 @@ public class TransactionsFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding.transactionToolBar.setNavigationOnClickListener(v -> findNavController(getView()).popBackStack());
+    }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-transaction-list";
     }
 
     public void transactionDetailHandler(Transaction transaction) {

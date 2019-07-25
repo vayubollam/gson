@@ -15,6 +15,7 @@ public class Reward implements Parcelable {
             return new Reward[size];
         }
     };
+    private String name;
     private String title;
     private String subtitle;
     private String points;
@@ -23,12 +24,17 @@ public class Reward implements Parcelable {
     private String largeImage;
 
     protected Reward(Parcel in) {
+        name = in.readString();
         title = in.readString();
         subtitle = in.readString();
         points = in.readString();
         description = in.readString();
         smallImage = in.readString();
         largeImage = in.readString();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getTitle() {
@@ -62,6 +68,7 @@ public class Reward implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
         dest.writeString(title);
         dest.writeString(subtitle);
         dest.writeString(points);

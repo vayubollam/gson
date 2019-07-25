@@ -69,6 +69,11 @@ public class FiltersFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+    @Override
+    protected String getScreenName() {
+        return "gas-station-locations-filter";
+    }
+
     private void initCheckBoxes() {
 
         for (String amenityKey : Station.SERVICE_AMENITIES.keySet()) {

@@ -156,6 +156,11 @@ public class PersonalInfoFragment extends BaseFragment {
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-personal-information-view";
+    }
+
     private void goBack() {
         hideKeyboard();
         Navigation.findNavController(getView()).popBackStack();

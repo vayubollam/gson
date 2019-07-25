@@ -69,4 +69,9 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
     protected boolean isFullScreen() {
         return true;
     }
+
+    @Override
+    protected String getScreenName() {
+        return "discover-petro-points";
+    }
 }

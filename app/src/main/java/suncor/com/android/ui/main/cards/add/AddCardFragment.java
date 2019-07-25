@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddCardBinding;
 import suncor.com.android.databinding.PetroCanadaExpandedCardItemBinding;
@@ -60,6 +63,7 @@ public class AddCardFragment extends BaseFragment {
             expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
             expandedCardItemBinding.setHideMoreButton(true);
             expandedCardItemBinding.executePendingBindings();
+            FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success", getActivity().getClass().getSimpleName());
         });
 
         viewModel.showCard.observe(this, show -> {
@@ -114,6 +118,11 @@ public class AddCardFragment extends BaseFragment {
                 .setView(getLayoutInflater().inflate(R.layout.cvv_help_layout, null))
                 .setPositiveButton(R.string.ok, null)
                 .show();
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-wallet-add-card";
     }
 
     private void hideKeyBoard() {

@@ -19,6 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardFormBinding;
@@ -127,6 +130,12 @@ public class CardFormFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "activate-match-card", getActivity().getClass().getSimpleName());
     }
 
     private void hideKeyBoard() {

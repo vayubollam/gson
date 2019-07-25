@@ -35,4 +35,8 @@ public class TransactionDetailFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-transaction-detail";
+    }
 }
