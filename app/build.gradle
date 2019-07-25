@@ -32,9 +32,9 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('../KeyStore')
+            storeFile file('../petrocanada.keystore')
             storePassword System.getenv("STORE_PASSWORD")
-            keyAlias = 'petro-canada'
+            keyAlias = 'petrocanada'
             keyPassword System.getenv("KEY_PASSWORD")
         }
     }
