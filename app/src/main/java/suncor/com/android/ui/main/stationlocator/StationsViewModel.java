@@ -38,6 +38,9 @@ public class StationsViewModel extends ViewModel {
     private MutableLiveData<LatLng> _userLocation = new MutableLiveData<>();
     public LiveData<LatLng> userLocation = _userLocation;
     private UserLocationType userLocationType;
+
+    private LatLng lastGpsLocation;
+
     private MutableLiveData<LatLngBounds> _mapBounds = new MutableLiveData<>();
     private Observer<Boolean> favouritesLoadedObserver = b -> refreshFavouriteState();
     public LiveData<LatLngBounds> mapBounds = _mapBounds;
@@ -219,7 +222,12 @@ public class StationsViewModel extends ViewModel {
         _userLocation.postValue(userLocation);
         if (userLocationType == UserLocationType.GPS) {
             _queryText.postValue("");
+            lastGpsLocation = userLocation;
         }
+    }
+
+    public LatLng getLastGpsLocation() {
+        return lastGpsLocation;
     }
 
     public void setSelectedStationFromSearch(LatLng userLocation, ArrayList<StationItem> stationItems, StationItem selectedStation) {
