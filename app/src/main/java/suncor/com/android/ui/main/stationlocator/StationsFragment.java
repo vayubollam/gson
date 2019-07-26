@@ -158,6 +158,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet);
 
         stationAdapter = new StationAdapter(this, bottomSheetBehavior);
+        stationAdapter.setUserLocation(mViewModel.getLastGpsLocation());
         binding.cardRecycler.setAdapter(stationAdapter);
         binding.cardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
         binding.cardRecycler.addOnItemTouchListener(new StationCardTouchListener(this, stationAdapter.getStations(), bottomSheetBehavior));
@@ -223,6 +224,11 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         if (mViewModel.userLocation.getValue() == null) {
             checkAndLocate();
         }
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "gas-station-locations";
     }
 
     public void checkAndLocate() {

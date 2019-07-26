@@ -413,4 +413,10 @@
     <string name="rewards_details_close">Fermer</string>
     <string name="station_filters_all_washes">Tous les lave-auto</string>
     <string name="station_filter_touchless_only">Sans contact</string>
+    <string name="update_required_dialog_title">Version plus récente nécessaire</string>
+    <string name="update_required_dialog_message">Veuillez mettre l\'application à jour pour continuer.</string>
+    <string name="update_required_dialog_button">Mettre à jour</string>
+    <string name="settings_failure_dialog_button">Fermer l\'application.</string>
+    <string name="settings_failure_dialog_message">Veuillez réessayer plus tard.</string>
+    <string name="settings_failure_dialog_title">Nous ne pouvons pas charger l\'application.</string>
 </resources>

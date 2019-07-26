@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -43,7 +45,6 @@ public class CardsDetailsFragment extends BaseFragment {
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +64,15 @@ public class CardsDetailsFragment extends BaseFragment {
                 binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
                 binding.setNumCards(expandedCardItems.size());
                 binding.executePendingBindings();
+
+                //track screen name
+                String screenName;
+                if (clickedCardIndex == 0) {
+                    screenName = "my-petro-points-wallet-view-card";
+                } else {
+                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
+                }
+                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
             }
         });
     }
@@ -105,8 +115,6 @@ public class CardsDetailsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
 
     void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {

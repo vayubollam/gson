@@ -96,7 +96,7 @@ public class FavouritesViewModel extends ViewModel {
                 } else {
                     String streetName1 = o1.getStation().getAddress().getAddressLine().replaceFirst("\\d+", "");
                     String streetName2 = o2.getStation().getAddress().getAddressLine().replaceFirst("\\d+", "");
-                    return streetName1.compareTo(streetName2);
+                    return streetName1.compareToIgnoreCase(streetName2);
                 }
             }
         }

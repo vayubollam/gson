@@ -22,6 +22,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
@@ -117,7 +120,7 @@ public class CardQuestionFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "petro-points-sign-up-activate", getActivity().getClass().getSimpleName());
     }
 
     private void animateCard() {

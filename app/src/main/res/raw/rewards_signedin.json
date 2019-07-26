@@ -1,5 +1,6 @@
 [
   {
+    "name": "free-gas-and-more",
     "points": "Starting at 1,000 points",
     "title": "Free gas and more",
     "subtitle": "Use your points for dollars off fuel, car wash, or store purchases.",
@@ -8,6 +9,7 @@
     "smallImage": "member_small_cards_dollarsoff"
   },
   {
+    "name": "car-wash-ticket",
     "points": "10,000 points",
     "title": "Car wash ticket",
     "subtitle": "Get our best wash package.",
@@ -16,6 +18,7 @@
     "smallImage": "member_small_cards_cw_ticket"
   },
   {
+    "name": "fuel-savings-reward",
     "points": "Starting at 10,000 points",
     "title": "Fuel Savings Reward",
     "subtitle": "Save 5¢ or 10¢ on 200 litres.",
@@ -24,6 +27,7 @@
     "smallImage": "member_small_cards_fsr"
   },
   {
+    "name": "itravel2000",
     "points": "Starting at 10,000 points",
     "title": "Travel",
     "subtitle": "Redeem Petro‑Points for travel.",
@@ -32,6 +36,7 @@
     "smallImage": "member_small_cards_travel"
   },
   {
+    "name": "egift-cards",
     "points": "Starting at 10,000 points",
     "title": "eGift cards",
     "subtitle": "Apparel, dining, entertainment and more.",
@@ -40,6 +45,7 @@
     "smallImage": "member_small_cards_egift"
   },
   {
+    "name": "wash-and-go-card",
     "points": "50,000 points",
     "title": "Wash & Go",
     "subtitle": "Pre-loaded with 5 of our best washes.",
@@ -48,6 +54,7 @@
     "smallImage": "member_small_cards_washandgo"
   },
   {
+    "name": "season-pass",
     "points": "185,000 points",
     "title": "Season Pass",
     "subtitle": "Wash once a day for 90 days.",

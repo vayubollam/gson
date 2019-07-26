@@ -15,6 +15,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -108,6 +110,12 @@ public class LoginFragment extends DaggerFragment {
                 getActivity().finish();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login", getActivity().getClass().getSimpleName());
     }
 
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {

@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCreatePasswordBinding;
@@ -77,6 +80,12 @@ public class CreatePasswordFragment extends DaggerFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login-force-new-password", getActivity().getClass().getSimpleName());
     }
 
     private void hideKeyboard() {

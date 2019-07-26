@@ -1,12 +1,15 @@
 package suncor.com.android.ui.main.common;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
@@ -49,6 +52,23 @@ public class BaseFragment extends DaggerFragment {
     public void onStart() {
         super.onStart();
         getView().requestApplyInsets();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(getScreenName())) {
+            FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), getScreenName(), getActivity().getClass().getSimpleName());
+        }
+    }
+
+    /**
+     * Used to track current screen being viewed on Firebase Analytics
+     * Subclasses should override it to change the behavior
+     * @return the name to send to Firebase Analytics
+     */
+    protected String getScreenName() {
+        return null;
     }
 
     //A hackish solution to this issue: https://issuetracker.google.com/issues/37036000

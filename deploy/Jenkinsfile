@@ -43,6 +43,10 @@ pipeline {
 		stage('Compile and Build  Stage') {
 			steps {
 				script {
+				    sh (
+				        script: "./gradlew clean",
+				        returnStdout: false
+				    )
                     sh (
                         script: "./gradlew assemble${env.BUILD_ENV}Release",
                         returnStdout: false

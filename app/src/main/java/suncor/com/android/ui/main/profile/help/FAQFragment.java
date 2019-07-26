@@ -62,7 +62,11 @@ public class FAQFragment extends BaseFragment {
                     "mailto", getContext().getResources().getString(R.string.customer_support_email), null));
             getContext().startActivity(Intent.createChooser(emailIntent, null));
         });
+    }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-get-help-view-list";
     }
 
     public void selectQuestion(Question question) {

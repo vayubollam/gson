@@ -53,6 +53,11 @@ public class PreferencesFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-preferences-view";
+    }
+
     private void goBack() {
         Navigation.findNavController(getView()).popBackStack();
     }

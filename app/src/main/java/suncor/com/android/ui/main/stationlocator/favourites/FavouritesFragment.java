@@ -11,10 +11,6 @@ import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -24,7 +20,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerFragment;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import javax.inject.Inject;
+
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
@@ -134,10 +134,9 @@ public class FavouritesFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected String getScreenName() {
+        return "my-petro-points-gas-station-locations-favourites";
     }
-
 
     public void goBack() {
         getFragmentManager().popBackStack();

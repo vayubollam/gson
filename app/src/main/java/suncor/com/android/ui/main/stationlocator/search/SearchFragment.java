@@ -134,6 +134,11 @@ public class SearchFragment extends BaseFragment {
         });
     }
 
+    @Override
+    protected String getScreenName() {
+        return "gas-station-locations-search";
+    }
+
     private void placeSuggestionClicked(PlaceSuggestion placeSuggestion) {
         viewModel.getCoordinatesOfPlace(placeSuggestion)
                 .observe(SearchFragment.this, (resouce) -> {

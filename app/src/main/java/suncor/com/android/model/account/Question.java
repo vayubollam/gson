@@ -1,6 +1,7 @@
 package suncor.com.android.model.account;
 
 public class Question {
+    private String id;
     private String question;
     private String response;
 
@@ -18,5 +19,9 @@ public class Question {
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public String getId() {
+        return id;
     }
 }
