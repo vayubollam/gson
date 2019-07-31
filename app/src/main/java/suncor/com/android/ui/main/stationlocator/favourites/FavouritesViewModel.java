@@ -1,5 +1,11 @@
 package suncor.com.android.ui.main.stationlocator.favourites;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -8,11 +14,6 @@ import java.util.Comparator;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
@@ -94,8 +95,8 @@ public class FavouritesViewModel extends ViewModel {
                     double distance2 = LocationUtils.calculateDistance(getUserLocation(), new LatLng(o2.getStation().getAddress().getLatitude(), o2.getStation().getAddress().getLongitude()));
                     return (int) (distance1 - distance2);
                 } else {
-                    String streetName1 = o1.getStation().getAddress().getAddressLine().replaceFirst("\\d+", "");
-                    String streetName2 = o2.getStation().getAddress().getAddressLine().replaceFirst("\\d+", "");
+                    String streetName1 = o1.getStation().getAddress().getAddressLine().replaceFirst("[\\d,-]+", "");
+                    String streetName2 = o2.getStation().getAddress().getAddressLine().replaceFirst("[\\d,-]+", "");
                     return streetName1.compareToIgnoreCase(streetName2);
                 }
             }
