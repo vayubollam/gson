@@ -56,6 +56,7 @@ import javax.inject.Inject;
 
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.FragmentStationsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
@@ -102,6 +103,9 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     @Inject
     SessionManager sessionManager;
+
+    @Inject
+    DistanceApi distanceApi;
 
     //convert vector images to bitmap in order to use as lastSelectedMarker icons
     private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
@@ -157,7 +161,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet);
 
-        stationAdapter = new StationAdapter(this, bottomSheetBehavior);
+        stationAdapter = new StationAdapter(this, bottomSheetBehavior, distanceApi);
         stationAdapter.setUserLocation(mViewModel.getLastGpsLocation());
         binding.cardRecycler.setAdapter(stationAdapter);
         binding.cardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
