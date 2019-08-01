@@ -113,11 +113,11 @@ public class LoginViewModel extends ViewModel {
         isLoginFromEnrollment = loginFromEnrollment;
     }
 
-    public MutableLiveData<Event<String>> getCreatePasswordEvent() {
+    public LiveData<Event<String>> getCreatePasswordEvent() {
         return createPasswordEvent;
     }
 
-    public MutableLiveData<Event<Boolean>> getCallCustomerService() {
+    public LiveData<Event<Boolean>> getCallCustomerService() {
         return callCustomerService;
     }
 
