@@ -366,7 +366,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     public void setSelectedQuestion(SecurityQuestion selectedQuestion) {
         this.selectedQuestion = selectedQuestion;
         if (selectedQuestion != null) {
-            securityQuestionField.setText(selectedQuestion.getLocalizedQuestion());
+            securityQuestionField.setText(selectedQuestion.getQuestion());
         }
     }
 

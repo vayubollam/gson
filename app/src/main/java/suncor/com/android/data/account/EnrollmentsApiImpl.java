@@ -1,8 +1,5 @@
 package suncor.com.android.data.account;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -17,7 +14,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -28,6 +28,7 @@ import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ADAPTER_PATH = "/adapters/suncor/v1/enrollments";
+    private final static String SECURITY_QUESTION_ADAPTER_PATH = "/adapters/suncor/v2/enrollments";
     private Gson gson;
 
     public EnrollmentsApiImpl(Gson gson) {
@@ -134,8 +135,13 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH.concat("/security-questions"));
+            adapterPath = new URI(SECURITY_QUESTION_ADAPTER_PATH.concat("/security-questions"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                request.addHeader("Accept-Language", "fr-CA");
+            } else {
+                request.addHeader("Accept-Language", "en-CA");
+            }
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
