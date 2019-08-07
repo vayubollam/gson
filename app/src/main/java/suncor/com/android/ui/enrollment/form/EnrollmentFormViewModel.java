@@ -32,6 +32,7 @@ import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
+import suncor.com.android.utilities.FingerPrintManager;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
@@ -67,9 +68,12 @@ public class EnrollmentFormViewModel extends ViewModel {
     private Province selectedProvince;
     private CardStatus cardStatus;
     private ArrayList<Province> provincesList;
+    private FingerPrintManager fingerPrintManager;
+    private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> showBiometricAlert = _showBiometricAlert;
 
     @Inject
-    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider) {
+    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerPrintManager fingerPrintManager) {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -78,7 +82,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(cityField);
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
-
+        this.fingerPrintManager = fingerPrintManager;
         LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
             Boolean hasFocus = event.getContentIfNotHandled();
             //If it's focused, or has already been checked, or email is invalid, return empty livedata
@@ -268,10 +272,23 @@ public class EnrollmentFormViewModel extends ViewModel {
                 return -1;
             }
 
-            //proceed to join
-            join.postValue(Event.newEvent(true));
+            if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {
+                _showBiometricAlert.setValue(Event.newEvent(true));
+            } else {
+                fingerPrintManager.deactivateFingerprint();
+                join.postValue(Event.newEvent(true));
+            }
         }
         return firstItemWithError;
+    }
+
+    public void proccedToJoin(boolean useFingerPrint) {
+        if (useFingerPrint) {
+            fingerPrintManager.activateFingerprint();
+        } else {
+            fingerPrintManager.deactivateFingerprint();
+        }
+        join.setValue(Event.newEvent(true));
     }
 
     public void addressSuggestionClicked(CanadaPostSuggestion suggestion) {
