@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.data.DirectionsApi;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
@@ -23,11 +23,13 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private final ArrayList<StationItem> stations = new ArrayList<>();
     private final StationsFragment fragment;
     private final BottomSheetBehavior bottomSheetBehavior;
+    private DistanceApi distanceApi;
     private LatLng userLocation;
 
-    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior) {
+    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior, DistanceApi distanceApi) {
         this.fragment = fragment;
         this.bottomSheetBehavior = bottomSheetBehavior;
+        this.distanceApi = distanceApi;
     }
 
     public ArrayList<StationItem> getStations() {
@@ -69,7 +71,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
             stationItem.setDistanceDuration(DirectionsResult.INVALID);
         } else if (stationItem.getDistanceDuration() == null) {
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-            DirectionsApi.getInstance().enqueuJob(userLocation, dest)
+            distanceApi.enqueuJob(userLocation, dest)
                     .observe(fragment, result -> {
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.setDistanceDuration(result.data);

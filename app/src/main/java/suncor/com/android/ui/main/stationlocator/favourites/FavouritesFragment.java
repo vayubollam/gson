@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.FragmentFavouritesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
@@ -54,6 +55,9 @@ public class FavouritesFragment extends BaseFragment {
 
     @Inject
     UserLocalSettings userLocalSettings;
+
+    @Inject
+    DistanceApi distanceApi;
 
     public static FavouritesFragment newInstance() {
         return new FavouritesFragment();
@@ -82,7 +86,7 @@ public class FavouritesFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         binding.appBar.setNavigationOnClickListener((v) -> goBack());
         binding.favouriteRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        favouritesAdapter = new FavouritesAdapter(this);
+        favouritesAdapter = new FavouritesAdapter(this, distanceApi);
         binding.favouriteRecycler.setAdapter(favouritesAdapter);
         binding.favouriteRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

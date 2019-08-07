@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -21,23 +25,17 @@ import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.utilities.Timber;
 
-public class DirectionsApi {
+@Singleton
+public class DistanceApi {
 
-    private static DirectionsApi sInstance;
     private OkHttpClient client;
 
-    private DirectionsApi() {
+    @Inject
+    public DistanceApi() {
         client = new OkHttpClient.Builder()
                 .connectTimeout(SuncorApplication.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(SuncorApplication.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
-    }
-
-    public static DirectionsApi getInstance() {
-        if (sInstance == null) {
-            sInstance = new DirectionsApi();
-        }
-        return sInstance;
     }
 
     public LiveData<Resource<DirectionsResult>> enqueuJob(LatLng origin, LatLng dest) {

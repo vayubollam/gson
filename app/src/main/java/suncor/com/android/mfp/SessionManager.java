@@ -22,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,7 +42,7 @@ public class SessionManager implements SessionChangeListener {
 
     public static final int LOCK_TIME_MINUTES = 30;
     public static final int LOGIN_ATTEMPTS = 6;
-    public static final String RETRIEVE_PROFILE_FAILED = "com,ibm.suncor.profile.failed";
+    public static final String RETRIEVE_PROFILE_FAILED = "com.ibm.suncor.profile.failed";
 
     private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
     private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
@@ -68,7 +69,6 @@ public class SessionManager implements SessionChangeListener {
     };
 
     private boolean loginOngoing = false;
-    private boolean isRetrievingProfile = false;
 
     private SuncorApplication application;
     private Gson gson;
@@ -84,11 +84,6 @@ public class SessionManager implements SessionChangeListener {
         this.userLocalSettings = userLocationSettings;
         this.application = application;
         this.gson = gson;
-        String profileString = userLocationSettings.getString(SHARED_PREF_USER);
-        if (profileString != null && !profileString.isEmpty()) {
-            profile = gson.fromJson(profileString, Profile.class);
-            setProfile(profile);
-        }
     }
 
     public LiveData<Resource<Boolean>> logout() {
@@ -161,19 +156,22 @@ public class SessionManager implements SessionChangeListener {
             public void onSuccess(AccessToken accessToken) {
                 Timber.d("Got access token, retrieving profile");
                 timer.cancel();
-                retrieveProfile((profile) -> {
-                    setProfile(profile);
-                    loginState.postValue(LoginState.LOGGED_IN);
-                    autoLoginState.postValue(AutoLoginState.LOGGED_IN);
-                }, (error) -> {
-                    if (ConnectionUtil.haveNetworkConnection(application)) {
-                        autoLoginState.postValue(AutoLoginState.ERROR);
-                    } else {
-                        autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
-                    }
-                    setProfile(null);
-                    loginState.postValue(LoginState.LOGGED_OUT);
-                });
+                retrieveProfile(
+                        (profile) -> {
+                            setProfile(profile);
+                            loginState.postValue(LoginState.LOGGED_IN);
+                            autoLoginState.postValue(AutoLoginState.LOGGED_IN);
+                        },
+                        (error) -> {
+                            if (ConnectionUtil.haveNetworkConnection(application)) {
+                                autoLoginState.postValue(AutoLoginState.ERROR);
+                            } else {
+                                autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
+                            }
+                            setProfile(null);
+                            loginState.postValue(LoginState.LOGGED_OUT);
+                        }
+                );
             }
 
             @Override
@@ -247,10 +245,8 @@ public class SessionManager implements SessionChangeListener {
         if (profile == null) {
             this.profile = null;
             accountState = null;
-            userLocalSettings.removeKey(SHARED_PREF_USER);
         } else {
             this.profile = profile;
-            userLocalSettings.setString(SHARED_PREF_USER, gson.toJson(profile));
             if (accountState == null) {
                 accountState = AccountState.REGULAR_LOGIN;
             }
@@ -285,13 +281,19 @@ public class SessionManager implements SessionChangeListener {
     public void onLoginSuccess(Profile account) {
         Timber.d("login succeeded");
         Timber.d("user's email: " + account.getEmail());
-        if (!loginOngoing || isRetrievingProfile) {
+
+        AtomicBoolean isRetrievingProfile = new AtomicBoolean(false);
+
+        if (!loginOngoing || isRetrievingProfile.get()) {
             return;
         }
 
         userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+
+        isRetrievingProfile.set(true);
+
         retrieveProfile((profile) -> {
-            isRetrievingProfile = false;
+            isRetrievingProfile.set(false);
             if (loginOngoing) {
                 loginOngoing = false;
 
@@ -302,7 +304,7 @@ public class SessionManager implements SessionChangeListener {
                 }
             }
         }, (error) -> {
-            isRetrievingProfile = false;
+            isRetrievingProfile.set(false);
             if (loginOngoing) {
                 loginOngoing = false;
 

@@ -18,7 +18,7 @@ import java.util.GregorianCalendar;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.data.DirectionsApi;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;
@@ -57,7 +57,7 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt headerImage = new ObservableInt();
 
     @Inject
-    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository) {
+    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi) {
         this.sessionManager = sessionManager;
         this.favouriteRepository = favouriteRepository;
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
@@ -93,7 +93,7 @@ public class HomeViewModel extends ViewModel {
             if (resource.status == Resource.Status.SUCCESS && resource.data != null && resource.data.getDistanceDuration() == null) {
                 LatLng dest = new LatLng(resource.data.getStation().getAddress().getLatitude(), resource.data.getStation().getAddress().getLongitude());
                 LatLng origin = new LatLng(userLocation.latitude, userLocation.longitude);
-                return DirectionsApi.getInstance().enqueuJob(origin, dest);
+                return distanceApi.enqueuJob(origin, dest);
             } else {
                 return new MutableLiveData<>();
             }
