@@ -163,6 +163,14 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                 getActivity().finish();
             }
         });
+        viewModel.showBiometricAlert.observe(this, booleanEvent ->
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.sign_enable_fp_title)
+                        .setMessage(R.string.sign_enable_fb_message)
+                        .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> viewModel.proccedToJoin(true))
+                        .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> viewModel.proccedToJoin(false))
+                        .create()
+                        .show());
     }
 
     private void showDuplicateEmailAlert() {

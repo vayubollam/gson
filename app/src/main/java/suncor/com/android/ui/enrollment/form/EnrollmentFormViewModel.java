@@ -32,11 +32,14 @@ import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
+import suncor.com.android.utilities.FingerPrintManager;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
     final static String LOGIN_FAILED = "login_failed";
+    public static final String USE_FINGERPRINT = "use_fingerprint";
     public LiveData<Resource<Boolean>> joinLiveData;
     //autocomplete fields
     public MutableLiveData<Boolean> showAutocompleteLayout = new MutableLiveData<>();
@@ -67,9 +70,13 @@ public class EnrollmentFormViewModel extends ViewModel {
     private Province selectedProvince;
     private CardStatus cardStatus;
     private ArrayList<Province> provincesList;
+    private FingerPrintManager fingerPrintManager;
+    private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> showBiometricAlert = _showBiometricAlert;
+    private UserLocalSettings userLocalSettings;
 
     @Inject
-    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider) {
+    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerPrintManager fingerPrintManager, UserLocalSettings userLocalSettings) {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -78,7 +85,8 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(cityField);
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
-
+        this.fingerPrintManager = fingerPrintManager;
+        this.userLocalSettings = userLocalSettings;
         LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
             Boolean hasFocus = event.getContentIfNotHandled();
             //If it's focused, or has already been checked, or email is invalid, return empty livedata
@@ -268,10 +276,19 @@ public class EnrollmentFormViewModel extends ViewModel {
                 return -1;
             }
 
-            //proceed to join
-            join.postValue(Event.newEvent(true));
+            if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {
+                _showBiometricAlert.setValue(Event.newEvent(true));
+            } else {
+                userLocalSettings.setBool(USE_FINGERPRINT, false);
+                join.postValue(Event.newEvent(true));
+            }
         }
         return firstItemWithError;
+    }
+
+    public void proccedToJoin(boolean useFingerPrint) {
+        userLocalSettings.setBool(USE_FINGERPRINT, useFingerPrint);
+        join.setValue(Event.newEvent(true));
     }
 
     public void addressSuggestionClicked(CanadaPostSuggestion suggestion) {
