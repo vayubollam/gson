@@ -9,10 +9,13 @@ import suncor.com.android.SuncorApplication;
 public class FingerPrintManager {
 
     private final SuncorApplication application;
+    private static UserLocalSettings userLocalSettings;
+    public final String USE_FINGERPRINT = "use_fingerprint";
 
     @Inject
-    public FingerPrintManager(SuncorApplication application) {
+    public FingerPrintManager(SuncorApplication application, UserLocalSettings userLocalSettings) {
         this.application = application;
+        this.userLocalSettings = userLocalSettings;
     }
 
     public boolean isFingerPrintExistAndEnrolled() {
@@ -27,4 +30,18 @@ public class FingerPrintManager {
         }
         return allGood;
     }
+
+    public void activateFingerprint() {
+        userLocalSettings.setBool(USE_FINGERPRINT, true);
+    }
+
+    public void deactivateFingerprint() {
+        userLocalSettings.setBool(USE_FINGERPRINT, false);
+    }
+
+    public boolean isFingerprintActivated() {
+        return userLocalSettings.getBool(USE_FINGERPRINT, false);
+    }
+
+
 }

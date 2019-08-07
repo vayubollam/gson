@@ -34,12 +34,10 @@ import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
 import suncor.com.android.utilities.FingerPrintManager;
 import suncor.com.android.utilities.Timber;
-import suncor.com.android.utilities.UserLocalSettings;
 
 public class EnrollmentFormViewModel extends ViewModel {
 
     final static String LOGIN_FAILED = "login_failed";
-    public static final String USE_FINGERPRINT = "use_fingerprint";
     public LiveData<Resource<Boolean>> joinLiveData;
     //autocomplete fields
     public MutableLiveData<Boolean> showAutocompleteLayout = new MutableLiveData<>();
@@ -73,10 +71,9 @@ public class EnrollmentFormViewModel extends ViewModel {
     private FingerPrintManager fingerPrintManager;
     private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
     public LiveData<Event<Boolean>> showBiometricAlert = _showBiometricAlert;
-    private UserLocalSettings userLocalSettings;
 
     @Inject
-    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerPrintManager fingerPrintManager, UserLocalSettings userLocalSettings) {
+    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerPrintManager fingerPrintManager) {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -86,7 +83,6 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
         this.fingerPrintManager = fingerPrintManager;
-        this.userLocalSettings = userLocalSettings;
         LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
             Boolean hasFocus = event.getContentIfNotHandled();
             //If it's focused, or has already been checked, or email is invalid, return empty livedata
@@ -279,7 +275,7 @@ public class EnrollmentFormViewModel extends ViewModel {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {
                 _showBiometricAlert.setValue(Event.newEvent(true));
             } else {
-                userLocalSettings.setBool(USE_FINGERPRINT, false);
+                fingerPrintManager.deactivateFingerprint();
                 join.postValue(Event.newEvent(true));
             }
         }
@@ -287,7 +283,11 @@ public class EnrollmentFormViewModel extends ViewModel {
     }
 
     public void proccedToJoin(boolean useFingerPrint) {
-        userLocalSettings.setBool(USE_FINGERPRINT, useFingerPrint);
+        if (useFingerPrint) {
+            fingerPrintManager.activateFingerprint();
+        } else {
+            fingerPrintManager.deactivateFingerprint();
+        }
         join.setValue(Event.newEvent(true));
     }
 
