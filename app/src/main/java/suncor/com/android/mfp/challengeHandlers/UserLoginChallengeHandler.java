@@ -19,6 +19,7 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.utilities.FingerPrintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 import suncor.com.android.utilities.Timber;
 
@@ -50,6 +51,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     @Inject
     KeyStoreStorage keyStoreStorage;
+
+    @Inject
+    FingerPrintManager fingerPrintManager;
 
     @Inject
     public UserLoginChallengeHandler() {
@@ -95,14 +99,16 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 }
             } else {
                 //Which means the token is either invalid or has expired
-                String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
-                if (savedCredentials != null) {
-                    Timber.d("Challenge without a useCase, try login using saved credentials");
-                    JSONObject credentials = new JSONObject(savedCredentials);
-                    login(credentials);
-                } else {
-                    Timber.d("Challenge without a useCase, user either is not logged in, or token expired");
-                    listener.onTokenInvalid();
+                if (fingerPrintManager.isAutoLoginActivated()) {
+                    String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
+                    if (savedCredentials != null) {
+                        Timber.d("Challenge without a useCase, try login using saved credentials");
+                        JSONObject credentials = new JSONObject(savedCredentials);
+                        login(credentials);
+                    } else {
+                        Timber.d("Challenge without a useCase, user either is not logged in, or token expired");
+                        listener.onTokenInvalid();
+                    }
                 }
             }
         } catch (JSONException e) {
@@ -174,12 +180,16 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
 
     public void logout(WLLogoutResponseListener listener) {
-        //Remove saved credentials
+
         String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
-        keyStoreStorage.remove(CREDENTIALS_KEY);
+        if (!fingerPrintManager.isFingerprintActivated()) {
+            //Remove saved credentials
+            keyStoreStorage.remove(CREDENTIALS_KEY);
+        }
         WLAuthorizationManager.getInstance().logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
+                fingerPrintManager.deactivateAutoLogin();
                 listener.onSuccess();
             }
 
