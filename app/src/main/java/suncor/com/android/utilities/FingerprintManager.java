@@ -6,14 +6,14 @@ import javax.inject.Inject;
 
 import suncor.com.android.SuncorApplication;
 
-public class FingerPrintManager {
+public class FingerprintManager {
 
     private final SuncorApplication application;
     private static UserLocalSettings userLocalSettings;
     public final String USE_FINGERPRINT = "use_fingerprint";
 
     @Inject
-    public FingerPrintManager(SuncorApplication application, UserLocalSettings userLocalSettings) {
+    public FingerprintManager(SuncorApplication application, UserLocalSettings userLocalSettings) {
         this.application = application;
         this.userLocalSettings = userLocalSettings;
     }
