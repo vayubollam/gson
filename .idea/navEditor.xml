@@ -463,6 +463,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_home_tab_to_rewardsDiscoveryFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
