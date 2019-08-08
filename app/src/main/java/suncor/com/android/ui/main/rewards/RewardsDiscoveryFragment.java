@@ -16,9 +16,9 @@ import androidx.navigation.Navigation;
 import java.util.Locale;
 
 import suncor.com.android.databinding.FragmentRewardsDiscoveryBinding;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 
-public class RewardsDiscoveryFragment extends BaseFragment {
+public class RewardsDiscoveryFragment extends MainActivityFragment {
 
     private FragmentRewardsDiscoveryBinding binding;
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();

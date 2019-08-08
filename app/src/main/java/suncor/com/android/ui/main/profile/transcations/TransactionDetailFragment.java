@@ -13,9 +13,9 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentTransactionDetailBinding;
 import suncor.com.android.model.cards.Transaction;
 import suncor.com.android.model.cards.TransactionDetail;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 
-public class TransactionDetailFragment extends BaseFragment {
+public class TransactionDetailFragment extends MainActivityFragment {
 
     private FragmentTransactionDetailBinding binding;
 

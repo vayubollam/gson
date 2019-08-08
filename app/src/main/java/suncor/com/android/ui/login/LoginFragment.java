@@ -27,9 +27,10 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class LoginFragment extends DaggerFragment {
+public class LoginFragment extends BaseFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -95,7 +96,7 @@ public class LoginFragment extends DaggerFragment {
                 intent.setData(Uri.parse("tel:" + customerSupportNumber));
                 startActivity(intent);
 
-                AnalyticsUtils.logEvent(getContext(), "tap_to_call", "login", new Pair<>("phoneNumberTapped", customerSupportNumber));
+                AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", customerSupportNumber));
             }
         });
 

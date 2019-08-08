@@ -10,7 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class AnalyticsUtils {
 
     @SafeVarargs
-    public static void logEvent(Context context, String eventName, String screenName, Pair<String, String>... variables) {
+    public static void logEvent(Context context, String eventName, Pair<String, String>... variables) {
         Bundle bundle = new Bundle();
         for (Pair<String, String> variable : variables) {
             bundle.putString(variable.first, variable.second);

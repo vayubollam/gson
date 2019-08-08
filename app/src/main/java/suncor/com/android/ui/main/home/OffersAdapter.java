@@ -93,7 +93,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                         intent.setData(Uri.parse(url));
                                         activity.startActivity(intent);
 
-                                        AnalyticsUtils.logEvent(activity, "intersite", "home", new Pair<>("intersiteURL", url));
+                                        AnalyticsUtils.logEvent(activity, "intersite", new Pair<>("intersiteURL", url));
                                     })
                                     .setNegativeButton(R.string.cancel, null)
                                     .show();

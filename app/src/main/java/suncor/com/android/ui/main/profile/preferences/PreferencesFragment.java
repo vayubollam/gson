@@ -13,10 +13,10 @@ import androidx.navigation.Navigation;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPreferencesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 
-public class PreferencesFragment extends BaseFragment {
+public class PreferencesFragment extends MainActivityFragment {
 
 
     private FragmentPreferencesBinding binding;

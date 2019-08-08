@@ -22,14 +22,14 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.ModalDialog;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 
-public class PersonalInfoFragment extends BaseFragment {
+public class PersonalInfoFragment extends MainActivityFragment {
 
     private FragmentPersonalInfoBinding binding;
     private PersonalInfoViewModel viewModel;

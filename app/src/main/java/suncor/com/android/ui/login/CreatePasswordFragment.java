@@ -25,8 +25,9 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.BaseFragment;
 
-public class CreatePasswordFragment extends DaggerFragment {
+public class CreatePasswordFragment extends BaseFragment {
 
     private static final String EMAIL_EXTRA = "email";
     private static final String ENCRYPTED_EMAIL_EXTRA = "encrypted_email";

@@ -235,7 +235,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         intent.setData(Uri.parse("tel:" + station.getAddress().getPhone()));
         startActivity(intent);
 
-        AnalyticsUtils.logEvent(getContext(), "tap_to_call", "gas-station-locations", new Pair<>("phoneNumberTapped", station.getAddress().getPhone()));
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", station.getAddress().getPhone()));
     }
 
     private int getStatusBarHeight() {

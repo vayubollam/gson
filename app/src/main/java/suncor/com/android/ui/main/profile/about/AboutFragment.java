@@ -17,10 +17,10 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentAboutBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.webview.WebDialogFragment;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class AboutFragment extends BaseFragment {
+public class AboutFragment extends MainActivityFragment {
     private FragmentAboutBinding binding;
 
     @Inject
@@ -50,7 +50,7 @@ public class AboutFragment extends BaseFragment {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
         webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
 
-        AnalyticsUtils.logEvent(getContext(), "intersite", getScreenName(), new Pair<>("intersiteURL", url));
+        AnalyticsUtils.logEvent(getContext(), "intersite", new Pair<>("intersiteURL", url));
     }
 
     @Override

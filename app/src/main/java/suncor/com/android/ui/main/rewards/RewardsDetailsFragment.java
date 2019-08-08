@@ -10,9 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
 import suncor.com.android.databinding.FragmentRewardsDetailsBinding;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 
-public class RewardsDetailsFragment extends BaseFragment {
+public class RewardsDetailsFragment extends MainActivityFragment {
 
     private FragmentRewardsDetailsBinding binding;
 

@@ -131,7 +131,7 @@ public class ProfileFragment extends BottomNavigationFragment {
                 binding.signOutPB.setVisibility(View.GONE);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
 
-                AnalyticsUtils.logEvent(getContext(), "logout", getScreenName());
+                AnalyticsUtils.logEvent(getContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();

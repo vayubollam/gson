@@ -272,7 +272,7 @@ public class HomeFragment extends BottomNavigationFragment {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
         webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
 
-        AnalyticsUtils.logEvent(getContext(), "intersite", getScreenName(), new Pair<>("intersiteURL", url));
+        AnalyticsUtils.logEvent(getContext(), "intersite", new Pair<>("intersiteURL", url));
     }
 
     @Override

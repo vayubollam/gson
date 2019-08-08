@@ -27,7 +27,7 @@ import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
 
 public class MainActivity extends SessionAwareActivity {
@@ -112,8 +112,8 @@ public class MainActivity extends SessionAwareActivity {
     protected void onLogout() {
         super.onLogout();
         for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
-            if (fragment instanceof BaseFragment) {
-                ((BaseFragment) fragment).onLoginStatusChanged();
+            if (fragment instanceof MainActivityFragment) {
+                ((MainActivityFragment) fragment).onLoginStatusChanged();
             }
         }
 
@@ -125,8 +125,8 @@ public class MainActivity extends SessionAwareActivity {
     protected void onLoginSuccess() {
         super.onLoginSuccess();
         for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
-            if (fragment instanceof BaseFragment) {
-                ((BaseFragment) fragment).onLoginStatusChanged();
+            if (fragment instanceof MainActivityFragment) {
+                ((MainActivityFragment) fragment).onLoginStatusChanged();
             }
         }
 

@@ -22,10 +22,10 @@ import java.util.HashMap;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFiltersBinding;
 import suncor.com.android.model.station.Station;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class FiltersFragment extends BaseFragment {
+public class FiltersFragment extends MainActivityFragment {
     private FragmentFiltersBinding binding;
     private final HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private final HashMap<String, String> categories = new HashMap<>();
@@ -100,7 +100,7 @@ public class FiltersFragment extends BaseFragment {
                 analyticsParameterValue.append(carwashFilters);
             }
 
-            AnalyticsUtils.logEvent(getContext(), "filters_applyed", getScreenName(), new Pair<>("filtersApplied", analyticsParameterValue.toString()));
+            AnalyticsUtils.logEvent(getContext(), "filters_applyed", new Pair<>("filtersApplied", analyticsParameterValue.toString()));
 
             parentViewModel.setCurrentFilters(filters);
             Navigation.findNavController(getView()).popBackStack();

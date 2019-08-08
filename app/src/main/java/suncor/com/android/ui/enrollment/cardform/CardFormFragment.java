@@ -29,6 +29,7 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.common.input.CardNumberFormattingTextWatcher;
@@ -41,7 +42,7 @@ import suncor.com.android.utilities.Timber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CardFormFragment extends DaggerFragment {
+public class CardFormFragment extends BaseFragment {
 
 
     private CardFormViewModel viewModel;
@@ -136,7 +137,7 @@ public class CardFormFragment extends DaggerFragment {
     public void onResume() {
         super.onResume();
         AnalyticsUtils.setCurrentScreenName(getActivity(), "activate-match-card");
-        AnalyticsUtils.logEvent(getContext(), "form_start", "activate-match-card", new Pair<>("formName", "Activate Petro-Points Card"));
+        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Activate Petro-Points Card"));
     }
 
     private void hideKeyBoard() {
@@ -154,6 +155,6 @@ public class CardFormFragment extends DaggerFragment {
         intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
 
-        AnalyticsUtils.logEvent(getContext(), "tap_to_call", "activate-match-card", new Pair<>("phoneNumberTapped", phoneNumber));
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", phoneNumber));
     }
 }

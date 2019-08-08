@@ -24,10 +24,10 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFaqBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Question;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class FAQFragment extends BaseFragment {
+public class FAQFragment extends MainActivityFragment {
     private FragmentFaqBinding binding;
     private FAQViewModel faqViewModel;
     @Inject
@@ -59,7 +59,7 @@ public class FAQFragment extends BaseFragment {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
             getContext().startActivity(intent);
 
-            AnalyticsUtils.logEvent(getContext(), "tap_to_call", getScreenName(), new Pair<>("phoneNumberTapped", phone));
+            AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", phone));
         });
         binding.emailButton.setOnClickListener(v ->
         {
@@ -68,7 +68,7 @@ public class FAQFragment extends BaseFragment {
                     "mailto", email, null));
             getContext().startActivity(Intent.createChooser(emailIntent, null));
 
-            AnalyticsUtils.logEvent(getContext(), "tap_to_email", getScreenName(), new Pair<>("emailTapped", email));
+            AnalyticsUtils.logEvent(getContext(), "tap_to_email", new Pair<>("emailTapped", email));
         });
     }
 
@@ -81,7 +81,7 @@ public class FAQFragment extends BaseFragment {
         faqViewModel.setSelectedQuestion(question);
         launchFAQResponseActivity();
 
-        AnalyticsUtils.logEvent(getContext(), "faq_read", getScreenName(), new Pair<>("faqText", question.getId()));
+        AnalyticsUtils.logEvent(getContext(), "faq_read", new Pair<>("faqText", question.getId()));
     }
 
     private void launchFAQResponseActivity() {

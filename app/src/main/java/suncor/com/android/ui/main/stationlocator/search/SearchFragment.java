@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerFragment;
+
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.databinding.FragmentSearchBinding;
 import suncor.com.android.databinding.NearbyLayoutBinding;
@@ -31,12 +31,12 @@ import suncor.com.android.databinding.RecentlySearchedLayoutBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.stationlocator.StationsViewModel;
 import suncor.com.android.utilities.LocationUtils;
 
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends MainActivityFragment {
     private SearchViewModel viewModel;
     private StationsViewModel parentViewModel;
     private FragmentSearchBinding binding;

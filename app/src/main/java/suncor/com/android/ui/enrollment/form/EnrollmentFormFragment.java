@@ -38,6 +38,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
@@ -49,7 +50,7 @@ import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
-public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
+public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -112,7 +113,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                 AnalyticsUtils.logEvent(
                         getContext(),
                         "form_sign_up_success",
-                        screenName,
                         new Pair<>("formName", formName),
                         new Pair<>("formSelection", optionsChecked)
                 );
@@ -278,7 +278,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         }
         AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
         if (!joinWithCard) {
-            AnalyticsUtils.logEvent(getContext(), "form_start", screenName, new Pair<>("formName", formName));
+            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", formName));
         }
     }
 
@@ -331,7 +331,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             AnalyticsUtils.logEvent(
                     getContext(),
                     "form_complete",
-                    screenName,
                     new Pair<>("formName", formName),
                     new Pair<>("formSelection", optionsChecked)
             );
@@ -378,7 +377,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                 AnalyticsUtils.logEvent(
                         getContext(),
                         "form_step",
-                        screenName,
                         new Pair<>("formName", formName),
                         new Pair<>("stepName", binding.personalCategoryTitle.getText().toString())
                 );
@@ -386,7 +384,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                 AnalyticsUtils.logEvent(
                         getContext(),
                         "form_step",
-                        screenName,
                         new Pair<>("formName", formName),
                         new Pair<>("stepName", binding.addressCategoryTitle.getText().toString())
                 );

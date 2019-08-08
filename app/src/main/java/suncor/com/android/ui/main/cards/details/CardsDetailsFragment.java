@@ -34,10 +34,10 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class CardsDetailsFragment extends BaseFragment {
+public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
     private int clickedCardIndex;
@@ -141,7 +141,7 @@ public class CardsDetailsFragment extends BaseFragment {
                                 cardsDetailsAdapter.removeCard(new ExpandedCardItem(getContext(), cardDetailResource.data));
                             }, 200);
 
-                            AnalyticsUtils.logEvent(getContext(), "card_remove", getScreenName(), new Pair<>("cardType", cardDetailResource.data.getCardName()));
+                            AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", cardDetailResource.data.getCardName()));
                         } else if (cardDetailResource.status == Resource.Status.LOADING) {
                             isRemoving.set(true);
                         }

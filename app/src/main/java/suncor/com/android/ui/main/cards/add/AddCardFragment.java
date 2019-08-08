@@ -25,10 +25,10 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.cards.details.ExpandedCardItem;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class AddCardFragment extends BaseFragment {
+public class AddCardFragment extends MainActivityFragment {
 
     private FragmentAddCardBinding binding;
     private AddCardViewModel viewModel;
@@ -65,7 +65,7 @@ public class AddCardFragment extends BaseFragment {
             expandedCardItemBinding.executePendingBindings();
             String screenName = "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success";
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
-            AnalyticsUtils.logEvent(getContext(), "card_add", screenName, new Pair<>("cardType", cardDetail.getCardName()));
+            AnalyticsUtils.logEvent(getContext(), "card_add", new Pair<>("cardType", cardDetail.getCardName()));
         });
 
         viewModel.showCard.observe(this, show -> {

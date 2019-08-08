@@ -30,10 +30,11 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
-public class CardQuestionFragment extends DaggerFragment {
+public class CardQuestionFragment extends BaseFragment {
 
     private AppCompatImageView cardImg, cardShadow;
     private int cardAnimationDuration = 400;
