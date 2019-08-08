@@ -454,7 +454,6 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             binding.filtersLayout.setVisibility(View.GONE);
         } else {
             binding.filtersLayout.setVisibility(View.VISIBLE);
-
             binding.filtersChipgroup.removeAllViews();
             for (String filter : filterList) {
                 String filterText;

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -269,6 +271,8 @@ public class HomeFragment extends BottomNavigationFragment {
     void showDialog(String url, String header) {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
         webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
+
+        AnalyticsUtils.logEvent(getContext(), "intersite", getScreenName(), new Pair<>("intersiteURL", url));
     }
 
     @Override

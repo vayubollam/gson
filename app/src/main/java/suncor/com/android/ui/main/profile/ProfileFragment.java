@@ -27,6 +27,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 public class ProfileFragment extends BottomNavigationFragment {
@@ -129,6 +130,8 @@ public class ProfileFragment extends BottomNavigationFragment {
             if (result.status == Resource.Status.SUCCESS) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
+
+                AnalyticsUtils.logEvent(getContext(), "logout", getScreenName());
             } else if (result.status == Resource.Status.ERROR) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();

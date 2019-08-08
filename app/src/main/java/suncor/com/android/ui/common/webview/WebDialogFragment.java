@@ -15,6 +15,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.DialogFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentWebDialogBinding;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class WebDialogFragment extends DialogFragment {
 
@@ -71,8 +72,5 @@ public class WebDialogFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.exit.setOnClickListener(v -> dismiss());
-
     }
-
-
 }

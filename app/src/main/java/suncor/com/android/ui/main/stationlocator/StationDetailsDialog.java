@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationDetailsDialog extends BottomSheetDialogFragment {
@@ -232,6 +234,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + station.getAddress().getPhone()));
         startActivity(intent);
+
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", "gas-station-locations", new Pair<>("phoneNumberTapped", station.getAddress().getPhone()));
     }
 
     private int getStatusBarHeight() {

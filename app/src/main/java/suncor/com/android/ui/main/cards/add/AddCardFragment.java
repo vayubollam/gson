@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.cards.add;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -27,6 +26,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.cards.details.ExpandedCardItem;
 import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AddCardFragment extends BaseFragment {
 
@@ -63,7 +63,9 @@ public class AddCardFragment extends BaseFragment {
             expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
             expandedCardItemBinding.setHideMoreButton(true);
             expandedCardItemBinding.executePendingBindings();
-            FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success", getActivity().getClass().getSimpleName());
+            String screenName = "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success";
+            AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+            AnalyticsUtils.logEvent(getContext(), "card_add", screenName, new Pair<>("cardType", cardDetail.getCardName()));
         });
 
         viewModel.showCard.observe(this, show -> {

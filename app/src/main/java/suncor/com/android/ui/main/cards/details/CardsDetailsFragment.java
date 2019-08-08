@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.cards.details;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CardsDetailsFragment extends BaseFragment {
     private FragmentCardsDetailsBinding binding;
@@ -138,6 +140,8 @@ public class CardsDetailsFragment extends BaseFragment {
                             new Handler().postDelayed(() -> {
                                 cardsDetailsAdapter.removeCard(new ExpandedCardItem(getContext(), cardDetailResource.data));
                             }, 200);
+
+                            AnalyticsUtils.logEvent(getContext(), "card_remove", getScreenName(), new Pair<>("cardType", cardDetailResource.data.getCardName()));
                         } else if (cardDetailResource.status == Resource.Status.LOADING) {
                             isRemoving.set(true);
                         }

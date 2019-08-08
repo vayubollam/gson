@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.home;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -18,6 +19,7 @@ import suncor.com.android.ui.YoutubePlayerActivity;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
@@ -86,9 +88,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
                                     .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
                                     .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
+                                        String url = activity.getString(R.string.rbc_url);
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setData(Uri.parse(activity.getString(R.string.rbc_url)));
+                                        intent.setData(Uri.parse(url));
                                         activity.startActivity(intent);
+
+                                        AnalyticsUtils.logEvent(activity, "intersite", "home", new Pair<>("intersiteURL", url));
                                     })
                                     .setNegativeButton(R.string.cancel, null)
                                     .show();

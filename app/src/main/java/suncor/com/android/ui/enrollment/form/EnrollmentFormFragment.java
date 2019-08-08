@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
@@ -56,6 +58,8 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
+    private String formName;
+    private String screenName;
 
     public EnrollmentFormFragment() {
     }
@@ -81,13 +85,6 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         //enrollments api call result
         viewModel.joinLiveData.observe(this, (r) -> {
             if (r.status == Resource.Status.SUCCESS) {
-                String screenName;
-                if (viewModel.getCardStatus() != null) {
-                    screenName = "activate-success";
-                } else {
-                    screenName = "sign-up-success";
-                }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
                 getView().postDelayed(() -> {
                     if (getActivity() != null) {
                         //Go to main screen to show the welcome message
@@ -96,6 +93,29 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                         startActivity(intent);
                     }
                 }, 1000);
+                //Log success events
+                String screenName;
+                if (viewModel.getCardStatus() != null) {
+                    screenName = "activate-success";
+                } else {
+                    screenName = "sign-up-success";
+                }
+                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+
+                String optionsChecked = "";
+                if (binding.emailOffersCheckbox.isChecked()) {
+                    optionsChecked += binding.emailOffersCheckbox.getText().toString();
+                }
+                if (binding.smsOffersCheckbox.isChecked()) {
+                    optionsChecked += binding.smsOffersCheckbox.getText().toString();
+                }
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_sign_up_success",
+                        screenName,
+                        new Pair<>("formName", formName),
+                        new Pair<>("formSelection", optionsChecked)
+                );
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
@@ -248,13 +268,18 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     @Override
     public void onResume() {
         super.onResume();
-        String screenName;
-        if (viewModel.getCardStatus() != null) {
+        boolean joinWithCard = viewModel.getCardStatus() != null;
+        if (joinWithCard) {
             screenName = "activate-i-have-a-card";
+            formName = "Activate Petro-Points Card";
         } else {
             screenName = "sign-up-i-dont-have-a-card";
+            formName = "Join Petro-Points";
         }
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+        if (!joinWithCard) {
+            AnalyticsUtils.logEvent(getContext(), "form_start", screenName, new Pair<>("formName", formName));
+        }
     }
 
     @Override
@@ -295,6 +320,21 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         int itemWithError = viewModel.validateAndJoin();
         if (itemWithError != -1) {
             focusOnItem(requiredFields.get(itemWithError));
+        } else {
+            String optionsChecked = "";
+            if (binding.emailOffersCheckbox.isChecked()) {
+                optionsChecked += binding.emailOffersCheckbox.getText().toString();
+            }
+            if (binding.smsOffersCheckbox.isChecked()) {
+                optionsChecked += binding.smsOffersCheckbox.getText().toString();
+            }
+            AnalyticsUtils.logEvent(
+                    getContext(),
+                    "form_complete",
+                    screenName,
+                    new Pair<>("formName", formName),
+                    new Pair<>("formSelection", optionsChecked)
+            );
         }
     }
 
@@ -332,6 +372,26 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             viewModel.getPhoneField().setHasFocus(hasFocus);
         }
 
+        //log form steps
+        if (hasFocus) {
+            if (view == binding.firstNameInput) {
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_step",
+                        screenName,
+                        new Pair<>("formName", formName),
+                        new Pair<>("stepName", binding.personalCategoryTitle.getText().toString())
+                );
+            } else if (view == binding.streetAddressInput) {
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_step",
+                        screenName,
+                        new Pair<>("formName", formName),
+                        new Pair<>("stepName", binding.addressCategoryTitle.getText().toString())
+                );
+            }
+        }
     }
 
     private void scrollToView(View view) {

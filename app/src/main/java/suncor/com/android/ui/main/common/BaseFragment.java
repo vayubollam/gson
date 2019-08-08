@@ -9,10 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class BaseFragment extends DaggerFragment {
 
@@ -58,13 +57,14 @@ public class BaseFragment extends DaggerFragment {
     public void onResume() {
         super.onResume();
         if (!TextUtils.isEmpty(getScreenName())) {
-            FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), getScreenName(), getActivity().getClass().getSimpleName());
+            AnalyticsUtils.setCurrentScreenName(getActivity(), getScreenName());
         }
     }
 
     /**
      * Used to track current screen being viewed on Firebase Analytics
      * Subclasses should override it to change the behavior
+     *
      * @return the name to send to Firebase Analytics
      */
     protected String getScreenName() {

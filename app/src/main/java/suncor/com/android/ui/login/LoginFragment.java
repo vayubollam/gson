@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class LoginFragment extends DaggerFragment {
 
@@ -92,6 +94,8 @@ public class LoginFragment extends DaggerFragment {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + customerSupportNumber));
                 startActivity(intent);
+
+                AnalyticsUtils.logEvent(getContext(), "tap_to_call", "login", new Pair<>("phoneNumberTapped", customerSupportNumber));
             }
         });
 
