@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -79,6 +78,15 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
         }
 
+        boolean joinWithCard = viewModel.getCardStatus() != null;
+        if (joinWithCard) {
+            screenName = "activate-i-have-a-card";
+            formName = "Activate Petro-Points Card";
+        } else {
+            screenName = "sign-up-i-dont-have-a-card";
+            formName = "Join Petro-Points";
+        }
+
         viewModel.getShowDuplicateEmailEvent().observe(this, (r) -> {
             showDuplicateEmailAlert();
         });
@@ -110,12 +118,21 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 if (binding.smsOffersCheckbox.isChecked()) {
                     optionsChecked += binding.smsOffersCheckbox.getText().toString();
                 }
+
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_complete",
+                        new Pair<>("formName", formName),
+                        new Pair<>("formSelection", optionsChecked)
+                );
                 AnalyticsUtils.logEvent(
                         getContext(),
                         "form_sign_up_success",
                         new Pair<>("formName", formName),
                         new Pair<>("formSelection", optionsChecked)
                 );
+                AnalyticsUtils.logEvent(getContext(), "sign_up");
+
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
@@ -268,18 +285,17 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onResume() {
         super.onResume();
-        boolean joinWithCard = viewModel.getCardStatus() != null;
-        if (joinWithCard) {
-            screenName = "activate-i-have-a-card";
-            formName = "Activate Petro-Points Card";
-        } else {
-            screenName = "sign-up-i-dont-have-a-card";
-            formName = "Join Petro-Points";
-        }
         AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
-        if (!joinWithCard) {
+        if (viewModel.getCardStatus() == null) {
             AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", formName));
+        } else {
+            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", formName), new Pair<>("stepName", "Personal Information"));
         }
+    }
+
+    @Override
+    public String getScreenName() {
+        return screenName;
     }
 
     @Override
@@ -320,20 +336,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         int itemWithError = viewModel.validateAndJoin();
         if (itemWithError != -1) {
             focusOnItem(requiredFields.get(itemWithError));
-        } else {
-            String optionsChecked = "";
-            if (binding.emailOffersCheckbox.isChecked()) {
-                optionsChecked += binding.emailOffersCheckbox.getText().toString();
-            }
-            if (binding.smsOffersCheckbox.isChecked()) {
-                optionsChecked += binding.smsOffersCheckbox.getText().toString();
-            }
-            AnalyticsUtils.logEvent(
-                    getContext(),
-                    "form_complete",
-                    new Pair<>("formName", formName),
-                    new Pair<>("formSelection", optionsChecked)
-            );
         }
     }
 

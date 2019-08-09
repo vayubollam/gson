@@ -26,6 +26,7 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CreatePasswordFragment extends BaseFragment {
 
@@ -61,6 +62,7 @@ public class CreatePasswordFragment extends BaseFragment {
                 binding.passwordInput.getEditText().clearFocus();
                 hideKeyboard();
             } else if (r.status == Resource.Status.SUCCESS) {
+                AnalyticsUtils.logEvent(getContext(), "password_reset");
                 if (getActivity() != null) {
                     getActivity().finish();
                 }

@@ -122,6 +122,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {
         RemoveCardBottomSheet removeCardBottomSheet = new RemoveCardBottomSheet();
         removeCardBottomSheet.setClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(), "menu_tap", new Pair<>("menuSelection", getString(R.string.card_remove_bottom_sheet_title)));
             removeCardBottomSheet.dismiss();
             showConfirmationAlert(expandedCardItem);
         });

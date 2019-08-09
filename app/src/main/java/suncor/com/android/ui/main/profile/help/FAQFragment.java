@@ -81,7 +81,7 @@ public class FAQFragment extends MainActivityFragment {
         faqViewModel.setSelectedQuestion(question);
         launchFAQResponseActivity();
 
-        AnalyticsUtils.logEvent(getContext(), "faq_read", new Pair<>("faqText", question.getId()));
+        AnalyticsUtils.logEvent(getContext(), "faq_read", new Pair<>("faqText", question.getQuestion()));
     }
 
     private void launchFAQResponseActivity() {

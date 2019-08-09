@@ -225,6 +225,10 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                     } else {
                         SuncorToast.makeText(application, R.string.msg_sl006, Toast.LENGTH_SHORT).show();
                     }
+                } else if (r.status == Resource.Status.SUCCESS) {
+                    if (stationItem.isFavourite()) {
+                        AnalyticsUtils.logEvent(getContext(), "station_add_to_favourite", new Pair<>("location", stationItem.getStation().getAddress().getAddressLine()));
+                    }
                 }
             });
         }
