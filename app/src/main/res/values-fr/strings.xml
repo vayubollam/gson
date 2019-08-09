@@ -419,4 +419,10 @@
     <string name="settings_failure_dialog_button">Fermer l\'application.</string>
     <string name="settings_failure_dialog_message">Veuillez réessayer plus tard.</string>
     <string name="settings_failure_dialog_title">Nous ne pouvons pas charger l\'application.</string>
+    <string name="sign_enable_fp_title">Activer l\'empreinte digitale?</string>
+    <string name="sign_enable_fb_message">Ouvrez une session plus rapidement la prochaine fois à l\'aide de votre empreinte digitale.</string>
+    <string name="sign_enable_fb_possitive_button">Activer</string>
+    <string name="sign_enable_fb_negative_button">Annuler</string>
+    <string name="profile_preferences_enable_fingerprint_message">Activer l\'empreinte digitale?</string>
+    <string name="profile_preferences_enable_fingerprint_hint">Ouvrez une session plus rapidement la prochaine fois.</string>
 </resources>

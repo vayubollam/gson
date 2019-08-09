@@ -32,7 +32,7 @@ import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
-import suncor.com.android.utilities.FingerPrintManager;
+import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
@@ -68,12 +68,12 @@ public class EnrollmentFormViewModel extends ViewModel {
     private Province selectedProvince;
     private CardStatus cardStatus;
     private ArrayList<Province> provincesList;
-    private FingerPrintManager fingerPrintManager;
+    private FingerprintManager fingerPrintManager;
     private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
     public LiveData<Event<Boolean>> showBiometricAlert = _showBiometricAlert;
 
     @Inject
-    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerPrintManager fingerPrintManager) {
+    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerprintManager fingerPrintManager) {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);

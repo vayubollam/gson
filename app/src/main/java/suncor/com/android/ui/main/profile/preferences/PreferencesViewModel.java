@@ -17,11 +17,16 @@ import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.account.ProfileRequest;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.utilities.FingerprintManager;
 
 public class PreferencesViewModel extends ViewModel {
+    private final FingerprintManager fingerprintManager;
+    private final Profile profile;
+
     private ObservableBoolean emailOffers = new ObservableBoolean();
     private ObservableBoolean donotEmail = new ObservableBoolean();
     private ObservableBoolean textOffers = new ObservableBoolean();
+    private ObservableBoolean enableFingerprint = new ObservableBoolean();
     private ObservableBoolean isEditing = new ObservableBoolean();
     private ObservableBoolean hasPhoneNumber = new ObservableBoolean();
     private ProfileSharedViewModel profileSharedViewModel;
@@ -30,15 +35,16 @@ public class PreferencesViewModel extends ViewModel {
     private LiveData<Resource<Boolean>> profilesApiCall;
     private MutableLiveData<Event<Boolean>> updateEvent = new MutableLiveData<>();
 
-    private boolean hasUpdatedEmailOffers = false;
-    private boolean hasUpdatedTextOffers = false;
+    private boolean hasUpdatedPhoneOffers;
 
     @Inject
-    public PreferencesViewModel(ProfilesApi profilesApi, SessionManager sessionManager) {
-        Profile profile = sessionManager.getProfile();
+    public PreferencesViewModel(ProfilesApi profilesApi, SessionManager sessionManager, FingerprintManager fingerprintManager) {
+        this.fingerprintManager = fingerprintManager;
+        profile = sessionManager.getProfile();
         emailOffers.set(profile.isEmailOffers());
         textOffers.set(profile.isTextOffers());
         donotEmail.set(profile.isDoNotEmail());
+        enableFingerprint.set(fingerprintManager.isFingerprintActivated());
         Observable.OnPropertyChangedCallback editCallback = new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -48,6 +54,7 @@ public class PreferencesViewModel extends ViewModel {
         emailOffers.addOnPropertyChangedCallback(editCallback);
         textOffers.addOnPropertyChangedCallback(editCallback);
         donotEmail.addOnPropertyChangedCallback(editCallback);
+        enableFingerprint.addOnPropertyChangedCallback(editCallback);
 
         if (profile.getPhone() == null || profile.getPhone().isEmpty()) {
             hasPhoneNumber.set(false);
@@ -59,10 +66,10 @@ public class PreferencesViewModel extends ViewModel {
         profilesApiCall = Transformations.switchMap(updateEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 ProfileRequest request = new ProfileRequest(profile);
-                if (hasUpdatedEmailOffers) {
+                if (hasUpdatedPhoneOffers) {
                     request.setEmailOffers(emailOffers.get());
                 }
-                if (hasUpdatedTextOffers) {
+                if (profile.isTextOffers() != textOffers.get()) {
                     request.setTextOffers(textOffers.get());
                 }
                 return profilesApi.updateProfile(request);
@@ -78,13 +85,9 @@ public class PreferencesViewModel extends ViewModel {
                     break;
                 case SUCCESS:
                     profileSharedViewModel.postToast(R.string.profile_update_toast);
-                    if (hasUpdatedEmailOffers) {
-                        sessionManager.getProfile().setEmailOffers(emailOffers.get());
-                        sessionManager.getProfile().setDoNotEmail(donotEmail.get());
-                    }
-                    if (hasUpdatedTextOffers) {
-                        sessionManager.getProfile().setTextOffers(textOffers.get());
-                    }
+                    sessionManager.getProfile().setEmailOffers(emailOffers.get());
+                    sessionManager.getProfile().setDoNotEmail(donotEmail.get());
+                    sessionManager.getProfile().setTextOffers(textOffers.get());
                     break;
                 case ERROR:
                     ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
@@ -111,16 +114,19 @@ public class PreferencesViewModel extends ViewModel {
     public void setEmailOffers(boolean value) {
         emailOffers.set(value);
         donotEmail.set(!value);
-        hasUpdatedEmailOffers = true;
+        hasUpdatedPhoneOffers = true;
     }
 
     public ObservableBoolean getTextOffers() {
         return textOffers;
     }
 
+    public ObservableBoolean getEnableFingerprint() {
+        return enableFingerprint;
+    }
+
     public void setTextOffers(boolean value) {
         textOffers.set(value);
-        hasUpdatedTextOffers = true;
     }
 
     public ObservableBoolean getIsEditing() {
@@ -131,16 +137,32 @@ public class PreferencesViewModel extends ViewModel {
         this.profileSharedViewModel = profileSharedViewModel;
     }
 
+    public boolean supportsFingerprint() {
+        return fingerprintManager.isFingerPrintExistAndEnrolled();
+    }
+
     public void save(boolean hasConnection) {
-        if (!hasConnection) {
-            _navigateToProfile.setValue(Event.newEvent(true));
-            ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
-            alert.title = R.string.msg_e002_title;
-            alert.message = R.string.msg_e002_message;
-            alert.positiveButton = R.string.ok;
-            profileSharedViewModel.postAlert(alert);
+        if (enableFingerprint.get()) {
+            fingerprintManager.activateFingerprint();
         } else {
-            updateEvent.setValue(Event.newEvent(true));
+            fingerprintManager.deactivateFingerprint();
+        }
+
+        if (hasUpdatedPhoneOffers || profile.isTextOffers() != textOffers.get()) {
+            if (!hasConnection) {
+                _navigateToProfile.setValue(Event.newEvent(true));
+                ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
+                alert.title = R.string.msg_e002_title;
+                alert.message = R.string.msg_e002_message;
+                alert.positiveButton = R.string.ok;
+                profileSharedViewModel.postAlert(alert);
+            } else {
+                updateEvent.setValue(Event.newEvent(true));
+            }
+        } else {
+            _navigateToProfile.setValue(Event.newEvent(true));
+            profileSharedViewModel.postToast(R.string.profile_update_toast);
         }
     }
+
 }
