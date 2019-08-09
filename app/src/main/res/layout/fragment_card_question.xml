@@ -99,7 +99,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/with_card_button"
                 style="@style/OutlinedButton.L"
                 android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                 android:padding="16dp"
                 android:text="@string/enrollment_yes_i_have_a_card_button" />
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/no_card_button"
                 style="@style/OutlinedButton.L"
                 android:layout_width="match_parent"

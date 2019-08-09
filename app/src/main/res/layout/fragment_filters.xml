@@ -104,7 +104,7 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/clear_button"
                     style="@style/OutlinedButton.M"
                     android:layout_width="0dp"
@@ -113,7 +113,7 @@
                     android:layout_weight="1"
                     android:text="@string/filters_clear_button" />
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/apply_button"
                     style="@style/FilledButton.Red.M"
                     android:layout_width="0dp"

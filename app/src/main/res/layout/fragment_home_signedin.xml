@@ -133,7 +133,7 @@
                             android:textAppearance="@style/Caption1"
                             tools:text="You just earned 2,500 points by creating a Petro-Canada account." />
 
-                        <com.google.android.material.button.MaterialButton
+                        <suncor.com.android.ui.common.SuncorButton
                             style="@style/LinkButton.Red.M"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

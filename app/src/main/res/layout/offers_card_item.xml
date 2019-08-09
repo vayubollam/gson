@@ -62,7 +62,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="@string/welcome_to_petro_canda_on_the_go" />
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/left_button"
                     style="@style/FilledButton.Red.L"
                     android:layout_width="0dp"
@@ -85,7 +85,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="Sign in" />
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/right_button"
                     style="@style/FilledButton.White.L"
                     android:layout_width="0dp"
