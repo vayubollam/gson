@@ -19,6 +19,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -32,6 +35,7 @@ import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.utilities.FingerPrintManager;
+import suncor.com.android.utilities.KeyStoreStorage;
 
 public class LoginFragment extends DaggerFragment {
 
@@ -44,7 +48,13 @@ public class LoginFragment extends DaggerFragment {
 
     private FragmentLoginBinding binding;
     private LoginViewModel viewModel;
+    private String email = "";
+    private String password = "";
 
+    @Inject
+    KeyStoreStorage keyStoreStorage;
+
+    private static final String CREDENTIALS_KEY = "credentials";
 
     public LoginFragment() {
 
@@ -147,11 +157,20 @@ public class LoginFragment extends DaggerFragment {
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login", getActivity().getClass().getSimpleName());
         new Handler().postDelayed(() -> {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
+                String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
+
+                if (savedCredentials != null) try {
+                    JSONObject credentials = new JSONObject(savedCredentials);
+                    email = credentials.getString("email");
+                    password = credentials.getString("password");
+                } catch (JSONException e) {
+                    return;
+                }
                 BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                        .setTitle("Confirm fingerprint")
-                        .setSubtitle("maria@gmail.com")
-                        .setDescription("Touch the fingerprint sensor")
-                        .setNegativeButtonText("Cancel").build();
+                        .setTitle(getResources().getString(R.string.login_fingerprint_alert_title))
+                        .setSubtitle(email)
+                        .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
+                        .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
                 Executor executor = Executors.newSingleThreadExecutor();
                 BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
                     @Override
@@ -162,7 +181,7 @@ public class LoginFragment extends DaggerFragment {
                     @Override
                     public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        viewModel.fingerPrintConfirmed();
+                        viewModel.fingerPrintConfirmed(email, password);
 
                     }
 
@@ -174,7 +193,6 @@ public class LoginFragment extends DaggerFragment {
                 biometricPrompt.authenticate(promptInfo);
             }
         }, 100);
-
 
 
     }

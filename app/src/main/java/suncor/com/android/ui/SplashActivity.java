@@ -35,6 +35,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.ConnectionUtil;
+import suncor.com.android.utilities.FingerPrintManager;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
@@ -54,6 +55,9 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     @Inject
     SuncorApplication application;
+
+    @Inject
+    FingerPrintManager fingerPrintManager;
 
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -187,19 +191,24 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
                 }, delayExit);
             } else {
-                sessionManager.checkLoginState().observe(this, loginState -> {
-                    binding.profilePd.setVisibility(View.GONE);
-                    switch (loginState) {
-                        case LOGGED_IN:
-                        case LOGGED_OUT:
-                            startExitAnimation(false);
-                            break;
-                        case ERROR:
-                            startExitAnimation(true);
-                            break;
+                if (fingerPrintManager.isAutoLoginActivated()) {
+                    sessionManager.checkLoginState().observe(this, loginState -> {
+                        binding.profilePd.setVisibility(View.GONE);
+                        switch (loginState) {
+                            case LOGGED_IN:
+                            case LOGGED_OUT:
+                                startExitAnimation(false);
+                                break;
+                            case ERROR:
+                                startExitAnimation(true);
+                                break;
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    startExitAnimation(false);
+                }
+
             }
         }
     }

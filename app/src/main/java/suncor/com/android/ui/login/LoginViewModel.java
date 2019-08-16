@@ -5,9 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import javax.inject.Inject;
 
 import suncor.com.android.BR;
@@ -34,15 +31,8 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> navigateToHomeEvent = new MutableLiveData<>();
     private boolean isLoginFromEnrollment;
     private LiveData<Resource<SigninResponse>> loginLiveData;
-    private SessionManager sessionManager;
-    private static final String CREDENTIALS_KEY = "credentials";
-
-    @Inject
-    KeyStoreStorage keyStoreStorage;
     @Inject
     public LoginViewModel(SessionManager sessionManager, KeyStoreStorage keyStoreStorage) {
-        this.sessionManager = sessionManager;
-        this.keyStoreStorage = keyStoreStorage;
         this.passwordInputField = new InputField(R.string.login_password_field_error);
         this.emailInputField = new InputField(R.string.login_email_field_error);
         loginLiveData = Transformations.switchMap(loginEvent, (event) -> {
@@ -166,18 +156,11 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-    public void fingerPrintConfirmed() {
-        String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
-        if (savedCredentials != null) try {
-            JSONObject credentials = new JSONObject(savedCredentials);
-            String email = credentials.getString("email");
-            String password = credentials.getString("password");
+    public void fingerPrintConfirmed(String email, String password) {
             emailInputField.setText(email);
             passwordInputField.setText(password);
             loginEvent.postValue(Event.newEvent(true));
-        } catch (JSONException e) {
 
-        }
 
 
     }
