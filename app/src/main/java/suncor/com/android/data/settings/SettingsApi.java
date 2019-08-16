@@ -6,5 +6,5 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 
 public interface SettingsApi {
-    public LiveData<Resource<SettingsResponse>> retrieveSettings();
+    LiveData<Resource<SettingsResponse>> retrieveSettings();
 }
