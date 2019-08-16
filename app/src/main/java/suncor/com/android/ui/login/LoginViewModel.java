@@ -14,7 +14,6 @@ import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.InputField;
-import suncor.com.android.utilities.KeyStoreStorage;
 
 
 public class LoginViewModel extends ViewModel {
@@ -30,12 +29,12 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<String>> createPasswordEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> navigateToHomeEvent = new MutableLiveData<>();
     private boolean isLoginFromEnrollment;
-    private LiveData<Resource<SigninResponse>> loginLiveData;
+
     @Inject
-    public LoginViewModel(SessionManager sessionManager, KeyStoreStorage keyStoreStorage) {
+    public LoginViewModel(SessionManager sessionManager) {
         this.passwordInputField = new InputField(R.string.login_password_field_error);
         this.emailInputField = new InputField(R.string.login_email_field_error);
-        loginLiveData = Transformations.switchMap(loginEvent, (event) -> {
+        LiveData<Resource<SigninResponse>> loginLiveData = Transformations.switchMap(loginEvent, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 return sessionManager.login(emailInputField.getText(), passwordInputField.getText());
             }
@@ -157,10 +156,9 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void fingerPrintConfirmed(String email, String password) {
-            emailInputField.setText(email);
-            passwordInputField.setText(password);
-            loginEvent.postValue(Event.newEvent(true));
-
+        emailInputField.setText(email);
+        passwordInputField.setText(password);
+        loginEvent.postValue(Event.newEvent(true));
 
 
     }
