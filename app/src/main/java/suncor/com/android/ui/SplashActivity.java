@@ -35,7 +35,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.ConnectionUtil;
-import suncor.com.android.utilities.FingerPrintManager;
+import suncor.com.android.utilities.FingerprintManager;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
@@ -57,7 +57,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     SuncorApplication application;
 
     @Inject
-    FingerPrintManager fingerPrintManager;
+    FingerprintManager fingerPrintManager;
 
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;

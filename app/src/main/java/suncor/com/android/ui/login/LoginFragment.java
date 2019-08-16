@@ -34,7 +34,7 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.utilities.FingerPrintManager;
+import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 
 public class LoginFragment extends DaggerFragment {
@@ -42,7 +42,7 @@ public class LoginFragment extends DaggerFragment {
     @Inject
     ViewModelFactory viewModelFactory;
     @Inject
-    FingerPrintManager fingerPrintManager;
+    FingerprintManager fingerPrintManager;
     @Inject
     SessionManager sessionManager;
 

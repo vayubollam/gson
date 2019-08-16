@@ -19,7 +19,7 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.account.Profile;
-import suncor.com.android.utilities.FingerPrintManager;
+import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 import suncor.com.android.utilities.Timber;
 
@@ -53,7 +53,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     KeyStoreStorage keyStoreStorage;
 
     @Inject
-    FingerPrintManager fingerPrintManager;
+    FingerprintManager fingerPrintManager;
 
     @Inject
     public UserLoginChallengeHandler() {

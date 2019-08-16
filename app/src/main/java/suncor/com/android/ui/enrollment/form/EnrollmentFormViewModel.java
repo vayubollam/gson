@@ -166,6 +166,9 @@ public class EnrollmentFormViewModel extends ViewModel {
                     }
                 });
             } else {
+                if (fingerPrintManager.isFingerprintActivated()) {
+                    fingerPrintManager.deactivateFingerprint();
+                }
                 MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
                 if (result.status == Resource.Status.LOADING) {
                     intermediateLivedata.setValue(Resource.loading());
