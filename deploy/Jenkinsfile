@@ -12,9 +12,9 @@ pipeline {
 
 	environment {
 		PERFECTO_TOKEN = credentials("PerfectoToken")
-		MFP_URL = credentials("MobileSecret${env.BUILD_ENV}URL")
-        MFP_USERNAME = credentials("MobileSecret${env.BUILD_ENV}User")
-        MFP_PASSWORD = credentials("MobileSecret${env.BUILD_ENV}Password")
+		APPCTNR_URL = credentials("MobileSecret${env.BUILD_ENV}URL")
+        APPCTNR_USERNAME = credentials("MobileSecret${env.BUILD_ENV}User")
+        APPCTNR_PASSWORD = credentials("MobileSecret${env.BUILD_ENV}Password")
         STORE_PASSWORD = credentials("AndroidSecretStorePassword")
         KEY_PASSWORD = credentials("AndroidSecretKeyPassword")
 	}
@@ -78,7 +78,7 @@ pipeline {
 			steps {
             	script {
             	    sh (
-                        script: "java -Dhttp.agent='Mozilla/5.0 (Windows NT 6.1)' -cp 'applicationcenterdeploytool.jar:json4j.jar' com.ibm.appcenter.Upload -l 'Petro-Canada (Android)' -s $MFP_URL -c applicationcenter -u $MFP_USERNAME -p $MFP_PASSWORD -e -f app/build/outputs/apk/${env.BUILD_ENV}/release/app-${env.BUILD_ENV}-release.apk",
+                        script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -l "Petro-Canada (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/`${env.BUILD_ENV}`/release/app-`${env.BUILD_ENV}`-release.apk',
                         returnStdout: false
                     )
 				}		
