@@ -431,6 +431,9 @@
     <string name="sign_enable_fb_message">Sign in faster next time by using your fingerprint.</string>
     <string name="sign_enable_fb_possitive_button">Enable</string>
     <string name="sign_enable_fb_negative_button">Cancel</string>
+    <string name="login_fingerprint_alert_title">Sign in</string>
+    <string name="login_fingerprint_alert_desc">Touch the fingerprint sensor.</string>
+    <string name="login_fingerprint_alert_negative_button">Cancel</string>
     <string name="profile_preferences_authentication_header">Authentication</string>
     <string name="profile_preferences_enable_fingerprint_message">Enable fingerprint?</string>
     <string name="profile_preferences_enable_fingerprint_hint">Sign in faster next time.</string>

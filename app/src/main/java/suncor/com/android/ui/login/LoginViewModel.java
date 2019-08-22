@@ -159,6 +159,14 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
+    public void fingerPrintConfirmed(String email, String password) {
+        emailInputField.setText(email);
+        passwordInputField.setText(password);
+        loginEvent.postValue(Event.newEvent(true));
+
+
+    }
+
     private boolean validateInput() {
         boolean isValid = true;
         if (!emailInputField.isValid()) {

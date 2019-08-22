@@ -11,6 +11,7 @@ public class FingerprintManager {
     private final SuncorApplication application;
     private static UserLocalSettings userLocalSettings;
     public final String USE_FINGERPRINT = "use_fingerprint";
+    public final String AUTO_LOGIN = "use_auto_login";
 
     @Inject
     public FingerprintManager(SuncorApplication application, UserLocalSettings userLocalSettings) {
@@ -41,6 +42,18 @@ public class FingerprintManager {
 
     public boolean isFingerprintActivated() {
         return userLocalSettings.getBool(USE_FINGERPRINT, false);
+    }
+
+    public void activateAutoLogin() {
+        userLocalSettings.setBool(AUTO_LOGIN, true);
+    }
+
+    public void deactivateAutoLogin() {
+        userLocalSettings.setBool(AUTO_LOGIN, false);
+    }
+
+    public boolean isAutoLoginActivated() {
+        return userLocalSettings.getBool(AUTO_LOGIN, false);
     }
 
 
