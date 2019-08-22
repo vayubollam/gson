@@ -89,7 +89,7 @@
                 android:textColor="@color/black_60"
                 android:textSize="18sp" />
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/addFavoriteBackButton"
                 style="@style/FilledButton.Red.L"
                 android:layout_width="wrap_content"

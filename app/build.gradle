@@ -143,12 +143,12 @@ dependencies {
     implementation "com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion"
     implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagManagerVersion"
     implementation "androidx.biometric:biometric:1.0.0-alpha04"
-
     testImplementation "androidx.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+
 }
 if (getGradle().getStartParameter().getTaskRequests().toString().contains("QA")) {
     apply plugin: 'com.google.gms.google-services'

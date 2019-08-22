@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.cards.details;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +34,10 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
-public class CardsDetailsFragment extends BaseFragment {
+public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
     private int clickedCardIndex;
@@ -120,6 +122,7 @@ public class CardsDetailsFragment extends BaseFragment {
     void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {
         RemoveCardBottomSheet removeCardBottomSheet = new RemoveCardBottomSheet();
         removeCardBottomSheet.setClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(), "menu_tap", new Pair<>("menuSelection", getString(R.string.card_remove_bottom_sheet_title)));
             removeCardBottomSheet.dismiss();
             showConfirmationAlert(expandedCardItem);
         });
@@ -138,6 +141,8 @@ public class CardsDetailsFragment extends BaseFragment {
                             new Handler().postDelayed(() -> {
                                 cardsDetailsAdapter.removeCard(new ExpandedCardItem(getContext(), cardDetailResource.data));
                             }, 200);
+
+                            AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", cardDetailResource.data.getCardName()));
                         } else if (cardDetailResource.status == Resource.Status.LOADING) {
                             isRemoving.set(true);
                         }

@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.profile;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 public class ProfileFragment extends BottomNavigationFragment {
@@ -46,6 +48,8 @@ public class ProfileFragment extends BottomNavigationFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message);
@@ -129,6 +133,8 @@ public class ProfileFragment extends BottomNavigationFragment {
             if (result.status == Resource.Status.SUCCESS) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
+
+                AnalyticsUtils.logEvent(getContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();

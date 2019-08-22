@@ -33,12 +33,12 @@ import suncor.com.android.databinding.FragmentFavouritesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.SuncorToast;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.UserLocalSettings;
 
-public class FavouritesFragment extends BaseFragment {
+public class FavouritesFragment extends MainActivityFragment {
 
     private static final String SHOW_FAVS_HINT = "show_favs_hint";
     private FavouritesViewModel mViewModel;

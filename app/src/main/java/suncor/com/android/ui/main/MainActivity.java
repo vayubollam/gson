@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Pair;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -27,8 +30,9 @@ import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class MainActivity extends SessionAwareActivity {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
@@ -41,6 +45,7 @@ public class MainActivity extends SessionAwareActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (LOGGED_OUT_DUE_CONFLICTING_LOGIN.equals(intent.getAction())) {
+                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",LOGGED_OUT_DUE_CONFLICTING_LOGIN ));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton("OK", (dialog, which) -> {
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
@@ -89,6 +94,16 @@ public class MainActivity extends SessionAwareActivity {
 
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
+        //To allow sending Firebase events when navigation items are getting selected, we will re-override the BottomNavigation listener
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                AnalyticsUtils.logEvent(MainActivity.this, "navigation", new Pair<>("actionBarTap", item.getTitle().toString()));
+                //pass the event to the Navigation component
+                return NavigationUI.onNavDestinationSelected(item, navController);
+            }
+        });
+
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
         if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
@@ -112,8 +127,8 @@ public class MainActivity extends SessionAwareActivity {
     protected void onLogout() {
         super.onLogout();
         for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
-            if (fragment instanceof BaseFragment) {
-                ((BaseFragment) fragment).onLoginStatusChanged();
+            if (fragment instanceof MainActivityFragment) {
+                ((MainActivityFragment) fragment).onLoginStatusChanged();
             }
         }
 
@@ -125,8 +140,8 @@ public class MainActivity extends SessionAwareActivity {
     protected void onLoginSuccess() {
         super.onLoginSuccess();
         for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
-            if (fragment instanceof BaseFragment) {
-                ((BaseFragment) fragment).onLoginStatusChanged();
+            if (fragment instanceof MainActivityFragment) {
+                ((MainActivityFragment) fragment).onLoginStatusChanged();
             }
         }
 

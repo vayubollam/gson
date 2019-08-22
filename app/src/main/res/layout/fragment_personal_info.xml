@@ -176,7 +176,7 @@
                     app:layout_constraintVertical_chainStyle="spread_inside" />
 
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/save_button"
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"

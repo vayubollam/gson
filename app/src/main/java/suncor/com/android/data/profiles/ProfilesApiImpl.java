@@ -31,6 +31,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         this.gson = gson;
     }
 
+
     @Override
     public void retrieveProfile(Consumer<Profile> successCallback, Consumer<String> errorCallback) {
         //TODO

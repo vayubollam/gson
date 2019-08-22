@@ -81,7 +81,7 @@
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp">
 
-                    <com.google.android.material.button.MaterialButton
+                    <suncor.com.android.ui.common.SuncorButton
                         android:id="@+id/signing_button"
                         style="@style/FilledButton.Red.L"
                         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                         android:onClick="@{() -> vm.onClickSignIn()}"
                         android:text="@string/sign_in" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <suncor.com.android.ui.common.SuncorButton
                         android:id="@+id/btn_forgot_password"
                         style="@style/FilledButton.White.L"
                         android:layout_width="match_parent"

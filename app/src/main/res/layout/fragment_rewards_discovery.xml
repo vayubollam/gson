@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/rewards_signedin_discoery_title" />
 
-        <WebView
+        <suncor.com.android.ui.common.webview.ObservableWebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="0dp"

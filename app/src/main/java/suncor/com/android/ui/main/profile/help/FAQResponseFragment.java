@@ -15,9 +15,9 @@ import androidx.navigation.Navigation;
 import suncor.com.android.databinding.FragmentFaqresponseBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Question;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 
-public class FAQResponseFragment extends BaseFragment {
+public class FAQResponseFragment extends MainActivityFragment {
     private FragmentFaqresponseBinding binding;
     private FAQViewModel faqViewModel;
     @Inject

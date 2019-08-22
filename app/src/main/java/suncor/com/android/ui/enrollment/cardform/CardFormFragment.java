@@ -6,13 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
@@ -30,18 +29,20 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.common.input.CardNumberFormattingTextWatcher;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.Timber;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CardFormFragment extends DaggerFragment {
+public class CardFormFragment extends BaseFragment {
 
 
     private CardFormViewModel viewModel;
@@ -73,6 +74,8 @@ public class CardFormFragment extends DaggerFragment {
                 if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE) || cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_USER_INFO_NOT_MATCHED)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_cardform_invalid_card_dialog_title)));
+
                     dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_invalid_card_dialog_message))
                             .setRightButton(getString(R.string.enrollment_cardform_invalid_card_dialog_try_again), (v) -> {
@@ -88,6 +91,8 @@ public class CardFormFragment extends DaggerFragment {
                 } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_cardform_existing_card_dialog_title)));
+
                     dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
                             .setRightButton(getString(R.string.enrollment_cardform_existing_card_dialog_sign_in), (v) -> {
@@ -103,6 +108,7 @@ public class CardFormFragment extends DaggerFragment {
                             .show(getFragmentManager(), ModalDialog.TAG);
                 } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
+
                     dialog.show();
                 }
             }
@@ -135,7 +141,8 @@ public class CardFormFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "activate-match-card", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "activate-match-card");
+        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Activate Petro-Points Card"));
     }
 
     private void hideKeyBoard() {
@@ -152,5 +159,7 @@ public class CardFormFragment extends DaggerFragment {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
+
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", phoneNumber));
     }
 }

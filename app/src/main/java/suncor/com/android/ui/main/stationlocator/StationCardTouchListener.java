@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.stationlocator;
 
+import android.content.Context;
+import android.util.Pair;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class StationCardTouchListener implements RecyclerView.OnItemTouchListener {
 
@@ -33,6 +36,7 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
 
             @Override
             public boolean onDown(MotionEvent e) {
+
                 if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                     return false;
                 }
@@ -50,6 +54,7 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
                     if (velocityY > flingVelocity && Math.abs(velocityX) < 10) {
                         isSwipeUpDetected = true;
                         StationDetailsDialog.showCard(fragment, item, child, true);
+
                         return true;
                     }
                 }
@@ -60,6 +65,10 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                     return false;
+                }
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    AnalyticsUtils.logEvent(fragment.getContext(), "station_details", new Pair<>("location", item.getStation().getAddress().getAddressLine()));
+
                 }
 
                 if (!isSwipeUpDetected) {

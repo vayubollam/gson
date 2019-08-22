@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -84,6 +86,18 @@ public class HomeFragment extends BottomNavigationFragment {
             StationDetailsDialog.showCard(this, resource.data, nearestCard.getRoot(), false);
         }
     };
+
+    private RecyclerView.OnScrollListener offersScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                OfferCard card = offersAdapter.getOffer(position);
+                AnalyticsUtils.logEvent(getContext(), "promotion_view", new Pair<>("promotionPosition", position + ""), new Pair<>("promotionName", card.getText()));
+            }
+        }
+    };
+
     private boolean systemMarginsAlreadyApplied;
 
 
@@ -177,25 +191,25 @@ public class HomeFragment extends BottomNavigationFragment {
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
         nearestCard = binding.nearestCard;
-//        nearestCard.getRoot().setOnClickListener((v) -> {
-//            if (mViewModel.nearestStation.getValue().data != null && !mViewModel.isLoading.get()) {
-//                if (binding.scrollView.getScrollY() > binding.nearestCard.getRoot().getTop() - 200) {
-//                    binding.scrollView.smoothScrollTo(0, binding.nearestCard.getRoot().getTop() - 200);
-//                    binding.scrollView.postDelayed(() -> {
-//                        StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
-//                    }, 100);
-//                } else {
-//                    StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
-//                }
-//            }
-//        });
+        nearestCard.getRoot().setOnClickListener((v) -> {
+            if (mViewModel.nearestStation.getValue().data != null && !mViewModel.isLoading.get()) {
+                if (binding.scrollView.getScrollY() > binding.nearestCard.getRoot().getTop() - 200) {
+                    binding.scrollView.smoothScrollTo(0, binding.nearestCard.getRoot().getTop() - 200);
+                    binding.scrollView.postDelayed(() -> {
+                        StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
+                    }, 100);
+                } else {
+                    StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
+                }
+            }
+        });
 
         offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
         binding.offersRecyclerview.setAdapter(offersAdapter);
-
+        binding.offersRecyclerview.addOnScrollListener(offersScrollListener);
         systemMarginsAlreadyApplied = false;
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             if (!systemMarginsAlreadyApplied) {
@@ -248,6 +262,7 @@ public class HomeFragment extends BottomNavigationFragment {
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
         binding.offersRecyclerview.setAdapter(offersAdapter);
+        binding.offersRecyclerview.addOnScrollListener(offersScrollListener);
         binding.privacyPolicy.setOnClickListener(v -> showDialog(getString(R.string.profile_about_privacy_policy_link), getString(R.string.profile_about_legal_header)));
         binding.termsConditions.setOnClickListener(v -> showDialog(getString(R.string.profile_about_legal_link), getString(R.string.profile_about_privacy_policy_header)));
 
@@ -269,6 +284,8 @@ public class HomeFragment extends BottomNavigationFragment {
     void showDialog(String url, String header) {
         WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
         webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
+
+        AnalyticsUtils.logEvent(getContext(), "intersite", new Pair<>("intersiteURL", url));
     }
 
     @Override

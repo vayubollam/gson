@@ -83,7 +83,7 @@
                         app:vm="@{vm}" />
 
 
-                    <com.google.android.material.button.MaterialButton
+                    <suncor.com.android.ui.common.SuncorButton
                         android:id="@+id/view_previous_month_button"
                         style="@style/LinkButton.Red.ML"
                         android:layout_width="match_parent"

@@ -22,17 +22,15 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.Transaction;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
-import suncor.com.android.ui.main.common.BaseFragment;
 import suncor.com.android.ui.main.profile.transcations.TransactionsFragmentDirections.ActionTransactionsFragmentToTransactionDetailFragment;
-import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
 
 import static androidx.navigation.Navigation.findNavController;
 import static suncor.com.android.ui.main.profile.transcations.TransactionsFragmentDirections.actionTransactionsFragmentToTransactionDetailFragment;
 
 
-public class TransactionsFragment extends BaseFragment {
+public class TransactionsFragment extends MainActivityFragment {
 
     private TransactionsViewModel mViewModel;
     @Inject

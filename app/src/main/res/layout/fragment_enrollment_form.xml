@@ -325,7 +325,7 @@
                     app:layout_constraintTop_toBottomOf="@id/fingerprint_hint"
                     tools:text="@string/enrollment_terms_agreement" />
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/join_button"
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"

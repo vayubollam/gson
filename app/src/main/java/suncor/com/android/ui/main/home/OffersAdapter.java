@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.home;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -18,12 +19,14 @@ import suncor.com.android.ui.YoutubePlayerActivity;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
 
     private ArrayList<OfferCard> offerCards;
 
+    YoutubePlayerActivity youtubePlayerActivity ;
 
     public OffersAdapter(MainActivity activity, boolean isSignedIn) {
         offerCards = new ArrayList<>();
@@ -31,9 +34,11 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
                     activity.getDrawable(R.drawable.banner_1_signin),
                     new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
+                        AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", "1"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_1_text)));
                         activity.startActivity(new Intent(activity, EnrollmentActivity.class));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
+                        AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", "1"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_1_text)));
                         activity.startActivity(new Intent(activity, LoginActivity.class));
                     }));
             offerCards.add(banner1);
@@ -45,8 +50,14 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_2_button),
                         () -> {
                             if (isSignedIn)
+                            {
                                 activity.getNavController().navigate(R.id.action_home_tab_to_rewardsDiscoveryFragment);
-                            else activity.getNavController().navigate(R.id.rewards_tab);
+                            }
+                            else
+                            {
+                                activity.getNavController().navigate(R.id.rewards_tab);
+                            }
+                            AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "1":"2"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_2_text)));
                         }
                 ));
         offerCards.add(banner2);
@@ -57,8 +68,11 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_3_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
+                            AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "2":"3"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_3_text)));
                             Intent intent = new Intent(activity, YoutubePlayerActivity.class);
                             intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_3_text));
+
                             activity.startActivity(intent);
                         }
                 ));
@@ -70,8 +84,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_4_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
+                            AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "3":"4"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_4_text)));
                             Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            AnalyticsUtils.logEvent(activity, "video_start", new Pair<>("videoTitle", activity.getString(R.string.offers_banner_4_text)));
                             intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "xsa9QjRgy5w");
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_4_text));
+
                             activity.startActivity(intent);
                         }
                 ));
@@ -82,13 +100,18 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_5_button),
                         () -> {
+                            AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "4":"5"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_5_text)));
+
                             new AlertDialog.Builder(activity)
                                     .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
                                     .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
                                     .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
+                                        String url = activity.getString(R.string.rbc_url);
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setData(Uri.parse(activity.getString(R.string.rbc_url)));
+                                        intent.setData(Uri.parse(url));
                                         activity.startActivity(intent);
+
+                                        AnalyticsUtils.logEvent(activity, "intersite", new Pair<>("intersiteURL", url));
                                     })
                                     .setNegativeButton(R.string.cancel, null)
                                     .show();
@@ -127,6 +150,10 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
     @Override
     public int getItemCount() {
         return offerCards.size();
+    }
+
+    public OfferCard getOffer(int position) {
+        return offerCards.get(position);
     }
 
     public class OffersViewHolder extends RecyclerView.ViewHolder {

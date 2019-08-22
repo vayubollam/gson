@@ -9,12 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
+import suncor.com.android.ui.common.BaseFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
-public class BaseFragment extends DaggerFragment {
+public class MainActivityFragment extends BaseFragment {
 
     private boolean insetsApplyed;
 
@@ -57,18 +57,6 @@ public class BaseFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!TextUtils.isEmpty(getScreenName())) {
-            FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), getScreenName(), getActivity().getClass().getSimpleName());
-        }
-    }
-
-    /**
-     * Used to track current screen being viewed on Firebase Analytics
-     * Subclasses should override it to change the behavior
-     * @return the name to send to Firebase Analytics
-     */
-    protected String getScreenName() {
-        return null;
     }
 
     //A hackish solution to this issue: https://issuetracker.google.com/issues/37036000

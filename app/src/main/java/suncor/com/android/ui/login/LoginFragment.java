@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +37,11 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.ui.common.BaseFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
-public class LoginFragment extends DaggerFragment {
+public class LoginFragment extends BaseFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -77,7 +81,6 @@ public class LoginFragment extends DaggerFragment {
         viewModel.getLoginFailedEvent().observe(this, (event) -> {
             LoginViewModel.LoginFailResponse response = event.getContentIfNotHandled();
             if (response != null) {
-
                 AlertDialog.Builder dialog = createAlert(response);
                 dialog.show();
             }
@@ -104,6 +107,9 @@ public class LoginFragment extends DaggerFragment {
                         }
 
                         fingerPrintManager.activateAutoLogin();
+                        AnalyticsUtils.logEvent(getContext(), "login", new Pair<>("retailID",viewModel.sessionManager.getProfile().getRetailIdDevQAOnly() ));
+                        getActivity().finish();
+
                     }
                 }
         );
@@ -131,6 +137,8 @@ public class LoginFragment extends DaggerFragment {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + customerSupportNumber));
                 startActivity(intent);
+
+                AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", customerSupportNumber));
             }
         });
 
@@ -200,6 +208,7 @@ public class LoginFragment extends DaggerFragment {
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
+        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(response.title)));
         if (response.message.args != null) {
             message = getString(response.message.content, response.message.args);
         } else {

@@ -54,7 +54,7 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <com.google.android.material.button.MaterialButton
+        <suncor.com.android.ui.common.SuncorButton
             android:id="@+id/ok_button"
             style="@style/OutlinedButton.L"
             android:layout_width="match_parent"

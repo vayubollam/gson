@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.rewards;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,16 @@ import androidx.databinding.ObservableBoolean;
 import java.util.Locale;
 
 import suncor.com.android.databinding.FragmentRewardsBinding;
+import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class RewardsGuestFragment extends BottomNavigationFragment {
 
     private FragmentRewardsBinding binding;
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();
-    private WebView webView;
+    private ObservableWebView webView;
 
     @Nullable
     @Override
@@ -40,6 +43,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
             getActivity().startActivity(intent);
         });
+
         return binding.getRoot();
     }
 
@@ -49,6 +53,22 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-guest-" + language + ".html");
         isWebViewLoading.set(true);
+        binding.webview.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback(){
+            public void onScroll(int l, int t, int oldl, int oldt){
+                if(t> oldt){
+                    float contentHeight = binding.webview.getContentHeight() * binding.webview.getScaleY();
+                    float total = contentHeight * getResources().getDisplayMetrics().density - getView().getHeight();
+                    double scrollPosition = (t / (total - getResources().getDisplayMetrics().density))  * 100d;
+                    int pourcentage = (int) scrollPosition;
+                    if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50|| pourcentage == 75 || pourcentage == 95  ){
+                        AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
+
+                    }
+                }
+
+
+            }
+        });
         binding.webview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {

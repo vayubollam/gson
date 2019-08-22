@@ -48,6 +48,7 @@
                 app:srcCompat="@drawable/bottom_sheet_icon" />
 
             <LinearLayout
+                android:id="@+id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -169,7 +170,7 @@
                         tools:text="Open, closes at 12:00 AM" />
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/directions_button"
                     style="@style/FilledButton.Red.M"
                     android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ package suncor.com.android.ui.main.profile.info;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,15 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.ModalDialog;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 
-public class PersonalInfoFragment extends BaseFragment {
+public class PersonalInfoFragment extends MainActivityFragment {
 
     private FragmentPersonalInfoBinding binding;
     private PersonalInfoViewModel viewModel;
@@ -63,6 +65,8 @@ public class PersonalInfoFragment extends BaseFragment {
             if (alert != null) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
+                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+
                 dialog.setTitle(getString(alert.title))
                         .setMessage(getString(alert.message))
                         .setCenterButton(getString(alert.positiveButton), (v) -> {
@@ -84,6 +88,8 @@ public class PersonalInfoFragment extends BaseFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message);

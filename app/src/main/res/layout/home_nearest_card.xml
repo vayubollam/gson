@@ -102,7 +102,7 @@
                 android:textAppearance="@style/Caption1"
                 tools:text="Open, closes at 12:00 AM" />
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/directions_button"
                 style="@style/LinkButton.Red.M"
                 android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_80" />
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/settings_button"
                 style="@style/LinkButton.Red.M"
                 android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
                 android:textColor="@color/black_80"
                 tools:text="We couldn’t locate the nearest station at the moment, please try again later." />
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/try_again_button"
                 style="@style/LinkButton.Red.M"
                 android:layout_width="wrap_content"

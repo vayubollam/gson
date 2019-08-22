@@ -51,7 +51,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/terms_conditions"
                     app:vm="@{vm}" />
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/terms_conditions"
                     style="@style/LinkButton.Black.S"
                     android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                     app:layout_constraintStart_toEndOf="@id/terms_conditions"
                     app:layout_constraintTop_toTopOf="@id/terms_conditions" />
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/privacy_policy"
                     style="@style/LinkButton.Black.S"
                     android:layout_width="wrap_content"

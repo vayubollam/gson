@@ -1,6 +1,7 @@
 package suncor.com.android.mfp;
 
 import android.content.Intent;
+import android.util.Pair;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -27,11 +28,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
@@ -43,7 +46,6 @@ public class SessionManager implements SessionChangeListener {
     public static final int LOCK_TIME_MINUTES = 30;
     public static final int LOGIN_ATTEMPTS = 6;
     public static final String RETRIEVE_PROFILE_FAILED = "com.ibm.suncor.profile.failed";
-
     private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
     private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
     private final UserLocalSettings userLocalSettings;
@@ -159,6 +161,7 @@ public class SessionManager implements SessionChangeListener {
                 retrieveProfile(
                         (profile) -> {
                             setProfile(profile);
+
                             loginState.postValue(LoginState.LOGGED_IN);
                             autoLoginState.postValue(AutoLoginState.LOGGED_IN);
                         },

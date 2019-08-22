@@ -21,9 +21,9 @@ import java.util.HashMap;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFiltersBinding;
 import suncor.com.android.model.station.Station;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 
-public class FiltersFragment extends BaseFragment {
+public class FiltersFragment extends MainActivityFragment {
     private FragmentFiltersBinding binding;
     private HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private StationsViewModel parentViewModel;
@@ -67,11 +67,6 @@ public class FiltersFragment extends BaseFragment {
             Navigation.findNavController(getView()).popBackStack();
         });
         return binding.getRoot();
-    }
-
-    @Override
-    protected String getScreenName() {
-        return "gas-station-locations-filter";
     }
 
     private void initCheckBoxes() {

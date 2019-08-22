@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.cards.add;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -26,9 +25,10 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.cards.details.ExpandedCardItem;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
-public class AddCardFragment extends BaseFragment {
+public class AddCardFragment extends MainActivityFragment {
 
     private FragmentAddCardBinding binding;
     private AddCardViewModel viewModel;
@@ -36,16 +36,19 @@ public class AddCardFragment extends BaseFragment {
     @Inject
     ViewModelFactory viewModelFactory;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddCardViewModel.class);
+        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Add Card"));
 
         viewModel.addCardApiResult.observe(this, result -> {
             if (result.status == Resource.Status.LOADING) {
                 hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_LIKING_CARD_FAILED.equals(result.message)) {
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.cards_add_fragment_invalid_card_title) ));
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.cards_add_fragment_invalid_card_title)
                             .setMessage(R.string.cards_add_fragment_invalid_card_message)
@@ -63,7 +66,16 @@ public class AddCardFragment extends BaseFragment {
             expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
             expandedCardItemBinding.setHideMoreButton(true);
             expandedCardItemBinding.executePendingBindings();
-            FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success", getActivity().getClass().getSimpleName());
+            String screenName = "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success";
+            String optionsChecked = "";
+            AnalyticsUtils.logEvent(
+                    getContext(),
+                    "form_complete",
+                     new Pair<>("formName", "Add card"),
+                     new Pair<>("formSelection", optionsChecked)
+                        );
+            AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+
         });
 
         viewModel.showCard.observe(this, show -> {
@@ -91,6 +103,7 @@ public class AddCardFragment extends BaseFragment {
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 viewModel.continueButtonClicked();
                 binding.cvvInput.getEditText().requestFocus();
+
                 return true;
             }
             return false;
@@ -104,10 +117,17 @@ public class AddCardFragment extends BaseFragment {
             }
             return false;
         });
-
-
         binding.cardInput.requestFocus();
         showKeyBoard();
+        if (binding.cardInput.hasFocus()){
+            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add card"), new Pair<>("stepName", "Card number"));
+        }
+        viewModel.showCvvField.observe(this, result -> {
+            if (viewModel.showCvvField.getValue().booleanValue())
+                AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add card"), new Pair<>("stepName", "CVV"));
+
+        });
+
 
         return binding.getRoot();
     }
