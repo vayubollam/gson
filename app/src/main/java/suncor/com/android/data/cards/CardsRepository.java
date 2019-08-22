@@ -152,6 +152,18 @@ public class CardsRepository {
                     case PARTNER:
                         return 1;
                 }
+            } else if(card1.getCardType() == CardType.FSR &&card2.getCardType() == CardType.FSR) {
+                if (card1.getCpl() == card2.getCpl()) {
+                    return ((card2.getBalance() - card1.getBalance()) * 10);
+                } else {
+                    return (int) ((card1.getCpl() - card2.getCpl()) * 10);
+                }
+            } else if(card1.getCardType() == CardType.SP &&card2.getCardType() == CardType.SP) {
+                return ((card2.getBalance() - card1.getBalance()) * 10);
+            } else if(card1.getCardType() == CardType.WAG &&card2.getCardType() == CardType.WAG) {
+                return ((card2.getBalance() - card1.getBalance()) * 10);
+            } else if(card1.getCardType() == CardType.PPC &&card2.getCardType() == CardType.PPC) {
+                return ((card2.getBalance() - card1.getBalance()) * 10);
             } else if (card1.getCardCategory() == CardDetail.CardCategory.PETRO_CANADA) {
                 if (card1.getCardType() != card2.getCardType()) {
                     switch (card1.getCardType()) {
