@@ -18,9 +18,11 @@ import suncor.com.android.utilities.AnalyticsUtils;
 
 public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
     public static final String VIDEO_ID_EXTRA = "video-id";
+    public static final String VIDEO_TITLE = "video-title";
     private YouTubePlayer mPlayer;
     private YouTubePlayerView youtubePlayer;
     private String videoId;
+    private String videoTitle;
     Handler mHandler;
     @Override
     protected void onCreate(Bundle bundle) {
@@ -33,6 +35,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
             throw new IllegalStateException("You should pass the video id as extra");
         }
         videoId = getIntent().getStringExtra(VIDEO_ID_EXTRA);
+        videoTitle = getIntent().getStringExtra(VIDEO_TITLE);
     }
 
     @Override
@@ -105,13 +108,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         @Override
         public void onVideoEnded() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_complete", new Pair<>("videoTitle", getApplicationContext().getString(R.string.offers_banner_4_text)));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_complete", new Pair<>("videoTitle", videoTitle));
 
         }
 
         @Override
         public void onVideoStarted() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_start", new Pair<>("videoTitle",  getApplicationContext().getString(R.string.offers_banner_4_text)));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_start", new Pair<>("videoTitle",  videoTitle));
 
         }
     };
@@ -122,7 +125,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
             if ( pourcentage == 25 || pourcentage == 50|| pourcentage == 75  ){
                 String  pour = "video_threshold_"+ Integer.toString(pourcentage) ;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), pour, new Pair<>("videoTitle", getApplicationContext().getString(R.string.offers_banner_4_text)));
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), pour, new Pair<>("videoTitle", videoTitle));
     }
         }
     }

@@ -71,6 +71,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "2":"3"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_3_text)));
                             Intent intent = new Intent(activity, YoutubePlayerActivity.class);
                             intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_3_text));
+
                             activity.startActivity(intent);
                         }
                 ));
@@ -86,6 +88,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             Intent intent = new Intent(activity, YoutubePlayerActivity.class);
                             AnalyticsUtils.logEvent(activity, "video_start", new Pair<>("videoTitle", activity.getString(R.string.offers_banner_4_text)));
                             intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "xsa9QjRgy5w");
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_4_text));
 
                             activity.startActivity(intent);
                         }
