@@ -64,7 +64,6 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
         @Override
         public void onPlaying() {
             mHandler.postDelayed(runnable, 1);
-            //displayCurrentTime();
     }
 
         @Override
@@ -115,7 +114,6 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
         @Override
         public void onVideoStarted() {
             AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_start", new Pair<>("videoTitle",  videoTitle));
-
         }
     };
     private void displayCurrentTime() {
