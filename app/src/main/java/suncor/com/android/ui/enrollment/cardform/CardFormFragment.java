@@ -74,6 +74,8 @@ public class CardFormFragment extends BaseFragment {
                 if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE) || cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_USER_INFO_NOT_MATCHED)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_cardform_invalid_card_dialog_title)));
+
                     dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_invalid_card_dialog_message))
                             .setRightButton(getString(R.string.enrollment_cardform_invalid_card_dialog_try_again), (v) -> {
@@ -89,6 +91,8 @@ public class CardFormFragment extends BaseFragment {
                 } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_cardform_existing_card_dialog_title)));
+
                     dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
                             .setRightButton(getString(R.string.enrollment_cardform_existing_card_dialog_sign_in), (v) -> {
@@ -104,6 +108,7 @@ public class CardFormFragment extends BaseFragment {
                             .show(getFragmentManager(), ModalDialog.TAG);
                 } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
+
                     dialog.show();
                 }
             }

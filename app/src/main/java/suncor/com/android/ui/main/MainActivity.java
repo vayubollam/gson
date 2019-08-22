@@ -45,6 +45,7 @@ public class MainActivity extends SessionAwareActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (LOGGED_OUT_DUE_CONFLICTING_LOGIN.equals(intent.getAction())) {
+                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",LOGGED_OUT_DUE_CONFLICTING_LOGIN ));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton("OK", (dialog, which) -> {
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);

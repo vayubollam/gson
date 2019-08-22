@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
 
@@ -92,7 +94,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     private FragmentStationsBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private ObservableBoolean isErrorCardVisible = new ObservableBoolean(false);
-
+    String listString = " ";
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
     @Inject
@@ -330,10 +332,18 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 }
             }
         }));
+        mViewModel.filters.observe(getViewLifecycleOwner(), v -> {
+                    for (String s : v){
+                        listString += s + " | ";
+                    }
+
+        }
+                 );
 
         mViewModel.queryText.observe(getViewLifecycleOwner(), (text) ->
         {
             binding.addressSearchText.setText(text);
+            AnalyticsUtils.logEvent(getContext(), "Location_search", new Pair<>("location", text), new Pair<>("filtersApplied", listString));
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });
     }
@@ -576,6 +586,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+        //AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enable_location_dialog_title)));
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, null);

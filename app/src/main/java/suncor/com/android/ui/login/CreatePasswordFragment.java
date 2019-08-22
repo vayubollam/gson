@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,8 @@ public class CreatePasswordFragment extends BaseFragment {
                 }
             } else if (r.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_PASSWORD_DUPLICATED.equals(r.message)) {
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.login_create_password_duplicated_alert_title)));
+
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
                     alertBuilder.setTitle(R.string.login_create_password_duplicated_alert_title);
                     alertBuilder.setMessage(R.string.login_create_password_duplicated_alert_message);

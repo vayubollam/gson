@@ -1,5 +1,7 @@
 package suncor.com.android.ui.login;
 
+import android.util.Pair;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -14,6 +16,7 @@ import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.InputField;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 public class LoginViewModel extends ViewModel {
@@ -29,7 +32,8 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<String>> createPasswordEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> navigateToHomeEvent = new MutableLiveData<>();
     private boolean isLoginFromEnrollment;
-
+    @Inject
+    SessionManager sessionManager;
     @Inject
     public LoginViewModel(SessionManager sessionManager) {
         this.passwordInputField = new InputField(R.string.login_password_field_error);
@@ -189,6 +193,7 @@ public class LoginViewModel extends ViewModel {
             this.message = message;
             this.negativeButtonCallBack = negativeButtonCallBack;
             this.negativeButtonTitle = negativeButtonTitle;
+
         }
 
         public LoginFailResponse(int title, ErrorMessage message) {

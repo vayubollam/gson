@@ -27,6 +27,7 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -59,7 +60,6 @@ public class LoginFragment extends BaseFragment {
         viewModel.getLoginFailedEvent().observe(this, (event) -> {
             LoginViewModel.LoginFailResponse response = event.getContentIfNotHandled();
             if (response != null) {
-
                 AlertDialog.Builder dialog = createAlert(response);
                 dialog.show();
             }
@@ -67,7 +67,9 @@ public class LoginFragment extends BaseFragment {
 
         viewModel.getLoginSuccessEvent().observe(this, event -> {
                     if (event.getContentIfNotHandled() != null) {
+                        AnalyticsUtils.logEvent(getContext(), "login", new Pair<>("retailID",viewModel.sessionManager.getProfile().getRetailIdDevQAOnly() ));
                         getActivity().finish();
+
                     }
                 }
         );
@@ -126,6 +128,7 @@ public class LoginFragment extends BaseFragment {
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
+        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(response.title)));
         if (response.message.args != null) {
             message = getString(response.message.content, response.message.args);
         } else {

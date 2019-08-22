@@ -26,6 +26,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
     private ArrayList<OfferCard> offerCards;
 
+    YoutubePlayerActivity youtubePlayerActivity ;
 
     public OffersAdapter(MainActivity activity, boolean isSignedIn) {
         offerCards = new ArrayList<>();
@@ -83,7 +84,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         () -> {
                             AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "3":"4"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_4_text)));
                             Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            AnalyticsUtils.logEvent(activity, "video_start", new Pair<>("videoTitle", activity.getString(R.string.offers_banner_4_text)));
                             intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "xsa9QjRgy5w");
+
                             activity.startActivity(intent);
                         }
                 ));

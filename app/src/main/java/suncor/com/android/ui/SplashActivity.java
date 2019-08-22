@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,6 +35,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
@@ -139,6 +141,8 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
             settingsApi.retrieveSettings().observe(this, resource -> {
                 if (resource.status == Resource.Status.ERROR) {
                     binding.profilePd.setVisibility(View.GONE);
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.settings_failure_dialog_title)));
+
                     new AlertDialog.Builder(this)
                             .setTitle(R.string.settings_failure_dialog_title)
                             .setMessage(R.string.settings_failure_dialog_message)
@@ -165,7 +169,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         String currentVersion = BuildConfig.VERSION_NAME;
         if (currentVersion.compareTo(minVersion) < 0) {
             binding.profilePd.setVisibility(View.GONE);
-
+            AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.update_required_dialog_title)));
             new AlertDialog.Builder(this)
                     .setTitle(R.string.update_required_dialog_title)
                     .setMessage(R.string.update_required_dialog_message)

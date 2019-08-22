@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.rewards;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.uicomponents.ExtendedNestedScrollView;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class RewardsSignedInFragment extends BottomNavigationFragment {
 
@@ -47,6 +50,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 Navigation.findNavController(getView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
             }
         });
+
     }
 
     @Nullable
@@ -77,7 +81,17 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             //handle visibility of the header
             int threshold = binding.balancePetropoints.getBottom();
+            if (scrollY > oldScrollY ){
+                double scrollViewHeight = v.getChildAt(0).getBottom() - v.getHeight();
+                double getScrollY = v.getScrollY();
+                double scrollPosition = (getScrollY / scrollViewHeight) * 100d;
+                int pourcentage = (int)scrollPosition;
+                if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50|| pourcentage == 75 || pourcentage == 95  ){
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
+                }
+                }
             if (scrollY >= threshold) {
+
                 if (!isHeaderVisible) {
                     binding.headerLayout.setVisibility(View.VISIBLE);
                     isHeaderVisible = true;

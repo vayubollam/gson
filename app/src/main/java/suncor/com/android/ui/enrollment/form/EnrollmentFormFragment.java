@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -44,6 +46,7 @@ import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.uicomponents.ExtendedNestedScrollView;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -137,6 +140,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_email_restricted_alert_title)));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
@@ -213,6 +217,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
+        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_invalid_email_title)));
+
         dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
                 .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
                 .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
@@ -302,6 +308,29 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        ExtendedNestedScrollView scroller = binding.scrollView;
+
+        if (scroller != null) {
+
+            scroller.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                    if (scrollY > oldScrollY) {
+                        double scrollViewHeight = v.getChildAt(0).getBottom() - v.getHeight();
+                        double getScrollY = v.getScrollY();
+                        double scrollPosition = (getScrollY / scrollViewHeight) * 100d;
+                        int pourcentage = (int)scrollPosition;
+                        if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50|| pourcentage == 75 || pourcentage == 95  ){
+                        AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
+
+                   }
+
+                    }
+
+                }
+            });
+        }
     }
 
 

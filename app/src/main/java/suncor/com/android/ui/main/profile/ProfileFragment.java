@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.profile;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class ProfileFragment extends BottomNavigationFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message);
