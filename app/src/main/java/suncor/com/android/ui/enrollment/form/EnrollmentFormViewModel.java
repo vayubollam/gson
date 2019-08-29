@@ -146,6 +146,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                     switch (r.status) {
                         case SUCCESS:
                             if (r.data.getStatus() == SigninResponse.Status.SUCCESS) {
+                                fingerPrintManager.activateAutoLogin();
                                 Timber.d("Login succeeded");
                                 sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
                                 sessionManager.setRewardedPoints(result.data);
@@ -166,7 +167,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                     }
                 });
             } else {
-                if (fingerPrintManager.isFingerprintActivated()) {
+                if (result.status == Resource.Status.ERROR && fingerPrintManager.isFingerprintActivated()) {
                     fingerPrintManager.deactivateFingerprint();
                 }
                 MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
@@ -278,7 +279,6 @@ public class EnrollmentFormViewModel extends ViewModel {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {
                 _showBiometricAlert.setValue(Event.newEvent(true));
             } else {
-                fingerPrintManager.deactivateFingerprint();
                 join.postValue(Event.newEvent(true));
             }
         }
