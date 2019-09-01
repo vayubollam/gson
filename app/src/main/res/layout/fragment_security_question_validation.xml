@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="suncor.com.android.model.Resource.Status" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            app:expandable="false"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingMultiplier="1.31"
+            android:text="Security Question"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textAppearance="@style/Title1"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:paddingLeft="16dp"
+                android:layout_marginTop="36dp"
+                android:paddingRight="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:id="@+id/subtitle"
+                    app:visibleGone="@{vm.securityQuestion.status == Status.SUCCESS}"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintTop_toBottomOf="@id/header"
+                    android:text="Answer the security question in order to edit your personal information." />
+
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/question_answer_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:textAppearance="@style/Body"
+                    app:error="@{vm.questionAnswer.error}"
+                    app:visibleGone="@{vm.securityQuestion.status == Status.SUCCESS}"
+                    app:layout_constraintTop_toBottomOf="@id/subtitle"
+                    tools:layout_editor_absoluteX="16dp" />
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/create_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:onClick="@{() -> vm.validateAndContinue()}"
+                    android:text="Continue"
+                    app:visibleGone="@{vm.securityQuestion.status == Status.SUCCESS}"
+                    app:layout_constraintTop_toBottomOf="@id/question_answer_input"
+                    app:layout_constraintVertical_bias="1"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+
+                <include
+                    layout="@layout/layout_error"
+                    android:layout_marginTop="72dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/error_layout"
+                    android:visibility="@{vm.securityQuestion.status == Status.ERROR ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintTop_toBottomOf="@id/subtitle" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:visibleGone="@{vm.securityQuestion.status == Status.LOADING}"
+            tools:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Title1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="64dp"
+                android:text="@string/login_in_progress" />
+
+
+            <ProgressBar
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:indeterminate="true" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

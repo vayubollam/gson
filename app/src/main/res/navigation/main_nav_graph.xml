@@ -138,20 +138,8 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_profile_tab_to_personalInfoFragment"
-            app:destination="@id/personalInfoFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
             android:id="@+id/action_profile_tab_to_transactionsFragment"
             app:destination="@+id/transactionsFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_profile_tab_to_preferencesFragment"
-            app:destination="@id/preferencesFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
@@ -161,6 +149,9 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_securityQuestionValidationFragment2"
+            app:destination="@id/securityQuestionValidationFragment" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
@@ -257,5 +248,16 @@
         android:id="@+id/rewardsDiscoveryFragment"
         android:name="suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment"
         android:label="RewardsDiscoveryFragment" />
+    <fragment
+        android:id="@+id/securityQuestionValidationFragment"
+        android:name="suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationFragment"
+        android:label="SecurityQuestionValidationFragment">
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_preferencesFragment2"
+            app:destination="@id/preferencesFragment" />
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_personalInfoFragment"
+            app:destination="@id/personalInfoFragment" />
+    </fragment>
 
 </navigation>

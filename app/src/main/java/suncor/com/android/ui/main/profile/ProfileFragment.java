@@ -117,8 +117,8 @@ public class ProfileFragment extends BottomNavigationFragment {
         });
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
-        binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment));
-        binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment));
+        binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_securityQuestionValidationFragment2));
+        binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_securityQuestionValidationFragment2));
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
     }
 

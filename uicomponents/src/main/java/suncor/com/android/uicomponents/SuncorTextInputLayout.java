@@ -71,6 +71,11 @@ public class SuncorTextInputLayout extends LinearLayout {
     private final ConstraintLayout inputFrame;
     private final AppCompatEditText editText;
     private final AppCompatTextView errorTextView;
+
+    public AppCompatTextView getHintTextView() {
+        return hintTextView;
+    }
+
     private final AppCompatTextView hintTextView;
     private final AppCompatCheckBox passwordToggle;
     private final AppCompatImageView errorImage;
@@ -84,6 +89,7 @@ public class SuncorTextInputLayout extends LinearLayout {
     private boolean hintExpanded;
 
     private ValueAnimator labelSizeAnimator;
+    private TintTypedArray a;
 
     public SuncorTextInputLayout(Context context) {
         this(context, null);
@@ -113,7 +119,7 @@ public class SuncorTextInputLayout extends LinearLayout {
         setAddStatesFromChildren(true);
         setFocusable(true);
 
-        TintTypedArray a = TintTypedArray.obtainStyledAttributes(getContext(), attrs, R.styleable.SuncorTextInputLayout, defStyleAttr, 0);
+        a = TintTypedArray.obtainStyledAttributes(getContext(), attrs, R.styleable.SuncorTextInputLayout, defStyleAttr, 0);
         final int hintAppearance = a.getResourceId(R.styleable.SuncorTextInputLayout_hintTextAppearance, -1);
         if (hintAppearance != -1) {
             setHintTextAppearance(hintAppearance);
@@ -238,6 +244,15 @@ public class SuncorTextInputLayout extends LinearLayout {
     public void setText(@StringRes int text) {
         editText.setText(text);
     }
+
+    /*public void setHint(CharSequence hint){
+        if(hint==null){
+            hint="";
+        }
+
+        hintTextView.setHintTextColor(getResources().getColor(R.color.black_60));
+        hintTextView.setHint(hint);
+    }*/
 
     public void setText(CharSequence text) {
         if (text == null) {

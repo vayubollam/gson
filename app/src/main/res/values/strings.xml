@@ -437,4 +437,6 @@
     <string name="profile_preferences_authentication_header">Authentication</string>
     <string name="profile_preferences_enable_fingerprint_message">Enable fingerprint?</string>
     <string name="profile_preferences_enable_fingerprint_hint">Sign in faster next time.</string>
+
+    <string name="profile_security_question_error">Security answer is required.</string>
 </resources>
