@@ -74,7 +74,9 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                 case ERROR:
                     if (Objects.requireNonNull(stringResource.message).equalsIgnoreCase(ErrorCodes.ERR_INVALID_SECURITY_ANSWER)) {
                         Alerts.prepareCustomDialogWithTryAgain(getResources().getString(R.string.profile_security_question_wrong_answer_alert_title), null, getContext(), ((dialog, which) -> {
-                            mViewModel.validateAndContinue();
+                            binding.questionAnswerInput.setText("");
+                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                             dialog.dismiss();
                         })).show();
                     } else {
