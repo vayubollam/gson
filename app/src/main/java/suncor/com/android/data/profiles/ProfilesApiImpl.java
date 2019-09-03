@@ -118,4 +118,43 @@ public class ProfilesApiImpl implements ProfilesApi {
 
         return result;
     }
+
+    @Override
+    public LiveData<Resource<String>> validateSecurityQuestion(String answer) {
+        Timber.d("validating security question");
+        MutableLiveData<Resource<String>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        URI adapterPath;
+        try {
+            adapterPath = new URI(SECURITY_QUESTION_ADAPTER_PATH.concat("/security-question-validation"));
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            request.addHeader("x-security-answer", answer);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Security Question validation Response:" + jsonText);
+                    try {
+                        String securityAnswerEncrypted = wlResponse.getResponseJSON().getString("securityAnswerEncrypted");
+                        result.postValue(Resource.success(securityAnswerEncrypted));
+                    } catch (JsonSyntaxException | JSONException e) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        Timber.e("Retrieving security question failed due to " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.e("Retrieving security question failed due to:" + wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+
+        } catch (URISyntaxException e) {
+            result.postValue(Resource.error(e.getMessage()));
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

@@ -366,8 +366,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1122" />
-                            <option name="y" value="-389" />
+                            <option name="x" value="1172" />
+                            <option name="y" value="-937" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -478,8 +478,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1664" />
-                            <option name="y" value="180" />
+                            <option name="x" value="2085" />
+                            <option name="y" value="419" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -490,8 +490,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1682" />
-                            <option name="y" value="-218" />
+                            <option name="x" value="1991" />
+                            <option name="y" value="-878" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -514,6 +514,16 @@
                               </value>
                             </entry>
                             <entry key="action_profile_tab_to_aboutFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_personalInfoFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_preferencesFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -617,8 +627,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1243" />
-                            <option name="y" value="-47" />
+                            <option name="x" value="1604" />
+                            <option name="y" value="-356" />
                           </Point>
                         </option>
                         <option name="myPositions">

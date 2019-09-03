@@ -13,13 +13,22 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSecurityQuestionValidationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.ErrorCodes;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
+
+import static androidx.navigation.Navigation.findNavController;
 
 public class SecurityQuestionValidationFragment extends MainActivityFragment {
 
@@ -27,6 +36,8 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
     @Inject
     ViewModelFactory viewModelFactory;
     private FragmentSecurityQuestionValidationBinding binding;
+    private ProfileSharedViewModel sharedViewModel;
+    private String destination;
 
     public static SecurityQuestionValidationFragment newInstance() {
         return new SecurityQuestionValidationFragment();
@@ -36,7 +47,8 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(SecurityQuestionValidationViewModel.class);
-        mViewModel.securityQuestion.observe(this, securityQuestionResource -> {
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
+        mViewModel.securityQuestionLiveData.observe(this, securityQuestionResource -> {
             switch (securityQuestionResource.status) {
                 case SUCCESS:
                     binding.getRoot().post(() -> {
@@ -49,11 +61,41 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
 
             }
         });
+        mViewModel.securityAnswerLiveData.observe(this, stringResource -> {
+            switch (stringResource.status) {
+                case SUCCESS:
+                    sharedViewModel.setEcryptedSecurityAnswer(stringResource.data);
+                    if (PersonalInfoFragment.PERSONAL_INFO_FRAGMENT.equalsIgnoreCase(destination)) {
+                        Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
+                    } else if (PreferencesFragment.PREFERENCES_FRAGMENT.equalsIgnoreCase(destination)) {
+                        Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_preferencesFragment2);
+                    }
+                    break;
+                case ERROR:
+                    if (Objects.requireNonNull(stringResource.message).equalsIgnoreCase(ErrorCodes.ERR_INVALID_SECURITY_ANSWER)) {
+                        Alerts.prepareCustomDialogWithTryAgain(getResources().getString(R.string.profile_security_question_wrong_answer_alert_title), null, getContext(), ((dialog, which) -> {
+                            mViewModel.validateAndContinue();
+                            dialog.dismiss();
+                        })).show();
+                    } else {
+                        Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
+                            mViewModel.validateAndContinue();
+                            dialog.dismiss();
+                        }).show();
+                    }
+                    break;
+                case LOADING:
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+                    break;
+            }
+        });
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        destination = SecurityQuestionValidationFragmentArgs.fromBundle(getArguments()).getDestinationFragment();
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_security_question_validation, container, false);
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
@@ -63,7 +105,7 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        findNavController(getView()).popBackStack();
     }
 
 

@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:lineSpacingMultiplier="1.31"
-            android:text="Security Question"
+            android:text="@string/profile_security_question_header"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:textAppearance="@style/Title1"
@@ -61,13 +61,12 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/subtitle"
-                    app:visibleGone="@{vm.securityQuestion.status == Status.SUCCESS}"
+                    app:visibleGone="@{vm.securityQuestionLiveData.status == Status.SUCCESS}"
                     android:textAppearance="@style/Body"
                     android:textColor="@color/black_60"
-                    app:layout_constraintTop_toBottomOf="@id/header"
-                    android:text="Answer the security question in order to edit your personal information." />
+                    android:text="@string/profile_security_question_content" />
 
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
@@ -76,8 +75,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:textAppearance="@style/Body"
-                    app:error="@{vm.questionAnswer.error}"
-                    app:visibleGone="@{vm.securityQuestion.status == Status.SUCCESS}"
+                    app:error="@{vm.questionAnswerField.error}"
+                    app:text="@={vm.questionAnswerField.text}"
+                    app:visibleGone="@{vm.securityQuestionLiveData.status == Status.SUCCESS}"
                     app:layout_constraintTop_toBottomOf="@id/subtitle"
                     tools:layout_editor_absoluteX="16dp" />
 
@@ -88,8 +88,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:onClick="@{() -> vm.validateAndContinue()}"
-                    android:text="Continue"
-                    app:visibleGone="@{vm.securityQuestion.status == Status.SUCCESS}"
+                    android:text="@string/profile_security_question_continue"
+                    app:visibleGone="@{vm.securityQuestionLiveData.status == Status.SUCCESS}"
                     app:layout_constraintTop_toBottomOf="@id/question_answer_input"
                     app:layout_constraintVertical_bias="1"
                     android:layout_marginTop="8dp"
@@ -101,8 +101,9 @@
                     android:layout_marginTop="72dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    tools:visibility="gone"
                     android:id="@+id/error_layout"
-                    android:visibility="@{vm.securityQuestion.status == Status.ERROR ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{vm.securityQuestionLiveData.status == Status.ERROR ? View.VISIBLE : View.GONE}"
                     app:layout_constraintTop_toBottomOf="@id/subtitle" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -117,7 +118,7 @@
             android:clickable="true"
             android:gravity="center"
             android:orientation="vertical"
-            app:visibleGone="@{vm.securityQuestion.status == Status.LOADING}"
+            app:visibleGone="@{vm.securityQuestionLiveData.status == Status.LOADING || vm.securityAnswerLiveData.status==Status.LOADING}"
             tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -126,7 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="64dp"
-                android:text="@string/login_in_progress" />
+                visibleGone="@{vm.securityAnswerLiveData.status==Status.LOADING}"
+                android:text="@string/profile_security_question_checking_answer" />
 
 
             <ProgressBar

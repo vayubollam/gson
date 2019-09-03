@@ -15,4 +15,5 @@ public interface ProfilesApi {
 
     LiveData<Resource<SecurityQuestion>> getSecurityQuestion();
 
+    LiveData<Resource<String>> validateSecurityQuestion(String answer);
 }
