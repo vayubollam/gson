@@ -100,7 +100,6 @@ public class MainActivity extends SessionAwareActivity {
 
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             AnalyticsUtils.logEvent(MainActivity.this, "navigation", new Pair<>("actionBarTap", item.getTitle().toString()));
-            //clear saved encrypted security answer ones user leaves profile tab
             if (item.getItemId() == R.id.profile_tab) {
                 isProfileTabSelected = true;
             }
