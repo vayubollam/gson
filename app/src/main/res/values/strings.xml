@@ -446,4 +446,7 @@
     <string name="profile_security_question_continue">Continue</string>
     <string name="profile_security_question_checking_answer">Checking your answer...</string>
     <string name="profile_security_question_wrong_answer_alert_title">Answer incorrect.</string>
+    <string name="profile_personnal_informations_password">Password</string>
+    <string name="update_password_progress">Updating Password</string>
+
 </resources>

@@ -34,6 +34,10 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.KeyStoreStorage;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
@@ -50,8 +54,8 @@ public class LoginFragment extends BaseFragment {
 
     private FragmentLoginBinding binding;
     private LoginViewModel viewModel;
-    private String email;
-    private String password;
+    private String email = "";
+    private String password = "";
 
     @Inject
     KeyStoreStorage keyStoreStorage;
@@ -62,9 +66,10 @@ public class LoginFragment extends BaseFragment {
 
     }
 
-    public static LoginFragment newInstance(boolean fromEnrollment) {
+    public static LoginFragment newInstance(boolean fromEnrollment,String email) {
         Bundle args = new Bundle();
         args.putBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, fromEnrollment);
+        args.putString(PersonalInfoFragment.EMAIL_EXTRA,email);
         LoginFragment fragment = new LoginFragment();
         fragment.setArguments(args);
         return fragment;
@@ -239,5 +244,17 @@ public class LoginFragment extends BaseFragment {
         binding.appBar.setNavigationOnClickListener((v) -> getActivity().finish());
         binding.emailLayout.getEditText().requestFocus();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+            String email= getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
+            if(email!=null){
+                binding.emailLayout.setText(email);
+            }
+
+
     }
 }
