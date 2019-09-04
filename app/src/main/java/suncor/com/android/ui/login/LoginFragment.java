@@ -29,17 +29,15 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.utilities.FingerprintManager;
-import suncor.com.android.utilities.KeyStoreStorage;
-import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.KeyStoreStorage;
 
 public class LoginFragment extends BaseFragment {
 
@@ -107,7 +105,7 @@ public class LoginFragment extends BaseFragment {
                         }
 
                         fingerPrintManager.activateAutoLogin();
-                        AnalyticsUtils.logEvent(getContext(), "login", new Pair<>("retailID",viewModel.sessionManager.getProfile().getRetailIdDevQAOnly() ));
+                        AnalyticsUtils.logEvent(getContext(), "login", new Pair<>("retailID", viewModel.sessionManager.getProfile().getRetailIdDevQAOnly()));
                         getActivity().finish();
 
                     }
@@ -208,7 +206,7 @@ public class LoginFragment extends BaseFragment {
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
-        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(response.title)));
+        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(response.title)));
         if (response.message.args != null) {
             message = getString(response.message.content, response.message.args);
         } else {

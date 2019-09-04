@@ -161,6 +161,12 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_addressFragment"
+            app:destination="@id/addressFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
@@ -257,5 +263,9 @@
         android:id="@+id/rewardsDiscoveryFragment"
         android:name="suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment"
         android:label="RewardsDiscoveryFragment" />
+    <keep_state_fragment
+        android:id="@+id/addressFragment"
+        android:name="suncor.com.android.ui.main.profile.address.AddressFragment"
+        android:label="AddressFragment" />
 
 </navigation>
