@@ -98,11 +98,9 @@ public class MainActivity extends SessionAwareActivity {
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
 
-        //To allow sending Firebase events when navigation items are getting selected, we will re-override the BottomNavigation listener
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             AnalyticsUtils.logEvent(MainActivity.this, "navigation", new Pair<>("actionBarTap", item.getTitle().toString()));
-            //pass the event to the Navigation component
-
+            //clear saved encrypted security answer ones user leaves profile tab
             if (item.getItemId() == R.id.profile_tab) {
                 isProfileTabSelected = true;
             }
