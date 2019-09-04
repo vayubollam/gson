@@ -156,7 +156,7 @@ public class SessionManager implements SessionChangeListener {
         authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
             @Override
             public void onSuccess(AccessToken accessToken) {
-                Timber.d("Got access token, retrieving profile");
+                Timber.d("Got access token, retrieving profile : "+accessToken.getValue());
                 timer.cancel();
                 retrieveProfile(
                         (profile) -> {
@@ -193,7 +193,7 @@ public class SessionManager implements SessionChangeListener {
     private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
         try {
             //We use 30s as the timeout for this request, as it times out a lot, and causes logout
-            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
+            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v2/profiles"), WLResourceRequest.GET);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {

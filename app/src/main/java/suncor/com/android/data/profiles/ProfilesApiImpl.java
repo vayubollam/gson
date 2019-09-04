@@ -24,7 +24,7 @@ import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
-    private static final String ADAPTER_PATH = "/adapters/suncor/v1/profiles";
+    private static final String ADAPTER_PATH = "/adapters/suncor/v2/profiles";
     private Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
