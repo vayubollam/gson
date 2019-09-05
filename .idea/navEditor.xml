@@ -366,8 +366,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1122" />
-                            <option name="y" value="-389" />
+                            <option name="x" value="1172" />
+                            <option name="y" value="-937" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -478,8 +478,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1212" />
-                            <option name="y" value="368" />
+                            <option name="x" value="2085" />
+                            <option name="y" value="419" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -490,8 +490,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1212" />
-                            <option name="y" value="12" />
+                            <option name="x" value="1991" />
+                            <option name="y" value="-878" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -524,6 +524,11 @@
                               </value>
                             </entry>
                             <entry key="action_profile_tab_to_preferencesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_securityQuestionValidationFragment2">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -613,6 +618,32 @@
                             <option name="x" value="268" />
                             <option name="y" value="1784" />
                           </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="securityQuestionValidationFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1604" />
+                            <option name="y" value="-356" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_securityQuestionValidationFragment_to_personalInfoFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_securityQuestionValidationFragment_to_preferencesFragment2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

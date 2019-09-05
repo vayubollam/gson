@@ -5,11 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+
 import javax.inject.Inject;
 
 import afu.org.checkerframework.checker.nullness.qual.Nullable;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPreferencesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -22,6 +23,7 @@ public class PreferencesFragment extends MainActivityFragment {
     private FragmentPreferencesBinding binding;
     private PreferencesViewModel viewModel;
     private ProfileSharedViewModel profileSharedViewModel;
+    public static final String PREFERENCES_FRAGMENT = "preferences_fragment";
 
     @Inject
     ViewModelFactory viewModelFactory;
