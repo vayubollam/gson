@@ -3,79 +3,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <data>
+
+        <import type="suncor.com.android.model.Resource" />
+
+        <variable
+            name="eventHandler"
+            type="suncor.com.android.ui.main.profile.address.AddressFragment" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.profile.address.AddressViewModel" />
+    </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:background="@color/white"
         android:clickable="true"
-        android:animateLayoutChanges="true"
         tools:context="suncor.com.android.ui.main.profile.address.AddressFragment">
 
         <suncor.com.android.uicomponents.ExtendedNestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <suncor.com.android.uicomponents.SuncorTextInputLayout
-                    android:id="@+id/street_address_input"
+                <View
+                    android:id="@+id/street_autocomplete_background"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="16dp"
-                    android:hint="@string/enrollment_street_address_label"
-                    android:inputType="textPostalAddress"
-                    android:maxLength="50"
-                    android:translationZ="8dp"
-                    app:afterTextChanged="@{eventHandler::textChanged}"
-                    app:error="@{vm.streetAddressField.error}"
-                    app:focusChanged="@{eventHandler::focusChanged}"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="-16dp"
+                    android:layout_marginTop="-24dp"
+                    android:layout_marginEnd="-16dp"
+                    android:background="@color/black_40_transparent"
+                    android:clickable="true"
+                    android:onClick="@{(v) -> vm.hideAutoCompleteLayout()}"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:text="@={vm.streetAddressField.text}" />
+                    tools:visibility="gone" />
 
-                <suncor.com.android.uicomponents.SuncorSelectInputLayout
-                    android:id="@+id/province_input"
+                <include
+                    android:id="@+id/street_autocomplete_overlay"
+                    layout="@layout/street_autocomplete_overlay"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:hint="@string/enrollment_province_label"
-                    app:error="@{vm.provinceField.error}"
-                    app:layout_constraintTop_toBottomOf="@id/city_input"
-                    app:text="@={vm.provinceField.text}" />
-
-                <suncor.com.android.uicomponents.SuncorTextInputLayout
-                    android:id="@+id/city_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:hint="@string/enrollment_city_label"
-                    android:maxLength="30"
-                    app:error="@{vm.cityField.error}"
-                    app:focusChanged="@{eventHandler::focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/street_address_input"
-                    app:text="@={vm.cityField.text}" />
-
-
-                <suncor.com.android.uicomponents.SuncorTextInputLayout
-                    android:id="@+id/postalcode_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:hint="@string/enrollment_postalcode_label"
-                    android:inputType="textCapCharacters"
-                    android:maxLength="7"
-                    app:error="@{vm.postalCodeField.error}"
-                    app:focusChanged="@{eventHandler::focusChanged}"
-                    app:layout_constraintTop_toBottomOf="@id/province_input"
-                    app:text="@={vm.postalCodeField.text}" />
+                    android:layout_height="288dp"
+                    android:layout_marginStart="-8dp"
+                    android:layout_marginEnd="-8dp"
+                    app:isLoading="@{vm.autocompleteResults.status == Resource.Status.LOADING}"
+                    app:layout_constraintTop_toTopOf="@id/street_address_input"
+                    tools:visibility="gone" />
 
                 <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/save_button"
@@ -96,6 +79,62 @@
                     tools:visibility="visible" />
 
 
+                <suncor.com.android.uicomponents.SuncorSelectInputLayout
+                    android:id="@+id/province_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:hint="@string/enrollment_province_label"
+                    app:error="@{vm.provinceField.error}"
+                    app:layout_constraintTop_toBottomOf="@id/city_input"
+                    app:text="@={vm.provinceField.text}" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/street_address_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    android:hint="@string/enrollment_street_address_label"
+                    android:inputType="textPostalAddress"
+                    android:maxLength="50"
+                    android:translationZ="8dp"
+                    app:afterTextChanged="@{eventHandler::textChanged}"
+                    app:error="@{vm.streetAddressField.error}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:text="@={vm.streetAddressField.text}" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/city_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:hint="@string/enrollment_city_label"
+                    android:maxLength="30"
+                    app:error="@{vm.cityField.error}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toBottomOf="@id/street_address_input"
+                    app:text="@={vm.cityField.text}" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/postalcode_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:hint="@string/enrollment_postalcode_label"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="7"
+                    app:error="@{vm.postalCodeField.error}"
+                    app:focusChanged="@{eventHandler::focusChanged}"
+                    app:layout_constraintTop_toBottomOf="@id/province_input"
+                    app:text="@={vm.postalCodeField.text}" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </suncor.com.android.uicomponents.ExtendedNestedScrollView>
 
@@ -109,4 +148,5 @@
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

@@ -8,6 +8,7 @@ import suncor.com.android.ui.main.cards.list.CardsFragment;
 import suncor.com.android.ui.main.home.HomeFragment;
 import suncor.com.android.ui.main.profile.ProfileFragment;
 import suncor.com.android.ui.main.profile.about.AboutFragment;
+import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.help.FAQFragment;
 import suncor.com.android.ui.main.profile.help.FAQResponseFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
@@ -88,5 +89,8 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract RewardsDiscoveryFragment contributesRewardsDiscoveryFragment();
+
+    @ContributesAndroidInjector
+    abstract AddressFragment contributesAddressFragment();
 
 }

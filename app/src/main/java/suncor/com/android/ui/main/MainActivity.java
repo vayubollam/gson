@@ -22,10 +22,13 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
@@ -41,6 +44,12 @@ public class MainActivity extends SessionAwareActivity {
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
+    private ArrayList<Province> provinces = new ArrayList<>();
+
+    public ArrayList<Province> getProvinces() {
+        return provinces;
+    }
+
     private BroadcastReceiver loginConflictReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -108,6 +117,12 @@ public class MainActivity extends SessionAwareActivity {
 
         if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
             Alerts.prepareGeneralErrorDialog(this).show();
+        }
+        String[] provincesArray = getResources().getStringArray(R.array.province_names);
+
+        for (String provinceCodeName : provincesArray) {
+            String[] nameCode = provinceCodeName.split(";");
+            provinces.add(new Province(nameCode[1], nameCode[0], nameCode[2]));
         }
     }
 
