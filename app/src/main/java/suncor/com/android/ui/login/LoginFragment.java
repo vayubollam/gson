@@ -66,10 +66,10 @@ public class LoginFragment extends BaseFragment {
 
     }
 
-    public static LoginFragment newInstance(boolean fromEnrollment,String email) {
+    public static LoginFragment newInstance(boolean fromEnrollment, String email) {
         Bundle args = new Bundle();
         args.putBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, fromEnrollment);
-        args.putString(PersonalInfoFragment.EMAIL_EXTRA,email);
+        args.putString(PersonalInfoFragment.EMAIL_EXTRA, email);
         LoginFragment fragment = new LoginFragment();
         fragment.setArguments(args);
         return fragment;
@@ -250,9 +250,9 @@ public class LoginFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String email= getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
-        if(email!=null){
-            binding.getRoot().post(()->{
+        String email = getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
+        if (email != null) {
+            binding.getRoot().post(() -> {
                 binding.emailLayout.getEditText().setText(email);
                 binding.passwordLayout.getEditText().requestFocus();
             });

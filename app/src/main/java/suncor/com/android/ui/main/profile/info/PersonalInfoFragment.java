@@ -37,7 +37,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
     private PersonalInfoViewModel viewModel;
     private ProfileSharedViewModel profileSharedViewModel;
     public static final String PERSONAL_INFO_FRAGMENT = "personal_info_fragment";
-    public static final String EMAIL_EXTRA="email_extra";
+    public static final String EMAIL_EXTRA = "email_extra";
 
 
     @Inject
@@ -69,7 +69,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
             if (alert != null) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
-                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
 
                 dialog.setTitle(getString(alert.title))
                         .setMessage(getString(alert.message))
@@ -92,7 +92,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
 
                 }
                 if (alert.message != -1) {
@@ -132,7 +132,6 @@ public class PersonalInfoFragment extends MainActivityFragment {
         });
 
 
-
         viewModel.navigateToProfile.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 goBack();
@@ -141,7 +140,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
         viewModel.navigateToSignIn.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
-                if (viewModel.getEmail() != null ){
+                if (viewModel.getEmail() != null) {
                     intent.putExtra(EMAIL_EXTRA, viewModel.getEmail());
                 }
                 startActivity(intent);

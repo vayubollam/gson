@@ -31,7 +31,7 @@ import suncor.com.android.utilities.KeyStoreStorage;
 
 public class PersonalInfoViewModel extends ViewModel {
 
-    private  Profile profile;
+    private Profile profile;
     private final MutableLiveData emptyLiveData = new MutableLiveData();
     private Observer<Resource<EnrollmentsApi.EmailState>> validateEmailObserver;
     private LiveData<Resource<EnrollmentsApi.EmailState>> validateEmailObservable;
@@ -69,15 +69,15 @@ public class PersonalInfoViewModel extends ViewModel {
     private static final String CREDENTIALS_KEY = "credentials";
     private String password;
     private String email;
+
     public String getEmail() {
         return email;
     }
 
 
-
     @SuppressWarnings("unchecked")
     @Inject
-    public PersonalInfoViewModel(SessionManager sessionManager, ProfilesApi profilesApi, EnrollmentsApi enrollmentsApi,KeyStoreStorage keyStoreStorage, FingerprintManager fingerprintManager) {
+    public PersonalInfoViewModel(SessionManager sessionManager, ProfilesApi profilesApi, EnrollmentsApi enrollmentsApi, KeyStoreStorage keyStoreStorage, FingerprintManager fingerprintManager) {
         String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
         if (savedCredentials != null) try {
             JSONObject credentials = new JSONObject(savedCredentials);
@@ -166,7 +166,7 @@ public class PersonalInfoViewModel extends ViewModel {
                 isUpdatingEmail = !emailInputField.getText().equals(profile.getEmail());
                 isUpdatingPassword = !passwordField.getText().equals(password);
                 boolean isSamePhoneNumber = samePhoneNumber(phoneField.getText());
-                boolean profileShouldBeUpdated = isUpdatingPassword ||isUpdatingEmail || !isSamePhoneNumber;
+                boolean profileShouldBeUpdated = isUpdatingPassword || isUpdatingEmail || !isSamePhoneNumber;
 
                 if (profileShouldBeUpdated) {
                     request.setEmail(emailInputField.getText());
@@ -190,28 +190,28 @@ public class PersonalInfoViewModel extends ViewModel {
             switch (result.status) {
                 case LOADING:
 
-                    if ( isUpdatingEmail ) {
+                    if (isUpdatingEmail) {
                         _isLoading.setValue(true);
-                    } else if (isUpdatingPassword ) {
+                    } else if (isUpdatingPassword) {
                         _isPasswordLoading.setValue(true);
-                    }
-                    else {
+                    } else {
                         _navigateToProfile.setValue(Event.newEvent(true));
                     }
                     break;
                 case SUCCESS:
-                    if (isUpdatingPassword ||isUpdatingEmail ) {
+                    if (isUpdatingPassword || isUpdatingEmail) {
                         signOutEvent.setValue(Event.newEvent(true));
                         fingerprintManager.deactivateAutoLogin();
                         fingerprintManager.deactivateFingerprint();
                         keyStoreStorage.remove(CREDENTIALS_KEY);
-                    } if ( isUpdatingEmail ) {
-                    email = null;
-                }   else {
-                    profileSharedViewModel.postToast(R.string.profile_update_toast);
-                    //Update the saved profile of the app
-                    sessionManager.getProfile().setPhone(phoneField.getText());
-                }
+                    }
+                    if (isUpdatingEmail) {
+                        email = null;
+                    } else {
+                        profileSharedViewModel.postToast(R.string.profile_update_toast);
+                        //Update the saved profile of the app
+                        sessionManager.getProfile().setPhone(phoneField.getText());
+                    }
                     break;
                 case ERROR:
                     _isPasswordLoading.setValue(false);
@@ -294,11 +294,13 @@ public class PersonalInfoViewModel extends ViewModel {
             _showSaveButtonEvent.setValue(Event.newEvent(true));
         }
     }
+
     public void passwordTextChanged(String text) {
         if (!text.equals(passwordField.getText())) {
             _showSaveButtonEvent.setValue(Event.newEvent(true));
         }
     }
+
     public void emailTextChanged(String text) {
         if (!text.equals(emailInputField.getText())) {
             _showSaveButtonEvent.setValue(Event.newEvent(true));
