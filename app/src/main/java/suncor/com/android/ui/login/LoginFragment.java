@@ -252,7 +252,11 @@ public class LoginFragment extends BaseFragment {
 
             String email= getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
             if(email!=null){
-                binding.emailLayout.setText(email);
+                binding.getRoot().post(()->{
+                    binding.emailLayout.getEditText().setText(email);
+                    binding.passwordLayout.getEditText().requestFocus();
+                });
+
             }
 
 

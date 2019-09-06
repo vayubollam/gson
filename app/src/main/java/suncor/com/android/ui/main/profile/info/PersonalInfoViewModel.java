@@ -26,6 +26,7 @@ import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel.Alert;
+import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 
 public class PersonalInfoViewModel extends ViewModel {
@@ -67,16 +68,16 @@ public class PersonalInfoViewModel extends ViewModel {
     private ProfileSharedViewModel profileSharedViewModel;
     private static final String CREDENTIALS_KEY = "credentials";
     private String password;
-
+    private String email;
     public String getEmail() {
         return email;
     }
 
-    private String email;
+
 
     @SuppressWarnings("unchecked")
     @Inject
-    public PersonalInfoViewModel(SessionManager sessionManager, ProfilesApi profilesApi, EnrollmentsApi enrollmentsApi,KeyStoreStorage keyStoreStorage) {
+    public PersonalInfoViewModel(SessionManager sessionManager, ProfilesApi profilesApi, EnrollmentsApi enrollmentsApi,KeyStoreStorage keyStoreStorage, FingerprintManager fingerprintManager) {
         String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
         if (savedCredentials != null) try {
             JSONObject credentials = new JSONObject(savedCredentials);
@@ -172,7 +173,8 @@ public class PersonalInfoViewModel extends ViewModel {
                     request.setEmail(emailInputField.getText());
                     request.setPhoneNumber(phoneField.getText());
                     request.setPassword(passwordField.getText());
-                    request.setSecurityAnswerEncrypted("SUy59qTEmMNN8GSc6HqF6jv7rhLNI6QDo/wRAlLjL8TxRs+QHaelRxdbRPOKsRqh");
+                    request.setSecurityAnswerEncrypted(profileSharedViewModel.getEcryptedSecurityAnswer());
+
                     return profilesApi.updateProfile(request);
                 } else {
                     //Generate a loading event to navigate to previous screen
@@ -188,7 +190,8 @@ public class PersonalInfoViewModel extends ViewModel {
         apiObservable.observeForever(result -> {
             switch (result.status) {
                 case LOADING:
-                    if ( isUpdatingEmail ) {
+
+                    if ( isUpdatingPassword ||isUpdatingEmail ) {
                         _isLoading.setValue(true);
                     } else if (isUpdatingPassword ) {
                         _isPasswordLoading.setValue(true);
@@ -198,9 +201,13 @@ public class PersonalInfoViewModel extends ViewModel {
                     }
                     break;
                 case SUCCESS:
-                    if (isUpdatingPassword || isUpdatingEmail ) {
+                    if (isUpdatingPassword ||isUpdatingEmail ) {
                         signOutEvent.setValue(Event.newEvent(true));
-                    } else {
+                    } if ( isUpdatingEmail ) {
+                    email = null;
+                    fingerprintManager.deactivateAutoLogin();
+                    fingerprintManager.deactivateFingerprint();
+                    }   else {
                         profileSharedViewModel.postToast(R.string.profile_update_toast);
                         //Update the saved profile of the app
                         sessionManager.getProfile().setPhone(phoneField.getText());
