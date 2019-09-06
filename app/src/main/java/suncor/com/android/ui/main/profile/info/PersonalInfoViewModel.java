@@ -83,7 +83,6 @@ public class PersonalInfoViewModel extends ViewModel {
             JSONObject credentials = new JSONObject(savedCredentials);
             password = credentials.getString("password");
             email = credentials.getString("email");
-
         } catch (JSONException e) {
             return;
         }
@@ -191,7 +190,7 @@ public class PersonalInfoViewModel extends ViewModel {
             switch (result.status) {
                 case LOADING:
 
-                    if ( isUpdatingPassword ||isUpdatingEmail ) {
+                    if ( isUpdatingEmail ) {
                         _isLoading.setValue(true);
                     } else if (isUpdatingPassword ) {
                         _isPasswordLoading.setValue(true);
@@ -203,10 +202,13 @@ public class PersonalInfoViewModel extends ViewModel {
                 case SUCCESS:
                     if (isUpdatingPassword ||isUpdatingEmail ) {
                         signOutEvent.setValue(Event.newEvent(true));
+                        fingerprintManager.deactivateAutoLogin();
+                        fingerprintManager.deactivateFingerprint();
+                        keyStoreStorage.remove("password");
                     } if ( isUpdatingEmail ) {
                     email = null;
-                    fingerprintManager.deactivateAutoLogin();
-                    fingerprintManager.deactivateFingerprint();
+                    keyStoreStorage.remove("email");
+
                     }   else {
                         profileSharedViewModel.postToast(R.string.profile_update_toast);
                         //Update the saved profile of the app
