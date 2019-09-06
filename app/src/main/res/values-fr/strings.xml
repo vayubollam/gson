@@ -428,4 +428,7 @@
     <string name="sign_enable_fb_negative_button">Annuler</string>
     <string name="profile_preferences_enable_fingerprint_message">Activer l\'empreinte digitale?</string>
     <string name="profile_preferences_enable_fingerprint_hint">Ouvrez une session plus rapidement la prochaine fois.</string>
+    <string name="profile_personnal_informations_password">Mot de passe</string>
+    <string name="update_password_progress">Updating Password</string>
+
 </resources>

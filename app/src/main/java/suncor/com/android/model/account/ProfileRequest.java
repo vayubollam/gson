@@ -4,6 +4,24 @@ public class ProfileRequest {
     String email;
     Address address;
     Offers offers;
+    String password;
+    String securityAnswerEncrypted;
+
+    public String getSecurityAnswerEncrypted() {
+        return securityAnswerEncrypted;
+    }
+
+    public void setSecurityAnswerEncrypted(String securityAnswerEncrypted) {
+        this.securityAnswerEncrypted = securityAnswerEncrypted;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public ProfileRequest(Profile profile) {
         email = profile.getEmail();

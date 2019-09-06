@@ -93,7 +93,38 @@
                     app:afterTextChanged="@{(i, t) -> vm.emailTextChanged(t.toString())}"
                     app:error="@{vm.emailInputField.error}"
                     app:layout_constraintTop_toBottomOf="@id/phone_input"
-                    app:text="@={vm.emailInputField.text}" />
+                    app:text="@={vm.emailInputField.text}"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="241dp" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enrollment_password_label"
+                    android:inputType="textPassword"
+                    android:maxLength="16"
+                    app:afterTextChanged="@{(i, t) -> vm.passwordTextChanged(t.toString())}"
+                    app:error="@{vm.passwordField.error}"
+                    app:focus="@{vm.passwordField.hasFocus}"
+                    app:focusChanged="@{(v, b) -> vm.passwordField.setHasFocus(b)}"
+                    app:layout_constraintTop_toBottomOf="@id/email_input"
+                    app:passwordToggleEnabled="true"
+                    app:showError="@{vm.passwordField.showError}"
+                    app:text="@={vm.passwordField.text}"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="241dp"/>
+
+                <include
+                    android:id="@+id/password_validation"
+                    layout="@layout/password_validation_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    app:field="@{vm.passwordField}"
+                    app:layout_constraintBottom_toTopOf="@id/create_button"
+                    app:layout_constraintTop_toBottomOf="@id/password_input" />
+
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/email_subcopy_icon"
@@ -103,7 +134,7 @@
                     android:src="@drawable/ic_info_outline"
                     android:tint="@color/black_60"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/email_input"
+                    app:layout_constraintTop_toBottomOf="@id/password_validation"
                     app:visibleGone="@{showEmailSubcopy}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -193,6 +224,38 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
+        <FrameLayout
+            android:id="@+id/progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:visibleGone="@{vm.isPasswordLoading}"
+            tools:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Title1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="64dp"
+                android:text="@string/update_password_progress" />
+
+
+            <ProgressBar
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:indeterminate="true" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_vpn_key" />
+        </FrameLayout>
 
         <ProgressBar
             android:layout_width="48dp"
@@ -200,6 +263,8 @@
             android:layout_gravity="center"
             android:background="@drawable/white_circle"
             app:visibleInvisible="@{vm.isLoading}" />
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

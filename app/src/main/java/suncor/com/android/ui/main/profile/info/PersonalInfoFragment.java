@@ -33,11 +33,12 @@ import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 
 public class PersonalInfoFragment extends MainActivityFragment {
-
     private FragmentPersonalInfoBinding binding;
     private PersonalInfoViewModel viewModel;
     private ProfileSharedViewModel profileSharedViewModel;
     public static final String PERSONAL_INFO_FRAGMENT = "personal_info_fragment";
+    public static final String EMAIL_EXTRA = "email_extra";
+
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -62,12 +63,13 @@ public class PersonalInfoFragment extends MainActivityFragment {
             }
         });
 
+
         viewModel.bottomSheetAlertObservable.observe(this, event -> {
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
             if (alert != null) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
-                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
 
                 dialog.setTitle(getString(alert.title))
                         .setMessage(getString(alert.message))
@@ -90,7 +92,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
 
                 }
                 if (alert.message != -1) {
@@ -122,6 +124,14 @@ public class PersonalInfoFragment extends MainActivityFragment {
             binding.emailInput.getEditText().clearFocus();
         });
 
+        viewModel.isPasswordLoading.observe(this, isLoading -> {
+            if (isLoading) {
+                hideKeyboard();
+            }
+            binding.passwordInput.getEditText().clearFocus();
+        });
+
+
         viewModel.navigateToProfile.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 goBack();
@@ -130,6 +140,9 @@ public class PersonalInfoFragment extends MainActivityFragment {
         viewModel.navigateToSignIn.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                if (viewModel.getEmail() != null) {
+                    intent.putExtra(EMAIL_EXTRA, viewModel.getEmail());
+                }
                 startActivity(intent);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
             }
@@ -145,6 +158,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
         binding.setLifecycleOwner(this);
         binding.phoneInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.phoneInput, f));
         binding.emailInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.emailInput, f));
+        binding.passwordInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.passwordInput, f));
         binding.emailInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
         binding.emailInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -184,11 +198,12 @@ public class PersonalInfoFragment extends MainActivityFragment {
             viewModel.getPhoneField().setHasFocus(hasFocus);
         } else if (view == binding.emailInput) {
             viewModel.getEmailInputField().setHasFocus(hasFocus);
+        } else if (view == binding.passwordInput) {
+            viewModel.getPasswordField().setHasFocus(hasFocus);
         }
         if (hasFocus) {
             binding.scrollView.postDelayed(() -> {
                 int viewYPosition = view.getTop();
-
                 int halfHeight = binding.scrollView.getHeight() / 2 - view.getHeight() / 2;
                 int scrollPosition = Math.max(viewYPosition - halfHeight, 0);
 
