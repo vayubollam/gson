@@ -141,8 +141,9 @@ public class PersonalInfoFragment extends MainActivityFragment {
         viewModel.navigateToSignIn.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
-                String email=viewModel.getEmail();
-                intent.putExtra(EMAIL_EXTRA, viewModel.getEmail());
+                if (viewModel.getEmail() != null ){
+                    intent.putExtra(EMAIL_EXTRA, viewModel.getEmail());
+                }
                 startActivity(intent);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
             }

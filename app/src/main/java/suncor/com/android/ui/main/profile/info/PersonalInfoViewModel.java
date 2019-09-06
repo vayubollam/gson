@@ -204,16 +204,14 @@ public class PersonalInfoViewModel extends ViewModel {
                         signOutEvent.setValue(Event.newEvent(true));
                         fingerprintManager.deactivateAutoLogin();
                         fingerprintManager.deactivateFingerprint();
-                        keyStoreStorage.remove("password");
+                        keyStoreStorage.remove(CREDENTIALS_KEY);
                     } if ( isUpdatingEmail ) {
                     email = null;
-                    keyStoreStorage.remove("email");
-
-                    }   else {
-                        profileSharedViewModel.postToast(R.string.profile_update_toast);
-                        //Update the saved profile of the app
-                        sessionManager.getProfile().setPhone(phoneField.getText());
-                    }
+                }   else {
+                    profileSharedViewModel.postToast(R.string.profile_update_toast);
+                    //Update the saved profile of the app
+                    sessionManager.getProfile().setPhone(phoneField.getText());
+                }
                     break;
                 case ERROR:
                     _isPasswordLoading.setValue(false);

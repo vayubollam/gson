@@ -250,14 +250,14 @@ public class LoginFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-            String email= getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
-            if(email!=null){
-                binding.getRoot().post(()->{
-                    binding.emailLayout.getEditText().setText(email);
-                    binding.passwordLayout.getEditText().requestFocus();
-                });
+        String email= getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
+        if(email!=null){
+            binding.getRoot().post(()->{
+                binding.emailLayout.getEditText().setText(email);
+                binding.passwordLayout.getEditText().requestFocus();
+            });
 
-            }
+        }
 
 
     }
