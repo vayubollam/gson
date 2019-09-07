@@ -266,6 +266,17 @@
     <keep_state_fragment
         android:id="@+id/addressFragment"
         android:name="suncor.com.android.ui.main.profile.address.AddressFragment"
-        android:label="AddressFragment" />
+        android:label="AddressFragment">
+        <action
+            android:id="@+id/action_addressFragment_to_provinceFragment2"
+            app:destination="@id/provinceFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_in_right" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/provinceFragment2"
+        android:name="suncor.com.android.ui.enrollment.form.ProvinceFragment"
+        android:label="ProvinceFragment" />
 
 </navigation>

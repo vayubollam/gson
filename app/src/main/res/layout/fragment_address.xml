@@ -24,6 +24,14 @@
         android:clickable="true"
         tools:context="suncor.com.android.ui.main.profile.address.AddressFragment">
 
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dragable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Address" />
+
         <suncor.com.android.uicomponents.ExtendedNestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -53,6 +61,8 @@
                     android:id="@+id/street_autocomplete_overlay"
                     layout="@layout/street_autocomplete_overlay"
                     android:layout_width="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_height="288dp"
                     android:layout_marginStart="-8dp"
                     android:layout_marginEnd="-8dp"
@@ -60,23 +70,6 @@
                     app:layout_constraintTop_toTopOf="@id/street_address_input"
                     tools:visibility="gone" />
 
-                <suncor.com.android.ui.common.SuncorButton
-                    android:id="@+id/save_button"
-                    style="@style/FilledButton.Red.L"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="20dp"
-                    android:onClick="@{v -> vm.save(ConnectionUtil.haveNetworkConnection(context))}"
-                    android:text="@string/profile_personnal_informations_button1"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/postalcode_input"
-                    app:layout_constraintVertical_bias="1"
-                    app:visibleInvisible="@{vm.isEditing}"
-                    tools:visibility="visible" />
 
 
                 <suncor.com.android.uicomponents.SuncorSelectInputLayout
@@ -101,7 +94,6 @@
                     android:inputType="textPostalAddress"
                     android:maxLength="50"
                     android:translationZ="8dp"
-                    app:afterTextChanged="@{eventHandler::textChanged}"
                     app:error="@{vm.streetAddressField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toTopOf="parent"
@@ -134,17 +126,24 @@
                     app:layout_constraintTop_toBottomOf="@id/province_input"
                     app:text="@={vm.postalCodeField.text}" />
 
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/save_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/profile_personnal_informations_button1"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/postalcode_input"
+                    app:layout_constraintVertical_bias="1"
+                    tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </suncor.com.android.uicomponents.ExtendedNestedScrollView>
-
-        <suncor.com.android.uicomponents.SuncorAppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:dragable="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Address" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -13,9 +13,15 @@ import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddressBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.enrollment.form.AddressAutocompleteAdapter;
@@ -28,6 +34,8 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
     private FragmentAddressBinding binding;
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
     private boolean isExpanded = true;
+    @Inject
+    ViewModelFactory factory;
 
     public static AddressFragment newInstance() {
         return new AddressFragment();
@@ -40,19 +48,34 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         binding.setEventHandler(this);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+        binding.provinceInput.setOnClickListener(v -> {
+            isExpanded = binding.appBar.isExpanded();
+            hideKeyBoard();
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addressFragment_to_provinceFragment2);
+
+        });
+        binding.appBar.post(() -> {
+            binding.appBar.setExpanded(isExpanded, false);
+        });
+
+        binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
+        binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        DividerItemDecoration dividerDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
+        binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
         return binding.getRoot();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
+        viewModel = ViewModelProviders.of(this, factory).get(AddressViewModel.class);
         viewModel.setProvincesList(((MainActivity) getActivity()).getProvinces());
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
         //show and hide autocomplete layout
         viewModel.showAutocompleteLayout.observe(this, (show) -> {
-            if (getActivity() == null || binding.appBar.isExpanded()) {
+            if (getActivity() == null) {
                 return;
             }
             if (show) {
@@ -85,15 +108,6 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
             binding.streetAddressInput.getEditText().clearFocus();
         });
 
-        binding.provinceInput.setOnClickListener(v -> {
-            isExpanded = binding.appBar.isExpanded();
-            hideKeyBoard();
-            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_enrollment_form_fragment_to_provinceFragment);
-
-        });
-        binding.appBar.post(() -> {
-            binding.appBar.setExpanded(isExpanded, false);
-        });
     }
 
     public void focusChanged(View view, boolean hasFocus) {

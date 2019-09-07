@@ -120,6 +120,7 @@ public class ProfileFragment extends BottomNavigationFragment {
         binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment));
         binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment));
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
+        binding.addressButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment));
     }
 
     @Override

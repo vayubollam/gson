@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
@@ -35,6 +37,10 @@ public class AddressViewModel extends ViewModel {
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
 
+    @Inject
+    public AddressViewModel(CanadaPostAutocompleteProvider autocompleteProvider) {
+        initAutoComplete(autocompleteProvider);
+    }
 
     public StreetAddressInputField getStreetAddressField() {
         return streetAddressField;
