@@ -28,6 +28,8 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
@@ -48,7 +50,7 @@ public class ProfileFragment extends BottomNavigationFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(alert.title)));
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
 
                 }
                 if (alert.message != -1) {
@@ -117,8 +119,23 @@ public class ProfileFragment extends BottomNavigationFragment {
         });
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
-        binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment));
-        binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment));
+        binding.personalInformationsButton.setOnClickListener(v -> {
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
+            } else {
+                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
+        binding.preferencesButton.setOnClickListener(v -> {
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
+            } else {
+                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PreferencesFragment.PREFERENCES_FRAGMENT);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+
+        });
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
         binding.addressButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment));
     }
@@ -147,6 +164,7 @@ public class ProfileFragment extends BottomNavigationFragment {
     public String capitalize(String string) {
         return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
+
 
     public void initBuild() {
         try {

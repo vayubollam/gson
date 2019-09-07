@@ -36,6 +36,12 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.KeyStoreStorage;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.ui.common.BaseFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 
@@ -62,9 +68,10 @@ public class LoginFragment extends BaseFragment {
 
     }
 
-    public static LoginFragment newInstance(boolean fromEnrollment) {
+    public static LoginFragment newInstance(boolean fromEnrollment, String email) {
         Bundle args = new Bundle();
         args.putBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, fromEnrollment);
+        args.putString(PersonalInfoFragment.EMAIL_EXTRA, email);
         LoginFragment fragment = new LoginFragment();
         fragment.setArguments(args);
         return fragment;
@@ -95,7 +102,6 @@ public class LoginFragment extends BaseFragment {
                                         getActivity().finish();
                                     })
                                     .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
-                                        fingerPrintManager.deactivateFingerprint();
                                         getActivity().finish();
                                     })
                                     .create()
@@ -103,11 +109,8 @@ public class LoginFragment extends BaseFragment {
                         } else {
                             getActivity().finish();
                         }
-
                         fingerPrintManager.activateAutoLogin();
-                        AnalyticsUtils.logEvent(getContext(), "login", new Pair<>("retailID", viewModel.sessionManager.getProfile().getRetailIdDevQAOnly()));
-                        getActivity().finish();
-
+                        AnalyticsUtils.logEvent(getContext(), "login", new Pair<>("retailID", sessionManager.getProfile().getRetailIdDevQAOnly()));
                     }
                 }
         );
@@ -243,5 +246,21 @@ public class LoginFragment extends BaseFragment {
         binding.appBar.setNavigationOnClickListener((v) -> getActivity().finish());
         binding.emailLayout.getEditText().requestFocus();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        String email = getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
+        if (email != null) {
+            binding.getRoot().post(() -> {
+                binding.emailLayout.getEditText().setText(email);
+                binding.passwordLayout.getEditText().requestFocus();
+            });
+
+        }
+
+
     }
 }

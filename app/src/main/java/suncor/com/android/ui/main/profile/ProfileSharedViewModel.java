@@ -4,6 +4,7 @@ import androidx.annotation.StringRes;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import suncor.com.android.ui.common.Event;
 
 public class ProfileSharedViewModel extends ViewModel {
@@ -13,6 +14,8 @@ public class ProfileSharedViewModel extends ViewModel {
 
     private MutableLiveData<Event<Integer>> _toastObservable = new MutableLiveData<>();
     public LiveData<Event<Integer>> toastObservable = _toastObservable;
+    private String ecryptedSecurityAnswer;
+
 
 
     public void postAlert(Alert alert) {
@@ -39,5 +42,13 @@ public class ProfileSharedViewModel extends ViewModel {
         public int negativeButton = -1;
 
         public Runnable negativeButtonClick;
+    }
+
+    public String getEcryptedSecurityAnswer() {
+        return ecryptedSecurityAnswer;
+    }
+
+    public void setEcryptedSecurityAnswer(String ecryptedSecurityAnswer) {
+        this.ecryptedSecurityAnswer = ecryptedSecurityAnswer;
     }
 }

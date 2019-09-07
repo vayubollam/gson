@@ -1,7 +1,6 @@
 package suncor.com.android.mfp;
 
 import android.content.Intent;
-import android.util.Pair;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -28,13 +27,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.ui.main.MainActivity;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
@@ -156,7 +153,7 @@ public class SessionManager implements SessionChangeListener {
         authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
             @Override
             public void onSuccess(AccessToken accessToken) {
-                Timber.d("Got access token, retrieving profile");
+                Timber.d("Got access token, retrieving profile :" + accessToken.getValue());
                 timer.cancel();
                 retrieveProfile(
                         (profile) -> {
@@ -193,7 +190,7 @@ public class SessionManager implements SessionChangeListener {
     private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
         try {
             //We use 30s as the timeout for this request, as it times out a lot, and causes logout
-            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
+            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v2/profiles"), WLResourceRequest.GET);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {

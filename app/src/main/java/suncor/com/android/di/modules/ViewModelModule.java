@@ -21,6 +21,7 @@ import suncor.com.android.ui.main.profile.address.AddressViewModel;
 import suncor.com.android.ui.main.profile.help.FAQViewModel;
 import suncor.com.android.ui.main.profile.info.PersonalInfoViewModel;
 import suncor.com.android.ui.main.profile.preferences.PreferencesViewModel;
+import suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationViewModel;
 import suncor.com.android.ui.main.profile.transcations.TransactionsViewModel;
 import suncor.com.android.ui.main.rewards.RewardsSignedInViewModel;
 import suncor.com.android.ui.main.stationlocator.StationsViewModel;
@@ -130,6 +131,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreatePasswordViewModel.class)
     protected abstract ViewModel createPasswordViewModel(CreatePasswordViewModel createPasswordViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SecurityQuestionValidationViewModel.class)
+    protected abstract ViewModel createSecurityQuestionValidationViewModel(SecurityQuestionValidationViewModel securityQuestionValidationViewModel);
 
     @Binds
     @IntoMap

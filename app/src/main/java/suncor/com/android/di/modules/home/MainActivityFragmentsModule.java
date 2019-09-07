@@ -13,6 +13,7 @@ import suncor.com.android.ui.main.profile.help.FAQFragment;
 import suncor.com.android.ui.main.profile.help.FAQResponseFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
+import suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationFragment;
 import suncor.com.android.ui.main.profile.transcations.TransactionDetailFragment;
 import suncor.com.android.ui.main.profile.transcations.TransactionsFragment;
 import suncor.com.android.ui.main.rewards.RewardsDetailsFragment;
@@ -89,6 +90,9 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract RewardsDiscoveryFragment contributesRewardsDiscoveryFragment();
+
+    @ContributesAndroidInjector
+    abstract SecurityQuestionValidationFragment contributeSecurityQuestionValidationFragment();
 
     @ContributesAndroidInjector
     abstract AddressFragment contributesAddressFragment();

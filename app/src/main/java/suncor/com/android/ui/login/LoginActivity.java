@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentTransaction;
 import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.R;
+import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 
 public class LoginActivity extends DaggerAppCompatActivity {
 
@@ -15,7 +16,7 @@ public class LoginActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment, LoginFragment.newInstance(getIntent().getBooleanExtra(LOGIN_FROM_ENROLLMENT_EXTRA, false)));
+        ft.add(R.id.fragment, LoginFragment.newInstance(getIntent().getBooleanExtra(LOGIN_FROM_ENROLLMENT_EXTRA, false), getIntent().getStringExtra(PersonalInfoFragment.EMAIL_EXTRA)));
         ft.commit();
     }
 }

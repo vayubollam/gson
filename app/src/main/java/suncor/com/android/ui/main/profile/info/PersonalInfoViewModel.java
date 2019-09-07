@@ -1,5 +1,8 @@
 package suncor.com.android.ui.main.profile.info;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
@@ -19,18 +22,22 @@ import suncor.com.android.model.account.ProfileRequest;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.EmailInputField;
 import suncor.com.android.ui.common.input.InputField;
+import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel.Alert;
+import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.KeyStoreStorage;
 
 public class PersonalInfoViewModel extends ViewModel {
 
-    private final Profile profile;
+    private Profile profile;
     private final MutableLiveData emptyLiveData = new MutableLiveData();
-    private final Observer<Resource<EnrollmentsApi.EmailState>> validateEmailObserver;
-    private final LiveData<Resource<EnrollmentsApi.EmailState>> validateEmailObservable;
+    private Observer<Resource<EnrollmentsApi.EmailState>> validateEmailObserver;
+    private LiveData<Resource<EnrollmentsApi.EmailState>> validateEmailObservable;
     private InputField firstNameField = new InputField();
     private InputField lastNameField = new InputField();
+    private PasswordInputField passwordField = new PasswordInputField(R.string.enrollment_password_empty_error);
     private PhoneInputField phoneField = new PhoneInputField(R.string.profile_personnal_informations_phone_field_invalid_format);
     private EmailInputField emailInputField = new EmailInputField(R.string.profile_personnal_informations_email_empty_inline_error, R.string.profile_personnal_informations_email_format_inline_error, R.string.profile_personnal_informations_email_restricted_inline_error);
     private MutableLiveData<Event> _showSaveButtonEvent = new MutableLiveData<>();
@@ -42,6 +49,10 @@ public class PersonalInfoViewModel extends ViewModel {
     private MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
     public LiveData<Boolean> isLoading = _isLoading;
 
+    private MutableLiveData<Boolean> _isPasswordLoading = new MutableLiveData<>();
+    public LiveData<Boolean> isPasswordLoading = _isPasswordLoading;
+
+
     private MediatorLiveData<Event<Boolean>> _navigateToSignIn = new MediatorLiveData<>();
     public LiveData<Event<Boolean>> navigateToSignIn = _navigateToSignIn;
 
@@ -52,18 +63,35 @@ public class PersonalInfoViewModel extends ViewModel {
     private MutableLiveData<Event> validateEmailEvent = new MutableLiveData<>();
     private MutableLiveData<Event> signOutEvent = new MutableLiveData<>();
     private boolean isUpdatingEmail;
+    private boolean isUpdatingPassword;
 
     private ProfileSharedViewModel profileSharedViewModel;
+    private static final String CREDENTIALS_KEY = "credentials";
+    private String password;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
 
     @SuppressWarnings("unchecked")
     @Inject
-    public PersonalInfoViewModel(SessionManager sessionManager, ProfilesApi profilesApi, EnrollmentsApi enrollmentsApi) {
+    public PersonalInfoViewModel(SessionManager sessionManager, ProfilesApi profilesApi, EnrollmentsApi enrollmentsApi, KeyStoreStorage keyStoreStorage, FingerprintManager fingerprintManager) {
+        String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
+        if (savedCredentials != null) try {
+            JSONObject credentials = new JSONObject(savedCredentials);
+            password = credentials.getString("password");
+            email = credentials.getString("email");
+        } catch (JSONException e) {
+            return;
+        }
         profile = sessionManager.getProfile();
         firstNameField.setText(profile.getFirstName());
         lastNameField.setText(profile.getLastName());
         phoneField.setText(profile.getPhone());
         emailInputField.setText(profile.getEmail());
-
+        passwordField.setText(password);
         validateEmailObservable = Transformations.switchMap(validateEmailEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 return enrollmentsApi.checkEmail(emailInputField.getText(), null);
@@ -136,12 +164,15 @@ public class PersonalInfoViewModel extends ViewModel {
             if (event.getContentIfNotHandled() != null) {
                 ProfileRequest request = new ProfileRequest(profile);
                 isUpdatingEmail = !emailInputField.getText().equals(profile.getEmail());
+                isUpdatingPassword = !passwordField.getText().equals(password);
                 boolean isSamePhoneNumber = samePhoneNumber(phoneField.getText());
-                boolean profileShouldBeUpdated = isUpdatingEmail || !isSamePhoneNumber;
+                boolean profileShouldBeUpdated = isUpdatingPassword || isUpdatingEmail || !isSamePhoneNumber;
 
                 if (profileShouldBeUpdated) {
                     request.setEmail(emailInputField.getText());
                     request.setPhoneNumber(phoneField.getText());
+                    request.setPassword(passwordField.getText());
+                    request.setSecurityAnswerEncrypted(profileSharedViewModel.getEcryptedSecurityAnswer());
 
                     return profilesApi.updateProfile(request);
                 } else {
@@ -158,15 +189,24 @@ public class PersonalInfoViewModel extends ViewModel {
         apiObservable.observeForever(result -> {
             switch (result.status) {
                 case LOADING:
+
                     if (isUpdatingEmail) {
                         _isLoading.setValue(true);
+                    } else if (isUpdatingPassword) {
+                        _isPasswordLoading.setValue(true);
                     } else {
                         _navigateToProfile.setValue(Event.newEvent(true));
                     }
                     break;
                 case SUCCESS:
-                    if (isUpdatingEmail) {
+                    if (isUpdatingPassword || isUpdatingEmail) {
                         signOutEvent.setValue(Event.newEvent(true));
+                        fingerprintManager.deactivateAutoLogin();
+                        fingerprintManager.deactivateFingerprint();
+                        keyStoreStorage.remove(CREDENTIALS_KEY);
+                    }
+                    if (isUpdatingEmail) {
+                        email = null;
                     } else {
                         profileSharedViewModel.postToast(R.string.profile_update_toast);
                         //Update the saved profile of the app
@@ -174,6 +214,7 @@ public class PersonalInfoViewModel extends ViewModel {
                     }
                     break;
                 case ERROR:
+                    _isPasswordLoading.setValue(false);
                     _isLoading.setValue(false);
                     Alert alert = new Alert();
                     alert.title = R.string.msg_am001_title;
@@ -195,6 +236,7 @@ public class PersonalInfoViewModel extends ViewModel {
                 signOutResult -> {
                     if (signOutResult.status == Resource.Status.SUCCESS) {
                         _isLoading.postValue(false);
+                        _isPasswordLoading.postValue(false);
                         _navigateToSignIn.postValue(Event.newEvent(true));
                     } else if (signOutResult.status == Resource.Status.ERROR) {
                         Alert alert = new Alert();
@@ -243,8 +285,18 @@ public class PersonalInfoViewModel extends ViewModel {
         return emailInputField;
     }
 
+    public PasswordInputField getPasswordField() {
+        return passwordField;
+    }
+
     public void phoneTextChanged(String text) {
         if (!samePhoneNumber(text)) {
+            _showSaveButtonEvent.setValue(Event.newEvent(true));
+        }
+    }
+
+    public void passwordTextChanged(String text) {
+        if (!text.equals(passwordField.getText())) {
             _showSaveButtonEvent.setValue(Event.newEvent(true));
         }
     }
@@ -259,6 +311,10 @@ public class PersonalInfoViewModel extends ViewModel {
         boolean isValid = true;
         if (!phoneField.isValid()) {
             phoneField.setShowError(true);
+            isValid = false;
+        }
+        if (!passwordField.isValid()) {
+            passwordField.setShowError(true);
             isValid = false;
         }
         if (!emailInputField.isValid()) {

@@ -437,4 +437,16 @@
     <string name="profile_preferences_authentication_header">Authentication</string>
     <string name="profile_preferences_enable_fingerprint_message">Enable fingerprint?</string>
     <string name="profile_preferences_enable_fingerprint_hint">Sign in faster next time.</string>
+
+    <string name="profile_security_question_error">Security answer is required.</string>
+    <string name="msg_001_dialog_try_again">Try again</string>
+    <string name="msg_001_dialog_cancel">Cancel</string>
+    <string name="profile_security_question_header">Security question</string>
+    <string name="profile_security_question_content">We want to help keep your information safe. Answer your security question to continue.</string>
+    <string name="profile_security_question_continue">Continue</string>
+    <string name="profile_security_question_checking_answer">Checking your answer...</string>
+    <string name="profile_security_question_wrong_answer_alert_title">Answer incorrect.</string>
+    <string name="profile_personnal_informations_password">Password</string>
+    <string name="update_password_progress">Updating Password</string>
+
 </resources>

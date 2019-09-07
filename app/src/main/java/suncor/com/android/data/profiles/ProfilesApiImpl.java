@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
@@ -14,17 +15,20 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.account.ProfileRequest;
+import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
-    private static final String ADAPTER_PATH = "/adapters/suncor/v1/profiles";
+    private static final String ADAPTER_PATH = "/adapters/suncor/v2/profiles";
+    private final static String SECURITY_QUESTION_ADAPTER_PATH = "/adapters/suncor/v2/profiles";
     private Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
@@ -67,6 +71,88 @@ public class ProfilesApiImpl implements ProfilesApi {
         } catch (JSONException e) {
             Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<SecurityQuestion>> getSecurityQuestion() {
+        Timber.d("Retrieve security question");
+        MutableLiveData<Resource<SecurityQuestion>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        URI adapterPath;
+        try {
+            adapterPath = new URI(SECURITY_QUESTION_ADAPTER_PATH.concat("/security-question"));
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                request.addHeader("Accept-Language", "fr-CA");
+            } else {
+                request.addHeader("Accept-Language", "en-CA");
+            }
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Security Question Response:" + jsonText);
+                    try {
+                        SecurityQuestion question = gson.fromJson(jsonText, SecurityQuestion.class);
+                        result.postValue(Resource.success(question));
+                    } catch (JsonSyntaxException e) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        Timber.e("Retrieving security question failed due to " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.e("Retrieving security question failed due to:" + wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+
+        } catch (URISyntaxException e) {
+            result.postValue(Resource.error(e.getMessage()));
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<String>> validateSecurityQuestion(String answer) {
+        Timber.d("validating security question");
+        MutableLiveData<Resource<String>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        URI adapterPath;
+        try {
+            adapterPath = new URI(SECURITY_QUESTION_ADAPTER_PATH.concat("/security-question-validation"));
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            request.addHeader("x-security-answer", answer);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Security Question validation Response:" + jsonText);
+                    try {
+                        String securityAnswerEncrypted = wlResponse.getResponseJSON().getString("securityAnswerEncrypted");
+                        result.postValue(Resource.success(securityAnswerEncrypted));
+                    } catch (JsonSyntaxException | JSONException e) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        Timber.e("Retrieving security question failed due to " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.e("Retrieving security question failed due to:" + wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+
+        } catch (URISyntaxException e) {
+            result.postValue(Resource.error(e.getMessage()));
+            e.printStackTrace();
         }
 
         return result;
