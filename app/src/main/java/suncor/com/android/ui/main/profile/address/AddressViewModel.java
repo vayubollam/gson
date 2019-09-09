@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.profile.address;
 
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,10 +15,13 @@ import javax.inject.Inject;
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.model.canadapost.CanadaPostDetails;
 import suncor.com.android.model.canadapost.CanadaPostSuggestion;
+import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.CityInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
@@ -29,7 +34,10 @@ public class AddressViewModel extends ViewModel {
     public MutableLiveData<Boolean> showAutocompleteLayout = new MutableLiveData<>();
     private LiveData<Resource<CanadaPostDetails>> placeDetailsApiCall;
     private ArrayList<Province> provincesList;
+    private ObservableBoolean isEditing = new ObservableBoolean();
     private Province selectedProvince;
+    private Profile profile;
+    private MutableLiveData<Event> updateProfileEvent = new MutableLiveData<>();
     private MutableLiveData<CanadaPostSuggestion> findMoreSuggestions = new MutableLiveData<>();
     private MutableLiveData<CanadaPostSuggestion> retrieveSuggestionDetails = new MutableLiveData<>();
     private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error, R.string.enrollment_street_format_error);
@@ -38,8 +46,27 @@ public class AddressViewModel extends ViewModel {
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
 
     @Inject
-    public AddressViewModel(CanadaPostAutocompleteProvider autocompleteProvider) {
+    public AddressViewModel(CanadaPostAutocompleteProvider autocompleteProvider, SessionManager sessionManager) {
         initAutoComplete(autocompleteProvider);
+        Observable.OnPropertyChangedCallback editCallback = new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                isEditing.set(true);
+            }
+        };
+        cityField.addOnPropertyChangedCallback(editCallback);
+        streetAddressField.addOnPropertyChangedCallback(editCallback);
+        provinceField.addOnPropertyChangedCallback(editCallback);
+        postalCodeField.addOnPropertyChangedCallback(editCallback);
+        profile = sessionManager.getProfile();
+        cityField.setText(profile.getCity());
+        streetAddressField.setText(profile.getStreetAddress());
+        postalCodeField.setText(profile.getPostalCode());
+
+    }
+
+    private String getProvinceById(String province) {
+        return provincesList.get(provincesList.indexOf(new Province(province, null, null))).getName();
     }
 
     public StreetAddressInputField getStreetAddressField() {
@@ -114,8 +141,35 @@ public class AddressViewModel extends ViewModel {
         });
     }
 
+    /* LiveData<Resource<Boolean>> apiObservable = Transformations.switchMap(updateProfileEvent, event -> {
+         if (event.getContentIfNotHandled() != null) {
+             ProfileRequest request = new ProfileRequest(profile);
+             isUpdatingEmail = !emailInputField.getText().equals(profile.getEmail());
+             isUpdatingPassword = !passwordField.getText().equals(password);
+             boolean isSamePhoneNumber = samePhoneNumber(phoneField.getText());
+             boolean profileShouldBeUpdated = isUpdatingPassword || isUpdatingEmail || !isSamePhoneNumber;
+
+             if (profileShouldBeUpdated) {
+                 request.setEmail(emailInputField.getText());
+                 request.setPhoneNumber(phoneField.getText());
+                 request.setPassword(passwordField.getText());
+                 request.setSecurityAnswerEncrypted(profileSharedViewModel.getEcryptedSecurityAnswer());
+
+                 return profilesApi.updateProfile(request);
+             } else {
+                 //Generate a loading event to navigate to previous screen
+                 MutableLiveData<Resource<Boolean>> loadingLiveData = new MutableLiveData<>();
+                 loadingLiveData.setValue(Resource.loading());
+                 return loadingLiveData;
+             }
+         } else {
+             return emptyLiveData;
+         }
+     });
+ */
     public void setProvincesList(ArrayList<Province> provincesList) {
         this.provincesList = provincesList;
+        provinceField.setText(getProvinceById(profile.getProvince()));
     }
 
     public void setSelectedProvince(Province selectedProvince) {
@@ -151,4 +205,14 @@ public class AddressViewModel extends ViewModel {
     public LiveData<Resource<CanadaPostDetails>> getAutocompleteRetrievalStatus() {
         return placeDetailsApiCall;
     }
+
+    public ObservableBoolean getIsEditing() {
+        return isEditing;
+    }
+
+    private void callUpdateProfile() {
+        updateProfileEvent.setValue(Event.newEvent(true));
+    }
+
+
 }

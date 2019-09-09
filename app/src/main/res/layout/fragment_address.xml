@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:dragable="true"
-            app:layout_constraintTop_toTopOf="parent"
             app:title="Address" />
 
         <suncor.com.android.uicomponents.ExtendedNestedScrollView
@@ -40,6 +39,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:clipToPadding="false"
                 android:layout_height="match_parent">
 
                 <View
@@ -61,8 +63,6 @@
                     android:id="@+id/street_autocomplete_overlay"
                     layout="@layout/street_autocomplete_overlay"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_height="288dp"
                     android:layout_marginStart="-8dp"
                     android:layout_marginEnd="-8dp"
@@ -76,8 +76,6 @@
                     android:id="@+id/province_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:hint="@string/enrollment_province_label"
                     app:error="@{vm.provinceField.error}"
                     app:layout_constraintTop_toBottomOf="@id/city_input"
@@ -87,9 +85,7 @@
                     android:id="@+id/street_address_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginRight="16dp"
                     android:hint="@string/enrollment_street_address_label"
                     android:inputType="textPostalAddress"
                     android:maxLength="50"
@@ -103,8 +99,6 @@
                     android:id="@+id/city_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:hint="@string/enrollment_city_label"
                     android:maxLength="30"
                     app:error="@{vm.cityField.error}"
@@ -116,8 +110,6 @@
                     android:id="@+id/postalcode_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:hint="@string/enrollment_postalcode_label"
                     android:inputType="textCapCharacters"
                     android:maxLength="7"
@@ -131,15 +123,14 @@
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="20dp"
                     android:text="@string/profile_personnal_informations_button1"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"
                     app:layout_constraintVertical_bias="1"
+                    app:visibleInvisible="@{vm.isEditing}"
                     tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

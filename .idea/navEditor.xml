@@ -11,6 +11,12 @@
                   <entry key="card_form_fragment">
                     <value>
                       <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_card_form_fragment_to_enrollment_form_fragment">
@@ -26,6 +32,12 @@
                   <entry key="card_question">
                     <value>
                       <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="54" />
+                          </Point>
+                        </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_cardQuestion_to_enrollmentFormFragment">
@@ -46,6 +58,12 @@
                   <entry key="enrollment_form_fragment">
                     <value>
                       <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="500" />
+                            <option name="y" value="54" />
+                          </Point>
+                        </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_enrollment_form_fragment_to_provinceFragment">
@@ -65,12 +83,26 @@
                   </entry>
                   <entry key="provinceFragment">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="744" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
                   <entry key="securityQuestionFragment">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="744" />
+                            <option name="y" value="368" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
                 </map>
@@ -335,7 +367,7 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="1319" />
-                            <option name="y" value="-525" />
+                            <option name="y" value="-791" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -358,13 +390,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1377" />
-                            <option name="y" value="-1198" />
+                            <option name="x" value="1643" />
+                            <option name="y" value="-1563" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_addressFragment_to_provinceFragment2">
+                            <entry key="action_addressFragment_to_provinceProfileFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -537,13 +569,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="provinceFragment2">
+                  <entry key="provinceProfileFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="2329" />
-                            <option name="y" value="-1275" />
+                            <option name="x" value="2650" />
+                            <option name="y" value="-1748" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -639,6 +671,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_securityQuestionValidationFragment_to_addressFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_securityQuestionValidationFragment_to_personalInfoFragment">
                               <value>
                                 <LayoutPositions />

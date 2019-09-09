@@ -25,6 +25,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
 
@@ -69,6 +70,8 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
                     } else if (PreferencesFragment.PREFERENCES_FRAGMENT.equalsIgnoreCase(destination)) {
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_preferencesFragment2);
+                    } else if (AddressFragment.ADDRESS_FRAGMENT.equalsIgnoreCase(destination)) {
+                        Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
                     }
                     break;
                 case ERROR:

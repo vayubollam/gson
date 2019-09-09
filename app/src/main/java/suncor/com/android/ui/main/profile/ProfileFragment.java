@@ -28,6 +28,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -137,7 +138,14 @@ public class ProfileFragment extends BottomNavigationFragment {
 
         });
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
-        binding.addressButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment));
+        binding.addressButton.setOnClickListener(v -> {
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment);
+            } else {
+                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
     }
 
     @Override

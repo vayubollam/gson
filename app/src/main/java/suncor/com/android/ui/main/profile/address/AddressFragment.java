@@ -27,10 +27,13 @@ import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.enrollment.form.AddressAutocompleteAdapter;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 
 public class AddressFragment extends MainActivityFragment implements OnBackPressedListener {
 
+    public static final String ADDRESS_FRAGMENT = "address_fragment";
     private AddressViewModel viewModel;
+    private ProfileSharedViewModel sharedViewModel;
     private FragmentAddressBinding binding;
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
     private boolean isExpanded = true;
@@ -51,7 +54,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         binding.provinceInput.setOnClickListener(v -> {
             isExpanded = binding.appBar.isExpanded();
             hideKeyBoard();
-            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addressFragment_to_provinceFragment2);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_addressFragment_to_provinceProfileFragment);
 
         });
         binding.appBar.post(() -> {
@@ -70,6 +73,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, factory).get(AddressViewModel.class);
+        sharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
         viewModel.setProvincesList(((MainActivity) getActivity()).getProvinces());
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
@@ -107,6 +111,9 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
             hideKeyBoard();
             binding.streetAddressInput.getEditText().clearFocus();
         });
+        sharedViewModel.getSelectedProvince().observe(this, province -> {
+            viewModel.setSelectedProvince(province);
+        });
 
     }
 
@@ -128,6 +135,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
             viewModel.hideAutoCompleteLayout();
         }
+        sharedViewModel.setSelectedProvince(null);
     }
 
 
