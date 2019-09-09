@@ -3,6 +3,7 @@ package suncor.com.android.data.profiles;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.common.io.BaseEncoding;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -128,7 +129,8 @@ public class ProfilesApiImpl implements ProfilesApi {
         try {
             adapterPath = new URI(SECURITY_QUESTION_ADAPTER_PATH.concat("/security-question-validation"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
-            request.addHeader("x-security-answer", answer);
+            String base64Answer = BaseEncoding.base64().encode(answer.getBytes());
+            request.addHeader("x-security-answer", base64Answer);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
