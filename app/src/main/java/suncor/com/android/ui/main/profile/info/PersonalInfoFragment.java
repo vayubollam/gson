@@ -4,6 +4,8 @@ package suncor.com.android.ui.main.profile.info;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,6 +178,8 @@ public class PersonalInfoFragment extends MainActivityFragment {
             savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
+        binding.passwordInput.getPasswordToggle().setVisibility(View.INVISIBLE);
+        binding.getRoot().post(() -> binding.passwordInput.getEditText().addTextChangedListener(tmpTextWatcher));
     }
 
     @Override
@@ -211,4 +215,23 @@ public class PersonalInfoFragment extends MainActivityFragment {
             }, 200);
         }
     }
+
+    TextWatcher tmpTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            s.clear();
+            binding.passwordInput.getEditText().removeTextChangedListener(tmpTextWatcher);
+            binding.passwordInput.getPasswordToggle().setVisibility(View.VISIBLE);
+        }
+    };
+
 }
