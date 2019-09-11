@@ -107,15 +107,13 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
                 ViewCompat.setElevation(binding.appBar, 8);
             }
         });
-        viewModel.getAutocompleteResults().observe(this, (resource ->
-        {
+        viewModel.getAutocompleteResults().observe(this, (resource -> {
             if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
                 addressAutocompleteAdapter.setSuggestions(resource.data);
                 binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
             }
         }));
-        viewModel.getAutocompleteRetrievalStatus().observe(this, resource ->
-        {
+        viewModel.getAutocompleteRetrievalStatus().observe(this, resource -> {
             hideKeyBoard();
             binding.streetAddressInput.getEditText().clearFocus();
         });

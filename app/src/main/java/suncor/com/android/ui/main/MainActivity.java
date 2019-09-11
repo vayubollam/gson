@@ -176,14 +176,11 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     public void onBackPressed() {
         boolean backPressedGandled = false;
         List<Fragment> currentFragments = navHostFragment.getChildFragmentManager().getFragments();
-        for (Fragment f : currentFragments
-        ) {
+        for (Fragment f : currentFragments) {
             if (f instanceof OnBackPressedListener) {
                 ((OnBackPressedListener) f).onBackPressed();
                 backPressedGandled = true;
             }
-
-
         }
         if (!backPressedGandled) {
             super.onBackPressed();
