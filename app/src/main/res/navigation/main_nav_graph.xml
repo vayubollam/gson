@@ -152,10 +152,10 @@
         <action
             android:id="@+id/action_profile_tab_to_securityQuestionValidationFragment2"
             app:destination="@id/securityQuestionValidationFragment"
-            app:enterAnim="@anim/slide_in_right"
+            app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/dummy"
             app:launchSingleTop="false"
-            app:popExitAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/fade_out"
             app:popUpTo="@+id/profile_tab" />
         <action
             android:id="@+id/action_profile_tab_to_preferencesFragment"
@@ -166,6 +166,12 @@
         <action
             android:id="@+id/action_profile_tab_to_personalInfoFragment"
             app:destination="@id/personalInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_addressFragment"
+            app:destination="@id/addressFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
@@ -286,6 +292,28 @@
         <argument
             android:name="destinationFragment"
             app:argType="string" />
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_addressFragment"
+            app:destination="@id/addressFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/profile_tab" />
     </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/addressFragment"
+        android:name="suncor.com.android.ui.main.profile.address.AddressFragment"
+        android:label="AddressFragment">
+        <action
+            android:id="@+id/action_addressFragment_to_provinceProfileFragment"
+            app:destination="@id/provinceProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/provinceProfileFragment"
+        android:name="suncor.com.android.ui.main.profile.address.ProvinceProfileFragment"
+        android:label="ProvinceProfileFragment" />
 
 </navigation>

@@ -21,33 +21,44 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
+import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class MainActivity extends SessionAwareActivity {
+public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     @Inject
     SuncorApplication application;
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
+    private ArrayList<Province> provinces = new ArrayList<>();
+
+    public ArrayList<Province> getProvinces() {
+        return provinces;
+    }
+
     private boolean isProfileTabSelected = false;
     private ProfileSharedViewModel profileSharedViewModel;
     private BroadcastReceiver loginConflictReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (LOGGED_OUT_DUE_CONFLICTING_LOGIN.equals(intent.getAction())) {
-                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",LOGGED_OUT_DUE_CONFLICTING_LOGIN ));
+                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", LOGGED_OUT_DUE_CONFLICTING_LOGIN));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton("OK", (dialog, which) -> {
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
@@ -115,6 +126,12 @@ public class MainActivity extends SessionAwareActivity {
         if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
             Alerts.prepareGeneralErrorDialog(this).show();
         }
+        String[] provincesArray = getResources().getStringArray(R.array.province_names);
+
+        for (String provinceCodeName : provincesArray) {
+            String[] nameCode = provinceCodeName.split(";");
+            provinces.add(new Province(nameCode[1], nameCode[0], nameCode[2]));
+        }
     }
 
     @Override
@@ -153,5 +170,22 @@ public class MainActivity extends SessionAwareActivity {
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean backPressedGandled = false;
+        List<Fragment> currentFragments = navHostFragment.getChildFragmentManager().getFragments();
+        for (Fragment f : currentFragments) {
+            if (f instanceof OnBackPressedListener) {
+                ((OnBackPressedListener) f).onBackPressed();
+                backPressedGandled = true;
+            }
+        }
+        if (!backPressedGandled) {
+            super.onBackPressed();
+        }
+
+
     }
 }

@@ -366,8 +366,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1172" />
-                            <option name="y" value="-937" />
+                            <option name="x" value="1319" />
+                            <option name="y" value="-791" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -381,6 +381,27 @@
                             <option name="x" value="273" />
                             <option name="y" value="706" />
                           </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="addressFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1643" />
+                            <option name="y" value="-1563" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_addressFragment_to_provinceProfileFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -518,6 +539,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_profile_tab_to_addressFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_profile_tab_to_personalInfoFragment">
                               <value>
                                 <LayoutPositions />
@@ -539,6 +565,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="provinceProfileFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="2650" />
+                            <option name="y" value="-1748" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -633,6 +671,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_securityQuestionValidationFragment_to_addressFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_securityQuestionValidationFragment_to_personalInfoFragment">
                               <value>
                                 <LayoutPositions />
