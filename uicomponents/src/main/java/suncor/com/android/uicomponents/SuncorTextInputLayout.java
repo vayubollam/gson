@@ -72,6 +72,10 @@ public class SuncorTextInputLayout extends LinearLayout {
     private final AppCompatEditText editText;
     private final AppCompatTextView errorTextView;
 
+    public AppCompatCheckBox getPasswordToggle() {
+        return passwordToggle;
+    }
+
     public AppCompatTextView getHintTextView() {
         return hintTextView;
     }
