@@ -64,4 +64,12 @@ public class ProfileRequest {
         Boolean email;
         Boolean text;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }

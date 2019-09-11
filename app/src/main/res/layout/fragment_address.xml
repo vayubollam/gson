@@ -8,6 +8,8 @@
 
         <import type="suncor.com.android.model.Resource" />
 
+        <import type="suncor.com.android.utilities.ConnectionUtil" />
+
         <variable
             name="eventHandler"
             type="suncor.com.android.ui.main.profile.address.AddressFragment" />
@@ -126,6 +128,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:text="@string/profile_personnal_informations_button1"
+                    android:onClick="@{v -> vm.save(ConnectionUtil.haveNetworkConnection(context))}"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"

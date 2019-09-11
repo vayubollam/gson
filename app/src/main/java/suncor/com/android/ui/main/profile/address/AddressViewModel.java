@@ -14,10 +14,12 @@ import javax.inject.Inject;
 
 import suncor.com.android.BR;
 import suncor.com.android.R;
+import suncor.com.android.data.profiles.ProfilesApi;
 import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.model.account.ProfileRequest;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.model.canadapost.CanadaPostDetails;
 import suncor.com.android.model.canadapost.CanadaPostSuggestion;
@@ -26,6 +28,7 @@ import suncor.com.android.ui.common.input.CityInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
+import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 
 public class AddressViewModel extends ViewModel {
 
@@ -37,16 +40,21 @@ public class AddressViewModel extends ViewModel {
     private ObservableBoolean isEditing = new ObservableBoolean();
     private Province selectedProvince;
     private Profile profile;
+    private LiveData<Resource<Boolean>> profilesApiCall;
+    private MutableLiveData<Event<Boolean>> _navigateToProfile = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> navigateToProfile = _navigateToProfile;
     private MutableLiveData<Event> updateProfileEvent = new MutableLiveData<>();
     private MutableLiveData<CanadaPostSuggestion> findMoreSuggestions = new MutableLiveData<>();
     private MutableLiveData<CanadaPostSuggestion> retrieveSuggestionDetails = new MutableLiveData<>();
+    private ProfileSharedViewModel sharedViewModel;
+    private MutableLiveData<Event<Boolean>> updateEvent = new MutableLiveData<>();
     private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error, R.string.enrollment_street_format_error);
     private CityInputField cityField = new CityInputField(R.string.enrollment_city_error, R.string.enrollment_city_format_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
 
     @Inject
-    public AddressViewModel(CanadaPostAutocompleteProvider autocompleteProvider, SessionManager sessionManager) {
+    public AddressViewModel(CanadaPostAutocompleteProvider autocompleteProvider, SessionManager sessionManager, ProfilesApi profilesApi) {
         initAutoComplete(autocompleteProvider);
         Observable.OnPropertyChangedCallback editCallback = new Observable.OnPropertyChangedCallback() {
             @Override
@@ -63,9 +71,43 @@ public class AddressViewModel extends ViewModel {
         streetAddressField.setText(profile.getStreetAddress());
         postalCodeField.setText(profile.getPostalCode());
 
+        profilesApiCall = Transformations.switchMap(updateEvent, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                ProfileRequest request = new ProfileRequest(profile);
+                request.getAddress().setStreetAddress(streetAddressField.getText());
+                request.getAddress().setCity(cityField.getText());
+                request.getAddress().setProvince(selectedProvince.getId());
+                request.getAddress().setPostalCode(postalCodeField.getText());
+
+                return profilesApi.updateProfile(request);
+            } else {
+                return new MutableLiveData<>();
+            }
+        });
+        profilesApiCall.observeForever(resource -> {
+            switch (resource.status) {
+                case LOADING:
+                    _navigateToProfile.setValue(Event.newEvent(true));
+                    break;
+                case SUCCESS:
+                    sharedViewModel.postToast(R.string.profile_update_toast);
+                    profile.setStreetAddress(streetAddressField.getText());
+                    profile.setCity(cityField.getText());
+                    profile.setProvince(selectedProvince.getId());
+                    profile.setPostalCode(postalCodeField.getText());
+                    break;
+                case ERROR:
+                    ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
+                    alert.title = R.string.msg_am001_title;
+                    alert.message = R.string.msg_am001_message;
+                    alert.positiveButton = R.string.ok;
+                    sharedViewModel.postAlert(alert);
+            }
+        });
+
     }
 
-    private String getProvinceById(String province) {
+    private String getProvinceNameById(String province) {
         return provincesList.get(provincesList.indexOf(new Province(province, null, null))).getName();
     }
 
@@ -141,35 +183,13 @@ public class AddressViewModel extends ViewModel {
         });
     }
 
-    /* LiveData<Resource<Boolean>> apiObservable = Transformations.switchMap(updateProfileEvent, event -> {
-         if (event.getContentIfNotHandled() != null) {
-             ProfileRequest request = new ProfileRequest(profile);
-             isUpdatingEmail = !emailInputField.getText().equals(profile.getEmail());
-             isUpdatingPassword = !passwordField.getText().equals(password);
-             boolean isSamePhoneNumber = samePhoneNumber(phoneField.getText());
-             boolean profileShouldBeUpdated = isUpdatingPassword || isUpdatingEmail || !isSamePhoneNumber;
 
-             if (profileShouldBeUpdated) {
-                 request.setEmail(emailInputField.getText());
-                 request.setPhoneNumber(phoneField.getText());
-                 request.setPassword(passwordField.getText());
-                 request.setSecurityAnswerEncrypted(profileSharedViewModel.getEcryptedSecurityAnswer());
 
-                 return profilesApi.updateProfile(request);
-             } else {
-                 //Generate a loading event to navigate to previous screen
-                 MutableLiveData<Resource<Boolean>> loadingLiveData = new MutableLiveData<>();
-                 loadingLiveData.setValue(Resource.loading());
-                 return loadingLiveData;
-             }
-         } else {
-             return emptyLiveData;
-         }
-     });
- */
+
     public void setProvincesList(ArrayList<Province> provincesList) {
         this.provincesList = provincesList;
-        provinceField.setText(getProvinceById(profile.getProvince()));
+        provinceField.setText(getProvinceNameById(profile.getProvince()));
+        sharedViewModel.setSelectedProvince(provincesList.get(provincesList.indexOf(new Province(profile.getProvince(), null, null))));
     }
 
     public void setSelectedProvince(Province selectedProvince) {
@@ -212,6 +232,54 @@ public class AddressViewModel extends ViewModel {
 
     private void callUpdateProfile() {
         updateProfileEvent.setValue(Event.newEvent(true));
+    }
+
+    public void setSharedViewModel(ProfileSharedViewModel sharedViewModel) {
+        this.sharedViewModel = sharedViewModel;
+    }
+
+    public void save(boolean hasConnection) {
+        boolean isValid = true;
+        if (!streetAddressField.isValid()) {
+            streetAddressField.setShowError(true);
+            isValid = false;
+        }
+        if (!cityField.isValid()) {
+            cityField.setShowError(true);
+            isValid = false;
+        }
+        if (!provinceField.isValid()) {
+            provinceField.setShowError(true);
+            isValid = false;
+        }
+        if (!postalCodeField.isValid()) {
+            postalCodeField.setShowError(true);
+            isValid = false;
+        }
+        if (!isValid) {
+            return;
+        }
+        boolean isUpdatingSAF = !streetAddressField.getText().equals(profile.getStreetAddress());
+        boolean isUpdatingCF = !cityField.getText().equals(profile.getCity());
+        boolean isUpdatingPF = !provinceField.getText().equals(getProvinceNameById(profile.getProvince()));
+        boolean isUpdatingPCF = !postalCodeField.getText().equals(profile.getPostalCode().replace(" ", ""));
+        boolean shouldUpdateProfile = isUpdatingSAF || isUpdatingCF || isUpdatingPF || isUpdatingPCF;
+
+        if (shouldUpdateProfile) {
+            if (!hasConnection) {
+                _navigateToProfile.setValue(Event.newEvent(true));
+                ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
+                alert.title = R.string.msg_e002_title;
+                alert.message = R.string.msg_e002_message;
+                alert.positiveButton = R.string.ok;
+                sharedViewModel.postAlert(alert);
+            } else {
+                updateEvent.setValue(Event.newEvent(true));
+            }
+        } else {
+            _navigateToProfile.setValue(Event.newEvent(true));
+            sharedViewModel.postToast(R.string.profile_update_toast);
+        }
     }
 
 

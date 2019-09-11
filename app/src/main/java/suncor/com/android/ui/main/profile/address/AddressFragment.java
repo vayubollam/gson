@@ -24,6 +24,7 @@ import suncor.com.android.databinding.FragmentAddressBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollment.form.AddressAutocompleteAdapter;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
@@ -60,12 +61,14 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
+        binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
 
         binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
         binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         DividerItemDecoration dividerDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
         binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
+        binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
         return binding.getRoot();
     }
 
@@ -74,6 +77,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, factory).get(AddressViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
+        viewModel.setSharedViewModel(sharedViewModel);
         viewModel.setProvincesList(((MainActivity) getActivity()).getProvinces());
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
@@ -115,6 +119,12 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
             viewModel.setSelectedProvince(province);
         });
 
+
+        viewModel.navigateToProfile.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                Navigation.findNavController(getView()).popBackStack();
+            }
+        });
     }
 
     public void focusChanged(View view, boolean hasFocus) {
