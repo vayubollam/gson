@@ -15,6 +15,10 @@
             type="suncor.com.android.ui.main.profile.address.AddressFragment" />
 
         <variable
+            name="isEditing"
+            type="androidx.databinding.ObservableBoolean" />
+
+        <variable
             name="vm"
             type="suncor.com.android.ui.main.profile.address.AddressViewModel" />
     </data>
@@ -78,6 +82,7 @@
                     android:id="@+id/province_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    afterTextChanged="@{(i, t) -> vm.provinceChanged(t.toString())}"
                     android:hint="@string/enrollment_province_label"
                     app:error="@{vm.provinceField.error}"
                     app:layout_constraintTop_toBottomOf="@id/city_input"
@@ -92,6 +97,7 @@
                     android:inputType="textPostalAddress"
                     android:maxLength="50"
                     android:translationZ="8dp"
+                    afterTextChanged="@{(i, t) -> vm.streetAdressChange(t.toString())}"
                     app:error="@{vm.streetAddressField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toTopOf="parent"
@@ -103,6 +109,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_city_label"
                     android:maxLength="30"
+                    afterTextChanged="@{(i, t) -> vm.cityChanged(t.toString())}"
                     app:error="@{vm.cityField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/street_address_input"
@@ -114,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_postalcode_label"
                     android:inputType="textCapCharacters"
+                    afterTextChanged="@{(i, t) -> vm.postalCodeChanged(t.toString())}"
                     android:maxLength="7"
                     app:error="@{vm.postalCodeField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
@@ -129,11 +137,11 @@
                     android:layout_marginBottom="20dp"
                     android:text="@string/profile_personnal_informations_button1"
                     android:onClick="@{v -> vm.save(ConnectionUtil.haveNetworkConnection(context))}"
-                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"
                     app:layout_constraintVertical_bias="1"
-                    app:visibleInvisible="@{vm.isEditing}"
+                    app:visibleInvisible="@{isEditing}"
+                    android:visibility="invisible"
                     tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

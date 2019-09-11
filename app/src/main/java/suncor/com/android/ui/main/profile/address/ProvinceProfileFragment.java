@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,10 +19,11 @@ import suncor.com.android.R;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.enrollment.form.ChoiceSelectorAdapter;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
-public class ProvinceProfileFragment extends DialogFragment {
+public class ProvinceProfileFragment extends MainActivityFragment {
     private ProfileSharedViewModel sharedViewModel;
     private ArrayList<String> provinceNames = new ArrayList<>();
 

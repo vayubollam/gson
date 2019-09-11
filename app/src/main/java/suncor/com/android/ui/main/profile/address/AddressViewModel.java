@@ -1,6 +1,5 @@
 package suncor.com.android.ui.main.profile.address;
 
-import androidx.databinding.Observable;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -37,7 +36,7 @@ public class AddressViewModel extends ViewModel {
     public MutableLiveData<Boolean> showAutocompleteLayout = new MutableLiveData<>();
     private LiveData<Resource<CanadaPostDetails>> placeDetailsApiCall;
     private ArrayList<Province> provincesList;
-    private ObservableBoolean isEditing = new ObservableBoolean();
+    private ObservableBoolean isEditing = new ObservableBoolean(false);
     private Province selectedProvince;
     private Profile profile;
     private LiveData<Resource<Boolean>> profilesApiCall;
@@ -48,6 +47,8 @@ public class AddressViewModel extends ViewModel {
     private MutableLiveData<CanadaPostSuggestion> retrieveSuggestionDetails = new MutableLiveData<>();
     private ProfileSharedViewModel sharedViewModel;
     private MutableLiveData<Event<Boolean>> updateEvent = new MutableLiveData<>();
+    private MutableLiveData<Event> _showSaveButtonEvent = new MutableLiveData<>();
+    public LiveData<Event> showSaveButtonEvent = _showSaveButtonEvent;
     private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error, R.string.enrollment_street_format_error);
     private CityInputField cityField = new CityInputField(R.string.enrollment_city_error, R.string.enrollment_city_format_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
@@ -56,16 +57,6 @@ public class AddressViewModel extends ViewModel {
     @Inject
     public AddressViewModel(CanadaPostAutocompleteProvider autocompleteProvider, SessionManager sessionManager, ProfilesApi profilesApi) {
         initAutoComplete(autocompleteProvider);
-        Observable.OnPropertyChangedCallback editCallback = new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                isEditing.set(true);
-            }
-        };
-        cityField.addOnPropertyChangedCallback(editCallback);
-        streetAddressField.addOnPropertyChangedCallback(editCallback);
-        provinceField.addOnPropertyChangedCallback(editCallback);
-        postalCodeField.addOnPropertyChangedCallback(editCallback);
         profile = sessionManager.getProfile();
         cityField.setText(profile.getCity());
         streetAddressField.setText(profile.getStreetAddress());
@@ -74,6 +65,7 @@ public class AddressViewModel extends ViewModel {
         profilesApiCall = Transformations.switchMap(updateEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 ProfileRequest request = new ProfileRequest(profile);
+                request.setSecurityAnswerEncrypted(sharedViewModel.getEcryptedSecurityAnswer());
                 request.getAddress().setStreetAddress(streetAddressField.getText());
                 request.getAddress().setCity(cityField.getText());
                 request.getAddress().setProvince(selectedProvince.getId());
@@ -236,6 +228,31 @@ public class AddressViewModel extends ViewModel {
 
     public void setSharedViewModel(ProfileSharedViewModel sharedViewModel) {
         this.sharedViewModel = sharedViewModel;
+    }
+
+    public void streetAdressChange(String text) {
+        if (!text.equals(streetAddressField.getText())) {
+            _showSaveButtonEvent.setValue(Event.newEvent(true));
+        }
+    }
+
+
+    public void provinceChanged(String text) {
+        if (!text.equals(provinceField.getText())) {
+            _showSaveButtonEvent.setValue(Event.newEvent(true));
+        }
+    }
+
+    public void cityChanged(String text) {
+        if (!text.equals(cityField.getText())) {
+            _showSaveButtonEvent.setValue(Event.newEvent(true));
+        }
+    }
+
+    public void postalCodeChanged(String text) {
+        if (!text.replace(" ", "").equals(postalCodeField.getText().replace(" ", ""))) {
+            _showSaveButtonEvent.setValue(Event.newEvent(true));
+        }
     }
 
     public void save(boolean hasConnection) {

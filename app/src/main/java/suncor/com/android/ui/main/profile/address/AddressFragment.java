@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -38,6 +39,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
     private FragmentAddressBinding binding;
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
     private boolean isExpanded = true;
+    private ObservableBoolean isEditing = new ObservableBoolean(false);
     @Inject
     ViewModelFactory factory;
 
@@ -52,6 +54,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         binding.setEventHandler(this);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+        binding.setIsEditing(isEditing);
         binding.provinceInput.setOnClickListener(v -> {
             isExpanded = binding.appBar.isExpanded();
             hideKeyBoard();
@@ -61,7 +64,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         binding.appBar.post(() -> {
             binding.appBar.setExpanded(isExpanded, false);
         });
-        binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.appBar.setNavigationOnClickListener(v -> goBack());
 
         binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
         binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -69,6 +72,11 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
         binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
+        viewModel.showSaveButtonEvent.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                isEditing.set(true);
+            }
+        });
         return binding.getRoot();
     }
 
@@ -92,14 +100,14 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
                 binding.streetAutocompleteBackground.setVisibility(View.VISIBLE);
                 binding.streetAutocompleteOverlay.setIsVisible(true);
                 ViewCompat.setElevation(binding.appBar, 0);
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
+                //  getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
             } else {
                 binding.appBar.setOnClickListener(null);
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.streetAutocompleteBackground.setVisibility(View.GONE);
                 binding.streetAutocompleteOverlay.setIsVisible(false);
                 ViewCompat.setElevation(binding.appBar, 8);
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+                //     getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
             }
         });
         //binding autocomplete results to adapter
@@ -141,17 +149,23 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
 
     @Override
     public void onBackPressed() {
-        hideKeyBoard();
-        if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
-            viewModel.hideAutoCompleteLayout();
-        }
-        sharedViewModel.setSelectedProvince(null);
+        goBack();
     }
 
 
     private void hideKeyBoard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    void goBack() {
+        hideKeyBoard();
+        if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
+            viewModel.hideAutoCompleteLayout();
+        }
+        sharedViewModel.setSelectedProvince(null);
+        Navigation.findNavController(getView()).popBackStack();
+
     }
 
 
