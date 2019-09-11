@@ -89,7 +89,6 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         viewModel.setProvincesList(((MainActivity) getActivity()).getProvinces());
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
-        //show and hide autocomplete layout
         viewModel.showAutocompleteLayout.observe(this, (show) -> {
             if (getActivity() == null) {
                 return;
@@ -100,17 +99,14 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
                 binding.streetAutocompleteBackground.setVisibility(View.VISIBLE);
                 binding.streetAutocompleteOverlay.setIsVisible(true);
                 ViewCompat.setElevation(binding.appBar, 0);
-                //  getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
             } else {
                 binding.appBar.setOnClickListener(null);
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.streetAutocompleteBackground.setVisibility(View.GONE);
                 binding.streetAutocompleteOverlay.setIsVisible(false);
                 ViewCompat.setElevation(binding.appBar, 8);
-                //     getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
             }
         });
-        //binding autocomplete results to adapter
         viewModel.getAutocompleteResults().observe(this, (resource ->
         {
             if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
