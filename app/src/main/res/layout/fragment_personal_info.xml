@@ -16,6 +16,7 @@
             name="isEditing"
             type="Boolean" />
 
+
         <variable
             name="showEmailSubcopy"
             type="Boolean" />
@@ -107,13 +108,11 @@
                     app:afterTextChanged="@{(i, t) -> vm.passwordTextChanged(t.toString())}"
                     app:error="@{vm.passwordField.error}"
                     app:focus="@{vm.passwordField.hasFocus}"
-                    app:focusChanged="@{(v, b) -> vm.passwordField.setHasFocus(b)}"
                     app:layout_constraintTop_toBottomOf="@id/email_input"
-                    app:passwordToggleEnabled="true"
                     app:showError="@{vm.passwordField.showError}"
                     app:text="@={vm.passwordField.text}"
                     tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="241dp"/>
+                    tools:layout_editor_absoluteY="241dp" />
 
                 <include
                     android:id="@+id/password_validation"

@@ -64,7 +64,7 @@ public class PersonalInfoViewModel extends ViewModel {
     private MutableLiveData<Event> signOutEvent = new MutableLiveData<>();
     private boolean isUpdatingEmail;
     private boolean isUpdatingPassword;
-
+    private boolean isSamePhoneNumber;
     private ProfileSharedViewModel profileSharedViewModel;
     private static final String CREDENTIALS_KEY = "credentials";
     private String password;
@@ -165,7 +165,7 @@ public class PersonalInfoViewModel extends ViewModel {
                 ProfileRequest request = new ProfileRequest(profile);
                 isUpdatingEmail = !emailInputField.getText().equals(profile.getEmail());
                 isUpdatingPassword = !passwordField.getText().equals(password);
-                boolean isSamePhoneNumber = samePhoneNumber(phoneField.getText());
+                isSamePhoneNumber = samePhoneNumber(phoneField.getText());
                 boolean profileShouldBeUpdated = isUpdatingPassword || isUpdatingEmail || !isSamePhoneNumber;
 
                 if (profileShouldBeUpdated) {
@@ -207,7 +207,7 @@ public class PersonalInfoViewModel extends ViewModel {
                     }
                     if (isUpdatingEmail) {
                         email = null;
-                    } else {
+                    } else if (!isSamePhoneNumber) {
                         profileSharedViewModel.postToast(R.string.profile_update_toast);
                         //Update the saved profile of the app
                         sessionManager.getProfile().setPhone(phoneField.getText());
@@ -346,6 +346,14 @@ public class PersonalInfoViewModel extends ViewModel {
             } else {
                 if (!emailInputField.getText().equals(profile.getEmail())) {
                     validateEmailEvent.setValue(Event.newEvent(true));
+                } else if (!passwordField.getText().equals(password)) {
+                    Alert signoutAlert = new Alert();
+                    signoutAlert.title = R.string.profile_personnal_informations_email_alert_title;
+                    signoutAlert.message = R.string.profile_personnal_informations_email_alert_message;
+                    signoutAlert.positiveButton = R.string.profile_personnal_informations_email_alert_signout_button;
+                    signoutAlert.negativeButton = R.string.cancel;
+                    signoutAlert.positiveButtonClick = this::callUpdateProfile;
+                    profileSharedViewModel.postAlert(signoutAlert);
                 } else {
                     callUpdateProfile();
                 }

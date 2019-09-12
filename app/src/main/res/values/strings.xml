@@ -307,8 +307,8 @@
     <string name="profile_personnal_informations_email_invalid_alert_title">Invalid email</string>
     <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
     <string name="profile_personnal_informations_email_invalid_alert_message">Please use a different email account.</string>
-    <string name="profile_personnal_informations_email_alert_title">Sign out?</string>
-    <string name="profile_personnal_informations_email_alert_message">Changing your email will require you to sign in again.</string>
+    <string name="profile_personnal_informations_email_alert_title">Save changes</string>
+    <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign out and in again.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
     <string name="msg_am001_title">Changes were not saved.</string>
