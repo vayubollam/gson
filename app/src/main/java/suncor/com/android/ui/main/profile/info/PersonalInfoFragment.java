@@ -4,8 +4,6 @@ package suncor.com.android.ui.main.profile.info;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +11,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import javax.inject.Inject;
+
+import afu.org.checkerframework.checker.nullness.qual.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-
-import javax.inject.Inject;
-
-import afu.org.checkerframework.checker.nullness.qual.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
@@ -40,6 +37,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
     private ProfileSharedViewModel profileSharedViewModel;
     public static final String PERSONAL_INFO_FRAGMENT = "personal_info_fragment";
     public static final String EMAIL_EXTRA = "email_extra";
+    private boolean hasCleared = false;
 
 
     @Inject
@@ -158,6 +156,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
         binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+        binding.passwordInput.getPasswordToggle().setVisibility(View.INVISIBLE);
         binding.phoneInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.phoneInput, f));
         binding.emailInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.emailInput, f));
         binding.passwordInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.passwordInput, f));
@@ -178,8 +177,6 @@ public class PersonalInfoFragment extends MainActivityFragment {
             savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        binding.passwordInput.getPasswordToggle().setVisibility(View.INVISIBLE);
-        binding.getRoot().post(() -> binding.passwordInput.getEditText().addTextChangedListener(tmpTextWatcher));
     }
 
     @Override
@@ -204,6 +201,11 @@ public class PersonalInfoFragment extends MainActivityFragment {
             viewModel.getEmailInputField().setHasFocus(hasFocus);
         } else if (view == binding.passwordInput) {
             viewModel.getPasswordField().setHasFocus(hasFocus);
+            if (!hasCleared) {
+                binding.passwordInput.getEditText().setText("");
+                binding.passwordInput.getPasswordToggle().setVisibility(View.VISIBLE);
+                hasCleared = true;
+            }
         }
         if (hasFocus) {
             binding.scrollView.postDelayed(() -> {
@@ -215,23 +217,4 @@ public class PersonalInfoFragment extends MainActivityFragment {
             }, 200);
         }
     }
-
-    TextWatcher tmpTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            s.clear();
-            binding.passwordInput.getEditText().removeTextChangedListener(tmpTextWatcher);
-            binding.passwordInput.getPasswordToggle().setVisibility(View.VISIBLE);
-        }
-    };
-
 }
