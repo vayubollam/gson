@@ -429,14 +429,16 @@
     <string name="profile_preferences_enable_fingerprint_message">Activer l\'empreinte digitale?</string>
     <string name="profile_preferences_enable_fingerprint_hint">Ouvrez une session plus rapidement la prochaine fois.</string>
     <string name="profile_personnal_informations_password">Mot de passe</string>
-    <string name="update_password_progress">Mise à jour...</string>
+    <string name="update_password_progress">Mise à jour…</string>
     <string name="profile_security_question_header">Question de sécurité</string>
     <string name="profile_security_question_content">Nous voulons vous aider à protéger vos renseignements. Répondez à la question de sécurité pour continuer.</string>
     <string name="profile_security_question_error">Une réponse est exigée.</string>
     <string name="profile_security_question_continue">Continuer</string>
-    <string name="profile_security_question_checking_answer">Vérification de la réponse...</string>
-    <string name="profile_security_question_wrong_answer_alert_title">Mauvaise réponse.</string>
+    <string name="profile_security_question_checking_answer">Vérification de la réponse…</string>
+    <string name="profile_security_question_wrong_answer_alert_title">Mauvaise réponse</string>
     <string name="msg_001_dialog_cancel">Annuler</string>
     <string name="msg_001_dialog_try_again">Essayez de nouveau</string>
+    <string name="profile_uodate_account_toast">Les changements ont été sauvegardés.</string>
+    <string name="profile_security_question_load_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
 
 </resources>

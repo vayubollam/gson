@@ -447,6 +447,8 @@
     <string name="profile_security_question_checking_answer">Checking your answer…</string>
     <string name="profile_security_question_wrong_answer_alert_title">Incorrect answer.</string>
     <string name="profile_personnal_informations_password">Password</string>
-    <string name="update_password_progress">Updating Password...</string>
+    <string name="update_password_progress">Updating Password…</string>
+    <string name="profile_uodate_account_toast">New changes saved</string>
+    <string name="profile_security_question_load_try_again">try again</string>
 
 </resources>

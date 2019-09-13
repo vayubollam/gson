@@ -105,7 +105,7 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.transactions_try_again, () -> mViewModel.loadQuestion()));
+        binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.profile_security_question_load_try_again, () -> mViewModel.loadQuestion()));
         return binding.getRoot();
     }
 
