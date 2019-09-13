@@ -219,7 +219,7 @@ public class SuncorTextInputLayout extends LinearLayout {
             if (shouldShowError) {
                 errorImage.setVisibility(VISIBLE);
             } else {
-                errorImage.setVisibility(GONE);
+                errorImage.setVisibility(INVISIBLE);
             }
             boolean shouldShowTextView = !TextUtils.isEmpty(errorTextView.getText());
             errorTextView.setVisibility(shouldShowTextView ? VISIBLE : GONE);
