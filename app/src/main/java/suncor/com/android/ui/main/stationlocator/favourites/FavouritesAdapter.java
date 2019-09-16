@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
-import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.SwipeableStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
@@ -26,9 +26,11 @@ public class FavouritesAdapter extends RecyclerSwipeAdapter<FavouritesAdapter.Fa
     private ArrayList<StationItem> stationItems = new ArrayList<>();
     private LatLng userLocation = null;
     private FavouritesFragment fragment;
+    private DistanceApi distanceApi;
 
-    public FavouritesAdapter(FavouritesFragment fragment) {
+    public FavouritesAdapter(FavouritesFragment fragment, DistanceApi distanceApi) {
         this.fragment = fragment;
+        this.distanceApi = distanceApi;
         setMode(Attributes.Mode.Single);
     }
 
@@ -69,7 +71,7 @@ public class FavouritesAdapter extends RecyclerSwipeAdapter<FavouritesAdapter.Fa
             stationItem.setDistanceDuration(new DirectionsResult(-1, -1));
         } else if (stationItem.getDistanceDuration() == null) {
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-            DirectionsApi.getInstance().enqueuJob(userLocation, dest)
+            distanceApi.enqueuJob(userLocation, dest)
                     .observe(fragment, result -> { //TODO choose right lifecycle owner
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.setDistanceDuration(result.data);

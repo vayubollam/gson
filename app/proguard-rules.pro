@@ -19,3 +19,33 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+-dontobfuscate
+
+####################################################################################################
+##############################  IBM MobileFirst Platform configuration  ############################
+####################################################################################################
+# Annotations are represented by attributes that have no direct effect on the execution of the code.
+-keepattributes *Annotation*
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepattributes InnerClasses
+-keep class **.R
+-keep class **.R$* {
+    <fields>;
+}
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+-keep class com.worklight.androidgap.push.** { *; }
+-keep class com.worklight.wlclient.push.** { *; }
+-keep class com.worklight.common.security.AppAuthenticityToken { *; }
+####################################################################################################
+
+#OkHttp
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**

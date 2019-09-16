@@ -7,11 +7,13 @@ public class CardStatus implements Parcelable {
     public static final Creator<CardStatus> CREATOR = new Creator<CardStatus>() {
         @Override
         public CardStatus createFromParcel(Parcel in) {
+
             return new CardStatus(in);
         }
 
         @Override
         public CardStatus[] newArray(int size) {
+
             return new CardStatus[size];
         }
     };

@@ -1,0 +1,98 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="suncor.com.android.ui.main.profile.about.AboutFragment">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        android:clickable="true"
+        android:orientation="vertical">
+
+    <suncor.com.android.uicomponents.SuncorAppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dragable="true"
+        app:title="@string/profile_about_header" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="24dp"
+        app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
+    <LinearLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/horizontal_divider" />
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/app_version_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?selectableItemBackground"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:text="@string/profile_about_app_version"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Body" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/horizontal_divider" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/legal_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?selectableItemBackground"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:text="@string/profile_about_legal"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Body" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/horizontal_divider" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/privacy_policy_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?selectableItemBackground"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:text="@string/profile_about_privacy_policy"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Body" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/horizontal_divider" />
+
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

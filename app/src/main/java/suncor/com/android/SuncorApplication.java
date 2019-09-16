@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
-import suncor.com.android.data.repository.favourite.FavouriteRepository;
+import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.di.DaggerAppComponent;
 import suncor.com.android.mfp.MFPRequestInterceptor;
 import suncor.com.android.mfp.MfpLogging;
@@ -19,7 +19,7 @@ import suncor.com.android.utilities.Timber;
 
 public class SuncorApplication extends DaggerApplication {
 
-    public static final int DEFAULT_TIMEOUT = 20_000;
+    public static final int DEFAULT_TIMEOUT = 30_000;
 
 
     private boolean splashShown = false;

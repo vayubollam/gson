@@ -47,6 +47,7 @@
                     android:id="@+id/email_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/gibson_semibold"
                     android:text="@string/profile_preferences_email_header"
                     android:textAppearance="@style/Body"
@@ -58,11 +59,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:checked="@={vm.emailOffers}"
+                    android:checked="@{vm.emailOffers &amp;&amp; !vm.donotEmail}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
                     android:text="@string/profile_preferences_enable_email_offers_message"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setEmailOffers(checked)}"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="@id/email_header"
                     app:layout_constraintTop_toBottomOf="@id/email_header" />
@@ -72,12 +74,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:checked="@={!vm.emailOffers}"
+                    android:checked="@{!vm.emailOffers &amp;&amp; vm.donotEmail}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
                     android:text="@string/profile_preferences_disable_email_offers_message"
                     android:textAppearance="@style/Body"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setEmailOffers(!checked)}"
                     app:layout_constraintStart_toStartOf="@id/email_header"
                     app:layout_constraintTop_toBottomOf="@id/enable_offers_checkbox" />
 
@@ -98,10 +101,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:checked="@={vm.textOffers}"
+                    android:checked="@{vm.textOffers}"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setTextOffers(checked)}"
                     android:text="@string/profile_preferences_enable_text_offers_message"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="@id/sms_header"
@@ -117,21 +121,63 @@
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.22"
                     android:paddingTop="4dp"
+                    android:onCheckedChanged="@{(switch, checked) -> vm.setTextOffers(!checked)}"
                     android:text="@string/profile_preferences_disable_text_offers_message"
                     android:textAppearance="@style/Body"
                     app:layout_constraintStart_toStartOf="@id/email_header"
                     app:layout_constraintTop_toBottomOf="@id/enable_sms_checkbox"
                     app:visibleGone="@{vm.hasPhoneNumber}" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/authentication_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/profile_preferences_authentication_header"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/disable_sms_checkbox"
+                    app:visibleGone="@{vm.supportsFingerprint()}" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/enable_fingerprint_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:checked="@={vm.enableFingerprint}"
+                    android:gravity="top"
+                    android:lineSpacingMultiplier="1.22"
+                    android:paddingTop="4dp"
+                    android:text="@string/profile_preferences_enable_fingerprint_message"
+                    android:textAppearance="@style/Body"
+                    app:layout_constraintStart_toStartOf="@id/authentication_header"
+                    app:layout_constraintTop_toBottomOf="@id/authentication_header"
+                    app:visibleGone="@{vm.supportsFingerprint()}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/enable_fingerprint_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginTop="2dp"
+                    android:lineSpacingMultiplier="1.17"
+                    android:text="@string/profile_preferences_enable_fingerprint_hint"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintTop_toBottomOf="@id/enable_fingerprint_checkbox"
+                    app:visibleGone="@{vm.supportsFingerprint()}"/>
+
+
                 <View
                     android:id="@+id/divider"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="32dp"
                     android:background="@drawable/horizontal_divider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/disable_sms_checkbox" />
+                    app:layout_constraintTop_toBottomOf="@id/enable_fingerprint_hint" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/address"
@@ -144,9 +190,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider"
-                    app:layout_constraintVertical_chainStyle="spread_inside"/>
+                    app:layout_constraintVertical_chainStyle="spread_inside" />
 
-                <com.google.android.material.button.MaterialButton
+                <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/save_button"
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"

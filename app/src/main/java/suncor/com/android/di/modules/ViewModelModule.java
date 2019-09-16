@@ -11,19 +11,22 @@ import suncor.com.android.di.viewmodel.ViewModelKey;
 import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 import suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
+import suncor.com.android.ui.login.CreatePasswordViewModel;
+import suncor.com.android.ui.login.LoginViewModel;
 import suncor.com.android.ui.main.cards.add.AddCardViewModel;
 import suncor.com.android.ui.main.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.main.cards.list.CardsViewModel;
 import suncor.com.android.ui.main.home.HomeViewModel;
+import suncor.com.android.ui.main.profile.address.AddressViewModel;
 import suncor.com.android.ui.main.profile.help.FAQViewModel;
 import suncor.com.android.ui.main.profile.info.PersonalInfoViewModel;
-import suncor.com.android.ui.main.profile.transcations.TransactionsViewModel;
 import suncor.com.android.ui.main.profile.preferences.PreferencesViewModel;
+import suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationViewModel;
+import suncor.com.android.ui.main.profile.transcations.TransactionsViewModel;
+import suncor.com.android.ui.main.rewards.RewardsSignedInViewModel;
 import suncor.com.android.ui.main.stationlocator.StationsViewModel;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.main.stationlocator.search.SearchViewModel;
-import suncor.com.android.ui.login.CreatePasswordViewModel;
-import suncor.com.android.ui.login.LoginViewModel;
 
 @Module
 public abstract class ViewModelModule {
@@ -82,6 +85,25 @@ public abstract class ViewModelModule {
     @ViewModelKey(PreferencesViewModel.class)
     protected abstract ViewModel addPreferencesViewModel(PreferencesViewModel preferencesViewModel);
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(FAQViewModel.class)
+    protected abstract ViewModel faqViewModel(FAQViewModel faqViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CardDetailsViewModel.class)
+    protected abstract ViewModel cardDetailViewModel(CardDetailsViewModel cardDetailsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TransactionsViewModel.class)
+    protected abstract ViewModel transactionsViewModel(TransactionsViewModel transactionsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RewardsSignedInViewModel.class)
+    protected abstract ViewModel reedeemViewModel(RewardsSignedInViewModel rewardsSignedInViewModel);
 
     //EnrollmentActivity ViewModels
     @Binds
@@ -112,17 +134,11 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FAQViewModel.class)
-    protected abstract ViewModel faqViewModel(FAQViewModel faqViewModel);
+    @ViewModelKey(SecurityQuestionValidationViewModel.class)
+    protected abstract ViewModel createSecurityQuestionValidationViewModel(SecurityQuestionValidationViewModel securityQuestionValidationViewModel);
 
     @Binds
     @IntoMap
-    @ViewModelKey(CardDetailsViewModel.class)
-    protected abstract ViewModel cardDetailViewModel(CardDetailsViewModel cardDetailsViewModel);
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(TransactionsViewModel.class)
-    protected abstract ViewModel transactionsViewModel(TransactionsViewModel transactionsViewModel);
-
+    @ViewModelKey(AddressViewModel.class)
+    protected abstract ViewModel createAddressViewModel(AddressViewModel addressViewModel);
 }

@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,23 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableBoolean;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,24 +55,9 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.ViewCompat;
-import androidx.databinding.Observable;
-import androidx.databinding.ObservableBoolean;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.FragmentStationsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
@@ -62,8 +65,9 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
 
@@ -90,7 +94,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     private FragmentStationsBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private ObservableBoolean isErrorCardVisible = new ObservableBoolean(false);
-
+    String listString = " ";
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
     @Inject
@@ -101,6 +105,9 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     @Inject
     SessionManager sessionManager;
+
+    @Inject
+    DistanceApi distanceApi;
 
     //convert vector images to bitmap in order to use as lastSelectedMarker icons
     private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
@@ -156,7 +163,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet);
 
-        stationAdapter = new StationAdapter(this, bottomSheetBehavior);
+        stationAdapter = new StationAdapter(this, bottomSheetBehavior, distanceApi);
+        stationAdapter.setUserLocation(mViewModel.getLastGpsLocation());
         binding.cardRecycler.setAdapter(stationAdapter);
         binding.cardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false));
         binding.cardRecycler.addOnItemTouchListener(new StationCardTouchListener(this, stationAdapter.getStations(), bottomSheetBehavior));
@@ -222,6 +230,11 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         if (mViewModel.userLocation.getValue() == null) {
             checkAndLocate();
         }
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "gas-station-locations";
     }
 
     public void checkAndLocate() {
@@ -319,16 +332,24 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 }
             }
         }));
+        mViewModel.filters.observe(getViewLifecycleOwner(), v -> {
+                    for (String s : v){
+                        listString += s + " | ";
+                    }
+
+        }
+                 );
 
         mViewModel.queryText.observe(getViewLifecycleOwner(), (text) ->
         {
             binding.addressSearchText.setText(text);
+            AnalyticsUtils.logEvent(getContext(), "Location_search", new Pair<>("location", text), new Pair<>("filtersApplied", listString));
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });
     }
 
     @Override
-    protected boolean isStatusBarTransparent() {
+    protected boolean isFullScreen() {
         return true;
     }
 
@@ -443,23 +464,34 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             binding.filtersLayout.setVisibility(View.GONE);
         } else {
             binding.filtersLayout.setVisibility(View.VISIBLE);
-
             binding.filtersChipgroup.removeAllViews();
-            for (String amenity : filterList) {
+            for (String filter : filterList) {
+                String filterText;
+                if (filter.equals(FiltersFragment.CARWASH_ALL_WASHES_KEY)) {
+                    filterText = getString(R.string.station_filters_all_washes);
+                } else if (filter.equals(FiltersFragment.CARWASH_TOUCHLESS_KEY)) {
+                    filterText = getString(R.string.station_filter_touchless_only);
+                } else {
+                    filterText = Station.FULL_AMENITIES.get(filter);
+                }
                 Chip chip = new Chip(getActivity());
-                chip.setText(Station.FULL_AMENITIES.get(amenity));
-                chip.setTag(amenity);
-                chip.setOnCloseIconClickListener(v -> {
+                chip.setText(filterText);
+                chip.setElevation(8);
+                chip.setTag(filter);
+                View.OnClickListener listener = v -> {
                     ArrayList<String> currentFilters = mViewModel.filters.getValue();
                     currentFilters.remove(v.getTag().toString());
                     mViewModel.setCurrentFilters(currentFilters);
-                });
+                };
+                chip.setOnClickListener(listener);
+                chip.setOnCloseIconClickListener(listener);
                 binding.filtersChipgroup.addView(chip);
             }
             Chip clearFiltersChip = new Chip(getActivity());
             clearFiltersChip.setText(R.string.station_clear_all_filters_chip);
             clearFiltersChip.setTextColor(getResources().getColor(R.color.red));
             clearFiltersChip.setCloseIconVisible(false);
+            clearFiltersChip.setElevation(8);
             clearFiltersChip.setOnClickListener((v) -> {
                 mViewModel.clearFilters();
             });
@@ -554,6 +586,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+        //AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enable_location_dialog_title)));
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, null);

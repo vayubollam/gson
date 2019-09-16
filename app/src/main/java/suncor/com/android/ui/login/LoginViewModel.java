@@ -1,11 +1,12 @@
 package suncor.com.android.ui.login;
 
-import javax.inject.Inject;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import javax.inject.Inject;
+
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
@@ -26,8 +27,8 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> passwordResetEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> callCustomerService = new MutableLiveData<>();
     private MutableLiveData<Event<String>> createPasswordEvent = new MutableLiveData<>();
+    private MutableLiveData<Event<Boolean>> navigateToHomeEvent = new MutableLiveData<>();
     private boolean isLoginFromEnrollment;
-
     @Inject
     public LoginViewModel(SessionManager sessionManager) {
         this.passwordInputField = new InputField(R.string.login_password_field_error);
@@ -84,10 +85,13 @@ public class LoginViewModel extends ViewModel {
                         )));
                         break;
                     case OTHER_FAILURE:
-                        loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
+                        LoginFailResponse failResponse = new LoginFailResponse(
                                 R.string.msg_e001_title,
                                 new ErrorMessage(R.string.msg_e001_message)
-                        )));
+
+                        );
+                        failResponse.positiveButtonCallback = () -> navigateToHomeEvent.postValue(Event.newEvent(true));
+                        loginFailedEvent.postValue(Event.newEvent(failResponse));
                         break;
                     case PASSWORD_RESET:
                         createPasswordEvent.postValue(Event.newEvent(response.getAdditionalData()));
@@ -108,11 +112,11 @@ public class LoginViewModel extends ViewModel {
         isLoginFromEnrollment = loginFromEnrollment;
     }
 
-    public MutableLiveData<Event<String>> getCreatePasswordEvent() {
+    public LiveData<Event<String>> getCreatePasswordEvent() {
         return createPasswordEvent;
     }
 
-    public MutableLiveData<Event<Boolean>> getCallCustomerService() {
+    public LiveData<Event<Boolean>> getCallCustomerService() {
         return callCustomerService;
     }
 
@@ -126,6 +130,10 @@ public class LoginViewModel extends ViewModel {
 
     public LiveData<Event<LoginFailResponse>> getLoginFailedEvent() {
         return loginFailedEvent;
+    }
+
+    public LiveData<Event<Boolean>> getNavigateToHomeEvent() {
+        return navigateToHomeEvent;
     }
 
     public LiveData<Boolean> getIsLoading() {
@@ -144,6 +152,14 @@ public class LoginViewModel extends ViewModel {
         if (this.validateInput()) {
             loginEvent.postValue(Event.newEvent(true));
         }
+    }
+
+    public void fingerPrintConfirmed(String email, String password) {
+        emailInputField.setText(email);
+        passwordInputField.setText(password);
+        loginEvent.postValue(Event.newEvent(true));
+
+
     }
 
     private boolean validateInput() {
@@ -170,14 +186,17 @@ public class LoginViewModel extends ViewModel {
     public static class LoginFailResponse {
         int title;
         ErrorMessage message;
-        int buttonTitle;
-        ErrorAlertCallback callback;
+        int negativeButtonTitle;
+        ErrorAlertCallback negativeButtonCallBack;
+        int positiveButtonTitle = R.string.ok;
+        ErrorAlertCallback positiveButtonCallback;
 
-        public LoginFailResponse(int title, ErrorMessage message, int buttonTitle, ErrorAlertCallback callback) {
+        public LoginFailResponse(int title, ErrorMessage message, int negativeButtonTitle, ErrorAlertCallback negativeButtonCallBack) {
             this.title = title;
             this.message = message;
-            this.callback = callback;
-            this.buttonTitle = buttonTitle;
+            this.negativeButtonCallBack = negativeButtonCallBack;
+            this.negativeButtonTitle = negativeButtonTitle;
+
         }
 
         public LoginFailResponse(int title, ErrorMessage message) {

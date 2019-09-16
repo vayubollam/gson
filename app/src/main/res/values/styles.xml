@@ -12,6 +12,7 @@
         <item name="suncorTextInputStyle">@style/TextInputLayoutStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
         <item name="suncorAppBarLayoutStyle">@style/AppBarStyle</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="P">@color/black_60</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
@@ -21,6 +22,17 @@
         <item name="android:windowDisablePreview">true</item>
     </style>
 
+    <style name="ModalWebViewStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/red</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/ModalWebAnimation</item>
+    </style>
+
+    <style name="ModalWebAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
 
     <!-- Text appearances -->
     <style name="Headline1" parent="Base.TextAppearance.AppCompat.Headline">
@@ -171,6 +183,7 @@
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
         <item name="android:lines">1</item>
+        <item name="rippleColor">@color/black_40</item>
     </style>
 
     <style name="LinkButton.Black">
@@ -323,6 +336,7 @@
 
     <style name="DialogButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="fontFamily">@font/gibson_semibold</item>
+        <item name="android:textColor">@color/blue</item>
     </style>
 
     <!-- end dialog -->
@@ -367,5 +381,4 @@
         <item name="itemIconTint">@color/bottom_nav_item_tint</item>
         <item name="itemTextColor">@color/bottom_nav_item_tint</item>
     </style>
-
 </resources>

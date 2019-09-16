@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="navigation_profile_tab">Profil</string>
-    <string name="navigation_stations_tab">Établissements</string>
+    <string name="navigation_profile_tab">Comptes</string>
+    <string name="navigation_stations_tab">Stations</string>
     <string name="station_search_hint">Recherche</string>
     <string name="station_distance_generic">%.1f km de vous</string>
     <string name="station_duration_generic">%1s en auto</string>
@@ -50,7 +50,7 @@
     </plurals>
 
     <string name="favourites_no_result_text">Vous pouvez utiliser vos Favoris pour trouver rapidement le lave-auto que vous aimez ou le dépanneur offrant votre saveur préférée de barbotine.</string>
-    <string name="dashboard_nearby_card_title">À proximité</string>
+    <string name="home_nearest_card_title">À proximité</string>
     <string name="suggestions_fragment_nearby_title">À proximité</string>
     <string name="filters_apply_button">Appliquer</string>
     <string name="filters_clear_button">Effacer filtres</string>
@@ -89,8 +89,8 @@
     <string name="enrollment_postalcode_label">Code postal</string>
     <string name="enrollment_postalcode_matching_province_error">Le code postal saisi ne correspond pas à la province sélectionnée.</string>
     <string name="enrollment_phone_label">Numéro de téléphone (facultatif)</string>
-    <string name="enrollment_news_label">Oui, j\'aimerais recevoir des nouvelles, des offres et des rabais chez les partenaires de Petro‑Points.</string>
-    <string name="enrollment_news_unsubscribe_hint">Vous pouvez vous désinscrire en tout temps.</string>
+    <string name="enrollment_email_offers_label">Oui, j\'aimerais recevoir des nouvelles, des offres et des rabais chez les partenaires de Petro‑Points.</string>
+    <string name="enrollment_email_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
@@ -165,15 +165,15 @@
     <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
     <string name="customer_support_number">18006680222</string>
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
-    <string name="dashboard_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
-    <string name="dashboard_nearest_no_stations_found">Aucun emplacement trouvé</string>
-    <string name="dashboard_nearest_enable_gps_message">"Petro-Canada utilise les services de localisation pour montrer les établissements près de chez vous  "</string>
-    <string name="dashboard_nearest_try_again">Veuillez réessayer</string>
-    <string name="dashboard_nearest_loading_title">Cherchons la station le plus près</string>
-    <string name="dashboard_nearest_enable_gps_title">Activer les services de localisation</string>
-    <string name="dashboard_nearest_error_body">Nous ne trouvons pas l\'établissement le plus près pour le moment. Veuillez réessayer plus tard.</string>
-    <string name="dashboard_nearest_error_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
-    <string name="dashboard_nearest_error_title">Quelque chose a mal tourné</string>
+    <string name="home_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
+    <string name="home_nearest_no_stations_found">Aucun emplacement trouvé</string>
+    <string name="home_nearest_enable_gps_message">"Petro-Canada utilise les services de localisation pour montrer les établissements près de chez vous  "</string>
+    <string name="home_nearest_try_again">Veuillez réessayer</string>
+    <string name="home_nearest_loading_title">Cherchons la station le plus près</string>
+    <string name="home_nearest_enable_gps_title">Activer les services de localisation</string>
+    <string name="home_nearest_error_body">Nous ne trouvons pas l\'établissement le plus près pour le moment. Veuillez réessayer plus tard.</string>
+    <string name="home_nearest_error_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
+    <string name="home_nearest_error_title">Quelque chose a mal tourné</string>
     <string name="msg_sl006">Station non ajoutée</string>
     <string name="msg_sl007">Station non supprimée</string>
     <string name="login_create_password_header">Nouveau mot de passe</string>
@@ -291,6 +291,9 @@
         <item quantity="one">%s lavage restant</item>
         <item quantity="other">%s lavages restants</item>
     </plurals>
+
+    <string name="cards_partners_balance_value">20 %</string>
+
     <string name="cards_details_close">Fermer</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_format_inline_error">Veuillez entrer une adresse courriel valide.</string>
@@ -299,14 +302,14 @@
     <string name="profile_personnal_informations_email_invalid_alert_title">Courriel invalide</string>
     <string name="profile_personnal_informations_email_empty_alert_message">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_invalid_alert_message">Veuillez utiliser un autre adresse courriel.</string>
-    <string name="profile_personnal_informations_email_alert_title">Déconnexion ?</string>
-    <string name="profile_personnal_informations_email_alert_message">Pour modifier votre courriel, vous devrez ouvrir une autre session.</string>
-    <string name="profile_personnal_informations_email_alert_signout_button">Déconnexion</string>
+    <string name="profile_personnal_informations_email_alert_title">Enregistrer les changements</string>
+    <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez fermer votre session et l\'ouvrir de nouveau.</string>
+    <string name="profile_personnal_informations_email_alert_signout_button">Fermer la session</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">Cette adresse courriel est déjà liée à un compte</string>
-    <string name="profile_personnal_informations_failure_alert_title">Les modifications des renseignements personnels n\'ont pas été sauvegardées.</string>
+    <string name="msg_am001_title">Les modifications n\'ont pas été sauvegardées.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Veuillez utiliser un autre adresse courriel ou annuler.</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Veuillez utiliser un autre adresse courriel.</string>
-    <string name="profile_personnal_informations_failure_alert_message">Veuillez réessayer plus tard.</string>
+    <string name="msg_am001_message">Veuillez réessayer plus tard.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
     <string name="profile_personnal_informations_update_toast">Vos renseignements personnels ont été mis à jour.</string>
@@ -333,5 +336,109 @@
     <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668-0222  .  TTY : 1 (888) 290-7377\t</string>
     <string name="profile_preferences_header">Changer mes préférences.</string>
     <string name="cards_add_fragment_done_button">Fini</string>
+    <string name="transaction_title_pe">points gagnés</string>
+    <string name="transaction_title_pp">" points ajustés"</string>
+    <string name="transaction_title_redemption">points échangés</string>
+    <string name="transaction_type_bonus">Prime</string>
+    <string name="transaction_type_csa">Ajustement</string>
+    <string name="transaction_type_ppt">Transfert</string>
+    <string name="transaction_type_purchase">Achat</string>
+    <string name="transaction_type_redemption">Échange</string>
+    <string name="transaction_detail_amount">Montant</string>
+    <string name="transaction_detail_location_title">Établissement</string>
+    <string name="transaction_detail_description_title">La description</string>
+    <string name="transaction_detail_base_points">Points ordinaires</string>
+    <string name="transaction_detail_bonus_points">Points supplémentaires</string>
+    <string name="transaction_detail_date">Date</string>
+    <string name="transaction_detail_total_points">Points totaux</string>
+    <string name="transaction_detail_transaction_type">Transaction</string>
+    <string name="transaction_details_header">Détails</string>
+    <string name="transactions_point_summary_header">Résumé de points</string>
+    <string name="profile_about_app_version">Version de l\'application</string>
+    <string name="profile_about_legal">Avis juridique</string>
+    <string name="profile_about_privacy_policy">Confidentialité</string>
+    <string name="profile_about_header">À propos</string>
+    <string name="profile_about_legal_header">Avis juridique</string>
+    <string name="profile_about_privacy_policy_header">Conditions</string>
+    <string name="profile_about_legal_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
+    <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
+    <string name="home_signedin_scan_button">Scannez</string>
+    <string name="home_tab_privacy_policy">Avis juridique</string>
+    <string name="home_tab_terms_amp_conditions">Conditions</string>
+    <string name="home_signedin_greetings_morning">Bonjour,\n%s.</string>
+    <string name="home_signedin_greetings_afternoon">Bonjour,\n%s.</string>
+    <string name="home_signedin_greetings_evening">Bonsoir,\n%s.</string>
+    <string name="home_signedin_petropoints_balance">Vous avez %s points ou %d $ de rabais.</string>
+    <string name="home_enrollment_greeting">Vos %s points apparaîtront dans environ 15 minutes.</string>
+    <string name="home_enrollment_greeting_title">Merci !</string>
+    <string name="home_enrollment_greeting_dismiss">Fermer</string>
+    <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
+    <string name="offers_banner_2_text">Petro\u2011Points🅪 = Essence gratuite.</string>
+    <string name="offers_banner_2_button">En savoir plus</string>
+    <string name="offers_banner_3_text">Élaine Roy, un membre de votre collectivité.</string>
+    <string name="offers_banner_3_button">Voici Élaine</string>
+    <string name="offers_banner_3_link">As0tktgN9Oc</string>
+    <string name="offers_banner_4_text">Voyez notre réseau de recharge rapide prendre forme.</string>
+    <string name="offers_banner_4_button">Voir la vidéo</string>
+    <string name="offers_banner_5_text">Économisez 3 ¢/litre sur gaz.</string>
+    <string name="offers_banner_5_button">Pour commencer</string>
+    <string name="offers_leaving_app_alert_title">Vous quittez notre application.</string>
+    <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
+    <string name="offers_leaving_app_alert_button">Continuer</string>
+    <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
+    <string name="transaction_type_pp">Petro Points</string>
+    <string name="rewards_guest_join_button">Inscrivez-vous et commencez à économiser</string>
+    <string name="navigation_rewards_tab">Petro-Points</string>
+    <string name="cards_remove_card_alert_title">Êtes-vous sûr?</string>
+    <string name="cards_remove_card_alert_message">Cela supprimera la carte de votre compte et tout solde résiduel ne sera plus protégé.</string>
+    <string name="cards_remove_card_alert_remove">Supprimer</string>
+    <string name="cards_remove_card_alert_cancel">Annuler</string>
+    <string name="card_remove_bottom_sheet_cancel">Annuler</string>
+    <string name="card_remove_bottom_sheet_title">Supprimer la carte</string>
+    <string name="card_remove_bottom_sheet_message">Retirer cette carte de mon compte.</string>
+    <string name="removing_card">Retrait de la carte</string>
+    <string name="msg_cm001_title">Quelque chose a mal tourné de notre côté</string>
+    <string name="msg_cm001_message">Vos cartes ne sont pas disponibles a ce moment.</string>
+    <string name="msg_cm001_button">Veuillez essayer à nouveau</string>
+    <string name="rewards_signedin_discoery_title">Petro-Points</string>
+    <string name="rewards_signedin_petropoints_balance">Vous avez\n%s points</string>
+    <string name="rewards_signedin_petropoints_value">ou %d $ de rabais</string>
+    <string name="rewards_signedin_how_to_redeem_title">Comment échanger</string>
+    <string name="rewards_signedin_header_balance">Vous avez %s points</string>
+    <string name="navigation_rewards_signedin_tab">Échanger</string>
+    <string name="cards_add_fragment_cvv_field_empty_error">Veuillez entrer le code de sécurité.</string>
+    <string name="cards_add_fragment_cvv_field_format_error">Votre code de sécurité est erroné.</string>
+    <string name="enrollment_sms_offers_label">Oui, j’aimerais recevoir des offres spéciales et des alertes par SMS de Petro\\u2011Points.</string>
+    <string name="enrollment_sms_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
+    <string name="rewards_details_close">Fermer</string>
+    <string name="station_filters_all_washes">Tous les lave-auto</string>
+    <string name="station_filter_touchless_only">Sans contact</string>
+    <string name="update_required_dialog_title">Version plus récente nécessaire</string>
+    <string name="update_required_dialog_message">Veuillez mettre l\'application à jour pour continuer.</string>
+    <string name="update_required_dialog_button">Mettre à jour</string>
+    <string name="settings_failure_dialog_button">Fermer l\'application.</string>
+    <string name="settings_failure_dialog_message">Veuillez réessayer plus tard.</string>
+    <string name="settings_failure_dialog_title">Nous ne pouvons pas charger l\'application.</string>
+    <string name="login_fingerprint_alert_title">Ouvrir une session</string>
+    <string name="login_fingerprint_alert_negative_button">Annuler</string>
+    <string name="login_fingerprint_alert_desc">Appuyez sur le capteur d\'empreinte digitale.</string>
+    <string name="sign_enable_fp_title">Activer l\'empreinte digitale?</string>
+    <string name="sign_enable_fb_message">Ouvrez une session plus rapidement la prochaine fois à l\'aide de votre empreinte digitale.</string>
+    <string name="sign_enable_fb_possitive_button">Activer</string>
+    <string name="sign_enable_fb_negative_button">Annuler</string>
+    <string name="profile_preferences_enable_fingerprint_message">Activer l\'empreinte digitale?</string>
+    <string name="profile_preferences_enable_fingerprint_hint">Ouvrez une session plus rapidement la prochaine fois.</string>
+    <string name="profile_personnal_informations_password">Mot de passe</string>
+    <string name="update_password_progress">Mise à jour…</string>
+    <string name="profile_security_question_header">Question de sécurité</string>
+    <string name="profile_security_question_content">Nous voulons vous aider à protéger vos renseignements. Répondez à la question de sécurité pour continuer.</string>
+    <string name="profile_security_question_error">Une réponse est exigée.</string>
+    <string name="profile_security_question_continue">Continuer</string>
+    <string name="profile_security_question_checking_answer">Vérification de la réponse…</string>
+    <string name="profile_security_question_wrong_answer_alert_title">Mauvaise réponse</string>
+    <string name="msg_001_dialog_cancel">Annuler</string>
+    <string name="msg_001_dialog_try_again">Essayez de nouveau</string>
+    <string name="profile_uodate_account_toast">Les changements ont été sauvegardés.</string>
+    <string name="profile_security_question_load_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
 
 </resources>

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -24,20 +23,20 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerFragment;
+
 import suncor.com.android.LocationLiveData;
-import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSearchBinding;
 import suncor.com.android.databinding.NearbyLayoutBinding;
 import suncor.com.android.databinding.RecentlySearchedLayoutBinding;
 import suncor.com.android.databinding.SuggestionsLayoutBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.stationlocator.StationsViewModel;
 import suncor.com.android.utilities.LocationUtils;
 
-public class SearchFragment extends DaggerFragment {
+public class SearchFragment extends MainActivityFragment {
     private SearchViewModel viewModel;
     private StationsViewModel parentViewModel;
     private FragmentSearchBinding binding;
@@ -64,9 +63,6 @@ public class SearchFragment extends DaggerFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_4));
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         nearbySearchBinding = binding.nearbyLayout;
         SuggestionsLayoutBinding suggestionsLayoutBinding = binding.suggestionsLayout;
@@ -138,6 +134,11 @@ public class SearchFragment extends DaggerFragment {
         });
     }
 
+    @Override
+    protected String getScreenName() {
+        return "gas-station-locations-search";
+    }
+
     private void placeSuggestionClicked(PlaceSuggestion placeSuggestion) {
         viewModel.getCoordinatesOfPlace(placeSuggestion)
                 .observe(SearchFragment.this, (resouce) -> {
@@ -173,14 +174,6 @@ public class SearchFragment extends DaggerFragment {
         } catch (NullPointerException ignored) {
         }
         Navigation.findNavController(getView()).popBackStack();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
-
     }
 
     private void showKeyBoard() {

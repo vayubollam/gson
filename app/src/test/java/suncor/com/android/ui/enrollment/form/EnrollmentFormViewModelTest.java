@@ -11,12 +11,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EnrollmentsApi;
-import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
+import suncor.com.android.data.account.EnrollmentsApi;
+import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.InputField;
+import suncor.com.android.utilities.FingerprintManager;
 
 import static org.mockito.Mockito.when;
 
@@ -26,6 +27,7 @@ public class EnrollmentFormViewModelTest {
     private EnrollmentsApi api = Mockito.mock(EnrollmentsApi.class);
     private SessionManager sessionManager = Mockito.mock(SessionManager.class);
     private CanadaPostAutocompleteProvider canadaPostAutocompleteProvider = Mockito.mock(CanadaPostAutocompleteProvider.class);
+    private FingerprintManager fingerprintManager = Mockito.mock(FingerprintManager.class);
 
 
     @Rule
@@ -33,7 +35,7 @@ public class EnrollmentFormViewModelTest {
 
     @Before
     public void init() {
-        viewModel = new EnrollmentFormViewModel(api, sessionManager, canadaPostAutocompleteProvider);
+        viewModel = new EnrollmentFormViewModel(api, sessionManager, canadaPostAutocompleteProvider, fingerprintManager);
     }
 
     @Test

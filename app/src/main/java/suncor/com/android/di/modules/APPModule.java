@@ -22,7 +22,7 @@ public class APPModule {
     //WLClient is passed as a parameter to ensure that WLAuthorizationManager is instantiated
     @Provides
     @Singleton
-    WLAuthorizationManager providesAuthorizationManager(WLClient client) {
+    WLAuthorizationManager providesAuthorizationManager() {
         return WLAuthorizationManager.getInstance();
     }
 

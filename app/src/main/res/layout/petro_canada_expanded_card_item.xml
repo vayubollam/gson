@@ -19,6 +19,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="40dp"
         tools:background="@color/black_4">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -78,13 +79,13 @@
                     android:tint="@color/black_60"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:visibleGone="@{!hideMoreButton &amp;&amp; card.cardType != CardType.PPTS}" />
+                    app:visibleGone="@{!hideMoreButton &amp;&amp; card.isRemovable}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/card_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="74dp"
+                    android:layout_marginTop="70dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:ellipsize="end"
@@ -104,9 +105,11 @@
                     android:layout_height="wrap_content"
                     android:text="@{card.cardNumber}"
                     android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/card_name"
+                    app:visibleGone="@{card.cardType != CardType.RBC}"
                     tools:text="7069 22761 9857 012" />
 
                 <View

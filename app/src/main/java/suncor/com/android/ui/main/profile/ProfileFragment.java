@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.profile;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,10 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.profile.address.AddressFragment;
+import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 public class ProfileFragment extends BottomNavigationFragment {
@@ -46,6 +51,8 @@ public class ProfileFragment extends BottomNavigationFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
+
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message);
@@ -113,8 +120,37 @@ public class ProfileFragment extends BottomNavigationFragment {
         });
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
-        binding.personalInformationsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment));
-        binding.preferencesButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment));
+        binding.personalInformationsButton.setOnClickListener(v -> {
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
+            } else {
+                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
+        binding.preferencesButton.setOnClickListener(v -> {
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
+            } else {
+                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PreferencesFragment.PREFERENCES_FRAGMENT);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+
+        });
+        binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
+        binding.addressButton.setOnClickListener(v -> {
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment);
+            } else {
+                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-navigation-list";
     }
 
     private void signUserOut() {
@@ -123,6 +159,8 @@ public class ProfileFragment extends BottomNavigationFragment {
             if (result.status == Resource.Status.SUCCESS) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
+
+                AnalyticsUtils.logEvent(getContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();
@@ -134,6 +172,7 @@ public class ProfileFragment extends BottomNavigationFragment {
     public String capitalize(String string) {
         return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
+
 
     public void initBuild() {
         try {

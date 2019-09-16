@@ -5,23 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+
 import javax.inject.Inject;
 
 import afu.org.checkerframework.checker.nullness.qual.Nullable;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPreferencesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 
-public class PreferencesFragment extends BaseFragment {
+public class PreferencesFragment extends MainActivityFragment {
 
 
     private FragmentPreferencesBinding binding;
     private PreferencesViewModel viewModel;
     private ProfileSharedViewModel profileSharedViewModel;
+    public static final String PREFERENCES_FRAGMENT = "preferences_fragment";
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -51,6 +53,11 @@ public class PreferencesFragment extends BaseFragment {
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         return binding.getRoot();
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-preferences-view";
     }
 
     private void goBack() {

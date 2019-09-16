@@ -2,30 +2,37 @@ package suncor.com.android.mfp;
 
 import android.content.Intent;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.Gson;
+import com.worklight.wlclient.api.WLAccessTokenListener;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLLogoutResponseListener;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
+import com.worklight.wlclient.auth.AccessToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
@@ -35,6 +42,7 @@ public class SessionManager implements SessionChangeListener {
 
     public static final int LOCK_TIME_MINUTES = 30;
     public static final int LOGIN_ATTEMPTS = 6;
+    public static final String RETRIEVE_PROFILE_FAILED = "com.ibm.suncor.profile.failed";
     private static final String SHARED_PREF_USER = "com.ibm.suncor.user";
     private static final String ACCOUNT_BLOCKED_DATE = "com.ibm.suncor.account.blocked.date";
     private final UserLocalSettings userLocalSettings;
@@ -60,27 +68,21 @@ public class SessionManager implements SessionChangeListener {
     };
 
     private boolean loginOngoing = false;
-    private boolean isRetrievingProfile = false;
 
     private SuncorApplication application;
-
-    @Inject
-    Gson gson;
+    private Gson gson;
 
     private int rewardedPoints = -1;
 
     @Inject
-    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager, UserLocalSettings userLocationSettings, SuncorApplication application) {
+    public SessionManager(UserLoginChallengeHandler challengeHandler, WLAuthorizationManager authorizationManager,
+                          UserLocalSettings userLocationSettings, SuncorApplication application, Gson gson) {
         this.challengeHandler = challengeHandler;
         challengeHandler.setSessionChangeListener(this);
         this.authorizationManager = authorizationManager;
         this.userLocalSettings = userLocationSettings;
         this.application = application;
-        String profileString = userLocationSettings.getString(SHARED_PREF_USER);
-        if (profileString != null && !profileString.isEmpty()) {
-            profile = new Gson().fromJson(profileString, Profile.class);
-            accountState = AccountState.REGULAR_LOGIN;
-        }
+        this.gson = gson;
     }
 
     public LiveData<Resource<Boolean>> logout() {
@@ -128,21 +130,67 @@ public class SessionManager implements SessionChangeListener {
         return loginState;
     }
 
-    public void checkLoginState() {
+    public LiveData<AutoLoginState> checkLoginState() {
         Timber.d("Checking login status");
-        retrieveProfile((profile) -> {
-            setProfile(profile);
-            loginState.postValue(LoginState.LOGGED_IN);
-        }, (error) -> {
-            setProfile(null);
-            loginState.postValue(LoginState.LOGGED_OUT);
+        MutableLiveData<AutoLoginState> autoLoginState = new MutableLiveData<>();
+
+        //MFP doesn't notify listener about some errors, we need to add a separate timer to timeout after 35 seconds in case we don't get a response before
+        TimerTask timeoutTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                Timber.d("obtain Access Token call timed out without notification from MFP");
+                setProfile(null);
+                loginState.postValue(LoginState.LOGGED_OUT);
+                autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timeoutTask, 30000);
+
+
+        authorizationManager.obtainAccessToken(UserLoginChallengeHandler.SCOPE, new WLAccessTokenListener() {
+            @Override
+            public void onSuccess(AccessToken accessToken) {
+                Timber.d("Got access token, retrieving profile :" + accessToken.getValue());
+                timer.cancel();
+                retrieveProfile(
+                        (profile) -> {
+                            setProfile(profile);
+
+                            loginState.postValue(LoginState.LOGGED_IN);
+                            autoLoginState.postValue(AutoLoginState.LOGGED_IN);
+                        },
+                        (error) -> {
+                            if (ConnectionUtil.haveNetworkConnection(application)) {
+                                autoLoginState.postValue(AutoLoginState.ERROR);
+                            } else {
+                                autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
+                            }
+                            setProfile(null);
+                            loginState.postValue(LoginState.LOGGED_OUT);
+                        }
+                );
+            }
+
+            @Override
+            public void onFailure(WLFailResponse wlFailResponse) {
+                timer.cancel();
+                Timber.d("Cannot retrieve an access token\n" + wlFailResponse.toString());
+                setProfile(null);
+                loginState.postValue(LoginState.LOGGED_OUT);
+                autoLoginState.postValue(AutoLoginState.LOGGED_OUT);
+            }
         });
+
+        return autoLoginState;
     }
 
     private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
         try {
-            //We use 30s as the timeout for this request, as it's times out a lot, and causes logout
-            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v1/profiles"), WLResourceRequest.GET);
+            //We use 30s as the timeout for this request, as it times out a lot, and causes logout
+            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v2/profiles"), WLResourceRequest.GET);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
@@ -197,11 +245,11 @@ public class SessionManager implements SessionChangeListener {
         if (profile == null) {
             this.profile = null;
             accountState = null;
-            userLocalSettings.removeKey(SHARED_PREF_USER);
         } else {
             this.profile = profile;
-            userLocalSettings.setString(SHARED_PREF_USER, gson.toJson(profile));
-            accountState = AccountState.REGULAR_LOGIN;
+            if (accountState == null) {
+                accountState = AccountState.REGULAR_LOGIN;
+            }
         }
     }
 
@@ -233,13 +281,19 @@ public class SessionManager implements SessionChangeListener {
     public void onLoginSuccess(Profile account) {
         Timber.d("login succeeded");
         Timber.d("user's email: " + account.getEmail());
-        if (!loginOngoing || isRetrievingProfile) {
+
+        AtomicBoolean isRetrievingProfile = new AtomicBoolean(false);
+
+        if (!loginOngoing || isRetrievingProfile.get()) {
             return;
         }
 
         userLocalSettings.setString(UserLocalSettings.RECENTLY_SEARCHED, null);
+
+        isRetrievingProfile.set(true);
+
         retrieveProfile((profile) -> {
-            isRetrievingProfile = false;
+            isRetrievingProfile.set(false);
             if (loginOngoing) {
                 loginOngoing = false;
 
@@ -250,7 +304,7 @@ public class SessionManager implements SessionChangeListener {
                 }
             }
         }, (error) -> {
-            isRetrievingProfile = false;
+            isRetrievingProfile.set(false);
             if (loginOngoing) {
                 loginOngoing = false;
 
@@ -302,6 +356,10 @@ public class SessionManager implements SessionChangeListener {
 
     public enum LoginState {
         LOGGED_IN, LOGGED_OUT
+    }
+
+    public enum AutoLoginState {
+        LOGGED_IN, LOGGED_OUT, ERROR
     }
 
     public enum AccountState {

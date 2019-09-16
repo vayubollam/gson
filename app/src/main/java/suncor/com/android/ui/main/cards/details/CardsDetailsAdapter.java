@@ -3,17 +3,23 @@ package suncor.com.android.ui.main.cards.details;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.PetroCanadaExpandedCardItemBinding;
+import suncor.com.android.utilities.Consumer;
 
 public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapter.CardsDetailHolder> {
-    ArrayList<ExpandedCardItem> cardItems = new ArrayList<>();
+    private ArrayList<ExpandedCardItem> cardItems = new ArrayList<>();
+    private Consumer<ExpandedCardItem> callBack;
 
+    public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack) {
+        this.callBack = callBack;
+    }
 
     @NonNull
     @Override
@@ -25,6 +31,14 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     @Override
     public void onBindViewHolder(@NonNull CardsDetailHolder holder, int position) {
         holder.binding.setCard(cardItems.get(position));
+        holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
+    }
+
+    public void removeCard(ExpandedCardItem expandedCardItem) {
+        int position = cardItems.indexOf(expandedCardItem);
+        cardItems.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, cardItems.size());
     }
 
     @Override

@@ -1,20 +1,20 @@
 package suncor.com.android.ui.enrollment.form;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import suncor.com.android.BR;
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EnrollmentsApi;
-import suncor.com.android.data.repository.suggestions.CanadaPostAutocompleteProvider;
+import suncor.com.android.data.account.EnrollmentsApi;
+import suncor.com.android.data.suggestions.CanadaPostAutocompleteProvider;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
@@ -32,6 +32,7 @@ import suncor.com.android.ui.common.input.PasswordInputField;
 import suncor.com.android.ui.common.input.PhoneInputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
+import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormViewModel extends ViewModel {
@@ -57,23 +58,22 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
     private PostalCodeField postalCodeField = new PostalCodeField(R.string.enrollment_postalcode_error, R.string.enrollment_postalcode_format_error, R.string.enrollment_postalcode_matching_province_error);
     private PhoneInputField phoneField = new PhoneInputField(R.string.enrollment_phone_field_invalid_format);
-    private ObservableBoolean newsAndOffersField = new ObservableBoolean();
-
+    private ObservableBoolean emailOffersField = new ObservableBoolean();
+    private ObservableBoolean smsOffersField = new ObservableBoolean();
     private MutableLiveData<Event<Boolean>> navigateToLogin = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> showDuplicateEmailEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
-
     private MutableLiveData<Boolean> isValidatingEmail = new MutableLiveData<>();
-
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
-
     private ArrayList<Province> provincesList;
-
+    private FingerprintManager fingerPrintManager;
+    private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> showBiometricAlert = _showBiometricAlert;
 
     @Inject
-    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider) {
+    public EnrollmentFormViewModel(EnrollmentsApi enrollmentsApi, SessionManager sessionManager, CanadaPostAutocompleteProvider canadaPostAutocompleteProvider, FingerprintManager fingerPrintManager) {
         requiredFields.add(firstNameField);
         requiredFields.add(lastNameField);
         requiredFields.add(emailInputField);
@@ -82,7 +82,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(cityField);
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
-
+        this.fingerPrintManager = fingerPrintManager;
         LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
             Boolean hasFocus = event.getContentIfNotHandled();
             //If it's focused, or has already been checked, or email is invalid, return empty livedata
@@ -127,7 +127,8 @@ public class EnrollmentFormViewModel extends ViewModel {
                         selectedProvince.getId(),
                         postalCodeField.getText().replace(" ", ""), //Replace the space characters
                         phoneField.getText(),
-                        newsAndOffersField.get(),
+                        emailOffersField.get(),
+                        smsOffersField.get(),
                         selectedQuestion.getId(),
                         securityAnswerField.getText()
                 );
@@ -145,6 +146,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                     switch (r.status) {
                         case SUCCESS:
                             if (r.data.getStatus() == SigninResponse.Status.SUCCESS) {
+                                fingerPrintManager.activateAutoLogin();
                                 Timber.d("Login succeeded");
                                 sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
                                 sessionManager.setRewardedPoints(result.data);
@@ -165,6 +167,9 @@ public class EnrollmentFormViewModel extends ViewModel {
                     }
                 });
             } else {
+                if (result.status == Resource.Status.ERROR && fingerPrintManager.isFingerprintActivated()) {
+                    fingerPrintManager.deactivateFingerprint();
+                }
                 MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
                 if (result.status == Resource.Status.LOADING) {
                     intermediateLivedata.setValue(Resource.loading());
@@ -214,12 +219,12 @@ public class EnrollmentFormViewModel extends ViewModel {
                 autocompleteResults.setValue(Resource.loading());
             } else if (result.status == Resource.Status.SUCCESS) {
                 CanadaPostDetails placeDetails = result.data;
-                String streetAddress = removeAccents(placeDetails.getLine1());
+                String streetAddress = placeDetails.getLine1();
                 streetAddressField.setTextSilent(streetAddress);
                 streetAddressField.notifyPropertyChanged(BR.text);
                 postalCodeField.setText(placeDetails.getPostalCode());
                 postalCodeField.notifyPropertyChanged(BR.text);
-                String city = removeAccents(placeDetails.getCity());
+                String city = placeDetails.getCity();
                 cityField.setText(city);
                 cityField.notifyPropertyChanged(BR.text);
                 Province province = Province.findProvince(provincesList, placeDetails.getProvinceCode());
@@ -271,10 +276,22 @@ public class EnrollmentFormViewModel extends ViewModel {
                 return -1;
             }
 
-            //proceed to join
-            join.postValue(Event.newEvent(true));
+            if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {
+                _showBiometricAlert.setValue(Event.newEvent(true));
+            } else {
+                join.postValue(Event.newEvent(true));
+            }
         }
         return firstItemWithError;
+    }
+
+    public void proccedToJoin(boolean useFingerPrint) {
+        if (useFingerPrint) {
+            fingerPrintManager.activateFingerprint();
+        } else {
+            fingerPrintManager.deactivateFingerprint();
+        }
+        join.setValue(Event.newEvent(true));
     }
 
     public void addressSuggestionClicked(CanadaPostSuggestion suggestion) {
@@ -305,8 +322,12 @@ public class EnrollmentFormViewModel extends ViewModel {
         return navigateToLogin;
     }
 
-    public ObservableBoolean getNewsAndOffersField() {
-        return newsAndOffersField;
+    public ObservableBoolean getEmailOffersField() {
+        return emailOffersField;
+    }
+
+    public ObservableBoolean getSmsOffersField() {
+        return smsOffersField;
     }
 
     public InputField getFirstNameField() {
@@ -365,7 +386,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     public void setSelectedQuestion(SecurityQuestion selectedQuestion) {
         this.selectedQuestion = selectedQuestion;
         if (selectedQuestion != null) {
-            securityQuestionField.setText(selectedQuestion.getLocalizedQuestion());
+            securityQuestionField.setText(selectedQuestion.getQuestion());
         }
     }
 
@@ -404,7 +425,6 @@ public class EnrollmentFormViewModel extends ViewModel {
             postalCodeField.setText(cardStatus.getAddress().getPostalCode());
             if (cardStatus.getAddress().getPhone() != null) {
                 phoneField.setText(cardStatus.getAddress().getPhone());
-
             }
         } else {
             lastNameField.setText(cardStatus.getUserInfo().getLastName());
@@ -414,10 +434,5 @@ public class EnrollmentFormViewModel extends ViewModel {
 
     public void setProvincesList(ArrayList<Province> provinces) {
         this.provincesList = provinces;
-    }
-
-    private String removeAccents(String text) {
-        return Normalizer.normalize(text, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "");
     }
 }

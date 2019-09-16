@@ -11,10 +11,6 @@ import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -24,19 +20,25 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerFragment;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import javax.inject.Inject;
+
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.FragmentFavouritesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.SuncorToast;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.UserLocalSettings;
 
-public class FavouritesFragment extends DaggerFragment {
+public class FavouritesFragment extends MainActivityFragment {
 
     private static final String SHOW_FAVS_HINT = "show_favs_hint";
     private FavouritesViewModel mViewModel;
@@ -53,6 +55,9 @@ public class FavouritesFragment extends DaggerFragment {
 
     @Inject
     UserLocalSettings userLocalSettings;
+
+    @Inject
+    DistanceApi distanceApi;
 
     public static FavouritesFragment newInstance() {
         return new FavouritesFragment();
@@ -81,7 +86,7 @@ public class FavouritesFragment extends DaggerFragment {
         super.onViewCreated(view, savedInstanceState);
         binding.appBar.setNavigationOnClickListener((v) -> goBack());
         binding.favouriteRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        favouritesAdapter = new FavouritesAdapter(this);
+        favouritesAdapter = new FavouritesAdapter(this, distanceApi);
         binding.favouriteRecycler.setAdapter(favouritesAdapter);
         binding.favouriteRecycler.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -133,10 +138,9 @@ public class FavouritesFragment extends DaggerFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected String getScreenName() {
+        return "my-petro-points-gas-station-locations-favourites";
     }
-
 
     public void goBack() {
         getFragmentManager().popBackStack();

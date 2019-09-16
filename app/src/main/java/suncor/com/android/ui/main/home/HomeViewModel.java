@@ -1,24 +1,32 @@
 package suncor.com.android.ui.main.home;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.data.repository.stations.StationsProvider;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import javax.inject.Inject;
+
+import suncor.com.android.R;
+import suncor.com.android.data.DistanceApi;
+import suncor.com.android.data.favourite.FavouriteRepository;
+import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 
@@ -26,24 +34,36 @@ public class HomeViewModel extends ViewModel {
 
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(20, -180), new LatLng(90, -50));
     private final static int DISTANCE_API = 25000;
-    public StationItem stationItem;
+    private FavouriteRepository favouriteRepository;
     public ObservableBoolean isLoading = new ObservableBoolean(false);
-    private MediatorLiveData<Resource<Station>> _nearestStation = new MediatorLiveData<>();
-    public LiveData<Resource<Station>> nearestStation = _nearestStation;
+    private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
+    public LiveData<Resource<StationItem>> nearestStation = _nearestStation;
     private MutableLiveData<Boolean> _locationServiceEnabled = new MutableLiveData<>();
     public LiveData<Boolean> locationServiceEnabled = _locationServiceEnabled;
     private MutableLiveData<Event<Boolean>> loadNearest = new MutableLiveData<>();
     private SessionManager sessionManager;
     private LatLng userLocation;
 
-    @Inject
-    public HomeViewModel(SessionManager sessionManager, StationsProvider stationsProvider) {
-        this.sessionManager = sessionManager;
+    private MutableLiveData<Event<Station>> _openNavigationApps = new MutableLiveData<>();
+    public LiveData<Event<Station>> openNavigationApps = _openNavigationApps;
 
+    private MutableLiveData<Event<Boolean>> _navigateToPetroPoints = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> navigateToPetroPoints = _navigateToPetroPoints;
+
+    private MutableLiveData<Event<Boolean>> _dismissEnrollmentRewardsCardEvent = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> dismissEnrollmentRewardsCardEvent = _dismissEnrollmentRewardsCardEvent;
+
+    public ObservableInt greetingsMessage = new ObservableInt();
+    public ObservableInt headerImage = new ObservableInt();
+
+    @Inject
+    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi) {
+        this.sessionManager = sessionManager;
+        this.favouriteRepository = favouriteRepository;
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 LatLngBounds bounds = LocationUtils.calculateSquareBounds(userLocation, DISTANCE_API);
-                return stationsProvider.getStations(bounds, true);
+                return stationsApi.getStations(bounds, true);
             } else {
                 return new MutableLiveData<>();
             }
@@ -63,11 +83,57 @@ public class HomeViewModel extends ViewModel {
                     if (resource.data == null || resource.data.isEmpty()) {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
-                        _nearestStation.setValue(Resource.success(resource.data.get(0)));
+                        _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
                     }
                     break;
             }
         }));
+
+        LiveData<Resource<DirectionsResult>> directionsResultLiveData = Transformations.switchMap(_nearestStation, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null && resource.data.getDistanceDuration() == null) {
+                LatLng dest = new LatLng(resource.data.getStation().getAddress().getLatitude(), resource.data.getStation().getAddress().getLongitude());
+                LatLng origin = new LatLng(userLocation.latitude, userLocation.longitude);
+                return distanceApi.enqueuJob(origin, dest);
+            } else {
+                return new MutableLiveData<>();
+            }
+        });
+
+        directionsResultLiveData.observeForever(resource -> {
+            if (resource.status == Resource.Status.LOADING) {
+                return;
+            }
+            StationItem item = nearestStation.getValue().data;
+            if (resource.status == Resource.Status.SUCCESS) {
+                item.setDistanceDuration(resource.data);
+            } else if (resource.status == Resource.Status.ERROR) {
+                item.setDistanceDuration(DirectionsResult.INVALID);
+            }
+            _nearestStation.setValue(Resource.success(item));
+        });
+
+        initGreetings();
+    }
+
+    private void initGreetings() {
+        Calendar now = GregorianCalendar.getInstance();
+        Calendar noon = GregorianCalendar.getInstance();
+        noon.set(Calendar.HOUR_OF_DAY, 12);
+        noon.set(Calendar.MINUTE, 0);
+        Calendar evening = GregorianCalendar.getInstance();
+        evening.set(Calendar.HOUR_OF_DAY, 17);
+        evening.set(Calendar.MINUTE, 0);
+
+        if (now.before(noon)) {
+            greetingsMessage.set(R.string.home_signedin_greetings_morning);
+            headerImage.set(R.drawable.home_backdrop_morning);
+        } else if (now.before(evening)) {
+            greetingsMessage.set(R.string.home_signedin_greetings_afternoon);
+            headerImage.set(R.drawable.home_backdrop_afternoon);
+        } else {
+            greetingsMessage.set(R.string.home_signedin_greetings_evening);
+            headerImage.set(R.drawable.home_backdrop_evening);
+        }
     }
 
 
@@ -108,11 +174,39 @@ public class HomeViewModel extends ViewModel {
         }
     }
 
-    public Profile getProfile() {
-        return sessionManager.getProfile();
+    public void openNavigationApps() {
+        Station nearestStation = _nearestStation.getValue().data.getStation();
+        _openNavigationApps.setValue(Event.newEvent(nearestStation));
     }
 
-    public int getRewardedPoints() {
-        return sessionManager.getRewardedPoints();
+    public String getUserFirstName() {
+        String firstName = sessionManager.getProfile().getFirstName();
+        return firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+    }
+
+    public String getPetroPointsBalance() {
+        return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+    }
+
+    public int getPetroPointsBalanceConverted() {
+        return sessionManager.getProfile().getPointsBalance() / 1000;
+    }
+
+
+    public boolean shouldShowEnrollmentRewardsCard() {
+        return sessionManager.getAccountState() == SessionManager.AccountState.JUST_ENROLLED;
+    }
+
+    public void dismissEnrollmentRewardsCard() {
+        sessionManager.setAccountState(SessionManager.AccountState.REGULAR_LOGIN);
+        _dismissEnrollmentRewardsCardEvent.setValue(Event.newEvent(true));
+    }
+
+    public void navigateToPetroPoints() {
+        _navigateToPetroPoints.setValue(Event.newEvent(true));
+    }
+
+    public String getRewardedPoints() {
+        return CardFormatUtils.formatBalance(sessionManager.getRewardedPoints());
     }
 }

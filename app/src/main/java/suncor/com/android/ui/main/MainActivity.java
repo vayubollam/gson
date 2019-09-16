@@ -4,39 +4,61 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import javax.inject.Inject;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.model.account.Province;
+import suncor.com.android.ui.SplashActivity;
+import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
+import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 
-public class MainActivity extends SessionAwareActivity {
+public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     @Inject
     SuncorApplication application;
-    private BottomNavigationView bottom_navigation;
+    private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
+    private ArrayList<Province> provinces = new ArrayList<>();
 
+    public ArrayList<Province> getProvinces() {
+        return provinces;
+    }
+
+    private boolean isProfileTabSelected = false;
+    private ProfileSharedViewModel profileSharedViewModel;
     private BroadcastReceiver loginConflictReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (LOGGED_OUT_DUE_CONFLICTING_LOGIN.equals(intent.getAction())) {
+                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", LOGGED_OUT_DUE_CONFLICTING_LOGIN));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton("OK", (dialog, which) -> {
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
@@ -50,16 +72,30 @@ public class MainActivity extends SessionAwareActivity {
         }
     };
 
+    public NavController getNavController() {
+        return navController;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //set the view to full screen, then each fragment will handle its UI and apply it's insets
+        int flags = getWindow().getDecorView().getSystemUiVisibility();
+        flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+        getWindow().getDecorView().setSystemUiVisibility(flags);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+
         setContentView(R.layout.activity_main);
-        bottom_navigation = findViewById(R.id.bottom_navigation);
+        AndroidBug5497Workaround.assistActivity(this);
+        profileSharedViewModel = ViewModelProviders.of(this).get(ProfileSharedViewModel.class);
+
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
         View mainDivider = findViewById(R.id.mainDivider);
         if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
             animslideUp.setDuration(500);
-            bottom_navigation.startAnimation(animslideUp);
+            bottomNavigation.startAnimation(animslideUp);
             mainDivider.startAnimation(animslideUp);
             application.setSplashShown(true);
         }
@@ -70,13 +106,32 @@ public class MainActivity extends SessionAwareActivity {
         navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getChildFragmentManager(), R.id.nav_host_fragment));
         navController.setGraph(R.navigation.main_nav_graph);
 
-        NavigationUI.setupWithNavController(bottom_navigation, navController);
+        NavigationUI.setupWithNavController(bottomNavigation, navController);
 
-        if (!isLoggedIn()) {
-            bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
-            bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
-        }
+
+        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            AnalyticsUtils.logEvent(MainActivity.this, "navigation", new Pair<>("actionBarTap", item.getTitle().toString()));
+            if (item.getItemId() == R.id.profile_tab) {
+                isProfileTabSelected = true;
+            }
+            if (item.getItemId() != R.id.profile_tab && isProfileTabSelected && profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                profileSharedViewModel.setEcryptedSecurityAnswer(null);
+                isProfileTabSelected = false;
+            }
+            return NavigationUI.onNavDestinationSelected(item, navController);
+        });
+
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+        if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
+            Alerts.prepareGeneralErrorDialog(this).show();
+        }
+        String[] provincesArray = getResources().getStringArray(R.array.province_names);
+
+        for (String provinceCodeName : provincesArray) {
+            String[] nameCode = provinceCodeName.split(";");
+            provinces.add(new Province(nameCode[1], nameCode[0], nameCode[2]));
+        }
     }
 
     @Override
@@ -95,25 +150,42 @@ public class MainActivity extends SessionAwareActivity {
     protected void onLogout() {
         super.onLogout();
         for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
-            if (fragment instanceof BaseFragment) {
-                ((BaseFragment) fragment).onLoginStatusChanged();
+            if (fragment instanceof MainActivityFragment) {
+                ((MainActivityFragment) fragment).onLoginStatusChanged();
             }
         }
 
-        bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(false);
-        bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(false);
+        bottomNavigation.getMenu().clear();
+        bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_guest);
     }
 
     @Override
     protected void onLoginSuccess() {
         super.onLoginSuccess();
         for (Fragment fragment : navHostFragment.getChildFragmentManager().getFragments()) {
-            if (fragment instanceof BaseFragment) {
-                ((BaseFragment) fragment).onLoginStatusChanged();
+            if (fragment instanceof MainActivityFragment) {
+                ((MainActivityFragment) fragment).onLoginStatusChanged();
             }
         }
 
-        bottom_navigation.getMenu().findItem(R.id.profile_tab).setVisible(true);
-        bottom_navigation.getMenu().findItem(R.id.cards_tab).setVisible(true);
+        bottomNavigation.getMenu().clear();
+        bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean backPressedGandled = false;
+        List<Fragment> currentFragments = navHostFragment.getChildFragmentManager().getFragments();
+        for (Fragment f : currentFragments) {
+            if (f instanceof OnBackPressedListener) {
+                ((OnBackPressedListener) f).onBackPressed();
+                backPressedGandled = true;
+            }
+        }
+        if (!backPressedGandled) {
+            super.onBackPressed();
+        }
+
+
     }
 }

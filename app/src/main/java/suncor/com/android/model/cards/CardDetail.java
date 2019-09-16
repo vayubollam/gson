@@ -18,6 +18,12 @@ public class CardDetail {
     //Defaulting to 5cent if the balance service is down
     private float cpl = 0.05f;
 
+    public CardDetail(CardType cardType, String cardNumber, int pointsBalance) {
+        this.cardType = cardType;
+        this.cardNumber = cardNumber;
+        this.pointsBalance = pointsBalance;
+    }
+
     public CardType getCardType() {
         return cardType;
     }
@@ -62,6 +68,30 @@ public class CardDetail {
             default:
                 return CardCategory.PARTNER;
         }
+    }
+
+    public String getCardName() {
+        switch (cardType) {
+            case FSR:
+                return "fsr-" + (cpl == 0.05 ? 5 : 10) + "c";
+            case PPC:
+                return "ppc";
+            case WAG:
+                return "wash-and-go";
+            case SP:
+                return "season-pass";
+            case CAA:
+                return "caa";
+            case BCAA:
+                return "bcaa";
+            case HBC:
+                return "bbc";
+            case MORE:
+                return "more-rewards";
+            case RBC:
+                return "rbc";
+        }
+        return "card";
     }
 
 

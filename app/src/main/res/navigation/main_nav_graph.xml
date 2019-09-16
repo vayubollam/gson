@@ -9,12 +9,35 @@
         android:id="@+id/home_tab"
         android:name="suncor.com.android.ui.main.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_home_guest">
+        <argument
+            android:name="root"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_home_tab_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_home_tab_to_rewardsDiscoveryFragment"
+            app:destination="@id/rewardsDiscoveryFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/rewards_tab"
+        android:name="suncor.com.android.ui.main.rewards.RewardsGuestFragment"
+        android:label="RewardsFragment"
+        tools:layout="@layout/fragment_rewards">
         <argument
             android:name="root"
             android:defaultValue="true"
             app:argType="boolean" />
     </keep_state_fragment>
+
     <keep_state_fragment
         android:id="@+id/stations_tab"
         android:name="suncor.com.android.ui.main.stationlocator.StationsFragment"
@@ -43,6 +66,39 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/rewards_signedin_tab"
+        android:name="suncor.com.android.ui.main.rewards.RewardsSignedInFragment"
+        android:label="RewardsSignedInFragment"
+        tools:layout="@layout/fragment_rewards_signedin">
+        <argument
+            android:name="root"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_rewardsDetailsFragment"
+            app:destination="@id/rewardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down">
+            <argument
+                android:name="isCardFromProfile"
+                android:defaultValue="true" />
+        </action>
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_rewardsDiscoveryFragment"
+            app:destination="@id/rewardsDiscoveryFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+    </keep_state_fragment>
+
     <keep_state_fragment
         android:id="@+id/cards_tab"
         android:name="suncor.com.android.ui.main.cards.list.CardsFragment"
@@ -82,20 +138,40 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
         <action
+            android:id="@+id/action_profile_tab_to_transactionsFragment"
+            app:destination="@+id/transactionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_aboutFragment"
+            app:destination="@+id/aboutFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_securityQuestionValidationFragment2"
+            app:destination="@id/securityQuestionValidationFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/dummy"
+            app:launchSingleTop="false"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/profile_tab" />
+        <action
+            android:id="@+id/action_profile_tab_to_preferencesFragment"
+            app:destination="@id/preferencesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
             android:id="@+id/action_profile_tab_to_personalInfoFragment"
             app:destination="@id/personalInfoFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_profile_tab_to_transactionsFragment"
-            app:destination="@+id/transactionsFragment"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_down" />
-        <action
-            android:id="@+id/action_profile_tab_to_preferencesFragment"
-            app:destination="@id/preferencesFragment"
+            android:id="@+id/action_profile_tab_to_addressFragment"
+            app:destination="@id/addressFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
@@ -133,17 +209,20 @@
         android:name="suncor.com.android.ui.main.cards.details.CardsDetailsFragment"
         android:label="CardsDetailsFragment">
         <argument
-            android:name="clickedCardIndex"
+            android:name="cardIndex"
             android:defaultValue="0"
             app:argType="integer" />
+        <argument
+            android:name="isCardFromProfile"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </keep_state_fragment>
 
     <keep_state_fragment
         android:id="@+id/addCardFragment"
         android:name="suncor.com.android.ui.main.cards.add.AddCardFragment"
         android:label="AddCardFragment"
-        tools:layout="@layout/fragment_add_card">
-    </keep_state_fragment>
+        tools:layout="@layout/fragment_add_card" />
     <keep_state_fragment
         android:id="@+id/personalInfoFragment"
         android:name="suncor.com.android.ui.main.profile.info.PersonalInfoFragment"
@@ -152,10 +231,89 @@
     <keep_state_fragment
         android:id="@+id/transactionsFragment"
         android:name="suncor.com.android.ui.main.profile.transcations.TransactionsFragment"
-        android:label="TransactionsFragment" />
+        android:label="TransactionsFragment">
+        <action
+            android:id="@+id/action_transactionsFragment_to_transactionDetailFragment"
+            app:destination="@id/transactionDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/transactionsFragment" />
+    </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/preferencesFragment"
         android:name="suncor.com.android.ui.main.profile.preferences.PreferencesFragment"
         android:label="PreferencesFragment" />
+    <keep_state_fragment
+        android:id="@+id/transactionDetailFragment"
+        android:name="suncor.com.android.ui.main.profile.transcations.TransactionDetailFragment"
+        android:label="TransactionDetailFragment">
+        <argument
+            android:name="transaction"
+            app:argType="suncor.com.android.model.cards.Transaction"
+            app:nullable="true" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/aboutFragment"
+        android:name="suncor.com.android.ui.main.profile.about.AboutFragment"
+        android:label="PersonalInfoFragment"
+        tools:layout="@layout/fragment_about" />
+    <keep_state_fragment
+        android:id="@+id/rewardsDetailsFragment"
+        android:name="suncor.com.android.ui.main.rewards.RewardsDetailsFragment"
+        android:label="RewardsDetailsFragment">
+        <argument
+            android:name="reward"
+            app:argType="suncor.com.android.ui.main.rewards.Reward" />
+
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/rewardsDiscoveryFragment"
+        android:name="suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment"
+        android:label="RewardsDiscoveryFragment" />
+    <keep_state_fragment
+        android:id="@+id/securityQuestionValidationFragment"
+        android:name="suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationFragment"
+        android:label="SecurityQuestionValidationFragment">
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_preferencesFragment2"
+            app:destination="@id/preferencesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/profile_tab" />
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_personalInfoFragment"
+            app:destination="@id/personalInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/profile_tab" />
+        <argument
+            android:name="destinationFragment"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_addressFragment"
+            app:destination="@id/addressFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/profile_tab" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/addressFragment"
+        android:name="suncor.com.android.ui.main.profile.address.AddressFragment"
+        android:label="AddressFragment">
+        <action
+            android:id="@+id/action_addressFragment_to_provinceProfileFragment"
+            app:destination="@id/provinceProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/provinceProfileFragment"
+        android:name="suncor.com.android.ui.main.profile.address.ProvinceProfileFragment"
+        android:label="ProvinceProfileFragment" />
 
 </navigation>

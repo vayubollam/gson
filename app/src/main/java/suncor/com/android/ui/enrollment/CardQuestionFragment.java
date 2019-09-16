@@ -14,23 +14,27 @@ import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
-public class CardQuestionFragment extends DaggerFragment {
+public class CardQuestionFragment extends BaseFragment {
 
     private AppCompatImageView cardImg, cardShadow;
     private int cardAnimationDuration = 400;
@@ -46,11 +50,8 @@ public class CardQuestionFragment extends DaggerFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
         securityQuestionViewModel.fetchQuestion();
-
     }
 
     @Override
@@ -59,7 +60,6 @@ public class CardQuestionFragment extends DaggerFragment {
         binding = FragmentCardQuestionBinding.inflate(inflater, container, false);
         binding.setVm(securityQuestionViewModel);
         binding.setLifecycleOwner(this);
-
         return binding.getRoot();
     }
 
@@ -108,16 +108,13 @@ public class CardQuestionFragment extends DaggerFragment {
                     dialog.show();
 
             }
-
         });
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "petro-points-sign-up-activate", getActivity().getClass().getSimpleName());
     }
 
     private void animateCard() {

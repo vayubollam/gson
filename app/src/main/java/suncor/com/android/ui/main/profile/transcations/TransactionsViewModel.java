@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import suncor.com.android.data.repository.transcations.TransactionApi;
+import suncor.com.android.data.transcations.TransactionApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.Transaction;
@@ -34,29 +34,31 @@ public class TransactionsViewModel extends ViewModel {
     private HashMap<Integer, ArrayList<Transaction>> listHashMap = new HashMap<>();
 
     @Inject
-    public TransactionsViewModel(SessionManager sessionManager, TransactionApi transactionApi, Gson gson) {
+    public TransactionsViewModel(SessionManager sessionManager, TransactionApi transactionApi) {
         transactionsLiveData = Transformations.switchMap(loadTransactions, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 updateStartEndMonths();
-                return transactionApi.getTransactions(sessionManager.getProfile().getPetroPointsNumber(), startMonth, monthsBack, gson);
+                return transactionApi.getTransactions(sessionManager.getProfile().getPetroPointsNumber(), startMonth, monthsBack);
             } else {
                 return new MutableLiveData<>();
             }
         });
         transactionsLiveData.observeForever(arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
-                if (Objects.requireNonNull(arrayListResource.data).isEmpty()) {
-                    switch (Objects.requireNonNull(transactions.getValue()).keySet().size()) {
-                        case 0:
-                            listHashMap.put(getCurrentMonth(0), new ArrayList<>());
-                            listHashMap.put(getCurrentMonth(1), new ArrayList<>());
-                            break;
-                        case 2:
-                            listHashMap.put(getCurrentMonth(2), new ArrayList<>());
-                            break;
-                        case 3:
-                            listHashMap.put(getCurrentMonth(3), new ArrayList<>());
-                            break;
+                if (arrayListResource.data.isEmpty()) {
+                    if (transactions.getValue() == null) {
+                        listHashMap.put(getCurrentMonth(0), new ArrayList<>());
+                        listHashMap.put(getCurrentMonth(1), new ArrayList<>());
+
+                    } else {
+                        switch (transactions.getValue().keySet().size()) {
+                            case 2:
+                                listHashMap.put(getCurrentMonth(2), new ArrayList<>());
+                                break;
+                            case 3:
+                                listHashMap.put(getCurrentMonth(3), new ArrayList<>());
+                                break;
+                        }
                     }
                     _transactions.setValue(listHashMap);
                     return;

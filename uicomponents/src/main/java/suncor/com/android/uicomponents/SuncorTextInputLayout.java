@@ -71,6 +71,15 @@ public class SuncorTextInputLayout extends LinearLayout {
     private final ConstraintLayout inputFrame;
     private final AppCompatEditText editText;
     private final AppCompatTextView errorTextView;
+
+    public AppCompatCheckBox getPasswordToggle() {
+        return passwordToggle;
+    }
+
+    public AppCompatTextView getHintTextView() {
+        return hintTextView;
+    }
+
     private final AppCompatTextView hintTextView;
     private final AppCompatCheckBox passwordToggle;
     private final AppCompatImageView errorImage;
@@ -210,13 +219,20 @@ public class SuncorTextInputLayout extends LinearLayout {
             if (shouldShowError) {
                 errorImage.setVisibility(VISIBLE);
             } else {
-                errorImage.setVisibility(GONE);
+                errorImage.setVisibility(INVISIBLE);
             }
             boolean shouldShowTextView = !TextUtils.isEmpty(errorTextView.getText());
             errorTextView.setVisibility(shouldShowTextView ? VISIBLE : GONE);
             updateBackground();
             updateLabelState(false);
         });
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        inputFrame.setEnabled(enabled);
+        editText.setEnabled(enabled);
     }
 
     public AppCompatEditText getEditText() {

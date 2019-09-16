@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="isWebviewLoading"
+            type="androidx.databinding.ObservableBoolean" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <suncor.com.android.ui.common.webview.ObservableWebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:visibleInvisible="@{!isWebviewLoading}" />
+
+        <ProgressBar
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            app:visibleGone="@{isWebviewLoading}" />
+
+        <suncor.com.android.ui.common.SuncorButton
+            android:id="@+id/join_button"
+            style="@style/FilledButton.Red.L"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="16dp"
+            android:text="@string/rewards_guest_join_button" />
+    </FrameLayout>
+</layout>

@@ -67,7 +67,7 @@ public class SecurityQuestionFragment extends DaggerFragment {
         questions = new ArrayList<>();
         for (SecurityQuestion question : securityQuestionViewModel.questionArrayList
         ) {
-            questions.add(question.getLocalizedQuestion());
+            questions.add(question.getQuestion());
         }
 
         ChoiceSelectorAdapter choiceSelectorAdapter = new ChoiceSelectorAdapter(questions, (this::onSecurityQuestionSelected), securityQuestionViewModel.getSelectedItem());

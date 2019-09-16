@@ -7,8 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import java.util.HashMap;
-
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
@@ -16,6 +14,9 @@ import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingListener;
 import androidx.databinding.InverseBindingMethod;
 import androidx.databinding.InverseBindingMethods;
+
+import java.util.HashMap;
+
 import suncor.com.android.model.station.Station;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
@@ -42,10 +43,26 @@ public class BindingAdapters {
                 amenitiesMap = Station.WASH_AMENITIES;
                 break;
         }
-        for (String amenitie : station.getAmenities()) {
-            if (amenitiesMap.containsKey(amenitie)) {
-                buffer.append(amenitiesMap.get(amenitie));
+        if (amenitieType == 0 || amenitieType == 1) {
+            for (String amenitie : station.getAmenities()) {
+                if (amenitiesMap.containsKey(amenitie)) {
+                    buffer.append(amenitiesMap.get(amenitie));
+                    buffer.append("\n");
+                }
+            }
+        } else {
+            //see https://suncoragilecoe.atlassian.net/browse/RMP-1999, brandOther stations will show only this amenity
+            if (station.getAmenities().contains("carWashBrandOther")) {
+                buffer.append(amenitiesMap.get("carWashBrandOther"));
                 buffer.append("\n");
+            } else {
+                for (String amenitie : station.getAmenities()) {
+                    //For car wash amenities, there is some duplication, to avoid showing multiple entries, we check if we already inserted it
+                    if (amenitiesMap.containsKey(amenitie) && buffer.indexOf(amenitiesMap.get(amenitie)) == -1) {
+                        buffer.append(amenitiesMap.get(amenitie));
+                        buffer.append("\n");
+                    }
+                }
             }
         }
         view.setText(buffer.toString().trim());
@@ -159,6 +176,20 @@ public class BindingAdapters {
                     parameter.bottomMargin);
             view.setLayoutParams(parameter);
         }
+    }
+
+    @BindingAdapter(value = {"layout_constraintWidth_default"})
+    public static void setConstraintWidthDefault(View view, int matchConstraint) {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        params.matchConstraintDefaultWidth = matchConstraint;
+        view.setLayoutParams(params);
+    }
+
+    @BindingAdapter(value = {"layout_constraintEnd_toStartOf"})
+    public static void setConstraineEndToStartOf(View view, int id) {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        params.endToStart = id;
+        view.setLayoutParams(params);
     }
 
 }

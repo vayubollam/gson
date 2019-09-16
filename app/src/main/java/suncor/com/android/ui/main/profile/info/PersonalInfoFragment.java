@@ -4,6 +4,7 @@ package suncor.com.android.ui.main.profile.info;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +23,22 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.ModalDialog;
-import suncor.com.android.ui.main.common.BaseFragment;
-import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 
-public class PersonalInfoFragment extends BaseFragment {
-
+public class PersonalInfoFragment extends MainActivityFragment {
     private FragmentPersonalInfoBinding binding;
     private PersonalInfoViewModel viewModel;
     private ProfileSharedViewModel profileSharedViewModel;
+    public static final String PERSONAL_INFO_FRAGMENT = "personal_info_fragment";
+    public static final String EMAIL_EXTRA = "email_extra";
+    private boolean hasCleared = false;
+
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -58,11 +63,14 @@ public class PersonalInfoFragment extends BaseFragment {
             }
         });
 
+
         viewModel.bottomSheetAlertObservable.observe(this, event -> {
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
             if (alert != null) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
+                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
+
                 dialog.setTitle(getString(alert.title))
                         .setMessage(getString(alert.message))
                         .setCenterButton(getString(alert.positiveButton), (v) -> {
@@ -84,6 +92,8 @@ public class PersonalInfoFragment extends BaseFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
+
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message);
@@ -114,6 +124,14 @@ public class PersonalInfoFragment extends BaseFragment {
             binding.emailInput.getEditText().clearFocus();
         });
 
+        viewModel.isPasswordLoading.observe(this, isLoading -> {
+            if (isLoading) {
+                hideKeyboard();
+            }
+            binding.passwordInput.getEditText().clearFocus();
+        });
+
+
         viewModel.navigateToProfile.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 goBack();
@@ -122,6 +140,9 @@ public class PersonalInfoFragment extends BaseFragment {
         viewModel.navigateToSignIn.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                if (viewModel.getEmail() != null) {
+                    intent.putExtra(EMAIL_EXTRA, viewModel.getEmail());
+                }
                 startActivity(intent);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
             }
@@ -135,8 +156,10 @@ public class PersonalInfoFragment extends BaseFragment {
         binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+        binding.passwordInput.getPasswordToggle().setVisibility(View.INVISIBLE);
         binding.phoneInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.phoneInput, f));
         binding.emailInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.emailInput, f));
+        binding.passwordInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.passwordInput, f));
         binding.emailInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
         binding.emailInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -156,6 +179,11 @@ public class PersonalInfoFragment extends BaseFragment {
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
 
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-personal-information-view";
+    }
+
     private void goBack() {
         hideKeyboard();
         Navigation.findNavController(getView()).popBackStack();
@@ -171,11 +199,17 @@ public class PersonalInfoFragment extends BaseFragment {
             viewModel.getPhoneField().setHasFocus(hasFocus);
         } else if (view == binding.emailInput) {
             viewModel.getEmailInputField().setHasFocus(hasFocus);
+        } else if (view == binding.passwordInput) {
+            viewModel.getPasswordField().setHasFocus(hasFocus);
+            if (!hasCleared) {
+                binding.passwordInput.getEditText().setText("");
+                binding.passwordInput.getPasswordToggle().setVisibility(View.VISIBLE);
+                hasCleared = true;
+            }
         }
         if (hasFocus) {
             binding.scrollView.postDelayed(() -> {
                 int viewYPosition = view.getTop();
-
                 int halfHeight = binding.scrollView.getHeight() / 2 - view.getHeight() / 2;
                 int scrollPosition = Math.max(viewYPosition - halfHeight, 0);
 

@@ -12,12 +12,15 @@ import java.util.ArrayList;
 import suncor.com.android.R;
 import suncor.com.android.databinding.TransactionItemBinding;
 import suncor.com.android.model.cards.Transaction;
+import suncor.com.android.utilities.Consumer;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
-    private final ArrayList<Transaction> transactions;
+    private ArrayList<Transaction> transactions;
+    private Consumer<Transaction> callBack;
 
-    public TransactionAdapter(ArrayList<Transaction> transactions) {
+    public TransactionAdapter(ArrayList<Transaction> transactions, Consumer<Transaction> callBack) {
         this.transactions = transactions;
+        this.callBack = callBack;
     }
 
     @NonNull
@@ -29,6 +32,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
         holder.transactionItemBinding.setTransaction(transactions.get(position));
+        holder.transactionItemBinding.getRoot().setOnClickListener(v -> callBack.accept(transactions.get(position)));
 
     }
 

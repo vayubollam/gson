@@ -137,7 +137,7 @@
                 android:layout_above="@+id/verifying_card_pd"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="24dp"
-                android:text="@{vm.addCardApiResult.status == Resource.Status.SUCCESS ? @string/enrollment_cardform_card_verified : @string/cards_add_fragment_adding}"
+                android:text="@{vm.addCardApiResult.status == Resource.Status.SUCCESS ? @string/cards_add_fragment_added : @string/cards_add_fragment_adding}"
                 android:textAppearance="@style/Title1" />
 
             <ProgressBar
@@ -180,7 +180,7 @@
             android:background="@color/black_4"
             android:clickable="true"
             android:paddingStart="12dp"
-            android:paddingTop="16dp"
+            android:paddingTop="40dp"
             android:paddingEnd="12dp"
             android:paddingBottom="16dp"
             android:visibility="gone"
@@ -196,8 +196,10 @@
                 style="@style/FilledButton.Red.L"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
                 android:text="@string/cards_add_fragment_done_button"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
                 app:layout_constraintBottom_toBottomOf="@id/card_layout"
                 app:layout_constraintEnd_toEndOf="@id/card_layout"
                 app:layout_constraintStart_toStartOf="@id/card_layout" />

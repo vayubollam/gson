@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.stationlocator;
 
 import android.annotation.SuppressLint;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -11,11 +12,12 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import suncor.com.android.api.DirectionsApi;
+import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {
@@ -23,11 +25,13 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
     private final ArrayList<StationItem> stations = new ArrayList<>();
     private final StationsFragment fragment;
     private final BottomSheetBehavior bottomSheetBehavior;
+    private DistanceApi distanceApi;
     private LatLng userLocation;
 
-    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior) {
+    public StationAdapter(StationsFragment fragment, BottomSheetBehavior bottomSheetBehavior, DistanceApi distanceApi) {
         this.fragment = fragment;
         this.bottomSheetBehavior = bottomSheetBehavior;
+        this.distanceApi = distanceApi;
     }
 
     public ArrayList<StationItem> getStations() {
@@ -65,11 +69,12 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         holder.binding.setVm(stationItem);
         holder.binding.stationTitleText.setText(station.getAddress().getAddressLine());
 
+
         if (userLocation == null) {
             stationItem.setDistanceDuration(DirectionsResult.INVALID);
         } else if (stationItem.getDistanceDuration() == null) {
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-            DirectionsApi.getInstance().enqueuJob(userLocation, dest)
+            distanceApi.enqueuJob(userLocation, dest)
                     .observe(fragment, result -> {
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.setDistanceDuration(result.data);
@@ -89,8 +94,10 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationV
         holder.binding.imgBottomSheet.setOnClickListener((v) -> {
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                 StationDetailsDialog.showCard(fragment, stationItem, holder.itemView, true);
+
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
             }
         });
         holder.binding.executePendingBindings();

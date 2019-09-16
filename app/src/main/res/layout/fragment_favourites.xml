@@ -25,8 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_4"
-        android:clickable="true"
-        android:fitsSystemWindows="true">
+        android:clickable="true">
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/app_bar"
@@ -90,7 +89,7 @@
                 android:textColor="@color/black_60"
                 android:textSize="18sp" />
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/addFavoriteBackButton"
                 style="@style/FilledButton.Red.L"
                 android:layout_width="wrap_content"

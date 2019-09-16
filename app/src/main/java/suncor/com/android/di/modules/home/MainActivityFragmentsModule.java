@@ -7,11 +7,21 @@ import suncor.com.android.ui.main.cards.details.CardsDetailsFragment;
 import suncor.com.android.ui.main.cards.list.CardsFragment;
 import suncor.com.android.ui.main.home.HomeFragment;
 import suncor.com.android.ui.main.profile.ProfileFragment;
+import suncor.com.android.ui.main.profile.about.AboutFragment;
+import suncor.com.android.ui.main.profile.address.AddressFragment;
+import suncor.com.android.ui.main.profile.address.ProvinceProfileFragment;
 import suncor.com.android.ui.main.profile.help.FAQFragment;
 import suncor.com.android.ui.main.profile.help.FAQResponseFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
+import suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationFragment;
+import suncor.com.android.ui.main.profile.transcations.TransactionDetailFragment;
 import suncor.com.android.ui.main.profile.transcations.TransactionsFragment;
+import suncor.com.android.ui.main.rewards.RewardsDetailsFragment;
+import suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment;
+import suncor.com.android.ui.main.rewards.RewardsGuestFragment;
+import suncor.com.android.ui.main.rewards.RewardsSignedInFragment;
+import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationsFragment;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesFragment;
@@ -30,6 +40,9 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract HomeFragment contributeHomeFragment();
+
+    @ContributesAndroidInjector
+    abstract FiltersFragment contributesFiltersFragment();
 
     @ContributesAndroidInjector
     abstract SearchFragment contributesSearchFragment();
@@ -58,7 +71,34 @@ abstract class MainActivityFragmentsModule {
     @ContributesAndroidInjector
     abstract PreferencesFragment contributesPreferencesFragment();
 
+    @ContributesAndroidInjector
+    abstract TransactionsFragment contributesTransactionFragment();
 
     @ContributesAndroidInjector
-    abstract TransactionsFragment contributTransactionFragment();
+    abstract TransactionDetailFragment contributesTransactionDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract AboutFragment contributesAboutFragment();
+
+    @ContributesAndroidInjector
+    abstract RewardsGuestFragment contributesRewardsFragment();
+
+    @ContributesAndroidInjector
+    abstract RewardsSignedInFragment contributesRedeemFragment();
+
+    @ContributesAndroidInjector
+    abstract RewardsDetailsFragment contributesRewardsDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract RewardsDiscoveryFragment contributesRewardsDiscoveryFragment();
+
+    @ContributesAndroidInjector
+    abstract SecurityQuestionValidationFragment contributeSecurityQuestionValidationFragment();
+
+    @ContributesAndroidInjector
+    abstract AddressFragment contributesAddressFragment();
+
+    @ContributesAndroidInjector
+    abstract ProvinceProfileFragment contributeProvinceProfileFragment();
+
 }

@@ -5,6 +5,7 @@ import android.graphics.Color;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.StringRes;
+
 import suncor.com.android.R;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
@@ -29,7 +30,7 @@ public class CardListItem {
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
             backgroundColor = Color.WHITE;
             textColor = Color.parseColor("#CC000000");
-            balance = context.getString(R.string.cards_partners_balance_template, "20%");
+            balance = context.getString(R.string.cards_partners_balance_template, context.getString(R.string.cards_partners_balance_value));
             switch (cardType) {
                 case HBC:
                     title = R.string.cards_hbc_label;

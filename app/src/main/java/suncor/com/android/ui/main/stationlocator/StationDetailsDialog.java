@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +19,15 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import dagger.android.support.AndroidSupportInjection;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
@@ -36,6 +39,7 @@ import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationDetailsDialog extends BottomSheetDialogFragment {
@@ -115,6 +119,11 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight));
         binding.cardView.getLayoutParams().height = initialHeight;
+
+        if (!shouldShowCardHandler) {
+            binding.imgBottomSheet.setVisibility(View.INVISIBLE);
+        }
+
         dialog.setContentView(binding.getRoot());
 
         binding.closeButton.setOnClickListener((v) -> {
@@ -135,10 +144,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         binding.detailsLayout.setVisibility(View.VISIBLE);
         binding.addressLayout.setVisibility(View.VISIBLE);
-        binding.addressLayout.post(() -> {
-            initialAddressLayoutHeight = binding.addressLayout.getMeasuredHeight();
-            initialAddressLayoutBottomMargin = ((LinearLayout.LayoutParams) binding.addressLayout.getLayoutParams()).bottomMargin;
-        });
+        initialAddressLayoutHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics()); //16dp
+        initialAddressLayoutBottomMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()); //10dp
 
         behavior = BottomSheetBehavior.from(((View) binding.getRoot().getParent()));
         if (behavior != null) {
@@ -218,6 +225,10 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                     } else {
                         SuncorToast.makeText(application, R.string.msg_sl006, Toast.LENGTH_SHORT).show();
                     }
+                } else if (r.status == Resource.Status.SUCCESS) {
+                    if (stationItem.isFavourite()) {
+                        AnalyticsUtils.logEvent(getContext(), "station_add_to_favourite", new Pair<>("location", stationItem.getStation().getAddress().getAddressLine()));
+                    }
                 }
             });
         }
@@ -227,6 +238,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + station.getAddress().getPhone()));
         startActivity(intent);
+
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", station.getAddress().getPhone()));
     }
 
     private int getStatusBarHeight() {

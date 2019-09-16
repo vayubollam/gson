@@ -30,6 +30,9 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:id="@+id/scollview"
+            android:paddingTop="28dp"
             android:fillViewport="true"
             app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
 
@@ -80,7 +83,7 @@
                         app:vm="@{vm}" />
 
 
-                    <com.google.android.material.button.MaterialButton
+                    <suncor.com.android.ui.common.SuncorButton
                         android:id="@+id/view_previous_month_button"
                         style="@style/LinkButton.Red.ML"
                         android:layout_width="match_parent"

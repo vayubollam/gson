@@ -8,42 +8,58 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.databinding.DataBindingUtil;
 
 import javax.inject.Inject;
 
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.data.settings.SettingsApi;
+import suncor.com.android.databinding.ActivitySplashBinding;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.ConnectionUtil;
+import suncor.com.android.utilities.FingerprintManager;
 
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
     private final static int EXIT_ANIMATION_DURATION = 900;
     private static final String LAST_APP_VERSION = "last_app_version";
     Handler delayHandler = new Handler();
-    private AppCompatImageView imageRetail;
-    private AppCompatImageView backgroundImage;
-    private LinearLayout textLayout;
     private int delayExit = 900;
+    private ActivitySplashBinding binding;
+    private boolean firstTimeUse = false;
+    public static final String LOGINFAILED = "loginFailed";
 
     @Inject
     SessionManager sessionManager;
 
     @Inject
+    SettingsApi settingsApi;
+
+    @Inject
     SuncorApplication application;
+
+    @Inject
+    FingerprintManager fingerPrintManager;
 
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -59,12 +75,8 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
         AppStart appStartMode = checkAppStart();
 
-        if (appStartMode != AppStart.FIRST_TIME) {
-            sessionManager.checkLoginState();
-        }
-
         if (application.isSplashShown()) {
-            openMainActivity();
+            openMainActivity(false);
             return;
         }
 
@@ -72,11 +84,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         getWindow().getDecorView()
                 .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-
-        setContentView(R.layout.activity_splash);
-        backgroundImage = findViewById(R.id.img_splash_full_screen);
-        imageRetail = findViewById(R.id.img_retail);
-        textLayout = findViewById(R.id.text_layout);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         AppCompatTextView splashText1 = findViewById(R.id.splash_text_1);
         AppCompatTextView splashText2 = findViewById(R.id.splash_text_2);
         switch (appStartMode) {
@@ -84,11 +92,12 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                 splashText2.setVisibility(View.GONE);
                 break;
             case FIRST_TIME:
+                firstTimeUse = true;
                 splashText2.setVisibility(View.VISIBLE);
                 splashText1.setText(R.string.drive_safely);
-                backgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.drive_safely));
-                backgroundImage.setOnClickListener((v) -> {
-                    startExitAnimation();
+                binding.imgSplashFullScreen.setImageDrawable(getResources().getDrawable(R.drawable.safety_image));
+                binding.imgSplashFullScreen.setOnClickListener((v) -> {
+                    startExitAnimation(false);
                 });
                 delayExit = 3000;
                 break;
@@ -99,6 +108,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                 break;
         }
     }
+
 
     @Override
     protected void onResume() {
@@ -115,9 +125,9 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         animZoomOut.setDuration(ENTER_ANIMATION_DURATION);
         animZoomOut.setAnimationListener(this);
 
-        backgroundImage.startAnimation(animZoomOut);
-        imageRetail.startAnimation(animFromBottom);
-        textLayout.startAnimation(animFromLet);
+        binding.imgSplashFullScreen.startAnimation(animZoomOut);
+        binding.imgRetail.startAnimation(animFromBottom);
+        binding.textLayout.startAnimation(animFromLet);
     }
 
     @Override
@@ -125,20 +135,95 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     }
 
+
     @Override
     public void onAnimationEnd(Animation animation) {
-        delayHandler.postDelayed(() -> {
-            startExitAnimation();
-        }, delayExit);
+        if (!firstTimeUse) {
+            binding.profilePd.setVisibility(View.VISIBLE);
+        }
+        if (ConnectionUtil.haveNetworkConnection(this)) {
+            settingsApi.retrieveSettings().observe(this, resource -> {
+                if (resource.status == Resource.Status.ERROR) {
+                    binding.profilePd.setVisibility(View.GONE);
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.settings_failure_dialog_title)));
+
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.settings_failure_dialog_title)
+                            .setMessage(R.string.settings_failure_dialog_message)
+                            .setPositiveButton(R.string.settings_failure_dialog_button, (dialog, which) -> {
+                                finish();
+                            })
+                            .setCancelable(false)
+                            .show();
+                }
+                if (resource.status == Resource.Status.SUCCESS) {
+                    handleSettingsResponse(resource.data);
+                }
+            });
+        } else {
+            delayHandler.postDelayed(() -> {
+                startExitAnimation(false);
+
+            }, delayExit);
+        }
     }
 
-    private void startExitAnimation() {
+    private void handleSettingsResponse(SettingsResponse settingsResponse) {
+        String minVersion = settingsResponse.getSettings().getMinAndroidVersion();
+        String currentVersion = BuildConfig.VERSION_NAME;
+        if (currentVersion.compareTo(minVersion) < 0) {
+            binding.profilePd.setVisibility(View.GONE);
+            AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.update_required_dialog_title)));
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.update_required_dialog_title)
+                    .setMessage(R.string.update_required_dialog_message)
+                    .setPositiveButton(R.string.update_required_dialog_button, (dialog, which) -> {
+                        final String appPackageName = "com.petrocanada.my_petro_canada";
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
+                        finish();
+                    })
+                    .setCancelable(false)
+                    .show();
+        } else {
+            if (firstTimeUse) {
+                delayHandler.postDelayed(() -> {
+                    startExitAnimation(false);
+
+                }, delayExit);
+            } else {
+                if (fingerPrintManager.isAutoLoginActivated()) {
+                    sessionManager.checkLoginState().observe(this, loginState -> {
+                        binding.profilePd.setVisibility(View.GONE);
+                        switch (loginState) {
+                            case LOGGED_IN:
+                            case LOGGED_OUT:
+                                startExitAnimation(false);
+                                break;
+                            case ERROR:
+                                startExitAnimation(true);
+                                break;
+
+                        }
+                    });
+                } else {
+                    startExitAnimation(false);
+                }
+
+            }
+        }
+    }
+
+    private void startExitAnimation(boolean loginFailed) {
         float screenHeightDiff = getDifferenceHeight(getScreenHeight());
         float screenWidthDiff = getDifferenceWidth(getScreenWidth());
 
-        ObjectAnimator toLeftAnim = ObjectAnimator.ofFloat(textLayout, "translationX", -screenWidthDiff);
+        ObjectAnimator toLeftAnim = ObjectAnimator.ofFloat(binding.textLayout, "translationX", -screenWidthDiff);
 
-        ObjectAnimator toBottomAnim = ObjectAnimator.ofFloat(imageRetail, "translationY", screenHeightDiff);
+        ObjectAnimator toBottomAnim = ObjectAnimator.ofFloat(binding.imgRetail, "translationY", screenHeightDiff);
 
         AnimatorSet animSetXY = new AnimatorSet();
         animSetXY.setDuration(EXIT_ANIMATION_DURATION);
@@ -146,7 +231,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         animSetXY.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                openMainActivity();
+                openMainActivity(loginFailed);
             }
         });
         animSetXY.start();
@@ -178,9 +263,10 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         }
     }
 
-    private void openMainActivity() {
+    private void openMainActivity(boolean loginFailed) {
         delayHandler.removeCallbacksAndMessages(null);
         Intent homeIntent = new Intent(this, MainActivity.class);
+        homeIntent.putExtra(LOGINFAILED, loginFailed);
         startActivity(homeIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
@@ -200,13 +286,13 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     private float getDifferenceHeight(float screenHeight) {
         int[] locations = new int[2];
-        imageRetail.getLocationOnScreen(locations);
+        binding.imgRetail.getLocationOnScreen(locations);
         return screenHeight - locations[1];
     }
 
     private float getDifferenceWidth(float screenWidth) {
         int[] locations = new int[2];
-        textLayout.getLocationOnScreen(locations);
+        binding.textLayout.getLocationOnScreen(locations);
         return screenWidth - locations[0];
     }
 

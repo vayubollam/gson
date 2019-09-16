@@ -3,7 +3,11 @@ package suncor.com.android.ui.main.home;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,31 +15,43 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.AutoTransition;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
-import suncor.com.android.api.DirectionsApi;
-import suncor.com.android.databinding.FragmentHomeBinding;
+import suncor.com.android.databinding.FragmentHomeGuestBinding;
+import suncor.com.android.databinding.FragmentHomeSignedinBinding;
+import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
-import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.common.webview.WebDialogFragment;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -49,12 +65,12 @@ public class HomeFragment extends BottomNavigationFragment {
     @Inject
     ViewModelFactory viewModelFactory;
     private HomeViewModel mViewModel;
-    private RewardsAdapter rewardsAdapter;
+    private OffersAdapter offersAdapter;
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
-    private FragmentHomeBinding binding;
     @Inject
     PermissionManager permissionManager;
+    private HomeNearestCardBinding nearestCard;
 
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
@@ -63,42 +79,219 @@ public class HomeFragment extends BottomNavigationFragment {
             mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
         }
     };
-    private OnClickListener openNavigation = v -> {
-        if (mViewModel.stationItem != null) {
-            NavigationAppsHelper.openNavigationApps(getActivity(), mViewModel.stationItem.getStation());
-        }
-    };
+
     private OnClickListener showCardDetail = v -> {
-        if (mViewModel.stationItem != null && !mViewModel.isLoading.get()) {
-            StationDetailsDialog.showCard(this, mViewModel.stationItem, binding.stationCard, false);
+        Resource<StationItem> resource = mViewModel.nearestStation.getValue();
+        if (resource != null && resource.data != null && !mViewModel.isLoading.get()) {
+            StationDetailsDialog.showCard(this, resource.data, nearestCard.getRoot(), false);
         }
     };
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
-    }
+    private RecyclerView.OnScrollListener offersScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+                OfferCard card = offersAdapter.getOffer(position);
+                AnalyticsUtils.logEvent(getContext(), "promotion_view", new Pair<>("promotionPosition", position + ""), new Pair<>("promotionName", card.getText()));
+            }
+        }
+    };
+
+    private boolean systemMarginsAlreadyApplied;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-        mViewModel.nearestStation.observe(this, stationObserver);
+        mViewModel.locationServiceEnabled.observe(this, (enabled -> {
+            if (enabled) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+                    mViewModel.isLoading.set(mViewModel.getUserLocation() == null);
+                    locationLiveData.observe(getViewLifecycleOwner(), (location -> mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()))));
+                }
+            }
+        }));
+        mViewModel.openNavigationApps.observe(this, event -> {
+            Station station = event.getContentIfNotHandled();
+            if (station != null) {
+                NavigationAppsHelper.openNavigationApps(getActivity(), station);
+            }
+        });
+        mViewModel.dismissEnrollmentRewardsCardEvent.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                ConstraintLayout mainLayout = getView().findViewById(R.id.main_layout);
+                TransitionSet set = new TransitionSet();
+                Transition cardSlide = new Slide(Gravity.LEFT);
+                cardSlide.addTarget(R.id.enrollment_greetings_card);
+                set.addTransition(cardSlide);
+                set.addTransition(new AutoTransition());
+                TransitionManager.beginDelayedTransition(mainLayout, set);
+                ConstraintSet constraintSet = new ConstraintSet();
+                constraintSet.clone(mainLayout);
+                constraintSet.setVisibility(R.id.enrollment_greetings_card, ConstraintSet.GONE);
+                constraintSet.applyTo(mainLayout);
+            }
+        });
+        mViewModel.navigateToPetroPoints.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                HomeFragmentDirections.ActionHomeTabToCardsDetailsFragment action = HomeFragmentDirections.actionHomeTabToCardsDetailsFragment();
+                action.setIsCardFromProfile(true);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+        });
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        View view;
+        if (!mViewModel.isUserLoggedIn()) {
+            view = setupGuestLayout(inflater, container);
+        } else {
+            view = setupSignedInLayout(inflater, container);
+        }
+
+        //Setup nearest card click listeners
+        nearestCard.getRoot().setOnClickListener(showCardDetail);
+        nearestCard.tryAgainButton.setOnClickListener(tryAgainLister);
+
+        nearestCard.settingsButton.setOnClickListener(v -> {
+            permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+                @Override
+                public void onNeedPermission() {
+                    showRequestLocationDialog(false);
+                }
+
+                @Override
+                public void onPermissionPreviouslyDenied() {
+                    //in case in the future we would show any rational
+                    showRequestLocationDialog(false);
+                }
+
+                @Override
+                public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                    showRequestLocationDialog(true);
+                }
+
+                @Override
+                public void onPermissionGranted() {
+                    showRequestLocationDialog(false);
+                }
+            });
+        });
+
+        return view;
+    }
+
+    private View setupSignedInLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        FragmentHomeSignedinBinding binding = FragmentHomeSignedinBinding.inflate(inflater, container, false);
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
-        binding.setIsLoading(mViewModel.isLoading);
-        binding.tryAgainButton.setOnClickListener(tryAgainLister);
-        binding.stationCard.setOnClickListener(showCardDetail);
-        binding.directionsButton.setOnClickListener(openNavigation);
+        nearestCard = binding.nearestCard;
+        nearestCard.getRoot().setOnClickListener((v) -> {
+            if (mViewModel.nearestStation.getValue().data != null && !mViewModel.isLoading.get()) {
+                if (binding.scrollView.getScrollY() > binding.nearestCard.getRoot().getTop() - 200) {
+                    binding.scrollView.smoothScrollTo(0, binding.nearestCard.getRoot().getTop() - 200);
+                    binding.scrollView.postDelayed(() -> {
+                        StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
+                    }, 100);
+                } else {
+                    StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
+                }
+            }
+        });
+
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
+        binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(binding.offersRecyclerview);
+        binding.offersRecyclerview.setAdapter(offersAdapter);
+        binding.offersRecyclerview.addOnScrollListener(offersScrollListener);
+        systemMarginsAlreadyApplied = false;
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+            if (!systemMarginsAlreadyApplied) {
+                systemMarginsAlreadyApplied = true;
+                int systemsTopMargin = insets.getSystemWindowInsetTop();
+                ((ViewGroup.MarginLayoutParams) binding.headerGreetings.getLayoutParams()).topMargin += systemsTopMargin;
+                binding.headerGreetings.getParent().requestLayout();
+            }
+            return insets;
+        });
+
+
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int totalTranslation = binding.greetingBottomToCards.getHeight();
+            View barrierView = binding.enrollmentGreetingsCard.getVisibility() != View.GONE ? binding.enrollmentGreetingsCard : binding.nearestCard.getRoot();
+            float parallaxEffectValue = (float) totalTranslation / barrierView.getTop();
+            float greetingsTranslation = Math.min(totalTranslation, scrollY * parallaxEffectValue);
+            binding.headerGreetings.setTranslationY(greetingsTranslation);
+            binding.headerPetropoints.setTranslationY(greetingsTranslation);
+            binding.headerImage.setTranslationY((float) (scrollY * 0.5));
+        });
+
         return binding.getRoot();
     }
 
+    private View setupGuestLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        FragmentHomeGuestBinding binding = FragmentHomeGuestBinding.inflate(inflater, container, false);
+        binding.setVm(mViewModel);
+        binding.setLifecycleOwner(this);
+        binding.mainLayout.post(() -> {
+            ConstraintLayout.LayoutParams privacyButtonParams = (ConstraintLayout.LayoutParams) binding.privacyPolicy.getLayoutParams();
+            int _8dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+            binding.mainLayout.getLayoutParams().height = binding.scrollView.getHeight() + binding.privacyPolicy.getHeight() + privacyButtonParams.bottomMargin + _8dp;
+            binding.mainLayout.requestLayout();
+        });
+
+        systemMarginsAlreadyApplied = false;
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainLayout, (view, insets) -> {
+            if (!systemMarginsAlreadyApplied) {
+                systemMarginsAlreadyApplied = true;
+                int systemsTopMargin = insets.getSystemWindowInsetTop();
+                view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + systemsTopMargin, view.getPaddingRight(), view.getPaddingBottom());
+            }
+            return insets;
+        });
+
+        nearestCard = binding.nearestCard;
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false);
+        binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(binding.offersRecyclerview);
+        binding.offersRecyclerview.setAdapter(offersAdapter);
+        binding.offersRecyclerview.addOnScrollListener(offersScrollListener);
+        binding.privacyPolicy.setOnClickListener(v -> showDialog(getString(R.string.profile_about_privacy_policy_link), getString(R.string.profile_about_legal_header)));
+        binding.termsConditions.setOnClickListener(v -> showDialog(getString(R.string.profile_about_legal_link), getString(R.string.profile_about_privacy_policy_header)));
+
+        if (!inAnimationShown) {
+            inAnimationShown = true;
+            Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right_home);
+            animFromLet.setDuration(500);
+            Animation animslideUp = AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in);
+            animslideUp.setDuration(500);
+            binding.offersRecyclerview.startAnimation(animFromLet);
+            nearestCard.getRoot().startAnimation(animslideUp);
+            binding.termsConditions.startAnimation(animslideUp);
+            binding.privacyPolicy.startAnimation(animslideUp);
+        }
+
+        return binding.getRoot();
+    }
+
+    void showDialog(String url, String header) {
+        WebDialogFragment webDialogFragment = WebDialogFragment.newInstance(url, header);
+        webDialogFragment.show(getFragmentManager(), WebDialogFragment.TAG);
+
+        AnalyticsUtils.logEvent(getContext(), "intersite", new Pair<>("intersiteURL", url));
+    }
+
+    @Override
+    protected boolean isFullScreen() {
+        return true;
+    }
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
@@ -125,66 +318,34 @@ public class HomeFragment extends BottomNavigationFragment {
     }
 
     @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
+    public void onStart() {
+        super.onStart();
+        checkAndRequestPermission();
+
+        if (mViewModel.isUserLoggedIn()) {
+            getView().post(() -> {
+                int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                }
+                getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+            });
+        }
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (!inAnimationShown) {
-            inAnimationShown = true;
-            Animation animFromLet = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right_home);
-            animFromLet.setDuration(500);
-            Animation animslideUp = AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in);
-            animslideUp.setDuration(500);
-            binding.carouselCardRecycler.startAnimation(animFromLet);
-            binding.stationCard.startAnimation(animslideUp);
+    public void onStop() {
+        super.onStop();
+        int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }
-        checkAndRequestPermission();
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+    }
 
-        rewardsAdapter = new RewardsAdapter(getActivity(), mViewModel);
-        binding.carouselCardRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        PagerSnapHelper helper = new PagerSnapHelper();
-        helper.attachToRecyclerView(binding.carouselCardRecycler);
-        binding.carouselCardRecycler.setAdapter(rewardsAdapter);
-        if (mViewModel.isUserLoggedIn()) {
-            showWelcomeMessage();
-        }
-
-        binding.settingsButton.setOnClickListener(v -> {
-            permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
-                @Override
-                public void onNeedPermission() {
-
-                    showRequestLocationDialog(false);
-                }
-
-                @Override
-                public void onPermissionPreviouslyDenied() {
-                    //in case in the future we would show any rational 
-                    showRequestLocationDialog(false);
-                }
-
-                @Override
-                public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
-                    showRequestLocationDialog(true);
-                }
-
-                @Override
-                public void onPermissionGranted() {
-                    showRequestLocationDialog(false);
-                }
-            });
-        });
-        mViewModel.locationServiceEnabled.observe(this, (enabled -> {
-            if (enabled) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
-                    mViewModel.isLoading.set(mViewModel.getUserLocation() == null);
-                    locationLiveData.observe(getViewLifecycleOwner(), (location -> mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()))));
-                }
-            }
-        }));
+    @Override
+    protected String getScreenName() {
+        return "home";
     }
 
     @Override
@@ -202,19 +363,13 @@ public class HomeFragment extends BottomNavigationFragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void showWelcomeMessage() {
-        //TODO improve this
-        binding.welcomeLayout.setVisibility(View.VISIBLE);
-        Profile profile = mViewModel.getProfile();
-        binding.welcomeMessage.setText(getString(R.string.dashboard_enrolled_welcome_message, profile.getFirstName(), mViewModel.getRewardedPoints()));
-    }
-
     @Override
     public void onLoginStatusChanged() {
-        if (mViewModel.isUserLoggedIn()) {
-            showWelcomeMessage();
-        } else {
-            binding.welcomeLayout.setVisibility(View.GONE);
+        if (!this.isDetached()) {
+            getFragmentManager().beginTransaction()
+                    .detach(this)
+                    .attach(this)
+                    .commit();
         }
     }
 
@@ -226,30 +381,6 @@ public class HomeFragment extends BottomNavigationFragment {
 
         }
     }
-
-    Observer<Resource<Station>> stationObserver = resource -> {
-        if (resource.status == Resource.Status.SUCCESS) {
-            if (resource.data != null) {
-                Station station = resource.data;
-                StationItem stationItem = new StationItem(station);
-                mViewModel.stationItem = stationItem;
-                binding.setStation(stationItem);
-                if (stationItem.getDistanceDuration() == null) {
-                    LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                    LatLng origin = new LatLng(mViewModel.getUserLocation().latitude, mViewModel.getUserLocation().longitude);
-                    DirectionsApi.getInstance().enqueuJob(origin, dest)
-                            .observe(getViewLifecycleOwner(), result -> {
-                                if (result.status == Resource.Status.SUCCESS) {
-                                    mViewModel.stationItem.setDistanceDuration(result.data);
-                                } else if (result.status == Resource.Status.ERROR) {
-                                    mViewModel.stationItem.setDistanceDuration(DirectionsResult.INVALID);
-                                }
-                            });
-                }
-            }
-        }
-    };
-
 
     private void checkAndRequestPermission() {
         permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {

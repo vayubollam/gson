@@ -7,33 +7,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.TransactionsFragmentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.cards.Transaction;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.uicomponents.DividerItemDecoratorHideLastItem;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.main.profile.transcations.TransactionsFragmentDirections.ActionTransactionsFragmentToTransactionDetailFragment;
+
+import static androidx.navigation.Navigation.findNavController;
+import static suncor.com.android.ui.main.profile.transcations.TransactionsFragmentDirections.actionTransactionsFragmentToTransactionDetailFragment;
 
 
-public class TransactionsFragment extends BaseFragment {
+public class TransactionsFragment extends MainActivityFragment {
 
     private TransactionsViewModel mViewModel;
     @Inject
     ViewModelFactory viewModelFactory;
     private TransactionsFragmentBinding binding;
-
+    private TransactionAdapter transactionAdapter1, transactionAdapter2, transactionAdapter3, transactionAdapter4;
+    private boolean isExpanded = true;
     public static TransactionsFragment newInstance() {
         return new TransactionsFragment();
     }
@@ -61,27 +65,25 @@ public class TransactionsFragment extends BaseFragment {
     }
 
     @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(TransactionsViewModel.class);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mViewModel.transactions.observe(this, transactionsHashMap -> {
             if (transactionsHashMap != null) {
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(0)) && transactionsHashMap.keySet().size() == 2) {
-                    binding.transactionFirstMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(0))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(0)) && transactionAdapter1 == null) {
+                    transactionAdapter1 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(0)), (this::transactionDetailHandler));
+                    binding.transactionFirstMonth.transactionRecycler.setAdapter(transactionAdapter1);
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(1)) && transactionsHashMap.keySet().size() == 2) {
-                    binding.transactionSecondMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(1))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(1)) && transactionAdapter2 == null) {
+                    transactionAdapter2 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(1)), (this::transactionDetailHandler));
+                    binding.transactionSecondMonth.transactionRecycler.setAdapter(transactionAdapter2);
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(2)) && transactionsHashMap.keySet().size() == 3) {
-                    binding.transactionThirdMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(2))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(2)) && transactionAdapter3 == null) {
+                    transactionAdapter3 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(2)), (this::transactionDetailHandler));
+                    binding.transactionThirdMonth.transactionRecycler.setAdapter(transactionAdapter3);
                 }
-                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(3)) && transactionsHashMap.keySet().size() == 4) {
-                    binding.transactionFourthMonth.transactionRecycler.setAdapter(new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(3))));
+                if (transactionsHashMap.containsKey(mViewModel.getCurrentMonth(3)) && transactionAdapter4 == null) {
+                    transactionAdapter4 = new TransactionAdapter(transactionsHashMap.get(mViewModel.getCurrentMonth(3)), (this::transactionDetailHandler));
+                    binding.transactionFourthMonth.transactionRecycler.setAdapter(transactionAdapter4);
                 }
 
 
@@ -92,13 +94,38 @@ public class TransactionsFragment extends BaseFragment {
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
             }
         });
+        binding.transactionToolBar.post(() -> {
+            binding.transactionToolBar.setExpanded(isExpanded, false);
+        });
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(TransactionsViewModel.class);
     }
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.transactionToolBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.transactionToolBar.setNavigationOnClickListener(v -> findNavController(getView()).popBackStack());
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "my-petro-points-account-transaction-list";
+    }
+
+    public void transactionDetailHandler(Transaction transaction) {
+        transactionAdapter1 = null;
+        transactionAdapter2 = null;
+        transactionAdapter3 = null;
+        transactionAdapter4 = null;
+        isExpanded = binding.transactionToolBar.isExpanded();
+        ActionTransactionsFragmentToTransactionDetailFragment action = actionTransactionsFragmentToTransactionDetailFragment(transaction);
+        findNavController(getView()).navigate(action);
 
     }
 

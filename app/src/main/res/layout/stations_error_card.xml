@@ -58,9 +58,9 @@
                 android:textColor="@color/black_60"
                 tools:text="@string/station_result_no_stations_filters_applied" />
 
-            <com.google.android.material.button.MaterialButton
+            <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/clear_filters_button"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/LinkButton.Red.L"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gibson_semibold"

@@ -8,25 +8,28 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFiltersBinding;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 
-public class FiltersFragment extends Fragment {
+public class FiltersFragment extends MainActivityFragment {
     private FragmentFiltersBinding binding;
     private HashMap<String, CheckBox> checkBoxes = new HashMap<>();
     private StationsViewModel parentViewModel;
 
+    public static final String CARWASH_TOUCHLESS_KEY = "carWashBrushTypeTouchless";
+    public static final String CARWASH_ALL_WASHES_KEY = "carWashAllWashes";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,12 +87,27 @@ public class FiltersFragment extends Fragment {
             binding.fuelAmenitiesContainer.addView(getDivider());
             checkBoxes.put(amenityKey, checkBox);
         }
-        for (String amenityKey : Station.WASH_AMENITIES.keySet()) {
-            AppCompatCheckBox checkBox = getCheckbox(Station.WASH_AMENITIES.get(amenityKey));
-            binding.carwashAmenitiesContainer.addView(checkBox);
-            binding.carwashAmenitiesContainer.addView(getDivider());
-            checkBoxes.put(amenityKey, checkBox);
-        }
+
+        AppCompatCheckBox touchlessCheckBox = getCheckbox(getString(R.string.station_filter_touchless_only));
+        binding.carwashAmenitiesContainer.addView(touchlessCheckBox);
+        binding.carwashAmenitiesContainer.addView(getDivider());
+        checkBoxes.put(CARWASH_TOUCHLESS_KEY, touchlessCheckBox);
+
+        AppCompatCheckBox allWashesCheckBox = getCheckbox(getString(R.string.station_filters_all_washes));
+        binding.carwashAmenitiesContainer.addView(allWashesCheckBox);
+        binding.carwashAmenitiesContainer.addView(getDivider());
+        checkBoxes.put(CARWASH_ALL_WASHES_KEY, allWashesCheckBox);
+
+        touchlessCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkBoxes.get(CARWASH_ALL_WASHES_KEY).setChecked(false);
+            }
+        });
+        allWashesCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                checkBoxes.get(CARWASH_TOUCHLESS_KEY).setChecked(false);
+            }
+        });
     }
 
     private AppCompatCheckBox getCheckbox(String amenityText) {

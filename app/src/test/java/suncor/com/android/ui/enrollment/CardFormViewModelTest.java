@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import suncor.com.android.R;
-import suncor.com.android.data.repository.account.EnrollmentsApi;
+import suncor.com.android.data.account.EnrollmentsApi;
 import suncor.com.android.ui.enrollment.cardform.CardFormViewModel;
 
 public class CardFormViewModelTest {

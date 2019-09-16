@@ -1,13 +1,15 @@
 package suncor.com.android.ui.main.stationlocator.search;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.PlaceSuggestionItemBinding;
 import suncor.com.android.utilities.Consumer;
@@ -42,6 +44,9 @@ public class SuggestionsAdapter extends RecyclerView.Adapter<SuggestionsAdapter.
     public void onBindViewHolder(@NonNull SuggestionyHolder holder, int position) {
         final PlaceSuggestion suggestion = suggestions.get(position);
         holder.binding.setPlace(suggestion);
+        if (position == suggestions.size() - 1) {
+            holder.binding.suggestionDivider.setVisibility(View.INVISIBLE);
+        }
         holder.binding.executePendingBindings();
         holder.binding.getRoot().setOnClickListener(v -> {
             callback.accept(suggestion);

@@ -6,44 +6,53 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerFragment;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.uicomponents.ExtendedNestedScrollView;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
-public class EnrollmentFormFragment extends DaggerFragment implements OnBackPressedListener {
+public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -52,6 +61,8 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     private EnrollmentFormViewModel viewModel;
     private boolean isExpanded = true;
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
+    private String formName;
+    private String screenName;
 
     public EnrollmentFormFragment() {
     }
@@ -70,6 +81,15 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
         }
 
+        boolean joinWithCard = viewModel.getCardStatus() != null;
+        if (joinWithCard) {
+            screenName = "activate-i-have-a-card";
+            formName = "Activate Petro-Points Card";
+        } else {
+            screenName = "sign-up-i-dont-have-a-card";
+            formName = "Join Petro-Points";
+        }
+
         viewModel.getShowDuplicateEmailEvent().observe(this, (r) -> {
             showDuplicateEmailAlert();
         });
@@ -85,10 +105,42 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
                         startActivity(intent);
                     }
                 }, 1000);
+                //Log success events
+                String screenName;
+                if (viewModel.getCardStatus() != null) {
+                    screenName = "activate-success";
+                } else {
+                    screenName = "sign-up-success";
+                }
+                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+
+                String optionsChecked = "";
+                if (binding.emailOffersCheckbox.isChecked()) {
+                    optionsChecked += binding.emailOffersCheckbox.getText().toString();
+                }
+                if (binding.smsOffersCheckbox.isChecked()) {
+                    optionsChecked += binding.smsOffersCheckbox.getText().toString();
+                }
+
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_complete",
+                        new Pair<>("formName", formName),
+                        new Pair<>("formSelection", optionsChecked)
+                );
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_sign_up_success",
+                        new Pair<>("formName", formName),
+                        new Pair<>("formSelection", optionsChecked)
+                );
+                AnalyticsUtils.logEvent(getContext(), "sign_up");
+
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_email_restricted_alert_title)));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
@@ -105,9 +157,7 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
 
 
         //show and hide autocomplete layout
-        viewModel.showAutocompleteLayout.observe(this, (show) ->
-
-        {
+        viewModel.showAutocompleteLayout.observe(this, (show) -> {
             if (getActivity() == null || binding.appBar.isExpanded()) {
                 return;
             }
@@ -131,43 +181,44 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         });
 
         //binding autocomplete results to adapter
-        viewModel.getAutocompleteResults().
+        viewModel.getAutocompleteResults().observe(this, (resource ->
+        {
+            if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
+                addressAutocompleteAdapter.setSuggestions(resource.data);
+                binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
+            }
+        }));
 
-                observe(this, (resource ->
+        viewModel.getAutocompleteRetrievalStatus().observe(this, resource ->
+        {
+            hideKeyBoard();
+            binding.streetAddressInput.getEditText().clearFocus();
+        });
 
-                {
-                    if (resource.status == Resource.Status.SUCCESS && resource.data.length != 0) {
-                        addressAutocompleteAdapter.setSuggestions(resource.data);
-                        binding.streetAutocompleteOverlay.autocompleteList.scrollToPosition(0);
-                    }
-                }));
-
-        viewModel.getAutocompleteRetrievalStatus().
-
-                observe(this, resource ->
-
-                {
-                    hideKeyBoard();
-                    binding.streetAddressInput.getEditText().clearFocus();
-                });
-
-        viewModel.getNavigateToLogin().
-
-                observe(this, event ->
-
-                {
-                    if (event.getContentIfNotHandled() != null) {
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                });
+        viewModel.getNavigateToLogin().observe(this, event ->
+        {
+            if (event.getContentIfNotHandled() != null) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+        viewModel.showBiometricAlert.observe(this, booleanEvent ->
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.sign_enable_fp_title)
+                        .setMessage(R.string.sign_enable_fb_message)
+                        .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> viewModel.proccedToJoin(true))
+                        .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> viewModel.proccedToJoin(false))
+                        .create()
+                        .show());
     }
 
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
+        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_invalid_email_title)));
+
         dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
                 .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
                 .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
@@ -201,8 +252,17 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
         requiredFields.add(binding.cityInput);
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
-        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
+
+        binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
+        binding.phoneInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
+        binding.phoneInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyBoard();
+                return true;
+            }
+            return false;
+        });
 
         binding.provinceInput.setOnClickListener(v -> {
             isExpanded = binding.appBar.isExpanded();
@@ -231,12 +291,46 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
     @Override
     public void onResume() {
         super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+        if (viewModel.getCardStatus() == null) {
+            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", formName));
+        } else {
+            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", formName), new Pair<>("stepName", "Personal Information"));
+        }
+    }
+
+    @Override
+    public String getScreenName() {
+        return screenName;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        ExtendedNestedScrollView scroller = binding.scrollView;
+
+        if (scroller != null) {
+
+            scroller.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                    if (scrollY > oldScrollY) {
+                        double scrollViewHeight = v.getChildAt(0).getBottom() - v.getHeight();
+                        double getScrollY = v.getScrollY();
+                        double scrollPosition = (getScrollY / scrollViewHeight) * 100d;
+                        int pourcentage = (int)scrollPosition;
+                        if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50|| pourcentage == 75 || pourcentage == 95  ){
+                        AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
+
+                   }
+
+                    }
+
+                }
+            });
+        }
     }
 
 
@@ -308,6 +402,24 @@ public class EnrollmentFormFragment extends DaggerFragment implements OnBackPres
             viewModel.getPhoneField().setHasFocus(hasFocus);
         }
 
+        //log form steps
+        if (hasFocus) {
+            if (view == binding.firstNameInput) {
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_step",
+                        new Pair<>("formName", formName),
+                        new Pair<>("stepName", binding.personalCategoryTitle.getText().toString())
+                );
+            } else if (view == binding.streetAddressInput) {
+                AnalyticsUtils.logEvent(
+                        getContext(),
+                        "form_step",
+                        new Pair<>("formName", formName),
+                        new Pair<>("stepName", binding.addressCategoryTitle.getText().toString())
+                );
+            }
+        }
     }
 
     private void scrollToView(View view) {

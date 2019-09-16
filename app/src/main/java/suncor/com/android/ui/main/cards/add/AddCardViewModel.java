@@ -2,14 +2,15 @@ package suncor.com.android.ui.main.cards.add;
 
 import android.os.Handler;
 
-import javax.inject.Inject;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
-import suncor.com.android.data.repository.cards.CardsRepository;
+import suncor.com.android.data.cards.CardsRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
@@ -21,7 +22,7 @@ public class AddCardViewModel extends ViewModel {
 
     public LiveData<Resource<CardDetail>> addCardApiResult;
     private CardNumberInputField cardNumberInputField = new CardNumberInputField(R.string.cards_add_fragment_card_field_empty_error, R.string.cards_add_fragment_card_field_format_error);
-    private CVVInputField cvvInputField = new CVVInputField(R.string.cards_add_fragment_card_field_empty_error, R.string.cards_add_fragment_card_field_format_error);
+    private CVVInputField cvvInputField = new CVVInputField(R.string.cards_add_fragment_cvv_field_empty_error, R.string.cards_add_fragment_cvv_field_format_error);
     private MutableLiveData<Boolean> _showCvvField = new MutableLiveData<>();
     public LiveData<Boolean> showCvvField = _showCvvField;
     private MutableLiveData<Boolean> _showCard = new MutableLiveData<>();

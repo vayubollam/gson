@@ -14,8 +14,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import suncor.com.android.data.repository.stations.StationsProvider;
-import suncor.com.android.data.repository.suggestions.PlaceSuggestionsProvider;
+
+import suncor.com.android.data.stations.StationsApi;
+import suncor.com.android.data.suggestions.PlaceSuggestionsProvider;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
@@ -28,7 +29,7 @@ public class SearchViewModel extends ViewModel {
     private final static int DEFAULT_DISTANCE_API = 25000;
     public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
     public MutableLiveData<String> query = new MutableLiveData<>();
-    private StationsProvider stationsProvider;
+    private StationsApi stationsApi;
     private MutableLiveData<Resource<ArrayList<StationItem>>> _nearbyStations = new MutableLiveData<>();
     public LiveData<Resource<ArrayList<StationItem>>> nearbyStations = _nearbyStations;
     private PlaceSuggestionsProvider suggestionsProvider;
@@ -39,8 +40,8 @@ public class SearchViewModel extends ViewModel {
     protected Gson gson;
 
     @Inject
-    public SearchViewModel(StationsProvider stationsProvider, PlaceSuggestionsProvider suggestionsProvider, Gson gson, UserLocalSettings userLocalSettings) {
-        this.stationsProvider = stationsProvider;
+    public SearchViewModel(StationsApi stationsApi, PlaceSuggestionsProvider suggestionsProvider, Gson gson, UserLocalSettings userLocalSettings) {
+        this.stationsApi = stationsApi;
         this.userLocalSettings = userLocalSettings;
         this.gson = gson;
         this.suggestionsProvider = suggestionsProvider;
@@ -56,7 +57,7 @@ public class SearchViewModel extends ViewModel {
         if (userLocation == null)
             return;
         LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
-        stationsProvider.getStations(_25KmBounds, false).observeForever((resource) -> {
+        stationsApi.getStations(_25KmBounds, false).observeForever((resource) -> {
             switch (resource.status) {
                 case LOADING:
                     _nearbyStations.postValue(Resource.loading());

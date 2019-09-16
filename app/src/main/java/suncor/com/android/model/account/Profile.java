@@ -14,7 +14,17 @@ public class Profile {
     private String postalCode;
     private String phone;
     private boolean emailOffers;
+    private boolean doNotEmail;
     private boolean textOffers;
+    private String retailIdDevQAOnly;
+
+    public String getRetailIdDevQAOnly() {
+        return retailIdDevQAOnly;
+    }
+
+    public void setRetailIdDevQAOnly(String retailIdDevQAOnly) {
+        this.retailIdDevQAOnly = retailIdDevQAOnly;
+    }
 
     public String getEmail() {
         return email;
@@ -106,6 +116,14 @@ public class Profile {
 
     public void setTextOffers(boolean textOffers) {
         this.textOffers = textOffers;
+    }
+
+    public boolean isDoNotEmail() {
+        return doNotEmail;
+    }
+
+    public void setDoNotEmail(boolean doNotEmail) {
+        this.doNotEmail = doNotEmail;
     }
 
     @Override

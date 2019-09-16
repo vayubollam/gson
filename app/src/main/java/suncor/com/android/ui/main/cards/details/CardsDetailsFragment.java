@@ -1,18 +1,28 @@
 package suncor.com.android.ui.main.cards.details;
 
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -23,40 +33,50 @@ import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
-public class CardsDetailsFragment extends BaseFragment {
+public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
     private int clickedCardIndex;
     @Inject
     ViewModelFactory viewModelFactory;
-    private static float MAX_BRIGHTNESS = 1f;
-    private float previousBrightness = MAX_BRIGHTNESS;
+    private float previousBrightness;
     private CardsDetailsAdapter cardsDetailsAdapter;
-
+    private ObservableBoolean isRemoving = new ObservableBoolean(false);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
+        boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+        viewModel.setCardFromProfile(loadCardFromProfile);
+        viewModel.retrieveCards();
         viewModel.cards.observe(this, arrayListResource -> {
-            if (arrayListResource.status == Resource.Status.SUCCESS) {
-                ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
-                for (CardDetail cardDetail : arrayListResource.data) {
-                    expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
-                }
-                if (expandedCardItems.size() > 0) {
-                    cardsDetailsAdapter.setCardItems(expandedCardItems);
-                    cardsDetailsAdapter.notifyDataSetChanged();
-                    binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
-                    binding.setNumCards(expandedCardItems.size());
-                    binding.executePendingBindings();
-                }
+            ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
+            for (CardDetail cardDetail : arrayListResource) {
+                expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
+            }
+            if (expandedCardItems.size() > 0) {
+                cardsDetailsAdapter.setCardItems(expandedCardItems);
+                cardsDetailsAdapter.notifyDataSetChanged();
+                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
+                binding.setNumCards(expandedCardItems.size());
+                binding.executePendingBindings();
 
+                //track screen name
+                String screenName;
+                if (clickedCardIndex == 0) {
+                    screenName = "my-petro-points-wallet-view-card";
+                } else {
+                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
+                }
+                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
             }
         });
-
     }
 
     @Nullable
@@ -64,23 +84,25 @@ public class CardsDetailsFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
         binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter();
+        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
         cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
         binding.buttonClose.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.setIsRemoving(isRemoving);
+        binding.setLifecycleOwner(this);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getClickedCardIndex();
+    public void onStart() {
+        super.onStart();
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         previousBrightness = attributes.screenBrightness;
-        attributes.screenBrightness = MAX_BRIGHTNESS;
+        attributes.screenBrightness = 1f;
         getActivity().getWindow().setAttributes(attributes);
     }
 
@@ -93,14 +115,64 @@ public class CardsDetailsFragment extends BaseFragment {
     }
 
     @Override
-    protected int getStatusBarColor() {
-        return getResources().getColor(R.color.black_4);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
+
+    void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {
+        RemoveCardBottomSheet removeCardBottomSheet = new RemoveCardBottomSheet();
+        removeCardBottomSheet.setClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(), "menu_tap", new Pair<>("menuSelection", getString(R.string.card_remove_bottom_sheet_title)));
+            removeCardBottomSheet.dismiss();
+            showConfirmationAlert(expandedCardItem);
+        });
+        removeCardBottomSheet.show(getFragmentManager(), RemoveCardBottomSheet.TAG);
+    }
+
+    private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
+                .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
+                    viewModel.deleteCard(expandedCardItem.getCardDetail()).observe(this, cardDetailResource -> {
+                        if (cardDetailResource.status == Resource.Status.ERROR) {
+                            isRemoving.set(false);
+                            Alerts.prepareGeneralErrorDialog(getContext()).show();
+                        } else if (cardDetailResource.status == Resource.Status.SUCCESS) {
+                            isRemoving.set(false);
+                            new Handler().postDelayed(() -> {
+                                cardsDetailsAdapter.removeCard(new ExpandedCardItem(getContext(), cardDetailResource.data));
+                            }, 200);
+
+                            AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", cardDetailResource.data.getCardName()));
+                        } else if (cardDetailResource.status == Resource.Status.LOADING) {
+                            isRemoving.set(true);
+                        }
+                    });
+                }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), null);
+        builder.show();
+    }
+
+    public class Animator extends DefaultItemAnimator {
+        @Override
+        public boolean animateRemove(RecyclerView.ViewHolder holder) {
+            View view = holder.itemView;
+            ViewPropertyAnimator propertyAnimator = view.animate();
+            propertyAnimator.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator()).scaleX(0).scaleY(0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(android.animation.Animator animation) {
+                    propertyAnimator.setListener(null);
+                    view.setScaleX(1);
+                    view.setScaleY(1);
+                    dispatchRemoveFinished(holder);
+                }
+
+                @Override
+                public void onAnimationStart(android.animation.Animator animation) {
+                    dispatchRemoveStarting(holder);
+                }
+            }).start();
+            return true;
+        }
+    }
+
+
 }

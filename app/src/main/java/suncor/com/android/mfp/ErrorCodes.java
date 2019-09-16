@@ -30,4 +30,5 @@ public class ErrorCodes {
     public static final String ERR_LIKING_CARD_FAILED = "SUNCOR020";
 
     public static final String ERR_RESTRICTED_DOMAIN = "SUNCOR024";
+    public static final String ERR_INVALID_SECURITY_ANSWER = "SUNCOR027";
 }

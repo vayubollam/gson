@@ -4,6 +4,24 @@ public class ProfileRequest {
     String email;
     Address address;
     Offers offers;
+    String password;
+    String securityAnswerEncrypted;
+
+    public String getSecurityAnswerEncrypted() {
+        return securityAnswerEncrypted;
+    }
+
+    public void setSecurityAnswerEncrypted(String securityAnswerEncrypted) {
+        this.securityAnswerEncrypted = securityAnswerEncrypted;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public ProfileRequest(Profile profile) {
         email = profile.getEmail();
@@ -13,16 +31,20 @@ public class ProfileRequest {
         address.setPostalCode(profile.getPostalCode());
         address.setPhone(profile.getPhone());
         address.setProvince(profile.getProvince());
-        offers = new Offers();
-        offers.text = profile.isTextOffers();
-        offers.email = profile.isEmailOffers();
     }
 
     public void setEmailOffers(boolean emailOffers) {
+        if (offers == null) {
+            offers = new Offers();
+        }
         this.offers.email = emailOffers;
     }
 
     public void setTextOffers(boolean textOffers) {
+        if (offers == null) {
+            offers = new Offers();
+        }
+
         this.offers.text = textOffers;
     }
 
@@ -39,7 +61,15 @@ public class ProfileRequest {
     }
 
     static class Offers {
-        boolean email;
-        boolean text;
+        Boolean email;
+        Boolean text;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

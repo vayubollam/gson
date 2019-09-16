@@ -14,8 +14,10 @@ import java.util.Arrays;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
-import suncor.com.android.data.repository.cards.CardsRepository;
+import suncor.com.android.data.cards.CardsRepository;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.main.cards.list.CardsViewModel;
 
@@ -24,6 +26,7 @@ public class CardsViewModelTest {
     private CardsViewModel viewModel;
     private CardDetail[] mockCardsList;
     private CardsRepository repository = Mockito.mock(CardsRepository.class);
+    private SessionManager sessionManager = Mockito.mock(SessionManager.class);
 
     @Rule
     public TestRule rule = new InstantTaskExecutorRule();
@@ -31,7 +34,11 @@ public class CardsViewModelTest {
 
     @Before
     public void init() {
-        viewModel = new CardsViewModel(repository);
+        Profile profile = new Profile();
+        profile.setPetroPointsNumber("706988500050292051");
+        profile.setPointsBalance(2500);
+        Mockito.when(sessionManager.getProfile()).thenReturn(profile);
+        viewModel = new CardsViewModel(repository, sessionManager);
         //Add a dummy observer to viewState
         viewModel.viewState.observeForever(state -> {
         });
@@ -156,8 +163,11 @@ public class CardsViewModelTest {
 
         viewModel.onAttached();
         Assert.assertEquals(CardsViewModel.ViewState.FAILED, viewModel.viewState.getValue());
+        Assert.assertEquals(sessionManager.getProfile().getPetroPointsNumber(), viewModel.getPetroPointsCard().getValue().getCardNumber());
+        Assert.assertEquals(sessionManager.getProfile().getPointsBalance(), viewModel.getPetroPointsCard().getValue().getBalance());
+        Assert.assertTrue(viewModel.getPetroCanadaCards().getValue() == null || viewModel.getPetroCanadaCards().getValue().isEmpty());
+        Assert.assertTrue(viewModel.getPartnerCards().getValue() == null || viewModel.getPartnerCards().getValue().isEmpty());
     }
-
 
     private String responseJson = "[{\n" +
             "                        \"cardType\": \"PPTS\",\n" +

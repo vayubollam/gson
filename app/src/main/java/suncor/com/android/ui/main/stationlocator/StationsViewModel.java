@@ -1,5 +1,10 @@
 package suncor.com.android.ui.main.stationlocator;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -8,12 +13,8 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import suncor.com.android.data.repository.favourite.FavouriteRepository;
-import suncor.com.android.data.repository.stations.StationsProvider;
+import suncor.com.android.data.favourite.FavouriteRepository;
+import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.DirectDistanceComparator;
@@ -25,7 +26,7 @@ public class StationsViewModel extends ViewModel {
     public final static int DEFAULT_MAP_ZOOM = 5000;
     private final static int DEFAULT_DISTANCE_API = 25000;
     private FavouriteRepository favouriteRepository;
-    private StationsProvider stationsProvider;
+    private StationsApi stationsApi;
     private ArrayList<StationItem> cachedStations;
     private LatLngBounds cachedStationsBounds;
     private MutableLiveData<Resource<ArrayList<StationItem>>> _stationsAround = new MutableLiveData<>();
@@ -37,6 +38,9 @@ public class StationsViewModel extends ViewModel {
     private MutableLiveData<LatLng> _userLocation = new MutableLiveData<>();
     public LiveData<LatLng> userLocation = _userLocation;
     private UserLocationType userLocationType;
+
+    private LatLng lastGpsLocation;
+
     private MutableLiveData<LatLngBounds> _mapBounds = new MutableLiveData<>();
     private Observer<Boolean> favouritesLoadedObserver = b -> refreshFavouriteState();
     public LiveData<LatLngBounds> mapBounds = _mapBounds;
@@ -51,9 +55,9 @@ public class StationsViewModel extends ViewModel {
     private boolean shouldUpdateSectedStation;
 
     @Inject
-    public StationsViewModel(StationsProvider stationsProvider, FavouriteRepository favouriteRepository) {
+    public StationsViewModel(StationsApi stationsApi, FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
-        this.stationsProvider = stationsProvider;
+        this.stationsApi = stationsApi;
         filters.observeForever((l) -> {
             if (stationsAround.getValue().status != Resource.Status.SUCCESS) {
                 return;
@@ -102,7 +106,7 @@ public class StationsViewModel extends ViewModel {
             LatLngBounds _25KmBounds = LocationUtils.calculateBounds(mapCenter, DEFAULT_DISTANCE_API, regionRatio);
             LatLngBounds apiBounds = _mapBounds.getValue() != null ? LocationUtils.getLargerBounds(_mapBounds.getValue(), _25KmBounds) : _25KmBounds;
 
-            stationsProvider.getStations(apiBounds, false).observeForever((resource) -> {
+            stationsApi.getStations(apiBounds, false).observeForever((resource) -> {
                 switch (resource.status) {
                     case LOADING:
                         _stationsAround.postValue(Resource.loading());
@@ -183,15 +187,22 @@ public class StationsViewModel extends ViewModel {
         return applyAmenitiesFilter(stationsInBound, filters.getValue());
     }
 
-    private ArrayList<StationItem> applyAmenitiesFilter(ArrayList<StationItem> stations, ArrayList<String> currentFilter) {
-        if (currentFilter == null || currentFilter.isEmpty()) {
+    private ArrayList<StationItem> applyAmenitiesFilter(ArrayList<StationItem> stations, ArrayList<String> filtersList) {
+        if (filtersList == null || filtersList.isEmpty()) {
             return stations;
         }
         for (StationItem stationItem : new ArrayList<>(stations)) {
-            for (String filter : currentFilter) {
-                if (!stationItem.getStation().getAmenities().contains(filter)) {
-                    stations.remove(stationItem);
-                    break;
+            for (String filter : filtersList) {
+                if (!filter.equals(FiltersFragment.CARWASH_ALL_WASHES_KEY)) {
+                    if (!stationItem.getStation().getAmenities().contains(filter)) {
+                        stations.remove(stationItem);
+                        break;
+                    }
+                } else {
+                    //If the current filter is "All Washes", we just check if the station has some wash options, if not we filter it out.
+                    if (!stationItem.getStation().hasWashOptions()) {
+                        stations.remove(stationItem);
+                    }
                 }
             }
         }
@@ -211,7 +222,12 @@ public class StationsViewModel extends ViewModel {
         _userLocation.postValue(userLocation);
         if (userLocationType == UserLocationType.GPS) {
             _queryText.postValue("");
+            lastGpsLocation = userLocation;
         }
+    }
+
+    public LatLng getLastGpsLocation() {
+        return lastGpsLocation;
     }
 
     public void setSelectedStationFromSearch(LatLng userLocation, ArrayList<StationItem> stationItems, StationItem selectedStation) {

@@ -1,0 +1,23 @@
+import java.text.SimpleDateFormat
+
+// This gradle scripts generates a "unique" version code for our release versions.
+//
+// The version code is composed like: yyDDDHHmm
+//  * y   = Double digit year
+//  * DDD = Day of the year, pad with zeros if needed: September 6th -> 249
+//  * HH  = Hour in day (00-23)
+//  * mm  = Minute in hour
+
+ext {
+    def today = new Date()
+
+    def year = String.valueOf((new SimpleDateFormat("yy").format(today) as int))
+
+    def day = String.format("%03d", (new SimpleDateFormat("D").format(today) as int))
+
+    def time = new SimpleDateFormat("HHmm").format(today)
+
+    generatedVersionCode = (year + day + time) as int
+
+    println("Generated versionCode: $generatedVersionCode")
+}

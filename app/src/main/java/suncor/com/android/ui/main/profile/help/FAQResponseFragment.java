@@ -14,9 +14,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import suncor.com.android.databinding.FragmentFaqresponseBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.ui.main.common.BaseFragment;
+import suncor.com.android.model.account.Question;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 
-public class FAQResponseFragment extends BaseFragment {
+public class FAQResponseFragment extends MainActivityFragment {
     private FragmentFaqresponseBinding binding;
     private FAQViewModel faqViewModel;
     @Inject
@@ -38,4 +39,9 @@ public class FAQResponseFragment extends BaseFragment {
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
     }
 
+    @Override
+    protected String getScreenName() {
+        Question question = faqViewModel.getSelectedQuestion();
+        return "my-petro-points-account-get-help-view-" + question.getId();
+    }
 }

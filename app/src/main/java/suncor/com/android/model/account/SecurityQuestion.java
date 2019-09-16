@@ -10,15 +10,13 @@ public class SecurityQuestion {
 
     @SerializedName("questionId")
     private String id;
-    @SerializedName("questionEn")
-    String engQuestion;
-    @SerializedName("questionFr")
-    String frQuestion;
+    @SerializedName("question")
+    String question;
 
-    public SecurityQuestion(String id, String engQuestion, String frQuestion) {
+    public SecurityQuestion(String id,  String question) {
         this.id = id;
-        this.engQuestion = engQuestion;
-        this.frQuestion = frQuestion;
+        this.question = question;
+
     }
 
     public String getId() {
@@ -29,21 +27,14 @@ public class SecurityQuestion {
         this.id = id;
     }
 
-    public String getEngQuestion() {
-        return engQuestion;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setEngQuestion(String engQuestion) {
-        this.engQuestion = engQuestion;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public String getFrQuestion() {
-        return frQuestion;
-    }
-
-    public void setFrQuestion(String frQuestion) {
-        this.frQuestion = frQuestion;
-    }
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -51,9 +42,5 @@ public class SecurityQuestion {
             return false;
         }
         return ((SecurityQuestion) obj).id.equals(this.id);
-    }
-
-    public String getLocalizedQuestion() {
-        return Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? this.frQuestion : this.engQuestion;
     }
 }

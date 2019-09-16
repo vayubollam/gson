@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.home.HomeViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_4">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                tools:context="suncor.com.android.ui.main.home.HomeFragment">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/offers_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="16dp"
+                    android:clipToPadding="false"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    app:layout_constraintBottom_toTopOf="@+id/nearest_card"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:listitem="@layout/offers_card_item" />
+
+                <include
+                    android:id="@+id/nearest_card"
+                    layout="@layout/home_nearest_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="166dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
+                    app:layout_constraintBottom_toTopOf="@+id/terms_conditions"
+                    app:vm="@{vm}" />
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/terms_conditions"
+                    style="@style/LinkButton.Black.S"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/home_tab_terms_amp_conditions"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/period"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="·"
+                    android:textAppearance="@style/Caption1"
+                    app:layout_constraintBottom_toBottomOf="@id/terms_conditions"
+                    app:layout_constraintEnd_toStartOf="@id/privacy_policy"
+                    app:layout_constraintStart_toEndOf="@id/terms_conditions"
+                    app:layout_constraintTop_toTopOf="@id/terms_conditions" />
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/privacy_policy"
+                    style="@style/LinkButton.Black.S"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/home_tab_privacy_policy"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/period" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>
