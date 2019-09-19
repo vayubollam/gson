@@ -49,7 +49,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private Fragment navHostFragment;
     private NavController navController;
     private ArrayList<Province> provinces = new ArrayList<>();
-    private MainViewModel mainViewModel;
+    private MerchantViewModel merchantsViewModel;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -87,7 +87,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
+        merchantsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MerchantViewModel.class);
 
         setContentView(R.layout.activity_main);
         AndroidBug5497Workaround.assistActivity(this);

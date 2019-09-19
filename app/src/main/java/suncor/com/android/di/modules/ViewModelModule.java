@@ -12,7 +12,7 @@ import suncor.com.android.ui.enrollment.form.EnrollmentFormViewModel;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.login.CreatePasswordViewModel;
 import suncor.com.android.ui.login.LoginViewModel;
-import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.MerchantViewModel;
 import suncor.com.android.ui.main.cards.add.AddCardViewModel;
 import suncor.com.android.ui.main.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.main.cards.list.CardsViewModel;
@@ -144,6 +144,6 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel.class)
-    protected abstract ViewModel MainViewModel(MainViewModel MainViewModel);
+    @ViewModelKey(MerchantViewModel.class)
+    protected abstract ViewModel MerchantViewModel(MerchantViewModel MerchantViewModel);
 }
