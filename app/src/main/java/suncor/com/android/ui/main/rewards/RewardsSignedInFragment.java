@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -15,14 +17,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.main.BottomNavigationFragment;
-import suncor.com.android.uicomponents.ExtendedNestedScrollView;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class RewardsSignedInFragment extends BottomNavigationFragment {
@@ -51,6 +49,17 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             }
         });
 
+        viewModel.merchantsLiveData.observe(this, merchantsResource -> {
+            switch (merchantsResource.status) {
+                case SUCCESS:
+                    //TODO : to use for UI Work
+            }
+        });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Nullable
@@ -81,15 +90,15 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             //handle visibility of the header
             int threshold = binding.balancePetropoints.getBottom();
-            if (scrollY > oldScrollY ){
+            if (scrollY > oldScrollY) {
                 double scrollViewHeight = v.getChildAt(0).getBottom() - v.getHeight();
                 double getScrollY = v.getScrollY();
                 double scrollPosition = (getScrollY / scrollViewHeight) * 100d;
-                int pourcentage = (int)scrollPosition;
-                if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50|| pourcentage == 75 || pourcentage == 95  ){
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
+                int pourcentage = (int) scrollPosition;
+                if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50 || pourcentage == 75 || pourcentage == 95) {
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", Integer.toString(pourcentage)));
                 }
-                }
+            }
             if (scrollY >= threshold) {
 
                 if (!isHeaderVisible) {

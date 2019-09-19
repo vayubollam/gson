@@ -11,14 +11,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -26,8 +18,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
@@ -42,11 +42,14 @@ import suncor.com.android.utilities.AnalyticsUtils;
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     @Inject
+    ViewModelFactory viewModelFactory;
+    @Inject
     SuncorApplication application;
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
     private ArrayList<Province> provinces = new ArrayList<>();
+    private MerchantViewModel merchantsViewModel;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -84,6 +87,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
+        merchantsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MerchantViewModel.class);
 
         setContentView(R.layout.activity_main);
         AndroidBug5497Workaround.assistActivity(this);
