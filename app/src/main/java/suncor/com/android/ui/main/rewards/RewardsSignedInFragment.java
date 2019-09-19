@@ -52,7 +52,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         viewModel.merchantsLiveData.observe(this, merchantsResource -> {
             switch (merchantsResource.status) {
                 case SUCCESS:
-                    //to use for UI Work
+                    //TODO : to use for UI Work
             }
         });
     }
