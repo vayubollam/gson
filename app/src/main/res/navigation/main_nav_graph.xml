@@ -315,5 +315,8 @@
         android:id="@+id/provinceProfileFragment"
         android:name="suncor.com.android.ui.main.profile.address.ProvinceProfileFragment"
         android:label="ProvinceProfileFragment" />
+    <action
+        android:id="@+id/action_global_home_tab"
+        app:destination="@id/home_tab" />
 
 </navigation>
