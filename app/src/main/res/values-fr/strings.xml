@@ -440,5 +440,9 @@
     <string name="msg_001_dialog_try_again">Essayez de nouveau</string>
     <string name="profile_uodate_account_toast">Les changements ont été sauvegardés.</string>
     <string name="profile_security_question_load_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
+    <string name="password_change_re_login_alert_positive_button">Ok</string>
+    <string name="password_change_re_login_alert_title">Fin de session</string>
+    <string name="pawword_change_re_login_alert_body">Vous avez peut-être changé récemment vos données d\'ouverture de session. Veuillez ouvrir une nouvelle session pour continuer.</string>
+    <string name="login_conflict_alert_positive_button">OK</string>
 
 </resources>

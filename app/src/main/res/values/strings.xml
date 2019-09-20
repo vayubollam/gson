@@ -450,5 +450,9 @@
     <string name="update_password_progress">Updating Password…</string>
     <string name="profile_uodate_account_toast">New changes saved</string>
     <string name="profile_security_question_load_try_again">try again</string>
+    <string name="login_conflict_alert_positive_button">OK</string>
+    <string name="password_change_re_login_alert_positive_button">OK</string>
+    <string name="password_change_re_login_alert_title">Signed out</string>
+    <string name="pawword_change_re_login_alert_body">You may have changed your sign in details recently. Please sign in again to continue.</string>
 
 </resources>
