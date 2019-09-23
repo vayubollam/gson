@@ -19,6 +19,7 @@ import suncor.com.android.R;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class ProvinceFragment extends DialogFragment {
     private EnrollmentFormViewModel enrollmentFormViewModel;
@@ -59,6 +60,12 @@ public class ProvinceFragment extends DialogFragment {
         RecyclerView province_recycler = getView().findViewById(R.id.province_recycler);
         province_recycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         province_recycler.setAdapter(provinceAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(),"province-security-help");
     }
 
     public void provinceSelected(int selectedProvince) {

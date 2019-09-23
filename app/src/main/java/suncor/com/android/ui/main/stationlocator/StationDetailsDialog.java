@@ -255,6 +255,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void onResume() {
         super.onResume();
         binding.setIsLoggedIn(sessionManager.isUserLoggedIn());
+        AnalyticsUtils.setCurrentScreenName(getActivity(),"station-details-home");
         if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             getDialog().getWindow().setDimAmount(DIM_AMOUNT);
         }

@@ -39,6 +39,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(this,"youtube-player");
+
+    }
+
+    @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         youTubePlayer.setShowFullscreenButton(false);
         mPlayer = youTubePlayer;

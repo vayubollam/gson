@@ -133,6 +133,7 @@ public class AddCardFragment extends MainActivityFragment {
     }
 
     private void showCvvHelp() {
+        AnalyticsUtils.setCurrentScreenName(getActivity(),"card-security-code-info");
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.cards_add_fragment_help_dialog_title)
                 .setView(getLayoutInflater().inflate(R.layout.cvv_help_layout, null))
