@@ -129,7 +129,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         binding.imgRetail.startAnimation(animFromBottom);
         binding.textLayout.startAnimation(animFromLet);
 
-        AnalyticsUtils.setCurrentScreenName(this,"splash");
+        AnalyticsUtils.setCurrentScreenName(this, "splash");
     }
 
     @Override

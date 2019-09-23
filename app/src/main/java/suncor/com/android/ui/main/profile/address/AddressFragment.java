@@ -43,7 +43,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
     private ObservableBoolean isEditing = new ObservableBoolean(false);
     @Inject
     ViewModelFactory factory;
-    private boolean  isLoadedFirstTime = false;
+    private boolean isLoadedFirstTime = false;
 
     public static AddressFragment newInstance() {
         return new AddressFragment();
@@ -98,7 +98,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
             }
             if (show) {
                 //Descriptive screen name for canada post
-                if(isLoadedFirstTime) {
+                if (isLoadedFirstTime) {
                     AnalyticsUtils.setCurrentScreenName(getActivity(), "canadapost-search-address");
                     isLoadedFirstTime = false;
                 }

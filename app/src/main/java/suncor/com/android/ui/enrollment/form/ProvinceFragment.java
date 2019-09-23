@@ -65,7 +65,7 @@ public class ProvinceFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(),"province-security-help");
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "province-security-help");
     }
 
     public void provinceSelected(int selectedProvince) {

@@ -71,7 +71,6 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
 
     @Override
     protected String getScreenName() {
-        return "rewards-content-loggedin" ;
+        return "rewards-content-loggedin";
     }
-
 }

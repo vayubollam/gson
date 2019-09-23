@@ -62,7 +62,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
     private String formName;
     private String screenName;
-    private boolean  isLoadedFirstTime = false;
+    private boolean isLoadedFirstTime = false;
 
     public EnrollmentFormFragment() {
     }
@@ -165,7 +165,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             }
             if (show) {
                 //Descriptive screen name for canada post
-                if(isLoadedFirstTime) {
+                if (isLoadedFirstTime) {
                     AnalyticsUtils.setCurrentScreenName(getActivity(), "canadapost-search-address");
                     isLoadedFirstTime = false;
                 }
