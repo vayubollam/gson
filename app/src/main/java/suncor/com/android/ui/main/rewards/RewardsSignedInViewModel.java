@@ -1,12 +1,15 @@
 package suncor.com.android.ui.main.rewards;
 
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
+
+import javax.inject.Inject;
+
 import suncor.com.android.data.redeem.MerchantsRepository;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -21,7 +24,11 @@ public class RewardsSignedInViewModel extends ViewModel {
 
     private MutableLiveData<Event> _navigateToDiscovery = new MutableLiveData<>();
     public LiveData<Event> navigateToDiscovery = _navigateToDiscovery;
-    public LiveData<Resource<ArrayList<Merchant>>> merchantsLiveData;
+
+    private MutableLiveData<ArrayList<MerchantItem>> _merchantsLiveData = new MutableLiveData<>();
+    public LiveData<ArrayList<MerchantItem>> merchantsLiveData = _merchantsLiveData;
+    public LiveData<Resource<ArrayList<Merchant>>> merchantsMutableLiveData;
+
 
 
     private Reward[] rewards;
@@ -31,7 +38,37 @@ public class RewardsSignedInViewModel extends ViewModel {
     public RewardsSignedInViewModel(SessionManager sessionManager, RewardsReader rewardsReader, MerchantsRepository merchantsRepository) {
         rewards = rewardsReader.getRewards();
         this.sessionManager = sessionManager;
-        merchantsLiveData = merchantsRepository.getMerchants();
+        merchantsMutableLiveData = merchantsRepository.getMerchants();
+        merchantsMutableLiveData.observeForever(merchantsResource -> {
+            if (merchantsResource.status == Resource.Status.SUCCESS) {
+                ArrayList<Merchant> validMerchants = filterValidMerchants(merchantsResource.data);
+                ArrayList<MerchantItem> merchantItems = new ArrayList<>();
+                for (Merchant m : validMerchants) {
+                    MerchantItem merchantItem = new MerchantItem(m);
+                    merchantItems.add(merchantItem);
+                }
+                _merchantsLiveData.postValue(merchantItems);
+            }
+        });
+    }
+
+    private ArrayList<Merchant> filterValidMerchants(ArrayList<Merchant> merchants) {
+
+        for (Iterator<Merchant> merchantIterator = merchants.iterator(); merchantIterator.hasNext(); ) {
+            Merchant m = merchantIterator.next();
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                if (m.getMerchantId() != MerchantsIds.Cara_FR && m.getMerchantId() != MerchantsIds.Cineplex_FR
+                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_FR && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_FR) {
+                    merchantIterator.remove();
+                }
+            } else {
+                if (m.getMerchantId() != MerchantsIds.Cara_EN && m.getMerchantId() != MerchantsIds.Cineplex_EN
+                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_EN && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_EN) {
+                    merchantIterator.remove();
+                }
+            }
+        }
+        return merchants;
     }
 
     public Reward[] getRewards() {
