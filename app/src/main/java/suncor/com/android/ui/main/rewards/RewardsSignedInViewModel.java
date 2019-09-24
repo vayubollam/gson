@@ -25,8 +25,8 @@ public class RewardsSignedInViewModel extends ViewModel {
     private MutableLiveData<Event> _navigateToDiscovery = new MutableLiveData<>();
     public LiveData<Event> navigateToDiscovery = _navigateToDiscovery;
 
-    private MutableLiveData<ArrayList<MerchantItem>> _merchantsLiveData = new MutableLiveData<>();
-    public LiveData<ArrayList<MerchantItem>> merchantsLiveData = _merchantsLiveData;
+    private MutableLiveData<ArrayList<Merchant>> _merchantsLiveData = new MutableLiveData<>();
+    public LiveData<ArrayList<Merchant>> merchantsLiveData = _merchantsLiveData;
     public LiveData<Resource<ArrayList<Merchant>>> merchantsMutableLiveData;
 
 
@@ -42,12 +42,7 @@ public class RewardsSignedInViewModel extends ViewModel {
         merchantsMutableLiveData.observeForever(merchantsResource -> {
             if (merchantsResource.status == Resource.Status.SUCCESS) {
                 ArrayList<Merchant> validMerchants = filterValidMerchants(merchantsResource.data);
-                ArrayList<MerchantItem> merchantItems = new ArrayList<>();
-                for (Merchant m : validMerchants) {
-                    MerchantItem merchantItem = new MerchantItem(m);
-                    merchantItems.add(merchantItem);
-                }
-                _merchantsLiveData.postValue(merchantItems);
+                _merchantsLiveData.postValue(validMerchants);
             }
         });
     }
