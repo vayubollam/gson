@@ -1,5 +1,7 @@
 package suncor.com.android.model.merchants;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 public class Merchant {
@@ -45,5 +47,13 @@ public class Merchant {
 
     public void seteGifts(List<EGift> eGifts) {
         this.eGifts = eGifts;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Merchant)) {
+            return false;
+        }
+        return ((Merchant) obj).getMerchantId() == this.getMerchantId();
     }
 }

@@ -444,5 +444,7 @@
     <string name="password_change_re_login_alert_title">Fin de session</string>
     <string name="pawword_change_re_login_alert_body">Vous avez peut-être changé récemment vos données d\'ouverture de session. Veuillez ouvrir une nouvelle session pour continuer.</string>
     <string name="login_conflict_alert_positive_button">OK</string>
+    <string name="rewards_egift_card_subtitle">Carte-cadeau électronique</string>
+    <string name="rewards_e_gift_card_starting_points">À compter de 10 000 points</string>
 
 </resources>

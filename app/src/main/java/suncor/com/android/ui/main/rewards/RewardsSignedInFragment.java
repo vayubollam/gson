@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -17,6 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -49,17 +50,16 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             }
         });
 
-        viewModel.merchantsLiveData.observe(this, merchantsResource -> {
-            switch (merchantsResource.status) {
-                case SUCCESS:
-                    //TODO : to use for UI Work
-            }
-        });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel.merchantsLiveData.observe(this, merchantsResource -> {
+            if (merchantsResource != null) {
+                binding.eGiftList.setAdapter(new EGiftsCardAdapter(merchantsResource, this::eCardClicked));
+            }
+        });
     }
 
     @Nullable
@@ -67,8 +67,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsSignedinBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
         RewardsAdapter rewardsAdapter = new RewardsAdapter(viewModel.getRewards(), this::rewardClicked);
         binding.rewardsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        binding.eGiftList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.rewardsList.setAdapter(rewardsAdapter);
 
         systemMarginsAlreadyApplied = false;
@@ -177,5 +179,9 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }
         getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+    }
+
+    private void eCardClicked(MerchantItem merchantItem) {
+        //TODO: handle merchant item clicked
     }
 }
