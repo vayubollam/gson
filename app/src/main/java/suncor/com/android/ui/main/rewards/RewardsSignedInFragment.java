@@ -50,17 +50,16 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             }
         });
 
-        viewModel.merchantsLiveData.observe(this, merchantsResource -> {
-            if (merchantsResource != null) {
-                binding.eGiftList.setAdapter(new EGiftsCardAdapter(merchantsResource, this::eCardClicked));
-            }
-        });
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel.merchantsLiveData.observe(this, merchantsResource -> {
+            if (merchantsResource != null) {
+                binding.eGiftList.setAdapter(new EGiftsCardAdapter(merchantsResource, this::eCardClicked));
+            }
+        });
     }
 
     @Nullable

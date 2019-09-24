@@ -454,5 +454,7 @@
     <string name="password_change_re_login_alert_positive_button">OK</string>
     <string name="password_change_re_login_alert_title">Signed out</string>
     <string name="pawword_change_re_login_alert_body">You may have changed your sign in details recently. Please sign in again to continue.</string>
+    <string name="rewards_e_gift_card_starting_points">From 10,000 points</string>
+    <string name="rewards_egift_card_subtitle">eGift card</string>
 
 </resources>
