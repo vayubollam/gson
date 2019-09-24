@@ -42,7 +42,6 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
     protected void onResume() {
         super.onResume();
         AnalyticsUtils.setCurrentScreenName(this, "youtube-player");
-
     }
 
     @Override

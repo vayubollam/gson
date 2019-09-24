@@ -63,6 +63,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private String formName;
     private String screenName;
     private boolean isLoadedFirstTime = false;
+    private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
 
     public EnrollmentFormFragment() {
     }
@@ -164,9 +165,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 return;
             }
             if (show) {
-                //Descriptive screen name for canada post
                 if (isLoadedFirstTime) {
-                    AnalyticsUtils.setCurrentScreenName(getActivity(), "canadapost-search-address");
+                    AnalyticsUtils.setCurrentScreenName(getActivity(), CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME);
                     isLoadedFirstTime = false;
                 }
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));

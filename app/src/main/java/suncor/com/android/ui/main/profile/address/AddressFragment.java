@@ -44,6 +44,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
     @Inject
     ViewModelFactory factory;
     private boolean isLoadedFirstTime = false;
+    private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
 
     public static AddressFragment newInstance() {
         return new AddressFragment();
@@ -97,9 +98,8 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
                 return;
             }
             if (show) {
-                //Descriptive screen name for canada post
                 if (isLoadedFirstTime) {
-                    AnalyticsUtils.setCurrentScreenName(getActivity(), "canadapost-search-address");
+                    AnalyticsUtils.setCurrentScreenName(getActivity(), CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME);
                     isLoadedFirstTime = false;
                 }
 
