@@ -450,5 +450,13 @@
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_dining_card">Bon Appétit</string>
     <string name="merchant_winners">WINNERS, Marshalls et HomeSense</string>
+    <string name="rewards_signedin_how_to_redeem_merchants_title">Comment échanger des points</string>
+    <string name="rewards_signedin_redeeming_your_rewards_title">Utilisation de votre prime</string>
+    <string name="rewards_buy_button">Échanger</string>
+    <string name="rewards_signedin_how_to_redeem_merchants_description">Choisissez une valeur, confirmez l\'échange, puis recevez la carte-cadeau électronique par la poste.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Valable à n\'importe quel cinéma Cinéplex ou en ligne à Cineplex.com.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Valable dans tous les WINNERS, HomeSense et Marshalls au Canada.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Valable dans plus de 10 restaurants Canadiens comme Montana\'s, East Side Mario\'s et Swiss Chalet.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Utilisez-la à La Baie d’Hudson, Déco Découverte et en ligne à labaie.com.</string>
 
 </resources>

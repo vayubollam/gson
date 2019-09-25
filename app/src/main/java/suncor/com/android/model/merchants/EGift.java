@@ -1,6 +1,9 @@
 package suncor.com.android.model.merchants;
 
-class EGift {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+class EGift implements Parcelable {
     private int id;
     private String description;
     private int value;
@@ -13,6 +16,40 @@ class EGift {
         this.value = value;
         this.petroPointsRequired = petroPointsRequired;
         this.merchantId = merchantId;
+    }
+
+    public static final Creator<EGift> CREATOR = new Creator<EGift>() {
+        @Override
+        public EGift createFromParcel(Parcel in) {
+            return new EGift(in);
+        }
+
+        @Override
+        public EGift[] newArray(int size) {
+            return new EGift[size];
+        }
+    };
+
+    protected EGift(Parcel in) {
+        id = in.readInt();
+        description = in.readString();
+        value = in.readInt();
+        petroPointsRequired = in.readInt();
+        merchantId = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(description);
+        dest.writeInt(value);
+        dest.writeInt(petroPointsRequired);
+        dest.writeInt(merchantId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public int getId() {
