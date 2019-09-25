@@ -87,6 +87,24 @@ public class MerchantItem implements Parcelable {
         return null;
     }
 
+    public int getRedeemingDescription() {
+        switch (merchant.getMerchantId()) {
+            case MerchantsIds.Cara_EN:
+            case MerchantsIds.Cara_FR:
+                return R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card;
+            case MerchantsIds.Cineplex_EN:
+            case MerchantsIds.Cineplex_FR:
+                return R.string.rewards_signedin_redeeming_your_rewards_desc_cineplex;
+            case MerchantsIds.Hudson_Bay_EN:
+            case MerchantsIds.Hudson_Bay_FR:
+                return R.string.rewards_signedin_redeeming_your_rewards_desc_Hudson_bay;
+            case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
+            case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
+                return R.string.rewards_signedin_redeeming_your_rewards_desc_winners;
+        }
+        return 0;
+    }
+
     public Merchant getMerchant() {
         return merchant;
     }
