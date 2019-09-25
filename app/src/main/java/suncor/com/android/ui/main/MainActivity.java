@@ -11,13 +11,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -25,6 +18,14 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -52,6 +53,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private NavController navController;
     private ArrayList<Province> provinces = new ArrayList<>();
     private MerchantViewModel merchantsViewModel;
+    private boolean autoLoginFailed = false;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -80,7 +82,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private BroadcastReceiver loginChangedPasswordReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (LOGGED_OUT_DUE_PASSWORD_CHANGE.equals(intent.getAction())) {
+            if (LOGGED_OUT_DUE_PASSWORD_CHANGE.equals(intent.getAction()) && !autoLoginFailed) {
                 navController.navigate(R.id.action_global_home_tab);
                 AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", LOGGED_OUT_DUE_PASSWORD_CHANGE));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
@@ -92,6 +94,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                 adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
                 adb.show();
             }
+            autoLoginFailed = false;
         }
     };
 
@@ -148,6 +151,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
         if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
+            autoLoginFailed = true;
             Alerts.prepareGeneralErrorDialog(this).show();
         }
         String[] provincesArray = getResources().getStringArray(R.array.province_names);
