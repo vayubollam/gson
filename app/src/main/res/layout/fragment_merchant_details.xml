@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="merchantItem"
+            type="suncor.com.android.ui.main.rewards.MerchantItem" />
+
+        <variable
+            name="image"
+            type="android.graphics.drawable.Drawable" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_4"
+        android:paddingTop="15dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="83dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:textAppearance="@style/Body"
+            android:textColor="@color/black_60"
+            app:layout_constraintBottom_toTopOf="@+id/small_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="You have 200.000 points." />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/small_image"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:elevation="12dp"
+            android:src="@{image}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/points"
+            tools:src="@drawable/member_small_cards_dollarsoff" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/white"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toTopOf="@id/close_button"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="74dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingBottom="4dp"
+                    android:text="@{merchantItem.localizedMerchantName}"
+                    android:textAppearance="@style/Title2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Free gas and more" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.33"
+                    android:text="@string/rewards_egift_card_subtitle"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/horizontal_divider"
+                    app:layout_constraintTop_toBottomOf="@id/subtitle" />
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:fillViewport="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/redeem_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="24dp"
+                            android:fontFamily="@font/gibson_semibold"
+                            android:gravity="center"
+                            android:text="@string/rewards_signedin_how_to_redeem_merchants_title"
+                            android:textColor="@color/black_80"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="@+id/redeem_description"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <suncor.com.android.ui.common.LinkableTextView
+                            android:id="@+id/redeem_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="start"
+                            android:lineSpacingMultiplier="1.63"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="@string/rewards_signedin_how_to_redeem_merchants_description"
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_60"
+                            android:textSize="16sp"
+                            app:layout_constraintTop_toBottomOf="@id/redeem_title"
+                            tools:text="Choose a value, confirm redemption and get the eGift card in your email." />
+
+
+                        <View
+                            android:id="@+id/divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/expanded_card_balance_margin"
+                            android:background="@drawable/horizontal_divider"
+                            app:layout_constraintTop_toBottomOf="@+id/redeem_description" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/redeeming_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="24dp"
+                            android:fontFamily="@font/gibson_semibold"
+                            android:text="@string/rewards_signedin_redeeming_your_rewards_title"
+                            android:textColor="@color/black_80"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
+                        <suncor.com.android.ui.common.LinkableTextView
+                            android:id="@+id/redeeming_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="start"
+                            android:lineSpacingMultiplier="1.63"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_60"
+                            android:textSize="16sp"
+                            app:layout_constraintTop_toBottomOf="@id/redeeming_title"
+                            tools:text="Use at Hudson's Bay, Home Outfitters and online at thebay.com." />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/buy_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/rewards_buy_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <suncor.com.android.ui.common.SuncorButton
+            android:id="@+id/close_button"
+            style="@style/LinkButton.Black.ML"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:text="@string/rewards_details_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

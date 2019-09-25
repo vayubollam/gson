@@ -2,17 +2,35 @@ package suncor.com.android.ui.main.rewards;
 
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import suncor.com.android.R;
 import suncor.com.android.model.merchants.Merchant;
 
-public class MerchantItem {
+public class MerchantItem implements Parcelable {
     private Merchant merchant;
     private Context context;
 
     public MerchantItem(Merchant merchant, Context context) {
         this.merchant = merchant;
         this.context = context;
+    }
+
+    public static final Creator<MerchantItem> CREATOR = new Creator<MerchantItem>() {
+        @Override
+        public MerchantItem createFromParcel(Parcel in) {
+            return new MerchantItem(in);
+        }
+
+        @Override
+        public MerchantItem[] newArray(int size) {
+            return new MerchantItem[size];
+        }
+    };
+
+    protected MerchantItem(Parcel in) {
+        merchant = in.readParcelable(Merchant.class.getClassLoader());
     }
 
     String getMerchantLargeImage() {
@@ -33,7 +51,7 @@ public class MerchantItem {
         return null;
     }
 
-    String getMerchantSmallImage() {
+    public String getMerchantSmallImage() {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
@@ -71,5 +89,15 @@ public class MerchantItem {
 
     public Merchant getMerchant() {
         return merchant;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(merchant, flags);
     }
 }

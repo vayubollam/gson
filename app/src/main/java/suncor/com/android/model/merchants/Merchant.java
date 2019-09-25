@@ -1,10 +1,13 @@
 package suncor.com.android.model.merchants;
 
-import androidx.annotation.Nullable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.List;
 
-public class Merchant {
+import androidx.annotation.Nullable;
+
+public class Merchant implements Parcelable {
     private String merchantName;
     private int displayOrder;
     private int merchantId;
@@ -15,6 +18,25 @@ public class Merchant {
         this.displayOrder = displayOrder;
         this.merchantId = merchantId;
         this.eGifts = eGifts;
+    }
+
+    public static final Creator<Merchant> CREATOR = new Creator<Merchant>() {
+        @Override
+        public Merchant createFromParcel(Parcel in) {
+            return new Merchant(in);
+        }
+
+        @Override
+        public Merchant[] newArray(int size) {
+            return new Merchant[size];
+        }
+    };
+
+    protected Merchant(Parcel in) {
+        merchantName = in.readString();
+        displayOrder = in.readInt();
+        merchantId = in.readInt();
+        eGifts = in.createTypedArrayList(EGift.CREATOR);
     }
 
     public String getMerchantName() {
@@ -55,5 +77,18 @@ public class Merchant {
             return false;
         }
         return ((Merchant) obj).getMerchantId() == this.getMerchantId();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(merchantName);
+        dest.writeInt(displayOrder);
+        dest.writeInt(merchantId);
+        dest.writeTypedList(eGifts);
     }
 }
