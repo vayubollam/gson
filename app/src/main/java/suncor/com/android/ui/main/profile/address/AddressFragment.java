@@ -30,6 +30,7 @@ import suncor.com.android.ui.enrollment.form.AddressAutocompleteAdapter;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AddressFragment extends MainActivityFragment implements OnBackPressedListener {
 
@@ -42,6 +43,8 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
     private ObservableBoolean isEditing = new ObservableBoolean(false);
     @Inject
     ViewModelFactory factory;
+    private boolean isLoadedFirstTime = false;
+    private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
 
     public static AddressFragment newInstance() {
         return new AddressFragment();
@@ -83,6 +86,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isLoadedFirstTime = true;
         viewModel = ViewModelProviders.of(this, factory).get(AddressViewModel.class);
         sharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
         viewModel.setSharedViewModel(sharedViewModel);
@@ -94,6 +98,11 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
                 return;
             }
             if (show) {
+                if (isLoadedFirstTime) {
+                    AnalyticsUtils.setCurrentScreenName(getActivity(), CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME);
+                    isLoadedFirstTime = false;
+                }
+
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
                 binding.appBar.setOnClickListener((v) -> viewModel.hideAutoCompleteLayout());
                 binding.streetAutocompleteBackground.setVisibility(View.VISIBLE);

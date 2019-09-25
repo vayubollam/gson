@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +62,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private AddressAutocompleteAdapter addressAutocompleteAdapter;
     private String formName;
     private String screenName;
+    private boolean isLoadedFirstTime = false;
+    private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
 
     public EnrollmentFormFragment() {
     }
@@ -89,6 +90,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             screenName = "sign-up-i-dont-have-a-card";
             formName = "Join Petro-Points";
         }
+
+        isLoadedFirstTime = true;
 
         viewModel.getShowDuplicateEmailEvent().observe(this, (r) -> {
             showDuplicateEmailAlert();
@@ -162,6 +165,10 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 return;
             }
             if (show) {
+                if (isLoadedFirstTime) {
+                    AnalyticsUtils.setCurrentScreenName(getActivity(), CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME);
+                    isLoadedFirstTime = false;
+                }
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
                 binding.appBar.setOnClickListener((v) -> viewModel.hideAutoCompleteLayout());
                 binding.streetAutocompleteBackground.setVisibility(View.VISIBLE);

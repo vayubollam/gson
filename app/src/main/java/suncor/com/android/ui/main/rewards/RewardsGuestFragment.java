@@ -92,6 +92,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
 
     @Override
     protected String getScreenName() {
-        return "discover-petro-points";
+        return "rewards-content";
     }
 }
