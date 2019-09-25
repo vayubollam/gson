@@ -32,6 +32,7 @@ public class MerchantDetailsFragment extends MainActivityFragment {
         int imageId = getContext().getResources().getIdentifier(merchantItem.getMerchantSmallImage(), "drawable", getContext().getPackageName());
         binding.setImage(getContext().getDrawable(imageId));
         binding.setMerchantItem(merchantItem);
+        binding.executePendingBindings();
         binding.closeButton.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.points.setText(getString(R.string.rewards_signedin_header_balance, CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance())));
         return binding.getRoot();
