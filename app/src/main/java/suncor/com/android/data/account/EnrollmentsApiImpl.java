@@ -29,6 +29,7 @@ import suncor.com.android.utilities.Timber;
 public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ADAPTER_PATH = "/adapters/suncor/v1/enrollments";
     private final static String SECURITY_QUESTION_ADAPTER_PATH = "/adapters/suncor/v2/enrollments";
+    private final static String EMAIL_VALIDATION_ADAPTER_PATH = "/adapters/suncor/v2/enrollments";
     private Gson gson;
 
     public EnrollmentsApiImpl(Gson gson) {
@@ -81,7 +82,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         MutableLiveData<Resource<EmailState>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH.concat("/email-validation"));
+            URI adapterPath = new URI(EMAIL_VALIDATION_ADAPTER_PATH.concat("/email-verification"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.addHeader("x-email", email);
             if (petroCanadaId != null) {

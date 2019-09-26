@@ -28,6 +28,7 @@ import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
     private static final String ADAPTER_PATH = "/adapters/suncor/v2/profiles";
+    private static final String SQ_VALIDATION_ADAPTER_PATH = "/adapters/suncor/v3/profiles";
     private Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
@@ -125,7 +126,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH.concat("/security-question-validation"));
+            adapterPath = new URI(SQ_VALIDATION_ADAPTER_PATH.concat("/security-answer-verification"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             String base64Answer = BaseEncoding.base64().encode(answer.getBytes());
             request.addHeader("x-security-answer", base64Answer);
