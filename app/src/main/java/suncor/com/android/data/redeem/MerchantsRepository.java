@@ -24,11 +24,6 @@ public class MerchantsRepository {
     @Inject
     public MerchantsRepository(MerchantsApi merchantsApi, SessionManager sessionManager) {
         this.merchantsApi = merchantsApi;
-        sessionManager.getLoginState().observeForever((state) -> {
-            if (state == SessionManager.LoginState.LOGGED_OUT && cachedMerchants != null) {
-                cachedMerchants.clear();
-            }
-        });
 
     }
 
