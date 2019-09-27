@@ -19,6 +19,8 @@ import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.favourite.FavouriteRepositoryImpl;
 import suncor.com.android.data.profiles.ProfilesApi;
 import suncor.com.android.data.profiles.ProfilesApiImpl;
+import suncor.com.android.data.redeem.MerchantsApi;
+import suncor.com.android.data.redeem.MerchantsApiImpl;
 import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.data.settings.SettingsApiImpl;
 import suncor.com.android.data.stations.StationsApi;
@@ -109,5 +111,11 @@ public class DataModule {
     @Provides
     SettingsApi provideSettingsApi(Gson gson) {
         return new SettingsApiImpl(gson);
+    }
+
+    @Provides
+    @Singleton
+    MerchantsApi providesMerchantsRepository(Gson gson) {
+        return new MerchantsApiImpl(gson);
     }
 }

@@ -28,12 +28,14 @@ import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
@@ -41,12 +43,17 @@ import suncor.com.android.utilities.AnalyticsUtils;
 
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
+    public static final String LOGGED_OUT_DUE_PASSWORD_CHANGE = "password_change_requires_re_login";
+    @Inject
+    ViewModelFactory viewModelFactory;
     @Inject
     SuncorApplication application;
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
     private ArrayList<Province> provinces = new ArrayList<>();
+    private MerchantViewModel merchantsViewModel;
+    private boolean autoLoginFailed = false;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -60,15 +67,34 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             if (LOGGED_OUT_DUE_CONFLICTING_LOGIN.equals(intent.getAction())) {
                 AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", LOGGED_OUT_DUE_CONFLICTING_LOGIN));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
-                adb.setPositiveButton("OK", (dialog, which) -> {
+                adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
                     homeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     application.startActivity(homeActivityIntent);
                 });
-                adb.setTitle(R.string.alert_signed_out_title);
-                adb.setMessage(getString(R.string.alert_signed_out_conflicting_login));
+                adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
+                adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
                 adb.show();
             }
+        }
+    };
+
+    private BroadcastReceiver loginChangedPasswordReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (LOGGED_OUT_DUE_PASSWORD_CHANGE.equals(intent.getAction()) && !autoLoginFailed) {
+                navController.navigate(R.id.action_global_home_tab);
+                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", LOGGED_OUT_DUE_PASSWORD_CHANGE));
+                AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+                adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
+                    Intent loginActivityIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    MainActivity.this.startActivity(loginActivityIntent);
+                });
+                adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
+                adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
+                adb.show();
+            }
+            autoLoginFailed = false;
         }
     };
 
@@ -84,6 +110,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
+        merchantsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MerchantViewModel.class);
 
         setContentView(R.layout.activity_main);
         AndroidBug5497Workaround.assistActivity(this);
@@ -124,6 +151,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
         if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
+            autoLoginFailed = true;
             Alerts.prepareGeneralErrorDialog(this).show();
         }
         String[] provincesArray = getResources().getStringArray(R.array.province_names);
@@ -138,12 +166,14 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver(loginConflictReceiver, new IntentFilter(LOGGED_OUT_DUE_CONFLICTING_LOGIN));
+        LocalBroadcastManager.getInstance(this).registerReceiver(loginChangedPasswordReceiver, new IntentFilter(LOGGED_OUT_DUE_PASSWORD_CHANGE));
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(loginConflictReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(loginChangedPasswordReceiver);
     }
 
     @Override

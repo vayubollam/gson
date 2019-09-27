@@ -450,5 +450,25 @@
     <string name="update_password_progress">Updating Password…</string>
     <string name="profile_uodate_account_toast">New changes saved</string>
     <string name="profile_security_question_load_try_again">try again</string>
+    <string name="login_conflict_alert_positive_button">OK</string>
+    <string name="password_change_re_login_alert_positive_button">OK</string>
+    <string name="password_change_re_login_alert_title">Signed out</string>
+    <string name="pawword_change_re_login_alert_body">You may have changed your sign in details recently. Please sign in again to continue.</string>
+    <string name="rewards_e_gift_card_starting_points">From 10,000 points</string>
+    <string name="rewards_egift_card_subtitle">eGift card</string>
+    <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
+    <string name="merchant_dining_card">The Ultimate Dining Card</string>
+    <string name="merchant_cineplex">Cineplex</string>
+    <string name="merchant_Hudson_bay">Hudson\'s Bay</string>
+
+    <string name="rewards_signedin_how_to_redeem_merchants_title">How to redeem</string>
+    <string name="rewards_signedin_how_to_redeem_merchants_description">Choose a value, confirm redemption and get the eGift card in your email.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_title">Using your reward</string>
+    <string name="rewards_buy_button">Redeem</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Use at any Cineplex theatre or online at cineplex.com.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com.</string>
+
 
 </resources>

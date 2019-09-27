@@ -97,6 +97,12 @@
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_rewards_signedin_tab_to_merchantDetailsFragment"
+            app:destination="@id/merchantDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -315,5 +321,16 @@
         android:id="@+id/provinceProfileFragment"
         android:name="suncor.com.android.ui.main.profile.address.ProvinceProfileFragment"
         android:label="ProvinceProfileFragment" />
+    <action
+        android:id="@+id/action_global_home_tab"
+        app:destination="@id/home_tab" />
+    <keep_state_fragment
+        android:id="@+id/merchantDetailsFragment"
+        android:name="suncor.com.android.ui.main.rewards.MerchantDetailsFragment"
+        android:label="MerchantDetailsFragment">
+        <argument
+            android:name="MerchantItem"
+            app:argType="suncor.com.android.ui.main.rewards.MerchantItem" />
+    </keep_state_fragment>
 
 </navigation>

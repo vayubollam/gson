@@ -22,6 +22,7 @@ import suncor.com.android.R;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 /**
@@ -72,6 +73,12 @@ public class SecurityQuestionFragment extends DaggerFragment {
 
         ChoiceSelectorAdapter choiceSelectorAdapter = new ChoiceSelectorAdapter(questions, (this::onSecurityQuestionSelected), securityQuestionViewModel.getSelectedItem());
         questionsRecyclerView.setAdapter(choiceSelectorAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "province-security-help");
     }
 
     public void onSecurityQuestionSelected(int selectedQuestion) {

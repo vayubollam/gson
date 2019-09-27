@@ -3,6 +3,8 @@ package suncor.com.android.mfp;
 import android.content.Intent;
 import android.os.Handler;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.worklight.nativeandroid.common.WLUtils;
 import com.worklight.wlclient.HttpClientManager;
 
@@ -16,7 +18,6 @@ import java.util.zip.GZIPInputStream;
 
 import javax.inject.Inject;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -25,6 +26,7 @@ import okio.BufferedSource;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
 public class MFPRequestInterceptor implements Interceptor {
@@ -33,6 +35,8 @@ public class MFPRequestInterceptor implements Interceptor {
     SessionManager sessionManager;
     @Inject
     SuncorApplication application;
+    @Inject
+    FingerprintManager fingerprintManager;
 
     @Inject
     MFPRequestInterceptor() {
@@ -65,6 +69,17 @@ public class MFPRequestInterceptor implements Interceptor {
                                 LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(MainActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN));
                             }
                         }));
+                    } else if (ErrorCodes.ERR_PASSWORD_CHANGE_REQUIRES_RE_LOGIN.equalsIgnoreCase(object.getString("errorCode"))) {
+                        Handler mainHandler = new Handler(application.getMainLooper());
+                        mainHandler.post(() -> {
+                            sessionManager.logout().observeForever(result -> {
+                                if (result.status == Resource.Status.SUCCESS) {
+                                    fingerprintManager.deactivateAutoLogin();
+                                    fingerprintManager.deactivateFingerprint();
+                                    LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(MainActivity.LOGGED_OUT_DUE_PASSWORD_CHANGE));
+                                }
+                            });
+                        });
                     }
                 }
             } catch (JSONException e) {

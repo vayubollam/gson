@@ -96,6 +96,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         windowParams.dimAmount = 0f;
         windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(windowParams);
+
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "station-details-home");
     }
 
     @Override

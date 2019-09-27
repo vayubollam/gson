@@ -440,5 +440,23 @@
     <string name="msg_001_dialog_try_again">Essayez de nouveau</string>
     <string name="profile_uodate_account_toast">Les changements ont été sauvegardés.</string>
     <string name="profile_security_question_load_try_again">VEUILLEZ ESSAYER DE NOUVEAU</string>
+    <string name="password_change_re_login_alert_positive_button">Ok</string>
+    <string name="password_change_re_login_alert_title">Fin de session</string>
+    <string name="pawword_change_re_login_alert_body">Vous avez peut-être changé récemment vos données d\'ouverture de session. Veuillez ouvrir une nouvelle session pour continuer.</string>
+    <string name="login_conflict_alert_positive_button">OK</string>
+    <string name="rewards_egift_card_subtitle">Carte-cadeau électronique</string>
+    <string name="rewards_e_gift_card_starting_points">À compter de 10 000 points</string>
+    <string name="merchant_Hudson_bay">La Baie d’Hudson</string>
+    <string name="merchant_cineplex">Cineplex</string>
+    <string name="merchant_dining_card">Bon Appétit</string>
+    <string name="merchant_winners">WINNERS, Marshalls et HomeSense</string>
+    <string name="rewards_signedin_how_to_redeem_merchants_title">Comment échanger des points</string>
+    <string name="rewards_signedin_redeeming_your_rewards_title">Utilisation de votre prime</string>
+    <string name="rewards_buy_button">Échanger</string>
+    <string name="rewards_signedin_how_to_redeem_merchants_description">Choisissez une valeur, confirmez l\'échange, puis recevez la carte-cadeau électronique par la poste.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Valable à n\'importe quel cinéma Cinéplex ou en ligne à Cineplex.com.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Valable dans tous les WINNERS, HomeSense et Marshalls au Canada.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Valable dans plus de 10 restaurants Canadiens comme Montana\'s, East Side Mario\'s et Swiss Chalet.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Utilisez-la à La Baie d’Hudson, Déco Découverte et en ligne à labaie.com.</string>
 
 </resources>

@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -15,14 +19,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.ui.main.BottomNavigationFragment;
-import suncor.com.android.uicomponents.ExtendedNestedScrollView;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class RewardsSignedInFragment extends BottomNavigationFragment {
@@ -53,13 +54,30 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel.merchantsLiveData.observe(this, merchants -> {
+            if (merchants != null) {
+                ArrayList<MerchantItem> merchantItems = new ArrayList<>();
+                for (Merchant m : merchants) {
+                    MerchantItem merchantItem = new MerchantItem(m, getContext());
+                    merchantItems.add(merchantItem);
+                }
+                binding.eGiftList.setAdapter(new EGiftsCardAdapter(merchantItems, this::eCardClicked));
+            }
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsSignedinBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
         RewardsAdapter rewardsAdapter = new RewardsAdapter(viewModel.getRewards(), this::rewardClicked);
         binding.rewardsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        binding.eGiftList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.rewardsList.setAdapter(rewardsAdapter);
 
         systemMarginsAlreadyApplied = false;
@@ -81,15 +99,15 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             //handle visibility of the header
             int threshold = binding.balancePetropoints.getBottom();
-            if (scrollY > oldScrollY ){
+            if (scrollY > oldScrollY) {
                 double scrollViewHeight = v.getChildAt(0).getBottom() - v.getHeight();
                 double getScrollY = v.getScrollY();
                 double scrollPosition = (getScrollY / scrollViewHeight) * 100d;
-                int pourcentage = (int)scrollPosition;
-                if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50|| pourcentage == 75 || pourcentage == 95  ){
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
+                int pourcentage = (int) scrollPosition;
+                if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50 || pourcentage == 75 || pourcentage == 95) {
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", Integer.toString(pourcentage)));
                 }
-                }
+            }
             if (scrollY >= threshold) {
 
                 if (!isHeaderVisible) {
@@ -168,5 +186,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }
         getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
+    }
+
+    private void eCardClicked(MerchantItem merchantItem) {
+        RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(merchantItem);
+        Navigation.findNavController(getView()).navigate(action);
     }
 }
