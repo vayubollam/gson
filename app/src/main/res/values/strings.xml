@@ -316,7 +316,7 @@
     <string name="msg_am001_message">Please try again later.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Use different email</string>
-    <string name="profile_update_toast">Your personal info has been updated.</string>
+    <string name="profile_update_toast">New changes saved</string>
     <string name="cards_details_close">Close</string>
     <string name="transactions_header">Transactions</string>
     <string name="transactions_current_month_name">This month</string>
@@ -447,7 +447,7 @@
     <string name="profile_security_question_checking_answer">Checking your answer…</string>
     <string name="profile_security_question_wrong_answer_alert_title">Incorrect answer.</string>
     <string name="profile_personnal_informations_password">Password</string>
-    <string name="update_password_progress">Updating Password…</string>
+    <string name="update_password_progress">Updating password…</string>
     <string name="profile_uodate_account_toast">New changes saved</string>
     <string name="profile_security_question_load_try_again">try again</string>
     <string name="login_conflict_alert_positive_button">OK</string>
@@ -465,10 +465,10 @@
     <string name="rewards_signedin_how_to_redeem_merchants_description">Choose a value, confirm redemption and get the eGift card in your email.</string>
     <string name="rewards_signedin_redeeming_your_rewards_title">Using your reward</string>
     <string name="rewards_buy_button">Redeem</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Use at any Cineplex theatre or online at cineplex.com.</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada.</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet.</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com.</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Use at any Cineplex theatre or online at cineplex.com. \n </string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com. \n</string>
 
 
 </resources>
