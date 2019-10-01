@@ -61,23 +61,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
         }
         holder.binding.executePendingBindings();
         holder.binding.valueRb.setChecked(position == selectedItem);
-        holder.binding.valueRb.setOnClickListener(v -> {
-            if (!itemsExpanded) {
-                return;
-            }
-            setItemHeight(holder.itemView.getHeight());
-            callBack.accept(position);
-            if (selectedItem == position) {
-                holder.binding.valueRb.setChecked(true);
-                notifyDataSetChanged();
-                shouldHideTheRest = true;
-            } else {
-                selectedItem = position;
-                notifyDataSetChanged();
-                shouldHideTheRest = true;
-
-            }
-        });
+        holder.binding.valueRb.setOnClickListener(v -> holder.itemView.callOnClick());
         holder.itemView.setOnClickListener(v -> {
             if (eGifts.get(position).getPetroPointsRequired() > petroPoints || !itemsExpanded) {
                 return;
@@ -103,7 +87,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                         .alpha(0.0f)
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
-            } else if (position == selectedItem) {
+            } else {
                 holder.binding.getRoot().animate().translationY(-holder.binding.getRoot().getHeight() * position)
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
@@ -123,7 +107,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                         .alpha(1.0f)
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
-            } else if (position == selectedItem) {
+            } else {
                 holder.itemView.animate().translationY(-(holder.binding.getRoot().getTranslationY() + (holder.binding.getRoot().getHeight() * position)))
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
@@ -162,7 +146,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
         return itemHeight;
     }
 
-    public void setItemHeight(float itemHeight) {
+    private void setItemHeight(float itemHeight) {
         this.itemHeight = itemHeight;
     }
 }
