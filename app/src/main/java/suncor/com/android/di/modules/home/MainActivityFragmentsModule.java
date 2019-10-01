@@ -22,6 +22,7 @@ import suncor.com.android.ui.main.rewards.RewardsDetailsFragment;
 import suncor.com.android.ui.main.rewards.RewardsDiscoveryFragment;
 import suncor.com.android.ui.main.rewards.RewardsGuestFragment;
 import suncor.com.android.ui.main.rewards.RewardsSignedInFragment;
+import suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationsFragment;
@@ -104,5 +105,8 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract MerchantDetailsFragment contributesMerchantDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract GiftCardValueConfirmationFragment contributeCardValueConfirmationFragment();
 
 }

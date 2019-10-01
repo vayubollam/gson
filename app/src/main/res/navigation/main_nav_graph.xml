@@ -331,6 +331,17 @@
         <argument
             android:name="MerchantItem"
             app:argType="suncor.com.android.ui.main.rewards.MerchantItem" />
+        <action
+            android:id="@+id/action_merchantDetailsFragment_to_giftCardValueConfirmation"
+            app:destination="@id/giftCardValueConfirmation" />
     </keep_state_fragment>
+    <fragment
+        android:id="@+id/giftCardValueConfirmation"
+        android:name="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment"
+        android:label="GiftCardValueConfirmation">
+        <argument
+            android:name="merchanItem"
+            app:argType="suncor.com.android.ui.main.rewards.MerchantItem" />
+    </fragment>
 
 </navigation>

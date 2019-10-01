@@ -31,5 +31,7 @@
     <dimen name="expanded_card_bottom_margin">16dp</dimen>
     <dimen name="expanded_card_pagination_margin">4dp</dimen>
     <dimen name="suncor_bottom_navigation_height">48dp</dimen>
+    <dimen name="gift_card_value_enable_start_margin">16dp</dimen>
+    <dimen name="gift_card_value_disable_start_margin">56dp</dimen>
 
 </resources>

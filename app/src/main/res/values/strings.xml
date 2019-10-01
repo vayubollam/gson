@@ -413,6 +413,8 @@
     <string name="rewards_signedin_petropoints_balance">You have\n%s points</string>
     <string name="rewards_signedin_petropoints_value">or $%d off</string>
     <string name="rewards_signedin_header_balance">You have %s points</string>
+    <string name="rewards_signedin_egift_value_in_dollar_generic">$%d</string>
+    <string name="rewards_signedin_egift_value_in_pointr_generic">%d points</string>
     <string name="rewards_signedin_discoery_title">Petro-Points</string>
     <string name="cards_add_fragment_cvv_field_empty_error">Please enter a security code.</string>
     <string name="cards_add_fragment_cvv_field_format_error">Your security code is wrong.</string>

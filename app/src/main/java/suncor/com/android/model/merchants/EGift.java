@@ -3,7 +3,7 @@ package suncor.com.android.model.merchants;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class EGift implements Parcelable {
+public class EGift implements Parcelable {
     private int id;
     private String description;
     private int value;

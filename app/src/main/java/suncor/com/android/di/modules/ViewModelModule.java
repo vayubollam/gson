@@ -2,6 +2,7 @@ package suncor.com.android.di.modules;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
@@ -24,6 +25,7 @@ import suncor.com.android.ui.main.profile.preferences.PreferencesViewModel;
 import suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationViewModel;
 import suncor.com.android.ui.main.profile.transcations.TransactionsViewModel;
 import suncor.com.android.ui.main.rewards.RewardsSignedInViewModel;
+import suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationViewModel;
 import suncor.com.android.ui.main.stationlocator.StationsViewModel;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.main.stationlocator.search.SearchViewModel;
@@ -146,4 +148,9 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MerchantViewModel.class)
     protected abstract ViewModel MerchantViewModel(MerchantViewModel MerchantViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GiftCardValueConfirmationViewModel.class)
+    protected abstract ViewModel GiftCardConfirmationViewModel(GiftCardValueConfirmationViewModel giftCardValueConfirmationViewModel);
 }

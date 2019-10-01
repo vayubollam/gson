@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:animateLayoutChanges="true"
+        tools:context="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment">
+
+        <View
+            android:id="@+id/app_bar_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/horizontal_divider"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+        <View
+            android:id="@+id/user_points_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/horizontal_divider"
+            app:layout_constraintTop_toBottomOf="@+id/user_points_txt" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_points_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@{@string/rewards_signedin_header_balance(CardFormatUtils.formatBalance(vm.sessionManager.profile.pointsBalance))}"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@id/user_points_divider"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_divider"
+            tools:text="You have 2,500 points" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toTopOf="@id/redeem_total_layout"
+            app:layout_constraintTop_toBottomOf="@id/user_points_divider">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="12dp">
+
+
+                <View
+                    android:id="@+id/card_value_down_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider"
+                    android:paddingStart="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/card_value_txt" />
+
+                <View
+                    android:id="@+id/card_value_up_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/horizontal_divider"
+                    android:paddingTop="16dp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/card_value_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingStart="16dp"
+                    android:paddingTop="12dp"
+                    app:layout_constraintTop_toBottomOf="@id/card_value_up_divider"
+                    android:paddingBottom="12dp"
+                    android:text="Select the gift card's value"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/Title2" />
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/change_value_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="change"
+                    style="@style/LinkButton.Red.M"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@id/card_value_txt"
+                    app:layout_constraintBottom_toBottomOf="@id/card_value_txt"
+                    android:layout_marginEnd="16dp" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/values_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    app:layout_constraintTop_toBottomOf="@id/card_value_down_divider" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/redeem_address_layout"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@+id/values_recycler_view">
+
+                    <View
+                        android:id="@+id/address_up_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/horizontal_divider"
+                        android:paddingTop="16dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/email_address_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingStart="16dp"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:text="You'll receive your card at"
+                        android:textAlignment="textStart"
+                        android:textAppearance="@style/Title2"
+                        app:layout_constraintTop_toBottomOf="@id/address_up_divider" />
+
+                    <View
+                        android:id="@+id/address_down_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/horizontal_divider"
+                        android:layout_marginLeft="16dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/email_address_txt" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/redeem_email_address"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/address_down_divider"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:textAppearance="@style/Body"
+                        android:layout_marginStart="16dp"
+                        tools:text="hicham@ibm.com"
+                        android:text="@{vm.sessionManager.profile.email}"
+                        android:layout_height="wrap_content" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/redeem_disclaimer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="If you changed your email  in the last 24 hours, there will be a hold on redeemed eGift cards.
+If you changed your email  in the last 24 hours, there will be a hold on redeemed eGift cards.
+If you changed your email  in the last 24 hours, there will be a hold on redeemed eGift cards.
+If you changed your email  in the last 24 hours, there will be a hold on redeemed eGift cards."
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/redeem_email_address"
+                        app:layout_constraintVertical_bias="1.0"
+                        tools:layout_editor_absoluteX="16dp" />
+
+                    <View
+                        android:id="@+id/address_layout_down_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/horizontal_divider"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:id="@+id/redeem_total_layout"
+            android:visibility="gone"
+            android:clipToPadding="false"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/redeem_btn"
+            android:elevation="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/redeem_total_down_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/horizontal_divider"
+                android:paddingStart="16dp"
+                app:layout_constraintTop_toBottomOf="@id/redeem_total_txt" />
+
+            <View
+                android:id="@+id/redeem_total_up_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/horizontal_divider"
+                android:paddingTop="16dp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/redeem_total_txt"
+                android:layout_width="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/redeem_total_up_divider"
+                android:paddingBottom="12dp"
+                android:text="Total"
+                app:layout_constraintRight_toLeftOf="@id/redeem_total_points_txt"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/Title2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/redeem_total_points_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="12dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="12dp"
+                android:text="10,000 points"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/Title2"
+                app:layout_constraintLeft_toRightOf="@id/redeem_total_txt"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/redeem_total_up_divider" />
+
+            <suncor.com.android.ui.common.LinkableTextView
+                android:id="@+id/terms_agreement"
+                style="@style/Caption1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:lineSpacingMultiplier="1.57"
+                android:paddingRight="2dp"
+                android:text="@string/enrollment_terms_agreement"
+                android:textAppearance="@style/Caption1"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@id/terms_agreement_down_divider"
+                android:paddingEnd="16dp"
+                android:textColorLink="@color/red"
+                app:layout_constraintTop_toBottomOf="@id/redeem_total_down_divider"
+                tools:text="@string/enrollment_terms_agreement" />
+
+            <View
+                android:id="@+id/terms_agreement_down_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/horizontal_divider"
+                android:paddingTop="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/terms_agreement" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/redeem_new_balance_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="New Balance"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="16dp"
+                app:layout_constraintRight_toLeftOf="@id/redeem_new_points_txt"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:textAppearance="@style/Body"
+                app:layout_constraintTop_toBottomOf="@id/terms_agreement_down_divider"
+                app:layout_constraintBottom_toTopOf="@id/new_balance_down_divider" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintLeft_toRightOf="@id/redeem_new_balance_txt"
+                android:id="@+id/redeem_new_points_txt"
+                android:layout_width="0dp"
+                android:textAlignment="textEnd"
+                android:layout_height="wrap_content"
+                android:text="1 000 points"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:textAppearance="@style/Body"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/terms_agreement_down_divider"
+                app:layout_constraintBottom_toTopOf="@id/new_balance_down_divider" />
+
+            <View
+                android:id="@+id/new_balance_down_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/horizontal_divider"
+                android:paddingTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <suncor.com.android.ui.common.SuncorButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CONFIRM AND REDEEM"
+            style="@style/FilledButton.Red.M"
+            android:id="@+id/redeem_btn"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expandable="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@{vm.merchantItem.localizedMerchantName}" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationViewModel" />
+    </data>
+</layout>
