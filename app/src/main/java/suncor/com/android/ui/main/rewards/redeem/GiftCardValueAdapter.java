@@ -48,6 +48,17 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
     public void onBindViewHolder(@NonNull GiftCardValueAdapter.ValueViewHolder holder, int position) {
         holder.binding.setEgift(eGifts.get(position));
         holder.binding.setPetroPoints(petroPoints);
+        if (position != eGifts.size() - 1) {
+            if (eGifts.get(position).getPetroPointsRequired() > petroPoints) {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.binding.itemDivider.getLayoutParams();
+                p.setMargins(holder.itemView.getContext().getResources().getDimensionPixelSize(R.dimen.gift_card_value_disable_start_margin), 0, 0, 0);
+                holder.binding.itemDivider.setLayoutParams(p);
+            } else {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.binding.itemDivider.getLayoutParams();
+                p.setMargins(holder.itemView.getContext().getResources().getDimensionPixelSize(R.dimen.gift_card_value_enable_start_margin), 0, 0, 0);
+                holder.binding.itemDivider.setLayoutParams(p);
+            }
+        }
         holder.binding.executePendingBindings();
         holder.binding.valueRb.setChecked(position == selectedItem);
         holder.binding.valueRb.setOnClickListener(v -> {
@@ -96,6 +107,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                 holder.binding.getRoot().animate().translationY(-holder.binding.getRoot().getHeight() * position)
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
+                holder.binding.itemDivider.setVisibility(View.INVISIBLE);
             }
             if (position == eGifts.size() - 1) {
                 shouldHideTheRest = false;
@@ -115,12 +127,14 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                 holder.itemView.animate().translationY(-(holder.binding.getRoot().getTranslationY() + (holder.binding.getRoot().getHeight() * position)))
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
+                holder.binding.itemDivider.setVisibility(View.VISIBLE);
             }
             if (position == eGifts.size() - 1) {
                 shouldShowValues = false;
             }
 
         }
+
 
     }
 

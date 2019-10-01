@@ -5,15 +5,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:animateLayoutChanges="true"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <ImageView
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:id="@+id/item_divider"
             android:background="@drawable/horizontal_divider"
             app:layout_constraintTop_toBottomOf="@id/value_rb" />
 
@@ -36,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:enabled="@{egift.petroPointsRequired > petroPoints ? false : true}"
             android:text="@{ @string/rewards_signedin_egift_value_in_dollar_generic(egift.value)}"
             android:textAppearance="@style/Body"
