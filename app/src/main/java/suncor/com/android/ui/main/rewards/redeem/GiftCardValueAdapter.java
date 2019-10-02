@@ -92,6 +92,8 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
                 holder.binding.itemDivider.setVisibility(View.INVISIBLE);
+                holder.binding.valueRb.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
+                holder.binding.txtSelectedCardGift.animate().alpha(1.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
             }
             if (position == eGifts.size() - 1) {
                 shouldHideTheRest = false;
@@ -112,6 +114,8 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
                 holder.binding.itemDivider.setVisibility(View.VISIBLE);
+                holder.binding.valueRb.animate().alpha(1.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
+                holder.binding.txtSelectedCardGift.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
             }
             if (position == eGifts.size() - 1) {
                 shouldShowValues = false;
