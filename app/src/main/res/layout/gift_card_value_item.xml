@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@{ @string/rewards_signedin_egift_value_in_pointr_generic(egift.petroPointsRequired)}"
+            android:text="@{ @string/rewards_signedin_egift_value_in_pointr_generic(CardFormatUtils.formatBalance(egift.petroPointsRequired))}"
             android:textAppearance="@style/Body"
             android:textColor="@{egift.petroPointsRequired > petroPoints ? @color/black_20 : @color/black_80}"
             app:layout_constraintBottom_toBottomOf="@id/value_rb"
@@ -48,6 +48,8 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <data>
+
+        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
 
         <variable
             name="egift"

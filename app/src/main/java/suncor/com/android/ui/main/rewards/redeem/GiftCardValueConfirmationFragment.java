@@ -21,8 +21,11 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.merchants.EGift;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.rewards.MerchantItem;
+
+import static suncor.com.android.ui.common.cards.CardFormatUtils.formatBalance;
 
 
 public class GiftCardValueConfirmationFragment extends MainActivityFragment {
@@ -72,6 +75,15 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        for (EGift e : viewModel.getMerchantItem().getMerchant().geteGifts()) {
+            if (e.getPetroPointsRequired() < viewModel.getSessionManager().getProfile().getPointsBalance()) {
+                binding.notEnoughPointLayout.setVisibility(View.GONE);
+            }
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -79,6 +91,10 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment {
     }
 
     void cardValueChanged(Integer selectedItem) {
+        int valueSelected = viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem).getPetroPointsRequired();
+        int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
+        binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, formatBalance(valueSelected)));
+        binding.redeemNewPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, formatBalance(userPetroPoints - valueSelected)));
         binding.cardValueTxt.setText("Card Value");
         binding.changeValueBtn.setVisibility(View.VISIBLE);
         binding.nestedScrollView.scrollTo(0, 0);

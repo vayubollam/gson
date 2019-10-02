@@ -414,7 +414,7 @@
     <string name="rewards_signedin_petropoints_value">or $%d off</string>
     <string name="rewards_signedin_header_balance">You have %s points</string>
     <string name="rewards_signedin_egift_value_in_dollar_generic">$%d</string>
-    <string name="rewards_signedin_egift_value_in_pointr_generic">%d points</string>
+    <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
     <string name="rewards_signedin_discoery_title">Petro-Points</string>
     <string name="cards_add_fragment_cvv_field_empty_error">Please enter a security code.</string>
     <string name="cards_add_fragment_cvv_field_format_error">Your security code is wrong.</string>
@@ -471,6 +471,10 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada.</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet.</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com.</string>
+    <string name="redeem_egift_card_select_value">Select value</string>
+    <string name="redeem_egoft_total_points">Total</string>
+    <string name="redeem_egift_address_disclaimer">If you changed your email address and then redeem for an eGift card, you will not be able to redeem points online or in-store for 24 hours.</string>
+    <string name="redeem_terms_agreement">Transactions are irreversible. By selecting "confirm and redeem," you agree to<a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
 
 
 </resources>
