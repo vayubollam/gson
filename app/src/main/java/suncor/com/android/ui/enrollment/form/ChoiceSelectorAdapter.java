@@ -5,11 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import suncor.com.android.databinding.ProvinceItemBinding;
 import suncor.com.android.utilities.Consumer;
 
@@ -76,6 +77,11 @@ public class ChoiceSelectorAdapter extends RecyclerView.Adapter<ChoiceSelectorAd
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     public int getSelectedItem() {

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:animateLayoutChanges="true"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/item_divider"
+            android:background="@drawable/horizontal_divider"
+            app:layout_constraintTop_toBottomOf="@id/value_rb" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/card_point_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@{ @string/rewards_signedin_egift_value_in_pointr_generic(CardFormatUtils.formatBalance(egift.petroPointsRequired))}"
+            android:textAppearance="@style/Body"
+            android:textColor="@{egift.petroPointsRequired > petroPoints ? @color/black_20 : @color/black_80}"
+            app:layout_constraintBottom_toBottomOf="@id/value_rb"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/value_rb"
+            tools:text="10,000 points" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/value_rb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:enabled="@{egift.petroPointsRequired > petroPoints ? false : true}"
+            android:text="@{ @string/rewards_signedin_egift_value_in_dollar_generic(egift.value)}"
+            android:textAppearance="@style/Body"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/card_point_value"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="$10" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:id="@+id/txt_selected_card_gift"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:text="@{ @string/rewards_signedin_egift_value_in_dollar_gift_card_generic(egift.value)}"
+            tools:visibility="visible"
+            app:layout_constraintTop_toTopOf="@id/value_rb"
+            app:layout_constraintLeft_toLeftOf="@id/value_rb"
+            tools:text="$10 gift card"
+            android:textAppearance="@style/Body"
+            app:layout_constraintBottom_toBottomOf="@id/value_rb" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
+
+        <variable
+            name="egift"
+            type="suncor.com.android.model.merchants.EGift" />
+
+        <variable
+            name="petroPoints"
+            type="Integer" />
+    </data>
+</layout>
