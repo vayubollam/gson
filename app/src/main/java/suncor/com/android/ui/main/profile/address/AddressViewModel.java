@@ -131,13 +131,9 @@ public class AddressViewModel extends ViewModel {
         });
 
 
-        LiveData<Resource<CanadaPostSuggestion[]>> suggestionsOnFindPlaceClicked = Transformations.switchMap(findMoreSuggestions, place -> {
-            return provider.findSuggestions(streetAddressField.getText(), place.getId());
-        });
+        LiveData<Resource<CanadaPostSuggestion[]>> suggestionsOnFindPlaceClicked = Transformations.switchMap(findMoreSuggestions, place -> provider.findSuggestions(streetAddressField.getText(), place.getId()));
 
-        placeDetailsApiCall = Transformations.switchMap(retrieveSuggestionDetails, place -> {
-            return provider.getPlaceDetails(place.getId());
-        });
+        placeDetailsApiCall = Transformations.switchMap(retrieveSuggestionDetails, place -> provider.getPlaceDetails(place.getId()));
 
         autocompleteResults.addSource(suggestionsOnTextChange, (results) -> {
             if (results.status == Resource.Status.SUCCESS && streetAddressField.hasFocus()) {
@@ -187,10 +183,14 @@ public class AddressViewModel extends ViewModel {
     public void setSelectedProvince(Province selectedProvince) {
         this.selectedProvince = selectedProvince;
         if (selectedProvince != null) {
+            if (!selectedProvince.getName().equalsIgnoreCase(provinceField.getText())) {
+                _showSaveButtonEvent.postValue(Event.newEvent(true));
+            }
             provinceField.setText(selectedProvince.getName());
             postalCodeField.setFirstCharacterValidation(selectedProvince.getFirstCharacter());
             //to trigger postal code validation
             postalCodeField.setHasFocus(false);
+
         }
     }
 
