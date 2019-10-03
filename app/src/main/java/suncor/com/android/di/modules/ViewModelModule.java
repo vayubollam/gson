@@ -2,7 +2,6 @@ package suncor.com.android.di.modules;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
@@ -153,4 +152,6 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GiftCardValueConfirmationViewModel.class)
     protected abstract ViewModel GiftCardConfirmationViewModel(GiftCardValueConfirmationViewModel giftCardValueConfirmationViewModel);
+    protected abstract ViewModel merchantViewModel(MerchantViewModel merchantViewModel);
+
 }

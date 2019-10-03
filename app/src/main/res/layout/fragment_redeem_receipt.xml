@@ -1,0 +1,360 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="suncor.com.android.ui.main.profile.ProfileFragment">
+
+    <data>
+        <variable
+            name="image"
+            type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="response"
+            type="suncor.com.android.model.redeem.response.OrderResponse" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_4">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/small_image"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="64dp"
+                    android:elevation="12dp"
+                    android:src="@{image}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/hbc_small"  />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/redeem_confirmation_cardview"
+                    android:layout_width="match_parent"
+                    android:layout_height="185dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/white"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintBottom_toTopOf="@+id/receipt_details_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/redeem_receipt_cardview_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="74dp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginEnd="16dp"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingBottom="8dp"
+                            android:textAppearance="@style/Title1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Thank you, Maria!" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/subtitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:gravity="center"
+                            android:maxLines="2"
+                            android:lineSpacingMultiplier="1.33"
+                            android:text="@string/redeem_receipt_body"
+                            android:textSize="16sp"
+                            android:textColor="@color/black_60"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/redeem_receipt_cardview_title" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/receipt_details_layout"
+                    android:background="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/redeem_confirmation_cardview"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    tools:context="suncor.com.android.ui.main.rewards.RedeemReceiptFragment">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/receipt_details_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:text="@string/redeem_receipt_header"
+                        android:lineSpacingMultiplier="1.36"
+                        android:textAppearance="@style/Title2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/points_summary_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/redeem_receipt_point_summary"
+                        android:textAppearance="@style/Caption1"
+                        android:textColor="@color/black_60"
+
+                        app:layout_constraintTop_toBottomOf="@+id/receipt_details_title"
+                        app:textAllCaps="true" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/points_summary_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/points_summary_title" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/points_redeemed_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/redeem_receipt_point_redeemeed"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/points_redeemed_value"
+                        app:layout_constraintTop_toBottomOf="@id/points_summary_divider" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/points_redeemed_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/points_summary_divider" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/points_redeemed_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/points_redeemed_title" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/new_balance_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/redeem_receipt_new_balance"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/points_redeemed_value"
+                        app:layout_constraintTop_toBottomOf="@id/points_redeemed_divider" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/new_balance_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/points_redeemed_divider" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/new_balance_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/new_balance_title" />
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/points_summary_section_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/new_balance_value" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/details_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:text="@string/redeem_receipt_details_label"
+                        android:textAppearance="@style/Caption1"
+                        android:textColor="@color/black_60"
+                        app:layout_constraintTop_toBottomOf="@+id/points_summary_section_divider"
+                        app:textAllCaps="true" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/details_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/details_txt" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/date_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/redeem_receipt_date_label"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/points_redeemed_value"
+                        app:layout_constraintTop_toBottomOf="@id/details_divider" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/date_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/details_divider" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/date_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/date_title" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/order_id_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/redeem_receipt_order_id_label"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/points_redeemed_value"
+                        app:layout_constraintTop_toBottomOf="@id/date_divider" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/order_id_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textAllCaps="true"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/date_divider" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/order_id_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/order_id_title"
+                         />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/quantity_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/redeem_receipt_quantity"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/points_redeemed_value"
+                        app:layout_constraintTop_toBottomOf="@id/order_id_divider"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/quantity_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textAlignment="textEnd"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/order_id_divider"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/quantity_section_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@+id/quantity_value" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/button_done"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/redeem_done"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

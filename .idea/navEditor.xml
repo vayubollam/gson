@@ -383,8 +383,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="260" />
-                            <option name="y" value="350" />
+                            <option name="x" value="273" />
+                            <option name="y" value="706" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -478,9 +478,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="602" />
-                            <option name="y" value="721" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_giftCardValueConfirmation_to_redeemReceiptFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -516,8 +525,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="245" />
-                            <option name="y" value="733" />
+                            <option name="x" value="90" />
+                            <option name="y" value="939" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -614,6 +623,18 @@
                           <Point>
                             <option name="x" value="2650" />
                             <option name="y" value="-1748" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="redeemReceiptFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>

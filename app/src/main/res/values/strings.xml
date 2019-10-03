@@ -447,7 +447,7 @@
     <string name="profile_security_question_checking_answer">Checking your answer…</string>
     <string name="profile_security_question_wrong_answer_alert_title">Incorrect answer.</string>
     <string name="profile_personnal_informations_password">Password</string>
-    <string name="update_password_progress">Updating password…</string>
+    <string name="update_password_progress">Updating Password…</string>
     <string name="profile_uodate_account_toast">New changes saved</string>
     <string name="profile_security_question_load_try_again">try again</string>
     <string name="login_conflict_alert_positive_button">OK</string>
@@ -484,6 +484,28 @@
     <string name="redeem_egift_change_btn">change</string>
     <string name="redeem_egift_confirm_and_redeem">Confirm and redeem</string>
     <string name="redeem_egift_new_balance">New balance</string>
+    <string name="redeeming">Redeeming…</string>
+    <string name="points_redeemed">Points redeemed!</string>
+    <string name="thank_you">Thank you, %1$s!</string>
+    <string name="redeem_done">Done</string>
+    <string name="redeem_receipt_body">Check your email for a link to your eGift card.</string>
+    <string name="redeem_receipt_header">Your receipt</string>
+    <string name="redeem_receipt_point_summary">Points summary</string>
+    <string name="redeem_receipt_point_redeemeed">Points redeemed</string>
+    <string name="redeem_receipt_new_balance">New balance</string>
+    <string name="redeem_receipt_details_label">Details</string>
+    <string name="redeem_receipt_date_label">Date</string>
+    <string name="redeem_receipt_order_id_label">Order ID</string>
+    <string name="redeem_receipt_quantity">Quantity</string>
+    <string name="redeem_receipt_quantity_value">%1$s card</string>
+    <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668-0220 (TTY: 1 (888) 290-7377).</string>
+
+
+
+
+
+
+
 
 
 </resources>
