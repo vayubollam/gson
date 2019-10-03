@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
+    private FloatingActionButton floatingActionButton;
     private ArrayList<Province> provinces = new ArrayList<>();
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
@@ -116,8 +118,12 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         AndroidBug5497Workaround.assistActivity(this);
         profileSharedViewModel = ViewModelProviders.of(this).get(ProfileSharedViewModel.class);
 
+        floatingActionButton = findViewById(R.id.action_float_button);
+       // floatingActionButton.setVisibility(isLoggedIn()? View.VISIBLE : View.GONE);
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
+        bottomNavigation.inflateMenu( R.menu.bottom_navigation_menu_signedin ); //testing only DELETE
+        //bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
         View mainDivider = findViewById(R.id.mainDivider);
         if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
