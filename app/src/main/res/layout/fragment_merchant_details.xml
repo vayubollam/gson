@@ -29,7 +29,7 @@
             android:fontFamily="@font/gibson_semibold"
             android:gravity="center"
             android:text="@string/rewards_signedin_how_to_redeem_merchants_title"
-            android:textColor="@color/black_90"
+            android:textColor="@color/black_60"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/small_image"
             app:layout_constraintEnd_toEndOf="parent"
@@ -150,9 +150,8 @@
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
                             android:text="@string/rewards_signedin_how_to_redeem_merchants_description"
-                            android:textAppearance="@style/Caption1"
+                            android:textAppearance="@style/Body"
                             android:textColor="@color/black_60"
-                            android:textSize="18sp"
                             app:layout_constraintTop_toBottomOf="@id/redeem_title"
                             tools:text="Choose a value, confirm redemption and get the eGift card in your email." />
 
@@ -189,9 +188,8 @@
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
                             android:text="@{merchantItem.getRedeemingDescription()}"
-                            android:textAppearance="@style/Caption1"
+                            android:textAppearance="@style/Body"
                             android:textColor="@color/black_60"
-                            android:textSize="18sp"
                             app:layout_constraintTop_toBottomOf="@id/redeeming_title"
                             tools:text="Use at Hudson's Bay, Home Outfitters and online at thebay.com." />
 
