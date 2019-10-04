@@ -23,11 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
             android:background="@color/white"
+            android:clickable="true"
             tools:context="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment">
 
             <View
@@ -61,6 +63,7 @@
                 android:id="@+id/redeem_total_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/black_4"
                 android:clipToPadding="false"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -68,11 +71,18 @@
                 tools:visibility="visible">
 
                 <View
+                    android:id="@+id/top_shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/top_shadow_gradient"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
                     android:id="@+id/redeem_total_down_divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
                     android:background="@drawable/horizontal_divider"
-                    android:paddingStart="16dp"
                     app:layout_constraintTop_toBottomOf="@id/redeem_total_txt" />
 
                 <View
@@ -80,16 +90,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@drawable/horizontal_divider"
-                    android:paddingTop="16dp"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/top_shadow" />
 
                 <View
                     android:id="@+id/terms_agreement_down_divider"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
                     android:background="@drawable/horizontal_divider"
                     android:paddingTop="16dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/terms_agreement" />
 
                 <View
@@ -98,8 +109,10 @@
                     android:layout_height="1dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/horizontal_divider"
+
                     android:paddingTop="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/redeem_total_txt"
@@ -120,9 +133,11 @@
                     android:id="@+id/redeem_new_balance_txt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
+                    android:background="@color/white"
+                    android:paddingStart="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="12dp"
                     android:text="@string/redeem_egift_new_balance"
                     android:textAppearance="@style/Body"
                     app:layout_constraintBottom_toTopOf="@id/new_balance_down_divider"
@@ -134,9 +149,10 @@
                     android:id="@+id/redeem_new_points_txt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="12dp"
+                    android:background="@color/white"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="12dp"
                     android:textAlignment="textEnd"
                     android:textAppearance="@style/Body"
                     app:layout_constraintBottom_toTopOf="@id/new_balance_down_divider"
@@ -165,12 +181,13 @@
                     style="@style/Caption1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
                     android:lineSpacingMultiplier="1.57"
-                    android:paddingStart="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="24dp"
                     android:paddingEnd="16dp"
                     android:paddingRight="16dp"
+                    android:paddingBottom="16dp"
                     android:text="@string/redeem_terms_agreement"
                     android:textAppearance="@style/Caption1"
                     android:textColor="@color/black_60"
@@ -372,6 +389,12 @@
 
             </androidx.core.widget.NestedScrollView>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/black_4"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
             <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/redeem_btn"
                 style="@style/FilledButton.Red.M"
@@ -381,7 +404,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/redeem_egift_confirm_and_redeem"
-                android:onClick="@{() -> eventHandler.redeemConfirmButtonClicked()}"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:visibility="visible" />
@@ -396,6 +418,7 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

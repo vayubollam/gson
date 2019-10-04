@@ -20,6 +20,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
         android:paddingTop="40dp"
         android:background="@color/black_4">
 

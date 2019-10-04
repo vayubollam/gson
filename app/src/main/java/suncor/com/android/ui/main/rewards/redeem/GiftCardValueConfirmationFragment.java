@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.rewards.redeem;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -37,7 +39,6 @@ import static suncor.com.android.ui.common.cards.CardFormatUtils.formatBalance;
 
 public class GiftCardValueConfirmationFragment extends MainActivityFragment implements OnBackPressedListener {
 
-    private final int ANIM_DURATION = 300;
     @Inject
     ViewModelFactory factory;
     private GiftCardValueConfirmationViewModel viewModel;
@@ -45,6 +46,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     private MerchantItem merchantItem;
     private GiftCardValueAdapter adapter;
     private Interpolator animInterpolator;
+    private final int ANIM_DURATION = 400;
     private Animation animFromBottom;
     private boolean firstTime = true;
     private EGift selectedEGiftCard;
@@ -106,7 +108,13 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.changeValueBtn.setOnClickListener(v -> {
             binding.cardValueTxt.setText(getString(R.string.redeem_egift_card_select_value));
-            binding.changeValueBtn.animate().alpha(0.0f).setDuration(ANIM_DURATION);
+            binding.changeValueBtn.animate().alpha(0.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    binding.changeValueBtn.setEnabled(false);
+                }
+            });
             adapter.showValues();
             binding.redeemAddressLayout.animate()
                     .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1)))
@@ -133,14 +141,20 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     }
 
     void cardValueChanged(Integer selectedItem) {
-        final int ANIM_DURATION = 300;
+        final int ANIM_DURATION = 400;
         int valueSelected = viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
         viewModel.setEGift(viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem));
         binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, formatBalance(valueSelected)));
         binding.redeemNewPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, formatBalance(userPetroPoints - valueSelected)));
         binding.cardValueTxt.setText(getString(R.string.redeem_egift_current_value));
-        binding.changeValueBtn.animate().alpha(1.0f).setDuration(ANIM_DURATION);
+        binding.changeValueBtn.animate().alpha(1.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                binding.changeValueBtn.setEnabled(true);
+            }
+        });
         binding.nestedScrollView.scrollTo(0, 0);
         if (binding.redeemAddressLayout.getVisibility() == View.GONE) {
             new Handler().postDelayed(() -> {
