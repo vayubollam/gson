@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?><!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <ImageView
+        android:id="@+id/left_icon"
+        android:layout_width="@dimen/action_menu_icon_size"
+        android:layout_height="@dimen/action_menu_icon_size"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        tools:src="@drawable/ic_wash_car" />
+
+    <TextView
+        android:id="@+id/button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/left_icon"
+        android:fontFamily="@font/gibson_regular"
+        android:textColor="@color/black_100"
+        android:textSize="@dimen/action_menu_icon_font_size"
+        tools:text="Wash my car" />
+
+    <ImageView
+        android:id="@+id/right_arrow"
+        android:layout_width="@dimen/action_menu_icon_size"
+        android:layout_height="@dimen/action_menu_icon_size"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="6dp"
+        android:src="@drawable/ic_chevron_right" />
+
+</RelativeLayout>

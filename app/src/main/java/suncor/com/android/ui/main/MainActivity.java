@@ -21,7 +21,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,7 @@ import suncor.com.android.utilities.AnalyticsUtils;
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     public static final String LOGGED_OUT_DUE_PASSWORD_CHANGE = "password_change_requires_re_login";
+    public static final String ACTION_MENU_FRAGMENT = "action_menu_fragment";
     @Inject
     ViewModelFactory viewModelFactory;
     @Inject
@@ -121,6 +121,10 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         actionButton = findViewById(R.id.action_float_button);
         actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
+        actionButton.setOnClickListener(view -> {
+            ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
+            actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU_FRAGMENT);
+        });
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);

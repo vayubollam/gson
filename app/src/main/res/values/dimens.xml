@@ -34,4 +34,14 @@
     <dimen name="gift_card_value_enable_start_margin">16dp</dimen>
     <dimen name="gift_card_value_disable_start_margin">56dp</dimen>
 
+    <dimen name="action_menu_icon_size">24dp</dimen>
+    <dimen name="action_menu_icon_font_size">18sp</dimen>
+    <dimen name="action_menu_font_size">34sp</dimen>
+    <dimen name="action_menu_card_view_margin_left_right">16dp</dimen>
+    <dimen name="action_menu_card_view_height">56dp</dimen>
+    <dimen name="action_menu_margin_32">32dp</dimen>
+    <dimen name="action_menu_margin_12">12dp</dimen>
+    <dimen name="action_menu_card_view_radius">12dp</dimen>
+    <dimen name="action_menu_card_view_elevation">2dp</dimen>
+
 </resources>
