@@ -52,7 +52,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private Fragment navHostFragment;
     private NavController navController;
     private ArrayList<Province> provinces = new ArrayList<>();
-    private MerchantViewModel merchantsViewModel;
+    private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
 
     public ArrayList<Province> getProvinces() {
@@ -110,7 +110,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-        merchantsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MerchantViewModel.class);
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
 
         setContentView(R.layout.activity_main);
         AndroidBug5497Workaround.assistActivity(this);
@@ -135,7 +135,10 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
-
+        mainViewModel.userLoggedOut.observe(this, event -> {
+            profileSharedViewModel.setEcryptedSecurityAnswer(null);
+            isProfileTabSelected = false;
+        });
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             AnalyticsUtils.logEvent(MainActivity.this, "navigation", new Pair<>("actionBarTap", item.getTitle().toString()));
             if (item.getItemId() == R.id.profile_tab) {
@@ -149,6 +152,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         });
 
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
 
         if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
             autoLoginFailed = true;
