@@ -343,6 +343,20 @@
         <argument
             android:name="merchanItem"
             app:argType="suncor.com.android.ui.main.rewards.MerchantItem" />
+        <action
+            android:id="@+id/action_giftCardValueConfirmation_to_redeemReceiptFragment"
+            app:destination="@id/redeemReceiptFragment"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/rewards_signedin_tab" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/redeemReceiptFragment"
+        android:name="suncor.com.android.ui.main.rewards.RedeemReceiptFragment"
+        android:label="RedeemReceiptFragment">
+        <argument
+            android:name="orderResponse"
+            app:argType="suncor.com.android.model.redeem.response.OrderResponse" />
     </keep_state_fragment>
 
 </navigation>

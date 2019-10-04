@@ -14,6 +14,7 @@ import android.view.animation.Interpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -25,7 +26,10 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.merchants.EGift;
+import suncor.com.android.model.redeem.response.OrderResponse;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.rewards.MerchantItem;
@@ -35,6 +39,8 @@ import static suncor.com.android.ui.common.cards.CardFormatUtils.formatBalance;
 
 public class GiftCardValueConfirmationFragment extends MainActivityFragment implements OnBackPressedListener {
 
+    @Inject
+    ViewModelFactory factory;
     private GiftCardValueConfirmationViewModel viewModel;
     private FragmentGiftCardValueConfirmationBinding binding;
     private MerchantItem merchantItem;
@@ -43,8 +49,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     private final int ANIM_DURATION = 400;
     private Animation animFromBottom;
     private boolean firstTime = true;
-    @Inject
-    ViewModelFactory factory;
 
     public static GiftCardValueConfirmationFragment newInstance() {
         return new GiftCardValueConfirmationFragment();
@@ -57,6 +61,32 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         animInterpolator = new DecelerateInterpolator(3f);
         animFromBottom = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
         animFromBottom.setInterpolator(animInterpolator);
+
+        viewModel.orderApiData.observe(this, (orderResponseResource) -> {
+            switch (orderResponseResource.status) {
+                case SUCCESS:
+                    OrderResponse orderResponse = orderResponseResource.data;
+
+                    GiftCardValueConfirmationFragmentDirections.ActionGiftCardValueConfirmationToRedeemReceiptFragment action =
+                            GiftCardValueConfirmationFragmentDirections.actionGiftCardValueConfirmationToRedeemReceiptFragment(orderResponse);
+
+                    if (getView() != null) {
+                        getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
+                    }
+                    break;
+                case ERROR:
+                    if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message)) {
+                        new AlertDialog.Builder(getContext())
+                                .setMessage(R.string.msg_e030_message)
+                                .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                                .create()
+                                .show();
+                    } else {
+                        Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                    }
+                    break;
+            }
+        });
     }
 
     @Override
@@ -64,7 +94,10 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                              @Nullable Bundle savedInstanceState) {
         merchantItem = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getMerchanItem();
         viewModel.setMerchantItem(merchantItem);
+
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_gift_card_value_confirmation, container, false);
+        binding.setEventHandler(this);
+        binding.setLifecycleOwner(this);
         binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -108,6 +141,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         final int ANIM_DURATION = 400;
         int valueSelected = viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
+        viewModel.setEGift(viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem));
         binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, formatBalance(valueSelected)));
         binding.redeemNewPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, formatBalance(userPetroPoints - valueSelected)));
         binding.cardValueTxt.setText(getString(R.string.redeem_egift_current_value));
@@ -150,5 +184,9 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     @Override
     public void onBackPressed() {
         Navigation.findNavController(getView()).popBackStack();
+    }
+
+    public void redeemConfirmButtonClicked() {
+        viewModel.sendRedeemData();
     }
 }
