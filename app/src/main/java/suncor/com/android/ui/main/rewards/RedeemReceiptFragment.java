@@ -49,6 +49,7 @@ public class RedeemReceiptFragment extends MainActivityFragment {
         binding.dateValue.setText(DateUtils.getFormattedDate(orderResponse.getTransaction().getTransactionDate()));
         binding.quantityValue.setText(String.format(getString(R.string.redeem_receipt_quantity_value), String.valueOf(orderResponse.getTransaction().getTransactionAmount().getQuantity())));
         binding.orderIdValue.setText(orderResponse.getOrderId());
+        binding.emailSentToValue.setText(orderResponse.getShipping().getEmailSentTo());
         return binding.getRoot();
     }
 }

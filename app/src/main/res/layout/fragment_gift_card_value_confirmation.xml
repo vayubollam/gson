@@ -404,6 +404,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/redeem_egift_confirm_and_redeem"
+                android:onClick="@{() -> eventHandler.redeemConfirmButtonClicked()}"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:visibility="visible" />

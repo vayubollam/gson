@@ -49,7 +49,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     private final int ANIM_DURATION = 400;
     private Animation animFromBottom;
     private boolean firstTime = true;
-    private EGift selectedEGiftCard;
 
     public static GiftCardValueConfirmationFragment newInstance() {
         return new GiftCardValueConfirmationFragment();
@@ -69,9 +68,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     OrderResponse orderResponse = orderResponseResource.data;
 
                     GiftCardValueConfirmationFragmentDirections.ActionGiftCardValueConfirmationToRedeemReceiptFragment action =
-                            GiftCardValueConfirmationFragmentDirections
-                                    .actionGiftCardValueConfirmationToRedeemReceiptFragment()
-                                    .setOrderResponse(orderResponse);
+                            GiftCardValueConfirmationFragmentDirections.actionGiftCardValueConfirmationToRedeemReceiptFragment(orderResponse);
 
                     if (getView() != null) {
                         getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);

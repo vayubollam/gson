@@ -356,9 +356,7 @@
         android:label="RedeemReceiptFragment">
         <argument
             android:name="orderResponse"
-            android:defaultValue="@null"
-            app:argType="suncor.com.android.model.redeem.response.OrderResponse"
-            app:nullable="true" />
+            app:argType="suncor.com.android.model.redeem.response.OrderResponse" />
     </keep_state_fragment>
 
 </navigation>

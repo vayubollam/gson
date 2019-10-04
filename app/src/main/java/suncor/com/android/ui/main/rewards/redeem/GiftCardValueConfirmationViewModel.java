@@ -29,7 +29,6 @@ public class GiftCardValueConfirmationViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> redeem = new MutableLiveData<>();
     private static final String CARD_TYPE = "petropoints";
 
-    public final static String REDEEM_FAILED = "redeem_failed";
     public LiveData<Resource<OrderResponse>> orderApiData;
     private EGift eGift;
 
