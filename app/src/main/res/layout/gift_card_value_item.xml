@@ -49,7 +49,7 @@
             android:id="@+id/txt_selected_card_gift"
             android:layout_height="wrap_content"
             android:alpha="0"
-            android:text="@{ @string/rewards_signedin_egift_value_in_dollar_gift_card_generic(egift.value)}"
+            android:text="@{ @string/rewards_signedin_egift_value_in_dollar_generic(egift.value)}"
             tools:visibility="visible"
             app:layout_constraintTop_toTopOf="@id/value_rb"
             app:layout_constraintLeft_toLeftOf="@id/value_rb"
