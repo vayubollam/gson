@@ -152,6 +152,4 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GiftCardValueConfirmationViewModel.class)
     protected abstract ViewModel GiftCardConfirmationViewModel(GiftCardValueConfirmationViewModel giftCardValueConfirmationViewModel);
-    protected abstract ViewModel merchantViewModel(MerchantViewModel merchantViewModel);
-
 }
