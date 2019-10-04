@@ -110,9 +110,7 @@
                     app:focus="@{vm.passwordField.hasFocus}"
                     app:layout_constraintTop_toBottomOf="@id/email_input"
                     app:showError="@{vm.passwordField.showError}"
-                    app:text="@={vm.passwordField.text}"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="241dp" />
+                    app:text="@={vm.passwordField.text}" />
 
                 <include
                     android:id="@+id/password_validation"

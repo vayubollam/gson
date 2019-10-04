@@ -35,12 +35,7 @@ import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.BaseFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
-import suncor.com.android.utilities.FingerprintManager;
-import suncor.com.android.utilities.KeyStoreStorage;
-import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
@@ -173,6 +168,9 @@ public class LoginFragment extends BaseFragment {
                     email = credentials.getString("email");
                     password = credentials.getString("password");
                 } catch (JSONException e) {
+                    return;
+                }
+                if (email.isEmpty() || password.isEmpty()) {
                     return;
                 }
                 BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
