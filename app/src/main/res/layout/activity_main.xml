@@ -36,20 +36,13 @@
         app:itemTextColor="@drawable/bottom_navigation_colors"
         app:labelVisibilityMode="labeled" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
         android:id="@+id/action_float_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_tab"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
-        android:backgroundTint="@color/red"
-        app:elevation="0dp"
-        android:src="@drawable/ic_arrow_up"
-        app:backgroundTint="@color/white"
-        app:borderWidth="3dp"
-        app:fabSize="normal"
-        app:tint="@color/white" />
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

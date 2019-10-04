@@ -10,6 +10,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -52,7 +53,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
-    private FloatingActionButton floatingActionButton;
+    private ImageView actionButton;
     private ArrayList<Province> provinces = new ArrayList<>();
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
@@ -118,12 +119,12 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         AndroidBug5497Workaround.assistActivity(this);
         profileSharedViewModel = ViewModelProviders.of(this).get(ProfileSharedViewModel.class);
 
-        floatingActionButton = findViewById(R.id.action_float_button);
-       // floatingActionButton.setVisibility(isLoggedIn()? View.VISIBLE : View.GONE);
+        actionButton = findViewById(R.id.action_float_button);
+        actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.inflateMenu( R.menu.bottom_navigation_menu_signedin ); //testing only DELETE
-        //bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
+        bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
+
         View mainDivider = findViewById(R.id.mainDivider);
         if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
@@ -197,6 +198,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_guest);
+        actionButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -210,6 +212,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
+        actionButton.setVisibility(View.VISIBLE);
     }
 
     @Override
