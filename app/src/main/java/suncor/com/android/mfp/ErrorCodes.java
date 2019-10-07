@@ -9,6 +9,7 @@ public class ErrorCodes {
     //Copied from https://bitbucket.org/rfmp-suncor/suncor-mfp/src/master/src/main/java/com/suncor/adapters/constants/SuncorConstants.java
     public static final String ERR_DB_CONNECTION_ERROR_CODE = "SUNCOR001";
     public static final String ERR_INTERNAL_SERVER_ERROR_CODE = "SUNCOR002";
+
     public static final String ERR_INVALID_PARAM_ERROR_CODE = "SUNCOR004";
 
     public static final String ERR_PROFILE_NOT_FOUND = "SUNCOR005";
@@ -32,4 +33,5 @@ public class ErrorCodes {
     public static final String ERR_RESTRICTED_DOMAIN = "SUNCOR024";
     public static final String ERR_INVALID_SECURITY_ANSWER = "SUNCOR027";
     public static final String ERR_PASSWORD_CHANGE_REQUIRES_RE_LOGIN = "SUNCOR028";
+    public static final String ERR_CARD_LOCK = "SUNCOR030";
 }

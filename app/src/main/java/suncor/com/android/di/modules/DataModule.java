@@ -21,6 +21,8 @@ import suncor.com.android.data.profiles.ProfilesApi;
 import suncor.com.android.data.profiles.ProfilesApiImpl;
 import suncor.com.android.data.redeem.MerchantsApi;
 import suncor.com.android.data.redeem.MerchantsApiImpl;
+import suncor.com.android.data.redeem.OrderApi;
+import suncor.com.android.data.redeem.OrderApiImpl;
 import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.data.settings.SettingsApiImpl;
 import suncor.com.android.data.stations.StationsApi;
@@ -33,6 +35,7 @@ import suncor.com.android.data.transcations.TransactionApiImpl;
 import suncor.com.android.data.users.UsersApi;
 import suncor.com.android.data.users.UsersApiImpl;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.redeem.response.OrderResponse;
 
 @Module
 public class DataModule {
@@ -117,5 +120,17 @@ public class DataModule {
     @Singleton
     MerchantsApi providesMerchantsRepository(Gson gson) {
         return new MerchantsApiImpl(gson);
+    }
+
+    @Provides
+    @Singleton
+    OrderApi providesOrderApi(Gson gson) {
+        return new OrderApiImpl(gson);
+    }
+
+    @Provides
+    @Singleton
+    OrderResponse providesOrderResponse() {
+        return new OrderResponse();
     }
 }
