@@ -65,7 +65,7 @@ android {
         }
         DevCarwash {
             dimension "version"
-            applicationId "com.suncor.android.SuncorApplicationDevCarwash"
+            applicationId "com.suncor.android.SuncorApplicationDev.Carwash"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
         QA {
@@ -75,7 +75,7 @@ android {
         }
         QACarwash {
             dimension "version"
-            applicationId "com.suncor.android.SuncorApplicationQACarwash"
+            applicationId "com.suncor.android.SuncorApplicationQA.Carwash"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
         Prod {
