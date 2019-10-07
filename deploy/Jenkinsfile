@@ -48,7 +48,7 @@ pipeline {
 				        returnStdout: false
 				    )
                     sh (
-                        script: "./gradlew assemble${env.BUILD_ENV}Release",
+                        script: "./gradlew assemble${env.BUILD_ENV}${env.FEATURE}Release",
                         returnStdout: false
                     )
 				}
@@ -66,7 +66,7 @@ pipeline {
 				script {
 					if (env.BUILD_ENV == "QA") {
 						sh (
-							script: 'curl -X POST -T app/build/outputs/apk/QA/release/app-QA-release.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-QA-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
+							script: 'curl -X POST -T app/build/outputs/apk/QA/release/app-QA-release.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-QA-Carwash-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
 							returnStdout: false
 						)
 					}
@@ -79,13 +79,13 @@ pipeline {
             	script {
                     if (env.BUILD_ENV == "Dev"){
                         sh (
-                            script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -l "Petro-Canada (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/Dev/release/app-Dev-release.apk',
+                            script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -l "Petro-Canada (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/DevCarwash/release/app-Dev-Carwash-release.apk',
                             returnStdout: false
                         )
                     }
                     if (env.BUILD_ENV == "QA"){
                         sh (
-                            script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -l "Petro-Canada (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/QA/release/app-QA-release.apk',
+                            script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -l "Petro-Canada (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/QACarwash/release/app-QA-Carwash-release.apk',
                             returnStdout: false
                         )
                     }
@@ -108,7 +108,7 @@ pipeline {
 
                     echo "LOGS BLOCK"
 
-                    echo "${env.Build_ENV} Build\n"
+                    echo "${env.FEATURE} ${env.Build_ENV} Build\n"
                     echo "Built Time: ${SlackUtils.getFormattedTime()}"
                     echo "Build SHA: ${shortCommitHash}"
                 }
@@ -137,10 +137,10 @@ pipeline {
                         )
                         lastTenCommitMessages = SlackUtils.addRMPLinks(lastTenCommitMessages)
 
-                        slackMessage = "*Android ${env.BUILD_ENV} Build Completed on Master Push Commit: ${shortCommitHash}*\n"
+                        slackMessage = "*Android ${env.FEATURE} ${env.BUILD_ENV} Build Completed on Master Push Commit: ${shortCommitHash}*\n"
                         slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
                         slackMessage += "${env.BUILD_URL}console\n"
-                        slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-core/commits/${env.GIT_COMMIT}\n"
+                        slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_COMMIT}\n"
                         slackMessage += "Last 5 commit messages on Master:\n ${lastTenCommitMessages}"
 
                         slackChannels = SLACK_CHANNEL_DEV
@@ -157,10 +157,10 @@ pipeline {
 
 						commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
 
-						slackMessage = "*Android ${env.BUILD_ENV} Build Completed on Tag Push: ${androidTagName} Commit: ${shortCommitHash}*\n"
+						slackMessage = "*Android ${env.FEATURE} ${env.BUILD_ENV} Build Completed on Tag Push: ${androidTagName} Commit: ${shortCommitHash}*\n"
 						slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
 						slackMessage += "${env.BUILD_URL}console\n"
-						slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-core/commits/tag/${androidTagName}\n"
+						slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/tag/${androidTagName}\n"
 						slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
 
 						slackChannels = SLACK_CHANNEL_QA
@@ -177,10 +177,10 @@ pipeline {
 
                         commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
 
-                        slackMessage = "*Android ${env.BUILD_ENV} Build Completed for Git commit: ${env.GIT_SHA} [Tag: ${androidTagName}]*\n"
+                        slackMessage = "*Android ${env.FEATURE} ${env.BUILD_ENV} Build Completed for Git commit: ${env.GIT_SHA} [Tag: ${androidTagName}]*\n"
                         slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
                         slackMessage += "${env.BUILD_URL}console\n"
-                        slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-core/commits/${env.GIT_SHA}\n"
+                        slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_SHA}\n"
                         slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
 
                         slackChannels = SLACK_CHANNEL_PROD
@@ -210,9 +210,9 @@ pipeline {
 
                     slackChannels = SLACK_CHANNEL_DEV
 
-                    slackMessage = "*!!! Android ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
+                    slackMessage = "*!!! Android ${env.FEATURE} ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
                     "*Failed on commit: ${shortCommitHash}*\n" +
-                    "https://bitbucket.org/rfmp-suncor/suncor-android-core/commits/${env.GIT_COMMIT}\n" +
+                    "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_COMMIT}\n" +
                     "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
                     "${env.BUILD_URL}console"
                 }
@@ -225,9 +225,9 @@ pipeline {
 
                     slackChannels = SLACK_CHANNEL_QA
 
-                    slackMessage = "*!!! Android ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
+                    slackMessage = "*!!! Android ${env.FEATURE} ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
                     "*Failed on Tag: ${androidTagName}*\n" +
-                    "https://bitbucket.org/rfmp-suncor/suncor-android-core/commits/tag/${androidTagName}\n" +
+                    "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/tag/${androidTagName}\n" +
                     "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
                     "${env.BUILD_URL}console"
                 }
@@ -240,9 +240,9 @@ pipeline {
 
                     slackChannels = SLACK_CHANNEL_PROD
 
-                    slackMessage = "*!!! Android ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
+                    slackMessage = "*!!! Android ${env.FEATURE} ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
                     "*Failed on Commit: ${env.GIT_SHA}*\n" +
-                    "https://bitbucket.org/rfmp-suncor/suncor-android-core/commits/${env.GIT_SHA}\n" +
+                    "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_SHA}\n" +
                     "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
                     "${env.BUILD_URL}console"
                 }
@@ -251,7 +251,7 @@ pipeline {
         }
 
 		always {
-			archiveArtifacts artifacts: "**/build/outputs/apk/${BUILD_ENV}/release/*.apk", fingerprint: true
+			archiveArtifacts artifacts: "**/build/outputs/apk/${BUILD_ENV}${env.FEATURE}/release/*.apk", fingerprint: true
 		}
 	}
 }
