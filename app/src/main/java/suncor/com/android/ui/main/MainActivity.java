@@ -49,8 +49,6 @@ import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-import static android.view.View.VISIBLE;
-
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     public static final String LOGGED_OUT_DUE_PASSWORD_CHANGE = "password_change_requires_re_login";
@@ -129,7 +127,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         profileSharedViewModel = ViewModelProviders.of(this).get(ProfileSharedViewModel.class);
 
         actionButton = findViewById(R.id.action_float_button);
-        actionButton.setVisibility(isLoggedIn() ? VISIBLE : View.GONE);
+        actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
             ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
             actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU_FRAGMENT);
@@ -165,19 +163,20 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                     return;
                 }
                 Menu menu = view.getMenu();
+                boolean isRootTab = false;
                 for (int h = 0, size = menu.size(); h < size; h++) {
                     MenuItem item = menu.getItem(h);
                     if (matchDestination(destination, item.getItemId()) && isLoggedIn()) {
+                        isRootTab = true;
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                actionButton.setVisibility(VISIBLE);
+                                actionButton.setVisibility(View.VISIBLE);
                             }
                         }, 300);
                     }
-
                 }
-                actionButton.setVisibility(View.INVISIBLE);
+                if (!isRootTab) actionButton.setVisibility(View.GONE);
 
             }
         });
@@ -255,7 +254,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
-        actionButton.setVisibility(VISIBLE);
+        actionButton.setVisibility(View.VISIBLE);
     }
 
     @Override
