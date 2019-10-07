@@ -6,22 +6,29 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +48,8 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
+
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
@@ -120,7 +129,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         profileSharedViewModel = ViewModelProviders.of(this).get(ProfileSharedViewModel.class);
 
         actionButton = findViewById(R.id.action_float_button);
-        actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
+        actionButton.setVisibility(isLoggedIn() ? VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
             ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
             actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU_FRAGMENT);
@@ -143,6 +152,36 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getChildFragmentManager(), R.id.nav_host_fragment));
         navController.setGraph(R.navigation.main_nav_graph);
+
+        //change the visibility of action button based on destination
+        final WeakReference<BottomNavigationView> weakReference =
+                new WeakReference<>(bottomNavigation);
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                BottomNavigationView view = weakReference.get();
+                if (view == null) {
+                    navController.removeOnDestinationChangedListener(this);
+                    return;
+                }
+                Menu menu = view.getMenu();
+                for (int h = 0, size = menu.size(); h < size; h++) {
+                    MenuItem item = menu.getItem(h);
+                    if (matchDestination(destination, item.getItemId()) && isLoggedIn()) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                actionButton.setVisibility(VISIBLE);
+                            }
+                        }, 300);
+                    }
+
+                }
+                actionButton.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
 
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
@@ -216,7 +255,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
-        actionButton.setVisibility(View.VISIBLE);
+        actionButton.setVisibility(VISIBLE);
     }
 
     @Override
@@ -235,4 +274,21 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
 
     }
+
+    /**
+     * recursively look up destination and its parents to match destId
+     *
+     * @param destination current destination
+     * @param destId      target destination id
+     * @return true if destination or its parent matches the target id
+     */
+    private static boolean matchDestination(@NonNull NavDestination destination,
+                                            int destId) {
+        NavDestination currentDestination = destination;
+        while (currentDestination.getId() != destId && currentDestination.getParent() != null) {
+            currentDestination = currentDestination.getParent();
+        }
+        return currentDestination.getId() == destId;
+    }
+
 }

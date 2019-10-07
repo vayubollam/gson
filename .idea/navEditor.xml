@@ -373,6 +373,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="actionMenuFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="525" />
+                            <option name="y" value="-397" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_actionMenuFragment_to_profile_tab2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="action_global_home_tab">
                     <value>
                       <LayoutPositions />
@@ -570,8 +591,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="687" />
-                            <option name="y" value="-227" />
+                            <option name="x" value="943" />
+                            <option name="y" value="-378" />
                           </Point>
                         </option>
                         <option name="myPositions">

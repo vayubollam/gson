@@ -358,5 +358,13 @@
             android:name="orderResponse"
             app:argType="suncor.com.android.model.redeem.response.OrderResponse" />
     </keep_state_fragment>
+    <fragment
+        android:id="@+id/actionMenuFragment"
+        android:name="suncor.com.android.ui.main.ActionMenuFragment"
+        android:label="ActionMenuFragment" >
+        <action
+            android:id="@+id/action_actionMenuFragment_to_profile_tab2"
+            app:destination="@id/profile_tab" />
+    </fragment>
 
 </navigation>

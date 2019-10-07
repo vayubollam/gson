@@ -3,7 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_4">
+    android:background="@drawable/modal_dialog_background">
+
+    <View
+        android:id="@+id/handle"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/rounded_dialog_handle" />
 
     <TextView
         android:id="@+id/action_welcome_message"
@@ -47,6 +55,7 @@
         app:icon_src="@drawable/ic_wash_car" />
 
     <suncor.com.android.ui.common.ActionMenuCardView
+        android:id="@+id/action_account_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_menu_card_view_height"
         android:layout_below="@id/action_wash_car_button"
