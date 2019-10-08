@@ -3,14 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="suncor.com.android.ui.main.profile.ProfileFragment">
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        android:clickable="true">
 
-        <androidx.core.widget.NestedScrollView
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dragable="true"
+            app:title="@string/profile_address_button" />
+
+        <suncor.com.android.uicomponents.ExtendedNestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            app:layout_behavior="suncor.com.android.uicomponents.ScrollViewBehaviorFix">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -31,8 +42,8 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/profile_gradient"
-                        android:scaleType="centerCrop"/>
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/profile_gradient" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/full_name_output"
@@ -226,7 +237,7 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        </suncor.com.android.uicomponents.ExtendedNestedScrollView>
 
         <ProgressBar
             android:id="@+id/sign_out_PB"
@@ -241,5 +252,5 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

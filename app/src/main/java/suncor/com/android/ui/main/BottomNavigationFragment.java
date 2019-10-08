@@ -6,6 +6,8 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
+
 import suncor.com.android.R;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
@@ -18,5 +20,9 @@ public class BottomNavigationFragment extends MainActivityFragment {
         // apply a bottom margin = height of bottom navigation + height of divider
         params.bottomMargin = (int) (getResources().getDimensionPixelSize(R.dimen.suncor_bottom_navigation_height) + getResources().getDisplayMetrics().density);
         view.setLayoutParams(params);
+    }
+
+    public void navigateToAccountPage() {
+        Navigation.findNavController(getView()).navigate(R.id.action_to_profile_tab);
     }
 }
