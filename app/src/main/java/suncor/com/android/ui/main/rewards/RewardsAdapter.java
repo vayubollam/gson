@@ -4,18 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import suncor.com.android.databinding.RewardsListItemBinding;
 import suncor.com.android.utilities.Consumer;
 
 public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsViewHolder> {
 
     private final Consumer<Reward> clickListener;
-    private Reward[] rewards;
+    private ArrayList<Reward> rewards;
 
-    public RewardsAdapter(Reward[] rewards, Consumer<Reward> clickListener) {
+    public RewardsAdapter(ArrayList<Reward> rewards, Consumer<Reward> clickListener) {
         this.rewards = rewards;
         this.clickListener = clickListener;
     }
@@ -30,17 +31,17 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
     @Override
     public void onBindViewHolder(@NonNull RewardsViewHolder holder, int position) {
         Context context = holder.binding.getRoot().getContext();
-        int imageId = context.getResources().getIdentifier(rewards[position].getLargeImage(), "drawable", context.getPackageName());
-        holder.binding.setReward(rewards[position]);
+        int imageId = context.getResources().getIdentifier(rewards.get(position).getLargeImage(), "drawable", context.getPackageName());
+        holder.binding.setReward(rewards.get(position));
         holder.binding.setImage(context.getDrawable(imageId));
         holder.binding.executePendingBindings();
 
-        holder.itemView.setOnClickListener(v -> clickListener.accept(rewards[position]));
+        holder.itemView.setOnClickListener(v -> clickListener.accept(rewards.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return rewards.length;
+        return rewards.size();
     }
 
     public class RewardsViewHolder extends RecyclerView.ViewHolder {
@@ -50,5 +51,13 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public ArrayList<Reward> getRewards() {
+        return rewards;
+    }
+
+    public void setRewards(ArrayList<Reward> rewards) {
+        this.rewards = rewards;
     }
 }

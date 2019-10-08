@@ -197,9 +197,11 @@ public class PersonalInfoFragment extends MainActivityFragment {
     public void onFocusChange(View view, boolean hasFocus) {
         if (view == binding.phoneInput) {
             viewModel.getPhoneField().setHasFocus(hasFocus);
-        } else if (view == binding.emailInput) {
+        }
+        if (view == binding.emailInput) {
             viewModel.getEmailInputField().setHasFocus(hasFocus);
-        } else if (view == binding.passwordInput) {
+        }
+        if (view == binding.passwordInput) {
             viewModel.getPasswordField().setHasFocus(hasFocus);
             if (!hasCleared) {
                 binding.passwordInput.getEditText().setText("");
@@ -208,13 +210,22 @@ public class PersonalInfoFragment extends MainActivityFragment {
             }
         }
         if (hasFocus) {
-            binding.scrollView.postDelayed(() -> {
-                int viewYPosition = view.getTop();
-                int halfHeight = binding.scrollView.getHeight() / 2 - view.getHeight() / 2;
-                int scrollPosition = Math.max(viewYPosition - halfHeight, 0);
-
-                binding.scrollView.smoothScrollTo(0, scrollPosition);
-            }, 200);
+            scrollToView(view);
         }
+
+    }
+
+    private void scrollToView(View view) {
+        binding.scrollView.postDelayed(() -> {
+            int viewYPosition = view.getTop();
+            int scrollPosition;
+            if (view == binding.passwordInput) {
+                scrollPosition = viewYPosition;
+            } else {
+                int halfHeight = binding.scrollView.getHeight() / 2 - view.getHeight() / 2;
+                scrollPosition = Math.max(viewYPosition - halfHeight, 0);
+            }
+                binding.scrollView.smoothScrollTo(0, scrollPosition);
+        }, 400);
     }
 }
