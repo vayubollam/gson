@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -31,6 +32,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private FragmentRewardsSignedinBinding binding;
     private RewardsSignedInViewModel viewModel;
     private boolean isHeaderVisible;
+    RewardsAdapter rewardsAdapter;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -65,6 +67,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                     merchantItems.add(merchantItem);
                 }
                 binding.eGiftList.setAdapter(new EGiftsCardAdapter(merchantItems, this::eCardClicked));
+                ArrayList<Reward> newRewards = rewardsAdapter.getRewards();
+                newRewards.remove(4);
+                rewardsAdapter.setRewards(newRewards);
+                rewardsAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -75,7 +81,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         binding = FragmentRewardsSignedinBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        RewardsAdapter rewardsAdapter = new RewardsAdapter(viewModel.getRewards(), this::rewardClicked);
+        rewardsAdapter = new RewardsAdapter(new ArrayList<>(Arrays.asList(viewModel.getRewards())), this::rewardClicked);
         binding.rewardsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.eGiftList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.rewardsList.setAdapter(rewardsAdapter);
