@@ -25,7 +25,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,14 +45,12 @@ import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.actionmenu.ActionMenuFragment;
 import suncor.com.android.ui.main.actionmenu.ActionMenuType;
 import suncor.com.android.ui.main.actionmenu.OnActionMenuButtonClickedListener;
-import suncor.com.android.ui.main.cards.list.CardsFragment;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
-import suncor.com.android.ui.main.home.HomeFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
-import suncor.com.android.ui.main.stationlocator.StationsFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener, OnActionMenuButtonClickedListener {

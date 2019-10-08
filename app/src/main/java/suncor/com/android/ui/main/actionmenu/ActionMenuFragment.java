@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main;
+package suncor.com.android.ui.main.actionmenu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
