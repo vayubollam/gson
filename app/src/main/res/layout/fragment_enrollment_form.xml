@@ -96,16 +96,6 @@
                     app:layout_constraintTop_toBottomOf="@id/last_name_input"
                     app:text="@={vm.emailInputField.text}" />
 
-                <ProgressBar
-                    android:id="@+id/email_validation_progress_bar"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintBottom_toBottomOf="@id/email_input"
-                    app:layout_constraintEnd_toEndOf="@id/email_input"
-                    app:layout_constraintTop_toTopOf="@id/email_input"
-                    app:visibleGone="@{vm.isValidatingEmail}" />
-
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/password_input"
                     android:layout_width="match_parent"
