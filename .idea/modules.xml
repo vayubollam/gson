@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/suncor-android.iml" filepath="$PROJECT_DIR$/suncor-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/suncor-android-core.iml" filepath="$PROJECT_DIR$/suncor-android-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/uicomponents/uicomponents.iml" filepath="$PROJECT_DIR$/uicomponents/uicomponents.iml" />
     </modules>

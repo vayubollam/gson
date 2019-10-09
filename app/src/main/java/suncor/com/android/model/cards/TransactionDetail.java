@@ -21,7 +21,6 @@ public class TransactionDetail {
 
     public SpannableString getFormattedTitle() {
         String formattedTootlePoints = NumberFormat.getNumberInstance(Locale.getDefault()).format(transaction.getTotalPoints());
-        String formattdBasePoints = NumberFormat.getNumberInstance(Locale.getDefault()).format(transaction.getBasePoints());
         String title = "";
         switch (transaction.getTransactionType()) {
             case REDEMPTION:
@@ -37,9 +36,8 @@ public class TransactionDetail {
                 title = context.getResources().getString(R.string.transaction_title_pe);
                 break;
         }
-        String points = transaction.getTransactionType() == Transaction.TransactionType.REDEMPTION || transaction.getTransactionType() == Transaction.TransactionType.PARTNER_POINTS_TRANSFER ? formattdBasePoints : formattedTootlePoints;
-        SpannableString titleSpan = new SpannableString(points + " " + title);
-        titleSpan.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red)), 0, points.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString titleSpan = new SpannableString(formattedTootlePoints + " " + title);
+        titleSpan.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red)), 0, formattedTootlePoints.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return titleSpan;
 
     }
