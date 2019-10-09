@@ -1,5 +1,8 @@
 package suncor.com.android.data.account;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -16,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -75,60 +76,6 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
 
         return result;
     }
-
-    @Override
-    public LiveData<Resource<EmailState>> checkEmail(String email, String petroCanadaId) {
-        Timber.d("validating email: " + email);
-        MutableLiveData<Resource<EmailState>> result = new MutableLiveData<>();
-        result.postValue(Resource.loading());
-        try {
-            URI adapterPath = new URI(EMAIL_VALIDATION_ADAPTER_PATH.concat("/email-verification"));
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
-            request.addHeader("x-email", email);
-            if (petroCanadaId != null) {
-                request.addHeader("x-petro-points-id", petroCanadaId);
-            }
-            request.send(new WLResponseListener() {
-                @Override
-                public void onSuccess(WLResponse wlResponse) {
-                    Timber.d("response: " + wlResponse.getResponseText());
-
-                    JSONObject json = wlResponse.getResponseJSON();
-                    if (json == null) {
-                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-                    }
-                    try {
-                        boolean isAlreadyRegistered = json.getBoolean("isAlreadyRegistered");
-                        boolean isRestricted = json.getBoolean("isRestrictedDomain");
-
-                        if (isAlreadyRegistered) {
-                            result.postValue(Resource.success(EmailState.ALREADY_REGISTERED));
-                        } else if (isRestricted) {
-                            result.postValue(Resource.success(EmailState.RESTRICTED));
-                        } else {
-                            result.postValue(Resource.success(EmailState.VALID));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-                    }
-                }
-
-                @Override
-                public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.e(wlFailResponse.toString());
-                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
-                }
-            });
-        } catch (
-                URISyntaxException e) {
-            Timber.e(e.toString());
-            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-        }
-
-        return result;
-    }
-
     @Override
     public LiveData<Resource<ArrayList<SecurityQuestion>>> fetchSecurityQuestions() {
         Timber.d("Retrieve security questions");
