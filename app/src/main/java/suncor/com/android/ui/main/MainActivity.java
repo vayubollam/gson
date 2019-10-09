@@ -172,15 +172,15 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                     MenuItem item = menu.getItem(h);
                     if (matchDestination(destination, item.getItemId()) && isLoggedIn()) {
                         isRootTab = true;
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                actionButton.setVisibility(View.VISIBLE);
-                            }
-                        }, 300);
+                        bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
+                        actionButton.setVisibility(View.VISIBLE);
                     }
                 }
-                if (!isRootTab) actionButton.setVisibility(View.GONE);
+                if (!isRootTab) {
+                    bottomNavigation.setTranslationZ(-getResources().getDimension(R.dimen.action_menu_translationZ));
+                    actionButton.setVisibility(View.GONE);
+
+                }
 
             }
         });

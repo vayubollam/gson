@@ -43,5 +43,6 @@
     <dimen name="action_menu_margin_12">12dp</dimen>
     <dimen name="action_menu_card_view_radius">12dp</dimen>
     <dimen name="action_menu_card_view_elevation">2dp</dimen>
+    <dimen name="action_menu_translationZ">12dp</dimen>
 
 </resources>
