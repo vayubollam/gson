@@ -66,7 +66,7 @@ pipeline {
 				script {
 					if (env.BUILD_ENV == "QA") {
 						sh (
-							script: 'curl -X POST -T app/build/outputs/apk/QA/release/app-QA-release.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-QACarwash-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
+							script: 'curl -X POST -T app/build/outputs/apk/QACarwash/release/app-QACarwash-release.apk "https://mobilecloud.perfectomobile.com/services/repositories/media/app-QACarwash-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
 							returnStdout: false
 						)
 					}
