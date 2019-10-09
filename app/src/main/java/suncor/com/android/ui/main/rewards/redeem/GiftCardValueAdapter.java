@@ -26,7 +26,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
     private Consumer<Integer> callBack;
     private float itemHeight;
     private Interpolator animInterpolator;
-    private final int ANIM_DURATION = 400;
+    private final int ANIM_DURATION = 500;
     private boolean itemsExpanded = true;
 
 

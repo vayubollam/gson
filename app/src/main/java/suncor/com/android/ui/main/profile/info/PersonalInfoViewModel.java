@@ -1,16 +1,16 @@
 package suncor.com.android.ui.main.profile.info;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.account.EnrollmentsApi;
@@ -33,8 +33,6 @@ public class PersonalInfoViewModel extends ViewModel {
 
     private Profile profile;
     private final MutableLiveData emptyLiveData = new MutableLiveData();
-    private Observer<Resource<EnrollmentsApi.EmailState>> validateEmailObserver;
-    private LiveData<Resource<EnrollmentsApi.EmailState>> validateEmailObservable;
     private InputField firstNameField = new InputField();
     private InputField lastNameField = new InputField();
     private PasswordInputField passwordField = new PasswordInputField(R.string.enrollment_password_empty_error);
@@ -60,7 +58,6 @@ public class PersonalInfoViewModel extends ViewModel {
     public LiveData<Event<Boolean>> navigateToProfile = _navigateToProfile;
 
     private MutableLiveData<Event> updateProfileEvent = new MutableLiveData<>();
-    private MutableLiveData<Event> validateEmailEvent = new MutableLiveData<>();
     private MutableLiveData<Event> signOutEvent = new MutableLiveData<>();
     private boolean isUpdatingEmail;
     private boolean isUpdatingPassword;
@@ -92,73 +89,8 @@ public class PersonalInfoViewModel extends ViewModel {
         phoneField.setText(profile.getPhone());
         emailInputField.setText(profile.getEmail());
         passwordField.setText(password);
-        validateEmailObservable = Transformations.switchMap(validateEmailEvent, event -> {
-            if (event.getContentIfNotHandled() != null) {
-                return enrollmentsApi.checkEmail(emailInputField.getText(), null);
-            } else {
-                return new MutableLiveData<>();
-            }
-        });
 
-        validateEmailObserver = result -> {
-            switch (result.status) {
-                case LOADING:
-                    _isLoading.setValue(true);
-                    break;
-                case ERROR:
-                    _isLoading.setValue(false);
-                    Alert alert = new Alert();
-                    alert.title = R.string.msg_am001_title;
-                    alert.message = R.string.msg_am001_message;
-                    alert.positiveButton = R.string.ok;
-                    profileSharedViewModel.postAlert(alert);
-                    break;
-                case SUCCESS:
-                    _isLoading.setValue(false);
-                    if (result.data == EnrollmentsApi.EmailState.RESTRICTED) {
-                        Alert restrictedAlert = new Alert();
-                        emailInputField.setRestricted(true);
-                        restrictedAlert.title = R.string.profile_personnal_informations_email_restricted_alert_message;
-                        restrictedAlert.positiveButton = R.string.ok;
-                        restrictedAlert.positiveButtonClick = () -> {
-                            emailInputField.setText("");
-                            emailInputField.notifyPropertyChanged(BR.text);
-                        };
-                        restrictedAlert.negativeButton = R.string.cancel;
-                        restrictedAlert.negativeButtonClick = () -> {
-                            emailInputField.setText(profile.getEmail());
-                            emailInputField.notifyPropertyChanged(BR.text);
-                        };
-                        profileSharedViewModel.postAlert(restrictedAlert);
-                    } else if (result.data == EnrollmentsApi.EmailState.ALREADY_REGISTERED) {
-                        Alert alreadyResgiteredAlert = new Alert();
-                        alreadyResgiteredAlert.title = R.string.profile_personnal_informations_email_duplicate_alert_title;
-                        alreadyResgiteredAlert.message = R.string.profile_personnal_informations_email_duplicate_alert_message;
-                        alreadyResgiteredAlert.positiveButton = R.string.profile_personnal_informations_email_duplicate_different_email_button;
-                        alreadyResgiteredAlert.positiveButtonClick = () -> {
-                            emailInputField.setText("");
-                            emailInputField.notifyPropertyChanged(BR.text);
-                        };
-                        alreadyResgiteredAlert.negativeButton = R.string.profile_personnal_informations_email_duplicate_undo_button;
-                        alreadyResgiteredAlert.negativeButtonClick = () -> {
-                            emailInputField.setText(profile.getEmail());
-                            emailInputField.notifyPropertyChanged(BR.text);
-                        };
-                        _bottomSheetAlertObservable.setValue(Event.newEvent(alreadyResgiteredAlert));
-                    } else {
-                        Alert signoutAlert = new Alert();
-                        signoutAlert.title = R.string.profile_personnal_informations_email_alert_title;
-                        signoutAlert.message = R.string.profile_personnal_informations_email_alert_message;
-                        signoutAlert.positiveButton = R.string.profile_personnal_informations_email_alert_signout_button;
-                        signoutAlert.negativeButton = R.string.cancel;
-                        signoutAlert.positiveButtonClick = this::callUpdateProfile;
-                        profileSharedViewModel.postAlert(signoutAlert);
-                    }
-                    break;
-            }
-        };
 
-        validateEmailObservable.observeForever(validateEmailObserver);
 
         LiveData<Resource<Boolean>> apiObservable = Transformations.switchMap(updateProfileEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
@@ -251,8 +183,6 @@ public class PersonalInfoViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        //To avoid updating profile if the user navigates away before clicking on sign-out
-        validateEmailObservable.removeObserver(validateEmailObserver);
     }
 
     private boolean samePhoneNumber(String text) {
@@ -344,9 +274,7 @@ public class PersonalInfoViewModel extends ViewModel {
                 alert.positiveButton = R.string.ok;
                 profileSharedViewModel.postAlert(alert);
             } else {
-                if (!emailInputField.getText().equals(profile.getEmail())) {
-                    validateEmailEvent.setValue(Event.newEvent(true));
-                } else if (!passwordField.getText().equals(password)) {
+                if (!passwordField.getText().equals(password) || !emailInputField.getText().equals(profile.getEmail())) {
                     Alert signoutAlert = new Alert();
                     signoutAlert.title = R.string.profile_personnal_informations_email_alert_title;
                     signoutAlert.message = R.string.profile_personnal_informations_email_alert_message;
