@@ -425,7 +425,7 @@
     <string name="update_required_dialog_message">Please update the app to continue using.</string>
     <string name="update_required_dialog_button">Update</string>
     <string name="settings_failure_dialog_title">We can\'t load the app</string>
-    <string name="settings_failure_dialog_message">Try again in a few minutes.</string>
+    <string name="settings_failure_dialog_message" translatable="false">Try again in a few minutes.</string>
     <string name="settings_failure_dialog_button">Close app</string>
     <string name="sign_enable_fp_title">Enable fingerprint?</string>
     <string name="sign_enable_fb_message">Sign in faster next time by using your fingerprint.</string>
@@ -502,8 +502,8 @@
 
     <string name="action_menu_what_would_you_like_to_do">What would you \nlike to do?</string>
     <string name="action_menu_scan_card">Scan my Petro-Points card</string>
-    <string name="action_menu_wash_car">Wash my car</string>
-    <string name="action_menu_account">Account</string>
+    <string name="action_menu_wash_car">Wash my vehicle</string>
+    <string name="action_menu_account">Go to my account</string>
 
 
 </resources>
