@@ -6,21 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import javax.inject.Inject;
+
 import suncor.com.android.R;
-import suncor.com.android.ui.main.actionmenu.ActionMenuType;
-import suncor.com.android.ui.main.actionmenu.OnActionMenuButtonClickedListener;
+import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
 
-    private OnActionMenuButtonClickedListener actionMenuButtonClickedListener;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
-    public ActionMenuFragment(OnActionMenuButtonClickedListener listener) {
-        this.actionMenuButtonClickedListener = listener;
-    }
+    private ActionMenuViewModel mViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,32 +30,27 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
 
         setStyle(STYLE_NORMAL, R.style.BottomSheetDialog);
 
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(ActionMenuViewModel.class);
+        mViewModel.navigateToPetroPoints.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_cardsDetailsFragment);
+                dismiss();
+            }
+        });
+
+        mViewModel.navigateToProfile.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_profile_tab);
+                dismiss();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_action_button_menu, container, false);
-        CardView accountCard = view.findViewById(R.id.action_account_button);
-        CardView washAndGoCard = view.findViewById(R.id.action_wash_car_button);
-        CardView scanMyCard = view.findViewById(R.id.action_scan_card_button);
-        accountCard.setOnClickListener(v -> {
-            if (actionMenuButtonClickedListener != null)
-                actionMenuButtonClickedListener.onActionMenuButtonClicked(ActionMenuType.ACCOUNT);
-            dismiss();
-        });
-
-        washAndGoCard.setOnClickListener(v -> {
-            if (actionMenuButtonClickedListener != null)
-                actionMenuButtonClickedListener.onActionMenuButtonClicked(ActionMenuType.WASH_AND_GO);
-            dismiss();
-        });
-
-        scanMyCard.setOnClickListener(v -> {
-            if (actionMenuButtonClickedListener != null)
-                actionMenuButtonClickedListener.onActionMenuButtonClicked(ActionMenuType.SCAN_MY_CARD);
-            dismiss();
-        });
-        return view;
+        FragmentActionButtonMenuBinding binding = FragmentActionButtonMenuBinding.inflate(inflater, container, false);
+        binding.setVm(mViewModel);
+        return binding.getRoot();
     }
 }

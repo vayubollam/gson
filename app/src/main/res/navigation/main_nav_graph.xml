@@ -361,5 +361,15 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/dummy"
         app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_to_cardsDetailsFragment"
+        app:destination="@id/cardsDetailsFragment"
+        app:enterAnim="@anim/slide_up"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_down">
+        <argument
+            android:name="isCardFromProfile"
+            android:defaultValue="true" />
+    </action>
 
 </navigation>

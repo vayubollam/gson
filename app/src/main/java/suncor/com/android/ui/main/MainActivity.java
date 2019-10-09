@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,14 +44,12 @@ import suncor.com.android.ui.common.KeepStateNavigator;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.actionmenu.ActionMenuFragment;
-import suncor.com.android.ui.main.actionmenu.ActionMenuType;
-import suncor.com.android.ui.main.actionmenu.OnActionMenuButtonClickedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class MainActivity extends SessionAwareActivity implements OnBackPressedListener, OnActionMenuButtonClickedListener {
+public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     public static final String LOGGED_OUT_DUE_PASSWORD_CHANGE = "password_change_requires_re_login";
     public static final String ACTION_MENU_FRAGMENT = "action_menu_fragment";
@@ -133,7 +129,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton = findViewById(R.id.action_float_button);
         actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
-            ActionMenuFragment actionMenuFragment = new ActionMenuFragment(this);
+            ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
             actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU_FRAGMENT);
         });
 
@@ -258,6 +254,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
+        bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
         actionButton.setVisibility(View.VISIBLE);
     }
 
@@ -294,25 +291,4 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         return currentDestination.getId() == destId;
     }
 
-    @Override
-    public void onActionMenuButtonClicked(ActionMenuType type) {
-        switch (type) {
-            case SCAN_MY_CARD:
-                //TODO: open scan card page
-                break;
-
-            case WASH_AND_GO:
-                Log.i("TEST", "Wash & Go");
-                //TODO: open wash car page
-                break;
-
-            case ACCOUNT:
-                Fragment f = navHostFragment.getChildFragmentManager().getFragments().get(0);
-                if (f instanceof BottomNavigationFragment) {
-                    ((BottomNavigationFragment) f).navigateToAccountPage();
-                }
-                break;
-
-        }
-    }
 }

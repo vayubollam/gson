@@ -378,6 +378,16 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_to_cardsDetailsFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_to_profile_tab">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="addCardFragment">
                     <value>
                       <LayoutPositions>
@@ -444,11 +454,6 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_cards_tab_to_profile_tab">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -511,11 +516,6 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_home_tab_to_cardsDetailsFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_home_tab_to_profile_tab">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -695,11 +695,6 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_rewards_signedin_tab_to_profile_tab">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                             <entry key="action_rewards_signedin_tab_to_rewardsDetailsFragment">
                               <value>
                                 <LayoutPositions />
@@ -787,11 +782,6 @@
                               </value>
                             </entry>
                             <entry key="action_stations_tab_to_filtersFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_stations_tab_to_profile_tab">
                               <value>
                                 <LayoutPositions />
                               </value>
