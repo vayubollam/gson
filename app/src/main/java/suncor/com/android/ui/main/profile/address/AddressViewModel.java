@@ -1,16 +1,15 @@
 package suncor.com.android.ui.main.profile.address;
 
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.profiles.ProfilesApi;
@@ -90,8 +89,8 @@ public class AddressViewModel extends ViewModel {
                     break;
                 case ERROR:
                     ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
-                    alert.title = R.string.msg_am001_title;
-                    alert.message = R.string.msg_am001_message;
+                    alert.title = R.string.msg_e001_title;
+                    alert.message = R.string.msg_e001_message;
                     alert.positiveButton = R.string.ok;
                     sharedViewModel.postAlert(alert);
             }

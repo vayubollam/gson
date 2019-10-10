@@ -107,7 +107,7 @@
     <string name="enrollment_leave_alert_title">Vous voulez quitter la fonction de création de compte?</string>
     <string name="enrollment_leave_alert_message">Les détails que vous avez entrés ne seront pas sauvegardés si vous quittez. Vous voulez quitter le formulaire de création de compte?</string>
     <string name="profile_fragment_title">Profil</string>
-    <string name="password_validation_title">Le mot de passe est requis:</string>
+    <string name="password_validation_title">Votre mot de passe doit comprendre:</string>
     <string name="password_validation_text_length">Doit avoir de 8 à 16 caractères</string>
     <string name="password_validation_number">Au moins un chiffre</string>
     <string name="password_validation_lowercase">Au moins une lettre minuscule</string>
