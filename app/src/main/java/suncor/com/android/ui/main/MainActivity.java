@@ -151,36 +151,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getChildFragmentManager(), R.id.nav_host_fragment));
         navController.setGraph(R.navigation.main_nav_graph);
 
-        //change the visibility of action button based on destination
-        final WeakReference<BottomNavigationView> weakReference =
-                new WeakReference<>(bottomNavigation);
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                BottomNavigationView view = weakReference.get();
-                if (view == null) {
-                    navController.removeOnDestinationChangedListener(this);
-                    return;
-                }
-                Menu menu = view.getMenu();
-                boolean isRootTab = false;
-                for (int h = 0, size = menu.size(); h < size; h++) {
-                    MenuItem item = menu.getItem(h);
-                    if (matchDestination(destination, item.getItemId()) && isLoggedIn()) {
-                        isRootTab = true;
-                        bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
-                        actionButton.setVisibility(View.VISIBLE);
-                    }
-                }
-                if (!isRootTab) {
-                    bottomNavigation.setTranslationZ(-getResources().getDimension(R.dimen.action_menu_translationZ));
-                    actionButton.setVisibility(View.GONE);
-
-                }
-
-            }
-        });
-
+        setUpNavigationOnDestinationChangedListener();
 
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
@@ -289,6 +260,40 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             currentDestination = currentDestination.getParent();
         }
         return currentDestination.getId() == destId;
+    }
+
+    /**
+     * set up onDestinationChanged Listener to update action button visibility.
+     */
+    private void setUpNavigationOnDestinationChangedListener() {
+        final WeakReference<BottomNavigationView> weakReference =
+                new WeakReference<>(bottomNavigation);
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                BottomNavigationView view = weakReference.get();
+                if (view == null) {
+                    navController.removeOnDestinationChangedListener(this);
+                    return;
+                }
+                Menu menu = view.getMenu();
+                boolean isRootTab = false;
+                for (int h = 0, size = menu.size(); h < size; h++) {
+                    MenuItem item = menu.getItem(h);
+                    if (matchDestination(destination, item.getItemId()) && isLoggedIn()) {
+                        isRootTab = true;
+                        bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
+                        actionButton.setVisibility(View.VISIBLE);
+                    }
+                }
+                if (!isRootTab) {
+                    bottomNavigation.setTranslationZ(-getResources().getDimension(R.dimen.action_menu_translationZ));
+                    actionButton.setVisibility(View.GONE);
+
+                }
+
+            }
+        });
     }
 
 }

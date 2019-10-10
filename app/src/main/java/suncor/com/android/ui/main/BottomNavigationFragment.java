@@ -6,7 +6,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import suncor.com.android.R;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 

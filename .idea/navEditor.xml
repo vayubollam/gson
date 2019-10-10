@@ -378,6 +378,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_to_carWashFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="action_to_cardsDetailsFragment">
                     <value>
                       <LayoutPositions />
