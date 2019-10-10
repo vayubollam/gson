@@ -371,5 +371,15 @@
             android:name="isCardFromProfile"
             android:defaultValue="true" />
     </action>
+    <action
+        android:id="@+id/action_to_carWashFragment"
+        app:destination="@id/carWashFragment"
+        app:enterAnim="@anim/slide_up"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_down" />
+    <keep_state_fragment
+        android:id="@+id/carWashFragment"
+        android:name="suncor.com.android.ui.CarWashFragment"
+        android:label="CarWashFragment" />
 
 </navigation>

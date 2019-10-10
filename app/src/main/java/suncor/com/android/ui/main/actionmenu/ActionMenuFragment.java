@@ -44,6 +44,11 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
+
+        mViewModel.navigateToCarWash.observe(this, booleanEvent -> {
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_carWashFragment);
+            dismiss();
+        });
     }
 
     @Override

@@ -13,6 +13,9 @@ public class ActionMenuViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> _navigateToProfile = new MutableLiveData<>();
     public LiveData<Event<Boolean>> navigateToProfile = _navigateToProfile;
 
+    private MutableLiveData<Event<Boolean>> _navigateToCarWash = new MutableLiveData<>();
+    public LiveData<Event<Boolean>> navigateToCarWash = _navigateToCarWash;
+
     public void navigateToPetroPoints() {
         _navigateToPetroPoints.setValue(Event.newEvent(true));
     }
@@ -22,6 +25,6 @@ public class ActionMenuViewModel extends ViewModel {
     }
 
     public void navigateToCarWash() {
-        //TODO: placeholder for car wash screen;
+        _navigateToCarWash.setValue(Event.newEvent(true));
     }
 }
