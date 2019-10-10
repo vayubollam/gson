@@ -374,9 +374,9 @@
     <action
         android:id="@+id/action_to_carWashFragment"
         app:destination="@id/carWashFragment"
-        app:enterAnim="@anim/slide_up"
+        app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/dummy"
-        app:popExitAnim="@anim/slide_down" />
+        app:popExitAnim="@anim/slide_out_right" />
     <keep_state_fragment
         android:id="@+id/carWashFragment"
         android:name="suncor.com.android.ui.CarWashFragment"

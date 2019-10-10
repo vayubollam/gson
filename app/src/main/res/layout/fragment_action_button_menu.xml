@@ -2,13 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="vm"
-            type="suncor.com.android.ui.main.actionmenu.ActionMenuViewModel" />
-
-    </data>
+    <data />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -51,7 +45,6 @@
             android:layout_marginTop="@dimen/action_menu_margin_32"
             android:layout_marginEnd="@dimen/action_menu_card_view_margin_left_right"
             android:layout_marginRight="@dimen/action_menu_card_view_margin_left_right"
-            android:onClick="@{v -> vm.navigateToPetroPoints()}"
             app:button_text="@string/action_menu_scan_card"
             app:icon_src="@drawable/ic_scan_card"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -65,7 +58,6 @@
             android:layout_marginLeft="@dimen/action_menu_card_view_margin_left_right"
             android:layout_marginTop="@dimen/action_menu_margin_12"
             android:layout_marginRight="@dimen/action_menu_card_view_margin_left_right"
-            android:onClick="@{v -> vm.navigateToCarWash()}"
             app:button_text="@string/action_menu_wash_car"
             app:icon_src="@drawable/ic_wash_car"
             app:layout_constraintBottom_toTopOf="@+id/action_account_button"
@@ -83,7 +75,6 @@
             android:layout_marginEnd="@dimen/action_menu_card_view_margin_left_right"
             android:layout_marginRight="@dimen/action_menu_card_view_margin_left_right"
             android:layout_marginBottom="@dimen/action_menu_margin_32"
-            android:onClick="@{v -> vm.navigateToProfile()}"
             app:button_text="@string/action_menu_account"
             app:icon_src="@drawable/ic_account_tab"
             app:layout_constraintBottom_toBottomOf="parent"

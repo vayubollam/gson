@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,7 +52,6 @@ import suncor.com.android.utilities.AnalyticsUtils;
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     public static final String LOGGED_OUT_DUE_PASSWORD_CHANGE = "password_change_requires_re_login";
-    public static final String ACTION_MENU_FRAGMENT = "action_menu_fragment";
     @Inject
     ViewModelFactory viewModelFactory;
     @Inject
@@ -60,7 +59,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
-    private ImageView actionButton;
+    private ImageButton actionButton;
     private ArrayList<Province> provinces = new ArrayList<>();
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
@@ -130,12 +129,11 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
             ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
-            actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU_FRAGMENT);
+            actionMenuFragment.show(getSupportFragmentManager(), null);
         });
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
-
         View mainDivider = findViewById(R.id.mainDivider);
         if (!application.isSplashShown()) {
             Animation animslideUp = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
