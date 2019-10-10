@@ -288,9 +288,9 @@
     <string name="profile_about_button">About</string>
     <string name="profile_address_button">Address</string>
     <string name="profile_preferences_button">Preferences</string>
-    <string name="profile_personnal_informations_button">Personal information</string>
+    <string name="profile_personnal_informations_button">Personal Information</string>
     <string name="profile_transactions_button">Transactions</string>
-    <string name="profile_personnal_informations_header">Personal information</string>
+    <string name="profile_personnal_informations_header">Personal Information</string>
     <string name="profile_personnal_informations_firstName">First name</string>
     <string name="profile_personnal_informations_lastName">Last name</string>
     <string name="profile_personnal_informations_phone">Phone (optional)</string>
@@ -484,7 +484,7 @@
     <string name="redeem_egift_confirm_and_redeem">Confirm and redeem</string>
     <string name="redeem_egift_new_balance">New balance</string>
     <string name="redeeming">Redeeming…</string>
-    <string name="points_redeemed">Points redeemed!</string>
+    <string name="points_redeemed">Points redeemed</string>
     <string name="thank_you">Thank you, %1$s!</string>
     <string name="redeem_done">Done</string>
     <string name="redeem_receipt_body">Check your email for a link to your eGift card.</string>
