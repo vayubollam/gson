@@ -31,7 +31,7 @@
             android:gravity="center"
             android:text="@string/rewards_signedin_how_to_redeem_merchants_title"
             android:textColor="@color/black_60"
-            android:textSize="14sp"
+            android:textAppearance="@style/Caption1"
             app:layout_constraintBottom_toTopOf="@+id/small_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

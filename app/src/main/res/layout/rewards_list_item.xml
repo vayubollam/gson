@@ -34,6 +34,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:letterSpacing="0.15"
+                app:textAllCaps="true"
                 android:text="@{reward.points}"
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_60"
