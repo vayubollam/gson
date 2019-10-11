@@ -1,15 +1,16 @@
 package suncor.com.android.ui.main.profile.address;
 
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.profiles.ProfilesApi;
@@ -63,12 +64,21 @@ public class AddressViewModel extends ViewModel {
 
         profilesApiCall = Transformations.switchMap(updateEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
-                ProfileRequest request = new ProfileRequest(profile);
+                ProfileRequest request = new ProfileRequest();
                 request.setSecurityAnswerEncrypted(sharedViewModel.getEcryptedSecurityAnswer());
-                request.getAddress().setStreetAddress(streetAddressField.getText());
-                request.getAddress().setCity(cityField.getText());
-                request.getAddress().setProvince(selectedProvince.getId());
-                request.getAddress().setPostalCode(postalCodeField.getText());
+
+                if (!streetAddressField.getText().equals(profile.getStreetAddress())) {
+                    request.getAddress().setStreetAddress(streetAddressField.getText());
+                }
+                if (!cityField.getText().equals(profile.getCity())) {
+                    request.getAddress().setCity(cityField.getText());
+                }
+                if (!provinceField.getText().equals(getProvinceNameById(profile.getProvince()))) {
+                    request.getAddress().setProvince(selectedProvince.getId());
+                }
+                if (!postalCodeField.getText().equals(profile.getPostalCode().replace(" ", ""))) {
+                    request.getAddress().setPostalCode(postalCodeField.getText());
+                }
 
                 return profilesApi.updateProfile(request);
             } else {
@@ -169,8 +179,6 @@ public class AddressViewModel extends ViewModel {
             }
         });
     }
-
-
 
 
     public void setProvincesList(ArrayList<Province> provincesList) {

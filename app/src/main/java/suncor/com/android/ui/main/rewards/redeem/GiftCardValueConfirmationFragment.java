@@ -46,7 +46,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     private MerchantItem merchantItem;
     private GiftCardValueAdapter adapter;
     private Interpolator animInterpolator;
-    private final int ANIM_DURATION = 400;
+    private final int ANIM_DURATION = 600;
     private Animation animFromBottom;
     private boolean firstTime = true;
 
@@ -105,11 +105,11 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.changeValueBtn.setOnClickListener(v -> {
             binding.cardValueTxt.setText(getString(R.string.redeem_egift_card_select_value));
+            binding.changeValueBtn.setEnabled(false);
             binding.changeValueBtn.animate().alpha(0.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    binding.changeValueBtn.setEnabled(false);
                 }
             });
             adapter.showValues();
@@ -138,7 +138,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     }
 
     void cardValueChanged(Integer selectedItem) {
-        final int ANIM_DURATION = 400;
         int valueSelected = viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
         viewModel.setEGift(viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem));

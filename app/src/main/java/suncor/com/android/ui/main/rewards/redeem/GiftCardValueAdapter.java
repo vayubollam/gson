@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.rewards.redeem;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +28,9 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
     private Consumer<Integer> callBack;
     private float itemHeight;
     private Interpolator animInterpolator;
-    private final int ANIM_DURATION = 500;
+    private final int ANIM_DURATION = 600;
     private boolean itemsExpanded = true;
+    private boolean isViewAnimating = false;
 
 
     public GiftCardValueAdapter(List<EGift> eGifts, int petroPoints, Consumer<Integer> callBack) {
@@ -61,9 +64,14 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
         }
         holder.binding.executePendingBindings();
         holder.binding.valueRb.setChecked(position == selectedItem);
+        holder.binding.valueRb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isViewAnimating && isChecked) {
+                buttonView.setChecked(false);
+            }
+        });
         holder.binding.valueRb.setOnClickListener(v -> holder.itemView.callOnClick());
         holder.itemView.setOnClickListener(v -> {
-            if (eGifts.get(position).getPetroPointsRequired() > petroPoints || !itemsExpanded) {
+            if (eGifts.get(position).getPetroPointsRequired() > petroPoints || !itemsExpanded || isViewAnimating) {
                 return;
             }
             setItemHeight(holder.itemView.getHeight());
@@ -92,8 +100,18 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                         .setInterpolator(animInterpolator)
                         .setDuration(ANIM_DURATION);
                 holder.binding.itemDivider.setVisibility(View.INVISIBLE);
-                holder.binding.valueRb.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
-                holder.binding.txtSelectedCardGift.animate().alpha(1.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
+                holder.binding.valueRb.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION / 2);
+                holder.binding.txtSelectedCardGift.animate().alpha(1.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        isViewAnimating = false;
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        isViewAnimating = true;
+                    }
+                });
             }
             if (position == eGifts.size() - 1) {
                 shouldHideTheRest = false;
@@ -115,7 +133,17 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
                         .setDuration(ANIM_DURATION);
                 holder.binding.itemDivider.setVisibility(View.VISIBLE);
                 holder.binding.valueRb.animate().alpha(1.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
-                holder.binding.txtSelectedCardGift.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
+                holder.binding.txtSelectedCardGift.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        isViewAnimating = false;
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        isViewAnimating = true;
+                    }
+                });
             }
             if (position == eGifts.size() - 1) {
                 shouldShowValues = false;

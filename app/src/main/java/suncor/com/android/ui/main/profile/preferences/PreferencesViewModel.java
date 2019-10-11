@@ -65,7 +65,7 @@ public class PreferencesViewModel extends ViewModel {
 
         profilesApiCall = Transformations.switchMap(updateEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
-                ProfileRequest request = new ProfileRequest(profile);
+                ProfileRequest request = new ProfileRequest();
                 if (hasUpdatedPhoneOffers) {
                     request.setEmailOffers(emailOffers.get());
                 }
