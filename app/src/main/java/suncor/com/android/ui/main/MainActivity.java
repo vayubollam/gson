@@ -245,22 +245,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     }
 
     /**
-     * recursively look up destination and its parents to match destId
-     *
-     * @param destination current destination
-     * @param destId      target destination id
-     * @return true if destination or its parent matches the target id
-     */
-    private static boolean matchDestination(@NonNull NavDestination destination,
-                                            int destId) {
-        NavDestination currentDestination = destination;
-        while (currentDestination.getId() != destId && currentDestination.getParent() != null) {
-            currentDestination = currentDestination.getParent();
-        }
-        return currentDestination.getId() == destId;
-    }
-
-    /**
      * set up onDestinationChanged Listener to update action button visibility.
      */
     private void setUpNavigationOnDestinationChangedListener() {
@@ -274,22 +258,13 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                     navController.removeOnDestinationChangedListener(this);
                     return;
                 }
-                Menu menu = view.getMenu();
-                boolean isRootTab = false;
-                for (int h = 0, size = menu.size(); h < size; h++) {
-                    MenuItem item = menu.getItem(h);
-                    if (matchDestination(destination, item.getItemId()) && isLoggedIn()) {
-                        isRootTab = true;
-                        bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
-                        actionButton.setVisibility(View.VISIBLE);
-                    }
-                }
-                if (!isRootTab) {
+                if (destination.getArguments().containsKey("root") && isLoggedIn()) {
+                    bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
+                    actionButton.setVisibility(View.VISIBLE);
+                } else {
                     bottomNavigation.setTranslationZ(-getResources().getDimension(R.dimen.action_menu_translationZ));
                     actionButton.setVisibility(View.GONE);
-
                 }
-
             }
         });
     }
