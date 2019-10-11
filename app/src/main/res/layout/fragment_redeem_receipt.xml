@@ -5,6 +5,7 @@
 
     <data>
         <import type="suncor.com.android.utilities.DateUtils" />
+        <import type="suncor.com.android.utilities.MerchantsUtil"/>
 
         <variable
             name="image"
@@ -181,6 +182,7 @@
                         android:layout_marginEnd="16dp"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
+                        android:text="@{@string/points_redeemed_value(MerchantsUtil.getFormattedPoints(response.transaction.transactionAmount.petroPoints.petroPointsRedeemed))}"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/points_summary_divider" />
@@ -212,6 +214,7 @@
                         android:layout_marginEnd="16dp"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
+                        android:text="@{@string/points_redeemed_value(MerchantsUtil.getFormattedPoints(response.transaction.transactionAmount.petroPoints.petroPointsRemaining))}"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/points_redeemed_divider" />
@@ -271,6 +274,7 @@
                         android:layout_marginEnd="16dp"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
+                        android:text="@{DateUtils.getFormattedDate(response.transaction.transactionDate)}"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/details_divider"
@@ -304,6 +308,7 @@
                         android:textAllCaps="true"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
+                        android:text="@{response.orderId}"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/date_divider" />
@@ -314,8 +319,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
-                        app:layout_constraintTop_toBottomOf="@+id/order_id_title"
-                         />
+                        app:layout_constraintTop_toBottomOf="@+id/order_id_title"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/quantity_title"
@@ -337,6 +341,7 @@
                         android:layout_marginEnd="16dp"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
+                        android:text="@{@string/redeem_receipt_quantity_value(response.transaction.transactionAmount.quantity)}"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/order_id_divider"/>
@@ -377,6 +382,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="5dp"
                         android:textAppearance="@style/Body"
+                        android:text="@{response.shipping.emailSentTo}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/email_sent_to_divider"
                         tools:text="abc@xyzt.com"/>

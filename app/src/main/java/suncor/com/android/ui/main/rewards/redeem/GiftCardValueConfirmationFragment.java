@@ -63,6 +63,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         animFromBottom.setInterpolator(animInterpolator);
 
         viewModel.orderApiData.observe(this, (orderResponseResource) -> {
+
             switch (orderResponseResource.status) {
                 case SUCCESS:
                     OrderResponse orderResponse = orderResponseResource.data;
@@ -75,7 +76,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     }
                     break;
                 case ERROR:
-                    if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message)) {
+                    if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
                         new AlertDialog.Builder(getContext())
                                 .setMessage(R.string.msg_e030_message)
                                 .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
