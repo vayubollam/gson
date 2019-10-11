@@ -498,5 +498,6 @@
     <string name="redeem_receipt_quantity">Quantity</string>
     <string name="redeem_receipt_quantity_value">%1$s card</string>
     <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668-0220 (TTY: 1 (888) 290-7377).</string>
-    <string name="redeem_receipt_email_sent_to_label">Order will be sent to:</string>
+    <string name="redeem_receipt_email_sent_to_label">Sent to:</string>
+    <string name="points_redeemed_value">%1$s points</string>
 </resources>

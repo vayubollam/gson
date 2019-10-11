@@ -17,7 +17,6 @@ import suncor.com.android.databinding.FragmentRedeemReceiptBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.utilities.DateUtils;
 import suncor.com.android.utilities.MerchantsUtil;
 
 public class RedeemReceiptFragment extends MainActivityFragment {
@@ -36,6 +35,7 @@ public class RedeemReceiptFragment extends MainActivityFragment {
 
         if (getArguments() != null) {
             orderResponse = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getOrderResponse();
+            binding.setResponse(orderResponse);
             sessionManager.getProfile().setPointsBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining());
         }return initView();
     }
@@ -44,12 +44,6 @@ public class RedeemReceiptFragment extends MainActivityFragment {
         int imageId = getContext().getResources().getIdentifier(MerchantsUtil.getMerchantSmallImage(orderResponse.getShoppingCart().geteGift().getMerchantId()), "drawable", getContext().getPackageName());
         binding.setImage(getContext().getDrawable(imageId));
         binding.redeemReceiptCardviewTitle.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-        binding.pointsRedeemedValue.setText(String.valueOf(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRedeemed()));
-        binding.newBalanceValue.setText(String.valueOf(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining()));
-        binding.dateValue.setText(DateUtils.getFormattedDate(orderResponse.getTransaction().getTransactionDate()));
-        binding.quantityValue.setText(String.format(getString(R.string.redeem_receipt_quantity_value), String.valueOf(orderResponse.getTransaction().getTransactionAmount().getQuantity())));
-        binding.orderIdValue.setText(orderResponse.getOrderId());
-        binding.emailSentToValue.setText(orderResponse.getShipping().getEmailSentTo());
         return binding.getRoot();
     }
 }
