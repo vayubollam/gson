@@ -27,7 +27,6 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
-import suncor.com.android.model.merchants.EGift;
 import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -125,16 +124,10 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        for (EGift e : viewModel.getMerchantItem().getMerchant().geteGifts()) {
-            if (e.getPetroPointsRequired() < viewModel.getSessionManager().getProfile().getPointsBalance()) {
-                binding.notEnoughPointLayout.setVisibility(View.GONE);
-            }
+        if (viewModel.getMerchantItem().getMerchant().geteGifts().get(0).getPetroPointsRequired() > viewModel.getSessionManager().getProfile().getPointsBalance()) {
+            binding.notEnoughPointLayout.setVisibility(View.VISIBLE);
         }
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     void cardValueChanged(Integer selectedItem) {

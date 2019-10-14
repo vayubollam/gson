@@ -209,7 +209,7 @@
                         android:id="@+id/not_enough_point_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/redeem_value_layout"
                         tools:layout_editor_absoluteX="32dp"
                         tools:visibility="gone">
