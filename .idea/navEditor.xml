@@ -426,13 +426,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="carWashFragment">
+                  <entry key="carWashCardFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="590" />
-                            <option name="y" value="1607" />
+                            <option name="x" value="-208" />
+                            <option name="y" value="-1994" />
                           </Point>
                         </option>
                       </LayoutPositions>

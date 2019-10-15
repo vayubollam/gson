@@ -109,7 +109,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
             binding.cardsLayout.setMinHeight(binding.scrollView.getHeight() - binding.appBar.getHeight());
         });
 
-        ItemDecorator listDecorator = new ItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
+        CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
 
         binding.petroCanadaCardsList.setAdapter(petroCanadaCardsAdapter);
         binding.petroCanadaCardsList.addItemDecoration(listDecorator);
@@ -168,20 +168,5 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
     @Override
     public void onRefresh() {
         viewModel.refreshBalance();
-    }
-
-    private class ItemDecorator extends RecyclerView.ItemDecoration {
-        private final int mSpace;
-
-        public ItemDecorator(int space) {
-            this.mSpace = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view);
-            if (position != 0)
-                outRect.top = mSpace;
-        }
     }
 }

@@ -381,5 +381,10 @@
         android:id="@+id/carWashFragment"
         android:name="suncor.com.android.ui.CarWashFragment"
         android:label="CarWashFragment" />
+    <keep_state_fragment
+        android:id="@+id/carWashCardFragment"
+        android:name="suncor.com.android.ui.main.carwash.CarWashCardFragment"
+        android:label="CarWashCardFragment">
+    </keep_state_fragment>
 
 </navigation>
