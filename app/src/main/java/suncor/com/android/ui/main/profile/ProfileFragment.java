@@ -26,15 +26,16 @@ import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorToast;
-import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
-public class ProfileFragment extends BottomNavigationFragment {
+public class ProfileFragment extends MainActivityFragment implements OnBackPressedListener {
     private FragmentProfileBinding binding;
     private ProfileSharedViewModel profileSharedViewModel;
 
@@ -146,6 +147,8 @@ public class ProfileFragment extends BottomNavigationFragment {
                 Navigation.findNavController(getView()).navigate(action);
             }
         });
+        binding.appBar.setExpanded(false, false);
+        binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
 
     @Override
@@ -191,5 +194,14 @@ public class ProfileFragment extends BottomNavigationFragment {
         } catch (Exception e) {
             //Show nothing
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        goBack();
+    }
+
+    private void goBack() {
+        Navigation.findNavController(getView()).popBackStack();
     }
 }

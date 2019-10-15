@@ -7,20 +7,27 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +43,7 @@ import suncor.com.android.ui.common.AndroidBug5497Workaround;
 import suncor.com.android.ui.common.KeepStateNavigator;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.actionmenu.ActionMenuFragment;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
@@ -51,6 +59,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private BottomNavigationView bottomNavigation;
     private Fragment navHostFragment;
     private NavController navController;
+    private ImageButton actionButton;
     private ArrayList<Province> provinces = new ArrayList<>();
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
@@ -116,6 +125,13 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         AndroidBug5497Workaround.assistActivity(this);
         profileSharedViewModel = ViewModelProviders.of(this).get(ProfileSharedViewModel.class);
 
+        actionButton = findViewById(R.id.action_float_button);
+        actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
+        actionButton.setOnClickListener(view -> {
+            ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
+            actionMenuFragment.show(getSupportFragmentManager(), null);
+        });
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.inflateMenu(isLoggedIn() ? R.menu.bottom_navigation_menu_signedin : R.menu.bottom_navigation_menu_guest);
         View mainDivider = findViewById(R.id.mainDivider);
@@ -132,6 +148,8 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController.getNavigatorProvider().addNavigator(new KeepStateNavigator(this, navHostFragment.getChildFragmentManager(), R.id.nav_host_fragment));
         navController.setGraph(R.navigation.main_nav_graph);
+
+        setUpNavigationOnDestinationChangedListener();
 
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
@@ -191,6 +209,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_guest);
+        actionButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -204,6 +223,8 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         bottomNavigation.getMenu().clear();
         bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu_signedin);
+        bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
+        actionButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -222,4 +243,30 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
 
     }
+
+    /**
+     * set up onDestinationChanged Listener to update action button visibility.
+     */
+    private void setUpNavigationOnDestinationChangedListener() {
+        final WeakReference<BottomNavigationView> weakReference =
+                new WeakReference<>(bottomNavigation);
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                BottomNavigationView view = weakReference.get();
+                if (view == null) {
+                    navController.removeOnDestinationChangedListener(this);
+                    return;
+                }
+                if (destination.getArguments().containsKey("root") && isLoggedIn()) {
+                    bottomNavigation.setTranslationZ(getResources().getDimension(R.dimen.action_menu_translationZ));
+                    actionButton.setVisibility(View.VISIBLE);
+                } else {
+                    bottomNavigation.setTranslationZ(-getResources().getDimension(R.dimen.action_menu_translationZ));
+                    actionButton.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
 }

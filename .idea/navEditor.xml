@@ -378,6 +378,21 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_to_carWashFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_to_cardsDetailsFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
+                  <entry key="action_to_profile_tab">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="addCardFragment">
                     <value>
                       <LayoutPositions>
@@ -407,6 +422,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="carWashFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="590" />
+                            <option name="y" value="1607" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

@@ -132,11 +132,8 @@
     <keep_state_fragment
         android:id="@+id/profile_tab"
         android:name="suncor.com.android.ui.main.profile.ProfileFragment"
-        android:label="ProfileFragment">
-        <argument
-            android:name="root"
-            android:defaultValue="true"
-            app:argType="boolean" />
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profile_tab_to_FAQFragment"
             app:destination="@id/FAQFragment"
@@ -358,5 +355,31 @@
             android:name="orderResponse"
             app:argType="suncor.com.android.model.redeem.response.OrderResponse" />
     </keep_state_fragment>
+    <action
+        android:id="@+id/action_to_profile_tab"
+        app:destination="@id/profile_tab"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_to_cardsDetailsFragment"
+        app:destination="@id/cardsDetailsFragment"
+        app:enterAnim="@anim/slide_up"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_down">
+        <argument
+            android:name="isCardFromProfile"
+            android:defaultValue="true" />
+    </action>
+    <action
+        android:id="@+id/action_to_carWashFragment"
+        app:destination="@id/carWashFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" />
+    <keep_state_fragment
+        android:id="@+id/carWashFragment"
+        android:name="suncor.com.android.ui.CarWashFragment"
+        android:label="CarWashFragment" />
 
 </navigation>
