@@ -36,11 +36,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-
+            android:buttonTint="@{egift.petroPointsRequired > petroPoints ? @color/black_20 : @color/black_80}"
             android:layout_marginBottom="8dp"
             android:enabled="@{egift.petroPointsRequired > petroPoints ? false : true}"
             android:text="@{ @string/rewards_signedin_egift_value_in_dollar_generic(egift.value)}"
             android:textAppearance="@style/Body"
+            android:paddingStart="15dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/card_point_value"
             app:layout_constraintTop_toTopOf="parent"
