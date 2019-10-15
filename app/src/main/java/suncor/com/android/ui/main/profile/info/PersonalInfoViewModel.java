@@ -91,21 +91,25 @@ public class PersonalInfoViewModel extends ViewModel {
         passwordField.setText(password);
 
 
-
         LiveData<Resource<Boolean>> apiObservable = Transformations.switchMap(updateProfileEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
-                ProfileRequest request = new ProfileRequest(profile);
+                ProfileRequest request = new ProfileRequest();
                 isUpdatingEmail = !emailInputField.getText().equals(profile.getEmail());
                 isUpdatingPassword = !passwordField.getText().equals(password);
                 isSamePhoneNumber = samePhoneNumber(phoneField.getText());
                 boolean profileShouldBeUpdated = isUpdatingPassword || isUpdatingEmail || !isSamePhoneNumber;
 
                 if (profileShouldBeUpdated) {
-                    request.setEmail(emailInputField.getText());
-                    request.setPhoneNumber(phoneField.getText());
-                    request.setPassword(passwordField.getText());
+                    if (isUpdatingEmail) {
+                        request.setEmail(emailInputField.getText());
+                    }
+                    if (!isSamePhoneNumber) {
+                        request.setPhoneNumber(phoneField.getText());
+                    }
+                    if (isUpdatingPassword) {
+                        request.setPassword(passwordField.getText());
+                    }
                     request.setSecurityAnswerEncrypted(profileSharedViewModel.getEcryptedSecurityAnswer());
-
                     return profilesApi.updateProfile(request);
                 } else {
                     //Generate a loading event to navigate to previous screen

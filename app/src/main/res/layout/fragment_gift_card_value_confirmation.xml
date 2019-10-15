@@ -3,22 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <import type="suncor.com.android.model.Resource" />
-
-        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
-
-        <variable
-            name="eventHandler"
-            type="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment" />
-
-        <variable
-            name="vm"
-            type="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationViewModel" />
-
-    </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -51,14 +35,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingTop="12dp"
                 android:fontFamily="@font/gibson_semibold"
+                android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:text="@{@string/rewards_signedin_header_balance(CardFormatUtils.formatBalance(vm.sessionManager.profile.pointsBalance))}"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toTopOf="@id/user_points_divider"
                 app:layout_constraintTop_toBottomOf="@id/app_bar_divider"
                 tools:text="You have 2,500 points" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/black_4"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/redeem_total_layout"
@@ -219,7 +209,7 @@
                         android:id="@+id/not_enough_point_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/redeem_value_layout"
                         tools:layout_editor_absoluteX="32dp"
                         tools:visibility="gone">
@@ -282,6 +272,7 @@
                             android:textAlignment="textStart"
                             android:textAppearance="@style/Title2"
                             app:layout_constraintTop_toBottomOf="@id/card_value_up_divider" />
+
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/redeem_address_layout"
@@ -362,7 +353,6 @@
                                 app:layout_constraintTop_toBottomOf="@id/address_up_divider" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/values_recycler_view"
                             android:layout_width="match_parent"
@@ -390,12 +380,6 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/black_4"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
             <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/redeem_btn"
                 style="@style/FilledButton.Red.M"
@@ -404,8 +388,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@string/redeem_egift_confirm_and_redeem"
                 android:onClick="@{() -> eventHandler.redeemConfirmButtonClicked()}"
+                android:text="@string/redeem_egift_confirm_and_redeem"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:visibility="visible" />
@@ -431,19 +415,6 @@
             android:visibility="gone"
             app:visibleGone="@{ vm.orderApiData.status == Resource.Status.LOADING || vm.orderApiData.status == Resource.Status.SUCCESS }">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:gravity="center"
-                android:lineSpacingMultiplier="1.31"
-                android:text="@{vm.orderApiData.status == Resource.Status.SUCCESS?@string/points_redeemed:@string/redeeming}"
-                android:textAppearance="@style/Title1"
-                app:layout_constraintBottom_toTopOf="@id/progress_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="@string/points_redeemed" />
-
             <FrameLayout
                 android:id="@+id/progress_layout"
                 android:layout_width="70dp"
@@ -455,14 +426,6 @@
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_check_thick"
-                    android:tint="@color/red"
-                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />
-
                 <ProgressBar
                     android:id="@+id/progress_bar"
                     android:layout_width="70dp"
@@ -470,6 +433,14 @@
                     android:layout_gravity="center"
                     android:indeterminate="true"
                     app:visibleGone="@{vm.orderApiData.status == Resource.Status.LOADING}" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_check_thick"
+                    android:tint="@color/red"
+                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/progress_complete"
@@ -482,6 +453,35 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />
             </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.31"
+                android:text="@{vm.orderApiData.status == Resource.Status.SUCCESS?@string/points_redeemed:@string/redeeming}"
+                android:textAppearance="@style/Title1"
+                app:layout_constraintBottom_toTopOf="@id/progress_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/points_redeemed" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <data>
+
+        <import type="suncor.com.android.model.Resource" />
+
+        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
+
+        <variable
+            name="eventHandler"
+            type="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationViewModel" />
+
+    </data>
 </layout>

@@ -15,22 +15,15 @@ public class ProfileRequest {
         this.securityAnswerEncrypted = securityAnswerEncrypted;
     }
 
+    public ProfileRequest() {
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public ProfileRequest(Profile profile) {
-        email = profile.getEmail();
-        address = new Address();
-        address.setStreetAddress(profile.getStreetAddress());
-        address.setCity(profile.getCity());
-        address.setPostalCode(profile.getPostalCode());
-        address.setPhone(profile.getPhone());
-        address.setProvince(profile.getProvince());
     }
 
     public void setEmailOffers(boolean emailOffers) {
@@ -49,6 +42,9 @@ public class ProfileRequest {
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        if (this.address == null) {
+            this.address = new Address();
+        }
         this.address.setPhone(phoneNumber);
     }
 
@@ -66,6 +62,9 @@ public class ProfileRequest {
     }
 
     public Address getAddress() {
+        if (this.address == null) {
+            this.address = new Address();
+        }
         return address;
     }
 
