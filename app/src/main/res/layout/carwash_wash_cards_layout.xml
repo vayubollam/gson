@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="suncor.com.android.ui.main.carwash.CarWashCardViewModel.ViewState" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.carwash.CarWashCardViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:visibleGone="@{vm.viewState == ViewState.SUCCESS &amp;&amp; vm.isCardAvailable}">
+        <!-- Title card-->
+        <LinearLayout
+            android:id="@+id/car_wash_get_wash_card"
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            android:background="@drawable/car_wash_welcome_card_background"
+            android:elevation="2dp"
+            android:foreground="@drawable/petro_canada_card_foreground"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/petro_canada_cards_padding">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/carwash_getwash_header"
+                android:textColor="@color/black_80"
+                android:textSize="18sp"
+                app:fontFamily="@font/gibson_semibold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:lineSpacingMultiplier="1.71"
+                android:text="Select the ticket or card you'd like to use at a Petro-Canada car wash."
+                android:textColor="@color/black_60"
+                android:textSize="16sp"
+                app:fontFamily="@font/gibson_regular" />
+        </LinearLayout>
+
+        <!-- Card List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/car_wash_cards_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-60dp"
+            android:elevation="2dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/petro_canada_small_card_item" />
+
+        <!-- Get More Card -->
+        <FrameLayout
+            android:id="@+id/car_wash_get_more_card"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/car_wash_get_more_card_background"
+            android:elevation="3dp"
+            android:foreground="@drawable/car_wash_get_more_card_foreground"
+            android:paddingBottom="@dimen/petro_canada_cards_padding"
+            app:visibleGone="@{vm.isBalanceZero}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="get more"
+                android:textAllCaps="true"
+                android:textColor="#EC1C2F"
+                android:textSize="14sp"
+                app:fontFamily="@font/gibson_semibold" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>

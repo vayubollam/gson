@@ -17,7 +17,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_4">
+        android:background="@color/black_4"
+        android:clipChildren="false">
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/app_bar"
@@ -35,7 +36,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:fontFamily="@font/gibson_semibold"
-            android:text="Getting your car clean is \nquick and easy!"
+            android:text="@string/carwash_header"
             android:textColor="@color/black_80"
             android:textSize="26sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -43,92 +44,59 @@
             app:layout_constraintTop_toBottomOf="@id/app_bar"
             app:visibleGone="@{vm.viewState == ViewState.SUCCESS}" />
 
-        <ScrollView
-            android:id="@+id/scroll_view"
+        <FrameLayout
+            android:id="@+id/card_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
             android:clipToPadding="false"
-            android:fillViewport="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message"
-            app:visibleGone="@{vm.viewState == ViewState.SUCCESS}">
+            app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message">
 
-            <LinearLayout
+            <include
+                android:id="@+id/carwash_no_card"
+                layout="@layout/carwash_no_card_layout"
+                android:layout_width="match_parent"
+                android:layout_height="196dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                app:vm="@{vm}"
+                tools:visibility="visible" />
+
+            <ScrollView
+                android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
-                <!-- Title card-->
-                <LinearLayout
-                    android:id="@+id/car_wash_get_wash_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="184dp"
-                    android:background="@drawable/car_wash_welcome_card_background"
-                    android:elevation="2dp"
-                    android:foreground="@drawable/petro_canada_card_foreground"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/petro_canada_cards_padding">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:text="Getting your wash"
-                        android:textColor="@color/black_80"
-                        android:textSize="18sp"
-                        app:fontFamily="@font/gibson_semibold" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:text="Select the ticket or card you'd like to use at \na Petro-Canada car wash."
-                        android:textColor="@color/black_60"
-                        android:textSize="16sp"
-                        app:fontFamily="@font/gibson_regular" />
-                </LinearLayout>
-
-                <!-- Card List -->
-
-                <!-- Get More Card -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/car_wash_cards_list"
+                <include
+                    android:id="@+id/carwash_wash_cards"
+                    layout="@layout/carwash_wash_cards_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-60dp"
-                    android:elevation="2dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/petro_canada_small_card_item" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    app:vm="@{vm}"
+                    tools:visibility="gone" />
 
-                <FrameLayout
-                    android:id="@+id/car_wash_get_more_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/car_wash_get_more_card_background"
-                    android:elevation="3dp"
-                    android:foreground="@drawable/car_wash_get_more_card_foreground"
-                    android:paddingBottom="@dimen/petro_canada_cards_padding"
-                    app:visibleGone="@{vm.isBalanceZero}">
+            </ScrollView>
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="get more"
-                        android:textAllCaps="true"
-                        android:textColor="#EC1C2F"
-                        android:textSize="14sp"
-                        app:fontFamily="@font/gibson_semibold" />
+        </FrameLayout>
 
-                </FrameLayout>
-            </LinearLayout>
-
-        </ScrollView>
+        <include
+            android:id="@+id/nearest_card"
+            layout="@layout/home_nearest_card"
+            android:layout_width="match_parent"
+            android:layout_height="166dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_container" />
 
         <!-- Generic Error Layout-->
         <FrameLayout

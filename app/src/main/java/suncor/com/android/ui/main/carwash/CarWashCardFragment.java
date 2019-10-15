@@ -71,9 +71,9 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
         CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
 
-        binding.carWashCardsList.setAdapter(petroCanadaCardsAdapter);
-        binding.carWashCardsList.addItemDecoration(listDecorator);
-        binding.carWashCardsList.setOutlineProvider(new ViewOutlineProvider() {
+        binding.carwashWashCards.carWashCardsList.setAdapter(petroCanadaCardsAdapter);
+        binding.carwashWashCards.carWashCardsList.addItemDecoration(listDecorator);
+        binding.carwashWashCards.carWashCardsList.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
                 Drawable drawable = getActivity().getDrawable(R.drawable.petro_canada_card_background);

@@ -31,7 +31,8 @@ public class CarWashCardViewModel extends ViewModel {
     public CarWashCardViewModel(CardsRepository repository) {
         this.repository = repository;
 
-        MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>(); //for future single ticket
+        //TODO: merge single ticket live data
+        MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>();
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 return repository.getCards(true);
@@ -92,6 +93,10 @@ public class CarWashCardViewModel extends ViewModel {
             }
         }
         return carWashCards;
+    }
+
+    public void buyCard() {
+        //TODO: buy card flow
     }
 
     public LiveData<List<CardDetail>> getPetroCanadaCards() {

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="suncor.com.android.ui.main.carwash.CarWashCardViewModel.ViewState" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.carwash.CarWashCardViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        app:cardCornerRadius="@dimen/cards_default_radius"
+        app:cardElevation="2dp"
+        app:rippleColor="@android:color/transparent"
+        app:visibleGone="@{vm.viewState == ViewState.SUCCESS &amp;&amp; !vm.isCardAvailable}">
+
+        <LinearLayout
+            android:id="@+id/car_wash_no_card_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Get a carwash card or ticket"
+                android:textColor="@color/black_80"
+                android:textSize="18sp"
+                app:fontFamily="@font/gibson_semibold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:lineSpacingMultiplier="1.71"
+                android:text="In order to wash your car, you'll need to buy or redeem Petro-Points for a car wash card or ticket."
+                android:textColor="@color/black_60"
+                android:textSize="16sp"
+                app:fontFamily="@font/gibson_regular" />
+
+            <suncor.com.android.ui.common.SuncorButton
+                style="@style/LinkButton.Red.M"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="@{v -> vm.buyCard()}"
+                android:text="BUY"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
+
