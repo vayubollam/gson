@@ -82,16 +82,6 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
         <action
-            android:id="@+id/action_rewards_signedin_tab_to_cardsDetailsFragment"
-            app:destination="@id/cardsDetailsFragment"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_down">
-            <argument
-                android:name="isCardFromProfile"
-                android:defaultValue="true" />
-        </action>
-        <action
             android:id="@+id/action_rewards_signedin_tab_to_rewardsDiscoveryFragment"
             app:destination="@id/rewardsDiscoveryFragment"
             app:enterAnim="@anim/slide_up"

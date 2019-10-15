@@ -19,16 +19,12 @@ import suncor.com.android.ui.common.cards.CardFormatUtils;
 
 public class RewardsSignedInViewModel extends ViewModel {
 
-    private MutableLiveData<Event> _navigateToPetroPoints = new MutableLiveData<>();
-    public LiveData<Event> navigateToPetroPoints = _navigateToPetroPoints;
-
     private MutableLiveData<Event> _navigateToDiscovery = new MutableLiveData<>();
     public LiveData<Event> navigateToDiscovery = _navigateToDiscovery;
 
     private MutableLiveData<ArrayList<Merchant>> _merchantsLiveData = new MutableLiveData<>();
     public LiveData<ArrayList<Merchant>> merchantsLiveData = _merchantsLiveData;
     public LiveData<Resource<ArrayList<Merchant>>> merchantsMutableLiveData;
-
 
 
     private Reward[] rewards;
@@ -76,10 +72,6 @@ public class RewardsSignedInViewModel extends ViewModel {
 
     public int getPetroPointsValue() {
         return sessionManager.getProfile().getPointsBalance() / 1000;
-    }
-
-    public void navigateToPetroPoints() {
-        _navigateToPetroPoints.postValue(Event.newEvent(true));
     }
 
     public void navigateToDiscovery() {

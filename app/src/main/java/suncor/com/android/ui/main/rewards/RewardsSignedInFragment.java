@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -42,12 +43,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RewardsSignedInViewModel.class);
-        viewModel.navigateToPetroPoints.observe(this, event -> {
-            if (event.getContentIfNotHandled() != null) {
-                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToCardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToCardsDetailsFragment();
-                Navigation.findNavController(getView()).navigate(action);
-            }
-        });
         viewModel.navigateToDiscovery.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 Navigation.findNavController(getView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
