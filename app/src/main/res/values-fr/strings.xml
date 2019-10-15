@@ -482,6 +482,7 @@
     <string name="redeem_receipt_details_label">Détails</string>
     <string name="redeem_receipt_order_id_label">Numéro de commande</string>
     <string name="msg_e030_message">Si ce problème persiste, appelez-nous au 1-800-668-0222.</string>
+    <string name="msg_e030_title">Vous ne pouvez pas échanger des points contre cet article.</string>
     <string name="redeem_receipt_email_sent_to_label">Envoyée à</string>
 
 

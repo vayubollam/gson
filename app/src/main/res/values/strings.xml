@@ -498,6 +498,7 @@
     <string name="redeem_receipt_quantity">Quantity</string>
     <string name="redeem_receipt_quantity_value">%1$s card</string>
     <string name="msg_e030_message">If this issue continues, contact us at 1 (800) 668-0220.</string>
+    <string name="msg_e030_title">You can’t redeem for this</string>
     <string name="redeem_receipt_email_sent_to_label">Sent to:</string>
     <string name="points_redeemed_value">%1$s points</string>
 </resources>

@@ -12,6 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,9 +22,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -78,6 +77,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 case ERROR:
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
                         new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.msg_e030_title)
                                 .setMessage(R.string.msg_e030_message)
                                 .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
                                 .create()
