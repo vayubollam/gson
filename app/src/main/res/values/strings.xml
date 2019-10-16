@@ -353,7 +353,6 @@
     <string name="home_signedin_greetings_evening">Good evening,\n%s.</string>
 
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
-    <string name="home_signedin_scan_button">Scan card</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
     <string name="offers_banner_2_text">Petro\u2011Points™ = Free gas.</string>
     <string name="offers_banner_2_button">Learn more</string>

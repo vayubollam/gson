@@ -362,7 +362,6 @@
     <string name="profile_about_privacy_policy_header">Conditions</string>
     <string name="profile_about_legal_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
     <string name="profile_about_privacy_policy_link">https://www.petro-canada.ca/fr/avis-juridiques</string>
-    <string name="home_signedin_scan_button">Scannez</string>
     <string name="home_tab_privacy_policy">Avis juridique</string>
     <string name="home_tab_terms_amp_conditions">Conditions</string>
     <string name="home_signedin_greetings_morning">Bonjour,\n%s.</string>
