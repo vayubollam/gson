@@ -29,94 +29,101 @@
             app:expandable="false"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scroll_view"
+        <suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:clipToPadding="false"
+                android:fillViewport="true">
 
-                <TextView
-                    android:id="@+id/car_wash_welcome_message"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/gibson_semibold"
-                    android:text="@string/carwash_header"
-                    android:textColor="@color/black_80"
-                    android:textSize="26sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/app_bar"
-                    app:visibleGone="@{vm.viewState == ViewState.SUCCESS}" />
-
-                <FrameLayout
-                    android:id="@+id/card_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message">
-
-                    <include
-                        android:id="@+id/carwash_no_card"
-                        layout="@layout/carwash_no_card_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="196dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="16dp"
-                        app:vm="@{vm}"
-                        tools:visibility="visible" />
-
-
-                    <include
-                        android:id="@+id/carwash_wash_cards"
-                        layout="@layout/carwash_wash_cards_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="16dp"
-                        app:vm="@{vm}"
-                        tools:visibility="gone" />
-
-
-                </FrameLayout>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="166dp"
-                    android:layout_margin="16dp"
-                    app:cardCornerRadius="11dp"
-                    app:elevation="2dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_container"
-                    app:visibleGone="@{vm.viewState == ViewState.SUCCESS}">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/car_wash_welcome_message"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="LOCATION PLACEHOLDER"
-                        android:textSize="16sp" />
-                </androidx.cardview.widget.CardView>
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/gibson_semibold"
+                        android:text="@string/carwash_header"
+                        android:textColor="@color/black_80"
+                        android:textSize="26sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/app_bar"
+                        app:visibleGone="@{vm.viewState != ViewState.LOADING}" />
+
+                    <FrameLayout
+                        android:id="@+id/card_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message">
+
+                        <include
+                            android:id="@+id/carwash_no_card"
+                            layout="@layout/carwash_no_card_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="196dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginEnd="16dp"
+                            app:vm="@{vm}"
+                            tools:visibility="visible" />
 
 
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                        <include
+                            android:id="@+id/carwash_wash_cards"
+                            layout="@layout/carwash_wash_cards_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginEnd="16dp"
+                            app:vm="@{vm}"
+                            tools:visibility="gone" />
+
+
+                    </FrameLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="166dp"
+                        android:layout_margin="16dp"
+                        app:cardCornerRadius="11dp"
+                        app:elevation="2dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_container"
+                        app:visibleGone="@{vm.viewState != ViewState.LOADING}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="LOCATION PLACEHOLDER"
+                            android:textSize="16sp" />
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout>
 
         <!-- Generic Error Layout-->
         <FrameLayout
@@ -125,7 +132,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scroll_view"
+            app:layout_constraintTop_toBottomOf="@id/refresh_layout"
             app:visibleGone="@{vm.viewState == ViewState.FAILED}"
             tools:visibility="gone">
 

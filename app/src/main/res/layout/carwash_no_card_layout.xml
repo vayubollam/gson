@@ -19,7 +19,7 @@
         android:layout_height="196dp"
         android:background="@drawable/car_wash_no_card_background"
         android:orientation="vertical"
-        app:visibleGone="@{vm.viewState == ViewState.SUCCESS &amp;&amp; !vm.isCardAvailable}">
+        app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; !vm.isCardAvailable}">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"

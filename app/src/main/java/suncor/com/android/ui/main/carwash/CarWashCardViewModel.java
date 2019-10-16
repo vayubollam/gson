@@ -26,6 +26,7 @@ public class CarWashCardViewModel extends ViewModel {
     private MutableLiveData<Boolean> isCardAvailable = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> retrieveCardsEvent = new MutableLiveData<>();
     private MutableLiveData<List<CardDetail>> petroCanadaCards = new MutableLiveData<>();
+    private MutableLiveData<Event<Boolean>> refreshCardsEvent = new MutableLiveData<>();
 
     @Inject
     public CarWashCardViewModel(CardsRepository repository) {
@@ -40,7 +41,15 @@ public class CarWashCardViewModel extends ViewModel {
             return new MutableLiveData<>();
         });
 
+        LiveData<Resource<ArrayList<CardDetail>>> refreshCall = Transformations.switchMap(refreshCardsEvent, event -> {
+            if (event.getContentIfNotHandled() != null) {
+                return repository.getCards(true);
+            }
+            return new MutableLiveData<>();
+        });
+
         apiCall.addSource(retrieveCall, apiCall::setValue);
+        apiCall.addSource(refreshCall, apiCall::setValue);
 
         apiCall.observeForever((result) -> {
             if (result.status != Resource.Status.LOADING) {
@@ -57,11 +66,11 @@ public class CarWashCardViewModel extends ViewModel {
     }
 
     public void onAttached() {
-        loadData();
+        loadData(ViewState.LOADING);
     }
 
-    public void loadData() {
-        viewState.setValue(ViewState.LOADING);
+    public void loadData(ViewState state) {
+        viewState.setValue(state);
         retrieveCardsEvent.setValue(Event.newEvent(true));
     }
 
@@ -111,6 +120,6 @@ public class CarWashCardViewModel extends ViewModel {
     }
 
     public enum ViewState {
-        LOADING, FAILED, SUCCESS
+        LOADING, FAILED, SUCCESS, REFRESHING
     }
 }
