@@ -320,7 +320,7 @@
     <string name="transactions_points_generic">%1s Points</string>
     <string name="transactions_try_again">Essayez de nouveau</string>
     <string name="transactions_header">Transaction</string>
-    <string name="profile_update_toast">Vos renseignements personnels ont été mis à jour.</string>
+    <string name="profile_update_toast">Les changements ont été sauvegardés.</string>
     <string name="profile_personnal_informations_email_restricted_inline_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_restricted_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_format_error">Veuillez entrer une adresse courriel valide.</string>
@@ -471,7 +471,7 @@
     <string name="redeem_egoft_total_points">Total</string>
 
     <string name="redeeming">Échange en cours…</string>
-    <string name="points_redeemed">Points échangés!</string>
+    <string name="points_redeemed">Points échangés</string>
     <string name="thank_you">Merci %1$s!</string>
     <string name="redeem_done">Terminé</string>
     <string name="redeem_receipt_body">Vérifiez vos courriels pour trouver un lien menant à votre carte-cadeau électronique.</string>
