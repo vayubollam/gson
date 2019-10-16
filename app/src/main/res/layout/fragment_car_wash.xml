@@ -55,8 +55,10 @@
                         android:id="@+id/car_wash_welcome_message"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="@dimen/carwash_margin_16"
+                        android:layout_marginLeft="@dimen/carwash_margin_16"
+                        android:layout_marginEnd="@dimen/carwash_margin_16"
+                        android:layout_marginRight="@dimen/carwash_margin_16"
                         android:fontFamily="@font/gibson_semibold"
                         android:text="@string/carwash_header"
                         android:textColor="@color/black_80"
@@ -78,25 +80,15 @@
                         <include
                             android:id="@+id/carwash_no_card"
                             layout="@layout/carwash_no_card_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="196dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="24dp"
-                            android:layout_marginEnd="16dp"
                             app:vm="@{vm}"
-                            tools:visibility="visible" />
+                            tools:visibility="gone" />
 
 
                         <include
                             android:id="@+id/carwash_wash_cards"
                             layout="@layout/carwash_wash_cards_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="24dp"
-                            android:layout_marginEnd="16dp"
                             app:vm="@{vm}"
-                            tools:visibility="gone" />
+                            tools:visibility="visible" />
 
 
                     </FrameLayout>
@@ -104,7 +96,7 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="166dp"
-                        android:layout_margin="16dp"
+                        android:layout_margin="@dimen/carwash_margin_16"
                         app:cardCornerRadius="11dp"
                         app:elevation="2dp"
                         app:layout_constraintLeft_toLeftOf="parent"
