@@ -151,6 +151,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 
     private void cardClick(CardDetail cardDetail) {
+        //TODO: goto card detail page
     }
 
 

@@ -16,7 +16,7 @@
     <LinearLayout
         android:id="@+id/car_wash_no_card_layout"
         android:layout_width="match_parent"
-        android:layout_height="196dp"
+        android:layout_height="@dimen/carwash_welcome_card_height"
         android:background="@drawable/car_wash_no_card_background"
         android:orientation="vertical"
         app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; !vm.isCardAvailable}">
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Get a carwash card or ticket"
+            android:text="@string/carwash_no_card_get_ticket_header"
             android:textColor="@color/black_80"
             android:textSize="18sp"
             app:fontFamily="@font/gibson_semibold" />
@@ -38,7 +38,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:lineSpacingMultiplier="1.71"
-            android:text="In order to wash your car, you'll need to buy or redeem Petro-Points for a car wash card or ticket."
+            android:text="@string/carwash_no_card_get_ticket_message"
             android:textColor="@color/black_60"
             android:textSize="16sp"
             app:fontFamily="@font/gibson_regular" />
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:onClick="@{v -> vm.buyCard()}"
-            android:text="BUY"
+            android:text="@string/carwash_no_card_get_ticket_button"
             android:textSize="14sp" />
     </LinearLayout>
 </layout>

@@ -500,13 +500,18 @@
     <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668-0220 (TTY: 1 (888) 290-7377).</string>
     <string name="redeem_receipt_email_sent_to_label">Order will be sent to:</string>
 
-    <string name="carwash_header">Let\'s clean your vehicle</string>
-    <string name="carwash_getwash_header">Getting your wash</string>
-
     <string name="action_menu_what_would_you_like_to_do">What would you \nlike to do?</string>
     <string name="action_menu_scan_card">Scan my Petro-Points card</string>
     <string name="action_menu_wash_car">Wash my vehicle</string>
     <string name="action_menu_account">Go to my account</string>
+
+    <string name="carwash_header">Let\'s clean your vehicle</string>
+    <string name="carwash_getwash_header">Get your wash</string>
+    <string name="carwash_getwash_message_card_only">Select your car wash card to get started.</string>
+    <string name="carwash_get_more_card">GET MORE</string>
+    <string name="carwash_no_card_get_ticket_header">Get a car wash ticket</string>
+    <string name="carwash_no_card_get_ticket_message">Purchase a car wash ticket now, or add your car wash card to your wallet.</string>
+    <string name="carwash_no_card_get_ticket_button">Buy a ticket</string>
 
 
 </resources>

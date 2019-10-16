@@ -22,7 +22,7 @@
         <LinearLayout
             android:id="@+id/car_wash_get_wash_card"
             android:layout_width="match_parent"
-            android:layout_height="184dp"
+            android:layout_height="@dimen/carwash_welcome_card_height"
             android:background="@drawable/car_wash_welcome_card_background"
             android:elevation="2dp"
             android:foreground="@drawable/petro_canada_card_foreground"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:lineSpacingMultiplier="1.71"
-                android:text="Select the ticket or card you'd like to use at a Petro-Canada car wash."
+                android:text="@string/carwash_getwash_message_card_only"
                 android:textColor="@color/black_60"
                 android:textSize="16sp"
                 app:fontFamily="@font/gibson_regular" />
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="get more"
+                android:text="@string/carwash_get_more_card"
                 android:textAllCaps="true"
                 android:textColor="#EC1C2F"
                 android:textSize="14sp"
