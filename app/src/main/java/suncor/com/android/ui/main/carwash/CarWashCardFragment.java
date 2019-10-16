@@ -3,14 +3,20 @@ package suncor.com.android.ui.main.carwash;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -36,12 +42,13 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private FragmentCarWashBinding binding;
     private CarWashCardViewModel viewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
+    private float appBarElevation;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+        appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarWashCardViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
@@ -60,6 +67,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCarWashBinding.inflate(inflater, container, false);
@@ -67,12 +75,32 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding.setLifecycleOwner(this);
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.msg_sl005_button, () -> viewModel.loadData()));
 
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int[] headerLocation = new int[2];
+            int[] appBarLocation = new int[2];
+
+            binding.carWashWelcomeMessage.getLocationInWindow(headerLocation);
+            binding.appBar.getLocationInWindow(appBarLocation);
+            int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
+            int headerBottom = headerLocation[1] + binding.carWashWelcomeMessage.getMeasuredHeight() - binding.carWashWelcomeMessage.getPaddingBottom();
+
+            if (headerBottom <= appBarBottom) {
+                binding.appBar.setTitle(binding.carWashWelcomeMessage.getText());
+                ViewCompat.setElevation(binding.appBar, appBarElevation);
+                binding.appBar.findViewById(R.id.collapsed_title).setAlpha(Math.min(1, (float) (appBarBottom - headerBottom) / 100));
+            } else {
+                binding.appBar.setTitle("");
+                ViewCompat.setElevation(binding.appBar, 0);
+            }
+        });
+
         binding.appBar.setNavigationOnClickListener(v -> goBack());
 
         CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
 
         binding.carwashWashCards.carWashCardsList.setAdapter(petroCanadaCardsAdapter);
         binding.carwashWashCards.carWashCardsList.addItemDecoration(listDecorator);
+        binding.carwashWashCards.carWashCardsList.setNestedScrollingEnabled(false);
         binding.carwashWashCards.carWashCardsList.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
@@ -104,16 +132,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 
     private void cardClick(CardDetail cardDetail) {
-        if (viewModel.getViewState().getValue() == CarWashCardViewModel.ViewState.FAILED) {
-            //the card was loaded from profile, so the repository is still empty
-//            CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
-//            action.setIsCardFromProfile(true);
-//            Navigation.findNavController(getView()).navigate(action);
-        } else {
-//            CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
-//            action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-//            Navigation.findNavController(getView()).navigate(action);
-        }
     }
 
 
