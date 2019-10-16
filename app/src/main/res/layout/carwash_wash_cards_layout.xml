@@ -54,18 +54,19 @@
             android:id="@+id/car_wash_cards_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-60dp"
+            android:layout_marginTop="-40dp"
             android:elevation="2dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/petro_canada_small_card_item" />
 
         <!-- Get More Card -->
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/car_wash_get_more_card"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/car_wash_get_more_card_background"
-            android:elevation="3dp"
+            android:clipToPadding="false"
+            android:elevation="2dp"
             android:foreground="@drawable/car_wash_get_more_card_foreground"
             android:paddingBottom="@dimen/petro_canada_cards_padding"
             app:visibleGone="@{vm.isBalanceZero}">
@@ -81,7 +82,7 @@
                 android:textSize="14sp"
                 app:fontFamily="@font/gibson_semibold" />
 
-        </FrameLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

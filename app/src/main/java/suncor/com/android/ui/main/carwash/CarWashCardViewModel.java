@@ -81,17 +81,16 @@ public class CarWashCardViewModel extends ViewModel {
 
     private List<CardDetail> filterCarWashCards(List<CardDetail> cards) {
         List<CardDetail> carWashCards = new ArrayList<>();
+        boolean isAllBalanceZero = true;
         for (CardDetail card : cards) {
-            isBalanceZero.setValue(false);
-            if (card.getCardType().equals(CardType.SP)) {
+            if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
                 carWashCards.add(card);
-            } else if (card.getCardType().equals(CardType.WAG)) {
-                carWashCards.add(card);
-                if (card.getBalance() == 0) {
-                    isBalanceZero.setValue(true);
+                if (card.getBalance() != 0) {
+                    isAllBalanceZero = false;
                 }
             }
         }
+        isBalanceZero.setValue(isAllBalanceZero);
         return carWashCards;
     }
 
