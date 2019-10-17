@@ -113,6 +113,15 @@ public class Station {
         return false;
     }
 
+    public String getCarWashType() {
+        for (String amenitie : amenities) {
+            if (WASH_AMENITIES.containsKey(amenitie)) {
+                return WASH_AMENITIES.get(amenitie);
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof Station)) {

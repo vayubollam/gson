@@ -9,6 +9,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
+
 import suncor.com.android.BR;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.model.DirectionsResult;
@@ -87,6 +88,10 @@ public class StationItem extends BaseObservable {
                 return r;
             });
         }
+    }
+
+    public String getCarWashType() {
+        return station.getCarWashType();
     }
 
     public boolean isOpen() {

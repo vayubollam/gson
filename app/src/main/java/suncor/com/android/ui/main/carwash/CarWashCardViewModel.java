@@ -1,7 +1,5 @@
 package suncor.com.android.ui.main.carwash;
 
-import android.util.Log;
-
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -29,7 +27,6 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
-import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class CarWashCardViewModel extends ViewModel {
 
@@ -117,7 +114,13 @@ public class CarWashCardViewModel extends ViewModel {
                     if (resource.data == null || resource.data.isEmpty()) {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
-                        _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
+                        Station station = filterCarWashStation(resource.data);
+                        if (station == null) {
+                            _nearestStation.setValue(Resource.success(null));
+                        } else {
+                            _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, station, favouriteRepository.isFavourite(station))));
+
+                        }
                     }
                     break;
             }
@@ -185,6 +188,21 @@ public class CarWashCardViewModel extends ViewModel {
         }
         isBalanceZero.setValue(isAllBalanceZero);
         return carWashCards;
+    }
+
+    /**
+     * Filter the nearest station has car wash option
+     *
+     * @param stations a list of stations returned from api call
+     * @return nearest car wash station
+     */
+    private Station filterCarWashStation(List<Station> stations) {
+        for (Station station : stations) {
+            if (station.hasWashOptions()) {
+                return station;
+            }
+        }
+        return null;
     }
 
     public void buyCard() {

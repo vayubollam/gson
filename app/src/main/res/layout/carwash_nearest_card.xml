@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/home_nearest_card_title" />
+                android:text="@{DirectionsResult.isOnsite(vm.nearestStation.data.distanceDuration)? @string/carwash_user_onsite_header : @string/carwash_user_not_onsite_header }" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -121,7 +121,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text=""
+                android:text="@{(vm.nearestStation.data.getCarWashType() != null)? vm.nearestStation.data.getCarWashType() : @string/carwash_no_carwash_station_available}"
                 android:textAppearance="@style/Caption1"
                 tools:text="Touchless car wash available" />
 
