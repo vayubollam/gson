@@ -6,6 +6,7 @@
 
     <data>
 
+        <import type="android.view.View" />
         <import type="suncor.com.android.ui.main.carwash.CarWashCardViewModel.ViewState" />
 
         <variable
@@ -90,28 +91,19 @@
                             app:vm="@{vm}"
                             tools:visibility="visible" />
 
-
                     </FrameLayout>
 
-                    <androidx.cardview.widget.CardView
+                    <include
+                        android:id="@+id/carwash_nearest_cards"
+                        layout="@layout/carwash_nearest_card"
                         android:layout_width="match_parent"
-                        android:layout_height="166dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/carwash_margin_16"
-                        app:cardCornerRadius="11dp"
-                        app:elevation="2dp"
+                        android:visibility="@{(vm.viewState != ViewState.LOADING)? View.VISIBLE : View.GONE}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/card_container"
-                        app:visibleGone="@{vm.viewState != ViewState.LOADING}">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="LOCATION PLACEHOLDER"
-                            android:textSize="16sp" />
-                    </androidx.cardview.widget.CardView>
-
+                        app:vm="@{vm}" />
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
