@@ -59,7 +59,7 @@
                 android:scaleType="fitCenter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/station_title_text"
-                app:srcCompat="@drawable/ic_car" />
+                app:srcCompat="@drawable/ic_pin_carwash" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/distance_text"
@@ -108,7 +108,7 @@
                 android:layout_height="16dp"
                 android:layout_below="@+id/open_hours_text"
                 android:layout_marginTop="8dp"
-                app:srcCompat="@drawable/ic_clock" />
+                app:srcCompat="@drawable/ic_car" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/carwash_type_text"
