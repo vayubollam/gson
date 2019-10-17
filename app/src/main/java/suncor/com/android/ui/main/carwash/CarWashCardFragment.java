@@ -32,8 +32,10 @@ import javax.inject.Inject;
 
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.databinding.CarwashNearestCardBinding;
 import suncor.com.android.databinding.FragmentCarWashBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
@@ -42,6 +44,8 @@ import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
+import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -63,6 +67,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private float appBarElevation;
 
     private LocationLiveData locationLiveData;
+    private CarwashNearestCardBinding nearestCardBinding;
     @Inject
     PermissionManager permissionManager;
 
@@ -154,9 +159,11 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
 
         //Setup nearest card click listeners
-        binding.carwashNearestCards.tryAgainButton.setOnClickListener(tryAgainLister);
-        binding.carwashNearestCards.directionsButton.setOnClickListener(openNavigationListener);
-        binding.carwashNearestCards.settingsButton.setOnClickListener(openSettingListener);
+        nearestCardBinding = binding.carwashNearestCards;
+        nearestCardBinding.tryAgainButton.setOnClickListener(tryAgainLister);
+        nearestCardBinding.directionsButton.setOnClickListener(openNavigationListener);
+        nearestCardBinding.settingsButton.setOnClickListener(openSettingListener);
+        nearestCardBinding.getRoot().setOnClickListener(showCardDetail);
 
         return binding.getRoot();
 
@@ -205,6 +212,13 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             if (station != null) {
                 NavigationAppsHelper.openNavigationApps(getActivity(), station);
             }
+        }
+    };
+
+    private View.OnClickListener showCardDetail = v -> {
+        Resource<StationItem> resource = viewModel.nearestStation.getValue();
+        if (resource != null && resource.data != null && !viewModel.isLoading.get()) {
+            StationDetailsDialog.showCard(this, resource.data, nearestCardBinding.getRoot(), false);
         }
     };
 
