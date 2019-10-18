@@ -2,10 +2,11 @@ package suncor.com.android.di.modules.home;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import suncor.com.android.ui.CarWashFragment;
 import suncor.com.android.ui.main.cards.add.AddCardFragment;
 import suncor.com.android.ui.main.cards.details.CardsDetailsFragment;
 import suncor.com.android.ui.main.cards.list.CardsFragment;
+import suncor.com.android.ui.main.carwash.CarWashCardFragment;
+import suncor.com.android.ui.main.carwash.CarWashPurchaseFragment;
 import suncor.com.android.ui.main.home.HomeFragment;
 import suncor.com.android.ui.main.profile.ProfileFragment;
 import suncor.com.android.ui.main.profile.about.AboutFragment;
@@ -115,6 +116,9 @@ abstract class MainActivityFragmentsModule {
     abstract GiftCardValueConfirmationFragment contributeCardValueConfirmationFragment();
 
     @ContributesAndroidInjector
-    abstract CarWashFragment contributeCarWashFragment();
+    abstract CarWashCardFragment contributeCarWashCardFragment();
+
+    @ContributesAndroidInjector
+    abstract CarWashPurchaseFragment contributeCarWashPurchaseFragment();
 
 }

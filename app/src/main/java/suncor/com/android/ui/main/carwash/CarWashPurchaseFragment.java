@@ -1,4 +1,4 @@
-package suncor.com.android.ui;
+package suncor.com.android.ui.main.carwash;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,28 +12,19 @@ import androidx.navigation.Navigation;
 import suncor.com.android.R;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
-//TODO: placeholder for now, will change to data binding later
-public class CarWashFragment extends MainActivityFragment implements OnBackPressedListener {
-
+// placeholder for buy ticket flow
+public class CarWashPurchaseFragment extends MainActivityFragment implements OnBackPressedListener {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_car_wash, container, false);
-        SuncorAppBarLayout suncorAppBarLayout = view.findViewById(R.id.app_bar);
-        suncorAppBarLayout.setNavigationOnClickListener(v -> goBack());
+        View view = inflater.inflate(R.layout.fragment_carwash_buy_ticket, container, false);
         return view;
-
     }
 
     @Override
     public void onBackPressed() {
-        goBack();
-    }
-
-    private void goBack() {
         Navigation.findNavController(getView()).popBackStack();
     }
 }

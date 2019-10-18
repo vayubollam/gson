@@ -1,30 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black_4">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <suncor.com.android.uicomponents.SuncorAppBarLayout
-        android:id="@+id/app_bar"
+    <data>
+
+        <import type="android.view.View" />
+        <import type="suncor.com.android.ui.main.carwash.CarWashCardViewModel.ViewState" />
+
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.carwash.CarWashCardViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/black_4"
-        app:elevation="0dp"
-        app:expandable="false"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:clipChildren="false">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="PlaceHolder for Car Wash Flow"
-        android:textColor="@color/black_100"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_4"
+            app:elevation="0dp"
+            app:expandable="false"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/car_wash_welcome_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/carwash_margin_16"
+                        android:layout_marginLeft="@dimen/carwash_margin_16"
+                        android:layout_marginEnd="@dimen/carwash_margin_16"
+                        android:layout_marginRight="@dimen/carwash_margin_16"
+                        android:fontFamily="@font/gibson_semibold"
+                        android:text="@string/carwash_header"
+                        android:textColor="@color/black_80"
+                        android:textSize="26sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/app_bar"
+                        app:visibleGone="@{vm.viewState != ViewState.LOADING}" />
+
+                    <FrameLayout
+                        android:id="@+id/card_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message">
+
+                        <include
+                            android:id="@+id/carwash_no_card"
+                            layout="@layout/carwash_no_card_layout"
+                            app:vm="@{vm}"
+                            tools:visibility="gone" />
+
+
+                        <include
+                            android:id="@+id/carwash_wash_cards"
+                            layout="@layout/carwash_wash_cards_layout"
+                            app:vm="@{vm}"
+                            tools:visibility="visible" />
+
+                    </FrameLayout>
+
+                    <include
+                        android:id="@+id/carwash_nearest_cards"
+                        layout="@layout/carwash_nearest_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/carwash_margin_16"
+                        android:visibility="@{(vm.viewState != ViewState.LOADING)? View.VISIBLE : View.GONE}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/card_container"
+                        app:vm="@{vm}" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout>
+
+        <!-- Generic Error Layout-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/refresh_layout"
+            app:visibleGone="@{vm.viewState == ViewState.FAILED}"
+            tools:visibility="gone">
+
+            <include
+                android:id="@+id/error_layout"
+                layout="@layout/layout_error" />
+        </FrameLayout>
+        <!-- Progress Bar-->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/app_bar"
+            app:visibleGone="@{vm.viewState == ViewState.LOADING}"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
