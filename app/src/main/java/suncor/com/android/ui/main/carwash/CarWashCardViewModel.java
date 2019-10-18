@@ -42,15 +42,15 @@ public class CarWashCardViewModel extends ViewModel {
     private MutableLiveData<List<CardDetail>> petroCanadaCards = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> refreshCardsEvent = new MutableLiveData<>();
 
-    public ObservableBoolean isLoading = new ObservableBoolean(false);
+    private ObservableBoolean isLoading = new ObservableBoolean(false);
     private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
-    public LiveData<Resource<StationItem>> nearestStation = _nearestStation;
+    private LiveData<Resource<StationItem>> nearestStation = _nearestStation;
 
 
     private MutableLiveData<Boolean> _locationServiceEnabled = new MutableLiveData<>();
-    public LiveData<Boolean> locationServiceEnabled = _locationServiceEnabled;
+    private LiveData<Boolean> locationServiceEnabled = _locationServiceEnabled;
     private MutableLiveData<Event<Boolean>> loadNearest = new MutableLiveData<>();
-    public MutableLiveData<Event<Boolean>> refreshLocationCard = new MutableLiveData<>();
+    private MutableLiveData<Event<Boolean>> refreshLocationCard = new MutableLiveData<>();
 
     private LatLng userLocation;
 
@@ -159,9 +159,11 @@ public class CarWashCardViewModel extends ViewModel {
 
     public void loadData(ViewState state) {
         viewState.setValue(state);
-        retrieveCardsEvent.setValue(Event.newEvent(true));
         if (state == ViewState.REFRESHING) {
-            refreshLocationCard.setValue(new Event<>(true));
+            refreshCardsEvent.setValue(Event.newEvent(true));
+            refreshLocationCard.setValue(Event.newEvent(true));
+        } else {
+            retrieveCardsEvent.setValue(Event.newEvent(true));
         }
     }
 
@@ -221,6 +223,9 @@ public class CarWashCardViewModel extends ViewModel {
         return isBalanceZero;
     }
 
+    public ObservableBoolean getIsLoading() {
+        return isLoading;
+    }
 
     public void setLocationServiceEnabled(boolean enabled) {
         _locationServiceEnabled.setValue(enabled);
@@ -228,6 +233,10 @@ public class CarWashCardViewModel extends ViewModel {
 
     public LatLng getUserLocation() {
         return userLocation;
+    }
+
+    public LiveData<Boolean> getLocationServiceEnabled() {
+        return locationServiceEnabled;
     }
 
     public void setUserLocation(LatLng userLocation) {
@@ -252,6 +261,10 @@ public class CarWashCardViewModel extends ViewModel {
 
     public LiveData<Resource<StationItem>> getNearestStation() {
         return nearestStation;
+    }
+
+    public MutableLiveData<Event<Boolean>> getRefreshLocationCard() {
+        return refreshLocationCard;
     }
 
     public enum ViewState {

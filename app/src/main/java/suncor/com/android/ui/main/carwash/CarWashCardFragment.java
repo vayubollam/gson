@@ -97,16 +97,16 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
 
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
-        viewModel.locationServiceEnabled.observe(this, (enabled -> {
+        viewModel.getLocationServiceEnabled().observe(this, (enabled -> {
             if (enabled) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
-                    viewModel.isLoading.set(viewModel.getUserLocation() == null);
+                    viewModel.getIsLoading().set(viewModel.getUserLocation() == null);
                     locationLiveData.observe(getViewLifecycleOwner(), (location -> viewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()))));
                 }
             }
         }));
 
-        viewModel.refreshLocationCard.observe(this, v -> {
+        viewModel.getRefreshLocationCard().observe(this, v -> {
             checkAndRequestPermission();
         });
 
@@ -227,8 +227,8 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     };
 
     private View.OnClickListener showCardDetail = v -> {
-        Resource<StationItem> resource = viewModel.nearestStation.getValue();
-        if (resource != null && resource.data != null && !viewModel.isLoading.get()) {
+        Resource<StationItem> resource = viewModel.getNearestStation().getValue();
+        if (resource != null && resource.data != null && !viewModel.getIsLoading().get()) {
             StationDetailsDialog.showCard(this, resource.data, nearestCardBinding.getRoot(), false);
         }
     };

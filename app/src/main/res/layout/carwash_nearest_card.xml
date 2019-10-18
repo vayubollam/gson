@@ -146,7 +146,7 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="16dp"
-            app:visibleGone="@{!vm.locationServiceEnabled}"
+            app:visibleGone="@{!vm.getLocationServiceEnabled().getValue()}"
             tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -184,7 +184,7 @@
             android:orientation="vertical"
             android:padding="16dp"
             android:visibility="gone"
-            app:visibleGone="@{(vm.nearestStation.status == Resource.Status.SUCCESS &amp;&amp; vm.nearestStation.data==null) || (vm.nearestStation.status == Resource.Status.ERROR &amp;&amp; vm.locationServiceEnabled) }"
+            app:visibleGone="@{(vm.nearestStation.status == Resource.Status.SUCCESS &amp;&amp; vm.nearestStation.data==null) || (vm.nearestStation.status == Resource.Status.ERROR &amp;&amp; vm.getLocationServiceEnabled().getValue()) }"
             tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -224,7 +224,7 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:visibility="gone"
-            app:visibleGone="@{vm.isLoading &amp;&amp; vm.locationServiceEnabled}">
+            app:visibleGone="@{vm.getIsLoading().get() &amp;&amp; vm.getLocationServiceEnabled().getValue()}">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
