@@ -209,10 +209,6 @@ public class CarWashCardViewModel extends ViewModel {
         return null;
     }
 
-    public void buyCard() {
-        //TODO: buy card flow
-    }
-
     public LiveData<List<CardDetail>> getPetroCanadaCards() {
         return petroCanadaCards;
     }

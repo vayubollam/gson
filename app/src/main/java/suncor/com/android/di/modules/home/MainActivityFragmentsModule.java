@@ -6,6 +6,7 @@ import suncor.com.android.ui.main.cards.add.AddCardFragment;
 import suncor.com.android.ui.main.cards.details.CardsDetailsFragment;
 import suncor.com.android.ui.main.cards.list.CardsFragment;
 import suncor.com.android.ui.main.carwash.CarWashCardFragment;
+import suncor.com.android.ui.main.carwash.CarWashPurchaseFragment;
 import suncor.com.android.ui.main.home.HomeFragment;
 import suncor.com.android.ui.main.profile.ProfileFragment;
 import suncor.com.android.ui.main.profile.about.AboutFragment;
@@ -115,6 +116,9 @@ abstract class MainActivityFragmentsModule {
     abstract GiftCardValueConfirmationFragment contributeCardValueConfirmationFragment();
 
     @ContributesAndroidInjector
-    abstract CarWashCardFragment contrubuteCarWashCardFragment();
+    abstract CarWashCardFragment contributeCarWashCardFragment();
+
+    @ContributesAndroidInjector
+    abstract CarWashPurchaseFragment contributeCarWashPurchaseFragment();
 
 }

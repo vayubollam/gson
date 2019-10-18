@@ -49,11 +49,11 @@
             app:fontFamily="@font/gibson_regular" />
 
         <suncor.com.android.ui.common.SuncorButton
+            android:id="@+id/buy_ticket_button"
             style="@style/LinkButton.Red.M"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/carwash_margin_16"
-            android:onClick="@{v -> vm.buyCard()}"
             android:text="@string/carwash_no_card_get_ticket_button"
             android:textSize="14sp" />
     </LinearLayout>

@@ -381,6 +381,16 @@
         android:id="@+id/carWashCardFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashCardFragment"
         android:label="CarWashCardFragment">
+        <action
+            android:id="@+id/action_carWashCardFragment_to_carWashPurchaseFragment"
+            app:destination="@id/carWashPurchaseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
     </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/carWashPurchaseFragment"
+        android:name="suncor.com.android.ui.main.carwash.CarWashPurchaseFragment"
+        android:label="CarWashPurchaseFragment" />
 
 </navigation>

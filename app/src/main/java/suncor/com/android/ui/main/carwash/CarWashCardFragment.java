@@ -162,6 +162,9 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             }
         });
 
+        //setup no card click listener
+        binding.carwashNoCard.buyTicketButton.setOnClickListener(buyTicketListener);
+
         //Setup nearest card click listeners
         nearestCardBinding = binding.carwashNearestCards;
         nearestCardBinding.tryAgainButton.setOnClickListener(tryAgainLister);
@@ -201,6 +204,10 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private void cardClick(CardDetail cardDetail) {
         //TODO: goto card detail page
     }
+
+    private View.OnClickListener buyTicketListener = v -> {
+        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
+    };
 
     private View.OnClickListener tryAgainLister = v -> {
         if (viewModel.getUserLocation() != null) {
