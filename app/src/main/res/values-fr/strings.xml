@@ -493,7 +493,7 @@
     <string name="carwash_getwash_header">Obtenez votre lavage</string>
     <string name="carwash_no_card_get_ticket_header">Obtenir un billet de lavage</string>
     <string name="carwash_no_card_get_ticket_message">Achetez un billet de lavage ou ajoutez votre carte de lave-auto à votre application Wallet.</string>
-    <string name="carwash_no_card_get_ticket_button">Acheter un billet</string>
+    <string name="carwash_get_ticket_button">Acheter un billet</string>
     <string name="carwash_getwash_message_card_only">Sélectionnez votre carte de lavage pour commencer.</string>
     <string name="carwash_no_carwash_station_available">Pas de lave-auto</string>
     <string name="carwash_user_onsite_header">Cette station</string>

@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/carwash_margin_16"
-            android:text="@string/carwash_no_card_get_ticket_button"
+            android:text="@string/carwash_get_ticket_button"
             android:textSize="14sp" />
     </LinearLayout>
 </layout>

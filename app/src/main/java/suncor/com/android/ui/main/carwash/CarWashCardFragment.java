@@ -149,7 +149,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding.refreshLayout.setOnRefreshListener(this);
 
         CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
-
+        binding.carwashWashCards.carWashGetMoreCard.setOnClickListener(buyTicketListener);
         binding.carwashWashCards.carWashCardsList.setAdapter(petroCanadaCardsAdapter);
         binding.carwashWashCards.carWashCardsList.addItemDecoration(listDecorator);
         binding.carwashWashCards.carWashCardsList.setNestedScrollingEnabled(false);
