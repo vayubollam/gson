@@ -1,9 +1,5 @@
 package suncor.com.android.utilities;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import suncor.com.android.ui.main.rewards.MerchantsIds;
 
 public class MerchantsUtil {
@@ -24,13 +20,5 @@ public class MerchantsUtil {
                 return "winners_small";
         }
         return null;
-    }
-
-    public static String getFormattedPoints(int points) {
-        String formattedPoints;
-        DecimalFormat df = new DecimalFormat("###,###,###.##");
-        df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-        formattedPoints = df.format(points);
-        return formattedPoints;
     }
 }

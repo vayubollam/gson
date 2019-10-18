@@ -327,7 +327,10 @@
         <action
             android:id="@+id/action_merchantDetailsFragment_to_giftCardValueConfirmation"
             app:destination="@id/giftCardValueConfirmation"
-            app:popUpTo="@+id/merchantDetailsFragment" />
+            app:popUpTo="@+id/merchantDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/giftCardValueConfirmation"
