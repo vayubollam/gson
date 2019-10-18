@@ -50,6 +50,8 @@ public class CarWashCardViewModel extends ViewModel {
     private MutableLiveData<Boolean> _locationServiceEnabled = new MutableLiveData<>();
     public LiveData<Boolean> locationServiceEnabled = _locationServiceEnabled;
     private MutableLiveData<Event<Boolean>> loadNearest = new MutableLiveData<>();
+    public MutableLiveData<Event<Boolean>> refreshLocationCard = new MutableLiveData<>();
+
     private LatLng userLocation;
 
 
@@ -158,7 +160,9 @@ public class CarWashCardViewModel extends ViewModel {
     public void loadData(ViewState state) {
         viewState.setValue(state);
         retrieveCardsEvent.setValue(Event.newEvent(true));
-        if (state == ViewState.REFRESHING) loadNearest.setValue(Event.newEvent(true));
+        if (state == ViewState.REFRESHING) {
+            refreshLocationCard.setValue(new Event<>(true));
+        }
     }
 
     public MutableLiveData<ViewState> getViewState() {

@@ -106,6 +106,10 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             }
         }));
 
+        viewModel.refreshLocationCard.observe(this, v -> {
+            checkAndRequestPermission();
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
