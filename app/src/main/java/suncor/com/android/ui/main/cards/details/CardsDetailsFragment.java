@@ -52,8 +52,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
         super.onCreate(savedInstanceState);
         clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
         boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
+        boolean loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setCardFromProfile(loadCardFromProfile);
+        viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
         viewModel.retrieveCards();
         viewModel.cards.observe(this, arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();

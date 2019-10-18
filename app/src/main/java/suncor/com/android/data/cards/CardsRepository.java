@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -211,5 +212,15 @@ public class CardsRepository {
             //which means card1==card2 and is ppts
             return 0;
         }
+    }
+
+    public static List<CardDetail> filterCarWashCards(List<CardDetail> cards) {
+        ArrayList<CardDetail> carWashCards = new ArrayList<>();
+        for (CardDetail card : cards) {
+            if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
+                carWashCards.add(card);
+            }
+        }
+        return carWashCards;
     }
 }

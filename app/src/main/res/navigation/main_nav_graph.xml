@@ -209,6 +209,10 @@
             android:name="isCardFromProfile"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="isCardFromCarWash"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -377,6 +381,12 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_carWashCardFragment_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down"/>
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashPurchaseFragment"

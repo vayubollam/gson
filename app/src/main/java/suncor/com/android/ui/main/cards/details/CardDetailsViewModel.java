@@ -23,6 +23,7 @@ public class CardDetailsViewModel extends ViewModel {
     MediatorLiveData<List<CardDetail>> _cards = new MediatorLiveData<>();
     LiveData<List<CardDetail>> cards = _cards;
     private boolean isCardFromProfile;
+    private boolean loadCardWashCardsOnly;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -42,7 +43,11 @@ public class CardDetailsViewModel extends ViewModel {
         } else {
             _cards.addSource(cardsRepository.getCards(false), result -> {
                 if (result.status == Resource.Status.SUCCESS) {
-                    _cards.setValue(result.data);
+                    if (loadCardWashCardsOnly) {
+                        _cards.setValue(CardsRepository.filterCarWashCards(result.data));
+                    } else {
+                        _cards.setValue(result.data);
+                    }
                 }
             });
         }
@@ -51,4 +56,9 @@ public class CardDetailsViewModel extends ViewModel {
     public LiveData<Resource<CardDetail>> deleteCard(CardDetail cardDetail) {
         return cardsRepository.removeCard(cardDetail);
     }
+
+    public void setCarWashCardsOnly(boolean loadCarWashCardsOnly) {
+        this.loadCardWashCardsOnly = loadCarWashCardsOnly;
+    }
+
 }
