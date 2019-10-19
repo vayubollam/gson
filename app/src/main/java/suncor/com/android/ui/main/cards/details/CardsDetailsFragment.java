@@ -50,35 +50,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
-        boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
-        boolean loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
-        viewModel.setCardFromProfile(loadCardFromProfile);
-        viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
-        viewModel.retrieveCards();
-        viewModel.cards.observe(this, arrayListResource -> {
-            ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
-            for (CardDetail cardDetail : arrayListResource) {
-                expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
-            }
-            if (expandedCardItems.size() > 0) {
-                cardsDetailsAdapter.setCardItems(expandedCardItems);
-                cardsDetailsAdapter.notifyDataSetChanged();
-                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
-                binding.setNumCards(expandedCardItems.size());
-                binding.executePendingBindings();
-
-                //track screen name
-                String screenName;
-                if (clickedCardIndex == 0) {
-                    screenName = "my-petro-points-wallet-view-card";
-                } else {
-                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
-                }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
-            }
-        });
     }
 
     @Nullable
@@ -89,7 +60,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler);
+        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
         cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
@@ -119,6 +90,35 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
+        boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
+        boolean loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+        viewModel.setCardFromProfile(loadCardFromProfile);
+        viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
+        viewModel.retrieveCards();
+        viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
+            ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
+            for (CardDetail cardDetail : arrayListResource) {
+                expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
+            }
+            if (expandedCardItems.size() > 0) {
+                cardsDetailsAdapter.setCardItems(expandedCardItems);
+                cardsDetailsAdapter.notifyDataSetChanged();
+                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
+                binding.setNumCards(expandedCardItems.size());
+                binding.executePendingBindings();
+
+                //track screen name
+                String screenName;
+                if (clickedCardIndex == 0) {
+                    screenName = "my-petro-points-wallet-view-card";
+                } else {
+                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
+                }
+                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+            }
+        });
     }
 
     void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {
@@ -130,6 +130,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
         });
         removeCardBottomSheet.show(getFragmentManager(), RemoveCardBottomSheet.TAG);
     }
+
+    private View.OnClickListener activeCarWashListener = view -> {
+        Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashActivationSecurityFragment);
+    };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))

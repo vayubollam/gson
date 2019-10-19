@@ -1,10 +1,13 @@
 package suncor.com.android.di.modules.home;
 
+import org.checkerframework.checker.units.qual.C;
+
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import suncor.com.android.ui.main.cards.add.AddCardFragment;
 import suncor.com.android.ui.main.cards.details.CardsDetailsFragment;
 import suncor.com.android.ui.main.cards.list.CardsFragment;
+import suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragment;
 import suncor.com.android.ui.main.carwash.CarWashCardFragment;
 import suncor.com.android.ui.main.carwash.CarWashPurchaseFragment;
 import suncor.com.android.ui.main.home.HomeFragment;
@@ -120,5 +123,8 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract CarWashPurchaseFragment contributeCarWashPurchaseFragment();
+
+    @ContributesAndroidInjector
+    abstract CarWashActivationSecurityFragment contributeCarWashActivationSecurityFragment();
 
 }

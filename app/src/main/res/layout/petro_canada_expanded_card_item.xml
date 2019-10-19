@@ -244,7 +244,7 @@
                             app:visibleGone="@{card.cardType==CardType.PPTS}" />
 
                         <suncor.com.android.ui.common.SuncorButton
-                            android:id="@+id/left_button"
+                            android:id="@+id/active_wash_button"
                             style="@style/FilledButton.Red.L"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
