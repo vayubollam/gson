@@ -251,8 +251,6 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginBottom="16dp"
-                            android:layout_weight="1"
-                            android:minWidth="120dp"
                             android:textAllCaps="true"
                             android:text="@string/carddetail_active_wash"
                             android:textSize="16sp"

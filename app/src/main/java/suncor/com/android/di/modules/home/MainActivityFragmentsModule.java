@@ -1,7 +1,5 @@
 package suncor.com.android.di.modules.home;
 
-import org.checkerframework.checker.units.qual.C;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import suncor.com.android.ui.main.cards.add.AddCardFragment;
@@ -126,5 +124,4 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract CarWashActivationSecurityFragment contributeCarWashActivationSecurityFragment();
-
 }
