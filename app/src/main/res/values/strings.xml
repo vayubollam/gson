@@ -503,6 +503,8 @@
     <string name="action_menu_scan_card">Scan my Petro-Points card</string>
     <string name="action_menu_wash_car">Wash my vehicle</string>
     <string name="action_menu_account">Go to my account</string>
+    <string name="cardetail_balance_update_message">Balance may take up to 24 hours to update</string>
+    <string name="carddetail_active_wash">Active Wash</string>
 
     <string name="carwash_header">Let\'s clean your vehicle</string>
     <string name="carwash_getwash_header">Get your wash</string>

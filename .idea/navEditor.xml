@@ -426,6 +426,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="carWashActivationSecurityFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="436" />
+                            <option name="y" value="-1610" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="carWashCardFragment">
                     <value>
                       <LayoutPositions>
@@ -434,6 +446,20 @@
                             <option name="x" value="-208" />
                             <option name="y" value="-1994" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_carWashCardFragment_to_carWashPurchaseFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_carWashCardFragment_to_cardsDetailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -714,11 +740,6 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_rewards_signedin_tab_to_cardsDetailsFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                             <entry key="action_rewards_signedin_tab_to_merchantDetailsFragment">
                               <value>
                                 <LayoutPositions />

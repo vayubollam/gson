@@ -209,6 +209,16 @@
             android:name="isCardFromProfile"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="isCardFromCarWash"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_cardsDetailsFragment_to_carWashActivationSecurityFragment"
+            app:destination="@id/carWashActivationSecurityFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"/>
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -377,10 +387,20 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_carWashCardFragment_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down"/>
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashPurchaseFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashPurchaseFragment"
         android:label="CarWashPurchaseFragment" />
+    <keep_state_fragment
+        android:id="@+id/carWashActivationSecurityFragment"
+        android:name="suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragment"
+        android:label="CarWashActivationSecurityFragment" />
 
 </navigation>

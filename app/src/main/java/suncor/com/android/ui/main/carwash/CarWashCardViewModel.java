@@ -172,28 +172,26 @@ public class CarWashCardViewModel extends ViewModel {
     }
 
     private void saveCards(List<CardDetail> cards) {
-        List<CardDetail> carWashCards = filterCarWashCards(cards);
+        List<CardDetail> carWashCards = CardsRepository.filterCarWashCards(cards);
         if (carWashCards.size() == 0) {
             isCardAvailable.setValue(false);
         } else {
+            setIsBalanceZero(carWashCards);
             isCardAvailable.setValue(true);
             petroCanadaCards.setValue(carWashCards);
         }
     }
 
-    private List<CardDetail> filterCarWashCards(List<CardDetail> cards) {
-        List<CardDetail> carWashCards = new ArrayList<>();
+    private void setIsBalanceZero(List<CardDetail> cards) {
         boolean isAllBalanceZero = true;
         for (CardDetail card : cards) {
             if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
-                carWashCards.add(card);
                 if (card.getBalance() != 0) {
                     isAllBalanceZero = false;
                 }
             }
         }
         isBalanceZero.setValue(isAllBalanceZero);
-        return carWashCards;
     }
 
     /**
@@ -265,6 +263,14 @@ public class CarWashCardViewModel extends ViewModel {
 
     public MutableLiveData<Event<Boolean>> getRefreshLocationCard() {
         return refreshLocationCard;
+    }
+
+    public int getIndexofCardDetail(CardDetail cardDetail) {
+        if (petroCanadaCards.getValue() != null) {
+            return petroCanadaCards.getValue().indexOf(cardDetail);
+        } else {
+            return 0;
+        }
     }
 
     public enum ViewState {

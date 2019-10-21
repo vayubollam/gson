@@ -50,12 +50,19 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
         boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
+        boolean loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setCardFromProfile(loadCardFromProfile);
+        viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
         viewModel.retrieveCards();
-        viewModel.cards.observe(this, arrayListResource -> {
+        viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
             for (CardDetail cardDetail : arrayListResource) {
                 expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
@@ -77,17 +84,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
             }
         });
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
         binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler);
+        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
         cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
@@ -128,6 +130,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
         });
         removeCardBottomSheet.show(getFragmentManager(), RemoveCardBottomSheet.TAG);
     }
+
+    private View.OnClickListener activeCarWashListener = view -> {
+        Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashActivationSecurityFragment);
+    };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))

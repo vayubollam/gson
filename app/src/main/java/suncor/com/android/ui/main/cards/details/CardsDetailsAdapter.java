@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.cards.details;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,9 +17,11 @@ import suncor.com.android.utilities.Consumer;
 public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapter.CardsDetailHolder> {
     private ArrayList<ExpandedCardItem> cardItems = new ArrayList<>();
     private Consumer<ExpandedCardItem> callBack;
+    private View.OnClickListener activeWashListener;
 
-    public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack) {
+    public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener) {
         this.callBack = callBack;
+        this.activeWashListener = activeWashListener;
     }
 
     @NonNull
@@ -60,6 +63,7 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
         public CardsDetailHolder(@NonNull PetroCanadaExpandedCardItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            binding.activeWashButton.setOnClickListener(activeWashListener);
         }
     }
 }

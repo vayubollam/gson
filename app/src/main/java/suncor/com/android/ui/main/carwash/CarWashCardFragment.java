@@ -202,7 +202,10 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 
     private void cardClick(CardDetail cardDetail) {
-        //TODO: goto card detail page
+        CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        action.setIsCardFromCarWash(true);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     private View.OnClickListener buyTicketListener = v -> {

@@ -498,5 +498,8 @@
     <string name="carwash_user_onsite_header">Cette station</string>
     <string name="carwash_user_not_onsite_header">Station la plus près</string>
 
+    <string name="cardetail_balance_update_message">La mise à jour du solde peut prendre jusqu\'à 24 heures</string>
+    <string name="carddetail_active_wash">ACTIVER LE LAVAGE</string>
+
 
 </resources>
