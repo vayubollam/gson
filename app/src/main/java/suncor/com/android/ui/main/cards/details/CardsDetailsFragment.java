@@ -55,6 +55,35 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
+        boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
+        boolean loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+        viewModel.setCardFromProfile(loadCardFromProfile);
+        viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
+        viewModel.retrieveCards();
+        viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
+            ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
+            for (CardDetail cardDetail : arrayListResource) {
+                expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
+            }
+            if (expandedCardItems.size() > 0) {
+                cardsDetailsAdapter.setCardItems(expandedCardItems);
+                cardsDetailsAdapter.notifyDataSetChanged();
+                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
+                binding.setNumCards(expandedCardItems.size());
+                binding.executePendingBindings();
+
+                //track screen name
+                String screenName;
+                if (clickedCardIndex == 0) {
+                    screenName = "my-petro-points-wallet-view-card";
+                } else {
+                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
+                }
+                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+            }
+        });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
         binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         binding.cardDetailRecycler.setItemAnimator(new Animator());
@@ -90,35 +119,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
-        boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
-        boolean loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
-        viewModel.setCardFromProfile(loadCardFromProfile);
-        viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
-        viewModel.retrieveCards();
-        viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
-            ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
-            for (CardDetail cardDetail : arrayListResource) {
-                expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
-            }
-            if (expandedCardItems.size() > 0) {
-                cardsDetailsAdapter.setCardItems(expandedCardItems);
-                cardsDetailsAdapter.notifyDataSetChanged();
-                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
-                binding.setNumCards(expandedCardItems.size());
-                binding.executePendingBindings();
-
-                //track screen name
-                String screenName;
-                if (clickedCardIndex == 0) {
-                    screenName = "my-petro-points-wallet-view-card";
-                } else {
-                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
-                }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
-            }
-        });
     }
 
     void cardViewMoreHandler(ExpandedCardItem expandedCardItem) {
