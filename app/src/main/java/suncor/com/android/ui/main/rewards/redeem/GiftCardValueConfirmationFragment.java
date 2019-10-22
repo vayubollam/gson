@@ -12,8 +12,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -22,6 +20,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -65,7 +66,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             switch (orderResponseResource.status) {
                 case SUCCESS:
                     OrderResponse orderResponse = orderResponseResource.data;
-
                     GiftCardValueConfirmationFragmentDirections.ActionGiftCardValueConfirmationToRedeemReceiptFragment action =
                             GiftCardValueConfirmationFragmentDirections.actionGiftCardValueConfirmationToRedeemReceiptFragment(orderResponse);
 
