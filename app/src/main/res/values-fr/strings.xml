@@ -483,8 +483,8 @@
     <string name="msg_e030_message">Vous ne pouvez pas échanger de points contre cet article pour le moment. Si ce problème persiste, veuillez communiquer avec le Service à la clientèle au 1-800-668-0222 (ATS : 1-888-290-7377).</string>
     <string name="redeem_receipt_email_sent_to_label">La commande sera envoyée à :</string>
 
-    <string name="action_menu_what_would_you_like_to_do">Que \nvoulez-vous faire?</string>
-    <string name="action_menu_scan_card">Scanner ma carte Petro-Points</string>
+    <string name="action_menu_what_would_you_like_to_do">Que voulez-vous \nfaire?</string>
+    <string name="action_menu_scan_card">Scanner ma Petro-Points</string>
     <string name="action_menu_wash_car">Laver mon véhicule</string>
     <string name="action_menu_account">Aller à mon compte</string>
 

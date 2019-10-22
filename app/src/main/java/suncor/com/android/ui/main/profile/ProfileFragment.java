@@ -90,11 +90,6 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
-        binding.getRoot().post(() -> {
-            int fullScreenHeight = binding.getRoot().getHeight();
-            binding.headerLayout.getLayoutParams().height = fullScreenHeight / 2;
-            binding.headerLayout.requestLayout();
-        });
         return binding.getRoot();
     }
 
@@ -147,7 +142,6 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                 Navigation.findNavController(getView()).navigate(action);
             }
         });
-        binding.appBar.setExpanded(false, false);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
 
