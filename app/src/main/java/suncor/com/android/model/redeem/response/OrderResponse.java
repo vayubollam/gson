@@ -105,5 +105,9 @@ public class OrderResponse implements Parcelable {
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
+
+    public boolean isTransactionDelayed() {
+        return orderId == null || orderId.equals("0") || orderId.isEmpty();
+    }
 }
 
