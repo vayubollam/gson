@@ -156,6 +156,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             new Handler().postDelayed(() -> {
                 binding.redeemTotalLayout.setVisibility(View.VISIBLE);
                 binding.redeemTotalLayout.startAnimation(animFromBottom);
+                binding.topShadow.setVisibility(View.VISIBLE);
             }, ANIM_DURATION);
         }
         if (binding.redeemBtn.getVisibility() == View.GONE) {
