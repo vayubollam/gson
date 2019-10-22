@@ -28,6 +28,7 @@ import suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationViewMo
 import suncor.com.android.ui.main.stationlocator.StationsViewModel;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.main.stationlocator.search.SearchViewModel;
+import suncor.com.android.ui.resetpassword.ForgotPasswordViewModel;
 
 @Module
 public abstract class ViewModelModule {
@@ -152,4 +153,9 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GiftCardValueConfirmationViewModel.class)
     protected abstract ViewModel GiftCardConfirmationViewModel(GiftCardValueConfirmationViewModel giftCardValueConfirmationViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ForgotPasswordViewModel.class)
+    protected abstract ViewModel ForgotPasswordViewModel(ForgotPasswordViewModel forgotPasswordViewModel);
 }
