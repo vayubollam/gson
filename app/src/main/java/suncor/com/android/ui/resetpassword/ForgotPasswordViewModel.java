@@ -20,13 +20,11 @@ public class ForgotPasswordViewModel extends ViewModel {
 
     public LiveData<Resource<Boolean>> sendEmailApiCall;
     private MutableLiveData<Event<Boolean>> updateEvent = new MutableLiveData<>();
-    private ArrayList<InputField> requiredFields = new ArrayList<>();
     private EmailInputField emailInputField = new EmailInputField(R.string.enrollment_email_empty_error, R.string.enrollment_email_format_error, R.string.enrollment_email_restricted_error);
 
 
     @Inject
     public ForgotPasswordViewModel(ForgotPasswordProfileApi api) {
-        requiredFields.add(emailInputField);
 
         sendEmailApiCall = Transformations.switchMap(updateEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
@@ -38,17 +36,11 @@ public class ForgotPasswordViewModel extends ViewModel {
     }
 
     public int validateAndReset() {
-        boolean firstItemFocused = false;
         int firstItemWithError = -1;
-        for (int i = 0; i < requiredFields.size(); i++) {
-            InputField field = requiredFields.get(i);
-            if (!field.isValid()) {
-                field.setShowError(true);
-                if (!firstItemFocused) {
-                    firstItemWithError = i;
-                    firstItemFocused = true;
-                }
-            }
+        InputField field = emailInputField;
+        if (!field.isValid()) {
+            field.setShowError(true);
+            firstItemWithError = 0;
         }
         if (firstItemWithError == -1) {
             updateEvent.postValue(Event.newEvent(true));
@@ -58,9 +50,5 @@ public class ForgotPasswordViewModel extends ViewModel {
 
     public EmailInputField getEmailInputField() {
         return emailInputField;
-    }
-
-    ArrayList<InputField> getRequiredFields() {
-        return requiredFields;
     }
 }
