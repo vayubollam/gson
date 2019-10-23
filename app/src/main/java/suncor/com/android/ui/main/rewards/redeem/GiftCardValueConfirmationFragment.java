@@ -138,6 +138,24 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     .setInterpolator(animInterpolator)
                     .setStartDelay(0)
                     .setDuration(ANIM_DURATION);
+            binding.redeemTotalLayoutScroll.animate()
+                    .translationY(-(binding.redeemTotalLayoutScroll.getTranslationY() + adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1)))
+                    .setInterpolator(animInterpolator)
+                    .setStartDelay(0)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            int[] totalScroll = new int[2];
+                            binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+                            float totalScrollY = totalScroll[1];
+                            if (totalScrollY > totalFixY) {
+                                binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
+                                binding.nestedScrollView.setScrollingEnabled(true);
+                                binding.valuesRecyclerView.setNestedScrollingEnabled(true);
+                            }
+                        }
+                    })
+                    .setDuration(ANIM_DURATION);
 
         });
 
@@ -217,6 +235,26 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 .setStartDelay(firstTime ? ANIM_DURATION : 0)
                 .setInterpolator(animInterpolator)
                 .setDuration(ANIM_DURATION);
+        binding.redeemTotalLayoutScroll.animate()
+                .translationY(-adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1))
+                .setStartDelay(firstTime ? ANIM_DURATION : 0)
+                .setInterpolator(animInterpolator)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        int[] totalScroll = new int[2];
+                        binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+                        float totalScrollY = totalScroll[1];
+                        if (totalScrollY < totalFixY) {
+                            binding.redeemTotalLayoutFix.setVisibility(View.GONE);
+                            binding.nestedScrollView.setScrollingEnabled(false);
+                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+                        }
+                    }
+                })
+                .setDuration(ANIM_DURATION);
+
+
         binding.nestedScrollView.setScrollingEnabled(true);
 
         firstTime = false;
