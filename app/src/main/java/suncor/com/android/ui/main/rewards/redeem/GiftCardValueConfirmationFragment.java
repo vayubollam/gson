@@ -48,6 +48,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     private final int ANIM_DURATION = 600;
     private Animation animFromBottom;
     private boolean firstTime = true;
+    float totalFixY;
 
     public static GiftCardValueConfirmationFragment newInstance() {
         return new GiftCardValueConfirmationFragment();
@@ -60,6 +61,24 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         animInterpolator = new DecelerateInterpolator(3f);
         animFromBottom = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
         animFromBottom.setInterpolator(animInterpolator);
+        animFromBottom.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                int[] totalFix = new int[2];
+                binding.termsAgreementDownDivider2.getLocationOnScreen(totalFix);
+                totalFixY = totalFix[1];
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         viewModel.orderApiData.observe(this, (orderResponseResource) -> {
 
@@ -123,36 +142,19 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         });
 
         binding.nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (binding.redeemTotalLayoutDown.getVisibility() == View.GONE) {
-                return;
-            }
 
-
-            int[] addressLocation = new int[2];
-            int[] totalUpLocation = new int[2];
-            int[] totalDownLocation = new int[2];
-
-            binding.addressLayoutDownDivider.getLocationOnScreen(addressLocation);
-            binding.redeemTotalLayoutUp.getLocationOnScreen(totalUpLocation);
-            binding.redeemTotalLayoutDown.getLocationOnScreen(totalDownLocation);
-            float address = addressLocation[1];
-            float totaldown = totalDownLocation[1];
-            float totalup = totalUpLocation[1];
+            int[] totalScroll = new int[2];
+            binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+            float totalScrollY = totalScroll[1];
             if (scrollY < oldScrollY) {
                 //scrolling down
-                if (address > totaldown) {
-                    //    binding.redeemTotalLayoutDown.setTranslationY(-binding.nestedScrollView.computeVerticalScrollOffset());
-                    binding.redeemTotalLayoutDown.setVisibility(View.VISIBLE);
-                    binding.redeemTotalLayoutUp.setVisibility(View.INVISIBLE);
-                    binding.redeemTotalLayoutUp.setElevation(-1);
+                if (totalScrollY > totalFixY) {
+                    binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
                 }
             } else {
-                if (address < totaldown && totaldown >= totalup) {
-
-                    //  binding.redeemTotalLayoutDown.setTranslationY(-(scrollY-oldScrollY));
-                    binding.redeemTotalLayoutDown.setVisibility(View.INVISIBLE);
-                    binding.redeemTotalLayoutUp.setVisibility(View.VISIBLE);
-                    binding.redeemTotalLayoutUp.setElevation(1);
+                //scrolling up
+                if (totalScrollY < totalFixY) {
+                    binding.redeemTotalLayoutFix.setVisibility(View.GONE);
                 }
             }
         });
@@ -185,16 +187,22 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             }
         });
         binding.nestedScrollView.scrollTo(0, 0);
-        if (binding.redeemAddressLayout.getVisibility() == View.GONE) {
+        if (binding.redeemAddressLayout.getVisibility() == View.GONE && firstTime) {
             new Handler().postDelayed(() -> {
                 binding.redeemAddressLayout.setVisibility(View.VISIBLE);
                 binding.redeemAddressLayout.startAnimation(animFromBottom);
             }, ANIM_DURATION);
         }
-        if (binding.redeemTotalLayoutDown.getVisibility() == View.GONE) {
+        if (binding.redeemTotalLayoutFix.getVisibility() == View.GONE && firstTime) {
             new Handler().postDelayed(() -> {
-                binding.redeemTotalLayoutDown.setVisibility(View.VISIBLE);
-                binding.redeemTotalLayoutDown.startAnimation(animFromBottom);
+                binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
+                binding.redeemTotalLayoutFix.startAnimation(animFromBottom);
+            }, ANIM_DURATION);
+        }
+        if (binding.redeemTotalLayoutScroll.getVisibility() == View.GONE && firstTime) {
+            new Handler().postDelayed(() -> {
+                binding.redeemTotalLayoutScroll.setVisibility(View.VISIBLE);
+                binding.redeemTotalLayoutScroll.startAnimation(animFromBottom);
             }, ANIM_DURATION);
         }
         if (binding.redeemBtn.getVisibility() == View.GONE) {
@@ -209,6 +217,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 .setStartDelay(firstTime ? ANIM_DURATION : 0)
                 .setInterpolator(animInterpolator)
                 .setDuration(ANIM_DURATION);
+        binding.nestedScrollView.setScrollingEnabled(true);
+
         firstTime = false;
     }
 
