@@ -83,6 +83,7 @@
                     android:background="@drawable/horizontal_divider"
                     app:layout_constraintTop_toBottomOf="@id/top_shadow" />
 
+
                 <View
                     android:id="@+id/terms_agreement_down_divider"
                     android:layout_width="0dp"
@@ -211,6 +212,7 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/redeem_value_layout"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         tools:layout_editor_absoluteX="32dp"
                         tools:visibility="gone">
 
@@ -218,7 +220,6 @@
                             android:id="@+id/alert_icon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:layout_marginTop="40dp"
                             android:src="@drawable/ic_alert"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
