@@ -484,6 +484,12 @@
     <string name="msg_e030_message">Si ce problème persiste, appelez-nous au 1-800-668-0222.</string>
     <string name="msg_e030_title">Échange de points non accepté</string>
     <string name="redeem_receipt_email_sent_to_label">Envoyée à</string>
+    <string name="forgot_password_header">Réinitialisation du mot de passe</string>
+    <string name="forgot_password_message">Aucun problème. Nous vous aiderons à en créer un nouveau.</string>
+    <string name="forgot_password_email_field_label">Courriel</string>
+    <string name="forgot_password_reset_button">Aller</string>
+    <string name="forgot_password_toast_msg">Demande de réinitialisation du mot de passe envoyée.</string>
+    <string name="sending_email_spinner">Envoi d\'courriel</string>
 
 
 </resources>
