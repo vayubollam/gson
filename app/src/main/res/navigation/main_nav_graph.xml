@@ -401,6 +401,17 @@
     <keep_state_fragment
         android:id="@+id/carWashActivationSecurityFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragment"
-        android:label="CarWashActivationSecurityFragment" />
+        android:label="CarWashActivationSecurityFragment" >
+        <action
+            android:id="@+id/action_carWashActivationSecurityFragment_to_carWashBarCodeFragment"
+            app:destination="@id/carWashBarCodeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/carWashBarCodeFragment"
+        android:name="suncor.com.android.ui.main.carwash.CarWashBarCodeFragment"
+        android:label="CarWashBarCodeFragment" />
 
 </navigation>

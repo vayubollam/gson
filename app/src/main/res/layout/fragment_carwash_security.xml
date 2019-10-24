@@ -115,7 +115,7 @@
                 </LinearLayout>
 
                 <suncor.com.android.ui.common.SuncorButton
-                    android:id="@+id/create_button"
+                    android:id="@+id/confirm_button"
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
@@ -43,7 +45,25 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             inputMethodManager.showSoftInput(pinText1, InputMethodManager.SHOW_IMPLICIT);
 
         });
+        binding.confirmButton.setOnClickListener(confirmListener);
         return binding.getRoot();
+    }
+
+    private View.OnClickListener confirmListener = v -> {
+        if (isPinEntered()) {
+            Navigation.findNavController(getView()).navigate(R.id.carWashBarCodeFragment);
+        } else {
+            new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.carwash_activation_pin_error_title)
+                    .setMessage(R.string.carwash_activation_pin_error_message)
+                    .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
+    };
+
+    private boolean isPinEntered() {
+        return pinText1.getText().toString().length() == 1
+                && pinText2.getText().toString().length() == 1 && pinText3.getText().toString().length() == 1;
     }
 
     private void goBack() {
