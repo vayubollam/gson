@@ -67,16 +67,12 @@ public class AddressViewModel extends ViewModel {
                 ProfileRequest request = new ProfileRequest();
                 request.setSecurityAnswerEncrypted(sharedViewModel.getEcryptedSecurityAnswer());
 
-                if (!streetAddressField.getText().equals(profile.getStreetAddress())) {
+                if (!streetAddressField.getText().equals(profile.getStreetAddress()) || !cityField.getText().equals(profile.getCity())
+                        || !provinceField.getText().equals(getProvinceNameById(profile.getProvince()))
+                        || !postalCodeField.getText().replace(" ", "").equals(profile.getPostalCode())) {
                     request.getAddress().setStreetAddress(streetAddressField.getText());
-                }
-                if (!cityField.getText().equals(profile.getCity())) {
                     request.getAddress().setCity(cityField.getText());
-                }
-                if (!provinceField.getText().equals(getProvinceNameById(profile.getProvince()))) {
                     request.getAddress().setProvince(selectedProvince.getId());
-                }
-                if (!postalCodeField.getText().equals(profile.getPostalCode().replace(" ", ""))) {
                     request.getAddress().setPostalCode(postalCodeField.getText());
                 }
 
