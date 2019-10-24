@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.biometric.BiometricPrompt;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -36,6 +38,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.ui.resetpassword.ForgotPasswordFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
@@ -120,11 +123,12 @@ public class LoginFragment extends BaseFragment {
         });
 
         viewModel.getPasswordResetEvent().observe(this, (event -> {
-            String resetPasswordPath = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr/personnel/mot-de-passe-oublie" : "en/personal/forgot-password";
-            String url = BuildConfig.SUNCOR_WEBSITE.concat(resetPasswordPath);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            startActivity(intent);
+            FragmentTransaction fragmentTransaction =  getFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, 0);
+            fragmentTransaction.replace(R.id.fragment, new ForgotPasswordFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         }));
 
         viewModel.getCallCustomerService().observe(this, event -> {

@@ -501,4 +501,10 @@
     <string name="msg_e030_title">You can’t redeem for this</string>
     <string name="redeem_receipt_email_sent_to_label">Sent to:</string>
     <string name="points_redeemed_value">%1$s points</string>
+    <string name="forgot_password_header">Forgot password</string>
+    <string name="forgot_password_message">No problem. Enter your email and we\'ll help you set up a new one.</string>
+    <string name="forgot_password_email_field_label">Email</string>
+    <string name="forgot_password_reset_button">Continue</string>
+    <string name="forgot_password_toast_msg">Password reset request sent.</string>
+    <string name="sending_email_spinner">Sending email</string>
 </resources>
