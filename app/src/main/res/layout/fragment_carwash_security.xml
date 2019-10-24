@@ -1,18 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@color/white">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PlaceHolder for activation security flow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true">
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expandable="false"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:lineSpacingMultiplier="1.31"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/carwash_activation_header"
+            android:textAppearance="@style/Title1"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <RelativeLayout
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:paddingLeft="16dp"
+                android:paddingTop="32dp"
+                android:paddingRight="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:text="@string/carwash_activation_subtitle"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
+                    app:autoSizeMaxTextSize="18sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/pin_input_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/pin_num1"
+                        android:layout_width="@dimen/carwash_verfication_input_width"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/input_field_background"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textCursorDrawable="@drawable/cursor"
+                        android:textSize="@dimen/carwash_verfication_input_textsize"
+                        tools:text="0" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/pin_num2"
+                        android:layout_width="@dimen/carwash_verfication_input_width"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/input_field_background"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textCursorDrawable="@drawable/cursor"
+                        android:textSize="@dimen/carwash_verfication_input_textsize"
+                        tools:text="0" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/pin_num3"
+                        android:layout_width="@dimen/carwash_verfication_input_width"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/input_field_background"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1"
+                        android:textCursorDrawable="@drawable/cursor"
+                        android:textSize="@dimen/carwash_verfication_input_textsize"
+                        tools:text="0" />
+
+                </LinearLayout>
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/create_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/carwash_activation_confirm_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="1" />
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
