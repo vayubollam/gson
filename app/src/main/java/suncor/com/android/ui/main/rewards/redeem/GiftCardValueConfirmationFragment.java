@@ -22,6 +22,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -42,13 +44,12 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     ViewModelFactory factory;
     private GiftCardValueConfirmationViewModel viewModel;
     private FragmentGiftCardValueConfirmationBinding binding;
-    private MerchantItem merchantItem;
     private GiftCardValueAdapter adapter;
     private Interpolator animInterpolator;
     private final int ANIM_DURATION = 600;
     private Animation animFromBottom;
     private boolean firstTime = true;
-    float totalFixY;
+    private float totalFixY;
 
     public static GiftCardValueConfirmationFragment newInstance() {
         return new GiftCardValueConfirmationFragment();
@@ -87,7 +88,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     OrderResponse orderResponse = orderResponseResource.data;
 
                     GiftCardValueConfirmationFragmentDirections.ActionGiftCardValueConfirmationToRedeemReceiptFragment action =
-                            GiftCardValueConfirmationFragmentDirections.actionGiftCardValueConfirmationToRedeemReceiptFragment(orderResponse);
+                            GiftCardValueConfirmationFragmentDirections.actionGiftCardValueConfirmationToRedeemReceiptFragment(Objects.requireNonNull(orderResponse));
 
                     if (getView() != null) {
                         getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
@@ -112,7 +113,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        merchantItem = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getMerchanItem();
+        MerchantItem merchantItem = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getMerchanItem();
         viewModel.setMerchantItem(merchantItem);
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_gift_card_value_confirmation, container, false);
@@ -123,6 +124,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adapter = new GiftCardValueAdapter(viewModel.getMerchantItem().getMerchant().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::cardValueChanged);
         binding.valuesRecyclerView.setAdapter(adapter);
+        binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.changeValueBtn.setOnClickListener(v -> {
             binding.cardValueTxt.setText(getString(R.string.redeem_egift_card_select_value));
             binding.changeValueBtn.setEnabled(false);
@@ -142,17 +144,15 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     .translationY(-(binding.redeemTotalLayoutScroll.getTranslationY() + adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1)))
                     .setInterpolator(animInterpolator)
                     .setStartDelay(0)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            int[] totalScroll = new int[2];
-                            binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
-                            float totalScrollY = totalScroll[1];
-                            if (totalScrollY > totalFixY) {
-                                binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
-                                binding.nestedScrollView.setScrollingEnabled(true);
-                                binding.valuesRecyclerView.setNestedScrollingEnabled(true);
-                            }
+                    .setUpdateListener(animation -> {
+                        int[] totalScroll = new int[2];
+                        binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+                        float totalScrollY = totalScroll[1];
+                        if (totalScrollY > totalFixY) {
+                            binding.redeemTotalLayoutFix.setAlpha(1);
+                            binding.redeemTotalLayoutFix.setZ(4);
+                            binding.nestedScrollView.setScrollingEnabled(true);
+                            binding.valuesRecyclerView.setNestedScrollingEnabled(true);
                         }
                     })
                     .setDuration(ANIM_DURATION);
@@ -164,17 +164,17 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             int[] totalScroll = new int[2];
             binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
             float totalScrollY = totalScroll[1];
-            if (scrollY < oldScrollY) {
-                //scrolling down
-                if (totalScrollY > totalFixY) {
-                    binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
-                }
-            } else {
-                //scrolling up
-                if (totalScrollY < totalFixY) {
-                    binding.redeemTotalLayoutFix.setVisibility(View.GONE);
-                }
+            //scrolling down
+            if ((totalScrollY + 20) >= totalFixY) {
+                binding.redeemTotalLayoutFix.setAlpha(1);
+                binding.redeemTotalLayoutFix.setZ(4);
             }
+            //scrolling up
+            if (totalScrollY < totalFixY) {
+                binding.redeemTotalLayoutFix.setAlpha(0);
+                binding.redeemTotalLayoutFix.setZ(-4);
+            }
+
         });
         return binding.getRoot();
     }
@@ -188,7 +188,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
 
     }
 
-    void cardValueChanged(Integer selectedItem) {
+    private void cardValueChanged(Integer selectedItem) {
         int valueSelected = viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
         viewModel.setEGift(viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem));
@@ -205,19 +205,13 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             }
         });
         binding.nestedScrollView.scrollTo(0, 0);
-        if (binding.redeemAddressLayout.getVisibility() == View.GONE && firstTime) {
+        if (binding.redeemAddressLayout.getVisibility() == View.GONE) {
             new Handler().postDelayed(() -> {
                 binding.redeemAddressLayout.setVisibility(View.VISIBLE);
                 binding.redeemAddressLayout.startAnimation(animFromBottom);
             }, ANIM_DURATION);
         }
-        if (binding.redeemTotalLayoutFix.getVisibility() == View.GONE && firstTime) {
-            new Handler().postDelayed(() -> {
-                binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
-                binding.redeemTotalLayoutFix.startAnimation(animFromBottom);
-            }, ANIM_DURATION);
-        }
-        if (binding.redeemTotalLayoutScroll.getVisibility() == View.GONE && firstTime) {
+        if (binding.redeemTotalLayoutScroll.getVisibility() == View.GONE) {
             new Handler().postDelayed(() -> {
                 binding.redeemTotalLayoutScroll.setVisibility(View.VISIBLE);
                 binding.redeemTotalLayoutScroll.startAnimation(animFromBottom);
@@ -242,17 +236,28 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
                         int[] totalScroll = new int[2];
                         binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
                         float totalScrollY = totalScroll[1];
-                        if (totalScrollY < totalFixY) {
-                            binding.redeemTotalLayoutFix.setVisibility(View.GONE);
-                            binding.nestedScrollView.setScrollingEnabled(false);
-                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+                        if (totalScrollY > totalFixY) {
+                            binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
+                            binding.redeemTotalLayoutFix.setAlpha(1);
+                            binding.redeemTotalLayoutFix.setZ(4);
                         }
                     }
                 })
-                .setDuration(ANIM_DURATION);
+                .setUpdateListener(animation -> {
+                    int[] totalScroll = new int[2];
+                    binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+                    float totalScrollY = totalScroll[1];
+                    if (totalScrollY < totalFixY) {
+                        binding.redeemTotalLayoutFix.setAlpha(0);
+                        binding.redeemTotalLayoutFix.setZ(-4);
+                        binding.nestedScrollView.setScrollingEnabled(false);
+                        binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+                    }
+                }).setDuration(ANIM_DURATION);
 
 
         binding.nestedScrollView.setScrollingEnabled(true);

@@ -52,9 +52,9 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:elevation="14dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:visibility="visible">
+                tools:visibility="gone">
 
 
                 <View
@@ -345,10 +345,12 @@
                             android:id="@+id/redeem_total_layout_scroll"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
                             android:background="@color/white"
                             android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/redeem_address_layout"
-                            tools:visibility="gone">
+                            tools:visibility="visible">
 
 
                             <View
@@ -381,9 +383,7 @@
                                 android:id="@+id/new_balance_down_divider"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:layout_marginBottom="16dp"
                                 android:background="@drawable/horizontal_divider"
-
                                 android:paddingTop="16dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toLeftOf="parent" />
