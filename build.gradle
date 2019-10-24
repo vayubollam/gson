@@ -28,7 +28,7 @@ allprojects {
 }
 
 ext {
-    minSdkVersion = 21
+    minSdkVersion = 24
     targetSdkVersion = 28
     compileSdkVersion = 28
     appcompatVersion = "1.0.2"

@@ -327,28 +327,31 @@
                         app:layout_constraintTop_toBottomOf="@+id/order_id_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/quantity_title"
+                        android:id="@+id/egift_card_value_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/redeem_receipt_quantity"
+                        android:maxLines="2"
+                        android:text="@string/egift_card_value_title"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/points_redeemed_value"
-                        app:layout_constraintTop_toBottomOf="@id/order_id_divider" />
+                        app:layout_constraintRight_toLeftOf="@id/egift_card_value"
+                        app:layout_constraintTop_toBottomOf="@id/order_id_divider"
+                        tools:text="Valeur de la carte-cadeau électronique"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/quantity_value"
+                        android:id="@+id/egift_card_value"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:text="@{@string/redeem_receipt_quantity_value(response.transaction.transactionAmount.quantity)}"
+                        android:text="@{@string/egift_card_value_in_dollar_generic(response.shoppingCart.eGift.value)}"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
-                        app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
+                        app:layout_constraintLeft_toRightOf="@id/egift_card_value_title"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/order_id_divider" />
+                        app:layout_constraintTop_toBottomOf="@id/order_id_divider"
+                        tools:text="125 $"/>
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/quantity_section_divider"
@@ -356,7 +359,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
-                        app:layout_constraintTop_toBottomOf="@+id/quantity_value" />
+                        app:layout_constraintTop_toBottomOf="@+id/egift_card_value_title" />
 
 
                     <androidx.appcompat.widget.AppCompatTextView
