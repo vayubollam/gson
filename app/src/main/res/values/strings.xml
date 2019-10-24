@@ -515,6 +515,9 @@
     <string name="carwash_no_carwash_station_available">Car wash not available</string>
     <string name="carwash_user_onsite_header">This station</string>
     <string name="carwash_user_not_onsite_header">Nearest station</string>
+    <string name="carwash_activation_header">Activate car wash</string>
+    <string name="carwash_activation_subtitle">Type the code shown on the car wash screen.</string>
+    <string name="carwash_activation_confirm_button">CONFIRM</string>
 
 
 </resources>

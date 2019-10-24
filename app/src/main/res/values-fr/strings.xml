@@ -501,5 +501,9 @@
     <string name="cardetail_balance_update_message">La mise à jour du solde peut prendre jusqu\'à 24 heures</string>
     <string name="carddetail_active_wash">ACTIVER LE LAVAGE</string>
 
+    <string name="carwash_activation_header">Activez le lave-auto</string>
+    <string name="carwash_activation_subtitle">Entrez le code affiché sur l\'écran du lave-auto.</string>
+    <string name="carwash_activation_confirm_button">CONFIRMER</string>
+
 
 </resources>
