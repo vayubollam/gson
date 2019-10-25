@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import suncor.com.android.R;
@@ -24,12 +24,31 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 
 public class CarWashActivationSecurityFragment extends MainActivityFragment implements OnBackPressedListener {
 
+    private final static int VERIFICATION_PIN_LENGTH = 3;
     private AppCompatEditText pinText1, pinText2, pinText3;
     private InputMethodManager inputMethodManager;
+    private CarWashSharedViewModel viewModel;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(CarWashSharedViewModel.class);
+        viewModel.getReEnter().observe(this, reEnter -> {
+            if (reEnter) {
+                clearText();
+            }
+        });
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (getArguments() != null) {
+            int clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
+            boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
+            viewModel.setClickedCardIndex(clickedCardIndex);
+            viewModel.setIsFromCarWash(loadFromCarWash);
+        }
         FragmentCarwashSecurityBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_carwash_security, container, false);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         pinText1 = binding.pinNum1;
@@ -50,8 +69,11 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     }
 
     private View.OnClickListener confirmListener = v -> {
-        if (isPinEntered()) {
-            Navigation.findNavController(getView()).navigate(R.id.carWashBarCodeFragment);
+        String pin = isPinEntered();
+        if (pin != null && pin.length() == VERIFICATION_PIN_LENGTH) {
+            viewModel.setSecurityPin(pin);
+            Navigation.findNavController(getView()).
+                    navigate(R.id.action_carWashActivationSecurityFragment_to_carWashBarCodeFragment);
         } else {
             new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
@@ -61,9 +83,25 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
         }
     };
 
-    private boolean isPinEntered() {
-        return pinText1.getText().toString().length() == 1
-                && pinText2.getText().toString().length() == 1 && pinText3.getText().toString().length() == 1;
+
+    private void clearText() {
+        if (pinText1.getText() != null && pinText2.getText() != null && pinText3.getText() != null) {
+            pinText1.getText().clear();
+            pinText2.getText().clear();
+            pinText3.getText().clear();
+        }
+
+    }
+
+    @Nullable
+    private String isPinEntered() {
+        StringBuilder sb = new StringBuilder();
+        if (pinText1.getText() != null && pinText2.getText() != null && pinText3.getText() != null) {
+            sb.append(pinText1.getText().toString());
+            sb.append(pinText2.getText().toString());
+            sb.append(pinText3.getText().toString());
+        }
+        return sb.toString();
     }
 
     private void goBack() {
@@ -94,19 +132,19 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             switch (id) {
                 case 1:
-                    if (pinText1.getText().toString().length() != 0) {
+                    if (pinText1.getText() != null && pinText1.getText().toString().length() != 0) {
                         pinText1.clearFocus();
                         pinText2.requestFocus();
                     }
                     break;
                 case 2:
-                    if (pinText2.getText().toString().length() != 0) {
+                    if (pinText2.getText() != null && pinText2.getText().toString().length() != 0) {
                         pinText2.clearFocus();
                         pinText3.requestFocus();
                     }
                     break;
                 case 3:
-                    if (pinText3.getText().toString().length() != 0) {
+                    if (pinText3.getText() != null && pinText3.getText().toString().length() != 0) {
                         pinText3.clearFocus();
                         inputMethodManager.hideSoftInputFromWindow(pinText3.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }

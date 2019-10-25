@@ -402,6 +402,14 @@
         android:id="@+id/carWashActivationSecurityFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragment"
         android:label="CarWashActivationSecurityFragment" >
+        <argument
+            android:name="cardIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="isCardFromCarWash"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_carWashActivationSecurityFragment_to_carWashBarCodeFragment"
             app:destination="@id/carWashBarCodeFragment"
@@ -412,6 +420,13 @@
     <keep_state_fragment
         android:id="@+id/carWashBarCodeFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashBarCodeFragment"
-        android:label="CarWashBarCodeFragment" />
+        android:label="CarWashBarCodeFragment" >
+        <action
+            android:id="@+id/action_carWashBarCodeFragment_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:popUpTo="@id/cardsDetailsFragment"
+            app:popExitAnim="@anim/slide_down"
+            app:popUpToInclusive="true"/>
+    </keep_state_fragment>
 
 </navigation>
