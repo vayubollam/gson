@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 public class CarWashBarCodeFragment extends MainActivityFragment implements OnBackPressedListener {
     private Integer clickedCardIndex;
     private Boolean loadFromCarWash;
+    private float previousBrightness;
     private CarWashSharedViewModel carWashSharedViewModel;
 
     @Override
@@ -63,6 +65,23 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         });
         binding.barCodeImage.setImageBitmap(generateBarcode("123456789012"));
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
+        previousBrightness = attributes.screenBrightness;
+        attributes.screenBrightness = 1f;
+        getActivity().getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
+        attributes.screenBrightness = previousBrightness;
+        getActivity().getWindow().setAttributes(attributes);
     }
 
     private void goBack(boolean reEnter) {
