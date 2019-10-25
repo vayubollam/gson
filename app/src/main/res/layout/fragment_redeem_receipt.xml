@@ -156,12 +156,13 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/points_summary_title"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_height="48dp"
+                        android:gravity="center|start"
+                        android:layout_marginTop="20dp"
+                        android:letterSpacing=".09"
                         android:text="@string/redeem_receipt_point_summary"
                         android:textAppearance="@style/Caption1"
                         android:textColor="@color/black_60"
-
                         app:layout_constraintTop_toBottomOf="@+id/receipt_details_title"
                         app:textAllCaps="true" />
 
@@ -169,15 +170,14 @@
                         android:id="@+id/points_summary_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/points_summary_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/points_redeemed_title"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
+                        android:gravity="center|start"
                         android:text="@string/redeem_receipt_point_redeemeed"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -187,29 +187,29 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/points_redeemed_value"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
+                        android:gravity="center|end"
                         android:text="@{@string/points_redeemed_value(CardFormatUtils.formatBalance(response.transaction.transactionAmount.petroPoints.petroPointsRedeemed))}"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/points_summary_divider" />
+                        app:layout_constraintTop_toBottomOf="@id/points_summary_divider"
+                        tools:text="25,000 points " />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/points_redeemed_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/points_redeemed_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/new_balance_title"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
+                        android:gravity="center|start"
                         android:text="@string/redeem_receipt_new_balance"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -219,29 +219,31 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/new_balance_value"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
+                        android:gravity="center|end"
                         android:text="@{@string/points_redeemed_value(CardFormatUtils.formatBalance(response.transaction.transactionAmount.petroPoints.petroPointsRemaining))}"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/points_redeemed_divider" />
+                        app:layout_constraintTop_toBottomOf="@id/points_redeemed_divider"
+                        tools:text="25,000 points" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/new_balance_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/new_balance_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/details_txt"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="20dp"
+                        android:letterSpacing=".09"
+                        android:gravity="center|start"
                         android:text="@string/redeem_receipt_details_label"
                         android:textAppearance="@style/Caption1"
                         android:textColor="@color/black_60"
@@ -252,15 +254,14 @@
                         android:id="@+id/details_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/details_txt" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/date_title"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
+                        android:gravity="center|start"
                         android:text="@string/redeem_receipt_date_label"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -270,9 +271,9 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/date_value"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
+                        android:gravity="center|end"
                         android:text="@{DateUtils.getFormattedDate(response.transaction.transactionDate)}"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
@@ -285,7 +286,6 @@
                         android:id="@+id/date_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/date_title"
                         app:visibleGone="@{response.status != Status.DELAYED }" />
@@ -293,8 +293,8 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/order_id_title"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
+                        android:gravity="center|start"
                         android:text="@string/redeem_receipt_order_id_label"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -305,9 +305,9 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/order_id_value"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
+                        android:gravity="center|end"
                         android:text="@{response.orderId}"
                         android:textAlignment="textEnd"
                         android:textAllCaps="true"
@@ -322,42 +322,40 @@
                         android:id="@+id/order_id_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/order_id_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/egift_card_value_title"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
+                        android:gravity="center|start"
                         android:maxLines="2"
                         android:text="@string/egift_card_value_title"
                         android:textAppearance="@style/Body"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/egift_card_value"
-                        app:layout_constraintTop_toBottomOf="@id/order_id_divider"
-                        tools:text="Valeur de la carte-cadeau électronique"/>
+                        app:layout_constraintEnd_toStartOf="@+id/egift_card_value"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/order_id_divider" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/egift_card_value"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
+                        android:gravity="center|end"
+                        app:layout_constraintWidth_default="percent"
+                        app:layout_constraintWidth_percent=".20"
                         android:text="@{@string/egift_card_value_in_dollar_generic(response.shoppingCart.eGift.value)}"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toRightOf="@id/egift_card_value_title"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/order_id_divider"
-                        tools:text="125 $"/>
+                        app:layout_constraintTop_toBottomOf="@id/order_id_divider" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/quantity_section_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/egift_card_value_title" />
 
@@ -365,8 +363,10 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/email_send_to_label"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_height="48dp"
+                        android:gravity="center|start"
+                        android:layout_marginTop="20dp"
+                        android:letterSpacing=".09"
                         android:text="@string/redeem_receipt_email_sent_to_label"
                         android:textAppearance="@style/Caption1"
                         android:textColor="@color/black_60"
@@ -377,16 +377,15 @@
                         android:id="@+id/email_sent_to_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
                         android:src="@drawable/horizontal_divider"
                         app:layout_constraintTop_toBottomOf="@+id/email_send_to_label" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/email_sent_to_value"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
                         android:layout_marginBottom="5dp"
+                        android:gravity="center|start"
                         android:lineSpacingMultiplier="1.44"
                         android:text="@{response.shipping.emailSentTo}"
                         android:textAppearance="@style/Body"
@@ -400,7 +399,7 @@
         <View
             android:id="@+id/divider3"
             android:layout_width="match_parent"
-            android:layout_height="43dp"
+            android:layout_height="48dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/merchantshadow"
             app:layout_constraintBottom_toTopOf="@id/button_done" />
