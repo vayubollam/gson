@@ -410,6 +410,10 @@
             android:name="isCardFromCarWash"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="cardNumber"
+            android:defaultValue="null"
+            app:argType="string" />
         <action
             android:id="@+id/action_carWashActivationSecurityFragment_to_carWashBarCodeFragment"
             app:destination="@id/carWashBarCodeFragment"

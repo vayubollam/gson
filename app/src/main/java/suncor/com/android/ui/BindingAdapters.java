@@ -6,6 +6,7 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -190,6 +191,16 @@ public class BindingAdapters {
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
         params.endToStart = id;
         view.setLayoutParams(params);
+    }
+
+    @BindingAdapter({"carWashCodeText"})
+    public static void setCarWashCodeText(TextView view, String carWashCode) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < carWashCode.length(); i += 3) {
+            sb.append(carWashCode.substring(i, i + 3));
+            sb.append(" ");
+        }
+        view.setText(sb.toString());
     }
 
 }

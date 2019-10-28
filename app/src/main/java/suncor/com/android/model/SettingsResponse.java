@@ -3,6 +3,7 @@ package suncor.com.android.model;
 public class SettingsResponse {
     private Settings settings;
     private BuildInfo buildInfo;
+    private CarWash carWash;
 
     public Settings getSettings() {
         return settings;
@@ -10,6 +11,10 @@ public class SettingsResponse {
 
     public BuildInfo getBuildInfo() {
         return buildInfo;
+    }
+
+    public CarWash getCarWash() {
+        return carWash;
     }
 
     public static class Settings {
@@ -68,6 +73,14 @@ public class SettingsResponse {
 
         public String getBuildNumber() {
             return buildNumber;
+        }
+    }
+
+    public static class CarWash {
+        private String key;
+
+        public String getKey() {
+            return key;
         }
     }
 }

@@ -154,6 +154,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private View.OnClickListener activeCarWashListener = view -> {
         CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                 = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
+        action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
         action.setCardIndex(clickedCardIndex);
         action.setIsCardFromCarWash(loadCarWashCardsOnly);
         Navigation.findNavController(getView()).navigate(action);

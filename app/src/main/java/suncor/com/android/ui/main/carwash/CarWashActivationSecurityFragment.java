@@ -17,8 +17,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCarwashSecurityBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
@@ -28,11 +31,13 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     private AppCompatEditText pinText1, pinText2, pinText3;
     private InputMethodManager inputMethodManager;
     private CarWashSharedViewModel viewModel;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(CarWashSharedViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CarWashSharedViewModel.class);
         viewModel.getReEnter().observe(this, reEnter -> {
             if (reEnter) {
                 clearText();
@@ -46,8 +51,10 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
         if (getArguments() != null) {
             int clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
             boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
+            String cardNumber = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardNumber();
             viewModel.setClickedCardIndex(clickedCardIndex);
             viewModel.setIsFromCarWash(loadFromCarWash);
+            viewModel.setCardNumber(cardNumber);
         }
         FragmentCarwashSecurityBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_carwash_security, container, false);
         binding.appBar.setNavigationOnClickListener(v -> goBack());

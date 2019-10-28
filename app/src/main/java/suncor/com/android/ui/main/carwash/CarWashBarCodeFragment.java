@@ -21,8 +21,11 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCarwashBarcodeBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
@@ -31,6 +34,8 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     private Boolean loadFromCarWash;
     private float previousBrightness;
     private CarWashSharedViewModel carWashSharedViewModel;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        carWashSharedViewModel = ViewModelProviders.of(getActivity()).get(CarWashSharedViewModel.class);
+        carWashSharedViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CarWashSharedViewModel.class);
         carWashSharedViewModel.getClickedCardIndex().observe(getViewLifecycleOwner(), integer -> clickedCardIndex = integer);
         carWashSharedViewModel.getIsFromCarWash().observe(getViewLifecycleOwner(), isLoadFromCarWash -> loadFromCarWash = isLoadFromCarWash);
 
@@ -63,7 +68,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         binding.reEnterButton.setOnClickListener(v -> {
             goBack(true);
         });
-        binding.barCodeImage.setImageBitmap(generateBarcode("123456789012"));
+        binding.barCodeImage.setImageBitmap(generateBarcode());
         return binding.getRoot();
     }
 
@@ -94,7 +99,8 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         goBack(false);
     }
 
-    private Bitmap generateBarcode(String barCodeNumber) {
+    private Bitmap generateBarcode() {
+        String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue();
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Resources r = getResources();
         int width = Math.round(TypedValue.applyDimension(
@@ -102,7 +108,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         int height = Math.round(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, r.getDimension(R.dimen.carwash_barcode_image_height), r.getDisplayMetrics()));
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(barCodeNumber, BarcodeFormat.EAN_13, width, height);
+            BitMatrix bitMatrix = multiFormatWriter.encode(encryptedCarWashCode, BarcodeFormat.EAN_13, width, height);
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {

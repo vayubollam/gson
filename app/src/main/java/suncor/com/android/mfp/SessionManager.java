@@ -48,6 +48,7 @@ public class SessionManager implements SessionChangeListener {
     private final UserLocalSettings userLocalSettings;
     private Profile profile;
     private AccountState accountState;
+    private String carWashKey;
     private UserLoginChallengeHandler challengeHandler;
     private WLAuthorizationManager authorizationManager;
     private MutableLiveData<Resource<SigninResponse>> loginObservable;
@@ -347,6 +348,14 @@ public class SessionManager implements SessionChangeListener {
 
     public void setRewardedPoints(int rewardedPoints) {
         this.rewardedPoints = rewardedPoints;
+    }
+
+    public String getCarWashKey() {
+        return carWashKey;
+    }
+
+    public void setCarWashKey(String carWashKey) {
+        this.carWashKey = carWashKey;
     }
 
     //Only when accountState is JUST_ENROLLED
