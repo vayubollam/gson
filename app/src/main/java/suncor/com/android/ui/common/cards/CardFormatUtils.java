@@ -1,7 +1,12 @@
 package suncor.com.android.ui.common.cards;
 
 import android.text.Editable;
+import android.util.Base64;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -127,5 +132,39 @@ public class CardFormatUtils {
                 s.replace(i, i + 1, "");
             }
         }
+    }
+
+    // main encryption logic
+    public static String getMobileScancode(String cardNumber, String key, int poePin)
+            throws NoSuchAlgorithmException {
+        byte[] presharedKey = Base64.decode(key, Base64.DEFAULT);
+
+        MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
+        sha256.update(presharedKey); // ingest first half of the nonce
+
+        byte[] buf = new byte[32]; // allocate second half of the nonce
+        ByteBuffer ib = ByteBuffer.wrap(buf);
+        ib.order(ByteOrder.LITTLE_ENDIAN);
+
+//        ib.putInt(0, 74676); // write siteId in overall position 32
+        ib.putInt(4, poePin); // write poePin in overall position 36
+        sha256.update(buf); // ingest second half of nonce
+
+        byte[] hash = sha256.digest(); // compute sha256 hash of full nonce
+        ByteBuffer ob = ByteBuffer.wrap(hash);
+        ob.order(ByteOrder.LITTLE_ENDIAN);
+
+        // interpret first 8 bytes of sha256 hash as a one-time pad and ignore the rest
+        // signedness doesn't matter because we'll be masking the upper bits anyway
+        long otp = ob.getLong(0);
+
+        // extract primary account number
+        long cardData = Long.parseLong(cardNumber.substring(8,17));
+
+        // encipher the PAN with the one-time pad, then mask away all but the bottom 39 bits
+        long encryptedCardData = (cardData ^ otp) & 0x7f_ffff_ffffL;
+
+        // increment the first decimal digit of our 12-digit code by 1 to get rid of any leading zeroes
+        return Long.toString(encryptedCardData + 100_000_000_000L);
     }
 }
