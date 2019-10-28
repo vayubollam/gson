@@ -521,6 +521,10 @@
     <string name="carwash_activation_confirm_button">CONFIRM</string>
     <string name="carwash_activation_pin_error_title">3-digit code required</string>
     <string name="carwash_activation_pin_error_message">We\'ll be able to activate the car wash once you\'ve typed the code shown on the car wash screen</string>
+    <string name="carwash_barcode_header">Scan to start your wash</string>
+    <string name="carwash_barcode_subtitle">Hold your barcode up to the scanner.</string>
+    <string name="carwash_barcode_trouble_hint">Having trouble scanning?</string>
+    <string name="carwash_barcode_reenter">TRY NEW CODE</string>
 
 
 </resources>
