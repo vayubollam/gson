@@ -146,7 +146,7 @@ public class CardFormatUtils {
         ByteBuffer ib = ByteBuffer.wrap(buf);
         ib.order(ByteOrder.LITTLE_ENDIAN);
 
-        ib.putInt(0, 0); // write siteId in overall position 32
+//        ib.putInt(0, 74676); // write siteId in overall position 32
         ib.putInt(4, poePin); // write poePin in overall position 36
         sha256.update(buf); // ingest second half of nonce
 
