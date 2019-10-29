@@ -53,24 +53,23 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         binding.setVm(carWashSharedViewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack(false));
-        binding.buttonClose.setOnClickListener(v -> {
-            CarWashBarCodeFragmentDirections.ActionCarWashBarCodeFragmentToCardsDetailsFragment action
-                    = CarWashBarCodeFragmentDirections.actionCarWashBarCodeFragmentToCardsDetailsFragment();
-            action.setCardIndex(clickedCardIndex);
-            if (loadFromCarWash) {
-                action.setIsCardFromCarWash(true);
-            } else {
-                action.setIsCardFromProfile(false);
-            }
-            Navigation.findNavController(getView()).navigate(action);
-        });
-
-        binding.reEnterButton.setOnClickListener(v -> {
-            goBack(true);
-        });
+        binding.buttonClose.setOnClickListener(closeListener);
+        binding.reEnterButton.setOnClickListener(v -> goBack(true));
         binding.barCodeImage.setImageBitmap(generateBarcode());
         return binding.getRoot();
     }
+
+    private View.OnClickListener closeListener = view -> {
+        CarWashBarCodeFragmentDirections.ActionCarWashBarCodeFragmentToCardsDetailsFragment action
+                = CarWashBarCodeFragmentDirections.actionCarWashBarCodeFragmentToCardsDetailsFragment();
+        action.setCardIndex(clickedCardIndex);
+        if (loadFromCarWash) {
+            action.setIsCardFromCarWash(true);
+        } else {
+            action.setIsCardFromProfile(false);
+        }
+        Navigation.findNavController(getView()).navigate(action);
+    };
 
     @Override
     public void onStart() {
