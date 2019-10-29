@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="carwash_verfication_input_textsize">36sp</dimen>
+    <dimen name="carwash_verfication_input_width">60dp</dimen>
+
+</resources>

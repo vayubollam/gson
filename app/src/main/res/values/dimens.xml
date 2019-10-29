@@ -50,5 +50,7 @@
     <dimen name="carwash_margin_24">24dp</dimen>
     <dimen name="carwash_list_margin_top">-40dp</dimen>
     <dimen name="carwash_card_elevation">2dp</dimen>
+    <dimen name="carwash_barcode_image_width">265dp</dimen>
+    <dimen name="carwash_barcode_image_height">60dp</dimen>
 
 </resources>

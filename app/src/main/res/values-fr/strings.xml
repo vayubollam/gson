@@ -501,5 +501,16 @@
     <string name="cardetail_balance_update_message">La mise à jour du solde peut prendre jusqu\'à 24 heures</string>
     <string name="carddetail_active_wash">ACTIVER LE LAVAGE</string>
 
+    <string name="carwash_activation_header">Activez le lave-auto</string>
+    <string name="carwash_activation_subtitle">Entrez le code affiché sur l\'écran du lave-auto.</string>
+    <string name="carwash_activation_confirm_button">CONFIRMER</string>
+    <string name="carwash_activation_pin_error_title">Code à trois chiffres requis</string>
+    <string name="carwash_activation_pin_error_message">Nous pourrons activer le lave-auto dès que vous aurez entré le code indiqué à l\'écran du lave-auto.</string>
+
+    <string name="carwash_barcode_header">Scannez pour commencer votre lavage</string>
+    <string name="carwash_barcode_subtitle">Placez votre code à barres devant le scanneur.</string>
+    <string name="carwash_barcode_trouble_hint">Vous n\'arrivez pas à scanner?</string>
+    <string name="carwash_barcode_reenter">ESSAYER LE NOUVEAU CODE</string>
+
 
 </resources>

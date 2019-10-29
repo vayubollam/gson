@@ -20,6 +20,7 @@ public class SettingsResponse {
         private String minIOSVersion;
         private String descriptionEN;
         private String descriptionFR;
+        private Carwash carwash;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -39,6 +40,10 @@ public class SettingsResponse {
 
         public String getMinAndroidVersion() {
             return minAndroidVersion;
+        }
+
+        public Carwash getCarwash() {
+            return carwash;
         }
     }
 
@@ -68,6 +73,14 @@ public class SettingsResponse {
 
         public String getBuildNumber() {
             return buildNumber;
+        }
+    }
+
+    public static class Carwash {
+        private String key;
+
+        public String getKey() {
+            return key;
         }
     }
 }

@@ -147,7 +147,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
             settingsApi.retrieveSettings().observe(this, resource -> {
                 if (resource.status == Resource.Status.ERROR) {
                     binding.profilePd.setVisibility(View.GONE);
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.settings_failure_dialog_title)));
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.settings_failure_dialog_title)));
 
                     new AlertDialog.Builder(this)
                             .setTitle(R.string.settings_failure_dialog_title)
@@ -175,7 +175,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         String currentVersion = BuildConfig.VERSION_NAME;
         if (currentVersion.compareTo(minVersion) < 0) {
             binding.profilePd.setVisibility(View.GONE);
-            AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.update_required_dialog_title)));
+            AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.update_required_dialog_title)));
             new AlertDialog.Builder(this)
                     .setTitle(R.string.update_required_dialog_title)
                     .setMessage(R.string.update_required_dialog_message)
@@ -191,6 +191,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                     .setCancelable(false)
                     .show();
         } else {
+            sessionManager.setCarWashKey(settingsResponse.getSettings().getCarwash().getKey());
             if (firstTimeUse) {
                 delayHandler.postDelayed(() -> {
                     startExitAnimation(false);

@@ -41,6 +41,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
     private int clickedCardIndex;
+    boolean loadCarWashCardsOnly;
     @Inject
     ViewModelFactory viewModelFactory;
     private float previousBrightness;
@@ -57,7 +58,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
         boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
-        boolean loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
+        loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setCardFromProfile(loadCardFromProfile);
         viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
@@ -85,12 +86,29 @@ public class CardsDetailsFragment extends MainActivityFragment {
             }
         });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
-        binding.cardDetailRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        binding.cardDetailRecycler.setLayoutManager(linearLayoutManager);
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
         cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
+        binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
+            }
+        });
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
         cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
         binding.buttonClose.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
@@ -132,7 +150,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
     }
 
     private View.OnClickListener activeCarWashListener = view -> {
-        Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashActivationSecurityFragment);
+        CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
+                = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
+        action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+        action.setCardIndex(clickedCardIndex);
+        action.setIsCardFromCarWash(loadCarWashCardsOnly);
+        Navigation.findNavController(getView()).navigate(action);
     };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
