@@ -504,6 +504,8 @@
     <string name="carwash_activation_header">Activez le lave-auto</string>
     <string name="carwash_activation_subtitle">Entrez le code affiché sur l\'écran du lave-auto.</string>
     <string name="carwash_activation_confirm_button">CONFIRMER</string>
+    <string name="carwash_activation_pin_error_title">Code à 3 chiffres requis</string>
+    <string name="carwash_activation_pin_error_message">Nous serons en mesure d\’activer le lave-auto une fois que vous aurez entré le code affiché sur l\’écran du lave-auto</string>
 
     <string name="carwash_barcode_header">Scannez pour commencer votre lavage</string>
     <string name="carwash_barcode_subtitle">Placez votre code à barres devant le scanneur.</string>
