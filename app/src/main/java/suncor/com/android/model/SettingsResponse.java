@@ -3,7 +3,6 @@ package suncor.com.android.model;
 public class SettingsResponse {
     private Settings settings;
     private BuildInfo buildInfo;
-    private CarWash carWash;
 
     public Settings getSettings() {
         return settings;
@@ -11,10 +10,6 @@ public class SettingsResponse {
 
     public BuildInfo getBuildInfo() {
         return buildInfo;
-    }
-
-    public CarWash getCarWash() {
-        return carWash;
     }
 
     public static class Settings {
@@ -25,6 +20,7 @@ public class SettingsResponse {
         private String minIOSVersion;
         private String descriptionEN;
         private String descriptionFR;
+        private Carwash carwash;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -44,6 +40,10 @@ public class SettingsResponse {
 
         public String getMinAndroidVersion() {
             return minAndroidVersion;
+        }
+
+        public Carwash getCarwash() {
+            return carwash;
         }
     }
 
@@ -76,8 +76,13 @@ public class SettingsResponse {
         }
     }
 
-    public static class CarWash {
+    public static class Carwash {
+        private String effective;
         private String key;
+
+        public String getEffective() {
+            return effective;
+        }
 
         public String getKey() {
             return key;

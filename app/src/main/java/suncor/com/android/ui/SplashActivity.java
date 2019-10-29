@@ -191,7 +191,10 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                     .setCancelable(false)
                     .show();
         } else {
-            sessionManager.setCarWashKey("RZSCFkO5ruCFplI/AdpgNNfCmgYu0mwsX1r/sXebtTc=");
+            //TODO: Need change once api is ready;
+            String key = (settingsResponse.getSettings().getCarwash() == null) ?
+                    "Sn5v9vxoQ72SBvFkymGn/WbkrjvHhUEJtl0r4sHhacA=" : settingsResponse.getSettings().getCarwash().getKey();
+            sessionManager.setCarWashKey(key);
             if (firstTimeUse) {
                 delayHandler.postDelayed(() -> {
                     startExitAnimation(false);
