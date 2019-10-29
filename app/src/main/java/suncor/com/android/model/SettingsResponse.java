@@ -77,12 +77,7 @@ public class SettingsResponse {
     }
 
     public static class Carwash {
-        private String effective;
         private String key;
-
-        public String getEffective() {
-            return effective;
-        }
 
         public String getKey() {
             return key;

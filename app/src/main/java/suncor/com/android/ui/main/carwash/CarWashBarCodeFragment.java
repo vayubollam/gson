@@ -99,7 +99,8 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     }
 
     private Bitmap generateBarcode() {
-        String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue();
+        //remove last checksum digit to generate the bar code
+        String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue().substring(0,13);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Resources r = getResources();
         int width = Math.round(TypedValue.applyDimension(
