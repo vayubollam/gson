@@ -30,7 +30,6 @@ import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
 public class CarWashBarCodeFragment extends MainActivityFragment implements OnBackPressedListener {
-    private Integer clickedCardIndex;
     private Boolean loadFromCarWash;
     private float previousBrightness;
     private CarWashSharedViewModel carWashSharedViewModel;
@@ -46,7 +45,6 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         carWashSharedViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CarWashSharedViewModel.class);
-        carWashSharedViewModel.getClickedCardIndex().observe(getViewLifecycleOwner(), integer -> clickedCardIndex = integer);
         carWashSharedViewModel.getIsFromCarWash().observe(getViewLifecycleOwner(), isLoadFromCarWash -> loadFromCarWash = isLoadFromCarWash);
 
         FragmentCarwashBarcodeBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_carwash_barcode, container, false);
@@ -60,15 +58,12 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     }
 
     private View.OnClickListener closeListener = view -> {
-        CarWashBarCodeFragmentDirections.ActionCarWashBarCodeFragmentToCardsDetailsFragment action
-                = CarWashBarCodeFragmentDirections.actionCarWashBarCodeFragmentToCardsDetailsFragment();
-        action.setCardIndex(clickedCardIndex);
         if (loadFromCarWash) {
-            action.setIsCardFromCarWash(true);
+            Navigation.findNavController(getView()).navigate(R.id.action_carWashBarCodeFragment_to_carWashCardFragment);
         } else {
-            action.setIsCardFromProfile(false);
+            Navigation.findNavController(getView()).navigate(R.id.action_carWashBarCodeFragment_to_cards_tab);
         }
-        Navigation.findNavController(getView()).navigate(action);
+
     };
 
     @Override
@@ -100,7 +95,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
 
     private Bitmap generateBarcode() {
         //remove last checksum digit to generate the bar code
-        String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue().substring(0,13);
+        String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue().substring(0, 13);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Resources r = getResources();
         int width = Math.round(TypedValue.applyDimension(
