@@ -216,6 +216,7 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
+<<<<<<< HEAD
             android:id="@+id/action_cardsDetailsFragment_to_carWashBarCodeFragment"
             app:destination="@id/carWashBarCodeFragment"
             app:enterAnim="@anim/slide_in_right"
@@ -224,6 +225,13 @@
             <argument android:defaultValue="true"
                 android:name="isSingleTicket" />
         </action>
+=======
+            android:id="@+id/action_cardsDetailsFragment_to_carWashPurchaseFragment"
+            app:destination="@id/carWashPurchaseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"/>
+>>>>>>> Add 0 balance alert to card detail page.
     </keep_state_fragment>
 
     <keep_state_fragment

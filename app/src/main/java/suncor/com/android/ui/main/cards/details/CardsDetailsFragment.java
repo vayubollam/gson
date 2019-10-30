@@ -183,14 +183,26 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
                 Navigation.findNavController(getView()).navigate(action);
             } else {
-                CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
-                        = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
-                action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
-                action.setCardIndex(clickedCardIndex);
-                action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
-                Navigation.findNavController(getView()).navigate(action);
+                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+                //TODO: CHANGE COPY CONTENT ONCE THEY ARE READY!!
+                if (cardDetail.getBalance() <= 0) {
+                    AlertDialog.Builder ab = new AlertDialog.Builder(getContext());
+                    ab.setTitle("Can't activate wash")
+                            .setMessage("Looks like you don\'t have a balance on this card. Buy a single ticket today to proceed.")
+                            .setPositiveButton("BUY A TICKET", (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashPurchaseFragment))
+                            .setNegativeButton("CANCEL", null)
+                            .show();
+                } else {
+                    CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
+                            = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
+                    action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+                    action.setCardIndex(clickedCardIndex);
+                    action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
         }
+
     };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
