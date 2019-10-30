@@ -65,7 +65,7 @@ public class CarWashCardViewModel extends ViewModel {
         //load wash cards
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
-                return repository.getCards(false);
+                return repository.getCards(true);
             }
             return new MutableLiveData<>();
         });
