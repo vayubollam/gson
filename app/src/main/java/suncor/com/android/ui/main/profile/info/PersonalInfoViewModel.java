@@ -102,9 +102,11 @@ public class PersonalInfoViewModel extends ViewModel {
                 if (profileShouldBeUpdated) {
                     if (isUpdatingEmail) {
                         request.setEmail(emailInputField.getText());
+                        request.setPetroPointsCardNumber(sessionManager.getProfile().getPetroPointsNumber());
                     }
                     if (!isSamePhoneNumber) {
                         request.setPhoneNumber(phoneField.getText());
+
                     }
                     if (isUpdatingPassword) {
                         request.setPassword(passwordField.getText());

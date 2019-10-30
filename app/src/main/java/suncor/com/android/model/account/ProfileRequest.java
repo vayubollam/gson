@@ -6,6 +6,7 @@ public class ProfileRequest {
     Offers offers;
     String password;
     String securityAnswerEncrypted;
+    String petroPointsCardNumber;
 
     public String getSecurityAnswerEncrypted() {
         return securityAnswerEncrypted;
@@ -59,6 +60,14 @@ public class ProfileRequest {
     static class Offers {
         Boolean email;
         Boolean text;
+    }
+
+    public String getPetroPointsCardNumber() {
+        return petroPointsCardNumber;
+    }
+
+    public void setPetroPointsCardNumber(String petroPointsCardNumber) {
+        this.petroPointsCardNumber = petroPointsCardNumber;
     }
 
     public Address getAddress() {
