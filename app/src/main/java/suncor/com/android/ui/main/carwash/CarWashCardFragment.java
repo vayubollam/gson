@@ -248,6 +248,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 
     private void cardClick(CardDetail cardDetail) {
+<<<<<<< HEAD
         if (viewModel.getIsNearestStationIndependent().getValue() != null
                 && viewModel.getIsNearestStationIndependent().getValue()) {
             StationsUtil.showIndependentStationAlert(getContext());
@@ -257,6 +258,27 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
             Navigation.findNavController(getView()).navigate(action);
         }
+=======
+        if (cardDetail.getBalance() > 0) {
+            navigateToCardDetail(cardDetail);
+        } else {
+            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+            adb.setPositiveButton("BUY A TICKET",
+                    (dialog, which) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment))
+                    .setNegativeButton("VIEW CARD DETAIL", (dialog, which) -> navigateToCardDetail(cardDetail))
+                    .setNeutralButton("CANCEL", null)
+                    .setTitle("Can't activate wash")
+                    .setMessage("Looks like you don\'t have a balance on this card. Buy a single ticket today to proceed.")
+                    .show();
+        }
+    }
+
+    private void navigateToCardDetail(CardDetail cardDetail) {
+        CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        action.setIsCardFromCarWash(true);
+        Navigation.findNavController(getView()).navigate(action);
+>>>>>>> Add alert to card tab and car wash card page for 0 balance card.
     }
 
     private View.OnClickListener buyTicketListener = v -> {

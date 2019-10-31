@@ -116,6 +116,12 @@
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_cards_tab_to_carWashPurchaseFragment"
+            app:destination="@id/carWashPurchaseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </keep_state_fragment>
 

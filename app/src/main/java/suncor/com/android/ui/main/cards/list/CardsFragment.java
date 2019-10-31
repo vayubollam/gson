@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
@@ -90,10 +91,25 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getView()).navigate(action);
         } else {
-            CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
-            action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-            Navigation.findNavController(getView()).navigate(action);
+            if (cardDetail.getBalance() > 0) {
+                navigateToCardDetail(cardDetail);
+            } else {
+                AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+                adb.setPositiveButton("BUY A TICKET",
+                        (dialog, which) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment))
+                        .setNegativeButton("VIEW CARD DETAIL", (dialog, which) -> navigateToCardDetail(cardDetail))
+                        .setNeutralButton("CANCEL", null)
+                        .setTitle("Can't activate wash")
+                        .setMessage("Looks like you don\'t have a balance on this card. Buy a single ticket today to proceed.")
+                        .show();
+            }
         }
+    }
+
+    private void navigateToCardDetail(CardDetail cardDetail) {
+        CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
+        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
