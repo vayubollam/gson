@@ -255,7 +255,6 @@
                             android:text="@string/carddetail_active_wash"
                             android:textSize="16sp"
                             app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"
-                            app:layout_constraintTop_toBottomOf="@id/card_description"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
