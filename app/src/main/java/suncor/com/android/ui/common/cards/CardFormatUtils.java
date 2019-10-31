@@ -165,23 +165,6 @@ public class CardFormatUtils {
         long encryptedCardData = (cardData ^ otp) & 0x7f_ffff_ffffL;
 
         // increment the first decimal digit of our 12-digit code by 1 to get rid of any leading zeroes
-        String first12Digits = Long.toString(encryptedCardData + 100_000_000_000L);
-
-        //concat last digit which is a checksum of first 12 digits
-        String lastDigit = calculateChecksumDigit(first12Digits);
-        return first12Digits.concat(lastDigit);
-    }
-
-    private static String calculateChecksumDigit(String mMembershipId) {
-        int total_sum = 0;
-        for (int i = 0; i < mMembershipId.length(); i++) {
-            if (i % 2 != 0) {
-                total_sum = total_sum + Integer.parseInt("" + mMembershipId.charAt(i)) * 3;
-            } else {
-                total_sum = total_sum + Integer.parseInt("" + mMembershipId.charAt(i));
-            }
-        }
-        return String.valueOf(10 - (total_sum % 10));
-
+       return Long.toString(encryptedCardData + 100_000_000_000L);
     }
 }
