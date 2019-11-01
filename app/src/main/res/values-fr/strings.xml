@@ -492,4 +492,11 @@
     <string name="sending_email_spinner">Envoi d\'courriel</string>
     <string name="egift_card_value_title">Valeur de la carte-cadeau électronique</string>
     <string name="egift_card_value_in_dollar_generic">%d $</string>
+    <string name="reset_password_header">Réinitialiser le mot de passe</string>
+    <string name="reset_password_body">Entrer un nouveau mot de passe Petro-Points ci-dessous.</string>
+    <string name="reset_password_hint">Nouveau mot de passe</string>
+    <string name="reset_password_button">Confirmer</string>
+    <string name="reset_password_spinner_text">Mise à jour…</string>
+
+
 </resources>

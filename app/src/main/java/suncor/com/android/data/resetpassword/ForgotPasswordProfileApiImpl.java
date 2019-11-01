@@ -1,13 +1,17 @@
 package suncor.com.android.data.resetpassword;
 
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,13 +20,19 @@ import java.util.Locale;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.resetpassword.ResetPasswordRequest;
+import suncor.com.android.model.resetpassword.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
-    public ForgotPasswordProfileApiImpl() {
-    }
 
-    private final static String SEND_EMAIL_ADAPTER_PATH = "adapters/suncor/v2/profiles/forgot-password";
+
+    private final static String FORGOT_PASSWORD_ADAPTER_PATH = "adapters/suncor/v2/profiles/forgot-password";
+    private Gson gson;
+
+    public ForgotPasswordProfileApiImpl(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public LiveData<Resource<Boolean>> generateResetPasswordEmail(String email) {
@@ -30,7 +40,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = createURI(SEND_EMAIL_ADAPTER_PATH);
+            URI adapterPath = createURI(FORGOT_PASSWORD_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
             request.addHeader("X-Email",email);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
@@ -44,7 +54,6 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
                     Timber.d("Profile forgot password API success");
                     String response = wlResponse.getResponseText();
                     Timber.d("Profile forgot password API success, response:\n" + response);
-
                     result.postValue(Resource.success(true));
                 }
 
@@ -56,6 +65,129 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
                 }
             });
         } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<SecurityQuestion>> getSecurityQuestionToResetPassword(String GUID) {
+            Timber.d("Retrieve security question");
+            MutableLiveData<Resource<SecurityQuestion>> result = new MutableLiveData<>();
+            result.postValue(Resource.loading());
+            URI adapterPath;
+            try {
+                adapterPath = new URI(FORGOT_PASSWORD_ADAPTER_PATH.concat("/security-question"));
+                WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+                request.addHeader("X-Guid",GUID);
+                if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                    request.addHeader("Accept-Language", "fr-CA");
+                } else {
+                    request.addHeader("Accept-Language", "en-CA");
+                }
+                request.send(new WLResponseListener() {
+                    @Override
+                    public void onSuccess(WLResponse wlResponse) {
+                        String jsonText = wlResponse.getResponseText();
+                        Timber.d("Security Question Response:" + jsonText);
+                        try {
+                            SecurityQuestion question = gson.fromJson(jsonText, SecurityQuestion.class);
+                            result.postValue(Resource.success(question));
+                        } catch (JsonSyntaxException e) {
+                            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                            Timber.e("Retrieving security question failed due to " + e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(WLFailResponse wlFailResponse) {
+                        Timber.e("Retrieving security question failed due to:" + wlFailResponse.toString());
+                        result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                    }
+                });
+
+            } catch (URISyntaxException e) {
+                result.postValue(Resource.error(e.getMessage()));
+                e.printStackTrace();
+            }
+            return result;
+    }
+
+    @Override
+    public LiveData<Resource<String>> validateSecurityQuestion(String questionId,String answer, String profileIdEncrypted, String GUID) {
+        Timber.d("validating security question");
+        MutableLiveData<Resource<String>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        URI adapterPath;
+        try {
+            adapterPath = new URI(FORGOT_PASSWORD_ADAPTER_PATH.concat("/security-answer-verification"));
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            request.addHeader("X-Security-Question-Id", questionId);
+            request.addHeader("X-Security-Answer", answer);
+            request.addHeader("X-Profile-Id-Encrypted", profileIdEncrypted);
+            request.addHeader("X-GUID", GUID);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Security Question validation Response:" + jsonText);
+                    try {
+                        String securityAnswerEncrypted = wlResponse.getResponseJSON().getString("securityAnswerEncrypted");
+                        result.postValue(Resource.success(securityAnswerEncrypted));
+                    } catch (JsonSyntaxException | JSONException e) {
+                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                        Timber.e("Retrieving security question failed due to " + e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.e("Retrieving security question failed due to:" + wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+
+        } catch (URISyntaxException e) {
+            result.postValue(Resource.error(e.getMessage()));
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<Boolean>> resetPassword(String profileIdEncrypted, String GUID, ResetPasswordRequest resetPasswordRequest) {
+        Timber.d("Call Reset PASSWORD API");
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = createURI(FORGOT_PASSWORD_ADAPTER_PATH);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
+            request.addHeader("X-Profile-Id-Encrypted",profileIdEncrypted);
+            request.addHeader("X-GUID",GUID);
+
+            JSONObject body = new JSONObject(gson.toJson(resetPasswordRequest));
+
+            request.send(body, new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    Timber.d("Reset password API success");
+                    String response = wlResponse.getResponseText();
+                    Timber.d("Reset password API success, response:\n" + response);
+                    result.postValue(Resource.success(true));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Reset password API  " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        } catch (JSONException e) {
             Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }

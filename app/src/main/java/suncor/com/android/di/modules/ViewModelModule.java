@@ -29,6 +29,8 @@ import suncor.com.android.ui.main.stationlocator.StationsViewModel;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.main.stationlocator.search.SearchViewModel;
 import suncor.com.android.ui.resetpassword.ForgotPasswordViewModel;
+import suncor.com.android.ui.resetpassword.ResetPasswordSecurityQuestionValidationViewModel;
+import suncor.com.android.ui.resetpassword.ResetPasswordViewModel;
 
 @Module
 public abstract class ViewModelModule {
@@ -158,4 +160,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ForgotPasswordViewModel.class)
     protected abstract ViewModel ForgotPasswordViewModel(ForgotPasswordViewModel forgotPasswordViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ResetPasswordSecurityQuestionValidationViewModel.class)
+    protected abstract ViewModel ResetPasswordSecurityQuestionValidationViewModel(ResetPasswordSecurityQuestionValidationViewModel resetPasswordSecurityQuestionValidationViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ResetPasswordViewModel.class)
+    protected abstract ViewModel ResetPasswordViewModel(ResetPasswordViewModel resetPasswordViewModel);
+
+
 }
