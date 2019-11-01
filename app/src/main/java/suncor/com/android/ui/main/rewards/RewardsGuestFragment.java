@@ -39,6 +39,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             binding.layout.removeView(binding.webview);
             binding.layout.addView(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
+        binding.joinButton.bringToFront();
         binding.joinButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
             getActivity().startActivity(intent);
