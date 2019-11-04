@@ -279,13 +279,6 @@
         android:name="suncor.com.android.ui.main.profile.securityquestion.SecurityQuestionValidationFragment"
         android:label="SecurityQuestionValidationFragment">
         <action
-            android:id="@+id/action_securityQuestionValidationFragment_to_preferencesFragment2"
-            app:destination="@id/preferencesFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/profile_tab" />
-        <action
             android:id="@+id/action_securityQuestionValidationFragment_to_personalInfoFragment"
             app:destination="@id/personalInfoFragment"
             app:enterAnim="@anim/slide_in_right"
@@ -331,7 +324,10 @@
         <action
             android:id="@+id/action_merchantDetailsFragment_to_giftCardValueConfirmation"
             app:destination="@id/giftCardValueConfirmation"
-            app:popUpTo="@+id/merchantDetailsFragment" />
+            app:popUpTo="@+id/merchantDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/giftCardValueConfirmation"

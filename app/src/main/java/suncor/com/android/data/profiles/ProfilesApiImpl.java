@@ -1,5 +1,8 @@
 package suncor.com.android.data.profiles;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.common.io.BaseEncoding;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -15,8 +18,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -27,8 +28,8 @@ import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
-    private static final String ADAPTER_PATH = "/adapters/suncor/v2/profiles";
-    private static final String SQ_VALIDATION_ADAPTER_PATH = "/adapters/suncor/v3/profiles";
+    private static final String ADAPTER_PATH_V2 = "/adapters/suncor/v2/profiles";
+    private static final String ADAPTER_PATH_V3 = "/adapters/suncor/v3/profiles";
     private Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
@@ -47,7 +48,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            URI adapterPath = new URI(ADAPTER_PATH_V3);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
@@ -83,7 +84,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH.concat("/security-question"));
+            adapterPath = new URI(ADAPTER_PATH_V2.concat("/security-question"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -126,7 +127,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(SQ_VALIDATION_ADAPTER_PATH.concat("/security-answer-verification"));
+            adapterPath = new URI(ADAPTER_PATH_V3.concat("/security-answer-verification"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             String base64Answer = BaseEncoding.base64().encode(answer.getBytes());
             request.addHeader("x-security-answer", base64Answer);

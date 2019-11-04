@@ -23,6 +23,8 @@ import suncor.com.android.data.redeem.MerchantsApi;
 import suncor.com.android.data.redeem.MerchantsApiImpl;
 import suncor.com.android.data.redeem.OrderApi;
 import suncor.com.android.data.redeem.OrderApiImpl;
+import suncor.com.android.data.resetpassword.ForgotPasswordProfileApi;
+import suncor.com.android.data.resetpassword.ForgotPasswordProfileApiImpl;
 import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.data.settings.SettingsApiImpl;
 import suncor.com.android.data.stations.StationsApi;
@@ -132,5 +134,11 @@ public class DataModule {
     @Singleton
     OrderResponse providesOrderResponse() {
         return new OrderResponse();
+    }
+
+    @Provides
+    @Singleton
+    ForgotPasswordProfileApi providesForgotPasswordProfileApi(Gson gson) {
+        return new ForgotPasswordProfileApiImpl(gson);
     }
 }

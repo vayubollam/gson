@@ -1,17 +1,20 @@
 package suncor.com.android.data.redeem;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Transformations;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.merchants.EGift;
 import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.utilities.Timber;
 
@@ -58,7 +61,26 @@ public class MerchantsRepository {
     private class MerchantsComparator implements Comparator<Merchant> {
         @Override
         public int compare(Merchant merchant1, Merchant merchant2) {
+            int minPointsReqd_Merchant1 = findMinFromList(merchant1.geteGifts());
+            int minPointsReqd_Merchant2 = findMinFromList(merchant2.geteGifts());
+
+            if (minPointsReqd_Merchant1 != minPointsReqd_Merchant2) {
+                return minPointsReqd_Merchant1 - minPointsReqd_Merchant2;
+            }
             return merchant1.getDisplayOrder() - merchant2.getDisplayOrder();
+        }
+
+        private Integer findMinFromList(List<EGift> list) {
+            if (list == null || list.size() == 0) {
+                return Integer.MAX_VALUE;
+            }
+            List<Integer> sortedlist = new ArrayList<>();
+            for (EGift eGift : list) {
+                sortedlist.add(eGift.getPetroPointsRequired());
+            }
+            Collections.sort(sortedlist);
+
+            return sortedlist.get(0);
         }
     }
 }
