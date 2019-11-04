@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ShoppingCart implements Parcelable {
-    private EGift eGift;
+    public EGift eGift;
 
     protected ShoppingCart(Parcel in) {
         eGift = in.readParcelable(EGift.class.getClassLoader());

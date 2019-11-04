@@ -52,12 +52,7 @@ public class ChoiceSelectorAdapter extends RecyclerView.Adapter<ChoiceSelectorAd
             }
             callback.accept(position);
             handler.removeCallbacksAndMessages(null);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Navigation.findNavController(holder.itemView).navigateUp();
-                }
-            }, 300);
+            handler.postDelayed(() -> Navigation.findNavController(holder.itemView).navigateUp(), 300);
         });
         if (position == (provinces.size() - 1)) {
             holder.binding.bottomDivider.setVisibility(View.VISIBLE);

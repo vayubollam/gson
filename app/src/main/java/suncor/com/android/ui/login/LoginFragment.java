@@ -23,19 +23,19 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
-import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.BaseFragment;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.ui.resetpassword.ForgotPasswordFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
@@ -53,6 +53,7 @@ public class LoginFragment extends BaseFragment {
     private LoginViewModel viewModel;
     private String email = "";
     private String password = "";
+    private boolean fromResetPassword = false;
 
     @Inject
     KeyStoreStorage keyStoreStorage;
@@ -63,9 +64,10 @@ public class LoginFragment extends BaseFragment {
 
     }
 
-    public static LoginFragment newInstance(boolean fromEnrollment, String email) {
+    public static LoginFragment newInstance(boolean fromEnrollment, boolean fromResetPassword, String email) {
         Bundle args = new Bundle();
         args.putBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, fromEnrollment);
+        args.putBoolean(LoginActivity.LOGIN_FROM_RESET_PASSWORD_EXTRA, fromResetPassword);
         args.putString(PersonalInfoFragment.EMAIL_EXTRA, email);
         LoginFragment fragment = new LoginFragment();
         fragment.setArguments(args);
@@ -77,6 +79,8 @@ public class LoginFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         boolean fromEnrollment = getArguments().getBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, false);
+        fromResetPassword = getArguments().getBoolean(LoginActivity.LOGIN_FROM_RESET_PASSWORD_EXTRA, false);
+
         viewModel.setLoginFromEnrollment(fromEnrollment);
         viewModel.getLoginFailedEvent().observe(this, (event) -> {
             LoginViewModel.LoginFailResponse response = event.getContentIfNotHandled();
@@ -120,11 +124,12 @@ public class LoginFragment extends BaseFragment {
         });
 
         viewModel.getPasswordResetEvent().observe(this, (event -> {
-            String resetPasswordPath = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr/personnel/mot-de-passe-oublie" : "en/personal/forgot-password";
-            String url = BuildConfig.SUNCOR_WEBSITE.concat(resetPasswordPath);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(url));
-            startActivity(intent);
+            FragmentTransaction fragmentTransaction =  getFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, 0);
+            fragmentTransaction.replace(R.id.fragment, new ForgotPasswordFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
         }));
 
         viewModel.getCallCustomerService().observe(this, event -> {
@@ -241,9 +246,17 @@ public class LoginFragment extends BaseFragment {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        binding.appBar.setNavigationOnClickListener((v) -> getActivity().finish());
+        if(fromResetPassword) {
+            binding.appBar.setNavigationOnClickListener((v) -> goToHomeScreen());
+        } else
+            binding.appBar.setNavigationOnClickListener((v) -> getActivity().finish());
         binding.emailLayout.getEditText().requestFocus();
         return binding.getRoot();
+    }
+
+    private void goToHomeScreen() {
+        Intent homeActivityIntent = new Intent(getContext(), MainActivity.class);
+        startActivity(homeActivityIntent);
     }
 
     @Override

@@ -63,7 +63,6 @@ public class EnrollmentFormViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> navigateToLogin = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> showDuplicateEmailEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> join = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isValidatingEmail = new MutableLiveData<>();
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
@@ -83,34 +82,6 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
         this.fingerPrintManager = fingerPrintManager;
-        LiveData<Resource<EnrollmentsApi.EmailState>> emailCheckLiveData = Transformations.switchMap(emailInputField.getHasFocusObservable(), (event) -> {
-            Boolean hasFocus = event.getContentIfNotHandled();
-            //If it's focused, or has already been checked, or email is invalid, return empty livedata
-            if (hasFocus == null || hasFocus
-                    || emailInputField.getVerificationState() != EmailInputField.VerificationState.UNCHECKED
-                    || !emailInputField.isValid()) {
-                MutableLiveData<Resource<EnrollmentsApi.EmailState>> temp = new MutableLiveData<>();
-                temp.setValue(Resource.success(EnrollmentsApi.EmailState.UNCHECKED));
-                return temp;
-            } else {
-                return enrollmentsApi.checkEmail(emailInputField.getText(), cardStatus != null ? cardStatus.getCardNumber() : null);
-            }
-        });
-        emailCheckLiveData.observeForever(r -> {
-            if (r.status == Resource.Status.LOADING) {
-                isValidatingEmail.setValue(true);
-            } else {
-                isValidatingEmail.setValue(false);
-                emailInputField.setVerificationState(EmailInputField.VerificationState.CHECKED);
-                if (r.status == Resource.Status.SUCCESS) {
-                    if (r.data == EnrollmentsApi.EmailState.ALREADY_REGISTERED) {
-                        showDuplicateEmailEvent.postValue(Event.newEvent(true));
-                    } else if (r.data == EnrollmentsApi.EmailState.RESTRICTED) {
-                        emailInputField.setRestricted(true);
-                    }
-                }
-            }
-        });
 
         LiveData<Resource<Integer>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
@@ -312,10 +283,6 @@ public class EnrollmentFormViewModel extends ViewModel {
 
     public MutableLiveData<Event<Boolean>> getShowDuplicateEmailEvent() {
         return showDuplicateEmailEvent;
-    }
-
-    public MutableLiveData<Boolean> getIsValidatingEmail() {
-        return isValidatingEmail;
     }
 
     public LiveData<Event<Boolean>> getNavigateToLogin() {

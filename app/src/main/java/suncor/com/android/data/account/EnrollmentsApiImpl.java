@@ -1,5 +1,8 @@
 package suncor.com.android.data.account;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -16,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -27,9 +28,8 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
-    private final static String ADAPTER_PATH = "/adapters/suncor/v1/enrollments";
-    private final static String SECURITY_QUESTION_ADAPTER_PATH = "/adapters/suncor/v2/enrollments";
-    private final static String EMAIL_VALIDATION_ADAPTER_PATH = "/adapters/suncor/v2/enrollments";
+    private final static String ADAPTER_PATH_V1 = "/adapters/suncor/v1/enrollments";
+    private final static String ADAPTER_PATH_V2 = "/adapters/suncor/v2/enrollments";
     private Gson gson;
 
     public EnrollmentsApiImpl(Gson gson) {
@@ -42,7 +42,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         MutableLiveData<Resource<Integer>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            URI adapterPath = new URI(ADAPTER_PATH_V1);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(account));
             request.send(body, new WLResponseListener() {
@@ -75,60 +75,6 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
 
         return result;
     }
-
-    @Override
-    public LiveData<Resource<EmailState>> checkEmail(String email, String petroCanadaId) {
-        Timber.d("validating email: " + email);
-        MutableLiveData<Resource<EmailState>> result = new MutableLiveData<>();
-        result.postValue(Resource.loading());
-        try {
-            URI adapterPath = new URI(EMAIL_VALIDATION_ADAPTER_PATH.concat("/email-verification"));
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
-            request.addHeader("x-email", email);
-            if (petroCanadaId != null) {
-                request.addHeader("x-petro-points-id", petroCanadaId);
-            }
-            request.send(new WLResponseListener() {
-                @Override
-                public void onSuccess(WLResponse wlResponse) {
-                    Timber.d("response: " + wlResponse.getResponseText());
-
-                    JSONObject json = wlResponse.getResponseJSON();
-                    if (json == null) {
-                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-                    }
-                    try {
-                        boolean isAlreadyRegistered = json.getBoolean("isAlreadyRegistered");
-                        boolean isRestricted = json.getBoolean("isRestrictedDomain");
-
-                        if (isAlreadyRegistered) {
-                            result.postValue(Resource.success(EmailState.ALREADY_REGISTERED));
-                        } else if (isRestricted) {
-                            result.postValue(Resource.success(EmailState.RESTRICTED));
-                        } else {
-                            result.postValue(Resource.success(EmailState.VALID));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-                    }
-                }
-
-                @Override
-                public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.e(wlFailResponse.toString());
-                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
-                }
-            });
-        } catch (
-                URISyntaxException e) {
-            Timber.e(e.toString());
-            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-        }
-
-        return result;
-    }
-
     @Override
     public LiveData<Resource<ArrayList<SecurityQuestion>>> fetchSecurityQuestions() {
         Timber.d("Retrieve security questions");
@@ -136,7 +82,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(SECURITY_QUESTION_ADAPTER_PATH.concat("/security-questions"));
+            adapterPath = new URI(ADAPTER_PATH_V2.concat("/security-questions"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -179,7 +125,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         MutableLiveData<Resource<CardStatus>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH.concat("/card-status"));
+            URI adapterPath = new URI(ADAPTER_PATH_V1.concat("/card-status"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
             request.addHeader("x-card-number", cardNumber);
             request.addHeader("x-postal-code", postalCode);

@@ -27,7 +27,6 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
-import suncor.com.android.ui.main.profile.preferences.PreferencesFragment;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -68,8 +67,6 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                     sharedViewModel.setEcryptedSecurityAnswer(stringResource.data);
                     if (PersonalInfoFragment.PERSONAL_INFO_FRAGMENT.equalsIgnoreCase(destination)) {
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
-                    } else if (PreferencesFragment.PREFERENCES_FRAGMENT.equalsIgnoreCase(destination)) {
-                        Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_preferencesFragment2);
                     } else if (AddressFragment.ADDRESS_FRAGMENT.equalsIgnoreCase(destination)) {
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
                     }

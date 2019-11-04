@@ -288,9 +288,9 @@
     <string name="profile_about_button">About</string>
     <string name="profile_address_button">Address</string>
     <string name="profile_preferences_button">Preferences</string>
-    <string name="profile_personnal_informations_button">Personal information</string>
+    <string name="profile_personnal_informations_button">Personal Information</string>
     <string name="profile_transactions_button">Transactions</string>
-    <string name="profile_personnal_informations_header">Personal information</string>
+    <string name="profile_personnal_informations_header">Personal Information</string>
     <string name="profile_personnal_informations_firstName">First name</string>
     <string name="profile_personnal_informations_lastName">Last name</string>
     <string name="profile_personnal_informations_phone">Phone (optional)</string>
@@ -446,7 +446,7 @@
     <string name="profile_security_question_checking_answer">Checking your answer…</string>
     <string name="profile_security_question_wrong_answer_alert_title">Incorrect answer.</string>
     <string name="profile_personnal_informations_password">Password</string>
-    <string name="update_password_progress">Updating Password…</string>
+    <string name="update_password_progress">Updating password…</string>
     <string name="profile_uodate_account_toast">New changes saved</string>
     <string name="profile_security_question_load_try_again">try again</string>
     <string name="login_conflict_alert_positive_button">OK</string>
@@ -483,7 +483,7 @@
     <string name="redeem_egift_confirm_and_redeem">Confirm and redeem</string>
     <string name="redeem_egift_new_balance">New balance</string>
     <string name="redeeming">Redeeming…</string>
-    <string name="points_redeemed">Points redeemed!</string>
+    <string name="points_redeemed">Points redeemed</string>
     <string name="thank_you">Thank you, %1$s!</string>
     <string name="redeem_done">Done</string>
     <string name="redeem_receipt_body">Check your email for a link to your eGift card.</string>
@@ -494,10 +494,7 @@
     <string name="redeem_receipt_details_label">Details</string>
     <string name="redeem_receipt_date_label">Date</string>
     <string name="redeem_receipt_order_id_label">Order ID</string>
-    <string name="redeem_receipt_quantity">Quantity</string>
-    <string name="redeem_receipt_quantity_value">%1$s card</string>
     <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668-0220 (TTY: 1 (888) 290-7377).</string>
-    <string name="redeem_receipt_email_sent_to_label">Order will be sent to:</string>
 
     <string name="action_menu_what_would_you_like_to_do">What would you \nlike to do?</string>
     <string name="action_menu_scan_card">Scan my points card</string>
@@ -528,4 +525,21 @@
     <string name="carwash_barcode_reenter">TRY NEW CODE</string>
 
 
+    <string name="msg_e030_title">You can’t redeem for this</string>
+    <string name="redeem_receipt_email_sent_to_label">Sent to:</string>
+    <string name="points_redeemed_value">%1$s points</string>
+    <string name="forgot_password_header">Forgot password</string>
+    <string name="forgot_password_message">No problem. Enter your email and we\'ll help you set up a new one.</string>
+    <string name="forgot_password_email_field_label">Email</string>
+    <string name="forgot_password_reset_button">Continue</string>
+    <string name="forgot_password_toast_msg">Password reset request sent.</string>
+    <string name="sending_email_spinner">Sending email</string>
+    <string name="egift_card_value_title">eGift card value</string>
+    <string name="egift_card_value_in_dollar_generic">$%d</string>
+    <string name="reset_password_header">Reset password</string>
+    <string name="reset_password_body">Enter your new Petro-Points password below.</string>
+    <string name="reset_password_hint">New password</string>
+    <string name="reset_password_button">Confirm</string>
+    <string name="reset_password_spinner_text">Updating password…</string>
+    <string name="reset_password_success_toast">Password has been reset</string>
 </resources>

@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.rewards.redeem;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +26,11 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
     private boolean shouldHideTheRest = false;
     private boolean shouldShowValues = false;
     private Consumer<Integer> callBack;
-    private float itemHeight;
+    private Float itemHeight;
     private Interpolator animInterpolator;
-    private final int ANIM_DURATION = 400;
+    private final int ANIM_DURATION = 600;
     private boolean itemsExpanded = true;
+    private boolean isViewAnimating = false;
 
 
     public GiftCardValueAdapter(List<EGift> eGifts, int petroPoints, Consumer<Integer> callBack) {
@@ -61,62 +64,60 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
         }
         holder.binding.executePendingBindings();
         holder.binding.valueRb.setChecked(position == selectedItem);
+        holder.binding.valueRb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isViewAnimating && isChecked) {
+                buttonView.setChecked(false);
+            }
+        });
         holder.binding.valueRb.setOnClickListener(v -> holder.itemView.callOnClick());
         holder.itemView.setOnClickListener(v -> {
-            if (eGifts.get(position).getPetroPointsRequired() > petroPoints || !itemsExpanded) {
+            if (eGifts.get(position).getPetroPointsRequired() > petroPoints || !itemsExpanded || isViewAnimating) {
                 return;
             }
-            setItemHeight(holder.itemView.getHeight());
+            if (itemHeight == null) {
+                setItemHeight(holder.itemView.getMeasuredHeight());
+            }
             callBack.accept(position);
             if (selectedItem == position) {
                 holder.binding.valueRb.setChecked(true);
-                notifyDataSetChanged();
                 shouldHideTheRest = true;
+                notifyDataSetChanged();
             } else {
-                selectedItem = position;
                 notifyDataSetChanged();
+                selectedItem = position;
                 shouldHideTheRest = true;
-
             }
         });
         if (shouldHideTheRest) {
             itemsExpanded = false;
-            if (position != selectedItem) {
-                holder.binding.getRoot().animate()
-                        .translationY(-holder.binding.getRoot().getHeight() * position)
-                        .alpha(0.0f)
-                        .setInterpolator(animInterpolator)
-                        .setDuration(ANIM_DURATION);
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(holder.itemView, "translationY", -getItemHeight() * position);
+            ObjectAnimator animationAlpha = ObjectAnimator.ofFloat(holder.itemView, "alpha", 1f, 0f);
+            ObjectAnimator animationValueRBAlpha = ObjectAnimator.ofFloat(holder.binding.valueRb, "alpha", 1f, 0f);
+            ObjectAnimator animationTxtSelectionAlpha = ObjectAnimator.ofFloat(holder.binding.txtSelectedCardGift, "alpha", 0f, 1f);
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.setDuration(ANIM_DURATION / 2);
+            if (position == selectedItem) {
+                animatorSet.play(animationY).with(animationValueRBAlpha).with(animationTxtSelectionAlpha);
             } else {
-                holder.binding.getRoot().animate().translationY(-holder.binding.getRoot().getHeight() * position)
-                        .setInterpolator(animInterpolator)
-                        .setDuration(ANIM_DURATION);
-                holder.binding.itemDivider.setVisibility(View.INVISIBLE);
-                holder.binding.valueRb.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
-                holder.binding.txtSelectedCardGift.animate().alpha(1.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
+                animatorSet.play(animationY).with(animationAlpha).with(animationValueRBAlpha).with(animationTxtSelectionAlpha);
             }
+            animatorSet.start();
+            holder.binding.itemDivider.setVisibility(View.INVISIBLE);
             if (position == eGifts.size() - 1) {
                 shouldHideTheRest = false;
             }
-
         }
         if (shouldShowValues) {
             itemsExpanded = true;
-            if (position != selectedItem) {
-                holder.binding.getRoot().setVisibility(View.VISIBLE);
-                holder.binding.getRoot().animate()
-                        .translationY(-(holder.binding.getRoot().getTranslationY() + (holder.binding.getRoot().getHeight() * position)))
-                        .alpha(1.0f)
-                        .setInterpolator(animInterpolator)
-                        .setDuration(ANIM_DURATION);
-            } else {
-                holder.itemView.animate().translationY(-(holder.binding.getRoot().getTranslationY() + (holder.binding.getRoot().getHeight() * position)))
-                        .setInterpolator(animInterpolator)
-                        .setDuration(ANIM_DURATION);
-                holder.binding.itemDivider.setVisibility(View.VISIBLE);
-                holder.binding.valueRb.animate().alpha(1.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
-                holder.binding.txtSelectedCardGift.animate().alpha(0.0f).setInterpolator(animInterpolator).setDuration(ANIM_DURATION);
-            }
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(holder.itemView, "translationY", 0f);
+            ObjectAnimator animationItemViewAlpha = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0f, 1f);
+            ObjectAnimator animationValueRBAlpha = ObjectAnimator.ofFloat(holder.binding.valueRb, "alpha", 0f, 1f);
+            ObjectAnimator animationTxtSelectionAlpha = ObjectAnimator.ofFloat(holder.binding.txtSelectedCardGift, "alpha", 1f, 0f);
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.setDuration(ANIM_DURATION / 2);
+            animatorSet.play(animationY).with(animationItemViewAlpha).with(animationValueRBAlpha).with(animationTxtSelectionAlpha);
+            animatorSet.start();
+            holder.binding.itemDivider.setVisibility(View.VISIBLE);
             if (position == eGifts.size() - 1) {
                 shouldShowValues = false;
             }

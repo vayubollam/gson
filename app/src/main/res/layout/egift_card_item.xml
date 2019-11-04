@@ -34,7 +34,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:letterSpacing="0.1"
-                android:textAllCaps="true"
+                app:textAllCaps="true"
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_60"
                 app:layout_constraintStart_toStartOf="parent"

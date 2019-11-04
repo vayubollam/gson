@@ -64,12 +64,17 @@ public class AddressViewModel extends ViewModel {
 
         profilesApiCall = Transformations.switchMap(updateEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
-                ProfileRequest request = new ProfileRequest(profile);
+                ProfileRequest request = new ProfileRequest();
                 request.setSecurityAnswerEncrypted(sharedViewModel.getEcryptedSecurityAnswer());
-                request.getAddress().setStreetAddress(streetAddressField.getText());
-                request.getAddress().setCity(cityField.getText());
-                request.getAddress().setProvince(selectedProvince.getId());
-                request.getAddress().setPostalCode(postalCodeField.getText());
+
+                if (!streetAddressField.getText().equals(profile.getStreetAddress()) || !cityField.getText().equals(profile.getCity())
+                        || !provinceField.getText().equals(getProvinceNameById(profile.getProvince()))
+                        || !postalCodeField.getText().replace(" ", "").equals(profile.getPostalCode())) {
+                    request.getAddress().setStreetAddress(streetAddressField.getText());
+                    request.getAddress().setCity(cityField.getText());
+                    request.getAddress().setProvince(selectedProvince.getId());
+                    request.getAddress().setPostalCode(postalCodeField.getText());
+                }
 
                 return profilesApi.updateProfile(request);
             } else {
@@ -90,8 +95,8 @@ public class AddressViewModel extends ViewModel {
                     break;
                 case ERROR:
                     ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
-                    alert.title = R.string.msg_am001_title;
-                    alert.message = R.string.msg_am001_message;
+                    alert.title = R.string.msg_e001_title;
+                    alert.message = R.string.msg_e001_message;
                     alert.positiveButton = R.string.ok;
                     sharedViewModel.postAlert(alert);
             }
@@ -170,8 +175,6 @@ public class AddressViewModel extends ViewModel {
             }
         });
     }
-
-
 
 
     public void setProvincesList(ArrayList<Province> provincesList) {

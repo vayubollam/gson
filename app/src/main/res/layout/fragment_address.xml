@@ -95,7 +95,7 @@
                     android:layout_marginTop="16dp"
                     android:hint="@string/enrollment_street_address_label"
                     android:inputType="textPostalAddress"
-                    android:maxLength="50"
+                    android:maxLength="40"
                     android:translationZ="8dp"
                     afterTextChanged="@{(i, t) -> vm.streetAdressChange(t.toString())}"
                     app:error="@{vm.streetAddressField.error}"
