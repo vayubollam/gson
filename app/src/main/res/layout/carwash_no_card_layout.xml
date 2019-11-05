@@ -13,49 +13,57 @@
             type="suncor.com.android.ui.main.carwash.CarWashCardViewModel" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/car_wash_no_card_layout"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/carwash_welcome_card_height"
+        android:layout_height="184dp"
         android:layout_marginStart="@dimen/carwash_margin_16"
         android:layout_marginLeft="@dimen/carwash_margin_16"
         android:layout_marginTop="@dimen/carwash_margin_24"
         android:layout_marginEnd="@dimen/carwash_margin_16"
         android:layout_marginRight="@dimen/carwash_margin_16"
-        android:background="@drawable/car_wash_no_card_background"
-        android:orientation="vertical"
+        android:clipChildren="false"
+        app:cardCornerRadius="11dp"
+        app:cardElevation="2dp"
         app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; !vm.isCardAvailable}">
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <LinearLayout
+            android:id="@+id/car_wash_no_card_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/carwash_margin_16"
-            android:text="@string/carwash_no_card_get_ticket_header"
-            android:textColor="@color/black_80"
-            android:textSize="18sp"
-            app:fontFamily="@font/gibson_semibold" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/carwash_margin_16"
-            android:layout_marginLeft="@dimen/carwash_margin_16"
-            android:layout_marginEnd="@dimen/carwash_margin_16"
-            android:layout_marginRight="@dimen/carwash_margin_16"
-            android:lineSpacingMultiplier="1.71"
-            android:text="@string/carwash_no_card_get_ticket_message"
-            android:textColor="@color/black_60"
-            android:textSize="16sp"
-            app:fontFamily="@font/gibson_regular" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/carwash_margin_16"
+                android:text="@string/carwash_no_card_get_ticket_header"
+                android:textColor="@color/black_80"
+                android:textSize="18sp"
+                app:fontFamily="@font/gibson_semibold" />
 
-        <suncor.com.android.ui.common.SuncorButton
-            android:id="@+id/buy_ticket_button"
-            style="@style/LinkButton.Red.L"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/carwash_margin_16"
-            android:text="@string/carwash_get_ticket_button"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/carwash_margin_16"
+                android:layout_marginLeft="@dimen/carwash_margin_16"
+                android:layout_marginEnd="@dimen/carwash_margin_16"
+                android:layout_marginRight="@dimen/carwash_margin_16"
+                android:lineSpacingMultiplier="1.71"
+                android:text="@string/carwash_no_card_get_ticket_message"
+                android:textColor="@color/black_60"
+                android:textSize="16sp"
+                app:fontFamily="@font/gibson_regular" />
+
+            <suncor.com.android.ui.common.SuncorButton
+                android:id="@+id/buy_ticket_button"
+                style="@style/LinkButton.Red.L"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/carwash_margin_16"
+                android:text="@string/carwash_get_ticket_button"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
 
