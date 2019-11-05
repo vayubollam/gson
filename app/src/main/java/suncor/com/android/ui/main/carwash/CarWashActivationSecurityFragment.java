@@ -85,6 +85,10 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
         String pin = isPinEntered();
         if (pin != null && pin.length() == VERIFICATION_PIN_LENGTH) {
             viewModel.setSecurityPin(pin);
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
             Navigation.findNavController(getView()).
                     navigate(R.id.action_carWashActivationSecurityFragment_to_carWashBarCodeFragment);
         } else {
@@ -158,8 +162,8 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                     break;
                 case 3:
                     if (pinText3.getText() != null && pinText3.getText().toString().length() != 0) {
-                        pinText3.clearFocus();
-                        inputMethodManager.hideSoftInputFromWindow(pinText3.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                        pinText3.clearFocus();
+//                        inputMethodManager.hideSoftInputFromWindow(pinText3.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                     break;
             }

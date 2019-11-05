@@ -3,8 +3,10 @@ package suncor.com.android.ui.main.carwash;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,10 +55,10 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         binding.appBar.setNavigationOnClickListener(v -> goBack(false));
         binding.buttonClose.setOnClickListener(closeListener);
         binding.reEnterButton.setOnClickListener(v -> goBack(true));
-        binding.barCodeImage.post(() -> {
-            float screenWdith = binding.barCodeImage.getWidth();
-            binding.barCodeImage.setImageBitmap(generateBarcode(screenWdith));
-        });
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        binding.barCodeImage.setImageBitmap(generateBarcode(size.x));
 
         return binding.getRoot();
     }
@@ -97,12 +99,12 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         goBack(false);
     }
 
-    private Bitmap generateBarcode(float screenWidth) {
+    private Bitmap generateBarcode(int screenSize) {
         String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue();
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Resources r = getResources();
         int width = Math.round(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, screenWidth, r.getDisplayMetrics()));
+                TypedValue.COMPLEX_UNIT_DIP, screenSize, r.getDisplayMetrics()));
         int height = Math.round(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, r.getDimension(R.dimen.carwash_barcode_image_height), r.getDisplayMetrics()));
         try {
