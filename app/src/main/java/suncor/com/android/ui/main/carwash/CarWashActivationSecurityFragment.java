@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +69,10 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             pinText1.addTextChangedListener(new mInputTextWatcher(1));
             pinText2.addTextChangedListener(new mInputTextWatcher(2));
             pinText3.addTextChangedListener(new mInputTextWatcher(3));
+            pinText1.setOnKeyListener(new mKeyBoardListener(1));
+            pinText2.setOnKeyListener(new mKeyBoardListener(2));
+            pinText3.setOnKeyListener(new mKeyBoardListener(3));
+
             inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(pinText1, InputMethodManager.SHOW_IMPLICIT);
 
@@ -163,6 +169,43 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
 
         @Override
         public void afterTextChanged(Editable editable) {
+        }
+    }
+
+    class mKeyBoardListener implements View.OnKeyListener {
+        int id;
+
+        mKeyBoardListener(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            if (keyEvent.getAction() != KeyEvent.ACTION_DOWN)
+                return true;
+
+            if (i == KeyEvent.KEYCODE_DEL) {
+                switch (id) {
+                    case 1:
+                        //do nothing
+                        break;
+                    case 2:
+                        if (pinText2.getText() != null && pinText2.getText().length() == 0) {
+                            pinText2.clearFocus();
+                            pinText1.requestFocus();
+                            pinText1.getText().clear();
+                        }
+                        break;
+                    case 3:
+                        if (pinText3.getText() != null && pinText3.getText().length() == 0) {
+                            pinText3.clearFocus();
+                            pinText2.requestFocus();
+                            pinText2.getText().clear();
+                        }
+                        break;
+                }
+            }
+            return false;
         }
     }
 }

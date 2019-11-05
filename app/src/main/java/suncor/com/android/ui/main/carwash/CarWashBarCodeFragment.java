@@ -53,7 +53,11 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         binding.appBar.setNavigationOnClickListener(v -> goBack(false));
         binding.buttonClose.setOnClickListener(closeListener);
         binding.reEnterButton.setOnClickListener(v -> goBack(true));
-        binding.barCodeImage.setImageBitmap(generateBarcode());
+        binding.barCodeImage.post(() -> {
+            float screenWdith = binding.barCodeImage.getWidth();
+            binding.barCodeImage.setImageBitmap(generateBarcode(screenWdith));
+        });
+
         return binding.getRoot();
     }
 
@@ -93,13 +97,12 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         goBack(false);
     }
 
-    private Bitmap generateBarcode() {
-        //remove last checksum digit to generate the bar code
+    private Bitmap generateBarcode(float screenWidth) {
         String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue();
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Resources r = getResources();
         int width = Math.round(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, r.getDimension(R.dimen.carwash_barcode_image_width), r.getDisplayMetrics()));
+                TypedValue.COMPLEX_UNIT_DIP, screenWidth, r.getDisplayMetrics()));
         int height = Math.round(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, r.getDimension(R.dimen.carwash_barcode_image_height), r.getDisplayMetrics()));
         try {
