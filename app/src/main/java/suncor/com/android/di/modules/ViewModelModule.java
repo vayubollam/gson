@@ -19,6 +19,7 @@ import suncor.com.android.ui.main.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.main.cards.list.CardsViewModel;
 import suncor.com.android.ui.main.carwash.CarWashCardViewModel;
 import suncor.com.android.ui.main.carwash.CarWashSharedViewModel;
+import suncor.com.android.ui.main.carwash.singleticket.SingleTicketViewModel;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.profile.address.AddressViewModel;
 import suncor.com.android.ui.main.profile.help.FAQViewModel;
@@ -183,5 +184,10 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ResetPasswordViewModel.class)
     protected abstract ViewModel ResetPasswordViewModel(ResetPasswordViewModel resetPasswordViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SingleTicketViewModel.class)
+    protected abstract ViewModel SingleTicketViewModel(SingleTicketViewModel singleTicketViewModel);
 
 }
