@@ -44,7 +44,23 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             offerCards.add(banner1);
         }
 
-        OfferCard banner2 = new OfferCard(activity.getString(R.string.offers_banner_2_text),
+        OfferCard banner2 = new OfferCard(activity.getString(R.string.offers_banner_3_text),
+                activity.getDrawable(R.drawable.banner_3_brand),
+                new OfferCard.OfferButton(
+                        activity.getString(R.string.offers_banner_3_button),
+                        activity.getDrawable(R.drawable.ic_play_video),
+                        () -> {
+                            AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "2":"3"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_3_text)));
+                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
+                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_3_text));
+
+                            activity.startActivity(intent);
+                        }
+                ));
+        offerCards.add(banner2);
+
+        OfferCard banner3 = new OfferCard(activity.getString(R.string.offers_banner_2_text),
                 activity.getDrawable(R.drawable.banner_2_ppts),
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_2_button),
@@ -60,23 +76,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "1":"2"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_2_text)));
                         }
                 ));
-        offerCards.add(banner2);
-
-        OfferCard banner3 = new OfferCard(activity.getString(R.string.offers_banner_3_text),
-                activity.getDrawable(R.drawable.banner_3_brand),
-                new OfferCard.OfferButton(
-                        activity.getString(R.string.offers_banner_3_button),
-                        activity.getDrawable(R.drawable.ic_play_video),
-                        () -> {
-                            AnalyticsUtils.logEvent(activity, "promotion_click", new Pair<>("promotionPosition", isSignedIn? "2":"3"), new Pair<>("promotionName", activity.getString(R.string.offers_banner_3_text)));
-                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_3_text));
-
-                            activity.startActivity(intent);
-                        }
-                ));
         offerCards.add(banner3);
+
 
         OfferCard banner4 = new OfferCard(activity.getString(R.string.offers_banner_4_text),
                 activity.getDrawable(R.drawable.banner_4_ev),
