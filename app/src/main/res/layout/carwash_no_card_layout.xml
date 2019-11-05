@@ -54,7 +54,7 @@
                 android:layout_marginEnd="@dimen/carwash_margin_16"
                 android:layout_marginRight="@dimen/carwash_margin_16"
                 android:layout_marginTop="24dp"
-                android:lineSpacingMultiplier="1.31"
+                android:lineSpacingMultiplier="1.41"
                 android:text="@string/carwash_no_card_get_ticket_message"
                 android:textColor="@color/black_60"
                 android:textSize="16sp"
