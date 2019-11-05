@@ -15,7 +15,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="184dp"
+        android:layout_height="196dp"
         android:layout_marginStart="@dimen/carwash_margin_16"
         android:layout_marginLeft="@dimen/carwash_margin_16"
         android:layout_marginTop="@dimen/carwash_margin_24"
@@ -26,44 +26,55 @@
         app:cardElevation="2dp"
         app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; !vm.isCardAvailable}">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/car_wash_no_card_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:orientation="vertical">
+            android:clipToPadding="false">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/no_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/carwash_margin_16"
                 android:text="@string/carwash_no_card_get_ticket_header"
                 android:textColor="@color/black_80"
                 android:textSize="18sp"
-                app:fontFamily="@font/gibson_semibold" />
+                app:fontFamily="@font/gibson_semibold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/no_card_description"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/no_card_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/carwash_margin_16"
                 android:layout_marginLeft="@dimen/carwash_margin_16"
                 android:layout_marginEnd="@dimen/carwash_margin_16"
                 android:layout_marginRight="@dimen/carwash_margin_16"
-                android:lineSpacingMultiplier="1.71"
+                android:layout_marginTop="24dp"
+                android:lineSpacingMultiplier="1.31"
                 android:text="@string/carwash_no_card_get_ticket_message"
                 android:textColor="@color/black_60"
                 android:textSize="16sp"
-                app:fontFamily="@font/gibson_regular" />
+                app:fontFamily="@font/gibson_regular"
+                app:layout_constraintTop_toBottomOf="@id/no_card_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
             <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/buy_ticket_button"
-                style="@style/LinkButton.Red.L"
+                style="@style/LinkButton.Red.M"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/carwash_margin_16"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="26dp"
                 android:text="@string/carwash_get_ticket_button"
-                android:textSize="14sp" />
-        </LinearLayout>
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
 
