@@ -63,6 +63,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private ArrayList<Province> provinces = new ArrayList<>();
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
+    private boolean isNearestStationIndependent = false;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -269,4 +270,11 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         });
     }
 
+    public boolean isNearestStationIndependent() {
+        return isNearestStationIndependent;
+    }
+
+    public void setNearestStationIndependent(boolean nearestStationIndependent) {
+        isNearestStationIndependent = nearestStationIndependent;
+    }
 }
