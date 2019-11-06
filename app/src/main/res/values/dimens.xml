@@ -48,7 +48,7 @@
     <dimen name="carwash_welcome_card_height">184dp</dimen>
     <dimen name="carwash_margin_16">16dp</dimen>
     <dimen name="carwash_margin_24">24dp</dimen>
-    <dimen name="carwash_list_margin_top">-88dp</dimen>
+    <dimen name="carwash_list_margin_top">16dp</dimen>
     <dimen name="carwash_card_elevation">2dp</dimen>
     <dimen name="carwash_barcode_image_width">280dp</dimen>
     <dimen name="carwash_barcode_image_height">100dp</dimen>
