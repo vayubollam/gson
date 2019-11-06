@@ -161,8 +161,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                     break;
                 case 3:
                     if (pinText3.getText() != null && pinText3.getText().toString().length() != 0) {
-//                        pinText3.clearFocus();
-//                        inputMethodManager.hideSoftInputFromWindow(pinText3.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        //do nothing
                     }
                     break;
             }
