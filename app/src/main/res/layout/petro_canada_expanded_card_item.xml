@@ -124,7 +124,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:fillViewport="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="21dp"
+                    app:layout_constraintBottom_toBottomOf="@id/divider3"
                     app:layout_constraintTop_toBottomOf="@id/divider">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -193,7 +194,7 @@
                             android:id="@+id/carwash_balance_update_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
+                            android:layout_marginTop="4dp"
                             android:text="@string/cardetail_balance_update_message"
                             android:textAppearance="@style/Caption1"
                             android:textColor="@color/black_60"
@@ -222,6 +223,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
+                            android:layout_marginBottom="24dp"
                             android:gravity="center"
                             android:lineSpacingMultiplier="1.57"
                             android:paddingStart="16dp"
@@ -243,25 +245,34 @@
                             app:layout_constraintTop_toBottomOf="@id/divider_2"
                             app:visibleGone="@{card.cardType==CardType.PPTS}" />
 
-                        <suncor.com.android.ui.common.SuncorButton
-                            android:id="@+id/active_wash_button"
-                            style="@style/FilledButton.Red.L"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:textAllCaps="true"
-                            android:text="@string/carddetail_active_wash"
-                            android:textSize="16sp"
-                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            tools:text="ACTIVATE WASH" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:layout_marginBottom="21dp"
+                    android:background="@drawable/merchantshadow"
+                    app:layout_constraintBottom_toTopOf="@id/active_wash_button" />
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/active_wash_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:textAllCaps="true"
+                    android:text="@string/carddetail_active_wash"
+                    android:textSize="16sp"
+                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="ACTIVATE WASH"
+                    tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

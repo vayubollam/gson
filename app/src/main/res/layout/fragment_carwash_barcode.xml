@@ -31,128 +31,147 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:lineSpacingMultiplier="1.31"
+            android:fontFamily="@font/gibson_semibold"
+            android:lineSpacingMultiplier="1.1"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/carwash_barcode_header"
-            android:textAppearance="@style/Title1"
+            android:textColor="@color/black_80"
+            android:textSize="@dimen/carwash_barcode_title"
             app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/gibson_regular"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
             android:paddingRight="16dp"
             android:text="@string/carwash_barcode_subtitle"
-            android:textAppearance="@style/Body"
             android:textColor="@color/black_60"
-            app:autoSizeMaxTextSize="18sp"
-            app:autoSizeMinTextSize="12sp"
-            app:autoSizeTextType="uniform"
+            android:textSize="@dimen/carwash_barcode_subtitle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header" />
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/bar_code_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/divider"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/button_close"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/subtitle">
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bar_code_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/guideline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/bar_code_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/carwash_barcode_image_height"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="24dp"
+                    android:paddingRight="20dp"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/barcode_number_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/black_80"
+                    android:textSize="18sp"
+                    app:carWashCodeText="@{vm.getEncryptedCarWashCode().getValue()}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/bar_code_image" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/bar_code_image"
-                android:layout_width="@dimen/carwash_barcode_image_width"
-                android:layout_height="@dimen/carwash_barcode_image_height"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="48dp"
+                android:src="@drawable/horizontal_divider"
+                app:layout_constraintBottom_toTopOf="@id/bar_code_button_group"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/bar_code_group" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/barcode_number_text"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bar_code_button_group"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/gibson_semibold"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textColor="@color/black_80"
-                android:textSize="18sp"
-                app:carWashCodeText="@{vm.getEncryptedCarWashCode().getValue()}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bar_code_image" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/guideline">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="48dp"
-            android:src="@drawable/horizontal_divider"
-            app:layout_constraintBottom_toTopOf="@id/button_close"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/security_pin_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:letterSpacing="0.1"
+                    android:text="@{vm.getSecurityPin().getValue()}"
+                    android:textColor="@color/black_100"
+                    android:textSize="22sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="038" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/button_close"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/have_trouble_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/gibson_regular"
+                    android:text="@string/carwash_barcode_trouble_hint"
+                    android:textColor="@color/black_80"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/security_pin_text" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/security_pin_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/gibson_semibold"
-                android:letterSpacing="0.2"
-                android:text="@{vm.getSecurityPin().getValue()}"
-                android:textColor="@color/black_100"
-                android:textSize="22sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="038" />
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/re_enter_button"
+                    style="@style/LinkButton.Red.M"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/carwash_barcode_reenter"
+                    android:textAllCaps="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/have_trouble_text" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/have_trouble_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/gibson_regular"
-                android:text="@string/carwash_barcode_trouble_hint"
-                android:textColor="@color/black_80"
-                android:textSize="14sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/security_pin_text" />
-
-            <suncor.com.android.ui.common.SuncorButton
-                android:id="@+id/re_enter_button"
-                style="@style/LinkButton.Red.M"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/carwash_barcode_reenter"
-                android:textAllCaps="true"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/have_trouble_text" />
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <suncor.com.android.ui.common.SuncorButton
@@ -162,6 +181,7 @@
             android:layout_height="44dp"
             android:layout_marginStart="84dp"
             android:layout_marginEnd="84dp"
+            android:layout_marginBottom="32dp"
             android:text="@string/cards_details_close"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -41,16 +41,16 @@
     <dimen name="action_menu_margin_32">32dp</dimen>
     <dimen name="action_menu_margin_12">12dp</dimen>
     <dimen name="action_menu_card_view_radius">12dp</dimen>
-    <dimen name="action_menu_card_view_elevation">1dp</dimen>
+    <dimen name="action_menu_card_view_elevation">1.3dp</dimen>
     <dimen name="action_menu_translationZ">12dp</dimen>
     <dimen name="action_menu_layout_margin">16dp</dimen>
     <dimen name="action_menu_fixed_height">358dp</dimen>
     <dimen name="carwash_welcome_card_height">184dp</dimen>
     <dimen name="carwash_margin_16">16dp</dimen>
     <dimen name="carwash_margin_24">24dp</dimen>
-    <dimen name="carwash_list_margin_top">-40dp</dimen>
+    <dimen name="carwash_list_margin_top">16dp</dimen>
     <dimen name="carwash_card_elevation">2dp</dimen>
     <dimen name="carwash_barcode_image_width">280dp</dimen>
-    <dimen name="carwash_barcode_image_height">60dp</dimen>
+    <dimen name="carwash_barcode_image_height">100dp</dimen>
 
 </resources>

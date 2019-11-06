@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="carwash_verfication_input_textsize">50sp</dimen>
-    <dimen name="carwash_verfication_input_width">80dp</dimen>
-
+    <dimen name="carwash_verfication_input_textsize">80dp</dimen>
+    <dimen name="carwash_verfication_input_width">56dp</dimen>
+    <dimen name="carwash_verification_input_margin">24dp</dimen>
+    <dimen name="carwash_barcode_title">26sp</dimen>
+    <dimen name="carwash_barcode_subtitle">18sp</dimen>
+    <dimen name="carwash_barcode_padding">16dp</dimen>
+    <dimen name="carwash_barcode_image_height">100dp</dimen>
 </resources>

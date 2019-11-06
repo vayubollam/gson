@@ -16,7 +16,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/station_card"
         android:layout_width="match_parent"
-        android:layout_height="188dp"
+        android:layout_height="196dp"
         android:clipChildren="false"
         app:cardCornerRadius="@dimen/cards_default_radius"
         app:cardElevation="2dp"
@@ -133,6 +133,7 @@
                 android:layout_below="@+id/carwash_type_icon"
                 android:layout_marginLeft="-8dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
                 android:paddingStart="8dp"
                 android:paddingLeft="8dp"
                 android:text="@string/station_directions_button" />

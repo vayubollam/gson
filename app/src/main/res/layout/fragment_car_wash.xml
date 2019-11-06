@@ -45,11 +45,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
+                android:clipChildren="false"
                 android:fillViewport="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clipChildren="false"
                     android:orientation="vertical">
 
                     <TextView
@@ -74,6 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
+                        android:clipChildren="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message">
@@ -82,14 +85,14 @@
                             android:id="@+id/carwash_no_card"
                             layout="@layout/carwash_no_card_layout"
                             app:vm="@{vm}"
-                            tools:visibility="gone" />
+                            tools:visibility="visible" />
 
 
                         <include
                             android:id="@+id/carwash_wash_cards"
                             layout="@layout/carwash_wash_cards_layout"
                             app:vm="@{vm}"
-                            tools:visibility="visible" />
+                            tools:visibility="gone" />
 
                     </FrameLayout>
 
@@ -97,7 +100,7 @@
                         android:id="@+id/carwash_nearest_cards"
                         layout="@layout/carwash_nearest_card"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="196dp"
                         android:layout_margin="@dimen/carwash_margin_16"
                         android:visibility="@{(vm.viewState != ViewState.LOADING)? View.VISIBLE : View.GONE}"
                         app:layout_constraintLeft_toLeftOf="parent"
