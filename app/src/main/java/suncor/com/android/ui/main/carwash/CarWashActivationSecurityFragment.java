@@ -65,12 +65,12 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
 
         binding.getRoot().post(() -> {
             pinText1.requestFocus();
-            pinText1.addTextChangedListener(new mInputTextWatcher(1));
-            pinText2.addTextChangedListener(new mInputTextWatcher(2));
-            pinText3.addTextChangedListener(new mInputTextWatcher(3));
-            pinText1.setOnKeyListener(new mKeyBoardListener(1));
-            pinText2.setOnKeyListener(new mKeyBoardListener(2));
-            pinText3.setOnKeyListener(new mKeyBoardListener(3));
+            pinText1.addTextChangedListener(new mInputTextWatcher(PIN_ID.FIRST));
+            pinText2.addTextChangedListener(new mInputTextWatcher(PIN_ID.SECOND));
+            pinText3.addTextChangedListener(new mInputTextWatcher(PIN_ID.THIRD));
+            pinText1.setOnKeyListener(new mKeyBoardListener(PIN_ID.FIRST));
+            pinText2.setOnKeyListener(new mKeyBoardListener(PIN_ID.SECOND));
+            pinText3.setOnKeyListener(new mKeyBoardListener(PIN_ID.THIRD));
 
             inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(pinText1, InputMethodManager.SHOW_IMPLICIT);
@@ -134,9 +134,9 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     }
 
     class mInputTextWatcher implements TextWatcher {
-        int id;
+        PIN_ID id;
 
-        mInputTextWatcher(int id) {
+        mInputTextWatcher(PIN_ID id) {
             this.id = id;
         }
 
@@ -147,21 +147,16 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             switch (id) {
-                case 1:
+                case FIRST:
                     if (pinText1.getText() != null && pinText1.getText().toString().length() != 0) {
                         pinText1.clearFocus();
                         pinText2.requestFocus();
                     }
                     break;
-                case 2:
+                case SECOND:
                     if (pinText2.getText() != null && pinText2.getText().toString().length() != 0) {
                         pinText2.clearFocus();
                         pinText3.requestFocus();
-                    }
-                    break;
-                case 3:
-                    if (pinText3.getText() != null && pinText3.getText().toString().length() != 0) {
-                        //do nothing
                     }
                     break;
             }
@@ -175,9 +170,9 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     }
 
     class mKeyBoardListener implements View.OnKeyListener {
-        int id;
+        PIN_ID id;
 
-        mKeyBoardListener(int id) {
+        mKeyBoardListener(PIN_ID id) {
             this.id = id;
         }
 
@@ -188,17 +183,17 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
 
             if (i == KeyEvent.KEYCODE_DEL) {
                 switch (id) {
-                    case 1:
+                    case FIRST:
                         //do nothing
                         break;
-                    case 2:
+                    case SECOND:
                         if (pinText2.getText() != null && pinText2.getText().length() == 0) {
                             pinText2.clearFocus();
                             pinText1.requestFocus();
                             pinText1.getText().clear();
                         }
                         break;
-                    case 3:
+                    case THIRD:
                         if (pinText3.getText() != null && pinText3.getText().length() == 0) {
                             pinText3.clearFocus();
                             pinText2.requestFocus();
@@ -210,4 +205,11 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             return false;
         }
     }
+
+    enum PIN_ID {
+        FIRST,
+        SECOND,
+        THIRD
+    }
+
 }
