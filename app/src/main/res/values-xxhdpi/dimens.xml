@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="carwash_verfication_input_textsize">50sp</dimen>
-    <dimen name="carwash_verfication_input_width">80dp</dimen>
-
+    <dimen name="carwash_verfication_input_textsize">80dp</dimen>
+    <dimen name="carwash_verfication_input_width">56dp</dimen>
+    <dimen name="carwash_verification_input_margin">24dp</dimen>
 </resources>
