@@ -13,6 +13,7 @@ import suncor.com.android.di.modules.ViewModelModule;
 import suncor.com.android.di.modules.enrollment.EnrollmentActivityModule;
 import suncor.com.android.di.modules.home.MainActivityModule;
 import suncor.com.android.di.modules.login.LoginActivityModule;
+import suncor.com.android.di.modules.resetpassword.ResetPasswordActivityModule;
 
 @Component(modules = {
         APPModule.class,
@@ -22,7 +23,8 @@ import suncor.com.android.di.modules.login.LoginActivityModule;
         LoginActivityModule.class,
         MainActivityModule.class,
         EnrollmentActivityModule.class,
-        AndroidSupportInjectionModule.class})
+        AndroidSupportInjectionModule.class,
+        ResetPasswordActivityModule.class})
 
 @Singleton
 public interface AppComponent extends AndroidInjector<SuncorApplication> {

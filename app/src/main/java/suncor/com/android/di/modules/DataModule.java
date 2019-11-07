@@ -138,7 +138,7 @@ public class DataModule {
 
     @Provides
     @Singleton
-    ForgotPasswordProfileApi providesForgotPasswordProfileApi() {
-        return new ForgotPasswordProfileApiImpl();
+    ForgotPasswordProfileApi providesForgotPasswordProfileApi(Gson gson) {
+        return new ForgotPasswordProfileApiImpl(gson);
     }
 }

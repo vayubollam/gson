@@ -12,24 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.databinding.FragmentResetPasswordBinding;
+import suncor.com.android.databinding.FragmentForgotPasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.uicomponents.SuncorSelectInputLayout;
-import suncor.com.android.uicomponents.SuncorTextInputLayout;
 
 public class ForgotPasswordFragment extends MainActivityFragment {
 
-    FragmentResetPasswordBinding binding;
+    FragmentForgotPasswordBinding binding;
     ForgotPasswordViewModel viewModel;
-    private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -47,6 +42,7 @@ public class ForgotPasswordFragment extends MainActivityFragment {
         viewModel.sendEmailApiCall.observe(this, resource -> {
             switch (resource.status) {
                 case LOADING:
+                    hideKeyBoard();
                     break;
                 case SUCCESS:
                     getFragmentManager().popBackStack();
@@ -56,7 +52,6 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                     Alerts.prepareGeneralErrorDialog(getActivity()).show();
                     getFragmentManager().popBackStack();
                     break;
-
             }
         });
     }
@@ -64,14 +59,12 @@ public class ForgotPasswordFragment extends MainActivityFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentResetPasswordBinding.inflate(inflater, container, false);
-
+        binding = FragmentForgotPasswordBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        binding.setEventHandler(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        requiredFields.add(binding.forgotPasswordEmailInput);
-
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
         return binding.getRoot();
     }
 
@@ -80,26 +73,8 @@ public class ForgotPasswordFragment extends MainActivityFragment {
         getFragmentManager().popBackStack();
     }
 
-
-    public void generateForgotPasswordLink() {
-        hideKeyBoard();
-
-        int itemWithError = viewModel.validateAndReset();
-        if (itemWithError != -1) {
-            focusOnItem(requiredFields.get(itemWithError));
-        }
-    }
-
     private void hideKeyBoard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    }
-
-    private void focusOnItem(SuncorTextInputLayout input) {
-        input.getEditText().requestFocus();
-        if (!(input instanceof SuncorSelectInputLayout)) {
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(input.getEditText(), InputMethodManager.SHOW_IMPLICIT);
-        }
     }
 }
