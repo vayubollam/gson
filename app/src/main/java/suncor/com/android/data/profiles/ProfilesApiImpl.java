@@ -28,6 +28,7 @@ import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
     private static final String ADAPTER_PATH = "/adapters/suncor/v2/profiles";
+    private static final String UPDATE_PROFILE_ADAPTER_PATH = "/adapters/suncor/v3/profiles";
     private static final String SQ_VALIDATION_ADAPTER_PATH = "/adapters/suncor/v3/profiles";
     private Gson gson;
 
@@ -47,7 +48,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            URI adapterPath = new URI(UPDATE_PROFILE_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
