@@ -542,4 +542,17 @@
     <string name="reset_password_button">Confirm</string>
     <string name="reset_password_spinner_text">Updating password…</string>
     <string name="reset_password_success_toast">Password has been reset</string>
+
+    <string name="single_ticket_title">Car wash ticket</string>
+    <string name="single_ticket_update_button">Update</string>
+    <string name="single_ticket_payment_title">Payment</string>
+    <string name="single_ticket_add_to_account">Add ticket to my account</string>
+    <string name="single_ticket_email_agreement">If you changed your email in the last 24 hours, there will be a hold on redeemed Single-Ticket tickets</string>
+    <string name="single_ticket_email_title">Sent to</string>
+    <string name="single_ticket_new_balance_title">New balance</string>
+    <string name="single_ticket_select_value">Select amount</string>
+    <string name="single_ticket_not_enough_points">Not enough points yet.</string>
+    <string name="single_ticket_quantity_title">Quantity</string>
+    <string name="single_ticket_quantity">%d</string>
+    <string name="single_ticket_value_in_pointr_generic">%s points</string>
 </resources>

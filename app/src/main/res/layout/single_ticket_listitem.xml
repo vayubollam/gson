@@ -6,16 +6,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/single_ticket_item_layout"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:background="@color/white"
         android:clickable="true"
-        android:foreground="?selectableItemBackground"
-        android:animateLayoutChanges="true"
-        android:layout_height="wrap_content">
+        android:foreground="?selectableItemBackground">
 
         <View
+            android:id="@+id/item_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:id="@+id/item_divider"
             android:background="@drawable/horizontal_divider"
             app:layout_constraintTop_toBottomOf="@id/value_rb" />
 
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@{ @string/rewards_signedin_egift_value_in_pointr_generic(CardFormatUtils.formatBalance(singleTicket.petroPointsRequired))}"
+            android:text="@{ @string/single_ticket_value_in_pointr_generic(CardFormatUtils.formatBalance(singleTicket.petroPointsRequired))}"
             android:textAppearance="@style/Body"
             android:textColor="@{singleTicket.petroPointsRequired > petroPoints ? @color/black_20 : @color/black_80}"
             app:layout_constraintBottom_toBottomOf="@id/value_rb"
@@ -39,26 +39,26 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
             android:enabled="@{singleTicket.petroPointsRequired > petroPoints ? false : true}"
-            android:text="@{ @string/rewards_signedin_egift_value_in_dollar_generic(singleTicket.value)}"
-            android:textAppearance="@style/Body"
             android:paddingStart="15dp"
+            android:text="@{ @string/single_ticket_quantity(singleTicket.value)}"
+            android:textAppearance="@style/Body"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/card_point_value"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="$10" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
             android:id="@+id/txt_selected_card_gift"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
-            android:text="@{ @string/rewards_signedin_egift_value_in_dollar_generic(singleTicket.value)}"
-            tools:visibility="visible"
-            app:layout_constraintTop_toTopOf="@id/value_rb"
-            app:layout_constraintLeft_toLeftOf="@id/value_rb"
-            tools:text="$10 gift card"
+            android:text="@{ @string/single_ticket_quantity(singleTicket.value)}"
             android:textAppearance="@style/Body"
-            app:layout_constraintBottom_toBottomOf="@id/value_rb" />
+            app:layout_constraintBottom_toBottomOf="@id/value_rb"
+            app:layout_constraintLeft_toLeftOf="@id/value_rb"
+            app:layout_constraintTop_toTopOf="@id/value_rb"
+            tools:text="$10 gift card"
+            tools:visibility="visible" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

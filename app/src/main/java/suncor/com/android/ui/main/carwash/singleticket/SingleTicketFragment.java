@@ -93,7 +93,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.changeValueBtn.setOnClickListener(v -> {
-            binding.cardValueTxt.setText(getString(R.string.redeem_egift_card_select_value));
+            binding.cardValueTxt.setText(getString(R.string.single_ticket_select_value));
             binding.changeValueBtn.setEnabled(false);
             binding.changeValueBtn.animate().alpha(0.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
                 @Override
@@ -127,18 +127,18 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
+        if (viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
     }
 
     private void cardValueChanged(Integer selectedItem) {
         int valueSelected = viewModel.getTicketItems().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
         //viewModel.setEGift(viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem));
-        binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
-        binding.redeemTotalPointsTxt2.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
-        binding.redeemNewPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
-        binding.redeemNewPointsTxt2.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
-        binding.cardValueTxt.setText(getString(R.string.redeem_egift_current_value));
+        binding.redeemTotalPointsTxt.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
+        binding.redeemTotalPointsTxt2.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
+        binding.redeemNewPointsTxt.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
+        binding.redeemNewPointsTxt2.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
+        binding.cardValueTxt.setText(getString(R.string.single_ticket_quantity_title));
         binding.changeValueBtn.animate().alpha(1.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

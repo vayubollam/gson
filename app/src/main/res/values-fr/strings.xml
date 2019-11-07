@@ -526,5 +526,18 @@
     <string name="carwash_barcode_trouble_hint">Vous n\'arrivez pas à scanner?</string>
     <string name="carwash_barcode_reenter">Entrer le code à nouveau</string>
 
+    <string name="single_ticket_title">Billet de lavage</string>
+    <string name="single_ticket_update_button">Modifier</string>
+    <string name="single_ticket_payment_title">Paiement</string>
+    <string name="single_ticket_add_to_account">Ajouter un billet à mon compte</string>
+    <string name="single_ticket_email_title">Envoyée à</string>
+    <string name="single_ticket_new_balance_title">Nouveau solde</string>
+    <string name="single_ticket_select_value">Choisir un montant</string>
+    <string name="single_ticket_not_enough_points">Vous n\'avez pas assez de points.</string>
+    <string name="single_ticket_quantity_title">Quantité</string>
+    <string name="single_ticket_quantity">%d</string>
+    <string name="single_ticket_value_in_pointr_generic">%s points</string>
+
+
 
 </resources>
