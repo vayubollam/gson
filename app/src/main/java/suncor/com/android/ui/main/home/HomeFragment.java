@@ -145,9 +145,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
         mViewModel.nearestCarWashStation.observeForever(resource -> {
             if (resource != null && getActivity() != null) {
-                boolean isNearestStationIndependent = resource.getCarWashType() != null &&
-                        resource.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go");
-                ((MainActivity) getActivity()).setNearestStationIndependent(isNearestStationIndependent);
+                ((MainActivity) getActivity()).setNearestCarWashStation(resource);
             }
         });
     }
