@@ -145,9 +145,9 @@ public class HomeFragment extends BottomNavigationFragment {
         });
         mViewModel.nearestStation.observeForever(resource -> {
             if (resource.status == Resource.Status.SUCCESS && resource.data != null && getActivity() != null) {
-                ((MainActivity) getActivity()).setNearestStationIndependent(
-                        resource.data.getCarWashType().equals("Doesn\\'t accept Season Pass or Wash &amp; Go")
-                );
+                boolean isNearestStationIndependent = resource.data.getCarWashType() != null &&
+                        resource.data.getCarWashType().equals("Doesn\\'t accept Season Pass or Wash &amp; Go");
+                ((MainActivity) getActivity()).setNearestStationIndependent(isNearestStationIndependent);
             }
         });
     }
