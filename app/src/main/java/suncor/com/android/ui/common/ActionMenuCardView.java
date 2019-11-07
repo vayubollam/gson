@@ -38,8 +38,8 @@ public class ActionMenuCardView extends CardView {
         icon.setImageDrawable(iconSrc);
         buttonText.setText(buttonName);
 
-        setElevation(getResources().getDimension(R.dimen.action_menu_card_view_elevation));
         setRadius(getResources().getDimension(R.dimen.action_menu_card_view_radius));
+        setBackgroundResource(R.drawable.action_menu_button_background);
 
     }
 
