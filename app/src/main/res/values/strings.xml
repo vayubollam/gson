@@ -522,7 +522,7 @@
     <string name="carwash_barcode_header">Scan to start your wash</string>
     <string name="carwash_barcode_subtitle">Hold your barcode up to the scanner.</string>
     <string name="carwash_barcode_trouble_hint">Having trouble scanning?</string>
-    <string name="carwash_barcode_reenter">TRY NEW CODE</string>
+    <string name="carwash_barcode_reenter">Try code again</string>
 
 
     <string name="msg_e030_title">You can’t redeem for this</string>
