@@ -23,7 +23,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -143,10 +142,11 @@ public class HomeFragment extends BottomNavigationFragment {
                 Navigation.findNavController(getView()).navigate(action);
             }
         });
-        mViewModel.nearestStation.observeForever(resource -> {
-            if (resource.status == Resource.Status.SUCCESS && resource.data != null && getActivity() != null) {
-                boolean isNearestStationIndependent = resource.data.getCarWashType() != null &&
-                        resource.data.getCarWashType().equals("Doesn\\'t accept Season Pass or Wash &amp; Go");
+
+        mViewModel.nearestCarWashStation.observeForever(resource -> {
+            if (resource != null && getActivity() != null) {
+                boolean isNearestStationIndependent = resource.getCarWashType() != null &&
+                        resource.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go");
                 ((MainActivity) getActivity()).setNearestStationIndependent(isNearestStationIndependent);
             }
         });
