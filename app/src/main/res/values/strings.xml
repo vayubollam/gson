@@ -529,6 +529,8 @@
     <string name="carwash_barcode_trouble_hint">Having trouble scanning?</string>
     <string name="carwash_barcode_reenter">Try code again</string>
 
+    <string name="carwash_independent_alert_title">This is an independently owned car wash</string>
+    <string name="carwash_independent_alert_message">Petro-Canada car wash cards and tickets can\'t be used at this location. Purchase a ticket in-store to wash your car.</string>
 
     <string name="msg_e030_title">You can’t redeem for this</string>
     <string name="redeem_receipt_email_sent_to_label">Sent to:</string>
