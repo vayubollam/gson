@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.carwash.singleticket;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,6 +17,7 @@ public class SingleTicketViewModel extends ViewModel {
     private SessionManager sessionManager;
     private List<SingleTicketRedeem> ticketItems;
     private MutableLiveData<Boolean> isAnyTicketReedeemable = new MutableLiveData<>();
+    private SingleTicketRedeem selectedSingleTicketRedeem;
 
     @Inject
     public SingleTicketViewModel(SessionManager sessionManager, SingleTicketRedeemReader singleTicketRedeemReader) {
@@ -45,5 +48,17 @@ public class SingleTicketViewModel extends ViewModel {
             }
         }
         isAnyTicketReedeemable.setValue(isAnyRedeemable);
+    }
+
+    public SingleTicketRedeem getSelectedSingleTicketRedeem() {
+        return selectedSingleTicketRedeem;
+    }
+
+    public void setSelectedSingleTicketRedeem(SingleTicketRedeem selectedSingleTicketRedeem) {
+        this.selectedSingleTicketRedeem = selectedSingleTicketRedeem;
+    }
+
+    public void sendRedeemData() {
+        Log.i("TTT", "Redeeming for " + selectedSingleTicketRedeem.getDescription());
     }
 }

@@ -179,7 +179,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.core.widget.NestedScrollView
+            <suncor.com.android.ui.common.LockableScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -600,7 +600,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.core.widget.NestedScrollView>
+            </suncor.com.android.ui.common.LockableScrollView>
 
             <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/redeem_btn"
@@ -611,6 +611,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:elevation="18dp"
+                android:onClick="@{() -> eventHandler.redeemConfirmButtonClicked()}"
                 android:text="@string/redeem_egift_confirm_and_redeem"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -697,9 +698,9 @@
 
         <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
 
-        <!--        <variable-->
-        <!--            name="eventHandler"-->
-        <!--            type="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment" />-->
+        <variable
+            name="eventHandler"
+            type="suncor.com.android.ui.main.carwash.singleticket.SingleTicketFragment" />
 
         <variable
             name="vm"

@@ -2,12 +2,12 @@
   {
     "description": "redeem-one-single-ticket",
     "value": "1",
-    "petroPointsRequired": "10000"
+    "petroPointsRequired": "1000"
   },
   {
     "description": "redeem-two-single-ticket",
     "value": "2",
-    "petroPointsRequired": "20000"
+    "petroPointsRequired": "2000"
   },
   {
     "description": "redeem-three-single-ticket",

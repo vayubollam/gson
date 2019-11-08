@@ -554,5 +554,4 @@
     <string name="single_ticket_not_enough_points">Not enough points yet.</string>
     <string name="single_ticket_quantity_title">Quantity</string>
     <string name="single_ticket_quantity">%d</string>
-    <string name="single_ticket_value_in_pointr_generic">%s points</string>
 </resources>

@@ -536,7 +536,6 @@
     <string name="single_ticket_not_enough_points">Vous n\'avez pas assez de points.</string>
     <string name="single_ticket_quantity_title">Quantité</string>
     <string name="single_ticket_quantity">%d</string>
-    <string name="single_ticket_value_in_pointr_generic">%s points</string>
 
 
 

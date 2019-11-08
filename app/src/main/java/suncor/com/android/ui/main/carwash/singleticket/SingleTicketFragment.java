@@ -83,7 +83,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
 //        viewModel.setMerchantItem(merchantItem);
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_single_ticket_redeem, container, false);
-        //binding.setEventHandler(this);
+        binding.setEventHandler(this);
         binding.setLifecycleOwner(this);
         binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
@@ -133,11 +133,11 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     private void cardValueChanged(Integer selectedItem) {
         int valueSelected = viewModel.getTicketItems().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
-        //viewModel.setEGift(viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem));
-        binding.redeemTotalPointsTxt.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
-        binding.redeemTotalPointsTxt2.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
-        binding.redeemNewPointsTxt.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
-        binding.redeemNewPointsTxt2.setText(getString(R.string.single_ticket_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
+        viewModel.setSelectedSingleTicketRedeem(viewModel.getTicketItems().get(selectedItem));
+        binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
+        binding.redeemTotalPointsTxt2.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
+        binding.redeemNewPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
+        binding.redeemNewPointsTxt2.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
         binding.cardValueTxt.setText(getString(R.string.single_ticket_quantity_title));
         binding.changeValueBtn.animate().alpha(1.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
             @Override
@@ -182,7 +182,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
             moveUnderneathLayoutsUp();
         }
 
-        //binding.nestedScrollView.setScrollingEnabled(true);
+        binding.nestedScrollView.setScrollingEnabled(true);
 
         firstTime = false;
     }
@@ -215,7 +215,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     if (totalScrollY > totalFixY) {
                         binding.redeemTotalLayoutFix.setAlpha(1);
                         binding.redeemTotalLayoutFix.setZ(4);
-                        // binding.nestedScrollView.setScrollingEnabled(true);
+                        binding.nestedScrollView.setScrollingEnabled(true);
                         binding.valuesRecyclerView.setNestedScrollingEnabled(true);
                     }
                 })
@@ -263,7 +263,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     if (totalScrollY < totalFixY) {
                         binding.redeemTotalLayoutFix.setAlpha(0);
                         binding.redeemTotalLayoutFix.setZ(-4);
-                        //binding.nestedScrollView.setScrollingEnabled(false);
+                        binding.nestedScrollView.setScrollingEnabled(false);
                         binding.valuesRecyclerView.setNestedScrollingEnabled(false);
                     }
                 }).setDuration(ANIM_DURATION);
@@ -275,8 +275,8 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         Navigation.findNavController(getView()).popBackStack();
     }
 
-//    public void redeemConfirmButtonClicked() {
-//        viewModel.sendRedeemData();
-//    }
+    public void redeemConfirmButtonClicked() {
+        viewModel.sendRedeemData();
+    }
 }
 
