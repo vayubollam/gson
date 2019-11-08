@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;
+    public static final String IS_FIRST_TIME_ACCESS_CAR_WASH = "IS_FIRST_TIME_ACCESS_CAR_WASH";
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -128,6 +130,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        checkAndReuestCarWashPermission();
         binding = FragmentCarWashBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
@@ -184,7 +187,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         nearestCardBinding.directionsButton.setOnClickListener(openNavigationListener);
         nearestCardBinding.settingsButton.setOnClickListener(openSettingListener);
         nearestCardBinding.getRoot().setOnClickListener(showCardDetail);
-
         return binding.getRoot();
 
     }
@@ -346,6 +348,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
     }
 
+
     private int findLinkedSingleTicketIndex(String ticketNumber, List<CardDetail> petroCanadaCards) {
         for (int i = 0; i < petroCanadaCards.size(); i++) {
             if (petroCanadaCards.get(i).getCardType() == CardType.ST
@@ -353,5 +356,14 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 return i;
         }
         return 0;
+    }
+
+    private void checkAndReuestCarWashPermission() {
+        permissionManager.checkCarWashPermission(getContext(), IS_FIRST_TIME_ACCESS_CAR_WASH, new PermissionManager.CarWashPermissionListener() {
+            @Override
+            public void onFirstTimeAccessCarWash() {
+                showRequestLocationDialog(false);
+            }
+        });
     }
 }
