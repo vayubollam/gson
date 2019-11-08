@@ -3,7 +3,8 @@ package suncor.com.android.ui.main.carwash.singleticket;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -12,13 +13,14 @@ import suncor.com.android.model.singleticket.SingleTicketRedeem;
 
 public class SingleTicketViewModel extends ViewModel {
     private SessionManager sessionManager;
-    private ArrayList<SingleTicketRedeem> ticketItems;
+    private List<SingleTicketRedeem> ticketItems;
     private MutableLiveData<Boolean> isAnyTicketReedeemable = new MutableLiveData<>();
 
     @Inject
-    public SingleTicketViewModel(SessionManager sessionManager) {
+    public SingleTicketViewModel(SessionManager sessionManager, SingleTicketRedeemReader singleTicketRedeemReader) {
+        SingleTicketRedeem[] singleTicketRedeemsList = singleTicketRedeemReader.getSingleTicketRedeemsList();
         this.sessionManager = sessionManager;
-        ticketItems = getFakeData();
+        this.ticketItems = Arrays.asList(singleTicketRedeemsList);
         updateAnyTicketRedeemable();
     }
 
@@ -26,22 +28,8 @@ public class SingleTicketViewModel extends ViewModel {
         return sessionManager;
     }
 
-    public ArrayList<SingleTicketRedeem> getTicketItems() {
+    public List<SingleTicketRedeem> getTicketItems() {
         return ticketItems;
-    }
-
-    private ArrayList<SingleTicketRedeem> getFakeData() {
-        ArrayList<SingleTicketRedeem> fakeDataSet = new ArrayList<>();
-        fakeDataSet.add(new SingleTicketRedeem("1", 1000, 1));
-        fakeDataSet.add(new SingleTicketRedeem("2", 2000, 2));
-        fakeDataSet.add(new SingleTicketRedeem("3", 3000, 3));
-        fakeDataSet.add(new SingleTicketRedeem("4", 4000, 4));
-        fakeDataSet.add(new SingleTicketRedeem("5", 5000, 5));
-        fakeDataSet.add(new SingleTicketRedeem("6", 6000, 6));
-        fakeDataSet.add(new SingleTicketRedeem("7", 7000, 7));
-        fakeDataSet.add(new SingleTicketRedeem("8", 8000, 8));
-        fakeDataSet.add(new SingleTicketRedeem("9", 9000, 9));
-        return fakeDataSet;
     }
 
     public MutableLiveData<Boolean> getIsAnyTicketReedeemable() {
