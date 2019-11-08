@@ -63,11 +63,9 @@
                     android:lineSpacingMultiplier="1.31"
                     android:paddingBottom="5dp"
                     android:text="@string/carwash_activation_subtitle"
-                    android:textAppearance="@style/Body"
                     android:textColor="@color/black_60"
-                    app:autoSizeMaxTextSize="18sp"
-                    app:autoSizeMinTextSize="12sp"
-                    app:autoSizeTextType="uniform"
+                    android:fontFamily="@font/gibson_regular"
+                    android:textSize="@dimen/carwash_security_subtitle_size"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout

@@ -51,5 +51,6 @@
     <dimen name="carwash_card_elevation">2dp</dimen>
     <dimen name="carwash_barcode_image_width">280dp</dimen>
     <dimen name="carwash_barcode_image_height">100dp</dimen>
+    <dimen name="carwash_security_subtitle_size">18sp</dimen>
 
 </resources>
