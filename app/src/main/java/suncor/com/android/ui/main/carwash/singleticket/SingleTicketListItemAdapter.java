@@ -16,10 +16,11 @@ import java.util.List;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.SingleTicketListitemBinding;
+import suncor.com.android.model.singleticket.SingleTicketRedeem;
 import suncor.com.android.utilities.Consumer;
 
 public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTicketListItemAdapter.SingleTicketViewHolder> {
-    private List<MockSingleTicket> singleTicketList;
+    private List<SingleTicketRedeem> singleTicketList;
     private int petroPoints;
     private int selectedItem = -1;
     private boolean shouldHideTheRest = false;
@@ -34,7 +35,7 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
     private OnInitialLaunchReady onInitialLaunchReady;
 
 
-    public SingleTicketListItemAdapter(List<MockSingleTicket> eGifts, int petroPoints, Consumer<Integer> callBack, OnInitialLaunchReady onInitialLaunchReady) {
+    public SingleTicketListItemAdapter(List<SingleTicketRedeem> eGifts, int petroPoints, Consumer<Integer> callBack, OnInitialLaunchReady onInitialLaunchReady) {
         this.singleTicketList = eGifts;
         this.petroPoints = petroPoints;
         this.callBack = callBack;

@@ -69,7 +69,7 @@
 
         <variable
             name="singleTicket"
-            type="suncor.com.android.ui.main.carwash.singleticket.MockSingleTicket" />
+            type="suncor.com.android.model.singleticket.SingleTicketRedeem" />
 
         <variable
             name="petroPoints"

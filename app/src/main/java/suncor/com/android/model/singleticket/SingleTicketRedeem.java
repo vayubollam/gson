@@ -1,11 +1,11 @@
-package suncor.com.android.ui.main.carwash.singleticket;
+package suncor.com.android.model.singleticket;
 
-public class MockSingleTicket {
+public class SingleTicketRedeem {
     private String description;
     private int value;
     private int petroPointsRequired;
 
-    public MockSingleTicket(String description, int petroPointsRequired, int value) {
+    public SingleTicketRedeem(String description, int petroPointsRequired, int value) {
         this.description = description;
         this.value = value;
         this.petroPointsRequired = petroPointsRequired;

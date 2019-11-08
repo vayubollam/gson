@@ -1,0 +1,27 @@
+[
+  {
+    "description": "redeem-one-single-ticket",
+    "value": "1",
+    "petroPointsRequired": "10000"
+  },
+  {
+    "description": "redeem-two-single-ticket",
+    "value": "2",
+    "petroPointsRequired": "20000"
+  },
+  {
+    "description": "redeem-three-single-ticket",
+    "value": "3",
+    "petroPointsRequired": "30000"
+  },
+  {
+    "description": "redeem-four-single-ticket",
+    "value": "4",
+    "petroPointsRequired": "40000"
+  },
+  {
+    "description": "redeem-five-single-ticket",
+    "value": "5",
+    "petroPointsRequired": "50000"
+  }
+]

@@ -79,7 +79,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-//        MockSingleTicket singleTicket = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getMerchanItem();
+//        SingleTicketRedeem singleTicket = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getMerchanItem();
 //        viewModel.setMerchantItem(merchantItem);
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_single_ticket_redeem, container, false);
