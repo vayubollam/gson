@@ -124,7 +124,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:fillViewport="true"
-                    android:layout_marginBottom="21dp"
                     app:layout_constraintBottom_toBottomOf="@id/divider3"
                     app:layout_constraintTop_toBottomOf="@id/divider">
 
@@ -223,7 +222,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
-                            android:layout_marginBottom="24dp"
+                            android:paddingBottom="16dp"
                             android:gravity="center"
                             android:lineSpacingMultiplier="1.57"
                             android:paddingStart="16dp"
@@ -231,6 +230,7 @@
                             android:text="@{card.cardDescription}"
                             android:textAppearance="@style/Caption1"
                             android:textColor="@color/black_60"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/divider_2"
                             tools:text="With Season Pass card you can wash your car every day (one wash per day) for 90 days.\nReload from 30 to 360 daily washes.\n—\nScan your card at the car wash entrance." />
 
