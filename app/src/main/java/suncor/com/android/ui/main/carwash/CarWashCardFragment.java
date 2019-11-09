@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,6 +124,12 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             checkAndRequestPermission();
         });
 
+        viewModel.getIsNearestStationIndependent().observe(this, isIndependent -> {
+            if (isIndependent) {
+                showIndependentStationAlert();
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -217,10 +222,15 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 
     private void cardClick(CardDetail cardDetail) {
-        CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-        action.setIsCardFromCarWash(true);
-        Navigation.findNavController(getView()).navigate(action);
+        if (viewModel.getIsNearestStationIndependent().getValue() != null
+                && viewModel.getIsNearestStationIndependent().getValue()) {
+            showIndependentStationAlert();
+        } else {
+            CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+            action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+            action.setIsCardFromCarWash(true);
+            Navigation.findNavController(getView()).navigate(action);
+        }
     }
 
     private View.OnClickListener buyTicketListener = v -> {
@@ -365,5 +375,13 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 showRequestLocationDialog(false);
             }
         });
+    }
+
+    private void showIndependentStationAlert() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(getString(R.string.carwash_independent_alert_title))
+                .setMessage(getString(R.string.carwash_independent_alert_message))
+                .setPositiveButton(getString(R.string.ok), null)
+                .show();
     }
 }
