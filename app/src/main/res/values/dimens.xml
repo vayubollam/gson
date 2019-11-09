@@ -44,7 +44,7 @@
     <dimen name="action_menu_translationZ">12dp</dimen>
     <dimen name="action_menu_layout_margin">16dp</dimen>
     <dimen name="action_menu_fixed_height">358dp</dimen>
-    <dimen name="carwash_welcome_card_height">110dp</dimen>
+    <dimen name="carwash_welcome_card_height">130dp</dimen>
     <dimen name="carwash_margin_16">16dp</dimen>
     <dimen name="carwash_margin_24">24dp</dimen>
     <dimen name="carwash_list_margin_top">16dp</dimen>
