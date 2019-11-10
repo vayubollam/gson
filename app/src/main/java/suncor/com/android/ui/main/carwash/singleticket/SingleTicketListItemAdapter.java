@@ -32,15 +32,13 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
     private boolean itemsExpanded = true;
     private boolean isViewAnimating = false;
     private boolean isFirstTime = true;
-    private OnInitialLaunchReady onInitialLaunchReady;
 
 
-    public SingleTicketListItemAdapter(List<SingleTicketRedeem> eGifts, int petroPoints, Consumer<Integer> callBack, OnInitialLaunchReady onInitialLaunchReady) {
+    public SingleTicketListItemAdapter(List<SingleTicketRedeem> eGifts, int petroPoints, Consumer<Integer> callBack) {
         this.singleTicketList = eGifts;
         this.petroPoints = petroPoints;
         this.callBack = callBack;
         animInterpolator = new DecelerateInterpolator(3f);
-        this.onInitialLaunchReady = onInitialLaunchReady;
     }
 
     @NonNull
@@ -51,7 +49,7 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
         int wrapContentMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         binding.singleTicketItemLayout.measure(matchParentMeasureSpec, wrapContentMeasureSpec);
         itemHeight = (float) binding.singleTicketItemLayout.getMeasuredHeight();
-        if (isFirstTime) onInitialLaunchReady.onReady();
+        if (isFirstTime) callBack.accept(0);
         isFirstTime = false;
         return new SingleTicketViewHolder(binding);
     }
@@ -168,11 +166,6 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
         selectedItem = 0;
         shouldHideTheRest = true;
         notifyDataSetChanged();
-        callBack.accept(0);
-    }
-
-    public interface OnInitialLaunchReady {
-        void onReady();
     }
 }
 

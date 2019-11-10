@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.view.animation.Interpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -89,7 +93,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adapter = new SingleTicketListItemAdapter(viewModel.getTicketItems(), viewModel.getSessionManager().getProfile().getPointsBalance(),
-                this::cardValueChanged, () -> moveUnderneathLayoutsUp(true));
+                this::cardValueChanged);
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.changeValueBtn.setOnClickListener(v -> {
@@ -129,7 +133,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // if (viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
+        if (viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
     }
 
     private void cardValueChanged(Integer selectedItem) {
@@ -180,10 +184,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                 binding.redeemBtn.startAnimation(animFromBottom);
             }, ANIM_DURATION);
         }
-        if (!firstTime) {
-            moveUnderneathLayoutsUp(false);
-        }
-
+        moveUnderneathLayoutsUp();
         binding.nestedScrollView.setScrollingEnabled(true);
 
         firstTime = false;
@@ -191,93 +192,111 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
 
     private void shiftUnderneathLayousDown() {
         adapter.showValues();
-        binding.paymentMethodLayout.animate()
-                .translationY(-(binding.paymentMethodLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-                .setInterpolator(animInterpolator)
-                .setStartDelay(0)
-                .setDuration(ANIM_DURATION);
-        binding.redeemAddressLayout.animate()
-                .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-                .setInterpolator(animInterpolator)
-                .setStartDelay(0)
-                .setDuration(ANIM_DURATION);
-        binding.addToAccountLayout.animate()
-                .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-                .setInterpolator(animInterpolator)
-                .setStartDelay(0)
-                .setDuration(ANIM_DURATION);
-        binding.redeemTotalLayoutScroll.animate()
-                .translationY(-(binding.redeemTotalLayoutScroll.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-                .setInterpolator(animInterpolator)
-                .setStartDelay(0)
-                .setUpdateListener(animation -> {
-                    int[] totalScroll = new int[2];
-                    binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
-                    float totalScrollY = totalScroll[1];
-                    if (totalScrollY > totalFixY) {
-                        binding.redeemTotalLayoutFix.setAlpha(1);
-                        binding.redeemTotalLayoutFix.setZ(4);
-                        binding.nestedScrollView.setScrollingEnabled(true);
-                        binding.valuesRecyclerView.setNestedScrollingEnabled(true);
-                    }
-                })
-                .setDuration(ANIM_DURATION);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(binding.redeemValueLayout);
+        constraintSet.clear(R.id.payment_method_layout, ConstraintSet.TOP);
+        constraintSet.connect(R.id.payment_method_layout, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.BOTTOM, 0);
+        constraintSet.applyTo(binding.redeemValueLayout);
+        Transition transition = new ChangeBounds();
+        transition.setDuration(ANIM_DURATION);
+        transition.setInterpolator(animInterpolator);
+        TransitionManager.beginDelayedTransition(binding.redeemValueLayout, transition);
+//        binding.paymentMethodLayout.animate()
+//                .translationY(-(binding.paymentMethodLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
+//                .setInterpolator(animInterpolator)
+//                .setStartDelay(0)
+//                .setDuration(ANIM_DURATION);
+//        binding.redeemAddressLayout.animate()
+//                .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
+//                .setInterpolator(animInterpolator)
+//                .setStartDelay(0)
+//                .setDuration(ANIM_DURATION);
+//        binding.addToAccountLayout.animate()
+//                .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
+//                .setInterpolator(animInterpolator)
+//                .setStartDelay(0)
+//                .setDuration(ANIM_DURATION);
+//        binding.redeemTotalLayoutScroll.animate()
+//                .translationY(-(binding.redeemTotalLayoutScroll.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
+//                .setInterpolator(animInterpolator)
+//                .setStartDelay(0)
+//                .setUpdateListener(animation -> {
+//                    int[] totalScroll = new int[2];
+//                    binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+//                    float totalScrollY = totalScroll[1];
+//                    if (totalScrollY > totalFixY) {
+//                        binding.redeemTotalLayoutFix.setAlpha(1);
+//                        binding.redeemTotalLayoutFix.setZ(4);
+//                        binding.nestedScrollView.setScrollingEnabled(true);
+//                        binding.valuesRecyclerView.setNestedScrollingEnabled(true);
+//                    }
+//                })
+//                .setDuration(ANIM_DURATION);
     }
 
-    private void moveUnderneathLayoutsUp(boolean allowRedeemTotalScroll) {
-        binding.paymentMethodLayout.animate()
-                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-                .setInterpolator(animInterpolator)
-                .setDuration(ANIM_DURATION);
-        binding.redeemAddressLayout.animate()
-                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-                .setInterpolator(animInterpolator)
-                .setDuration(ANIM_DURATION);
-        binding.addToAccountLayout.animate()
-                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-                .setInterpolator(animInterpolator)
-                .setDuration(ANIM_DURATION);
-        binding.redeemTotalLayoutScroll.animate()
-                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-                .setInterpolator(animInterpolator)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        int[] totalScroll = new int[2];
-                        binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
-                        float totalScrollY = totalScroll[1];
-                        if (totalScrollY > totalFixY) {
-                            binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
-                            binding.redeemTotalLayoutFix.setAlpha(1);
-                            binding.redeemTotalLayoutFix.setZ(4);
-                        }
-                    }
-                })
-                .setUpdateListener(animation -> {
-                    int[] totalScroll = new int[2];
-                    binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
-                    float totalScrollY = totalScroll[1];
-                    if (allowRedeemTotalScroll) {
-                        if (totalScrollY > totalFixY) {
-                            binding.redeemTotalLayoutFix.setAlpha(0);
-                            binding.redeemTotalLayoutFix.setZ(-4);
-                            binding.nestedScrollView.setScrollingEnabled(true);
-                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
-                        }
-                    } else {
-                        if (totalScrollY < totalFixY) {
-                            binding.redeemTotalLayoutFix.setAlpha(0);
-                            binding.redeemTotalLayoutFix.setZ(-4);
-                            binding.nestedScrollView.setScrollingEnabled(false);
-                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
-                        }
-                    }
-                }).setDuration(ANIM_DURATION);
+    private void moveUnderneathLayoutsUp() {
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(binding.redeemValueLayout);
+        constraintSet.clear(R.id.payment_method_layout, ConstraintSet.TOP);
+        constraintSet.connect(R.id.payment_method_layout, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.TOP, (int) adapter.getItemHeight());
+        constraintSet.applyTo(binding.redeemValueLayout);
+        Transition transition = new ChangeBounds();
+        transition.setDuration(ANIM_DURATION);
+        transition.setInterpolator(animInterpolator);
+        TransitionManager.beginDelayedTransition(binding.redeemValueLayout, transition);
+//        binding.paymentMethodLayout.animate()
+//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
+//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
+//                .setInterpolator(animInterpolator)
+//                .setDuration(ANIM_DURATION);
+//        binding.redeemAddressLayout.animate()
+//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
+//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
+//                .setInterpolator(animInterpolator)
+//                .setDuration(ANIM_DURATION);
+//        binding.addToAccountLayout.animate()
+//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
+//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
+//                .setInterpolator(animInterpolator)
+//                .setDuration(ANIM_DURATION);
+//        binding.redeemTotalLayoutScroll.animate()
+//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
+//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
+//                .setInterpolator(animInterpolator)
+//                .setListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        super.onAnimationEnd(animation);
+//                        int[] totalScroll = new int[2];
+//                        binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+//                        float totalScrollY = totalScroll[1];
+//                        if (totalScrollY > totalFixY) {
+//                            binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
+//                            binding.redeemTotalLayoutFix.setAlpha(1);
+//                            binding.redeemTotalLayoutFix.setZ(4);
+//                        }
+//                    }
+//                })
+//                .setUpdateListener(animation -> {
+//                    int[] totalScroll = new int[2];
+//                    binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
+//                    float totalScrollY = totalScroll[1];
+//                    if (allowRedeemTotalScroll) {
+//                        if (totalScrollY > totalFixY) {
+//                            binding.redeemTotalLayoutFix.setAlpha(0);
+//                            binding.redeemTotalLayoutFix.setZ(-4);
+//                            binding.nestedScrollView.setScrollingEnabled(true);
+//                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+//                        }
+//                    } else {
+//                        if (totalScrollY < totalFixY) {
+//                            binding.redeemTotalLayoutFix.setAlpha(0);
+//                            binding.redeemTotalLayoutFix.setZ(-4);
+//                            binding.nestedScrollView.setScrollingEnabled(false);
+//                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+//                        }
+//                    }
+//                }).setDuration(ANIM_DURATION);
     }
 
 
