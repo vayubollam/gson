@@ -18,6 +18,7 @@ public class SingleTicketViewModel extends ViewModel {
     private List<SingleTicketRedeem> ticketItems;
     private MutableLiveData<Boolean> isAnyTicketReedeemable = new MutableLiveData<>();
     private SingleTicketRedeem selectedSingleTicketRedeem;
+    private boolean isLinkedToAccount = true;
 
     @Inject
     public SingleTicketViewModel(SessionManager sessionManager, SingleTicketRedeemReader singleTicketRedeemReader) {
@@ -59,6 +60,14 @@ public class SingleTicketViewModel extends ViewModel {
     }
 
     public void sendRedeemData() {
-        Log.i("TTT", "Redeeming for " + selectedSingleTicketRedeem.getDescription());
+        Log.i("TTT", "Redeeming for " + selectedSingleTicketRedeem.getDescription() + " add to account = " + isLinkedToAccount);
+    }
+
+    public boolean isLinkedToAccount() {
+        return isLinkedToAccount;
+    }
+
+    public void setLinkedToAccount(boolean linkedToAccount) {
+        isLinkedToAccount = linkedToAccount;
     }
 }

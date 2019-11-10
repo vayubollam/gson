@@ -26,9 +26,9 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSingleTicketRedeemBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.common.OnBackPressedListener;
 
 public class SingleTicketFragment extends MainActivityFragment implements OnBackPressedListener {
 
@@ -89,7 +89,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adapter = new SingleTicketListItemAdapter(viewModel.getTicketItems(), viewModel.getSessionManager().getProfile().getPointsBalance(),
-                this::cardValueChanged, this::moveUnderneathLayoutsUp);
+                this::cardValueChanged, () -> moveUnderneathLayoutsUp(true));
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.changeValueBtn.setOnClickListener(v -> {
@@ -121,13 +121,15 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
             }
 
         });
+
+        binding.addToAccountCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> viewModel.setLinkedToAccount(isChecked));
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
+       // if (viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
     }
 
     private void cardValueChanged(Integer selectedItem) {
@@ -179,7 +181,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
             }, ANIM_DURATION);
         }
         if (!firstTime) {
-            moveUnderneathLayoutsUp();
+            moveUnderneathLayoutsUp(false);
         }
 
         binding.nestedScrollView.setScrollingEnabled(true);
@@ -222,7 +224,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                 .setDuration(ANIM_DURATION);
     }
 
-    private void moveUnderneathLayoutsUp() {
+    private void moveUnderneathLayoutsUp(boolean allowRedeemTotalScroll) {
         binding.paymentMethodLayout.animate()
                 .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
                 .setStartDelay(firstTime ? ANIM_DURATION : 0)
@@ -260,11 +262,20 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     int[] totalScroll = new int[2];
                     binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
                     float totalScrollY = totalScroll[1];
-                    if (totalScrollY < totalFixY) {
-                        binding.redeemTotalLayoutFix.setAlpha(0);
-                        binding.redeemTotalLayoutFix.setZ(-4);
-                        binding.nestedScrollView.setScrollingEnabled(false);
-                        binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+                    if (allowRedeemTotalScroll) {
+                        if (totalScrollY > totalFixY) {
+                            binding.redeemTotalLayoutFix.setAlpha(0);
+                            binding.redeemTotalLayoutFix.setZ(-4);
+                            binding.nestedScrollView.setScrollingEnabled(true);
+                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+                        }
+                    } else {
+                        if (totalScrollY < totalFixY) {
+                            binding.redeemTotalLayoutFix.setAlpha(0);
+                            binding.redeemTotalLayoutFix.setZ(-4);
+                            binding.nestedScrollView.setScrollingEnabled(false);
+                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
+                        }
                     }
                 }).setDuration(ANIM_DURATION);
     }
