@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
-import suncor.com.android.model.singleticket.SingleTicketRedeem;
+import suncor.com.android.model.petrocanadaproduct.PetroCanadaProduct;
 
 public class SingleTicketRedeemReader {
     private final SuncorApplication application;
@@ -21,9 +21,9 @@ public class SingleTicketRedeemReader {
         this.gson = gson;
     }
 
-    public SingleTicketRedeem[] getSingleTicketRedeemsList() {
+    public PetroCanadaProduct[] getSingleTicketRedeemsList() {
         InputStream jsonFile = application.getResources().openRawResource(R.raw.single_ticket_redeem);
-        SingleTicketRedeem[] rewards = gson.fromJson(new InputStreamReader(jsonFile), SingleTicketRedeem[].class);
+        PetroCanadaProduct[] rewards = gson.fromJson(new InputStreamReader(jsonFile), PetroCanadaProduct[].class);
         return rewards;
     }
 }

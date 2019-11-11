@@ -1,27 +1,42 @@
 [
   {
-    "description": "redeem-one-single-ticket",
-    "value": "1",
-    "petroPointsRequired": "1000"
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 1000,
+    "quantity": 1
   },
   {
-    "description": "redeem-two-single-ticket",
-    "value": "2",
-    "petroPointsRequired": "2000"
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 2000,
+    "quantity": 2
   },
   {
-    "description": "redeem-three-single-ticket",
-    "value": "3",
-    "petroPointsRequired": "30000"
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 3000,
+    "quantity": 3
   },
   {
-    "description": "redeem-four-single-ticket",
-    "value": "4",
-    "petroPointsRequired": "40000"
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 4000,
+    "quantity": 4
   },
   {
-    "description": "redeem-five-single-ticket",
-    "value": "5",
-    "petroPointsRequired": "50000"
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 5000,
+    "quantity": 5
   }
 ]

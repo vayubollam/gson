@@ -16,11 +16,11 @@ import java.util.List;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.SingleTicketListitemBinding;
-import suncor.com.android.model.singleticket.SingleTicketRedeem;
+import suncor.com.android.model.petrocanadaproduct.PetroCanadaProduct;
 import suncor.com.android.utilities.Consumer;
 
 public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTicketListItemAdapter.SingleTicketViewHolder> {
-    private List<SingleTicketRedeem> singleTicketList;
+    private List<PetroCanadaProduct> singleTicketList;
     private int petroPoints;
     private int selectedItem = -1;
     private boolean shouldHideTheRest = false;
@@ -34,8 +34,8 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
     private boolean isFirstTime = true;
 
 
-    public SingleTicketListItemAdapter(List<SingleTicketRedeem> eGifts, int petroPoints, Consumer<Integer> callBack) {
-        this.singleTicketList = eGifts;
+    public SingleTicketListItemAdapter(List<PetroCanadaProduct> products, int petroPoints, Consumer<Integer> callBack) {
+        this.singleTicketList = products;
         this.petroPoints = petroPoints;
         this.callBack = callBack;
         animInterpolator = new DecelerateInterpolator(3f);
@@ -59,7 +59,7 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
         holder.binding.setSingleTicket(singleTicketList.get(position));
         holder.binding.setPetroPoints(petroPoints);
         if (position != singleTicketList.size() - 1) {
-            if (singleTicketList.get(position).getPetroPointsRequired() > petroPoints) {
+            if (singleTicketList.get(position).getPointsPrice() > petroPoints) {
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.binding.itemDivider.getLayoutParams();
                 p.setMargins(holder.itemView.getContext().getResources().getDimensionPixelSize(R.dimen.gift_card_value_disable_start_margin), 0, 0, 0);
                 holder.binding.itemDivider.setLayoutParams(p);
@@ -78,7 +78,7 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
         });
         holder.binding.valueRb.setOnClickListener(v -> holder.itemView.callOnClick());
         holder.itemView.setOnClickListener(v -> {
-            if (singleTicketList.get(position).getPetroPointsRequired() > petroPoints || !itemsExpanded || isViewAnimating) {
+            if (singleTicketList.get(position).getPointsPrice() > petroPoints || !itemsExpanded || isViewAnimating) {
                 return;
             }
             if (itemHeight == null) {

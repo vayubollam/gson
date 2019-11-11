@@ -44,7 +44,6 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     private Interpolator animInterpolator;
     private final int ANIM_DURATION = 600;
     private Animation animFromBottom;
-    private boolean firstTime = true;
     private float totalFixY;
 
     public static SingleTicketFragment newInstance() {
@@ -137,7 +136,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     }
 
     private void cardValueChanged(Integer selectedItem) {
-        int valueSelected = viewModel.getTicketItems().get(selectedItem).getPetroPointsRequired();
+        int valueSelected = viewModel.getTicketItems().get(selectedItem).getPointsPrice();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
         viewModel.setSelectedSingleTicketRedeem(viewModel.getTicketItems().get(selectedItem));
         binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
@@ -186,8 +185,6 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         }
         moveUnderneathLayoutsUp();
         binding.nestedScrollView.setScrollingEnabled(true);
-
-        firstTime = false;
     }
 
     private void shiftUnderneathLayousDown() {

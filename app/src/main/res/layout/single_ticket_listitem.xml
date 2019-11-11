@@ -24,9 +24,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@{ @string/rewards_signedin_egift_value_in_pointr_generic(CardFormatUtils.formatBalance(singleTicket.petroPointsRequired))}"
+            android:text="@{ @string/rewards_signedin_egift_value_in_pointr_generic(CardFormatUtils.formatBalance(singleTicket.getPointsPrice()))}"
             android:textAppearance="@style/Body"
-            android:textColor="@{singleTicket.petroPointsRequired > petroPoints ? @color/black_20 : @color/black_80}"
+            android:textColor="@{singleTicket.getPointsPrice() > petroPoints ? @color/black_20 : @color/black_80}"
             app:layout_constraintBottom_toBottomOf="@id/value_rb"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/value_rb"
@@ -38,26 +38,26 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
-            android:enabled="@{singleTicket.petroPointsRequired > petroPoints ? false : true}"
+            android:enabled="@{singleTicket.getPointsPrice() > petroPoints ? false : true}"
             android:paddingStart="15dp"
-            android:text="@{ @string/single_ticket_quantity(singleTicket.value)}"
+            android:text="@{ @string/single_ticket_quantity(singleTicket.getQuantity())}"
             android:textAppearance="@style/Body"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/card_point_value"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="$10" />
+            tools:text="10" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txt_selected_card_gift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
-            android:text="@{ @string/single_ticket_quantity(singleTicket.value)}"
+            android:text="@{ @string/single_ticket_quantity(singleTicket.getQuantity())}"
             android:textAppearance="@style/Body"
             app:layout_constraintBottom_toBottomOf="@id/value_rb"
             app:layout_constraintLeft_toLeftOf="@id/value_rb"
             app:layout_constraintTop_toTopOf="@id/value_rb"
-            tools:text="$10 gift card"
+            tools:text="10"
             tools:visibility="visible" />
 
 
@@ -69,7 +69,7 @@
 
         <variable
             name="singleTicket"
-            type="suncor.com.android.model.singleticket.SingleTicketRedeem" />
+            type="suncor.com.android.model.petrocanadaproduct.PetroCanadaProduct" />
 
         <variable
             name="petroPoints"
