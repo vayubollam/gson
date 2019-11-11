@@ -554,4 +554,6 @@
     <string name="single_ticket_not_enough_points">Not enough points yet.</string>
     <string name="single_ticket_quantity_title">Quantity</string>
     <string name="single_ticket_quantity">%d</string>
+    <string name="single_ticket_add_to_account_help_title">Add to my Account</string>
+    <string name="single_ticket_add_to_account_help_message">Add your ticket to your account to access at a later date.</string>
 </resources>

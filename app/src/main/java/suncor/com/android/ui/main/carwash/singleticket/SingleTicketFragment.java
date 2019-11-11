@@ -17,6 +17,7 @@ import android.view.animation.Interpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
@@ -82,9 +83,6 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-//        SingleTicketRedeem singleTicket = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getMerchanItem();
-//        viewModel.setMerchantItem(merchantItem);
-
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_single_ticket_redeem, container, false);
         binding.setEventHandler(this);
         binding.setLifecycleOwner(this);
@@ -124,7 +122,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
             }
 
         });
-
+        binding.accToAccountHelp.setOnClickListener(addToAccountHelpListener);
         binding.addToAccountCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> viewModel.setLinkedToAccount(isChecked));
         return binding.getRoot();
     }
@@ -134,6 +132,12 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         super.onViewCreated(view, savedInstanceState);
         if (viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
     }
+
+    private View.OnClickListener addToAccountHelpListener = view -> new AlertDialog.Builder(getContext())
+            .setTitle(R.string.single_ticket_add_to_account_help_title)
+            .setMessage(R.string.single_ticket_add_to_account_help_message)
+            .setPositiveButton(R.string.ok, null)
+            .show();
 
     private void cardValueChanged(Integer selectedItem) {
         int valueSelected = viewModel.getTicketItems().get(selectedItem).getPointsPrice();
@@ -198,37 +202,6 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         transition.setDuration(ANIM_DURATION);
         transition.setInterpolator(animInterpolator);
         TransitionManager.beginDelayedTransition(binding.redeemValueLayout, transition);
-//        binding.paymentMethodLayout.animate()
-//                .translationY(-(binding.paymentMethodLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-//                .setInterpolator(animInterpolator)
-//                .setStartDelay(0)
-//                .setDuration(ANIM_DURATION);
-//        binding.redeemAddressLayout.animate()
-//                .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-//                .setInterpolator(animInterpolator)
-//                .setStartDelay(0)
-//                .setDuration(ANIM_DURATION);
-//        binding.addToAccountLayout.animate()
-//                .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-//                .setInterpolator(animInterpolator)
-//                .setStartDelay(0)
-//                .setDuration(ANIM_DURATION);
-//        binding.redeemTotalLayoutScroll.animate()
-//                .translationY(-(binding.redeemTotalLayoutScroll.getTranslationY() + adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1)))
-//                .setInterpolator(animInterpolator)
-//                .setStartDelay(0)
-//                .setUpdateListener(animation -> {
-//                    int[] totalScroll = new int[2];
-//                    binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
-//                    float totalScrollY = totalScroll[1];
-//                    if (totalScrollY > totalFixY) {
-//                        binding.redeemTotalLayoutFix.setAlpha(1);
-//                        binding.redeemTotalLayoutFix.setZ(4);
-//                        binding.nestedScrollView.setScrollingEnabled(true);
-//                        binding.valuesRecyclerView.setNestedScrollingEnabled(true);
-//                    }
-//                })
-//                .setDuration(ANIM_DURATION);
     }
 
     private void moveUnderneathLayoutsUp() {
@@ -241,59 +214,6 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         transition.setDuration(ANIM_DURATION);
         transition.setInterpolator(animInterpolator);
         TransitionManager.beginDelayedTransition(binding.redeemValueLayout, transition);
-//        binding.paymentMethodLayout.animate()
-//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-//                .setInterpolator(animInterpolator)
-//                .setDuration(ANIM_DURATION);
-//        binding.redeemAddressLayout.animate()
-//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-//                .setInterpolator(animInterpolator)
-//                .setDuration(ANIM_DURATION);
-//        binding.addToAccountLayout.animate()
-//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-//                .setInterpolator(animInterpolator)
-//                .setDuration(ANIM_DURATION);
-//        binding.redeemTotalLayoutScroll.animate()
-//                .translationY(-adapter.getItemHeight() * (viewModel.getTicketItems().size() - 1))
-//                .setStartDelay(firstTime ? ANIM_DURATION : 0)
-//                .setInterpolator(animInterpolator)
-//                .setListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        super.onAnimationEnd(animation);
-//                        int[] totalScroll = new int[2];
-//                        binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
-//                        float totalScrollY = totalScroll[1];
-//                        if (totalScrollY > totalFixY) {
-//                            binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
-//                            binding.redeemTotalLayoutFix.setAlpha(1);
-//                            binding.redeemTotalLayoutFix.setZ(4);
-//                        }
-//                    }
-//                })
-//                .setUpdateListener(animation -> {
-//                    int[] totalScroll = new int[2];
-//                    binding.termsAgreementDownDivider.getLocationOnScreen(totalScroll);
-//                    float totalScrollY = totalScroll[1];
-//                    if (allowRedeemTotalScroll) {
-//                        if (totalScrollY > totalFixY) {
-//                            binding.redeemTotalLayoutFix.setAlpha(0);
-//                            binding.redeemTotalLayoutFix.setZ(-4);
-//                            binding.nestedScrollView.setScrollingEnabled(true);
-//                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
-//                        }
-//                    } else {
-//                        if (totalScrollY < totalFixY) {
-//                            binding.redeemTotalLayoutFix.setAlpha(0);
-//                            binding.redeemTotalLayoutFix.setZ(-4);
-//                            binding.nestedScrollView.setScrollingEnabled(false);
-//                            binding.valuesRecyclerView.setNestedScrollingEnabled(false);
-//                        }
-//                    }
-//                }).setDuration(ANIM_DURATION);
     }
 
 
