@@ -1,0 +1,36 @@
+{
+  "orderId": "pptb730638d8dfe4636b0c644cc2be963a5",
+  "transaction":
+  {
+    "id": "92423867423423423423E",
+    "transactionDate": "2019-11-20 11:29:00",
+    "transactionType": "redemption",
+    "transactionAmount":
+    {
+      "quantity": 1,
+      "units": 5,
+      "petroPoints":
+      {
+        "petroPointsCardNumber":"7069123456789012",
+        "petroPointsRedeemed": 10000
+      }
+    },
+    "card":
+    {
+      "cardType": "petropoints",
+      "cardNumber": "7069123456789012"
+    }
+  },
+  "shoppingCart":
+  {
+    "petroCanadaProduct":
+    {
+      "category": "ticket",
+      "sku": "94430",
+      "units": 1,
+      "pointsPrice": 10000,
+      "rewardId": "1"
+    }
+  },
+  "productsDelivered": ["763487365987465"]
+}

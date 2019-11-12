@@ -1,5 +1,6 @@
 package suncor.com.android.utilities;
 
+import suncor.com.android.model.petrocanadaproduct.PetroCanadaProduct;
 import suncor.com.android.ui.main.rewards.MerchantsIds;
 
 public class MerchantsUtil {
@@ -18,6 +19,17 @@ public class MerchantsUtil {
             case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
             case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
                 return "winners_small";
+        }
+        return null;
+    }
+
+    public static String getRewardSmallImage(PetroCanadaProduct.Category category) {
+        switch (category) {
+            case WAG:
+            case SP:
+            case ST:
+                return "member_small_cards_cw_ticket";
+            case FSR:
         }
         return null;
     }

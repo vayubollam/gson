@@ -630,67 +630,67 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:background="@color/white"-->
-        <!--            android:clickable="true"-->
-        <!--            android:elevation="8dp"-->
-        <!--            android:visibility="gone"-->
-        <!--            app:visibleGone="@{ vm.orderApiData.status == Resource.Status.LOADING || vm.orderApiData.status == Resource.Status.SUCCESS }">-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            android:elevation="8dp"
+            android:visibility="gone"
+            app:visibleGone="@{ vm.orderApiData.status == Resource.Status.LOADING || vm.orderApiData.status == Resource.Status.SUCCESS }">
 
-        <!--            <FrameLayout-->
-        <!--                android:id="@+id/progress_layout"-->
-        <!--                android:layout_width="70dp"-->
-        <!--                android:layout_height="70dp"-->
-        <!--                android:background="@color/white"-->
-        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                app:layout_constraintStart_toStartOf="parent"-->
-        <!--                app:layout_constraintTop_toTopOf="parent">-->
+            <FrameLayout
+                android:id="@+id/progress_layout"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
-        <!--                <ProgressBar-->
-        <!--                    android:id="@+id/progress_bar"-->
-        <!--                    android:layout_width="70dp"-->
-        <!--                    android:layout_height="70dp"-->
-        <!--                    android:layout_gravity="center"-->
-        <!--                    android:indeterminate="true"-->
-        <!--                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.LOADING}" />-->
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.LOADING}" />
 
-        <!--                <androidx.appcompat.widget.AppCompatImageView-->
-        <!--                    android:layout_width="22dp"-->
-        <!--                    android:layout_height="22dp"-->
-        <!--                    android:layout_gravity="center"-->
-        <!--                    android:src="@drawable/ic_check_thick"-->
-        <!--                    android:tint="@color/red"-->
-        <!--                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_check_thick"
+                    android:tint="@color/red"
+                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />
 
-        <!--                <androidx.appcompat.widget.AppCompatImageView-->
-        <!--                    android:id="@+id/progress_complete"-->
-        <!--                    android:layout_width="70dp"-->
-        <!--                    android:layout_height="70dp"-->
-        <!--                    android:src="@drawable/circular_ring"-->
-        <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                    app:layout_constraintStart_toStartOf="parent"-->
-        <!--                    app:layout_constraintTop_toTopOf="parent"-->
-        <!--                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />-->
-        <!--            </FrameLayout>-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/progress_complete"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/circular_ring"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />
+            </FrameLayout>
 
-        <!--            <androidx.appcompat.widget.AppCompatTextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginBottom="24dp"-->
-        <!--                android:gravity="center"-->
-        <!--                android:lineSpacingMultiplier="1.31"-->
-        <!--                android:text="@{vm.orderApiData.status == Resource.Status.SUCCESS?@string/points_redeemed:@string/redeeming}"-->
-        <!--                android:textAppearance="@style/Title1"-->
-        <!--                app:layout_constraintBottom_toTopOf="@id/progress_layout"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent"-->
-        <!--                app:layout_constraintStart_toStartOf="parent"-->
-        <!--                tools:text="@string/points_redeemed" />-->
-        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.31"
+                android:text="@{vm.orderApiData.status == Resource.Status.SUCCESS?@string/points_redeemed:@string/redeeming}"
+                android:textAppearance="@style/Title1"
+                app:layout_constraintBottom_toTopOf="@id/progress_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/points_redeemed" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <data>

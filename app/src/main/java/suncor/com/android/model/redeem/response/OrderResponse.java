@@ -3,6 +3,8 @@ package suncor.com.android.model.redeem.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import suncor.com.android.model.redeem.request.ShoppingCart;
+
 import com.google.gson.annotations.SerializedName;
 
 public class OrderResponse implements Parcelable {
@@ -10,6 +12,8 @@ public class OrderResponse implements Parcelable {
     private Status status;
     private Shipping shipping;
     private ShoppingCart shoppingCart;
+    //private ShoppingCart shoppingCart;
+    //TODO: confirm using which shoppingCart
     private Transaction transaction;
     private String orderId;
 

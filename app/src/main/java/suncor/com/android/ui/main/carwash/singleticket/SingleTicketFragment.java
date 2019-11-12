@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +27,20 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSingleTicketRedeemBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.ErrorCodes;
+import suncor.com.android.model.redeem.response.OrderResponse;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
@@ -74,6 +84,33 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
             @Override
             public void onAnimationRepeat(Animation animation) {
 
+            }
+        });
+
+        viewModel.orderApiData.observe(this, (orderResponseResource) -> {
+
+            switch (orderResponseResource.status) {
+                case SUCCESS:
+
+                    OrderResponse orderResponse = orderResponseResource.data;
+                    SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
+                            = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
+                    if (getView() != null) {
+                        getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
+                    }
+                    break;
+                case ERROR:
+                    if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
+                        new AlertDialog.Builder(getContext())
+                                .setTitle(R.string.msg_e030_title)
+                                .setMessage(R.string.msg_e030_message)
+                                .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                                .create()
+                                .show();
+                    } else {
+                        Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                    }
+                    break;
             }
         });
 
@@ -223,7 +260,19 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     }
 
     public void redeemConfirmButtonClicked() {
-        viewModel.sendRedeemData();
+        OrderResponse orderResponse = getFakeOrderResponse();
+        SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
+                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
+        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
+        Navigation.findNavController(getView()).navigate(action);
+        // viewModel.sendRedeemData();
+    }
+
+    private OrderResponse getFakeOrderResponse() {
+        InputStream jsonFile = getResources().openRawResource(R.raw.mock_order_response_ticket);
+        OrderResponse orderResponses = new Gson().fromJson(new InputStreamReader(jsonFile), OrderResponse.class);
+        Log.i("TTT", orderResponses.getShoppingCart().getPetroCanadaProduct().getPointsPrice() + " ");
+        return orderResponses;
     }
 }
 

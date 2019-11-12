@@ -326,29 +326,29 @@
                         app:layout_constraintTop_toBottomOf="@+id/order_id_title" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/egift_card_value_title"
+                        android:id="@+id/value_title"
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:gravity="center|start"
                         android:maxLines="2"
                         android:text="@string/egift_card_value_title"
                         android:textAppearance="@style/Body"
-                        app:layout_constraintEnd_toStartOf="@+id/egift_card_value"
+                        app:layout_constraintEnd_toStartOf="@+id/card_value"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/order_id_divider" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/egift_card_value"
+                        android:id="@+id/card_value"
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
                         android:gravity="center|end"
                         app:layout_constraintWidth_default="percent"
                         app:layout_constraintWidth_percent=".20"
-                        android:text="@{@string/egift_card_value_in_dollar_generic(response.shoppingCart.eGift.value)}"
+                        android:text="@{@string/egift_card_value_in_dollar_generic(response.shoppingCart.geteGift.value)}"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
-                        app:layout_constraintLeft_toRightOf="@id/egift_card_value_title"
+                        app:layout_constraintLeft_toRightOf="@id/value_title"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/order_id_divider" />
 
@@ -357,7 +357,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:src="@drawable/horizontal_divider"
-                        app:layout_constraintTop_toBottomOf="@+id/egift_card_value_title" />
+                        app:layout_constraintTop_toBottomOf="@+id/value_title" />
 
 
                     <androidx.appcompat.widget.AppCompatTextView
