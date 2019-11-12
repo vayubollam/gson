@@ -43,6 +43,7 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
@@ -125,8 +126,14 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             checkAndRequestPermission();
         });
 
+        viewModel.getNearestStation().observeForever(resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                ((MainActivity) getActivity()).setNearestCarWashStation(resource.data.getStation());
+            }
+        });
+
         viewModel.getIsNearestStationIndependent().observe(this, isIndependent -> {
-            if (isIndependent) {
+            if (!permissionManager.isAlertShown() && isIndependent) {
                 IndependentStationAlertUtil.showIndependentStationAlert(getContext());
             }
         });
