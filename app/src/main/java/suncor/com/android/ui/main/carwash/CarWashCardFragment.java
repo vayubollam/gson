@@ -133,7 +133,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
 
         viewModel.getIsNearestStationIndependent().observe(this, isIndependent -> {
-            if (!permissionManager.isAlertShown() && isIndependent) {
+            if (isIndependent) {
                 IndependentStationAlertUtil.showIndependentStationAlert(getContext());
             }
         });
