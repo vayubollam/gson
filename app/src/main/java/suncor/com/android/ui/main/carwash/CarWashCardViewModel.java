@@ -34,7 +34,6 @@ public class CarWashCardViewModel extends ViewModel {
     private FavouriteRepository favouriteRepository;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(20, -180), new LatLng(90, -50));
     private final static int DISTANCE_API = 25000;
-    private final static int DISTANCE_RANGE = 70;
 
     private MutableLiveData<ViewState> viewState = new MutableLiveData<>();
     private MutableLiveData<Boolean> isBalanceZero = new MutableLiveData<>();
@@ -284,7 +283,8 @@ public class CarWashCardViewModel extends ViewModel {
     private boolean validateIndependentStation(Station station) {
         LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
         LatLng origin = new LatLng(userLocation.latitude, userLocation.longitude);
-        return LocationUtils.calculateDistance(dest, origin) < DISTANCE_RANGE && station.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go");
+        return LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD
+                && station.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go");
     }
 
     public enum ViewState {

@@ -50,6 +50,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
+import suncor.com.android.utilities.IndependentStationAlertUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -126,7 +127,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
         viewModel.getIsNearestStationIndependent().observe(this, isIndependent -> {
             if (isIndependent) {
-                showIndependentStationAlert();
+                IndependentStationAlertUtil.showIndependentStationAlert(getContext());
             }
         });
 
@@ -135,7 +136,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        checkAndReuestCarWashPermission();
+        checkAndRequestCarWashPermission();
         binding = FragmentCarWashBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
@@ -224,7 +225,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private void cardClick(CardDetail cardDetail) {
         if (viewModel.getIsNearestStationIndependent().getValue() != null
                 && viewModel.getIsNearestStationIndependent().getValue()) {
-            showIndependentStationAlert();
+            IndependentStationAlertUtil.showIndependentStationAlert(getContext());
         } else {
             CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
             action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
@@ -358,6 +359,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
     }
 
+<<<<<<< HEAD
 
     private int findLinkedSingleTicketIndex(String ticketNumber, List<CardDetail> petroCanadaCards) {
         for (int i = 0; i < petroCanadaCards.size(); i++) {
@@ -375,13 +377,11 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 showRequestLocationDialog(false);
             }
         });
+=======
+    private void checkAndRequestCarWashPermission() {
+        permissionManager.checkCarWashPermission(getContext(), IS_FIRST_TIME_ACCESS_CAR_WASH,
+                () -> showRequestLocationDialog(false));
+>>>>>>> Add independent alert on card detail page.
     }
 
-    private void showIndependentStationAlert() {
-        new AlertDialog.Builder(getContext())
-                .setTitle(getString(R.string.carwash_independent_alert_title))
-                .setMessage(getString(R.string.carwash_independent_alert_message))
-                .setPositiveButton(getString(R.string.ok), null)
-                .show();
-    }
 }
