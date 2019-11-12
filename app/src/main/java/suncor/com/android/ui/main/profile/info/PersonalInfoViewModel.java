@@ -286,6 +286,12 @@ public class PersonalInfoViewModel extends ViewModel {
                     signoutAlert.message = R.string.profile_personnal_informations_email_alert_message;
                     signoutAlert.positiveButton = R.string.profile_personnal_informations_email_alert_signout_button;
                     signoutAlert.negativeButton = R.string.cancel;
+                    signoutAlert.negativeButtonClick = () -> {
+                        if(!emailInputField.getText().equals(profile.getEmail())) {
+                            emailInputField.setText(profile.getEmail());
+                            emailInputField.notifyPropertyChanged(BR.text);
+                        }
+                    };
                     signoutAlert.positiveButtonClick = this::callUpdateProfile;
                     profileSharedViewModel.postAlert(signoutAlert);
                 } else {
