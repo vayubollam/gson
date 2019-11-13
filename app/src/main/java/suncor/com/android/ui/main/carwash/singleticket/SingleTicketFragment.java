@@ -269,12 +269,12 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     }
 
     public void redeemConfirmButtonClicked() {
-        OrderResponse orderResponse = getFakeOrderResponse();
-        SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
-                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
-        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
-        Navigation.findNavController(getView()).navigate(action);
-        // viewModel.sendRedeemData();
+//        OrderResponse orderResponse = getFakeOrderResponse();
+//        SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
+//                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
+//        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
+//        Navigation.findNavController(getView()).navigate(action);
+         viewModel.sendRedeemData();
     }
 
     private OrderResponse getFakeOrderResponse() {

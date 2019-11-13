@@ -1,7 +1,5 @@
 package suncor.com.android.ui.main.carwash.singleticket;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -106,7 +104,7 @@ public class SingleTicketViewModel extends ViewModel {
     }
 
     public void sendRedeemData() {
-        Log.i("TTT", "Redeeming for " + selectedSingleTicketRedeem.getTitle() + " " + selectedSingleTicketRedeem.getPointsPrice() + " add to account = " + isLinkedToAccount);
+        redeem.postValue(Event.newEvent(true));
     }
 
     public boolean isLinkedToAccount() {

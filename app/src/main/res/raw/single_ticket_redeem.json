@@ -5,7 +5,9 @@
     "sku": "1234567890",
     "title": "single ticket",
     "pointsPrice": 1000,
-    "quantity": 1
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 1
   },
   {
     "category": "ticket",
@@ -13,7 +15,9 @@
     "sku": "1234567890",
     "title": "single ticket",
     "pointsPrice": 2000,
-    "quantity": 2
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 2
   },
   {
     "category": "ticket",
@@ -21,7 +25,9 @@
     "sku": "1234567890",
     "title": "single ticket",
     "pointsPrice": 3000,
-    "quantity": 3
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 3
   },
   {
     "category": "ticket",
@@ -29,7 +35,9 @@
     "sku": "1234567890",
     "title": "single ticket",
     "pointsPrice": 4000,
-    "quantity": 4
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 4
   },
   {
     "category": "ticket",
@@ -37,6 +45,8 @@
     "sku": "1234567890",
     "title": "single ticket",
     "pointsPrice": 5000,
-    "quantity": 5
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 5
   }
 ]

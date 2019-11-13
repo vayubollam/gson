@@ -1,7 +1,5 @@
 package suncor.com.android.data.redeem;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -19,9 +17,9 @@ import java.net.URISyntaxException;
 
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.redeem.request.Order;
 import suncor.com.android.model.redeem.response.OrderResponse;
-import suncor.com.android.model.Resource;
 import suncor.com.android.utilities.Timber;
 
 public class OrderApiImpl implements OrderApi {
@@ -41,6 +39,7 @@ public class OrderApiImpl implements OrderApi {
             URI adapterPath = createURI(ORDER_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(order));
+            if(order.getShoppingCart().geteGift() == null) request.addHeader("X-Mock-Variant", "/v1/orders:singleticket:success");
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
