@@ -98,6 +98,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     OrderResponse orderResponse = orderResponseResource.data;
                     SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
                             = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
+                    action.setIsLinkToAccount(viewModel.isLinkedToAccount());
                     if (getView() != null) {
                         getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
                     }
@@ -226,7 +227,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                 binding.redeemBtn.startAnimation(animFromBottom);
             }, ANIM_DURATION);
         }
-        if(binding.redeemTotalLayoutFix.getVisibility() == View.GONE){
+        if (binding.redeemTotalLayoutFix.getVisibility() == View.GONE) {
             new Handler().postDelayed(() ->
             {
                 binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
@@ -280,7 +281,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
 //                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
 //        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
 //        Navigation.findNavController(getView()).navigate(action);
-//         viewModel.sendRedeemData();
+        viewModel.sendRedeemData();
     }
 
 //    private OrderResponse getFakeOrderResponse() {
