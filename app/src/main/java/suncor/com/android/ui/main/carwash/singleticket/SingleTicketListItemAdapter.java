@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.carwash.singleticket;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
     private final int ANIM_DURATION = 600;
     private boolean itemsExpanded = true;
     private boolean isViewAnimating = false;
-    private boolean isFirstTime = true;
+    private boolean isFirstTime = false;
 
 
     public SingleTicketListItemAdapter(List<PetroCanadaProduct> products, int petroPoints, Consumer<Integer> callBack) {
@@ -166,6 +167,7 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
         selectedItem = 0;
         shouldHideTheRest = true;
         notifyDataSetChanged();
+        isFirstTime = true;
     }
 }
 

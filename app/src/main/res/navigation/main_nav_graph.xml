@@ -358,13 +358,6 @@
             android:name="isLinkToAccount"
             android:defaultValue="true"
             app:argType="boolean"/>
-        <action
-            android:id="@+id/action_redeemReceiptFragment_to_cardsDetailsFragment"
-            app:destination="@id/cardsDetailsFragment"
-            app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/slide_down"
-            app:popEnterAnim="@anim/slide_up"
-            app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
     <action
         android:id="@+id/action_to_profile_tab"

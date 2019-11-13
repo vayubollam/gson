@@ -222,7 +222,6 @@
                         android:layout_height="48dp"
                         android:layout_marginEnd="16dp"
                         android:gravity="center|end"
-                        android:text="@{@string/points_redeemed_value(CardFormatUtils.formatBalance(response.transaction.transactionAmount.petroPoints.petroPointsRemaining))}"
                         android:textAlignment="textEnd"
                         android:textAppearance="@style/Body"
                         app:layout_constraintLeft_toRightOf="@id/points_redeemed_title"

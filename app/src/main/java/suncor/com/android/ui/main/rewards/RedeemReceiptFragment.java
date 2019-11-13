@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,8 @@ import suncor.com.android.databinding.FragmentRedeemReceiptBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.MerchantsUtil;
 
@@ -40,9 +41,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             orderResponse = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getOrderResponse();
             isMerchant = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getIsMerchant();
             isLinkToAccount = RedeemReceiptFragmentArgs.fromBundle(getArguments()).getIsLinkToAccount();
-            Log.i("TTT", "isMerchant=" + isMerchant + " isLinkedToAccount=" + isLinkToAccount);
             binding.setResponse(orderResponse);
-            sessionManager.getProfile().setPointsBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining());
         }
         return initView();
     }
@@ -50,15 +49,21 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     private View initView() {
         int imageId;
         if (isMerchant) {
+            sessionManager.getProfile().setPointsBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining());
+            binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining())));
             imageId = getContext().getResources().getIdentifier(MerchantsUtil.getMerchantSmallImage(orderResponse.getShoppingCart().geteGift().getMerchantId()), "drawable", getContext().getPackageName());
             binding.valueTitle.setText(R.string.egift_card_value_title);
             binding.subtitle.setText(R.string.redeem_receipt_body);
             binding.cardValue.setText(getString(R.string.egift_card_value_in_dollar_generic, orderResponse.getShoppingCart().geteGift().getValue()));
             binding.emailSentToValue.setText(orderResponse.getShipping().getEmailSentTo());
         } else {
+            int remainingPoints = sessionManager.getProfile().getPointsBalance()
+                    - orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRedeemed();
+            sessionManager.getProfile().setPointsBalance(remainingPoints);
+            binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(remainingPoints)));
             imageId = getContext().getResources().getIdentifier(MerchantsUtil.getRewardSmallImage(orderResponse.getShoppingCart().getPetroCanadaProduct().getCategory()), "drawable", getContext().getPackageName());
             binding.valueTitle.setText("Number of tickets");
-            binding.subtitle.setText("Scan your ticket at any participating GlideWash or SuperWash location.");
+            binding.subtitle.setText(getString(R.string.single_ticket_receipt_subtitle));
             binding.cardValue.setText(String.valueOf(orderResponse.getShoppingCart().getPetroCanadaProduct().getUnits()));
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
         }
@@ -74,16 +79,10 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     }
 
     private void goBack() {
-//        if (!isMerchant && isLinkToAccount) {
-//            RedeemReceiptFragmentDirections.ActionRedeemReceiptFragmentToCardsDetailsFragment action
-//                    = RedeemReceiptFragmentDirections.actionRedeemReceiptFragmentToCardsDetailsFragment();
-//            action.setIsCardFromCarWash(true);
-//            action.setCardIndex(0);
-//            action.setIsCardFromProfile(false);
-//            Navigation.findNavController(getView()).navigate(action);
-//        } else {
-            Navigation.findNavController(getView()).popBackStack();
-//        }
+        if (!isMerchant && isLinkToAccount) {
+            ((MainActivity) getActivity()).setLinkedToAccount(true);
+        }
+        Navigation.findNavController(getView()).popBackStack();
     }
 
     public boolean isMerchant() {

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
@@ -65,6 +67,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private CarWashCardViewModel viewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
     private float appBarElevation;
+    private boolean isLinkToAccount;
 
     private LocationLiveData locationLiveData;
     private CarwashNearestCardBinding nearestCardBinding;
@@ -76,7 +79,8 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-
+        isLinkToAccount = ((MainActivity) getActivity()).isLinkedToAccount();
+        Log.i("TTT", "is link to account " + isLinkToAccount);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarWashCardViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
 
@@ -93,6 +97,14 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
                 }
                 petroCanadaCardsAdapter.setCards(petroCanadaCards);
+//                if(isLinkToAccount) {
+//                    Log.i("TTT", "i am here");
+//                    ((MainActivity)getActivity()).setLinkedToAccount(false);
+//                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+//                    action.setCardIndex(0);
+//                    action.setIsCardFromCarWash(true);
+//                    Navigation.findNavController(getView()).navigate(action);
+//                }
             }
         });
 

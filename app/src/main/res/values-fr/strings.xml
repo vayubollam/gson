@@ -538,6 +538,7 @@
     <string name="single_ticket_quantity">%d</string>
     <string name="single_ticket_add_to_account_help_title">Ajouter à mon compte</string>
     <string name="single_ticket_add_to_account_help_message">Ajouter votre billet à votre compte pour y accéder plus tard.</string>
+    <string name="single_ticket_receipt_subtitle">Scannez votre billet à n\'importe quel établissement avec lave-auto GlideWash ou SuperDoux participant.</string>
 
 
 </resources>
