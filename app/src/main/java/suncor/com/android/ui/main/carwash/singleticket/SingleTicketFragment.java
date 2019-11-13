@@ -186,7 +186,6 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
         binding.redeemTotalPointsTxt2.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
         binding.redeemNewPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
-        binding.redeemNewPointsTxt2.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
         binding.cardValueTxt.setText(getString(R.string.single_ticket_quantity_title));
         binding.changeValueBtn.animate().alpha(1.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
             @Override
@@ -225,6 +224,13 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
             {
                 binding.redeemBtn.setVisibility(View.VISIBLE);
                 binding.redeemBtn.startAnimation(animFromBottom);
+            }, ANIM_DURATION);
+        }
+        if(binding.redeemTotalLayoutFix.getVisibility() == View.GONE){
+            new Handler().postDelayed(() ->
+            {
+                binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
+                binding.redeemTotalLayoutFix.startAnimation(animFromBottom);
             }, ANIM_DURATION);
         }
         moveUnderneathLayoutsUp();
