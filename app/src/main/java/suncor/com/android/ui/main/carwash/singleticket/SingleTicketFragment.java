@@ -8,6 +8,7 @@ import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -56,6 +58,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     private final int ANIM_DURATION = 600;
     private Animation animFromBottom;
     private float totalFixY;
+    private int marginTop;
 
     public static SingleTicketFragment newInstance() {
         return new SingleTicketFragment();
@@ -114,7 +117,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
             }
         });
 
-
+        marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
     }
 
     @Override
@@ -139,7 +142,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     super.onAnimationEnd(animation);
                 }
             });
-            shiftUnderneathLayousDown();
+            shiftUnderneathLayoutDown();
         });
 
         binding.nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -228,29 +231,35 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         binding.nestedScrollView.setScrollingEnabled(true);
     }
 
-    private void shiftUnderneathLayousDown() {
+    private void shiftUnderneathLayoutDown() {
         adapter.showValues();
+        binding.valueRecyclerViewDownDivider.animate().alpha(0).start();
+        binding.valuesRecyclerView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
         ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(binding.redeemValueLayout);
+        constraintSet.clone(binding.scrollViewGroup);
         constraintSet.clear(R.id.payment_method_layout, ConstraintSet.TOP);
-        constraintSet.connect(R.id.payment_method_layout, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.BOTTOM, 0);
-        constraintSet.applyTo(binding.redeemValueLayout);
+        constraintSet.connect(R.id.payment_method_layout, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.BOTTOM, marginTop);
+        constraintSet.connect(R.id.value_recycler_view_down_divider, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.BOTTOM, marginTop);
+        constraintSet.applyTo(binding.scrollViewGroup);
         Transition transition = new ChangeBounds();
         transition.setDuration(ANIM_DURATION);
         transition.setInterpolator(animInterpolator);
-        TransitionManager.beginDelayedTransition(binding.redeemValueLayout, transition);
+        TransitionManager.beginDelayedTransition(binding.scrollViewGroup, transition);
     }
 
     private void moveUnderneathLayoutsUp() {
+        binding.valuesRecyclerView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black_4));
         ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(binding.redeemValueLayout);
+        constraintSet.clone(binding.scrollViewGroup);
         constraintSet.clear(R.id.payment_method_layout, ConstraintSet.TOP);
-        constraintSet.connect(R.id.payment_method_layout, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.TOP, (int) adapter.getItemHeight());
-        constraintSet.applyTo(binding.redeemValueLayout);
+        constraintSet.connect(R.id.payment_method_layout, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.TOP, (int) adapter.getItemHeight() + marginTop);
+        constraintSet.connect(R.id.value_recycler_view_down_divider, ConstraintSet.TOP, R.id.values_recycler_view, ConstraintSet.TOP, (int) adapter.getItemHeight());
+        constraintSet.applyTo(binding.scrollViewGroup);
         Transition transition = new ChangeBounds();
         transition.setDuration(ANIM_DURATION);
         transition.setInterpolator(animInterpolator);
-        TransitionManager.beginDelayedTransition(binding.redeemValueLayout, transition);
+        TransitionManager.beginDelayedTransition(binding.scrollViewGroup, transition);
+        binding.valueRecyclerViewDownDivider.animate().setDuration(ANIM_DURATION).alpha(1).start();
     }
 
 
