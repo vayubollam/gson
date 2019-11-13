@@ -62,9 +62,10 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             sessionManager.getProfile().setPointsBalance(remainingPoints);
             binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(remainingPoints)));
             imageId = getContext().getResources().getIdentifier(MerchantsUtil.getRewardSmallImage(orderResponse.getShoppingCart().getPetroCanadaProduct().getCategory()), "drawable", getContext().getPackageName());
-            binding.valueTitle.setText("Number of tickets");
+            binding.valueTitle.setText(getString(R.string.single_ticket_receipt_quantity_title));
             binding.subtitle.setText(getString(R.string.single_ticket_receipt_subtitle));
-            binding.cardValue.setText(String.valueOf(orderResponse.getShoppingCart().getPetroCanadaProduct().getUnits()));
+            binding.cardValue.setText(getContext().getResources().getQuantityString(R.plurals.single_ticket_receipt_quantity,
+                    orderResponse.getShoppingCart().getPetroCanadaProduct().getUnits(), orderResponse.getShoppingCart().getPetroCanadaProduct().getUnits()));
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
         }
         binding.setImage(getContext().getDrawable(imageId));
