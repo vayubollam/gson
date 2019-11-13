@@ -556,8 +556,7 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_check_thick"
-                    android:tint="@color/red"
+                    android:src="@drawable/ic_check_round"
                     app:visibleGone="@{vm.orderApiData.status == Resource.Status.SUCCESS}" />
 
                 <androidx.appcompat.widget.AppCompatImageView
