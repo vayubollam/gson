@@ -497,6 +497,7 @@
     <string name="reset_password_hint">Nouveau mot de passe</string>
     <string name="reset_password_button">Confirmer</string>
     <string name="reset_password_spinner_text">Mise à jour…</string>
+    <string name="reset_password_success_toast">Mot de passe mis à jour</string>
 
 
 </resources>
