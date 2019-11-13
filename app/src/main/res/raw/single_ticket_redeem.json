@@ -4,7 +4,7 @@
     "subtype": "one",
     "sku": "1234567890",
     "title": "single ticket",
-    "pointsPrice": 1000,
+    "pointsPrice": 10000,
     "rewardId": 1,
     "quantity": 1,
     "units": 1
@@ -14,7 +14,7 @@
     "subtype": "one",
     "sku": "1234567890",
     "title": "single ticket",
-    "pointsPrice": 2000,
+    "pointsPrice": 20000,
     "rewardId": 1,
     "quantity": 1,
     "units": 2
@@ -24,7 +24,7 @@
     "subtype": "one",
     "sku": "1234567890",
     "title": "single ticket",
-    "pointsPrice": 3000,
+    "pointsPrice": 30000,
     "rewardId": 1,
     "quantity": 1,
     "units": 3
@@ -34,7 +34,7 @@
     "subtype": "one",
     "sku": "1234567890",
     "title": "single ticket",
-    "pointsPrice": 4000,
+    "pointsPrice": 40000,
     "rewardId": 1,
     "quantity": 1,
     "units": 4
@@ -44,9 +44,59 @@
     "subtype": "one",
     "sku": "1234567890",
     "title": "single ticket",
-    "pointsPrice": 5000,
+    "pointsPrice": 50000,
     "rewardId": 1,
     "quantity": 1,
     "units": 5
+  },
+  {
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 60000,
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 6
+  },
+  {
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 70000,
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 7
+  },
+  {
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 80000,
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 8
+  },
+  {
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 90000,
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 9
+  },
+  {
+    "category": "ticket",
+    "subtype": "one",
+    "sku": "1234567890",
+    "title": "single ticket",
+    "pointsPrice": 100000,
+    "rewardId": 1,
+    "quantity": 1,
+    "units": 10
   }
 ]

@@ -274,14 +274,13 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
 //                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
 //        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
 //        Navigation.findNavController(getView()).navigate(action);
-         viewModel.sendRedeemData();
+//         viewModel.sendRedeemData();
     }
 
-    private OrderResponse getFakeOrderResponse() {
-        InputStream jsonFile = getResources().openRawResource(R.raw.mock_order_response_ticket);
-        OrderResponse orderResponses = new Gson().fromJson(new InputStreamReader(jsonFile), OrderResponse.class);
-        Log.i("TTT", orderResponses.getShoppingCart().getPetroCanadaProduct().getPointsPrice() + " ");
-        return orderResponses;
-    }
+//    private OrderResponse getFakeOrderResponse() {
+//        InputStream jsonFile = getResources().openRawResource(R.raw.mock_order_response_ticket);
+//        OrderResponse orderResponses = new Gson().fromJson(new InputStreamReader(jsonFile), OrderResponse.class);
+//        return orderResponses;
+//    }
 }
 
