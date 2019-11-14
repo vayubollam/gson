@@ -279,18 +279,8 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     }
 
     public void redeemConfirmButtonClicked() {
-//        OrderResponse orderResponse = getFakeOrderResponse();
-//        SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
-//                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
-//        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
-//        Navigation.findNavController(getView()).navigate(action);
         viewModel.sendRedeemData();
     }
 
-//    private OrderResponse getFakeOrderResponse() {
-//        InputStream jsonFile = getResources().openRawResource(R.raw.mock_order_response_ticket);
-//        OrderResponse orderResponses = new Gson().fromJson(new InputStreamReader(jsonFile), OrderResponse.class);
-//        return orderResponses;
-//    }
 }
 

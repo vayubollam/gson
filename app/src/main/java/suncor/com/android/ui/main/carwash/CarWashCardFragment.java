@@ -94,7 +94,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     mainViewModel.setLinkedToAccount(false);
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setCardIndex(1);
-                    //action.setIsCardFromCarWash(true);
                     Navigation.findNavController(getView()).navigate(action);
                 }
             }
