@@ -7,17 +7,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRedeemReceiptBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
-import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.MerchantsUtil;
 
@@ -26,10 +28,19 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
 
     @Inject
     SessionManager sessionManager;
+    @Inject
+    ViewModelFactory viewModelFactory;
     private FragmentRedeemReceiptBinding binding;
     private OrderResponse orderResponse;
     private boolean isMerchant;
     private boolean isLinkToAccount;
+    private MainViewModel mainViewModel;
+
+    @Override
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
+    }
 
     @Nullable
     @Override
@@ -81,12 +92,9 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
 
     private void goBack() {
         if (!isMerchant && isLinkToAccount) {
-            ((MainActivity) getActivity()).setLinkedToAccount(true);
+            mainViewModel.setLinkedToAccount(true);
         }
         Navigation.findNavController(getView()).popBackStack();
     }
 
-    public boolean isMerchant() {
-        return isMerchant;
-    }
 }

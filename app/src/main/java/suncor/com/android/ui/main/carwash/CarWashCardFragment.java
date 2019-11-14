@@ -41,7 +41,7 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
-import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
@@ -65,9 +65,9 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     ViewModelFactory viewModelFactory;
     private FragmentCarWashBinding binding;
     private CarWashCardViewModel viewModel;
+    private MainViewModel mainViewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
     private float appBarElevation;
-    private boolean isLinkToAccount;
 
     private LocationLiveData locationLiveData;
     private CarwashNearestCardBinding nearestCardBinding;
@@ -79,12 +79,16 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-        isLinkToAccount = ((MainActivity) getActivity()).isLinkedToAccount();
-        Log.i("TTT", "is link to account " + isLinkToAccount);
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarWashCardViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
 
         viewModel.getViewState().observe(this, (result) -> {
+            if (mainViewModel.isLinkedToAccount()) {
+                Log.i("TTT", "i am here");
+            } else {
+                Log.i("TTT", "i am here2");
+            }
             if (result != CarWashCardViewModel.ViewState.REFRESHING) {
                 binding.refreshLayout.setRefreshing(false);
             }
