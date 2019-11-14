@@ -10,6 +10,7 @@ public class CardDetail {
     private String cardNumber;
     private String cardNumberEncrypted;
     private String serviceId;
+    private String ticketNumber;
     private int pointsBalance = INVALID_BALANCE;
     private int litresRemaining = INVALID_BALANCE;
     private int unitsRemaining = INVALID_BALANCE;
@@ -40,6 +41,10 @@ public class CardDetail {
         return serviceId;
     }
 
+    public String getTicketNumber() {
+        return ticketNumber;
+    }
+
     public int getBalance() {
         switch (cardType) {
             case PPTS:
@@ -47,6 +52,7 @@ public class CardDetail {
             case FSR:
             case PPC:
                 return litresRemaining;
+            case ST:
             case WAG:
                 return unitsRemaining;
             case SP:
@@ -64,6 +70,7 @@ public class CardDetail {
             case PPC:
             case SP:
             case WAG:
+            case ST:
                 return CardCategory.PETRO_CANADA;
             default:
                 return CardCategory.PARTNER;
@@ -90,6 +97,8 @@ public class CardDetail {
                 return "more-rewards";
             case RBC:
                 return "rbc";
+            case ST:
+                return "single_ticket";
         }
         return "card";
     }
@@ -101,8 +110,12 @@ public class CardDetail {
             return false;
         } else {
             CardDetail cardDetail = (CardDetail) obj;
-            return (cardDetail.getCardType() == CardType.RBC && this.getCardType() == CardType.RBC)
-                    || cardDetail.getCardNumber().equals(this.getCardNumber());
+            if (cardDetail.cardType != CardType.ST) {
+                return (cardDetail.getCardType() == CardType.RBC && this.getCardType() == CardType.RBC)
+                        || cardDetail.getCardNumber().equals(this.getCardNumber());
+            } else {
+                return cardDetail.getTicketNumber().equals(this.getTicketNumber());
+            }
         }
     }
 

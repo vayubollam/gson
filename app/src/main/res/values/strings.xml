@@ -563,4 +563,6 @@
     <string name="single_ticket_add_to_account_help_message">Add your ticket to your account to access at a later date.</string>
     <string name="single_ticket_receipt_subtitle">Scan your ticket at any participating GlideWash or SuperWash location.</string>
     <string name="single_ticket_receipt_quantity_title">Quantity</string>
+
+    <string name="single_ticket_card_label">Car wash ticket</string>
 </resources>
