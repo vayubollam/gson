@@ -172,7 +172,14 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (viewModel.getIsAnyTicketReedeemable().getValue()) adapter.initialLaunch();
+        if (viewModel.getIsAnyTicketReedeemable().getValue()) {
+            adapter.initialLaunch();
+        } else {
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(binding.scrollViewGroup);
+            constraintSet.connect(R.id.values_recycler_view, ConstraintSet.BOTTOM, R.id.scroll_view_group, ConstraintSet.BOTTOM, marginTop);
+            constraintSet.applyTo(binding.scrollViewGroup);
+        }
     }
 
     private View.OnClickListener addToAccountHelpListener = view -> new AlertDialog.Builder(getContext())
