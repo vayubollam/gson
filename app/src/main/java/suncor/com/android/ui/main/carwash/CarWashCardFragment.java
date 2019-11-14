@@ -84,13 +84,20 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
 
         viewModel.getViewState().observe(this, (result) -> {
-            if (mainViewModel.isLinkedToAccount()) {
-                Log.i("TTT", "i am here");
-            } else {
-                Log.i("TTT", "i am here2");
-            }
             if (result != CarWashCardViewModel.ViewState.REFRESHING) {
                 binding.refreshLayout.setRefreshing(false);
+            }
+
+            //TODO: NEED TO CHANGE ONCE THE BACKEND IS FULLY READY
+            if (result != CarWashCardViewModel.ViewState.REFRESHING && result != CarWashCardViewModel.ViewState.LOADING
+                    && result != CarWashCardViewModel.ViewState.FAILED) {
+                if (mainViewModel.isLinkedToAccount()) {
+                    mainViewModel.setLinkedToAccount(false);
+                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+                    action.setCardIndex(1);
+                    //action.setIsCardFromCarWash(true);
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
 
             if (result != CarWashCardViewModel.ViewState.REFRESHING && result != CarWashCardViewModel.ViewState.LOADING
@@ -101,14 +108,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
                 }
                 petroCanadaCardsAdapter.setCards(petroCanadaCards);
-//                if(isLinkToAccount) {
-//                    Log.i("TTT", "i am here");
-//                    ((MainActivity)getActivity()).setLinkedToAccount(false);
-//                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-//                    action.setCardIndex(0);
-//                    action.setIsCardFromCarWash(true);
-//                    Navigation.findNavController(getView()).navigate(action);
-//                }
             }
         });
 
