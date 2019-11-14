@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentResetPasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -77,6 +76,7 @@ public class ResetPasswordFragment extends BaseFragment {
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.passwordInput.getPasswordToggle().setVisibility(View.VISIBLE);
         binding.passwordInput.getEditText().setOnFocusChangeListener((v, f) -> viewModel.getPasswordField().setHasFocus(f));
+        scrollToView(binding.passwordInput);
         return binding.getRoot();
     }
 
@@ -88,5 +88,13 @@ public class ResetPasswordFragment extends BaseFragment {
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+
+    private void scrollToView(View view) {
+        binding.scrollView.postDelayed(() -> {
+            int scrollPosition = view.getTop();
+            binding.scrollView.smoothScrollTo(0, scrollPosition);
+        }, 400);
     }
 }

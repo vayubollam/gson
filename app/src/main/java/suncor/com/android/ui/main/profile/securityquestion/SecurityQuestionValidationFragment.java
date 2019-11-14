@@ -7,16 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import java.util.Objects;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-
-import java.util.Objects;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSecurityQuestionValidationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -103,6 +102,7 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.profile_security_question_load_try_again, () -> mViewModel.loadQuestion()));
+        binding.questionAnswerInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.questionAnswerInput, f));
         return binding.getRoot();
     }
 
@@ -115,6 +115,19 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    public void onFocusChange(View view, boolean hasFocus) {
+        if (hasFocus) {
+            scrollToView(view);
+        }
+    }
+
+    private void scrollToView(View view) {
+        binding.scrollView.postDelayed(() -> {
+            int scrollPosition = view.getTop();
+            binding.scrollView.smoothScrollTo(0, scrollPosition);
+        }, 400);
     }
 
 }
