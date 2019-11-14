@@ -88,7 +88,7 @@
                     style="@style/FilledButton.Red.L"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:onClick="@{() -> vm.validateAndContinue()}"
                     android:text="@string/profile_security_question_continue"
                     app:visibleGone="@{vm.securityQuestionLiveData.status == Status.SUCCESS}"
