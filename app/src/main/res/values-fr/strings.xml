@@ -547,5 +547,7 @@
     <string name="single_ticket_receipt_quantity_title">Quantité</string>
 
     <string name="single_ticket_card_label">Billet de lavage</string>
+    <string name="single_ticket_card_detail_description">Placez votre code à barres devant le scanneur.</string>
+    <string name="single_ticket_card_detail_trouble_scan_message">Vous n\'arrivez pas à scanner?\nEssayez d\'entrer votre numéro de billet à l\'écran du lave-auto.</string>
 
 </resources>

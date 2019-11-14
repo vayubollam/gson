@@ -242,7 +242,40 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/divider_2"
-                            app:visibleGone="@{card.cardType==CardType.PPTS}" />
+                            app:visibleGone="@{card.cardType==CardType.PPTS || card.cardType==CardType.ST}" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/single_ticket_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@{card.cardNumber}"
+                            android:textAppearance="@style/Title2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/barcode_image"
+                            app:visibleGone="@{card.cardType==CardType.ST}"
+                            tools:text="1234 5678 9012" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/single_ticket_have_trouble_scan_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:text="@string/single_ticket_card_detail_trouble_scan_message"
+                            android:gravity="center"
+                            android:lineSpacingMultiplier="1.5"
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_60"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/single_ticket_number"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:visibleGone="@{card.cardType == CardType.ST}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
