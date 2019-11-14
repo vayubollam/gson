@@ -87,25 +87,22 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 binding.refreshLayout.setRefreshing(false);
             }
 
-            //TODO: NEED TO CHANGE ONCE THE BACKEND IS FULLY READY
-            if (result != CarWashCardViewModel.ViewState.REFRESHING && result != CarWashCardViewModel.ViewState.LOADING
-                    && result != CarWashCardViewModel.ViewState.FAILED) {
-                if (mainViewModel.isLinkedToAccount()) {
-                    mainViewModel.setLinkedToAccount(false);
-                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-                    action.setCardIndex(1);
-                    Navigation.findNavController(getView()).navigate(action);
-                }
-            }
-
             if (result != CarWashCardViewModel.ViewState.REFRESHING && result != CarWashCardViewModel.ViewState.LOADING
                     && result != CarWashCardViewModel.ViewState.FAILED && viewModel.getIsCardAvailable().getValue()) {
 
-                ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
-                for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
-                    petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                if (mainViewModel.isLinkedToAccount()) {
+                    mainViewModel.setLinkedToAccount(false);
+                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+                    action.setIsCardFromCarWash(true);
+                    action.setCardIndex(0);
+                    Navigation.findNavController(getView()).navigate(action);
+                } else {
+                    ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
+                    for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
+                        petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                    }
+                    petroCanadaCardsAdapter.setCards(petroCanadaCards);
                 }
-                petroCanadaCardsAdapter.setCards(petroCanadaCards);
             }
         });
 

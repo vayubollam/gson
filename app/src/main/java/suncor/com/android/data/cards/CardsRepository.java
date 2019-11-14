@@ -153,17 +153,17 @@ public class CardsRepository {
                     case PARTNER:
                         return 1;
                 }
-            } else if(card1.getCardType() == CardType.FSR &&card2.getCardType() == CardType.FSR) {
+            } else if (card1.getCardType() == CardType.FSR && card2.getCardType() == CardType.FSR) {
                 if (card1.getCpl() == card2.getCpl()) {
                     return ((card2.getBalance() - card1.getBalance()) * 10);
                 } else {
                     return (int) ((card1.getCpl() - card2.getCpl()) * 10);
                 }
-            } else if(card1.getCardType() == CardType.SP &&card2.getCardType() == CardType.SP) {
+            } else if (card1.getCardType() == CardType.SP && card2.getCardType() == CardType.SP) {
                 return ((card2.getBalance() - card1.getBalance()) * 10);
-            } else if(card1.getCardType() == CardType.WAG &&card2.getCardType() == CardType.WAG) {
+            } else if (card1.getCardType() == CardType.WAG && card2.getCardType() == CardType.WAG) {
                 return ((card2.getBalance() - card1.getBalance()) * 10);
-            } else if(card1.getCardType() == CardType.PPC &&card2.getCardType() == CardType.PPC) {
+            } else if (card1.getCardType() == CardType.PPC && card2.getCardType() == CardType.PPC) {
                 return ((card2.getBalance() - card1.getBalance()) * 10);
             } else if (card1.getCardCategory() == CardDetail.CardCategory.PETRO_CANADA) {
                 if (card1.getCardType() != card2.getCardType()) {
@@ -217,7 +217,7 @@ public class CardsRepository {
     public static List<CardDetail> filterCarWashCards(List<CardDetail> cards) {
         ArrayList<CardDetail> carWashCards = new ArrayList<>();
         for (CardDetail card : cards) {
-            if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
+            if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG) || card.getCardType().equals(CardType.ST)) {
                 carWashCards.add(card);
             }
         }
