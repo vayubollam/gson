@@ -99,6 +99,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
                             = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
                     action.setIsLinkToAccount(viewModel.isLinkedToAccount());
+                    action.setPetroCanadaProduct(viewModel.getSelectedSingleTicketRedeem());
                     if (getView() != null) {
                         getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
                     }
