@@ -3,8 +3,6 @@ package suncor.com.android.model.redeem.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import suncor.com.android.model.redeem.response.ShoppingCart;
-
 import com.google.gson.annotations.SerializedName;
 
 public class OrderResponse implements Parcelable {
