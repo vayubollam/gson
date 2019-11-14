@@ -37,7 +37,6 @@ import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Province;
-import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.AndroidBug5497Workaround;
@@ -64,7 +63,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private ArrayList<Province> provinces = new ArrayList<>();
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
-    private Station nearestCarWashStation;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -271,11 +269,4 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         });
     }
 
-    public Station getNearestCarWashStation() {
-        return nearestCarWashStation;
-    }
-
-    public void setNearestCarWashStation(Station station) {
-        nearestCarWashStation = station;
-    }
 }

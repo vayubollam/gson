@@ -44,6 +44,7 @@ import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.IndependentStationAlertUtil;
@@ -52,6 +53,7 @@ import suncor.com.android.utilities.LocationUtils;
 public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
+    private MainViewModel mainViewModel;
     private int clickedCardIndex;
     boolean loadCarWashCardsOnly;
     @Inject
@@ -67,6 +69,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         locationLiveData.observe(this, location -> {
             currentLocation = (new LatLng(location.getLatitude(), location.getLongitude()));
@@ -234,13 +237,15 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private boolean isUserAtIndependentStation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Station station = ((MainActivity) getActivity()).getNearestCarWashStation();
-            LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-            LatLng origin = new LatLng(currentLocation.latitude, currentLocation.longitude);
-            Log.i("TTT", "distance is " + LocationUtils.calculateDistance(dest, origin));
-            if (LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD
-                    && station.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go")) {
-                return true;
+            Station station = mainViewModel.getNearestStation().getValue();
+            if (station != null) {
+                LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+                LatLng origin = new LatLng(currentLocation.latitude, currentLocation.longitude);
+                Log.i("TTT", "distance is " + LocationUtils.calculateDistance(dest, origin));
+                if (LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD
+                        && station.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go")) {
+                    return true;
+                }
             }
         }
         return false;

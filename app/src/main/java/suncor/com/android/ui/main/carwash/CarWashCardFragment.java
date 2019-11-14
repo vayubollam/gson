@@ -44,6 +44,7 @@ import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
@@ -128,7 +129,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
         viewModel.getNearestStation().observeForever(resource -> {
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                ((MainActivity) getActivity()).setNearestCarWashStation(resource.data.getStation());
+                mainViewModel.setNearestStation(resource.data.getStation());
             }
         });
 
@@ -366,8 +367,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
     }
 
-<<<<<<< HEAD
-
     private int findLinkedSingleTicketIndex(String ticketNumber, List<CardDetail> petroCanadaCards) {
         for (int i = 0; i < petroCanadaCards.size(); i++) {
             if (petroCanadaCards.get(i).getCardType() == CardType.ST
@@ -377,18 +376,9 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         return 0;
     }
 
-    private void checkAndReuestCarWashPermission() {
-        permissionManager.checkCarWashPermission(getContext(), IS_FIRST_TIME_ACCESS_CAR_WASH, new PermissionManager.CarWashPermissionListener() {
-            @Override
-            public void onFirstTimeAccessCarWash() {
-                showRequestLocationDialog(false);
-            }
-        });
-=======
     private void checkAndRequestCarWashPermission() {
         permissionManager.checkCarWashPermission(getContext(), IS_FIRST_TIME_ACCESS_CAR_WASH,
                 () -> showRequestLocationDialog(false));
->>>>>>> Add independent alert on card detail page.
     }
 
 }
