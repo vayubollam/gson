@@ -68,8 +68,10 @@ public class PreferencesViewModel extends ViewModel {
                 ProfileRequest request = new ProfileRequest();
                 if (hasUpdatedPhoneOffers) {
                     request.setEmailOffers(emailOffers.get());
+                    request.setTextOffers(textOffers.get());
                 }
                 if (profile.isTextOffers() != textOffers.get()) {
+                    request.setEmailOffers(emailOffers.get());
                     request.setTextOffers(textOffers.get());
                 }
                 return profilesApi.updateProfile(request);
