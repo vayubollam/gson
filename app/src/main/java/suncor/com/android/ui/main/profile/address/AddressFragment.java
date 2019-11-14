@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -17,9 +19,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddressBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -148,6 +147,9 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         if (view == binding.cityInput) {
             viewModel.getCityField().setHasFocus(hasFocus);
         }
+        if (hasFocus) {
+            scrollToView(view);
+        }
     }
 
     @Override
@@ -171,5 +173,18 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
 
     }
 
+    private void scrollToView(View view) {
+        binding.scrollView.postDelayed(() -> {
+            int viewYPosition = view.getTop();
+            int scrollPosition;
+            if (view == binding.postalcodeInput) {
+                scrollPosition = viewYPosition;
+            } else {
+                int halfHeight = binding.scrollView.getHeight() / 2 - view.getHeight() / 2;
+                scrollPosition = Math.max(viewYPosition - halfHeight, 0);
+            }
+            binding.scrollView.smoothScrollTo(0, scrollPosition);
+        }, 400);
+    }
 
 }
