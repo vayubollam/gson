@@ -16,14 +16,14 @@ public class Profile {
     private boolean emailOffers;
     private boolean doNotEmail;
     private boolean textOffers;
-    private String retailIdDevQAOnly;
+    private String retailId;
 
-    public String getRetailIdDevQAOnly() {
-        return retailIdDevQAOnly;
+    public String getRetailId() {
+        return retailId;
     }
 
-    public void setRetailIdDevQAOnly(String retailIdDevQAOnly) {
-        this.retailIdDevQAOnly = retailIdDevQAOnly;
+    public void setRetailId(String retailId) {
+        this.retailId = retailId;
     }
 
     public String getEmail() {

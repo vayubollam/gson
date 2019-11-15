@@ -109,7 +109,7 @@ public class LoginFragment extends BaseFragment {
                             getActivity().finish();
                         }
                         fingerPrintManager.activateAutoLogin();
-                        AnalyticsUtils.logEvent(getContext(), "login", new Pair<>("retailID", sessionManager.getProfile().getRetailIdDevQAOnly()));
+                        AnalyticsUtils.logEvent(getContext(), "login");
                     }
                 }
         );
