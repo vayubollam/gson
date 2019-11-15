@@ -56,6 +56,7 @@ public class CarWashCardViewModel extends ViewModel {
     private MutableLiveData<Boolean> isNearestStationIndependent = new MutableLiveData<>();
 
     private LatLng userLocation;
+    private MutableLiveData<CardTypeStatus> cardTypeStatus = new MutableLiveData<>();
 
 
     @Inject
@@ -179,20 +180,45 @@ public class CarWashCardViewModel extends ViewModel {
         if (carWashCards.size() == 0) {
             isCardAvailable.setValue(false);
         } else {
-            setIsBalanceZero(carWashCards);
+            setUpCardTypeStatusAndIsBalanceZero(carWashCards);
             isCardAvailable.setValue(true);
             petroCanadaCards.setValue(carWashCards);
         }
     }
 
-    private void setIsBalanceZero(List<CardDetail> cards) {
+//    private void setIsBalanceZero(List<CardDetail> cards) {
+//        boolean isAllBalanceZero = true;
+//        for (CardDetail card : cards) {
+//            if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
+//                if (card.getBalance() != 0) {
+//                    isAllBalanceZero = false;
+//                }
+//            } else if (card.getCardType().equals(CardType.ST)) {
+//            }
+//        }
+//        isBalanceZero.setValue(isAllBalanceZero);
+//    }
+
+    private void setUpCardTypeStatusAndIsBalanceZero(List<CardDetail> cards) {
         boolean isAllBalanceZero = true;
+        int cardQuantity = 0;
+        int ticketQuantity = 0;
         for (CardDetail card : cards) {
             if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
                 if (card.getBalance() != 0) {
                     isAllBalanceZero = false;
                 }
+                cardQuantity++;
+            } else if (card.getCardType().equals(CardType.ST)) {
+                ticketQuantity++;
             }
+        }
+        if (cardQuantity == 0 && ticketQuantity != 0) {
+            this.cardTypeStatus.setValue(CardTypeStatus.TICKET_ONLY);
+        } else if (cardQuantity != 0 && ticketQuantity == 0) {
+            this.cardTypeStatus.setValue(CardTypeStatus.CARD_ONLY);
+        } else {
+            this.cardTypeStatus.setValue(CardTypeStatus.CARD_AND_TICKET);
         }
         isBalanceZero.setValue(isAllBalanceZero);
     }
@@ -223,6 +249,10 @@ public class CarWashCardViewModel extends ViewModel {
 
     public LiveData<Boolean> getLocationServiceEnabled() {
         return locationServiceEnabled;
+    }
+
+    public LiveData<CardTypeStatus> getCardTypeStatus() {
+        return cardTypeStatus;
     }
 
     public void setUserLocation(LatLng userLocation) {
@@ -274,5 +304,11 @@ public class CarWashCardViewModel extends ViewModel {
 
     public enum ViewState {
         LOADING, FAILED, SUCCESS, REFRESHING
+    }
+
+    public enum CardTypeStatus {
+        CARD_ONLY,
+        TICKET_ONLY,
+        CARD_AND_TICKET
     }
 }

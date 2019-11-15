@@ -137,6 +137,22 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             }
         });
 
+        viewModel.getCardTypeStatus().observe(this, cardTypeStatus -> {
+            String content;
+            switch (cardTypeStatus) {
+                case CARD_ONLY:
+                    content = getString(R.string.carwash_getwash_message_card_only);
+                    break;
+                case TICKET_ONLY:
+                    content = getString(R.string.carwash_getwash_message_ticket_only);
+                    break;
+                default:
+                    content = getString(R.string.carwash_getwash_message_card_and_ticket);
+                    break;
+            }
+            binding.carwashWashCards.descriptionCardContent.setText(content);
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
