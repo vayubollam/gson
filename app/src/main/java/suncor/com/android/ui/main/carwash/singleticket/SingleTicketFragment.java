@@ -170,10 +170,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         if (viewModel.getIsAnyTicketReedeemable().getValue()) {
             adapter.initialLaunch();
         } else {
-            ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.clone(binding.scrollViewGroup);
-            constraintSet.connect(R.id.values_recycler_view, ConstraintSet.BOTTOM, R.id.scroll_view_group, ConstraintSet.BOTTOM, marginTop);
-            constraintSet.applyTo(binding.scrollViewGroup);
+            binding.valuesRecyclerView.setPadding(0,0,0,marginTop);
         }
     }
 
