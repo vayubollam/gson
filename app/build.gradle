@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
 apply from: "./versionCode.gradle"
 
-if (getGradle().getStartParameter().getTaskRequests().toString().contains("QA")) {
-    apply plugin: 'io.fabric'
+if (!(getGradle().getStartParameter().getTaskRequests().toString().contains("Dev"))) {
+        apply plugin: 'io.fabric'
 }
 
 repositories {
@@ -150,6 +150,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 
 }
-if (getGradle().getStartParameter().getTaskRequests().toString().contains("QA")) {
+
+if (!(getGradle().getStartParameter().getTaskRequests().toString().contains("Dev"))) {
     apply plugin: 'com.google.gms.google-services'
 }

@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentForgotPasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -63,6 +62,7 @@ public class ForgotPasswordFragment extends MainActivityFragment {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
+        scrollToView(binding.forgotPasswordEmailInput);
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
         return binding.getRoot();
@@ -77,4 +77,13 @@ public class ForgotPasswordFragment extends MainActivityFragment {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
+
+
+    private void scrollToView(View view) {
+        binding.scrollView.postDelayed(() -> {
+            int scrollPosition = view.getTop();
+            binding.scrollView.smoothScrollTo(0, scrollPosition);
+        }, 400);
+    }
+
 }
