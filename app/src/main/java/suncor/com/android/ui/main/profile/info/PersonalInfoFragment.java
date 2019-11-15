@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
-import javax.inject.Inject;
-
-import afu.org.checkerframework.checker.nullness.qual.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import javax.inject.Inject;
+
+import afu.org.checkerframework.checker.nullness.qual.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
@@ -86,7 +87,6 @@ public class PersonalInfoFragment extends MainActivityFragment {
         });
 
         profileSharedViewModel.alertObservable.observe(getActivity(), event -> {
-
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
             if (alert != null) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
@@ -121,14 +121,18 @@ public class PersonalInfoFragment extends MainActivityFragment {
             if (isLoading) {
                 hideKeyboard();
             }
-            binding.emailInput.getEditText().clearFocus();
+            binding.emailInput.getEditText().requestFocus();
         });
 
         viewModel.isPasswordLoading.observe(this, isLoading -> {
             if (isLoading) {
                 hideKeyboard();
             }
-            binding.passwordInput.getEditText().clearFocus();
+            if (viewModel.isDuplicateEmail) {
+                binding.passwordInput.getEditText().requestFocus();
+            } else {
+                binding.passwordInput.getEditText().clearFocus();
+            }
         });
 
 
