@@ -121,18 +121,18 @@ public class PersonalInfoFragment extends MainActivityFragment {
             if (isLoading) {
                 hideKeyboard();
             }
-            binding.emailInput.getEditText().requestFocus();
+            if (viewModel.isDuplicateEmail) {
+                binding.emailInput.getEditText().requestFocus();
+            } else {
+                binding.emailInput.getEditText().clearFocus();
+            }
         });
 
         viewModel.isPasswordLoading.observe(this, isLoading -> {
             if (isLoading) {
                 hideKeyboard();
             }
-            if (viewModel.isDuplicateEmail) {
-                binding.passwordInput.getEditText().requestFocus();
-            } else {
-                binding.passwordInput.getEditText().clearFocus();
-            }
+            binding.passwordInput.getEditText().clearFocus();
         });
 
 
