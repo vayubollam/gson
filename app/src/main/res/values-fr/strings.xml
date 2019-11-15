@@ -294,6 +294,11 @@
 
     <string name="cards_partners_balance_value">20 %</string>
 
+    <plurals name="single_ticket_receipt_quantity">
+        <item quantity="one">%s billet</item>
+        <item quantity="other">%s billets</item>
+    </plurals>
+
     <string name="cards_details_close">Fermer</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_format_inline_error">Veuillez entrer une adresse courriel valide.</string>
@@ -526,5 +531,21 @@
     <string name="carwash_barcode_trouble_hint">Vous n\'arrivez pas à scanner?</string>
     <string name="carwash_barcode_reenter">Entrer le code à nouveau</string>
 
+    <string name="single_ticket_title">Billet de lavage</string>
+    <string name="single_ticket_update_button">Modifier</string>
+    <string name="single_ticket_payment_title">Paiement</string>
+    <string name="single_ticket_add_to_account">Ajouter un billet à mon compte</string>
+    <string name="single_ticket_email_title">Envoyée à</string>
+    <string name="single_ticket_new_balance_title">Nouveau solde</string>
+    <string name="single_ticket_select_value">Choisir un montant</string>
+    <string name="single_ticket_not_enough_points">Vous n\'avez pas assez de points.</string>
+    <string name="single_ticket_quantity_title">Quantité</string>
+    <string name="single_ticket_quantity">%d</string>
+    <string name="single_ticket_add_to_account_help_title">Ajouter à mon compte</string>
+    <string name="single_ticket_add_to_account_help_message">Ajouter votre billet à votre compte pour y accéder plus tard.</string>
+    <string name="single_ticket_receipt_subtitle">Scannez votre billet à n\'importe quel établissement avec lave-auto GlideWash ou SuperDoux participant.</string>
+    <string name="single_ticket_receipt_quantity_title">Quantité</string>
+
+    <string name="single_ticket_card_label">Billet de lavage</string>
 
 </resources>

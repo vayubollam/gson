@@ -33,6 +33,7 @@ import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -150,12 +151,16 @@ public class CardsDetailsFragment extends MainActivityFragment {
     }
 
     private View.OnClickListener activeCarWashListener = view -> {
-        CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
-                = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
-        action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
-        action.setCardIndex(clickedCardIndex);
-        action.setIsCardFromCarWash(loadCarWashCardsOnly);
-        Navigation.findNavController(getView()).navigate(action);
+        if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
+            //TODO
+        } else {
+            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
+                    = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
+            action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+            action.setCardIndex(clickedCardIndex);
+            action.setIsCardFromCarWash(loadCarWashCardsOnly);
+            Navigation.findNavController(getView()).navigate(action);
+        }
     };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {

@@ -81,6 +81,13 @@ public class CardListItem {
                             : null;
                     textColor = Color.BLACK;
                     break;
+                case ST:
+                    backgroundColor = Color.parseColor("#FF3863AA");
+                    title = R.string.single_ticket_card_label;
+                    balance = balanceValue != -1 ?
+                            context.getResources().getQuantityString(R.plurals.cards_washes_balance, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            : null;
+                    break;
             }
         }
     }

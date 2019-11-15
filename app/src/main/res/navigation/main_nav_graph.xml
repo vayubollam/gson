@@ -350,6 +350,19 @@
         <argument
             android:name="orderResponse"
             app:argType="suncor.com.android.model.redeem.response.OrderResponse" />
+        <argument
+            android:name="isMerchant"
+            app:nullable="false"
+            app:argType="boolean" />
+        <argument
+            android:name="isLinkToAccount"
+            android:defaultValue="true"
+            app:argType="boolean"/>
+        <argument
+            android:name="petroCanadaProduct"
+            app:nullable="true"
+            android:defaultValue="@null"
+            app:argType="suncor.com.android.model.petrocanadaproduct.PetroCanadaProduct"/>
     </keep_state_fragment>
     <action
         android:id="@+id/action_to_profile_tab"
@@ -392,8 +405,16 @@
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashPurchaseFragment"
-        android:name="suncor.com.android.ui.main.carwash.CarWashPurchaseFragment"
-        android:label="CarWashPurchaseFragment" />
+        android:name="suncor.com.android.ui.main.carwash.singleticket.SingleTicketFragment"
+        android:label="CarWashPurchaseFragment" >
+        <action
+            android:id="@+id/action_carWashPurchaseFragment_to_redeemReceiptFragment"
+            app:destination="@id/redeemReceiptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/carWashCardFragment"
+            app:popExitAnim="@anim/fade_out"/>
+    </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashActivationSecurityFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragment"

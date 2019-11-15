@@ -127,6 +127,16 @@ public class ExpandedCardItem {
                     balanceDetails = context.getString(R.string.cards_ppc_balance_conversion, (int) (cardDetail.getCpl() * 100));
                     cardDescription = context.getString(R.string.cards_ppc_description);
                     break;
+                case ST:
+                    cardImage = context.getDrawable(R.drawable.member_small_cards_cw_ticket);
+                    cardNumber = CardFormatUtils.formatForViewing(cardDetail.getTicketNumber(), CardFormatUtils.WAG_SP_FORMAT);
+                    cardName = context.getString(R.string.cards_wag_expanded_label);
+                    balance = balanceValue != -1 ?
+                            context.getResources().getQuantityString(R.plurals.cards_washes_balance_expanded, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                            : null;
+                    cardDescription = context.getString(R.string.single_ticket_card_detail_description);
+                    isBalanceDetailsVisible = false;
+                    break;
             }
         }
     }

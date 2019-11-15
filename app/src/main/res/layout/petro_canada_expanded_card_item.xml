@@ -266,7 +266,7 @@
                     android:textAllCaps="true"
                     android:text="@string/carddetail_active_wash"
                     android:textSize="16sp"
-                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"
+                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

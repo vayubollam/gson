@@ -41,5 +41,9 @@ public enum CardType {
 
     //RBC Credit Card
     @SerializedName("RBC")
-    RBC
+    RBC,
+
+    //Single Wash Ticket
+    @SerializedName("TKT")
+    ST
 }

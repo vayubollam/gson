@@ -40,6 +40,7 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
@@ -63,6 +64,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     ViewModelFactory viewModelFactory;
     private FragmentCarWashBinding binding;
     private CarWashCardViewModel viewModel;
+    private MainViewModel mainViewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
     private float appBarElevation;
 
@@ -76,7 +78,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarWashCardViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
 
@@ -88,11 +90,19 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             if (result != CarWashCardViewModel.ViewState.REFRESHING && result != CarWashCardViewModel.ViewState.LOADING
                     && result != CarWashCardViewModel.ViewState.FAILED && viewModel.getIsCardAvailable().getValue()) {
 
-                ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
-                for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
-                    petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                if (mainViewModel.isLinkedToAccount()) {
+                    mainViewModel.setLinkedToAccount(false);
+                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+                    action.setIsCardFromCarWash(true);
+                    action.setCardIndex(0);
+                    Navigation.findNavController(getView()).navigate(action);
+                } else {
+                    ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
+                    for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
+                        petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                    }
+                    petroCanadaCardsAdapter.setCards(petroCanadaCards);
                 }
-                petroCanadaCardsAdapter.setCards(petroCanadaCards);
             }
         });
 

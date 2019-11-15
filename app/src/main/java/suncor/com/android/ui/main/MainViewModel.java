@@ -12,6 +12,8 @@ import suncor.com.android.utilities.Timber;
 
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
+    private boolean isLinkedToAccount = false;
+
     @Inject
     public MainViewModel(MerchantsRepository merchantsRepository, SessionManager sessionManager) {
         sessionManager.getLoginState().observeForever((loginState -> {
@@ -24,5 +26,13 @@ public class MainViewModel extends ViewModel {
                 userLoggedOut.postValue(Event.newEvent(true));
             }
         }));
+    }
+
+    public boolean isLinkedToAccount() {
+        return isLinkedToAccount;
+    }
+
+    public void setLinkedToAccount(boolean linkedToAccount) {
+        isLinkedToAccount = linkedToAccount;
     }
 }

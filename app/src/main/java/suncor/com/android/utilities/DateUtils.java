@@ -17,4 +17,8 @@ public class DateUtils {
         }
         return DateFormat.getDateInstance(DateFormat.LONG).format(date);
     }
+
+    public static String getFormattedDate(Date inputDate) {
+        return DateFormat.getDateInstance(DateFormat.LONG).format(inputDate);
+    }
 }
