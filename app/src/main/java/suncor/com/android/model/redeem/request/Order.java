@@ -10,6 +10,7 @@ public class Order implements Parcelable {
     @SerializedName("transaction")
     private RedeemTransaction redeemTransaction;
     private ShoppingCart shoppingCart;
+    private boolean linkProductsToAccount;
 
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -45,6 +46,13 @@ public class Order implements Parcelable {
         return shoppingCart;
     }
 
+    public boolean isLinkProductsToAccount() {
+        return linkProductsToAccount;
+    }
+
+    public void setLinkProductsToAccount(boolean linkProductsToAccount) {
+        this.linkProductsToAccount = linkProductsToAccount;
+    }
 
     @Override
     public int describeContents() {
@@ -56,11 +64,13 @@ public class Order implements Parcelable {
 
         dest.writeParcelable(redeemTransaction, flag);
         dest.writeParcelable(shoppingCart, flag);
+        dest.writeInt(linkProductsToAccount ? 1 : 0);
     }
 
     protected Order(Parcel in) {
         redeemTransaction = in.readParcelable(RedeemTransaction.class.getClassLoader());
         shoppingCart = in.readParcelable(ShoppingCart.class.getClassLoader());
+        linkProductsToAccount = in.readInt() == 1;
     }
 
 }
