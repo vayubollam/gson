@@ -548,5 +548,6 @@
     <string name="single_ticket_receipt_quantity_title">Quantité</string>
 
     <string name="single_ticket_card_label">Billet de lavage</string>
+    <string name="single_ticket_payment_petro_points">Petro-Points</string>
 
 </resources>
