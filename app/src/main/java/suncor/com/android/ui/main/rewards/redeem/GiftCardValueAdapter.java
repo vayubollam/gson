@@ -33,8 +33,6 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
     private final int ANIM_DURATION = 600;
     private boolean itemsExpanded = true;
     private boolean isViewAnimating = false;
-    private final String RED_COLOR="#EB182C";
-    private final String BLACK_80="#323232";
 
 
 
@@ -69,7 +67,8 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
         }
         holder.binding.executePendingBindings();
         holder.binding.valueRb.setChecked(position == selectedItem);
-        holder.binding.valueRb.setButtonTintList(position == selectedItem?ColorStateList.valueOf(Color.parseColor(RED_COLOR)):ColorStateList.valueOf(Color.parseColor(BLACK_80)));
+        ColorStateList currentTint= holder.binding.valueRb.getButtonTintList();
+        holder.binding.valueRb.setButtonTintList(position == selectedItem?ColorStateList.valueOf(holder.itemView.getContext().getColor(R.color.colorAccent)):currentTint);
 
         holder.binding.valueRb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isViewAnimating && isChecked) {
