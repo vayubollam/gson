@@ -284,7 +284,7 @@ public class CarWashCardViewModel extends ViewModel {
         LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
         LatLng origin = new LatLng(userLocation.latitude, userLocation.longitude);
         return LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD
-                && station.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go");
+                && station.isStationIndependentDealer();
     }
 
     public enum ViewState {

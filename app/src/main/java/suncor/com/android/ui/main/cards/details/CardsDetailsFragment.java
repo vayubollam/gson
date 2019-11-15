@@ -242,8 +242,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
                 LatLng origin = new LatLng(currentLocation.latitude, currentLocation.longitude);
                 Log.i("TTT", "distance is " + LocationUtils.calculateDistance(dest, origin));
-                if (LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD
-                        && station.getCarWashType().equals("Doesn't accept Season Pass or Wash & Go")) {
+                if (station.isStationIndependentDealer() && LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD) {
                     return true;
                 }
             }
