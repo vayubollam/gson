@@ -9,12 +9,15 @@ import androidx.lifecycle.ViewModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.BR;
 import suncor.com.android.R;
 import suncor.com.android.data.account.EnrollmentsApi;
 import suncor.com.android.data.profiles.ProfilesApi;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
@@ -70,6 +73,7 @@ public class PersonalInfoViewModel extends ViewModel {
     public String getEmail() {
         return email;
     }
+    public boolean isDuplicateEmail =  false;
 
 
     @SuppressWarnings("unchecked")
@@ -155,9 +159,27 @@ public class PersonalInfoViewModel extends ViewModel {
                     _isPasswordLoading.setValue(false);
                     _isLoading.setValue(false);
                     Alert alert = new Alert();
-                    alert.title = R.string.msg_am001_title;
-                    alert.message = R.string.msg_am001_message;
-                    alert.positiveButton = R.string.ok;
+                    if (Objects.requireNonNull(result.message).equalsIgnoreCase(ErrorCodes.ERR_EMAIL_ALREADY_EXISTS)) {
+                        alert.title = R.string.profile_personnal_informations_email_duplicate_alert_title;
+                        alert.message = R.string.profile_personnal_informations_email_duplicate_alert_message;
+                        alert.positiveButton = R.string.profile_personnal_informations_email_duplicate_different_email_button;
+                        alert.positiveButtonClick = () -> {
+                            isDuplicateEmail = true;
+                            emailInputField.setText("");
+                            emailInputField.notifyPropertyChanged(BR.text);
+                        };
+                        alert.negativeButton = R.string.profile_personnal_informations_email_duplicate_undo_button;
+                        alert.negativeButtonClick =  () -> {
+                            if (!emailInputField.getText().equals(profile.getEmail())) {
+                                emailInputField.setText(profile.getEmail());
+                                emailInputField.notifyPropertyChanged(BR.text);
+                            }
+                        };
+                    } else {
+                        alert.title = R.string.msg_am001_title;
+                        alert.message = R.string.msg_am001_message;
+                        alert.positiveButton = R.string.ok;
+                    }
                     profileSharedViewModel.postAlert(alert);
                     break;
             }
