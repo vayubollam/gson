@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.carwash.singleticket;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.ChangeBounds;
@@ -170,15 +171,20 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         if (viewModel.getIsAnyTicketReedeemable().getValue()) {
             adapter.initialLaunch();
         } else {
-            binding.valuesRecyclerView.setPadding(0,0,0,marginTop);
+            binding.valuesRecyclerView.setPadding(0, 0, 0, marginTop);
         }
     }
 
-    private View.OnClickListener addToAccountHelpListener = view -> new AlertDialog.Builder(getContext())
-            .setTitle(R.string.single_ticket_add_to_account_help_title)
-            .setMessage(R.string.single_ticket_add_to_account_help_message)
-            .setPositiveButton(R.string.ok, null)
-            .show();
+    private View.OnClickListener addToAccountHelpListener = view -> {
+        Dialog dialog = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.single_ticket_add_to_account_help_title)
+                .setMessage(R.string.single_ticket_add_to_account_help_message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok, null)
+                .create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    };
 
     private void cardValueChanged(Integer selectedItem) {
         int valueSelected = viewModel.getTicketItems().get(selectedItem).getPointsPrice();

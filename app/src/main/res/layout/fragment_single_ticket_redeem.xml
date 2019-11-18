@@ -265,7 +265,7 @@
                             android:id="@+id/redeem_disclaimer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.17"
+                            android:lineSpacingMultiplier="1.2"
                             android:paddingStart="16dp"
                             android:paddingTop="12dp"
                             android:paddingEnd="16dp"
@@ -438,20 +438,20 @@
                             style="@style/Caption1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.57"
+                            android:lineSpacingMultiplier="1.2"
                             android:paddingLeft="16dp"
                             android:paddingTop="16dp"
                             android:paddingEnd="16dp"
                             android:paddingRight="16dp"
                             android:paddingBottom="16dp"
-                            android:text="@string/redeem_terms_agreement"
+                            android:text="@string/single_ticket_terms_and_agreement"
                             android:textAppearance="@style/Caption1"
                             android:textColor="@color/black_60"
                             android:textColorLink="@color/black_60"
                             app:layout_constraintBottom_toTopOf="@id/terms_agreement_down_divider"
                             app:layout_constraintTop_toBottomOf="@id/redeem_total_down_divider"
                             tools:layout_editor_absoluteX="16dp"
-                            tools:text="@string/redeem_terms_agreement" />
+                            tools:text="@string/single_ticket_terms_and_agreement" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
