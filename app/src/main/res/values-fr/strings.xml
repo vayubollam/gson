@@ -537,7 +537,7 @@
     <string name="single_ticket_payment_title">Paiement</string>
     <string name="single_ticket_add_to_account">Ajouter un billet à mon compte</string>
     <string name="single_ticket_email_title">Envoyée à</string>
-    <string name="single_ticket_terms_and_agreement">Les transactions sont irréversibles. En choisissant « Confirmer et échanger », vous acceptez <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">les conditions.</a></string>
+    <string name="single_ticket_terms_and_agreement">Les transactions sont irréversibles. En choisissant « Confirmer et échanger », vous acceptez <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints"><u>les conditions.</u></a></string>
     <string name="single_ticket_new_balance_title">Nouveau solde</string>
     <string name="single_ticket_select_value">Choisir un montant</string>
     <string name="single_ticket_not_enough_points">Vous n\'avez pas assez de points.</string>
