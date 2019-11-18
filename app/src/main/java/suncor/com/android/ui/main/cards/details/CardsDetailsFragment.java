@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +45,8 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
-import suncor.com.android.utilities.IndependentStationAlertUtil;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.StationsUtil;
 
 public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
@@ -173,7 +172,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener activeCarWashListener = view -> {
         if (isUserAtIndependentStation()) {
-            IndependentStationAlertUtil.showIndependentStationAlert(getContext());
+            StationsUtil.showIndependentStationAlert(getContext());
         } else {
             if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
                 //TODO
@@ -240,7 +239,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
             if (station != null) {
                 LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
                 LatLng origin = new LatLng(currentLocation.latitude, currentLocation.longitude);
-                Log.i("TTT", "distance is " + LocationUtils.calculateDistance(dest, origin));
                 if (station.isStationIndependentDealer() && LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD) {
                     return true;
                 }

@@ -50,10 +50,10 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
-import suncor.com.android.utilities.IndependentStationAlertUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
+import suncor.com.android.utilities.StationsUtil;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -133,7 +133,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
         viewModel.getIsNearestStationIndependent().observe(this, isIndependent -> {
             if (isIndependent) {
-                IndependentStationAlertUtil.showIndependentStationAlert(getContext());
+                StationsUtil.showIndependentStationAlert(getContext());
             }
         });
 
@@ -231,7 +231,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private void cardClick(CardDetail cardDetail) {
         if (viewModel.getIsNearestStationIndependent().getValue() != null
                 && viewModel.getIsNearestStationIndependent().getValue()) {
-            IndependentStationAlertUtil.showIndependentStationAlert(getContext());
+            StationsUtil.showIndependentStationAlert(getContext());
         } else {
             CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
             action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));

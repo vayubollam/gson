@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,6 +29,7 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.StationsUtil;
 
 public class HomeViewModel extends ViewModel {
 
@@ -87,7 +87,7 @@ public class HomeViewModel extends ViewModel {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
                         _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
-                        nearestCarWashStation.setValue(filterCarWashStation(resource.data));
+                        nearestCarWashStation.setValue(StationsUtil.filterNearestCarWashStation(resource.data));
                     }
                     break;
             }
@@ -212,15 +212,6 @@ public class HomeViewModel extends ViewModel {
 
     public String getRewardedPoints() {
         return CardFormatUtils.formatBalance(sessionManager.getRewardedPoints());
-    }
-
-    private Station filterCarWashStation(List<Station> stations) {
-        for (Station station : stations) {
-            if (station.hasWashOptions()) {
-                return station;
-            }
-        }
-        return null;
     }
 
 }
