@@ -127,6 +127,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         adapter = new GiftCardValueAdapter(viewModel.getMerchantItem().getMerchant().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::cardValueChanged);
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
+        binding.redeemTotalLayoutFixShadow.setAlpha(0f);
         binding.changeValueBtn.setOnClickListener(v -> {
             binding.cardValueTxt.setText(getString(R.string.redeem_egift_card_select_value));
             binding.changeValueBtn.setEnabled(false);
@@ -153,6 +154,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                         if (totalScrollY > totalFixY) {
                             binding.redeemTotalLayoutFix.setAlpha(1);
                             binding.redeemTotalLayoutFix.setZ(4);
+                            binding.redeemTotalLayoutFixShadow.setAlpha(1);
                             binding.nestedScrollView.setScrollingEnabled(true);
                             binding.valuesRecyclerView.setNestedScrollingEnabled(true);
                         }
@@ -170,11 +172,14 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             if ((totalScrollY + 20) >= totalFixY) {
                 binding.redeemTotalLayoutFix.setAlpha(1);
                 binding.redeemTotalLayoutFix.setZ(4);
+                binding.redeemTotalLayoutFixShadow.setAlpha(1);
+
             }
             //scrolling up
             if (totalScrollY < totalFixY) {
                 binding.redeemTotalLayoutFix.setAlpha(0);
                 binding.redeemTotalLayoutFix.setZ(-4);
+                binding.redeemTotalLayoutFixShadow.setAlpha(0);
             }
 
         });
@@ -246,6 +251,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                             binding.redeemTotalLayoutFix.setVisibility(View.VISIBLE);
                             binding.redeemTotalLayoutFix.setAlpha(1);
                             binding.redeemTotalLayoutFix.setZ(4);
+                            binding.redeemTotalLayoutFixShadow.setAlpha(1);
                         }
                     }
                 })
@@ -255,6 +261,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     float totalScrollY = totalScroll[1];
                     if (totalScrollY < totalFixY) {
                         binding.redeemTotalLayoutFix.setAlpha(0);
+                        binding.redeemTotalLayoutFixShadow.setAlpha(0);
                         binding.redeemTotalLayoutFix.setZ(-4);
                         binding.nestedScrollView.setScrollingEnabled(false);
                         binding.valuesRecyclerView.setNestedScrollingEnabled(false);

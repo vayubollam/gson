@@ -19,6 +19,7 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionChangeListener;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 import suncor.com.android.utilities.Timber;
@@ -122,7 +123,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         super.handleFailure(error);
         Timber.d("Handle failure");
         Timber.v(error.toString());
-
+        AnalyticsUtils.userID = "none";
         isChallenged = false;
         listener.onLoginFailed(SigninResponse.generalFailure());
     }
@@ -138,8 +139,10 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 //save credentials using KeyStore
                 keyStoreStorage.store(CREDENTIALS_KEY, credentials.toString());
             }
-            String profile = identity.getJSONObject("user").getString("attributes");
-            listener.onLoginSuccess(gson.fromJson(profile, Profile.class));
+            String profileStr = identity.getJSONObject("user").getString("attributes");
+            Profile profile = gson.fromJson(profileStr, Profile.class);
+            AnalyticsUtils.userID = profile.getRetailId();
+            listener.onLoginSuccess(profile);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -158,7 +161,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    //TODO handle failures related to connection issues
+                    //TODO handle failures related to connection issue
+                    AnalyticsUtils.userID = "none";
                     Timber.d("Login Preemptive Failure, error: " + wlFailResponse.toString());
                     if (listener != null && !WLErrorCode.CHALLENGE_HANDLING_CANCELED.getDescription().equals(wlFailResponse.getErrorMsg())) {
                         listener.onLoginFailed(SigninResponse.generalFailure());
@@ -189,6 +193,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         WLAuthorizationManager.getInstance().logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
+                AnalyticsUtils.userID = "none";
                 fingerPrintManager.deactivateAutoLogin();
                 listener.onSuccess();
             }

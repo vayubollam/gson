@@ -51,7 +51,7 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
 
                     double scrollPosition = (t / (total - getResources().getDisplayMetrics().density))  * 100d;
                     int pourcentage = (int) scrollPosition;
-                    if (pourcentage == 5 || pourcentage == 25 || pourcentage == 50|| pourcentage == 75 || pourcentage == 95  ){
+                    if (pourcentage == 20 || pourcentage == 40 || pourcentage == 60 || pourcentage == 80 || pourcentage == 100){
                         AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
 
                     }

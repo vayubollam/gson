@@ -12,7 +12,6 @@ public class Address implements Parcelable {
     private String city;
     private String province;
     private String postalCode;
-    @JsonAdapter(EmptyStringTypeAdapter.class)
     private String phone;
 
     public Address() {
