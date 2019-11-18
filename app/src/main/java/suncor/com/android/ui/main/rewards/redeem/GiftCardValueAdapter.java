@@ -2,6 +2,8 @@ package suncor.com.android.ui.main.rewards.redeem;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
     private final int ANIM_DURATION = 600;
     private boolean itemsExpanded = true;
     private boolean isViewAnimating = false;
+
 
 
     public GiftCardValueAdapter(List<EGift> eGifts, int petroPoints, Consumer<Integer> callBack) {
@@ -64,6 +67,9 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
         }
         holder.binding.executePendingBindings();
         holder.binding.valueRb.setChecked(position == selectedItem);
+        ColorStateList currentTint= holder.binding.valueRb.getButtonTintList();
+        holder.binding.valueRb.setButtonTintList(position == selectedItem?ColorStateList.valueOf(holder.itemView.getContext().getColor(R.color.colorAccent)):currentTint);
+
         holder.binding.valueRb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isViewAnimating && isChecked) {
                 buttonView.setChecked(false);

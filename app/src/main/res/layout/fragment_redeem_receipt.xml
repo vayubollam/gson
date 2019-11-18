@@ -104,8 +104,6 @@
                             android:fontFamily="@font/gibson_regular"
                             android:lineSpacingMultiplier="1.50"
                             android:maxLines="2"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="15dp"
                             android:text="@string/redeem_receipt_body"
                             android:textAlignment="center"
                             android:textColor="@color/black_80"

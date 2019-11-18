@@ -197,29 +197,32 @@
                     android:text="@string/profile_personnal_informations_subcopy2"
                     android:textAppearance="@style/Caption1"
                     android:textColor="@color/black_60"
-                    app:layout_constraintBottom_toTopOf="@id/save_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/subcopy2_icon"
                     app:layout_constraintTop_toTopOf="@id/subcopy2_icon"
                     app:layout_constraintVertical_chainStyle="spread_inside" />
 
 
-                <suncor.com.android.ui.common.SuncorButton
-                    android:id="@+id/save_button"
-                    style="@style/FilledButton.Red.L"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:onClick="@{v -> vm.save(ConnectionUtil.haveNetworkConnection(context))}"
-                    android:text="@string/profile_personnal_informations_button1"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/subcopy2_text"
-                    app:visibleInvisible="@{isEditing}"
-                    tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <suncor.com.android.ui.common.SuncorButton
+            android:id="@+id/save_button"
+            style="@style/FilledButton.Red.L"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="@{v -> vm.save(ConnectionUtil.haveNetworkConnection(context))}"
+            android:text="@string/profile_personnal_informations_button1"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subcopy2_text"
+            app:visibleInvisible="@{isEditing}"
+            tools:visibility="visible" />
 
         <FrameLayout
             android:id="@+id/progress_layout"
