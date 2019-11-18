@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     private Boolean loadFromCarWash;
     private float previousBrightness;
     private CarWashSharedViewModel carWashSharedViewModel;
+    private boolean isSingleTicket;
     @Inject
     ViewModelFactory viewModelFactory;
 
@@ -46,19 +48,27 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        carWashSharedViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CarWashSharedViewModel.class);
-        carWashSharedViewModel.getIsFromCarWash().observe(getViewLifecycleOwner(), isLoadFromCarWash -> loadFromCarWash = isLoadFromCarWash);
-
         FragmentCarwashBarcodeBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_carwash_barcode, container, false);
-        binding.setVm(carWashSharedViewModel);
-        binding.setLifecycleOwner(this);
-        binding.appBar.setNavigationOnClickListener(v -> goBack(false));
         binding.buttonClose.setOnClickListener(closeListener);
-        binding.reEnterButton.setOnClickListener(v -> goBack(true));
+        binding.appBar.setNavigationOnClickListener(v -> goBack(false));
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        binding.barCodeImage.setImageBitmap(generateBarcode(size.x));
+        isSingleTicket = CarWashBarCodeFragmentArgs.fromBundle(getArguments()).getIsSingleTicket();
+        loadFromCarWash = CarWashBarCodeFragmentArgs.fromBundle(getArguments()).getIsFromCarWash();
+        if (isSingleTicket) {
+            String singleTicketNumber = CarWashBarCodeFragmentArgs.fromBundle(getArguments()).getSingleTicketNumber();
+            binding.setIsSingleTicket(true);
+            binding.setSingleTicketNumber(singleTicketNumber);
+            binding.barCodeImage.setImageBitmap(generateBarcode(size.x, singleTicketNumber));
+        } else {
+            carWashSharedViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CarWashSharedViewModel.class);
+            binding.setVm(carWashSharedViewModel);
+            binding.setIsSingleTicket(false);
+            binding.setLifecycleOwner(this);
+            binding.reEnterButton.setOnClickListener(v -> goBack(true));
+            binding.barCodeImage.setImageBitmap(generateBarcode(size.x, carWashSharedViewModel.getEncryptedCarWashCode().getValue()));
+        }
 
         return binding.getRoot();
     }
@@ -90,7 +100,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     }
 
     private void goBack(boolean reEnter) {
-        carWashSharedViewModel.setReEnter(reEnter);
+        if (!isSingleTicket) carWashSharedViewModel.setReEnter(reEnter);
         Navigation.findNavController(getView()).popBackStack();
     }
 
@@ -99,8 +109,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         goBack(false);
     }
 
-    private Bitmap generateBarcode(int screenSize) {
-        String encryptedCarWashCode = carWashSharedViewModel.getEncryptedCarWashCode().getValue();
+    private Bitmap generateBarcode(int screenSize, String encryptedCarWashCode) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Resources r = getResources();
         int width = Math.round(TypedValue.applyDimension(

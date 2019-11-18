@@ -51,10 +51,8 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
             int clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
-            boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
             String cardNumber = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardNumber();
             viewModel.setClickedCardIndex(clickedCardIndex);
-            viewModel.setIsFromCarWash(loadFromCarWash);
             viewModel.setCardNumber(cardNumber);
         }
         FragmentCarwashSecurityBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_carwash_security, container, false);
@@ -88,8 +86,10 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             if (view != null) {
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
-            Navigation.findNavController(getView()).
-                    navigate(R.id.action_carWashActivationSecurityFragment_to_carWashBarCodeFragment);
+            boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
+            CarWashActivationSecurityFragmentDirections.ActionCarWashActivationSecurityFragmentToCarWashBarCodeFragment
+                    action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashBarCodeFragment(loadFromCarWash);
+            Navigation.findNavController(getView()).navigate(action);
         } else {
             new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)

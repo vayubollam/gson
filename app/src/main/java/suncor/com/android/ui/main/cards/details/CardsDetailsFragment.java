@@ -175,8 +175,11 @@ public class CardsDetailsFragment extends MainActivityFragment {
             StationsUtil.showIndependentStationAlert(getContext());
         } else {
             if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
-                //TODO
-
+                CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashBarCodeFragment
+                        action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashBarCodeFragment(loadCarWashCardsOnly);
+                action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber().substring(5, 17));
+                action.setIsFromCarWash(loadCarWashCardsOnly);
+                Navigation.findNavController(getView()).navigate(action);
             } else {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                         = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
