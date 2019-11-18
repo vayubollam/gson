@@ -50,9 +50,10 @@ public class PermissionManager {
     }
 
     public void checkCarWashPermission(Context context, String permission, CarWashPermissionListener listener) {
-        if (shouldAskPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) && isFirstTimeAsking(permission)) {
+        if (isFirstTimeAsking(permission)) {
             setIsFirstTimeAccessCarWash(permission, false);
-            listener.onFirstTimeAccessCarWash();
+            if (shouldAskPermission(context, Manifest.permission.ACCESS_FINE_LOCATION))
+                listener.onFirstTimeAccessCarWash();
         }
     }
 
