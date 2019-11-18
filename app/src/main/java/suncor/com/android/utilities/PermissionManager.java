@@ -1,5 +1,6 @@
 package suncor.com.android.utilities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +50,7 @@ public class PermissionManager {
     }
 
     public void checkCarWashPermission(Context context, String permission, CarWashPermissionListener listener) {
-        if (shouldAskPermission(context, permission) && isFirstTimeAsking(permission)) {
+        if (shouldAskPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) && isFirstTimeAsking(permission)) {
             setIsFirstTimeAccessCarWash(permission, false);
             listener.onFirstTimeAccessCarWash();
         }
