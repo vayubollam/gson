@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import suncor.com.android.BR;
 import suncor.com.android.data.favourite.FavouriteRepository;
@@ -72,20 +73,27 @@ public class StationItem extends BaseObservable {
     }
 
     public LiveData<Resource<Boolean>> toggleFavourite() {
-        if (isFavourite) {
-            return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
-                if (r.status == Resource.Status.SUCCESS) {
-                    setFavourite(false);
-                }
-                return r;
-            });
-        } else {
-            return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
-                if (r.status == Resource.Status.SUCCESS) {
-                    setFavourite(true);
-                }
-                return r;
-            });
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        try {
+            if (isFavourite) {
+                return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
+                    if (r.status == Resource.Status.SUCCESS) {
+                        setFavourite(false);
+                    }
+                    return r;
+                });
+            } else {
+                return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
+                    if (r.status == Resource.Status.SUCCESS) {
+                        setFavourite(true);
+                    }
+                    return r;
+                });
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            result.postValue(Resource.error(ex.getMessage(), false));
+            return result;
         }
     }
 
