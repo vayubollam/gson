@@ -52,7 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0"
-            android:text="@{ @string/single_ticket_quantity(singleTicket.getUnits())}"
             android:textAppearance="@style/Body"
             app:layout_constraintBottom_toBottomOf="@id/value_rb"
             app:layout_constraintLeft_toLeftOf="@id/value_rb"

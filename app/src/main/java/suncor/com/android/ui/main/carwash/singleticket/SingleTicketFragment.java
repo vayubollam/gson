@@ -128,7 +128,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adapter = new SingleTicketListItemAdapter(viewModel.getTicketItems(), viewModel.getSessionManager().getProfile().getPointsBalance(),
-                this::cardValueChanged);
+                this::cardValueChanged, getContext());
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.changeValueBtn.setOnClickListener(v -> {
