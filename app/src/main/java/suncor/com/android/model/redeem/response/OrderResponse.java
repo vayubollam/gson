@@ -12,6 +12,8 @@ public class OrderResponse implements Parcelable {
     private ShoppingCart shoppingCart;
     private Transaction transaction;
     private String orderId;
+    private boolean linkProductsToAccount;
+    private String[] productsDelivered;
 
     protected OrderResponse(Parcel in) {
         shipping = in.readParcelable(Shipping.class.getClassLoader());
@@ -19,6 +21,8 @@ public class OrderResponse implements Parcelable {
         transaction = in.readParcelable(Transaction.class.getClassLoader());
         orderId = in.readString();
         status = Status.valueOf(in.readString());
+        linkProductsToAccount = in.readInt() == 1;
+        productsDelivered = in.createStringArray();
     }
 
     public enum Status {
@@ -46,6 +50,8 @@ public class OrderResponse implements Parcelable {
         dest.writeParcelable(transaction, flags);
         dest.writeString(orderId);
         dest.writeString(status.name());
+        dest.writeInt(linkProductsToAccount ? 1 : 0);
+        dest.writeStringArray(productsDelivered);
     }
 
     @Override
@@ -104,6 +110,22 @@ public class OrderResponse implements Parcelable {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public boolean isLinkProductsToAccount() {
+        return linkProductsToAccount;
+    }
+
+    public void setLinkProductsToAccount(boolean linkProductsToAccount) {
+        this.linkProductsToAccount = linkProductsToAccount;
+    }
+
+    public String[] getProductsDelivered() {
+        return productsDelivered;
+    }
+
+    public void setProductsDelivered(String[] productsDelivered) {
+        this.productsDelivered = productsDelivered;
     }
 }
 

@@ -27,6 +27,7 @@ import androidx.navigation.Navigation;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,6 +38,7 @@ import suncor.com.android.databinding.FragmentCarWashBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -92,9 +94,10 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
                 if (mainViewModel.isLinkedToAccount()) {
                     mainViewModel.setLinkedToAccount(false);
+                    int index = findLinkedSingleTicketIndex(mainViewModel.getSingleTicketNumber(), viewModel.getPetroCanadaCards().getValue());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setIsCardFromCarWash(true);
-                    action.setCardIndex(0);
+                    action.setCardIndex(index);
                     Navigation.findNavController(getView()).navigate(action);
                 } else {
                     ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
@@ -341,5 +344,14 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
             }
         });
+    }
+
+    private int findLinkedSingleTicketIndex(String ticketNumber, List<CardDetail> petroCanadaCards) {
+        for (int i = 0; i < petroCanadaCards.size(); i++) {
+            if (petroCanadaCards.get(i).getCardType() == CardType.ST
+                    && petroCanadaCards.get(i).getTicketNumber().equals(ticketNumber))
+                return i;
+        }
+        return 0;
     }
 }
