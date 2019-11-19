@@ -49,6 +49,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
+import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -251,6 +252,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         if (viewModel.getIsNearestStationIndependent().getValue() != null
                 && viewModel.getIsNearestStationIndependent().getValue()) {
             StationsUtil.showIndependentStationAlert(getContext());
+<<<<<<< HEAD
         }else if (cardDetail.getBalance() > 0) {
             navigateToCardDetail(cardDetail);
         } else {
@@ -263,6 +265,14 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     .setMessage("Looks like you don\'t have a balance on this card. Buy a single ticket today to proceed.")
                     .show();
 
+=======
+        } else if (cardDetail.getBalance() <= 0) {
+            CardsUtil.showZeroBalanceAlert(getActivity(),
+                    (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment),
+                    (dialog, v) -> navigateToCardDetail(cardDetail));
+        } else {
+            navigateToCardDetail(cardDetail);
+>>>>>>> Update copy content and modulize alert.
         }
 
     }

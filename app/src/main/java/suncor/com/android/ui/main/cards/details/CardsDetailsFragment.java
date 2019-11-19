@@ -46,6 +46,7 @@ import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 
@@ -184,14 +185,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 Navigation.findNavController(getView()).navigate(action);
             } else {
                 CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
-                //TODO: CHANGE COPY CONTENT ONCE THEY ARE READY!!
                 if (cardDetail.getBalance() <= 0) {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(getContext());
-                    ab.setTitle("Can't activate wash")
-                            .setMessage("Looks like you don\'t have a balance on this card. Buy a single ticket today to proceed.")
-                            .setPositiveButton("BUY A TICKET", (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashPurchaseFragment))
-                            .setNegativeButton("CANCEL", null)
-                            .show();
+                    CardsUtil.showZeroBalanceAlert(getActivity(),
+                            (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashPurchaseFragment), null);
                 } else {
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();

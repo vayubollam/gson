@@ -33,6 +33,7 @@ import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
+import suncor.com.android.utilities.CardsUtil;
 
 public class CardsFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -91,17 +92,13 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getView()).navigate(action);
         } else {
-            if (cardDetail.getBalance() > 0) {
-                navigateToCardDetail(cardDetail);
+            if (cardDetail.getBalance() <= 0) {
+                CardsUtil.showZeroBalanceAlert(getContext(),
+                        (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment),
+                        (dialog, v) -> navigateToCardDetail(cardDetail));
             } else {
-                AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-                adb.setPositiveButton("BUY A TICKET",
-                        (dialog, which) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment))
-                        .setNegativeButton("VIEW CARD DETAIL", (dialog, which) -> navigateToCardDetail(cardDetail))
-                        .setNeutralButton("CANCEL", null)
-                        .setTitle("Can't activate wash")
-                        .setMessage("Looks like you don\'t have a balance on this card. Buy a single ticket today to proceed.")
-                        .show();
+                navigateToCardDetail(cardDetail);
+
             }
         }
     }

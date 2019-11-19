@@ -574,4 +574,9 @@
     <string name="single_ticket_payment_petro_points">Petro-Points</string>
     <string name="single_ticket_barcode_trouble_message">Having trouble scanning?  \nTry typing your ticket number into the car wash screen.</string>
 
+    <string name="zero_balance_alert_title">Your card is empty</string>
+    <string name="zero_balance_alert_message">Looks like your card is running on empty. Don\'t worry – you can buy a wash below.</string>
+    <string name="zero_balance_alert_buy">Buy a wash</string>
+    <string name="zero_balance_alert_view">View card details</string>
+
 </resources>
