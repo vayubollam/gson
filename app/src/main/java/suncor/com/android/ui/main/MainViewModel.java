@@ -14,11 +14,8 @@ import suncor.com.android.utilities.Timber;
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
     private boolean isLinkedToAccount = false;
-<<<<<<< HEAD
     private String singleTicketNumber;
-=======
     private MutableLiveData<Station> nearestStation = new MutableLiveData<>();
->>>>>>> Use mainviewmodel to store staion data.
 
     @Inject
     public MainViewModel(MerchantsRepository merchantsRepository, SessionManager sessionManager) {
@@ -42,20 +39,19 @@ public class MainViewModel extends ViewModel {
         isLinkedToAccount = linkedToAccount;
     }
 
-<<<<<<< HEAD
     public String getSingleTicketNumber() {
         return singleTicketNumber;
     }
 
     public void setSingleTicketNumber(String singleTicketNumber) {
         this.singleTicketNumber = singleTicketNumber;
-=======
+    }
+
     public MutableLiveData<Station> getNearestStation() {
         return nearestStation;
     }
 
     public void setNearestStation(Station nearestStation) {
         this.nearestStation.setValue(nearestStation);
->>>>>>> Use mainviewmodel to store staion data.
     }
 }
