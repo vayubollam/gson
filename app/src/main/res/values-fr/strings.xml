@@ -532,6 +532,9 @@
     <string name="carwash_barcode_trouble_hint">Vous n\'arrivez pas à scanner?</string>
     <string name="carwash_barcode_reenter">Entrer le code à nouveau</string>
 
+    <string name="carwash_independent_alert_title">Il s\'agit d\'un lave-auto indépendant</string>
+    <string name="carwash_independent_alert_message">Les cartes et billets de lavage Petro-Canada ne peuvent être utilisés à cet établissement. Achetez un billet à l\'intérieur pour laver votre voiture.</string>
+
     <string name="single_ticket_title">Billet de lavage</string>
     <string name="single_ticket_update_button">Modifier</string>
     <string name="single_ticket_payment_title">Paiement</string>

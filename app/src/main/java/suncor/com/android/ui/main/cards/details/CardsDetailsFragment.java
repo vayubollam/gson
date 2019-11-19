@@ -1,6 +1,8 @@
 package suncor.com.android.ui.main.cards.details;
 
+import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -14,6 +16,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -22,25 +25,33 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.StationsUtil;
 
 public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
+    private MainViewModel mainViewModel;
     private int clickedCardIndex;
     boolean loadCarWashCardsOnly;
     @Inject
@@ -49,9 +60,18 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
 
+    private LocationLiveData locationLiveData;
+    private LatLng currentLocation;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
+        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
+        locationLiveData.observe(this, location -> {
+            currentLocation = (new LatLng(location.getLatitude(), location.getLongitude()));
+        });
     }
 
     @Nullable
@@ -151,15 +171,20 @@ public class CardsDetailsFragment extends MainActivityFragment {
     }
 
     private View.OnClickListener activeCarWashListener = view -> {
-        if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
-            //TODO
+        if (isUserAtIndependentStation()) {
+            StationsUtil.showIndependentStationAlert(getContext());
         } else {
-            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
-                    = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
-            action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
-            action.setCardIndex(clickedCardIndex);
-            action.setIsCardFromCarWash(loadCarWashCardsOnly);
-            Navigation.findNavController(getView()).navigate(action);
+            if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
+                //TODO
+
+            } else {
+                CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
+                        = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
+                action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+                action.setCardIndex(clickedCardIndex);
+                action.setIsCardFromCarWash(loadCarWashCardsOnly);
+                Navigation.findNavController(getView()).navigate(action);
+            }
         }
     };
 
@@ -206,6 +231,20 @@ public class CardsDetailsFragment extends MainActivityFragment {
             }).start();
             return true;
         }
+    }
+
+    private boolean isUserAtIndependentStation() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Station station = mainViewModel.getNearestStation().getValue();
+            if (station != null) {
+                LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+                LatLng origin = new LatLng(currentLocation.latitude, currentLocation.longitude);
+                if (station.isStationIndependentDealer() && LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+
 import suncor.com.android.R;
 
 public class Station {
@@ -22,6 +23,7 @@ public class Station {
     private ArrayList<Hour> hours;
     private List<String> amenities;
     private Address address;
+    private static final String INDEPENDENT_STATION_KEY = "carWashBrandOther";
 
 
     public Station(String id, ArrayList<Hour> hours, List<String> amenities, Address address) {
@@ -120,6 +122,13 @@ public class Station {
             }
         }
         return null;
+    }
+
+    public boolean isStationIndependentDealer() {
+        for (String amenitie : amenities) {
+            if (amenitie.equals(INDEPENDENT_STATION_KEY)) return true;
+        }
+        return false;
     }
 
     @Override

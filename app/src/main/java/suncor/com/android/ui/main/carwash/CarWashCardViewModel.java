@@ -27,6 +27,7 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.StationsUtil;
 
 public class CarWashCardViewModel extends ViewModel {
 
@@ -52,6 +53,8 @@ public class CarWashCardViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> loadNearest = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> refreshLocationCard = new MutableLiveData<>();
 
+    private MutableLiveData<Boolean> isNearestStationIndependent = new MutableLiveData<>();
+
     private LatLng userLocation;
 
 
@@ -60,7 +63,6 @@ public class CarWashCardViewModel extends ViewModel {
         this.repository = repository;
         this.favouriteRepository = favouriteRepository;
 
-        //TODO: merge single ticket live data
         MediatorLiveData<Resource<ArrayList<CardDetail>>> apiCall = new MediatorLiveData<>();
         //load wash cards
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
@@ -116,7 +118,7 @@ public class CarWashCardViewModel extends ViewModel {
                     if (resource.data == null || resource.data.isEmpty()) {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
-                        Station station = filterCarWashStation(resource.data);
+                        Station station = StationsUtil.filterNearestCarWashStation(resource.data);
                         if (station == null) {
                             _nearestStation.setValue(Resource.success(null));
                         } else {
@@ -149,6 +151,7 @@ public class CarWashCardViewModel extends ViewModel {
                 item.setDistanceDuration(DirectionsResult.INVALID);
             }
             _nearestStation.setValue(Resource.success(item));
+            isNearestStationIndependent.setValue(validateIndependentStation(item.getStation()));
         });
 
     }
@@ -192,21 +195,6 @@ public class CarWashCardViewModel extends ViewModel {
             }
         }
         isBalanceZero.setValue(isAllBalanceZero);
-    }
-
-    /**
-     * Filter the nearest station has car wash option
-     *
-     * @param stations a list of stations returned from api call
-     * @return nearest car wash station
-     */
-    private Station filterCarWashStation(List<Station> stations) {
-        for (Station station : stations) {
-            if (station.hasWashOptions()) {
-                return station;
-            }
-        }
-        return null;
     }
 
     public LiveData<List<CardDetail>> getPetroCanadaCards() {
@@ -271,6 +259,17 @@ public class CarWashCardViewModel extends ViewModel {
         } else {
             return 0;
         }
+    }
+
+    public MutableLiveData<Boolean> getIsNearestStationIndependent() {
+        return isNearestStationIndependent;
+    }
+
+    private boolean validateIndependentStation(Station station) {
+        LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
+        LatLng origin = new LatLng(userLocation.latitude, userLocation.longitude);
+        return LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD
+                && station.isStationIndependentDealer();
     }
 
     public enum ViewState {

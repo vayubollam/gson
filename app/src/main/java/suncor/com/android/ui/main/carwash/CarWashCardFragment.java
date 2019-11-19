@@ -53,6 +53,7 @@ import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
+import suncor.com.android.utilities.StationsUtil;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -61,6 +62,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;
+    public static final String IS_FIRST_TIME_ACCESS_CAR_WASH = "IS_FIRST_TIME_ACCESS_CAR_WASH";
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -123,11 +125,24 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             checkAndRequestPermission();
         });
 
+        viewModel.getNearestStation().observeForever(resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                mainViewModel.setNearestStation(resource.data.getStation());
+            }
+        });
+
+        viewModel.getIsNearestStationIndependent().observe(this, isIndependent -> {
+            if (isIndependent) {
+                StationsUtil.showIndependentStationAlert(getContext());
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        checkAndRequestCarWashPermission();
         binding = FragmentCarWashBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
@@ -184,7 +199,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         nearestCardBinding.directionsButton.setOnClickListener(openNavigationListener);
         nearestCardBinding.settingsButton.setOnClickListener(openSettingListener);
         nearestCardBinding.getRoot().setOnClickListener(showCardDetail);
-
         return binding.getRoot();
 
     }
@@ -215,10 +229,15 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 
     private void cardClick(CardDetail cardDetail) {
-        CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-        action.setIsCardFromCarWash(true);
-        Navigation.findNavController(getView()).navigate(action);
+        if (viewModel.getIsNearestStationIndependent().getValue() != null
+                && viewModel.getIsNearestStationIndependent().getValue()) {
+            StationsUtil.showIndependentStationAlert(getContext());
+        } else {
+            CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+            action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+            action.setIsCardFromCarWash(true);
+            Navigation.findNavController(getView()).navigate(action);
+        }
     }
 
     private View.OnClickListener buyTicketListener = v -> {
@@ -354,4 +373,10 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         }
         return 0;
     }
+
+    private void checkAndRequestCarWashPermission() {
+        permissionManager.checkCarWashPermission(getContext(), IS_FIRST_TIME_ACCESS_CAR_WASH,
+                () -> showRequestLocationDialog(false));
+    }
+
 }

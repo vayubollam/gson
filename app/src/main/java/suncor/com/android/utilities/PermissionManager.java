@@ -1,5 +1,6 @@
 package suncor.com.android.utilities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,12 +8,15 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.util.Log;
 
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.ui.main.carwash.CarWashCardFragment;
 
 public class PermissionManager {
     private static final String LOCATION_ALERT = "location_alter";
@@ -42,6 +46,14 @@ public class PermissionManager {
             }
         } else {
             listener.onPermissionGranted();
+        }
+    }
+
+    public void checkCarWashPermission(Context context, String permission, CarWashPermissionListener listener) {
+        if (isFirstTimeAsking(permission)) {
+            setIsFirstTimeAccessCarWash(permission, false);
+            if (shouldAskPermission(context, Manifest.permission.ACCESS_FINE_LOCATION))
+                listener.onFirstTimeAccessCarWash();
         }
     }
 
@@ -79,6 +91,10 @@ public class PermissionManager {
         void onPermissionGranted();
     }
 
+    public interface CarWashPermissionListener {
+        void onFirstTimeAccessCarWash();
+    }
+
     public static void openAppSettings(Activity activity) {
 
         Uri packageUri = Uri.fromParts("package", activity.getPackageName(), null);
@@ -99,6 +115,10 @@ public class PermissionManager {
 
     private boolean isFirstTimeAsking(String permission) {
         return userLocalSettings.getBool(permission, true);
+    }
+
+    public void setIsFirstTimeAccessCarWash(String key, boolean isFirstTime) {
+        userLocalSettings.setBool(key, isFirstTime);
     }
 
 }

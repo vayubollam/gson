@@ -29,6 +29,7 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.StationsUtil;
 
 public class HomeViewModel extends ViewModel {
 
@@ -52,6 +53,8 @@ public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<Event<Boolean>> _dismissEnrollmentRewardsCardEvent = new MutableLiveData<>();
     public LiveData<Event<Boolean>> dismissEnrollmentRewardsCardEvent = _dismissEnrollmentRewardsCardEvent;
+
+    public MutableLiveData<Station> nearestCarWashStation = new MutableLiveData<>();
 
     public ObservableInt greetingsMessage = new ObservableInt();
     public ObservableInt headerImage = new ObservableInt();
@@ -84,6 +87,7 @@ public class HomeViewModel extends ViewModel {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
                         _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
+                        nearestCarWashStation.setValue(StationsUtil.filterNearestCarWashStation(resource.data));
                     }
                     break;
             }
@@ -209,4 +213,5 @@ public class HomeViewModel extends ViewModel {
     public String getRewardedPoints() {
         return CardFormatUtils.formatBalance(sessionManager.getRewardedPoints());
     }
+
 }

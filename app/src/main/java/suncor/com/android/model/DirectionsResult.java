@@ -5,7 +5,7 @@ import android.content.Context;
 import suncor.com.android.R;
 
 public class DirectionsResult {
-    private static final int ONSITE_THRESHOLD = 1000;
+    public static final int ONSITE_THRESHOLD = 70;
     public static final DirectionsResult INVALID = new DirectionsResult(-1, -1);
     private int distance;
     private int duration;

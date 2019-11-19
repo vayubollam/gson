@@ -15,7 +15,6 @@ import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

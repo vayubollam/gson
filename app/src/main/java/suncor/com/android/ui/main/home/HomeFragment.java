@@ -49,6 +49,7 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.webview.WebDialogFragment;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -65,6 +66,7 @@ public class HomeFragment extends BottomNavigationFragment {
     @Inject
     ViewModelFactory viewModelFactory;
     private HomeViewModel mViewModel;
+    private MainViewModel mainViewModel;
     private OffersAdapter offersAdapter;
     private LocationLiveData locationLiveData;
     private boolean inAnimationShown;
@@ -106,6 +108,7 @@ public class HomeFragment extends BottomNavigationFragment {
         super.onCreate(savedInstanceState);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         mViewModel.locationServiceEnabled.observe(this, (enabled -> {
             if (enabled) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
@@ -140,6 +143,12 @@ public class HomeFragment extends BottomNavigationFragment {
                 HomeFragmentDirections.ActionHomeTabToCardsDetailsFragment action = HomeFragmentDirections.actionHomeTabToCardsDetailsFragment();
                 action.setIsCardFromProfile(true);
                 Navigation.findNavController(getView()).navigate(action);
+            }
+        });
+
+        mViewModel.nearestCarWashStation.observeForever(resource -> {
+            if (resource != null) {
+                mainViewModel.setNearestStation(resource);
             }
         });
     }

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import suncor.com.android.data.redeem.MerchantsRepository;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.utilities.Timber;
 
@@ -14,6 +15,7 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
     private boolean isLinkedToAccount = false;
     private String singleTicketNumber;
+    private MutableLiveData<Station> nearestStation = new MutableLiveData<>();
 
     @Inject
     public MainViewModel(MerchantsRepository merchantsRepository, SessionManager sessionManager) {
@@ -43,5 +45,13 @@ public class MainViewModel extends ViewModel {
 
     public void setSingleTicketNumber(String singleTicketNumber) {
         this.singleTicketNumber = singleTicketNumber;
+    }
+
+    public MutableLiveData<Station> getNearestStation() {
+        return nearestStation;
+    }
+
+    public void setNearestStation(Station nearestStation) {
+        this.nearestStation.setValue(nearestStation);
     }
 }
