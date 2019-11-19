@@ -154,7 +154,11 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
     }
 
     public OfferCard getOffer(int position) {
-        return offerCards.get(position);
+        if (position < offerCards.size() && position > 0) {
+            return offerCards.get(position);
+        } else {
+            return offerCards.get(0);
+        }
     }
 
     public class OffersViewHolder extends RecyclerView.ViewHolder {
