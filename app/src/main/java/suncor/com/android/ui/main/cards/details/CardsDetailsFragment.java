@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -177,7 +178,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
             if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashBarCodeFragment
                         action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashBarCodeFragment(loadCarWashCardsOnly);
-                action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber().substring(5, 17));
+                action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
                 action.setIsFromCarWash(loadCarWashCardsOnly);
                 Navigation.findNavController(getView()).navigate(action);
             } else {
