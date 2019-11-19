@@ -39,6 +39,7 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "discover-petro-points");
         String language = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr" : "en";
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-" + language + ".html");

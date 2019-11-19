@@ -165,8 +165,10 @@ public class PersonalInfoFragment extends MainActivityFragment {
         binding.emailInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.emailInput, f));
         binding.passwordInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.passwordInput, f));
         binding.emailInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
+        AnalyticsUtils.logEvent(this.getContext(),"form_start", new Pair<>("formName","update-personal-information"));
         binding.emailInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                AnalyticsUtils.logEvent(this.getContext(), "form_complete", new Pair<>("formName","update-personal-information"));
                 viewModel.save(ConnectionUtil.haveNetworkConnection(getContext()));
                 return true;
             }

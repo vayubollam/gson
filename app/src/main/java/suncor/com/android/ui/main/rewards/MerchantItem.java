@@ -33,7 +33,43 @@ public class MerchantItem implements Parcelable {
         merchant = in.readParcelable(Merchant.class.getClassLoader());
     }
 
-    String getMerchantLargeImage() {
+    public String getMerchantShortName() {
+        switch (merchant.getMerchantId()) {
+            case MerchantsIds.Cara_EN:
+            case MerchantsIds.Cara_FR:
+                return "Cara";
+            case MerchantsIds.Cineplex_EN:
+            case MerchantsIds.Cineplex_FR:
+                return "Cineplex";
+            case MerchantsIds.Hudson_Bay_EN:
+            case MerchantsIds.Hudson_Bay_FR:
+                return "HBC";
+            case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
+            case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
+                return "TJX";
+        }
+        return null;
+    }
+
+    public String getMerchantScreenName() {
+        switch (merchant.getMerchantId()) {
+            case MerchantsIds.Cara_EN:
+            case MerchantsIds.Cara_FR:
+                return "ultimate-dining-egift-card";
+            case MerchantsIds.Cineplex_EN:
+            case MerchantsIds.Cineplex_FR:
+                return "cineplex-egift-card";
+            case MerchantsIds.Hudson_Bay_EN:
+            case MerchantsIds.Hudson_Bay_FR:
+                return "hudsons-bay-egift-card";
+            case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
+            case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
+                return "homesense-marshalls-winners-egift-card";
+        }
+        return null;
+    }
+
+    public String getMerchantLargeImage() {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
