@@ -51,6 +51,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         String language = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr" : "en";
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "discover-petro-points");
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-guest-" + language + ".html");
         isWebViewLoading.set(true);
