@@ -13,6 +13,7 @@ import suncor.com.android.utilities.Timber;
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
     private boolean isLinkedToAccount = false;
+    private String singleTicketNumber;
 
     @Inject
     public MainViewModel(MerchantsRepository merchantsRepository, SessionManager sessionManager) {
@@ -34,5 +35,13 @@ public class MainViewModel extends ViewModel {
 
     public void setLinkedToAccount(boolean linkedToAccount) {
         isLinkedToAccount = linkedToAccount;
+    }
+
+    public String getSingleTicketNumber() {
+        return singleTicketNumber;
+    }
+
+    public void setSingleTicketNumber(String singleTicketNumber) {
+        this.singleTicketNumber = singleTicketNumber;
     }
 }

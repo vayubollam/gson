@@ -50,6 +50,7 @@ public class SingleTicketViewModel extends ViewModel {
                 Timber.d("Order APi Redeeming");
                 if (selectedSingleTicketRedeem != null) {
                     Order order = buildOrderObject(sessionManager);
+                    order.setLinkProductsToAccount(isLinkedToAccount);
                     return orderApi.getRedeemResponse(order);
                 }
             }

@@ -2,7 +2,7 @@ package suncor.com.android.ui.main.carwash.singleticket;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +33,15 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
     private boolean itemsExpanded = true;
     private boolean isViewAnimating = false;
     private boolean isFirstTime = false;
+    private Context context;
 
 
-    public SingleTicketListItemAdapter(List<PetroCanadaProduct> products, int petroPoints, Consumer<Integer> callBack) {
+    public SingleTicketListItemAdapter(List<PetroCanadaProduct> products, int petroPoints, Consumer<Integer> callBack, Context context) {
         this.singleTicketList = products;
         this.petroPoints = petroPoints;
         this.callBack = callBack;
         animInterpolator = new DecelerateInterpolator(3f);
+        this.context = context;
     }
 
     @NonNull
@@ -102,6 +104,8 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
             ObjectAnimator animationAlpha = ObjectAnimator.ofFloat(holder.itemView, "alpha", 1f, 0f);
             ObjectAnimator animationValueRBAlpha = ObjectAnimator.ofFloat(holder.binding.valueRb, "alpha", 1f, 0f);
             ObjectAnimator animationTxtSelectionAlpha = ObjectAnimator.ofFloat(holder.binding.txtSelectedCardGift, "alpha", 0f, 1f);
+            holder.binding.txtSelectedCardGift.setText(context.getResources().getQuantityString(R.plurals.single_ticket_receipt_quantity,
+                    singleTicketList.get(selectedItem).getUnits(),  singleTicketList.get(selectedItem).getUnits()));
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.setDuration(ANIM_DURATION / 2);
             if (position == selectedItem) {

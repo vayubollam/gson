@@ -553,6 +553,7 @@
     <string name="single_ticket_payment_title">Payment</string>
     <string name="single_ticket_add_to_account">Add ticket to my account</string>
     <string name="single_ticket_email_agreement">If you changed your email in the last 24 hours, there will be a hold on redeemed Single-Ticket tickets</string>
+    <string name="single_ticket_terms_and_agreement">Transactions are irreversible. By selecting \"confirm and redeem,\" you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints"><u>Terms and conditions.</u></a></string>
     <string name="single_ticket_email_title">Sent to</string>
     <string name="single_ticket_new_balance_title">New balance</string>
     <string name="single_ticket_select_value">Select amount</string>
@@ -566,4 +567,6 @@
 
     <string name="single_ticket_card_label">Car wash ticket</string>
     <string name="single_ticket_card_detail_description">Buy or redeem your points for the most expensive car wash at over 250 Petro-Canada Locations</string>
+    <string name="single_ticket_payment_petro_points">Petro-Points</string>
+
 </resources>

@@ -102,6 +102,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     private void goBack() {
         if (!isMerchant && isLinkToAccount) {
             mainViewModel.setLinkedToAccount(true);
+            mainViewModel.setSingleTicketNumber(orderResponse.getProductsDelivered()[0]);
         }
         Navigation.findNavController(getView()).popBackStack();
     }
