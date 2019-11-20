@@ -9,7 +9,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class AnalyticsUtils {
 
-    public static String userID = "none";
+    public static String userID;
 
     @SafeVarargs
     public static void logEvent(Context context, String eventName, Pair<String, String>... variables) {
@@ -17,8 +17,9 @@ public class AnalyticsUtils {
         for (Pair<String, String> variable : variables) {
             bundle.putString(variable.first, variable.second);
         }
-        String id = userID;
-        bundle.putString("user_id", userID);
+        if (userID != null) {
+            bundle.putString("user_id", userID);
+        }
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
     }
 

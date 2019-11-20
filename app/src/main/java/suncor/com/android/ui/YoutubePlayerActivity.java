@@ -24,6 +24,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
     private String videoId;
     private String videoTitle;
     Handler mHandler;
+    private boolean show25 = false, show50 = false, show75 = false;
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -125,12 +126,17 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
     private void displayCurrentTime() {
         if (null == mPlayer) return;
         if ( mPlayer.getCurrentTimeMillis() != 0){
-        int pourcentage =  ( mPlayer.getCurrentTimeMillis() * 100 ) / mPlayer.getDurationMillis();
-
-            if ( pourcentage == 25 || pourcentage == 50|| pourcentage == 75  ){
-                String  pour = "video_threshold_"+ Integer.toString(pourcentage) ;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), pour, new Pair<>("videoTitle", videoTitle));
-    }
+            int percentage =  ( mPlayer.getCurrentTimeMillis() * 100 ) / mPlayer.getDurationMillis();
+            if (percentage > 25 && !show25) {
+                show25 = true;
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_threshold_25");
+            } else if (percentage > 50 && !show50) {
+                show50 = true;
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_threshold_50");
+            } else if (percentage > 75 && !show75) {
+                show25 = true;
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_threshold_75");
+            }
         }
     }
     private Runnable runnable = new Runnable() {
