@@ -60,14 +60,14 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
             String singleTicketNumber = CarWashBarCodeFragmentArgs.fromBundle(getArguments()).getSingleTicketNumber();
             binding.setIsSingleTicket(true);
             binding.setSingleTicketNumber(singleTicketNumber);
-            binding.barCodeImage.setImageBitmap(generateBarcode(size.x, singleTicketNumber));
+            binding.barCodeImage.setImageBitmap(generateBarcode(size.x, singleTicketNumber, BarcodeFormat.UPC_A));
         } else {
             carWashSharedViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CarWashSharedViewModel.class);
             binding.setVm(carWashSharedViewModel);
             binding.setIsSingleTicket(false);
             binding.setLifecycleOwner(this);
             binding.reEnterButton.setOnClickListener(v -> goBack(true));
-            binding.barCodeImage.setImageBitmap(generateBarcode(size.x, carWashSharedViewModel.getEncryptedCarWashCode().getValue()));
+            binding.barCodeImage.setImageBitmap(generateBarcode(size.x, carWashSharedViewModel.getEncryptedCarWashCode().getValue(), BarcodeFormat.EAN_13));
         }
 
         return binding.getRoot();
@@ -109,7 +109,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         goBack(false);
     }
 
-    private Bitmap generateBarcode(int screenSize, String encryptedCarWashCode) {
+    private Bitmap generateBarcode(int screenSize, String encryptedCarWashCode, BarcodeFormat barcodeFormat) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Resources r = getResources();
         int width = Math.round(TypedValue.applyDimension(
@@ -117,7 +117,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         int height = Math.round(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, r.getDimension(R.dimen.carwash_barcode_image_height), r.getDisplayMetrics()));
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(encryptedCarWashCode, BarcodeFormat.EAN_13, width, height);
+            BitMatrix bitMatrix = multiFormatWriter.encode(encryptedCarWashCode, barcodeFormat, width, height);
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
