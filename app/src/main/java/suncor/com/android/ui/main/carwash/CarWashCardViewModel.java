@@ -186,19 +186,6 @@ public class CarWashCardViewModel extends ViewModel {
         }
     }
 
-//    private void setIsBalanceZero(List<CardDetail> cards) {
-//        boolean isAllBalanceZero = true;
-//        for (CardDetail card : cards) {
-//            if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
-//                if (card.getBalance() != 0) {
-//                    isAllBalanceZero = false;
-//                }
-//            } else if (card.getCardType().equals(CardType.ST)) {
-//            }
-//        }
-//        isBalanceZero.setValue(isAllBalanceZero);
-//    }
-
     private void setUpCardTypeStatusAndIsBalanceZero(List<CardDetail> cards) {
         boolean isAllBalanceZero = true;
         int cardQuantity = 0;
