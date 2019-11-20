@@ -511,6 +511,8 @@
     <string name="carwash_header">Let\'s clean your vehicle</string>
     <string name="carwash_getwash_header">Get your wash</string>
     <string name="carwash_getwash_message_card_only">Select your car wash card to get started.</string>
+    <string name="carwash_getwash_message_ticket_only">Select your car wash ticket to get started.</string>
+    <string name="carwash_getwash_message_card_and_ticket">Select your car wash card or ticket to get started.</string>
     <string name="carwash_no_card_get_ticket_header">Get a car wash ticket</string>
     <string name="carwash_no_card_get_ticket_message">Purchase a car wash ticket now, or add your car wash card to your wallet.</string>
     <string name="carwash_get_ticket_button">Buy a ticket</string>

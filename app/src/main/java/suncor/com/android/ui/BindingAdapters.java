@@ -197,9 +197,14 @@ public class BindingAdapters {
     public static void setCarWashCodeText(TextView view, String carWashCode) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < carWashCode.length(); i += 4) {
+            if (i + 4 <= carWashCode.length()) {
                 sb.append(carWashCode.substring(i, i + 4));
-                sb.append(" ");
+            } else {
+                sb.append(carWashCode.substring(i, i + (carWashCode.length() - i)));
+            }
+            sb.append(" ");
         }
+
         view.setText(sb.toString());
     }
 
