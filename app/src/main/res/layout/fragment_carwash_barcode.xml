@@ -128,7 +128,7 @@
                 android:id="@+id/have_trouble_single_ticket_text"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="48dp"
                 android:fontFamily="@font/gibson_regular"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.5"
@@ -138,7 +138,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/bar_code_group"
                 app:visibleGone="@{isSingleTicket}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -147,13 +147,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-<<<<<<< HEAD
-                app:layout_constraintRight_toRightOf="parent">
-=======
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/guideline"
                 app:visibleGone="@{!isSingleTicket}">
->>>>>>> Add logic for single bar code page.
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/security_pin_text"
