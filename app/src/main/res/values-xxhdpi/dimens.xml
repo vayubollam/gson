@@ -8,4 +8,5 @@
     <dimen name="carwash_barcode_padding">16dp</dimen>
     <dimen name="carwash_barcode_image_height">100dp</dimen>
     <dimen name="carwash_security_subtitle_size">18sp</dimen>
+    <dimen name="carwash_barcode_divider_padding">48dp</dimen>
 </resources>
