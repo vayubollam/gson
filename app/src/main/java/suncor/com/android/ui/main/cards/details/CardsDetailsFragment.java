@@ -82,6 +82,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         loadType = CardsDetailsFragmentArgs.fromBundle(getArguments()).getLoadType();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setLoadType(loadType);
+        viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
         viewModel.retrieveCards();
         viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
@@ -176,7 +177,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
             if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashBarCodeFragment
                         action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashBarCodeFragment(
-                        loadType == CardsLoadType.CAR_WASH_PRODUCTS
+                        loadType == CardsLoadType.REDEEMED_SINGLE_TICKETS ||
+                                loadType == CardsLoadType.CAR_WASH_PRODUCTS
                 );
                 action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
                 Navigation.findNavController(getView()).navigate(action);

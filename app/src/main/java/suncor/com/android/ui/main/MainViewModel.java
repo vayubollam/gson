@@ -3,6 +3,8 @@ package suncor.com.android.ui.main;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import suncor.com.android.data.redeem.MerchantsRepository;
@@ -14,7 +16,7 @@ import suncor.com.android.utilities.Timber;
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
     private boolean isLinkedToAccount = false;
-    private String singleTicketNumber;
+    private Set<String> singleTicketNumber;
     private MutableLiveData<Station> nearestStation = new MutableLiveData<>();
 
     @Inject
@@ -39,11 +41,11 @@ public class MainViewModel extends ViewModel {
         isLinkedToAccount = linkedToAccount;
     }
 
-    public String getSingleTicketNumber() {
+    public Set<String> getSingleTicketNumber() {
         return singleTicketNumber;
     }
 
-    public void setSingleTicketNumber(String singleTicketNumber) {
+    public void setSingleTicketNumber(Set<String> singleTicketNumber) {
         this.singleTicketNumber = singleTicketNumber;
     }
 

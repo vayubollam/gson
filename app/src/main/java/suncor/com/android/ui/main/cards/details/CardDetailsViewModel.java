@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -21,9 +23,10 @@ public class CardDetailsViewModel extends ViewModel {
 
     private final SessionManager sessionManager;
     private final CardsRepository cardsRepository;
-    MediatorLiveData<List<CardDetail>> _cards = new MediatorLiveData<>();
+    private MediatorLiveData<List<CardDetail>> _cards = new MediatorLiveData<>();
     LiveData<List<CardDetail>> cards = _cards;
     private CardsLoadType loadType;
+    private Set<String> redeemedTicketNumbers;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -39,6 +42,10 @@ public class CardDetailsViewModel extends ViewModel {
                 _cards.setValue(Collections.singletonList(petroPointsCard));
                 break;
             case REDEEMED_SINGLE_TICKETS:
+                _cards.addSource(cardsRepository.getCards(false), result -> {
+                    _cards.setValue(findNewlyRedeemedSingleTickets(result.data));
+                });
+                break;
             case CAR_WASH_PRODUCTS:
                 _cards.addSource(cardsRepository.getCards(false), result -> {
                     if (result.status == Resource.Status.SUCCESS) {
@@ -65,4 +72,19 @@ public class CardDetailsViewModel extends ViewModel {
         this.loadType = loadType;
     }
 
+    public void setRedeemedTicketNumbers(Set<String> redeemedTicketNumbers) {
+        this.redeemedTicketNumbers = redeemedTicketNumbers;
+    }
+
+    private List<CardDetail> findNewlyRedeemedSingleTickets(List<CardDetail> petroCanadaCards) {
+        if (redeemedTicketNumbers != null && redeemedTicketNumbers.size() > 0) {
+            List<CardDetail> newlyRedeemedSingleTickets = new ArrayList<>();
+            for (CardDetail card : petroCanadaCards) {
+                if (card.getCardType() == CardType.ST && redeemedTicketNumbers.contains(card.getTicketNumber()))
+                    newlyRedeemedSingleTickets.add(card);
+            }
+            return newlyRedeemedSingleTickets;
+        }
+        return petroCanadaCards;
+    }
 }
