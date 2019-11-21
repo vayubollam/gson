@@ -19,7 +19,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -31,6 +30,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 
 public class CardsFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -87,7 +87,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         if (viewModel.viewState.getValue() == CardsViewModel.ViewState.FAILED) {
             //the card was loaded from profile, so the repository is still empty
             CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
-            action.setIsCardFromProfile(true);
+            action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getView()).navigate(action);
         } else {
             CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();

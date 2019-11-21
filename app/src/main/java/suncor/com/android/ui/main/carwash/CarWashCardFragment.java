@@ -43,6 +43,7 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
@@ -98,7 +99,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     mainViewModel.setLinkedToAccount(false);
                     int index = findLinkedSingleTicketIndex(mainViewModel.getSingleTicketNumber(), viewModel.getPetroCanadaCards().getValue());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-                    action.setIsCardFromCarWash(true);
+                    action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     action.setCardIndex(index);
                     Navigation.findNavController(getView()).navigate(action);
                 } else {
@@ -251,7 +252,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         } else {
             CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
             action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-            action.setIsCardFromCarWash(true);
+            action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
             Navigation.findNavController(getView()).navigate(action);
         }
     }

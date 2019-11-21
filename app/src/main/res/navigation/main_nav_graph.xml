@@ -206,13 +206,9 @@
             android:defaultValue="0"
             app:argType="integer" />
         <argument
-            android:name="isCardFromProfile"
-            android:defaultValue="false"
-            app:argType="boolean" />
-        <argument
-            android:name="isCardFromCarWash"
-            android:defaultValue="false"
-            app:argType="boolean" />
+            android:name="loadType"
+            app:argType="suncor.com.android.ui.main.cards.CardsLoadType"
+            android:defaultValue="ALL"/>
         <action
             android:id="@+id/action_cardsDetailsFragment_to_carWashActivationSecurityFragment"
             app:destination="@id/carWashActivationSecurityFragment"
@@ -385,9 +381,6 @@
         app:enterAnim="@anim/slide_up"
         app:exitAnim="@anim/dummy"
         app:popExitAnim="@anim/slide_down">
-        <argument
-            android:name="isCardFromProfile"
-            android:defaultValue="true" />
     </action>
     <action
         android:id="@+id/action_to_carWashFragment"

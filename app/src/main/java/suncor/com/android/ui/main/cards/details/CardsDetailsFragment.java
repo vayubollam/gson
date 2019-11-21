@@ -43,6 +43,7 @@ import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
@@ -53,7 +54,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     CardDetailsViewModel viewModel;
     private MainViewModel mainViewModel;
     private int clickedCardIndex;
-    boolean loadCarWashCardsOnly;
+    private CardsLoadType loadType;
     @Inject
     ViewModelFactory viewModelFactory;
     private float previousBrightness;
@@ -78,11 +79,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
-        boolean loadCardFromProfile = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromProfile();
-        loadCarWashCardsOnly = CardsDetailsFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
+        loadType = CardsDetailsFragmentArgs.fromBundle(getArguments()).getLoadType();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
-        viewModel.setCardFromProfile(loadCardFromProfile);
-        viewModel.setCarWashCardsOnly(loadCarWashCardsOnly);
+        viewModel.setLoadType(loadType);
         viewModel.retrieveCards();
         viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
@@ -176,16 +175,17 @@ public class CardsDetailsFragment extends MainActivityFragment {
         } else {
             if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashBarCodeFragment
-                        action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashBarCodeFragment(loadCarWashCardsOnly);
+                        action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashBarCodeFragment(
+                        loadType == CardsLoadType.CAR_WASH_PRODUCTS
+                );
                 action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
-                action.setIsFromCarWash(loadCarWashCardsOnly);
                 Navigation.findNavController(getView()).navigate(action);
             } else {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                         = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                 action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                 action.setCardIndex(clickedCardIndex);
-                action.setIsCardFromCarWash(loadCarWashCardsOnly);
+                action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                 Navigation.findNavController(getView()).navigate(action);
             }
         }
