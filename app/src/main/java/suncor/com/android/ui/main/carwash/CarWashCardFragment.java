@@ -75,6 +75,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private CarwashNearestCardBinding nearestCardBinding;
     @Inject
     PermissionManager permissionManager;
+    private boolean isFirstTime = true;
 
 
     @Override
@@ -164,24 +165,29 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
         binding.scrollView.setOnScrollChangeListener(
                 (NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    int[] headerLocation = new int[2];
-                    int[] appBarLocation = new int[2];
+                    if (!isFirstTime) {
+                        int[] headerLocation = new int[2];
+                        int[] appBarLocation = new int[2];
 
-                    binding.carWashWelcomeMessage.getLocationInWindow(headerLocation);
-                    binding.appBar.getLocationInWindow(appBarLocation);
-                    int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
-                    int headerBottom = headerLocation[1] +
-                            binding.carWashWelcomeMessage.getMeasuredHeight()
-                            - binding.carWashWelcomeMessage.getPaddingBottom();
+                        binding.carWashWelcomeMessage.getLocationInWindow(headerLocation);
+                        binding.appBar.getLocationInWindow(appBarLocation);
+                        int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
+                        int headerBottom = headerLocation[1] +
+                                binding.carWashWelcomeMessage.getMeasuredHeight()
+                                - binding.carWashWelcomeMessage.getPaddingBottom();
 
-                    if (headerBottom <= appBarBottom) {
-                        binding.appBar.setTitle(binding.carWashWelcomeMessage.getText());
-                        ViewCompat.setElevation(binding.appBar, appBarElevation);
-                        binding.appBar.findViewById(R.id.collapsed_title).setAlpha(
-                                Math.min(1, (float) (appBarBottom - headerBottom) / 100));
+                        if (headerBottom <= appBarBottom) {
+                            binding.appBar.setTitle(binding.carWashWelcomeMessage.getText());
+                            ViewCompat.setElevation(binding.appBar, appBarElevation);
+                            binding.appBar.findViewById(R.id.collapsed_title).setAlpha(
+                                    Math.min(1, (float) (appBarBottom - headerBottom) / 100));
+                        } else {
+                            binding.appBar.setTitle("");
+                            ViewCompat.setElevation(binding.appBar, 0);
+                        }
                     } else {
-                        binding.appBar.setTitle("");
-                        ViewCompat.setElevation(binding.appBar, 0);
+                        isFirstTime = false;
+                        binding.scrollView.scrollTo(0, 0);
                     }
                 });
 
@@ -221,6 +227,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         super.onStart();
         viewModel.onAttached();
         checkAndRequestPermission();
+        isFirstTime = true;
     }
 
     /**
