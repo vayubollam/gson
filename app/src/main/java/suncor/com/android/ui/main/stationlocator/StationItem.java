@@ -32,7 +32,8 @@ public class StationItem extends BaseObservable {
         this.isFavourite = isFavourite;
     }
 
-    public StationItem(Station station, DirectionsResult distanceDuration) {
+    public StationItem(FavouriteRepository favouriteRepository,Station station, DirectionsResult distanceDuration) {
+        this.favouriteRepository = favouriteRepository;
         this.station = station;
         this.distanceDuration = distanceDuration;
     }
