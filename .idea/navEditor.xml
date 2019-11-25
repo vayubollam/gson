@@ -536,6 +536,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_cardsDetailsFragment_to_carWashBarCodeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -754,15 +759,6 @@
                             <option name="x" value="12" />
                             <option name="y" value="12" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_redeemReceiptFragment_to_cardsDetailsFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

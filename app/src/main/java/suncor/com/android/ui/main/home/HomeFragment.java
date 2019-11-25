@@ -50,6 +50,8 @@ import suncor.com.android.ui.common.webview.WebDialogFragment;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.cards.CardsLoadType;
+import suncor.com.android.ui.main.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -141,7 +143,7 @@ public class HomeFragment extends BottomNavigationFragment {
         mViewModel.navigateToPetroPoints.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 HomeFragmentDirections.ActionHomeTabToCardsDetailsFragment action = HomeFragmentDirections.actionHomeTabToCardsDetailsFragment();
-                action.setIsCardFromProfile(true);
+                action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
                 Navigation.findNavController(getView()).navigate(action);
             }
         });

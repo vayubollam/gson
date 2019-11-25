@@ -554,6 +554,8 @@
     <string name="single_ticket_receipt_quantity_title">Quantité</string>
 
     <string name="single_ticket_card_label">Billet de lavage</string>
+    <string name="single_ticket_card_detail_description">Scannez votre billet à n\'importe quel établissement avec lave-auto GlideWash ou SuperDoux participant.</string>
     <string name="single_ticket_payment_petro_points">Petro-Points</string>
+    <string name="single_ticket_barcode_trouble_message">Vous n\'arrivez pas à scanner?  \nEssayez d\'entrer votre numéro de billet à l\'écran du lave-auto.</string>
 
 </resources>

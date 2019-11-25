@@ -10,8 +10,10 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
+import suncor.com.android.ui.main.cards.CardsLoadType;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
 
@@ -30,7 +32,9 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             dismiss();
         });
         binding.actionScanCardButton.setOnClickListener(view -> {
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_cardsDetailsFragment);
+            HomeNavigationDirections.ActionToCardsDetailsFragment action = HomeNavigationDirections.actionToCardsDetailsFragment();
+            action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
             dismiss();
         });
         binding.actionWashCarButton.setOnClickListener(view -> {

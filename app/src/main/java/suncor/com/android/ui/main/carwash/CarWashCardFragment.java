@@ -27,7 +27,6 @@ import androidx.navigation.Navigation;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -38,11 +37,11 @@ import suncor.com.android.databinding.FragmentCarWashBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
-import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.ui.main.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.cards.list.CardListItem;
 import suncor.com.android.ui.main.cards.list.CardsListAdapter;
@@ -76,6 +75,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     private CarwashNearestCardBinding nearestCardBinding;
     @Inject
     PermissionManager permissionManager;
+    private boolean isFirstTime = true;
 
 
     @Override
@@ -96,10 +96,8 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
                 if (mainViewModel.isLinkedToAccount()) {
                     mainViewModel.setLinkedToAccount(false);
-                    int index = findLinkedSingleTicketIndex(mainViewModel.getSingleTicketNumber(), viewModel.getPetroCanadaCards().getValue());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-                    action.setIsCardFromCarWash(true);
-                    action.setCardIndex(index);
+                    action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate(action);
                 } else {
                     ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
@@ -165,28 +163,32 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.msg_sl005_button,
                 () -> viewModel.loadData(CarWashCardViewModel.ViewState.LOADING)));
 
-        binding.scrollView.setOnScrollChangeListener(
-                (NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    int[] headerLocation = new int[2];
-                    int[] appBarLocation = new int[2];
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (!isFirstTime) {
+                int[] headerLocation = new int[2];
+                int[] appBarLocation = new int[2];
 
-                    binding.carWashWelcomeMessage.getLocationInWindow(headerLocation);
-                    binding.appBar.getLocationInWindow(appBarLocation);
-                    int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
-                    int headerBottom = headerLocation[1] +
-                            binding.carWashWelcomeMessage.getMeasuredHeight()
-                            - binding.carWashWelcomeMessage.getPaddingBottom();
+                binding.carWashWelcomeMessage.getLocationInWindow(headerLocation);
+                binding.appBar.getLocationInWindow(appBarLocation);
+                int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
+                int headerBottom = headerLocation[1] +
+                        binding.carWashWelcomeMessage.getMeasuredHeight()
+                        - binding.carWashWelcomeMessage.getPaddingBottom();
 
-                    if (headerBottom <= appBarBottom) {
-                        binding.appBar.setTitle(binding.carWashWelcomeMessage.getText());
-                        ViewCompat.setElevation(binding.appBar, appBarElevation);
-                        binding.appBar.findViewById(R.id.collapsed_title).setAlpha(
-                                Math.min(1, (float) (appBarBottom - headerBottom) / 100));
-                    } else {
-                        binding.appBar.setTitle("");
-                        ViewCompat.setElevation(binding.appBar, 0);
-                    }
-                });
+                if (headerBottom <= appBarBottom) {
+                    binding.appBar.setTitle(binding.carWashWelcomeMessage.getText());
+                    ViewCompat.setElevation(binding.appBar, appBarElevation);
+                    binding.appBar.findViewById(R.id.collapsed_title).setAlpha(
+                            Math.min(1, (float) (appBarBottom - headerBottom) / 100));
+                } else {
+                    binding.appBar.setTitle("");
+                    ViewCompat.setElevation(binding.appBar, 0);
+                }
+            } else {
+                isFirstTime = false;
+                binding.scrollView.scrollTo(0, 0);
+            }
+        });
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.refreshLayout.setColorSchemeResources(R.color.red);
@@ -224,6 +226,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         super.onStart();
         viewModel.onAttached();
         checkAndRequestPermission();
+        isFirstTime = true;
     }
 
     /**
@@ -251,7 +254,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         } else {
             CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
             action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-            action.setIsCardFromCarWash(true);
+            action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
             Navigation.findNavController(getView()).navigate(action);
         }
     }
@@ -379,15 +382,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
             }
         });
-    }
-
-    private int findLinkedSingleTicketIndex(String ticketNumber, List<CardDetail> petroCanadaCards) {
-        for (int i = 0; i < petroCanadaCards.size(); i++) {
-            if (petroCanadaCards.get(i).getCardType() == CardType.ST
-                    && petroCanadaCards.get(i).getTicketNumber().equals(ticketNumber))
-                return i;
-        }
-        return 0;
     }
 
     private void checkAndRequestCarWashPermission() {

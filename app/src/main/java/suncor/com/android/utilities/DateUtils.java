@@ -19,7 +19,7 @@ public class DateUtils {
     }
 
     public static String getFormattedDate(Date inputDate) {
-        SimpleDateFormat localDateFormat = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mma");
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("MMM dd, yyyy 'at' HH:mm");
         return localDateFormat.format(inputDate);
     }
 }

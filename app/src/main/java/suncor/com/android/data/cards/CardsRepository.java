@@ -159,6 +159,8 @@ public class CardsRepository {
                 } else {
                     return (int) ((card1.getCpl() - card2.getCpl()) * 10);
                 }
+            }else if (card1.getCardType() == CardType.ST && card2.getCardType() == CardType.ST){
+                return 0;
             } else if (card1.getCardType() == CardType.SP && card2.getCardType() == CardType.SP) {
                 return ((card2.getBalance() - card1.getBalance()) * 10);
             } else if (card1.getCardType() == CardType.WAG && card2.getCardType() == CardType.WAG) {
@@ -170,14 +172,20 @@ public class CardsRepository {
                     switch (card1.getCardType()) {
                         case FSR:
                             return -1;
-                        case WAG:
+                        case ST:
                             if (card2.getCardType() == CardType.FSR) {
                                 return 1;
                             } else {
                                 return -1;
                             }
+                        case WAG:
+                            if (card2.getCardType() == CardType.FSR || card2.getCardType() == CardType.ST) {
+                                return 1;
+                            } else {
+                                return -1;
+                            }
                         case SP:
-                            if (card2.getCardType() == CardType.FSR || card2.getCardType() == CardType.WAG) {
+                            if (card2.getCardType() == CardType.FSR || card2.getCardType() == CardType.WAG || card2.getCardType() == CardType.ST) {
                                 return 1;
                             } else {
                                 return -1;

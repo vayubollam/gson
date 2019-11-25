@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.common.collect.Sets;
+
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -102,7 +104,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     private void goBack() {
         if (!isMerchant && isLinkToAccount) {
             mainViewModel.setLinkedToAccount(true);
-            mainViewModel.setSingleTicketNumber(orderResponse.getProductsDelivered()[0]);
+            mainViewModel.setSingleTicketNumber(Sets.newHashSet(orderResponse.getProductsDelivered()));
         }
         Navigation.findNavController(getView()).popBackStack();
     }

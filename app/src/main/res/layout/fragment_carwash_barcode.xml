@@ -132,7 +132,7 @@
                 android:fontFamily="@font/gibson_regular"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.5"
-                android:text="Having trouble Scanning? \n Enter your ticket barcode number manually."
+                android:text="@string/single_ticket_barcode_trouble_message"
                 android:textColor="@color/black_60"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
