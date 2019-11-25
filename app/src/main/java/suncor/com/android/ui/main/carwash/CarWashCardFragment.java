@@ -163,33 +163,32 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.msg_sl005_button,
                 () -> viewModel.loadData(CarWashCardViewModel.ViewState.LOADING)));
 
-        binding.scrollView.setOnScrollChangeListener(
-                (NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    if (!isFirstTime) {
-                        int[] headerLocation = new int[2];
-                        int[] appBarLocation = new int[2];
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (!isFirstTime) {
+                int[] headerLocation = new int[2];
+                int[] appBarLocation = new int[2];
 
-                        binding.carWashWelcomeMessage.getLocationInWindow(headerLocation);
-                        binding.appBar.getLocationInWindow(appBarLocation);
-                        int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
-                        int headerBottom = headerLocation[1] +
-                                binding.carWashWelcomeMessage.getMeasuredHeight()
-                                - binding.carWashWelcomeMessage.getPaddingBottom();
+                binding.carWashWelcomeMessage.getLocationInWindow(headerLocation);
+                binding.appBar.getLocationInWindow(appBarLocation);
+                int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
+                int headerBottom = headerLocation[1] +
+                        binding.carWashWelcomeMessage.getMeasuredHeight()
+                        - binding.carWashWelcomeMessage.getPaddingBottom();
 
-                        if (headerBottom <= appBarBottom) {
-                            binding.appBar.setTitle(binding.carWashWelcomeMessage.getText());
-                            ViewCompat.setElevation(binding.appBar, appBarElevation);
-                            binding.appBar.findViewById(R.id.collapsed_title).setAlpha(
-                                    Math.min(1, (float) (appBarBottom - headerBottom) / 100));
-                        } else {
-                            binding.appBar.setTitle("");
-                            ViewCompat.setElevation(binding.appBar, 0);
-                        }
-                    } else {
-                        isFirstTime = false;
-                        binding.scrollView.scrollTo(0, 0);
-                    }
-                });
+                if (headerBottom <= appBarBottom) {
+                    binding.appBar.setTitle(binding.carWashWelcomeMessage.getText());
+                    ViewCompat.setElevation(binding.appBar, appBarElevation);
+                    binding.appBar.findViewById(R.id.collapsed_title).setAlpha(
+                            Math.min(1, (float) (appBarBottom - headerBottom) / 100));
+                } else {
+                    binding.appBar.setTitle("");
+                    ViewCompat.setElevation(binding.appBar, 0);
+                }
+            } else {
+                isFirstTime = false;
+                binding.scrollView.scrollTo(0, 0);
+            }
+        });
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.refreshLayout.setColorSchemeResources(R.color.red);
