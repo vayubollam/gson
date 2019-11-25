@@ -79,7 +79,8 @@
                         android:clipChildren="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message">
+                        app:layout_constraintTop_toBottomOf="@id/car_wash_welcome_message"
+                        app:visibleGone="@{vm.viewState != ViewState.FAILED}">
 
                         <include
                             android:id="@+id/carwash_no_card"
@@ -102,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="196dp"
                         android:layout_margin="@dimen/carwash_margin_16"
-                        android:visibility="@{(vm.viewState != ViewState.LOADING)? View.VISIBLE : View.GONE}"
+                        android:visibility="@{(vm.viewState != ViewState.FAILED &amp;&amp; vm.viewState != ViewState.LOADING)? View.VISIBLE : View.GONE}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/card_container"
@@ -119,7 +120,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/refresh_layout"
+            app:layout_constraintTop_toTopOf="parent"
             app:visibleGone="@{vm.viewState == ViewState.FAILED}"
             tools:visibility="gone">
 
