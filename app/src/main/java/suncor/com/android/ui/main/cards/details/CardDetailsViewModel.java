@@ -52,6 +52,7 @@ public class CardDetailsViewModel extends ViewModel {
                 _cards.addSource(cardsRepository.getCards(false), result -> {
                     if (result.status == Resource.Status.SUCCESS) {
                         _cards.setValue(CardsRepository.filterCarWashCards(result.data));
+                        updateCarWashBalance(_cards.getValue());
                     }
                 });
                 break;
@@ -59,11 +60,11 @@ public class CardDetailsViewModel extends ViewModel {
                 _cards.addSource(cardsRepository.getCards(false), result -> {
                     if (result.status == Resource.Status.SUCCESS) {
                         _cards.setValue(result.data);
+                        updateCarWashBalance(_cards.getValue());
                     }
                 });
                 break;
         }
-        updateCarWashBalance(_cards.getValue());
 
     }
 

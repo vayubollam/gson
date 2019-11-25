@@ -252,26 +252,8 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         if (viewModel.getIsNearestStationIndependent().getValue() != null
                 && viewModel.getIsNearestStationIndependent().getValue()) {
             StationsUtil.showIndependentStationAlert(getContext());
-<<<<<<< HEAD
-<<<<<<< HEAD
-        }else if (cardDetail.getBalance() > 0) {
-            navigateToCardDetail(cardDetail);
-        } else {
-            AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-            adb.setPositiveButton("BUY A TICKET",
-                    (dialog, which) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment))
-                    .setNegativeButton("VIEW CARD DETAIL", (dialog, which) -> navigateToCardDetail(cardDetail))
-                    .setNeutralButton("CANCEL", null)
-                    .setTitle("Can't activate wash")
-                    .setMessage("Looks like you don\'t have a balance on this card. Buy a single ticket today to proceed.")
-                    .show();
-
-=======
-        } else if (cardDetail.getBalance() <= 0) {
-=======
         } else if (viewModel.getIsBalanceZero().getValue() != null &&
                 viewModel.getIsBalanceZero().getValue()) {
->>>>>>> Add show other available card alert into zero balance story.
             CardsUtil.showZeroBalanceAlert(getActivity(),
                     (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment),
                     (dialog, v) -> navigateToCardDetail(cardDetail));
@@ -279,7 +261,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             CardsUtil.showOtherCardAvailableAlert(getContext());
         } else {
             navigateToCardDetail(cardDetail);
->>>>>>> Update copy content and modulize alert.
         }
 
     }
