@@ -33,4 +33,17 @@ public class CardsUtil {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
+    public static void showOtherCardAvailableAlert(Context context) {
+        Dialog dialog;
+        dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.zero_balance_alert_title)
+                .setMessage(R.string.zero_balance_other_available_message)
+                .setPositiveButton(R.string.cancel, null)
+                .setCancelable(false)
+                .create();
+
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 }

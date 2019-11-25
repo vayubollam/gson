@@ -185,9 +185,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 Navigation.findNavController(getView()).navigate(action);
             } else {
                 CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
-                if (cardDetail.getBalance() <= 0) {
+                if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
+                        viewModel.getIsCarWashBalanceZero().getValue()) {
                     CardsUtil.showZeroBalanceAlert(getActivity(),
                             (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashPurchaseFragment), null);
+                } else if (cardDetail.getBalance() <= 0) {
+                    CardsUtil.showOtherCardAvailableAlert(getContext());
                 } else {
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();

@@ -578,5 +578,6 @@
     <string name="zero_balance_alert_message">Looks like your card is running on empty. Don\'t worry – you can buy a wash below.</string>
     <string name="zero_balance_alert_buy">Buy a wash</string>
     <string name="zero_balance_alert_view">View card details</string>
+    <string name="zero_balance_other_available_message">Looks like you don\'t have a balance on this card. But you have other wash options available to use. Please use those instead</string>
 
 </resources>

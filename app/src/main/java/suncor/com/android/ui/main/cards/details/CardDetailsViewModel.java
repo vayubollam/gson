@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.cards.details;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class CardDetailsViewModel extends ViewModel {
     LiveData<List<CardDetail>> cards = _cards;
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
+    private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -61,8 +63,10 @@ public class CardDetailsViewModel extends ViewModel {
                 });
                 break;
         }
+        updateCarWashBalance(_cards.getValue());
 
     }
+
 
     public LiveData<Resource<CardDetail>> deleteCard(CardDetail cardDetail) {
         return cardsRepository.removeCard(cardDetail);
@@ -86,5 +90,18 @@ public class CardDetailsViewModel extends ViewModel {
             return newlyRedeemedSingleTickets;
         }
         return petroCanadaCards;
+    }
+
+    private void updateCarWashBalance(List<CardDetail> cards) {
+        boolean isBalanceZero = true;
+        for (CardDetail card : cards) {
+            if (card.getCardType() == CardType.ST || ((card.getCardType() == CardType.SP || card.getCardType() == CardType.WAG)
+                    && card.getBalance() > 0)) isBalanceZero = false;
+        }
+        this.isCarWashBalanceZero.setValue(isBalanceZero);
+    }
+
+    public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
+        return isCarWashBalanceZero;
     }
 }

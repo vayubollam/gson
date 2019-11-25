@@ -253,6 +253,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 && viewModel.getIsNearestStationIndependent().getValue()) {
             StationsUtil.showIndependentStationAlert(getContext());
 <<<<<<< HEAD
+<<<<<<< HEAD
         }else if (cardDetail.getBalance() > 0) {
             navigateToCardDetail(cardDetail);
         } else {
@@ -267,9 +268,15 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 =======
         } else if (cardDetail.getBalance() <= 0) {
+=======
+        } else if (viewModel.getIsBalanceZero().getValue() != null &&
+                viewModel.getIsBalanceZero().getValue()) {
+>>>>>>> Add show other available card alert into zero balance story.
             CardsUtil.showZeroBalanceAlert(getActivity(),
                     (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment),
                     (dialog, v) -> navigateToCardDetail(cardDetail));
+        } else if (cardDetail.getBalance() <= 0) {
+            CardsUtil.showOtherCardAvailableAlert(getContext());
         } else {
             navigateToCardDetail(cardDetail);
 >>>>>>> Update copy content and modulize alert.

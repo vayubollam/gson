@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
@@ -92,10 +91,13 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getView()).navigate(action);
         } else {
-            if (cardDetail.getBalance() <= 0) {
+            if (viewModel.getIsBalanceZero().getValue() != null &&
+                    viewModel.getIsBalanceZero().getValue()) {
                 CardsUtil.showZeroBalanceAlert(getContext(),
                         (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment),
                         (dialog, v) -> navigateToCardDetail(cardDetail));
+            } else if (cardDetail.getBalance() <= 0) {
+                CardsUtil.showOtherCardAvailableAlert(getContext());
             } else {
                 navigateToCardDetail(cardDetail);
 
