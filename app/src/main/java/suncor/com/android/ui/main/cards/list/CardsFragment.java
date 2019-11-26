@@ -30,6 +30,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.CardsUtil;
@@ -40,6 +41,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
     ViewModelFactory viewModelFactory;
     private FragmentCardsBinding binding;
     private CardsViewModel viewModel;
+    private MainViewModel mainViewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
     private CardsListAdapter partnerCardsAdapter;
     private float appBarElevation;
@@ -50,6 +52,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
 
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
         partnerCardsAdapter = new CardsListAdapter(this::cardClick);
@@ -64,17 +67,23 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
                 binding.setPptsCard(new PetroPointsCard(getContext(), viewModel.getPetroPointsCard().getValue()));
 
                 if (result != CardsViewModel.ViewState.FAILED) {
-                    ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
-                    for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
-                        petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
-                    }
-                    petroCanadaCardsAdapter.setCards(petroCanadaCards);
+                    if (mainViewModel.isLinkedToAccount()) {
+                        CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
+                        action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
+                        Navigation.findNavController(getView()).navigate(action);
+                    } else {
+                        ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
+                        for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
+                            petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                        }
+                        petroCanadaCardsAdapter.setCards(petroCanadaCards);
 
-                    ArrayList<CardListItem> partnerCards = new ArrayList<>();
-                    for (CardDetail cardDetail : viewModel.getPartnerCards().getValue()) {
-                        partnerCards.add(new CardListItem(getContext(), cardDetail));
+                        ArrayList<CardListItem> partnerCards = new ArrayList<>();
+                        for (CardDetail cardDetail : viewModel.getPartnerCards().getValue()) {
+                            partnerCards.add(new CardListItem(getContext(), cardDetail));
+                        }
+                        partnerCardsAdapter.setCards(partnerCards);
                     }
-                    partnerCardsAdapter.setCards(partnerCards);
                 }
 
                 if (result == CardsViewModel.ViewState.BALANCE_FAILED) {

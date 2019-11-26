@@ -53,7 +53,7 @@ public class CardsViewModel extends ViewModel {
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 pendingViewState = ViewState.LOADING;
-                return repository.getCards(false);
+                return repository.getCards(true);
             }
             return new MutableLiveData<>();
         });

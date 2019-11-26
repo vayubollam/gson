@@ -71,6 +71,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
+        mainViewModel.setLinkedToAccount(false);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         locationLiveData.observe(this, location -> {
             currentLocation = (new LatLng(location.getLatitude(), location.getLongitude()));

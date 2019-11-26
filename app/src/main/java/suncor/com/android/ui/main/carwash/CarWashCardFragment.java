@@ -96,7 +96,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     && result != CarWashCardViewModel.ViewState.FAILED && viewModel.getIsCardAvailable().getValue()) {
 
                 if (mainViewModel.isLinkedToAccount()) {
-                    mainViewModel.setLinkedToAccount(false);
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate(action);
