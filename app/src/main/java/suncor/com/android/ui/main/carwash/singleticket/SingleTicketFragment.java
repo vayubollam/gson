@@ -90,14 +90,24 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
 
             switch (orderResponseResource.status) {
                 case SUCCESS:
-
+                    boolean isFromCardsTab = SingleTicketFragmentArgs.fromBundle(getArguments()).getIsFromCardsTab();
                     OrderResponse orderResponse = orderResponseResource.data;
-                    SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragment action
-                            = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragment(Objects.requireNonNull(orderResponse), false);
-                    action.setIsLinkToAccount(viewModel.isLinkedToAccount());
-                    action.setPetroCanadaProduct(viewModel.getSelectedSingleTicketRedeem());
-                    if (getView() != null) {
-                        getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
+                    if (isFromCardsTab) {
+                        SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCards action
+                                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCards(Objects.requireNonNull(orderResponse), false);
+                        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
+                        action.setPetroCanadaProduct(viewModel.getSelectedSingleTicketRedeem());
+                        if (getView() != null) {
+                            getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
+                        }
+                    } else {
+                        SingleTicketFragmentDirections.ActionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCarWash action
+                                = SingleTicketFragmentDirections.actionCarWashPurchaseFragmentToRedeemReceiptFragmentPopToCarWash(Objects.requireNonNull(orderResponse), false);
+                        action.setIsLinkToAccount(viewModel.isLinkedToAccount());
+                        action.setPetroCanadaProduct(viewModel.getSelectedSingleTicketRedeem());
+                        if (getView() != null) {
+                            getView().postDelayed(() -> Navigation.findNavController(getView()).navigate(action), 1000);
+                        }
                     }
                     break;
                 case ERROR:

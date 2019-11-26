@@ -77,6 +77,10 @@ public class CardDetailsViewModel extends ViewModel {
         this.loadType = loadType;
     }
 
+    public CardsLoadType getLoadType() {
+        return loadType;
+    }
+
     public void setRedeemedTicketNumbers(Set<String> redeemedTicketNumbers) {
         this.redeemedTicketNumbers = redeemedTicketNumbers;
     }

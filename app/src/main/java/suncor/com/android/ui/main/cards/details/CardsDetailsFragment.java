@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.cards.details;
 
 import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -171,6 +172,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
         removeCardBottomSheet.show(getFragmentManager(), RemoveCardBottomSheet.TAG);
     }
 
+    private DialogInterface.OnClickListener buySingleTicketListener = (dialogInterface, i) -> {
+        CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashPurchaseFragment action =
+                CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashPurchaseFragment(viewModel.getLoadType() == CardsLoadType.ALL);
+        Navigation.findNavController(getView()).navigate(action);
+    };
+
     private View.OnClickListener activeCarWashListener = view -> {
         if (isUserAtIndependentStation()) {
             StationsUtil.showIndependentStationAlert(getContext());
@@ -187,8 +194,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
                 if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
                         viewModel.getIsCarWashBalanceZero().getValue()) {
-                    CardsUtil.showZeroBalanceAlert(getActivity(),
-                            (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cardsDetailsFragment_to_carWashPurchaseFragment), null);
+                    CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
                 } else {
