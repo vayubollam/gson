@@ -136,6 +136,7 @@ public class ExpandedCardItem {
                             : null;
                     cardDescription = context.getString(R.string.single_ticket_card_detail_description);
                     isBalanceDetailsVisible = false;
+                    isRemovable = false;
                     break;
             }
         }
