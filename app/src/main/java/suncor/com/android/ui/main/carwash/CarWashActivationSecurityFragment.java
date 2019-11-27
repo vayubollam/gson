@@ -62,7 +62,13 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
         pinText3 = binding.pinNum3;
 
         binding.getRoot().post(() -> {
-            pinText1.requestFocus();
+            if (viewModel.getIsBackFromBarCode().getValue() != null && viewModel.getIsBackFromBarCode().getValue()
+                    && viewModel.getReEnter().getValue() != null && !viewModel.getReEnter().getValue()) {
+                pinText3.requestFocus();
+                viewModel.setIsBackFromBarCode(false);
+            } else {
+                pinText1.requestFocus();
+            }
             pinText1.addTextChangedListener(new mInputTextWatcher(PIN_ID.FIRST));
             pinText2.addTextChangedListener(new mInputTextWatcher(PIN_ID.SECOND));
             pinText3.addTextChangedListener(new mInputTextWatcher(PIN_ID.THIRD));

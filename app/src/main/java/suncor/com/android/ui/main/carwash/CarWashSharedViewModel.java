@@ -17,6 +17,7 @@ public class CarWashSharedViewModel extends ViewModel {
     private MutableLiveData<Boolean> reEnter = new MutableLiveData<>();
     private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>();
     private MutableLiveData<String> securityPin = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isBackFromBarCode = new MutableLiveData<>();
 
     @Inject
     public CarWashSharedViewModel(SessionManager sessionManager) {
@@ -66,5 +67,13 @@ public class CarWashSharedViewModel extends ViewModel {
 
     public MutableLiveData<String> getEncryptedCarWashCode() {
         return this.encryptedCarWashCode;
+    }
+
+    public MutableLiveData<Boolean> getIsBackFromBarCode() {
+        return isBackFromBarCode;
+    }
+
+    public void setIsBackFromBarCode(Boolean isBackFromBarCode) {
+        this.isBackFromBarCode.setValue(isBackFromBarCode);
     }
 }

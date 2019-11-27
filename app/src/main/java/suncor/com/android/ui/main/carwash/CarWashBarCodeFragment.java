@@ -99,7 +99,10 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     }
 
     private void goBack(boolean reEnter) {
-        if (!isSingleTicket) carWashSharedViewModel.setReEnter(reEnter);
+        if (!isSingleTicket){
+            carWashSharedViewModel.setReEnter(reEnter);
+            carWashSharedViewModel.setIsBackFromBarCode(true);
+        }
         Navigation.findNavController(getView()).popBackStack();
     }
 
