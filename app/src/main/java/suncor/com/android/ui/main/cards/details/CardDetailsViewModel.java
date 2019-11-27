@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.cards.details;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class CardDetailsViewModel extends ViewModel {
     LiveData<List<CardDetail>> cards = _cards;
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
+    private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -50,6 +52,7 @@ public class CardDetailsViewModel extends ViewModel {
                 _cards.addSource(cardsRepository.getCards(false), result -> {
                     if (result.status == Resource.Status.SUCCESS) {
                         _cards.setValue(CardsRepository.filterCarWashCards(result.data));
+                        updateCarWashBalance(_cards.getValue());
                     }
                 });
                 break;
@@ -57,6 +60,7 @@ public class CardDetailsViewModel extends ViewModel {
                 _cards.addSource(cardsRepository.getCards(false), result -> {
                     if (result.status == Resource.Status.SUCCESS) {
                         _cards.setValue(result.data);
+                        updateCarWashBalance(_cards.getValue());
                     }
                 });
                 break;
@@ -64,12 +68,17 @@ public class CardDetailsViewModel extends ViewModel {
 
     }
 
+
     public LiveData<Resource<CardDetail>> deleteCard(CardDetail cardDetail) {
         return cardsRepository.removeCard(cardDetail);
     }
 
     public void setLoadType(CardsLoadType loadType) {
         this.loadType = loadType;
+    }
+
+    public CardsLoadType getLoadType() {
+        return loadType;
     }
 
     public void setRedeemedTicketNumbers(Set<String> redeemedTicketNumbers) {
@@ -86,5 +95,18 @@ public class CardDetailsViewModel extends ViewModel {
             return newlyRedeemedSingleTickets;
         }
         return petroCanadaCards;
+    }
+
+    private void updateCarWashBalance(List<CardDetail> cards) {
+        boolean isBalanceZero = true;
+        for (CardDetail card : cards) {
+            if (card.getCardType() == CardType.ST || ((card.getCardType() == CardType.SP || card.getCardType() == CardType.WAG)
+                    && card.getBalance() > 0)) isBalanceZero = false;
+        }
+        this.isCarWashBalanceZero.setValue(isBalanceZero);
+    }
+
+    public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
+        return isCarWashBalanceZero;
     }
 }

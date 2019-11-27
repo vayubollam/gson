@@ -49,6 +49,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
+import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
@@ -95,7 +96,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     && result != CarWashCardViewModel.ViewState.FAILED && viewModel.getIsCardAvailable().getValue()) {
 
                 if (mainViewModel.isLinkedToAccount()) {
-                    mainViewModel.setLinkedToAccount(false);
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate(action);
@@ -251,12 +251,24 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         if (viewModel.getIsNearestStationIndependent().getValue() != null
                 && viewModel.getIsNearestStationIndependent().getValue()) {
             StationsUtil.showIndependentStationAlert(getContext());
+        } else if (viewModel.getIsBalanceZero().getValue() != null &&
+                viewModel.getIsBalanceZero().getValue()) {
+            CardsUtil.showZeroBalanceAlert(getActivity(),
+                    (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment),
+                    (dialog, v) -> navigateToCardDetail(cardDetail));
+        } else if (cardDetail.getBalance() <= 0) {
+            CardsUtil.showOtherCardAvailableAlert(getContext());
         } else {
-            CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-            action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-            action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
-            Navigation.findNavController(getView()).navigate(action);
+            navigateToCardDetail(cardDetail);
         }
+
+    }
+
+    private void navigateToCardDetail(CardDetail cardDetail) {
+        CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
     private View.OnClickListener buyTicketListener = v -> {

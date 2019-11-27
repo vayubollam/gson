@@ -192,12 +192,13 @@ public class CarWashCardViewModel extends ViewModel {
         int ticketQuantity = 0;
         for (CardDetail card : cards) {
             if (card.getCardType().equals(CardType.SP) || card.getCardType().equals(CardType.WAG)) {
-                if (card.getBalance() != 0) {
+                if (card.getBalance() > 0) {
                     isAllBalanceZero = false;
                 }
                 cardQuantity++;
             } else if (card.getCardType().equals(CardType.ST)) {
                 ticketQuantity++;
+                isAllBalanceZero = false;
             }
         }
         if (cardQuantity == 0 && ticketQuantity != 0) {

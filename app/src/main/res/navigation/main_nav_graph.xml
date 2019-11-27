@@ -116,6 +116,17 @@
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_cards_tab_to_carWashPurchaseFragment"
+            app:destination="@id/carWashPurchaseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+            <argument
+                android:name="isFromCardsTab"
+                android:defaultValue="true"
+                app:argType="boolean"/>
+        </action>
 
     </keep_state_fragment>
 
@@ -224,6 +235,12 @@
             <argument android:defaultValue="true"
                 android:name="isSingleTicket" />
         </action>
+        <action
+            android:id="@+id/action_cardsDetailsFragment_to_carWashPurchaseFragment"
+            app:destination="@id/carWashPurchaseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"/>
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -397,7 +414,12 @@
             app:destination="@id/carWashPurchaseFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right" >
+            <argument
+                android:name="isFromCardsTab"
+                android:defaultValue="false"
+                app:argType="boolean"/>
+        </action>
         <action
             android:id="@+id/action_carWashCardFragment_to_cardsDetailsFragment"
             app:destination="@id/cardsDetailsFragment"
@@ -409,12 +431,22 @@
         android:id="@+id/carWashPurchaseFragment"
         android:name="suncor.com.android.ui.main.carwash.singleticket.SingleTicketFragment"
         android:label="CarWashPurchaseFragment" >
+        <argument
+            android:name="isFromCardsTab"
+            app:argType="boolean"/>
         <action
-            android:id="@+id/action_carWashPurchaseFragment_to_redeemReceiptFragment"
+            android:id="@+id/action_carWashPurchaseFragment_to_redeemReceiptFragment_pop_to_carWash"
             app:destination="@id/redeemReceiptFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/carWashCardFragment"
+            app:popExitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_carWashPurchaseFragment_to_redeemReceiptFragment_pop_to_cards"
+            app:destination="@id/redeemReceiptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/cards_tab"
             app:popExitAnim="@anim/fade_out"/>
     </keep_state_fragment>
     <keep_state_fragment

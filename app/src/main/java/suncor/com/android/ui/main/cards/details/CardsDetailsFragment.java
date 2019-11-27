@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.cards.details;
 
 import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +47,7 @@ import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 
@@ -69,6 +71,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
+        mainViewModel.setLinkedToAccount(false);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         locationLiveData.observe(this, location -> {
             currentLocation = (new LatLng(location.getLatitude(), location.getLongitude()));
@@ -170,6 +173,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
         removeCardBottomSheet.show(getFragmentManager(), RemoveCardBottomSheet.TAG);
     }
 
+    private DialogInterface.OnClickListener buySingleTicketListener = (dialogInterface, i) -> {
+        CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashPurchaseFragment action =
+                CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashPurchaseFragment(viewModel.getLoadType() == CardsLoadType.ALL);
+        Navigation.findNavController(getView()).navigate(action);
+    };
+
     private View.OnClickListener activeCarWashListener = view -> {
         if (isUserAtIndependentStation()) {
             StationsUtil.showIndependentStationAlert(getContext());
@@ -183,14 +192,23 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
                 Navigation.findNavController(getView()).navigate(action);
             } else {
-                CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
-                        = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
-                action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
-                action.setCardIndex(clickedCardIndex);
-                action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
-                Navigation.findNavController(getView()).navigate(action);
+                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+                if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
+                        viewModel.getIsCarWashBalanceZero().getValue()) {
+                    CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
+                } else if (cardDetail.getBalance() <= 0) {
+                    CardsUtil.showOtherCardAvailableAlert(getContext());
+                } else {
+                    CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
+                            = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
+                    action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+                    action.setCardIndex(clickedCardIndex);
+                    action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+                    Navigation.findNavController(getView()).navigate(action);
+                }
             }
         }
+
     };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {

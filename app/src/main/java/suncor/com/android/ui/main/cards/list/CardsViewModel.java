@@ -40,6 +40,8 @@ public class CardsViewModel extends ViewModel {
     private MutableLiveData<Calendar> dateOfUpdate = new MutableLiveData<>();
     private ArrayList<CardDetail> cards;
 
+    private MutableLiveData<Boolean> isBalanceZero = new MutableLiveData<>();
+
     @Inject
     public CardsViewModel(CardsRepository repository, SessionManager sessionManager) {
         this.repository = repository;
@@ -51,7 +53,7 @@ public class CardsViewModel extends ViewModel {
         LiveData<Resource<ArrayList<CardDetail>>> retrieveCall = Transformations.switchMap(retrieveCardsEvent, event -> {
             if (event.getContentIfNotHandled() != null) {
                 pendingViewState = ViewState.LOADING;
-                return repository.getCards(false);
+                return repository.getCards(true);
             }
             return new MutableLiveData<>();
         });
@@ -117,11 +119,15 @@ public class CardsViewModel extends ViewModel {
         petroPointsCard.setValue(cards.get(0));
 
         ArrayList<CardDetail> petroCanadaCardsList = new ArrayList<>();
+        boolean isCarWashBalanceZero = true;
         for (CardDetail item : cards) {
             if (item.getCardCategory() == CardDetail.CardCategory.PETRO_CANADA) {
                 petroCanadaCardsList.add(item);
+                if (item.getCardType() == CardType.ST || ((item.getCardType() == CardType.SP || item.getCardType() == CardType.WAG)
+                        && item.getBalance() > 0)) isCarWashBalanceZero = false;
             }
         }
+        isBalanceZero.setValue(isCarWashBalanceZero);
         petroCanadaCards.setValue(petroCanadaCardsList);
 
         ArrayList<CardDetail> partnerCardsList = new ArrayList<>();
@@ -161,5 +167,13 @@ public class CardsViewModel extends ViewModel {
 
     public int getIndexofCardDetail(CardDetail cardDetail) {
         return cards.indexOf(cardDetail);
+    }
+
+    public MutableLiveData<Boolean> getIsBalanceZero() {
+        return isBalanceZero;
+    }
+
+    public void setIsBalanceZero(MutableLiveData<Boolean> isBalanceZero) {
+        this.isBalanceZero = isBalanceZero;
     }
 }
