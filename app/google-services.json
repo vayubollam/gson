@@ -77,6 +77,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:0f2c8fb839cbecde8ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationUAT"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-6s27bu2a4vc1o330k4117m53pjjet1mn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.petro-canada.mobile"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
