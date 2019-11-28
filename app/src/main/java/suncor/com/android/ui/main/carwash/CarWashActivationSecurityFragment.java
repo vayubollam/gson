@@ -62,16 +62,24 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
         pinText3 = binding.pinNum3;
 
         binding.getRoot().post(() -> {
-            pinText1.requestFocus();
             pinText1.addTextChangedListener(new mInputTextWatcher(PIN_ID.FIRST));
             pinText2.addTextChangedListener(new mInputTextWatcher(PIN_ID.SECOND));
             pinText3.addTextChangedListener(new mInputTextWatcher(PIN_ID.THIRD));
             pinText1.setOnKeyListener(new mKeyBoardListener(PIN_ID.FIRST));
             pinText2.setOnKeyListener(new mKeyBoardListener(PIN_ID.SECOND));
             pinText3.setOnKeyListener(new mKeyBoardListener(PIN_ID.THIRD));
-
             inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(pinText1, InputMethodManager.SHOW_IMPLICIT);
+
+            if (viewModel.getIsBackFromBarCode().getValue() != null && viewModel.getIsBackFromBarCode().getValue()
+                    && viewModel.getReEnter().getValue() != null && !viewModel.getReEnter().getValue()) {
+                pinText3.requestFocus();
+                inputMethodManager.showSoftInput(pinText3, InputMethodManager.SHOW_IMPLICIT);
+                viewModel.setIsBackFromBarCode(false);
+            } else {
+                pinText1.requestFocus();
+                inputMethodManager.showSoftInput(pinText1, InputMethodManager.SHOW_IMPLICIT);
+            }
+
 
         });
         binding.confirmButton.setOnClickListener(confirmListener);
