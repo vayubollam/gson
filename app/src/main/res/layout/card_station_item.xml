@@ -407,37 +407,37 @@
                             <include
                                 layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(1)}"
-                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.getWorkHours(1)}" />
+                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:(vm.isClosed(1))?@string/station_closed:vm.getWorkHours(1)}" />
 
                             <include
                                 layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(2)}"
-                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.getWorkHours(2)}" />
+                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:(vm.isClosed(2))?@string/station_closed:vm.getWorkHours(2)}" />
 
                             <include
                                 layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(3)}"
-                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.getWorkHours(3)}" />
+                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:(vm.isClosed(3))?@string/station_closed:vm.getWorkHours(3)}" />
 
                             <include
                                 layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(4)}"
-                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.getWorkHours(4)}" />
+                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:(vm.isClosed(4))?@string/station_closed:vm.getWorkHours(4)}" />
 
                             <include
                                 layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(5)}"
-                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.getWorkHours(5)}" />
+                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:(vm.isClosed(5))?@string/station_closed:vm.getWorkHours(5)}" />
 
                             <include
                                 layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(6)}"
-                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.getWorkHours(6)}" />
+                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:(vm.isClosed(6))?@string/station_closed:vm.getWorkHours(6)}" />
 
                             <include
                                 layout="@layout/station_openhour_line"
                                 app:dayName="@{vm.getDayName(0)}"
-                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:vm.getWorkHours(0)}" />
+                                app:workHour="@{vm.isOpen24Hrs()?@string/station_open_24hrs:(vm.isClosed(0))?@string/station_closed:vm.getWorkHours(0)}" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
