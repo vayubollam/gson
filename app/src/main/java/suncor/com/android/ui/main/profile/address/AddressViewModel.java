@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.profile.address;
 
+import android.util.Pair;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -28,6 +30,7 @@ import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AddressViewModel extends ViewModel {
 

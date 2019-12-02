@@ -120,6 +120,7 @@ public class ProfileFragment extends BottomNavigationFragment {
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update personal information"));
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
             } else {
@@ -128,10 +129,12 @@ public class ProfileFragment extends BottomNavigationFragment {
             }
         });
         binding.preferencesButton.setOnClickListener(v -> {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Change preferences"));
+            Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
         });
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
         binding.addressButton.setOnClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update address"));
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment);
             } else {
