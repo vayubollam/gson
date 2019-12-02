@@ -41,7 +41,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = createURI(FORGOT_PASSWORD_ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
             request.addHeader("X-Email",email);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -79,7 +79,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
             URI adapterPath;
             try {
                 adapterPath = new URI(FORGOT_PASSWORD_ADAPTER_PATH.concat("/security-question"));
-                WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+                WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
                 request.addHeader("X-Guid",GUID);
                 if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                     request.addHeader("Accept-Language", "fr-CA");
@@ -122,7 +122,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
         URI adapterPath;
         try {
             adapterPath = new URI(FORGOT_PASSWORD_ADAPTER_PATH.concat("/security-answer-verification"));
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
             request.addHeader("X-Security-Question-Id", questionId);
             request.addHeader("X-Security-Answer", answer);
             request.addHeader("X-Profile-Id-Encrypted", profileIdEncrypted);
@@ -162,7 +162,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = createURI(FORGOT_PASSWORD_ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
             request.addHeader("X-Profile-Id-Encrypted",profileIdEncrypted);
             request.addHeader("X-GUID",GUID);
 
