@@ -148,11 +148,15 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                 if (resource.status == Resource.Status.ERROR) {
                     binding.profilePd.setVisibility(View.GONE);
                     AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.settings_failure_dialog_title)));
-
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title)));
                     new AlertDialog.Builder(this)
                             .setTitle(R.string.settings_failure_dialog_title)
                             .setMessage(R.string.settings_failure_dialog_message)
                             .setPositiveButton(R.string.settings_failure_dialog_button, (dialog, which) -> {
+                                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
+                                    new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title)),
+                                    new Pair<>("alertSelection",getString(R.string.settings_failure_dialog_button))
+                                );
                                 finish();
                             })
                             .setCancelable(false)
@@ -176,10 +180,15 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         if (currentVersion.compareTo(minVersion) < 0) {
             binding.profilePd.setVisibility(View.GONE);
             AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.update_required_dialog_title)));
+            AnalyticsUtils.logEvent(application.getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.update_required_dialog_title)));
             new AlertDialog.Builder(this)
                     .setTitle(R.string.update_required_dialog_title)
                     .setMessage(R.string.update_required_dialog_message)
                     .setPositiveButton(R.string.update_required_dialog_button, (dialog, which) -> {
+                        AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.update_required_dialog_title)),
+                                new Pair<>("alertSelection",getString(R.string.update_required_dialog_button))
+                        );
                         final String appPackageName = "com.petrocanada.my_petro_canada";
                         try {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
