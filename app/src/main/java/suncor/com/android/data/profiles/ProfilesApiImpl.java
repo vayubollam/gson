@@ -49,7 +49,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH_V3);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
             request.send(body, new WLResponseListener() {
@@ -85,7 +85,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         URI adapterPath;
         try {
             adapterPath = new URI(ADAPTER_PATH_V2.concat("/security-question"));
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
             } else {
@@ -128,7 +128,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         URI adapterPath;
         try {
             adapterPath = new URI(ADAPTER_PATH_V3.concat("/security-answer-verification"));
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             String base64Answer = BaseEncoding.base64().encode(answer.getBytes());
             request.addHeader("x-security-answer", base64Answer);
             request.send(new WLResponseListener() {

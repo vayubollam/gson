@@ -33,7 +33,7 @@ public class SettingsApiImpl implements SettingsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterURI = new URI(BASE_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {

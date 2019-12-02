@@ -36,7 +36,7 @@ public class MerchantsApiImpl implements MerchantsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
             } else {
