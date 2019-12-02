@@ -89,7 +89,6 @@ public class PersonalInfoFragment extends MainActivityFragment {
         profileSharedViewModel.alertObservable.observe(getActivity(), event -> {
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
             if (alert != null) {
-
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);

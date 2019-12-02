@@ -1,7 +1,5 @@
 package suncor.com.android.ui.main.profile.address;
 
-import android.util.Pair;
-
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
