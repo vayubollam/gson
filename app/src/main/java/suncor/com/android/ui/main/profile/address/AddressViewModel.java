@@ -30,7 +30,6 @@ import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
 import suncor.com.android.ui.common.input.StreetAddressInputField;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AddressViewModel extends ViewModel {
 
