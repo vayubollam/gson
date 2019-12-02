@@ -39,7 +39,7 @@ public class OrderApiImpl implements OrderApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = createURI(ORDER_ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(order));
             request.send(body, new WLResponseListener() {
                 @Override

@@ -37,7 +37,7 @@ public class TransactionApiImpl implements TransactionApi {
 
         try {
             URI adapterUri = new URI(BASE_PATH + "?startMonth=" + startMonth + "&monthsBack=" + monthsBack);
-            WLResourceRequest request = new WLResourceRequest(adapterUri, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterUri, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("x-petro-card-id", cardId);
             request.send(new WLResponseListener() {
                 @Override
