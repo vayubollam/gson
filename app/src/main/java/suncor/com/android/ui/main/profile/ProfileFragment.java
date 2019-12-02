@@ -108,12 +108,23 @@ public class ProfileFragment extends BottomNavigationFragment {
         initBuild();
 
         binding.signoutButton.setOnClickListener((v) -> {
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)));
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
                     .setPositiveButton(getString(R.string.profil_sign_out_dialog_positive_button), (dialog, which) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)),
+                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_positive_button))
+                        );
                         signUserOut();
                     })
-                    .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> dialog.dismiss()));
+                    .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)),
+                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_negative_button))
+                        );
+                        dialog.dismiss();
+                    }));
             builder.create().show();
 
         });

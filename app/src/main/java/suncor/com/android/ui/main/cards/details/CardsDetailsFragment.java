@@ -130,9 +130,15 @@ public class CardsDetailsFragment extends MainActivityFragment {
     }
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
+        AnalyticsUtils.logEvent(getContext(), "alert", new Pair<>("alertTitle", getString(R.string.cards_remove_card_alert_title)));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
                     viewModel.deleteCard(expandedCardItem.getCardDetail()).observe(this, cardDetailResource -> {
+                        AnalyticsUtils.logEvent(getContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.cards_remove_card_alert_title)),
+                                new Pair<>("alertSelection",getString(R.string.cards_remove_card_alert_remove))
+                        );
                         if (cardDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
                             Alerts.prepareGeneralErrorDialog(getContext()).show();
@@ -147,7 +153,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             isRemoving.set(true);
                         }
                     });
-                }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), null);
+                }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {
+                    AnalyticsUtils.logEvent(getContext(), "alert_interaction",
+                            new Pair<>("alertTitle", getString(R.string.cards_remove_card_alert_title)),
+                            new Pair<>("alertSelection",getString(R.string.cards_remove_card_alert_cancel))
+                    );
+                });
         builder.show();
     }
 

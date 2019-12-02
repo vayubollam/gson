@@ -138,10 +138,15 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     new Pair<>("item_id", (isSignedIn? "4":"5")+"|"+activity.getString(R.string.offers_banner_5_text)),
                                     new Pair<>("content_type", "Internal Promotions")
                             );
+                            AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert", new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)));
                             new AlertDialog.Builder(activity)
                                     .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
                                     .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
                                     .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
+                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert_interaction",
+                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)),
+                                                new Pair<>("alertSelection",activity.getString(R.string.offers_leaving_app_alert_button))
+                                        );
                                         String url = activity.getString(R.string.rbc_url);
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
                                         intent.setData(Uri.parse(url));
@@ -149,7 +154,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
                                         AnalyticsUtils.logEvent(activity, "intersite", new Pair<>("intersiteURL", url));
                                     })
-                                    .setNegativeButton(R.string.cancel, null)
+                                    .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert_interaction",
+                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)),
+                                                new Pair<>("alertSelection",activity.getString(R.string.cancel))
+                                        );
+                                    })
                                     .show();
                         }
                 ));
