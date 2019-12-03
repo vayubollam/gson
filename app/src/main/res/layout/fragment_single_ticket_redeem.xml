@@ -329,6 +329,8 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
                                 android:layout_toRightOf="@id/add_to_account_checkbox"
+                                android:layout_toLeftOf="@id/acc_to_account_help"
+                                android:paddingEnd="16dp"
                                 android:text="@string/single_ticket_add_to_account"
                                 android:textAppearance="@style/Body" />
 
