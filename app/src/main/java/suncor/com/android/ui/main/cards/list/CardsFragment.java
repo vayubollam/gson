@@ -71,6 +71,10 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
                         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
                         action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                         Navigation.findNavController(getView()).navigate(action);
+                    } else if (mainViewModel.isNewCardAdded()) {
+                        CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
+                        action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
+                        Navigation.findNavController(getView()).navigate(action);
                     } else {
                         ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
                         for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {

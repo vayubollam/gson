@@ -24,6 +24,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.details.ExpandedCardItem;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -35,11 +36,14 @@ public class AddCardFragment extends MainActivityFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
+    @Inject
+    MainViewModel mainViewModel;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddCardViewModel.class);
         AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Add Card"));
 
@@ -61,11 +65,14 @@ public class AddCardFragment extends MainActivityFragment {
         });
 
         viewModel.card.observe(this, cardDetail -> {
-            binding.cardLayout.setVisibility(View.VISIBLE);
-            PetroCanadaExpandedCardItemBinding expandedCardItemBinding = PetroCanadaExpandedCardItemBinding.inflate(getLayoutInflater(), binding.cardLayout, true);
-            expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
-            expandedCardItemBinding.setHideMoreButton(true);
-            expandedCardItemBinding.executePendingBindings();
+            mainViewModel.setNewCardAdded(true);
+            mainViewModel.setNewCardNumber(cardDetail);
+            goBack();
+//            binding.cardLayout.setVisibility(View.VISIBLE);
+//            PetroCanadaExpandedCardItemBinding expandedCardItemBinding = PetroCanadaExpandedCardItemBinding.inflate(getLayoutInflater(), binding.cardLayout, true);
+//            expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
+//            expandedCardItemBinding.setHideMoreButton(true);
+//            expandedCardItemBinding.executePendingBindings();
             String screenName = "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success";
             String optionsChecked = "";
             AnalyticsUtils.logEvent(
@@ -96,7 +103,7 @@ public class AddCardFragment extends MainActivityFragment {
         binding.setLifecycleOwner(this);
         binding.helpButton.setOnClickListener(v -> showCvvHelp());
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        binding.doneButton.setOnClickListener(v -> goBack());
+        //binding.doneButton.setOnClickListener(v -> goBack());
 
         binding.cardInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_NEXT);
         binding.cardInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {

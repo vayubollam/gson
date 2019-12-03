@@ -14,6 +14,7 @@ import suncor.com.android.data.cards.CardsRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormat;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
@@ -66,6 +67,10 @@ public class AddCardViewModel extends ViewModel {
         addCardApiResult.observeForever(result -> {
             if (result.status == Resource.Status.SUCCESS) {
                 _card.postValue(result.data);
+                new Handler().postDelayed(() -> _showCard.postValue(true), 500);
+            } else {
+                //TODO REMOVE ONCE BACK END IS READY, FOR TESTING ONLY
+                _card.postValue(new CardDetail(CardType.WAG, "706981007005077938", 5));
                 new Handler().postDelayed(() -> _showCard.postValue(true), 500);
             }
         });
