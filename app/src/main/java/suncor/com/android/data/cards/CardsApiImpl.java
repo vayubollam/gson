@@ -71,7 +71,9 @@ public class CardsApiImpl implements CardsApi {
         MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            //TODO: DELETE HARD CODED END POINT WHEN BACK END IS READY
+            URI adapterPath = new URI("/adapters/suncor/v1/cards");
+            //URI adapterPath = new URI(ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(cardRequest));
             request.send(body, new WLResponseListener() {
@@ -108,7 +110,9 @@ public class CardsApiImpl implements CardsApi {
         MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            //TODO: DELETE HARD CODED END POINT WHEN BACK END IS READY
+            URI adapterPath = new URI("/adapters/suncor/v1/cards");
+            //URI adapterPath = new URI(ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT);
             request.addHeader("x-card-number", cardDetail.getCardNumber());
             request.addHeader("x-service-id", cardDetail.getServiceId());

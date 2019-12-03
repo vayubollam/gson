@@ -48,7 +48,7 @@ public class CardsRepository {
         }
         return Transformations.map(cardsApi.retrieveCards(), resource -> {
             if (resource.status == Resource.Status.SUCCESS) {
-                if (cachedCards == null) {
+                if (cachedCards == null || cachedCards.size() == 0) {
                     Collections.sort(resource.data, cardsComparator);
                     cachedCards = resource.data;
                     timeOfLastUpdate = Calendar.getInstance();
@@ -127,6 +127,8 @@ public class CardsRepository {
     private static CardDetail findCardIn(ArrayList<CardDetail> cards, CardDetail otherCard) {
         for (CardDetail card : cards) {
             if (card.getCardNumber() != null && card.getCardNumber().equals(otherCard.getCardNumber())) {
+                return card;
+            }else if(card.getTicketNumber() != null && card.getTicketNumber().equals(otherCard.getTicketNumber())){
                 return card;
             } else if (card.getCardNumber() == null && otherCard.getCardNumber() == null && card.getCardType() == otherCard.getCardType()) {
                 return card;
