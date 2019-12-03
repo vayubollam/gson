@@ -49,7 +49,7 @@ public class SettingsApiImpl implements SettingsApi {
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
-        } catch (URISyntaxException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             result.postValue(Resource.error(e.getMessage()));
         }
