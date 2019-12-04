@@ -68,10 +68,6 @@ public class AddCardViewModel extends ViewModel {
             if (result.status == Resource.Status.SUCCESS) {
                 _card.postValue(result.data);
                 new Handler().postDelayed(() -> _showCard.postValue(true), 500);
-            } else {
-                //TODO REMOVE ONCE BACK END IS READY, FOR TESTING ONLY
-                _card.postValue(new CardDetail(CardType.WAG, "706981007005077938", 5));
-                new Handler().postDelayed(() -> _showCard.postValue(true), 500);
             }
         });
     }
