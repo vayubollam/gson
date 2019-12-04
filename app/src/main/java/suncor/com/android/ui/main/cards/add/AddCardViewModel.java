@@ -1,7 +1,5 @@
 package suncor.com.android.ui.main.cards.add;
 
-import android.os.Handler;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -14,7 +12,6 @@ import suncor.com.android.data.cards.CardsRepository;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
-import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormat;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
@@ -26,8 +23,6 @@ public class AddCardViewModel extends ViewModel {
     private CVVInputField cvvInputField = new CVVInputField(R.string.cards_add_fragment_cvv_field_empty_error, R.string.cards_add_fragment_cvv_field_format_error);
     private MutableLiveData<Boolean> _showCvvField = new MutableLiveData<>();
     public LiveData<Boolean> showCvvField = _showCvvField;
-    private MutableLiveData<Boolean> _showCard = new MutableLiveData<>();
-    public LiveData<Boolean> showCard = _showCard;
     private MutableLiveData<CardDetail> _card = new MutableLiveData<>();
     public LiveData<CardDetail> card = _card;
     private MutableLiveData<Event<Boolean>> addCardEvent = new MutableLiveData<>();
@@ -35,7 +30,6 @@ public class AddCardViewModel extends ViewModel {
     @Inject
     public AddCardViewModel(CardsRepository repository) {
         _showCvvField.setValue(false);
-        _showCard.setValue(false);
         cardNumberInputField.setChangedListener(() -> _showCvvField.setValue(false));
 
         addCardApiResult = Transformations.switchMap(addCardEvent, event -> {
@@ -67,7 +61,6 @@ public class AddCardViewModel extends ViewModel {
         addCardApiResult.observeForever(result -> {
             if (result.status == Resource.Status.SUCCESS) {
                 _card.postValue(result.data);
-                new Handler().postDelayed(() -> _showCard.postValue(true), 500);
             }
         });
     }

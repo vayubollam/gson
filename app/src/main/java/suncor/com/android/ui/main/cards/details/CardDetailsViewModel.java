@@ -104,10 +104,8 @@ public class CardDetailsViewModel extends ViewModel {
     }
 
     private List<CardDetail> findNewlyAddedCard(List<CardDetail> petroCanadaCards) {
-        //TODO: NEED CHANGE COMPARE METHOD ONCE API IS WORKING
         for(CardDetail card : petroCanadaCards){
-            if(card.getCardType() == newlyAddedCard.getCardType() &&
-                    card.getCardNumber().equals(newlyAddedCard.getCardNumber())) return Collections.singletonList(card);
+            if(card.equals(newlyAddedCard)) return Collections.singletonList(card);
         }
         return petroCanadaCards;
     }

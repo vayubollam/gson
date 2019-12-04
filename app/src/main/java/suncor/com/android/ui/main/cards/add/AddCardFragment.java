@@ -19,13 +19,11 @@ import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddCardBinding;
-import suncor.com.android.databinding.PetroCanadaExpandedCardItemBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainViewModel;
-import suncor.com.android.ui.main.cards.details.ExpandedCardItem;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -52,7 +50,7 @@ public class AddCardFragment extends MainActivityFragment {
                 hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_LIKING_CARD_FAILED.equals(result.message)) {
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.cards_add_fragment_invalid_card_title) ));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.cards_add_fragment_invalid_card_title)));
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.cards_add_fragment_invalid_card_title)
                             .setMessage(R.string.cards_add_fragment_invalid_card_message)
@@ -67,43 +65,28 @@ public class AddCardFragment extends MainActivityFragment {
         viewModel.card.observe(this, cardDetail -> {
             mainViewModel.setNewCardAdded(true);
             mainViewModel.setNewCardNumber(cardDetail);
-            goBack();
-//            binding.cardLayout.setVisibility(View.VISIBLE);
-//            PetroCanadaExpandedCardItemBinding expandedCardItemBinding = PetroCanadaExpandedCardItemBinding.inflate(getLayoutInflater(), binding.cardLayout, true);
-//            expandedCardItemBinding.setCard(new ExpandedCardItem(getContext(), cardDetail));
-//            expandedCardItemBinding.setHideMoreButton(true);
-//            expandedCardItemBinding.executePendingBindings();
             String screenName = "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success";
             String optionsChecked = "";
             AnalyticsUtils.logEvent(
                     getContext(),
                     "form_complete",
-                     new Pair<>("formName", "Add card"),
-                     new Pair<>("formSelection", optionsChecked)
-                        );
+                    new Pair<>("formName", "Add card"),
+                    new Pair<>("formSelection", optionsChecked)
+            );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
-
+            goBack();
         });
 
-        viewModel.showCard.observe(this, show -> {
-            if (show) {
-                binding.getRoot().setBackgroundColor(getResources().getColor(R.color.black_4));
-            } else {
-                binding.getRoot().setBackgroundColor(getResources().getColor(R.color.white));
-            }
-        });
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAddCardBinding.inflate(inflater, container, false);
-        //binding.cardInput.getEditText().addTextChangedListener(new CardNumberFormattingTextWatcher(binding.cardInput.getEditText()));
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.helpButton.setOnClickListener(v -> showCvvHelp());
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        //binding.doneButton.setOnClickListener(v -> goBack());
 
         binding.cardInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_NEXT);
         binding.cardInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
@@ -126,7 +109,7 @@ public class AddCardFragment extends MainActivityFragment {
         });
         binding.cardInput.requestFocus();
         showKeyBoard();
-        if (binding.cardInput.hasFocus()){
+        if (binding.cardInput.hasFocus()) {
             AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add card"), new Pair<>("stepName", "Card number"));
         }
         viewModel.showCvvField.observe(this, result -> {
