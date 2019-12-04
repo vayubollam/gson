@@ -195,8 +195,8 @@
     <string name="customer_support_email">custsvs@suncor.com</string>
     <string name="profile_get_help_call">Call</string>
     <string name="profile_get_help_email">Email</string>
-    <string name="navigation_cards_tab">Cards</string>
-    <string name="cards_fragment_title">Cards</string>
+    <string name="navigation_cards_tab">Wallet</string>
+    <string name="cards_fragment_title">Wallet</string>
     <string name="cards_fragment_petrocanada_cards_header">Petro-Canada cards</string>
     <string name="cards_fragment_partner_cards_header">Petro-Points partners</string>
     <string name="cards_fsr_label">Fuel Savings Reward</string>

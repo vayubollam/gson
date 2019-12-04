@@ -182,8 +182,8 @@
     <string name="login_create_password_duplicated_alert_title">Mot de passe invalide</string>
     <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
     <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez 2 500 points.</string>
-    <string name="navigation_cards_tab">Cartes</string>
-    <string name="cards_fragment_title">Cartes</string>
+    <string name="navigation_cards_tab">Portefeuille</string>
+    <string name="cards_fragment_title">Portefeuille</string>
     <string name="profile_top_questions">Questions les plus fréquentes</string>
     <string name="profile_faq_get_help_title">Obtenir de l\'aide</string>
     <string name="profile_get_help_footer">Besoin d\'aide? Communiquez avec nous.</string>
