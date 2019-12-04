@@ -18,7 +18,7 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
     private boolean isLinkedToAccount = false;
     private boolean isNewCardAdded = false;
-    private CardDetail newCardNumber;
+    private CardDetail newAddedCard;
     private Set<String> singleTicketNumber;
     private MutableLiveData<Station> nearestStation = new MutableLiveData<>();
 
@@ -68,11 +68,11 @@ public class MainViewModel extends ViewModel {
         isNewCardAdded = newCardAdded;
     }
 
-    public CardDetail getNewCardNumber() {
-        return newCardNumber;
+    public CardDetail getNewAddedCard() {
+        return newAddedCard;
     }
 
-    public void setNewCardNumber(CardDetail newCardNumber) {
-        this.newCardNumber = newCardNumber;
+    public void setNewAddedCard(CardDetail newAddedCard) {
+        this.newAddedCard = newAddedCard;
     }
 }

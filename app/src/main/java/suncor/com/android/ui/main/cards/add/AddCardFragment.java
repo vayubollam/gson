@@ -64,7 +64,7 @@ public class AddCardFragment extends MainActivityFragment {
 
         viewModel.card.observe(this, cardDetail -> {
             mainViewModel.setNewCardAdded(true);
-            mainViewModel.setNewCardNumber(cardDetail);
+            mainViewModel.setNewAddedCard(cardDetail);
             String screenName = "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success";
             String optionsChecked = "";
             AnalyticsUtils.logEvent(
