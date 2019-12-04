@@ -29,7 +29,7 @@ public class CardDetailsViewModel extends ViewModel {
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
-    private CardDetail newlyAddedCard;
+    private String newlyAddedCardNumber;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -105,13 +105,13 @@ public class CardDetailsViewModel extends ViewModel {
 
     private List<CardDetail> findNewlyAddedCard(List<CardDetail> petroCanadaCards) {
         for(CardDetail card : petroCanadaCards){
-            if(card.equals(newlyAddedCard)) return Collections.singletonList(card);
+            if(card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber)) return Collections.singletonList(card);
         }
         return petroCanadaCards;
     }
 
-    public void setNewlyAddedCard(CardDetail newlyAddedCard) {
-        this.newlyAddedCard = newlyAddedCard;
+    public void setNewlyAddedCardNumber(String newlyAddedCardNumber) {
+        this.newlyAddedCardNumber = newlyAddedCardNumber;
     }
 
     private void updateCarWashBalance(List<CardDetail> cards) {

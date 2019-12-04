@@ -87,7 +87,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setLoadType(loadType);
         viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
-        viewModel.setNewlyAddedCard(mainViewModel.getNewAddedCard());
+        viewModel.setNewlyAddedCardNumber(mainViewModel.getNewAddedCardNumber());
         viewModel.retrieveCards();
         viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
