@@ -580,4 +580,6 @@
     <string name="zero_balance_alert_view">View card details</string>
     <string name="zero_balance_other_available_message">Looks like your card is running on empty. Don\'t worry – you have other options in your account.</string>
 
+    <string name="account_page_header">Account</string>
+
 </resources>

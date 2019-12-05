@@ -564,4 +564,6 @@
     <string name="zero_balance_alert_view">Voir les détails de la carte</string>
     <string name="zero_balance_other_available_message">Votre carte semble vide. Ne vous inquiétez pas - vous avez d\'autres options dans votre compte.</string>
 
+    <string name="account_page_header">Compte</string>
+
 </resources>

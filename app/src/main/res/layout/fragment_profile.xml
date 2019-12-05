@@ -7,8 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:background="@color/white"
+        android:background="@color/black_4"
         android:clickable="true">
+
 
         <suncor.com.android.uicomponents.SuncorAppBarLayout
             android:id="@+id/app_bar"
@@ -21,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <suncor.com.android.uicomponents.ExtendedNestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -39,37 +41,27 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
+                    android:background="@color/white"
                     app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/profile_gradient" />
-
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/full_name_output"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:ellipsize="end"
-                        android:gravity="bottom"
-                        android:lineSpacingMultiplier="1.25"
-                        android:maxLines="2"
-                        android:textAppearance="@style/Headline1"
-                        app:autoSizeMaxTextSize="42sp"
-                        app:autoSizeMinTextSize="26sp"
-                        app:autoSizeTextType="uniform"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="16dp"
+                        android:lineSpacingMultiplier="1.31"
+                        android:textAppearance="@style/Title1"
+                        android:text="@string/account_page_header"
                         app:layout_constraintBottom_toTopOf="@id/email_output"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed"
-                        tools:text="user name" />
+                        app:layout_constraintVertical_chainStyle="packed" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/email_output"
@@ -77,6 +69,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="32dp"
                         android:ellipsize="end"
                         android:fontFamily="@font/gibson_regular"
                         android:gravity="start"
@@ -84,9 +78,18 @@
                         android:textAppearance="@style/Body"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/full_name_output"
-                        app:layout_constraintTop_toBottomOf="@+id/full_name_output"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/full_name_output"
                         tools:text="email@test.com" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:elevation="2dp"
+                        android:background="@color/black_8"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -101,8 +104,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_height="8dp"
                         android:background="@drawable/horizontal_divider" />
 
                     <androidx.appcompat.widget.AppCompatButton
@@ -221,7 +223,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="14dp"
+                        android:layout_height="8dp"
                         android:background="@drawable/horizontal_divider" />
 
                     <TextView
