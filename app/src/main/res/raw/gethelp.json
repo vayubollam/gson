@@ -10,17 +10,18 @@
       {
         "id": "how-do-i-reload-my-fuel-savings-reward-card",
         "question": "How do I reload my Fuel Savings Reward card?",
-        "response": "Soon you’ll be able to reload your card in the App, but for now please visit petro-points.com."
+        "response": "Soon you’ll be able to reload your card in the App, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal/login\">petro-points.com.</a>"
       },
       {
         "id": "how-do-i-reload-my-wash-and-go-card-or-season-pass",
         "question": "How do I reload my Wash & Go card or Season Pass?",
-        "response": "Soon you’ll be able to reload your cards in the App, but for now please visit petro-canada.ca."
+        "response": "Soon you’ll be able to reload your cards in the App, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal\">petro-points.com.</a>"
+
       },
       {
         "id": "how-do-i-add-my-partner-card-to-my-petro-points-account",
         "question": "How do I add my partner card to my Petro-Points account (i.e. CAA, More Rewards)?",
-        "response": "Soon you’ll be able to add your partner cards in the App, but for now please visit petro-points.com."
+        "response": "Soon you’ll be able to add your partner cards in the App, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal/login\">petro-points.com.</a>"
       },
       {
         "id": "can-i-redeem-my-points-using-the-app",
