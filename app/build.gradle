@@ -17,7 +17,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 3
-        versionName "3.0.0"
+        versionName "3.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
@@ -63,9 +63,24 @@ android {
             applicationId "com.suncor.android.SuncorApplicationDev"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
+        DevSus {
+            dimension "version"
+            applicationId "com.suncor.android.SuncorApplicationOpsDev"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
+        }
         QA {
             dimension "version"
             applicationId "com.suncor.android.SuncorApplicationQA"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
+        }
+        QASus {
+            dimension "version"
+            applicationId "com.suncor.android.SuncorApplicationOpsQA"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
+        }
+        UAT {
+            dimension "version"
+            applicationId "com.suncor.android.SuncorApplicationUAT"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
         Prod {

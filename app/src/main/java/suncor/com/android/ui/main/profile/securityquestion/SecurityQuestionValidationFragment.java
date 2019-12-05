@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.profile.securityquestion;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -65,8 +67,16 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                 case SUCCESS:
                     sharedViewModel.setEcryptedSecurityAnswer(stringResource.data);
                     if (PersonalInfoFragment.PERSONAL_INFO_FRAGMENT.equalsIgnoreCase(destination)) {
+                        AnalyticsUtils.logEvent(getContext(),"form_step",
+                            new Pair<>("formName","Update personal information"),
+                            new Pair<>("stepName","Answer security question ")
+                        );
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
                     } else if (AddressFragment.ADDRESS_FRAGMENT.equalsIgnoreCase(destination)) {
+                        AnalyticsUtils.logEvent(getContext(),"form_step",
+                                new Pair<>("formName","Update address"),
+                                new Pair<>("stepName","Answer security question ")
+                        );
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
                     }
                     break;

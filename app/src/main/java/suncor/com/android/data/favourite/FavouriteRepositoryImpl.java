@@ -71,7 +71,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
         loading = true;
-        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
         Timber.d("Loading favourites");
         request.send(new WLResponseListener() {
             @Override
@@ -133,7 +133,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
         try {
-            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject();
             body.put("encryptedEntityId", station.getId());
             request.send(body, new WLResponseListener() {
@@ -163,7 +163,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
     public LiveData<Resource<Boolean>> removeFavourite(Station station) {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading(null));
-        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT);
+        WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
         request.setQueryParameter("encryptedEntityId", String.valueOf(station.getId()));
         request.send(new WLResponseListener() {
             @Override

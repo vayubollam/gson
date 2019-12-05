@@ -12,9 +12,11 @@ import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.data.suggestions.PlaceSuggestionsProvider;
 import suncor.com.android.model.DirectionsResult;
@@ -26,6 +28,7 @@ import suncor.com.android.utilities.UserLocalSettings;
 
 public class SearchViewModel extends ViewModel {
 
+    private FavouriteRepository favouriteRepository;
     private final static int DEFAULT_DISTANCE_API = 25000;
     public LiveData<Resource<ArrayList<PlaceSuggestion>>> placeSuggestions;
     public MutableLiveData<String> query = new MutableLiveData<>();
@@ -40,11 +43,12 @@ public class SearchViewModel extends ViewModel {
     protected Gson gson;
 
     @Inject
-    public SearchViewModel(StationsApi stationsApi, PlaceSuggestionsProvider suggestionsProvider, Gson gson, UserLocalSettings userLocalSettings) {
+    public SearchViewModel(StationsApi stationsApi, PlaceSuggestionsProvider suggestionsProvider,Gson gson, UserLocalSettings userLocalSettings,FavouriteRepository favouriteRepository) {
         this.stationsApi = stationsApi;
         this.userLocalSettings = userLocalSettings;
         this.gson = gson;
         this.suggestionsProvider = suggestionsProvider;
+        this.favouriteRepository = favouriteRepository;
         query.setValue("");
         placeSuggestions = Transformations.switchMap(query, (suggestionsProvider::getSuggestions));
         String recent = userLocalSettings.getString(UserLocalSettings.RECENTLY_SEARCHED);
@@ -72,7 +76,8 @@ public class SearchViewModel extends ViewModel {
                         ArrayList<StationItem> stations = new ArrayList<>();
                         for (Station station : resource.data) {
                             LatLng stationLocation = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                            StationItem item = new StationItem(station, calculateDistance(userLocation, stationLocation));
+                            StationItem item = new StationItem(favouriteRepository,station, calculateDistance(userLocation, stationLocation));
+                            item.setFavourite(favouriteRepository.isFavourite(item.getStation()));
                             stations.add(item);
                         }
                         Collections.sort(stations, (o1, o2) -> o1.getDistanceDuration().getDistance() - o2.getDistanceDuration().getDistance());

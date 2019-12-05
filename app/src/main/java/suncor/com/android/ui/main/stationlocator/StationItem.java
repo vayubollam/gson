@@ -32,7 +32,8 @@ public class StationItem extends BaseObservable {
         this.isFavourite = isFavourite;
     }
 
-    public StationItem(Station station, DirectionsResult distanceDuration) {
+    public StationItem(FavouriteRepository favouriteRepository, Station station, DirectionsResult distanceDuration) {
+        this.favouriteRepository = favouriteRepository;
         this.station = station;
         this.distanceDuration = distanceDuration;
     }
@@ -113,6 +114,10 @@ public class StationItem extends BaseObservable {
     public boolean isOpen24Hrs() {
         Hour workHours = getTodaysHours();
         return workHours.getOpen().equals("0000") && workHours.getClose().equals("2400");
+    }
+    public boolean isClosed(int i) {
+        Hour workHours = station.getHours().get(i);
+        return workHours.getOpen().equals("0000") && workHours.getClose().equals("0000");
     }
 
     public String getDayName(int i) {
