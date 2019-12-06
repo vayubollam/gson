@@ -98,13 +98,13 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             int[] headerLocation = new int[2];
             int[] appBarLocation = new int[2];
 
-            binding.fullNameOutput.getLocationInWindow(headerLocation);
+            binding.header.getLocationInWindow(headerLocation);
             binding.appBar.getLocationInWindow(appBarLocation);
             int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
             int headerBottom = headerLocation[1];
 
             if (headerBottom <= appBarBottom) {
-                binding.appBar.setTitle(binding.fullNameOutput.getText());
+                binding.appBar.setTitle(binding.header.getText());
                 ViewCompat.setElevation(binding.appBar, appBarElevation);
                 binding.appBar.findViewById(R.id.collapsed_title).setAlpha(Math.min(1, (float) (appBarBottom - headerBottom) / 100));
             } else {
