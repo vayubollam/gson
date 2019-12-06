@@ -7,8 +7,6 @@
             name="vm"
             type="suncor.com.android.ui.main.cards.add.AddCardViewModel" />
 
-        <import type="suncor.com.android.ui.main.cards.details.ExpandedCardItem" />
-
         <import type="suncor.com.android.model.Resource" />
     </data>
 
@@ -173,39 +171,6 @@
                 android:src="@drawable/circular_ring"
                 app:visibleGone="@{vm.addCardApiResult.status == Resource.Status.SUCCESS}" />
         </RelativeLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black_4"
-            android:clickable="true"
-            android:paddingStart="12dp"
-            android:paddingTop="40dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="16dp"
-            android:visibility="gone"
-            app:visibleGone="@{vm.showCard}">
-
-            <FrameLayout
-                android:id="@+id/card_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <Button
-                android:id="@+id/done_button"
-                style="@style/FilledButton.Red.L"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/cards_add_fragment_done_button"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginLeft="16dp"
-                app:layout_constraintBottom_toBottomOf="@id/card_layout"
-                app:layout_constraintEnd_toEndOf="@id/card_layout"
-                app:layout_constraintStart_toStartOf="@id/card_layout" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

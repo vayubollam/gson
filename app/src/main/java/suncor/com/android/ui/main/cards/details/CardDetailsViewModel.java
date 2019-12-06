@@ -29,6 +29,7 @@ public class CardDetailsViewModel extends ViewModel {
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
+    private String newlyAddedCardNumber;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -42,6 +43,11 @@ public class CardDetailsViewModel extends ViewModel {
                 Profile profile = sessionManager.getProfile();
                 CardDetail petroPointsCard = new CardDetail(CardType.PPTS, profile.getPetroPointsNumber(), profile.getPointsBalance());
                 _cards.setValue(Collections.singletonList(petroPointsCard));
+                break;
+            case NEWLY_ADD_CARD:
+                _cards.addSource(cardsRepository.getCards(false), result -> {
+                    _cards.setValue(findNewlyAddedCard(result.data));
+                });
                 break;
             case REDEEMED_SINGLE_TICKETS:
                 _cards.addSource(cardsRepository.getCards(false), result -> {
@@ -95,6 +101,17 @@ public class CardDetailsViewModel extends ViewModel {
             return newlyRedeemedSingleTickets;
         }
         return petroCanadaCards;
+    }
+
+    private List<CardDetail> findNewlyAddedCard(List<CardDetail> petroCanadaCards) {
+        for(CardDetail card : petroCanadaCards){
+            if(card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber)) return Collections.singletonList(card);
+        }
+        return petroCanadaCards;
+    }
+
+    public void setNewlyAddedCardNumber(String newlyAddedCardNumber) {
+        this.newlyAddedCardNumber = newlyAddedCardNumber;
     }
 
     private void updateCarWashBalance(List<CardDetail> cards) {

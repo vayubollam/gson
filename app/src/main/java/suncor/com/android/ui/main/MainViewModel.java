@@ -16,6 +16,8 @@ import suncor.com.android.utilities.Timber;
 public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
     private boolean isLinkedToAccount = false;
+    private boolean isNewCardAdded = false;
+    private String newAddedCardNumber;
     private Set<String> singleTicketNumber;
     private MutableLiveData<Station> nearestStation = new MutableLiveData<>();
 
@@ -55,5 +57,21 @@ public class MainViewModel extends ViewModel {
 
     public void setNearestStation(Station nearestStation) {
         this.nearestStation.setValue(nearestStation);
+    }
+
+    public boolean isNewCardAdded() {
+        return isNewCardAdded;
+    }
+
+    public void setNewCardAdded(boolean newCardAdded) {
+        isNewCardAdded = newCardAdded;
+    }
+
+    public String getNewAddedCardNumber() {
+        return newAddedCardNumber;
+    }
+
+    public void setNewAddedCardNumber(String newAddedCardNumber) {
+        this.newAddedCardNumber = newAddedCardNumber;
     }
 }

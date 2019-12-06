@@ -72,6 +72,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         super.onCreate(savedInstanceState);
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         mainViewModel.setLinkedToAccount(false);
+        mainViewModel.setNewCardAdded(false);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         locationLiveData.observe(this, location -> {
             currentLocation = (new LatLng(location.getLatitude(), location.getLongitude()));
@@ -86,6 +87,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setLoadType(loadType);
         viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
+        viewModel.setNewlyAddedCardNumber(mainViewModel.getNewAddedCardNumber());
         viewModel.retrieveCards();
         viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
