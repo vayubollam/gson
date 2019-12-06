@@ -101,17 +101,15 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             binding.fullNameOutput.getLocationInWindow(headerLocation);
             binding.appBar.getLocationInWindow(appBarLocation);
             int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
-            int headerBottom = headerLocation[1] + binding.fullNameOutput.getMeasuredHeight() - binding.fullNameOutput.getPaddingBottom();
+            int headerBottom = headerLocation[1];
 
             if (headerBottom <= appBarBottom) {
                 binding.appBar.setTitle(binding.fullNameOutput.getText());
                 ViewCompat.setElevation(binding.appBar, appBarElevation);
                 binding.appBar.findViewById(R.id.collapsed_title).setAlpha(Math.min(1, (float) (appBarBottom - headerBottom) / 100));
-                binding.headerLayout.setAlpha(0);
             } else {
                 binding.appBar.setTitle("");
                 ViewCompat.setElevation(binding.appBar, 0);
-                binding.headerLayout.setAlpha(1);
             }
         });
 
@@ -124,8 +122,6 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         if (sessionManager.getProfile() == null) {
             return;
         }
-        String fullName = capitalize(sessionManager.getProfile().getFirstName()) + " " + capitalize(sessionManager.getProfile().getLastName());
-       // binding.fullNameOutput.setText(fullName);
         binding.emailOutput.setText(sessionManager.getProfile().getEmail());
         initBuild();
 
