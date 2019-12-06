@@ -4,6 +4,7 @@ package suncor.com.android.ui.main.profile;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -37,6 +40,7 @@ import suncor.com.android.utilities.AnalyticsUtils;
 public class ProfileFragment extends MainActivityFragment implements OnBackPressedListener {
     private FragmentProfileBinding binding;
     private ProfileSharedViewModel profileSharedViewModel;
+    private float appBarElevation;
 
     @Inject
     SessionManager sessionManager;
@@ -44,6 +48,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
         profileSharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
         profileSharedViewModel.alertObservable.observe(getActivity(), event -> {
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
@@ -89,6 +94,25 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int[] headerLocation = new int[2];
+            int[] appBarLocation = new int[2];
+
+            binding.header.getLocationInWindow(headerLocation);
+            binding.appBar.getLocationInWindow(appBarLocation);
+            int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
+            int headerBottom = headerLocation[1];
+
+            if (headerBottom <= appBarBottom) {
+                binding.appBar.setTitle(binding.header.getText());
+                ViewCompat.setElevation(binding.appBar, appBarElevation);
+                binding.appBar.findViewById(R.id.collapsed_title).setAlpha(Math.min(1, (float) (appBarBottom - headerBottom) / 100));
+            } else {
+                binding.appBar.setTitle("");
+                ViewCompat.setElevation(binding.appBar, 0);
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -98,8 +122,6 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         if (sessionManager.getProfile() == null) {
             return;
         }
-        String fullName = capitalize(sessionManager.getProfile().getFirstName()) + " " + capitalize(sessionManager.getProfile().getLastName());
-        binding.fullNameOutput.setText(fullName);
         binding.emailOutput.setText(sessionManager.getProfile().getEmail());
         initBuild();
 
