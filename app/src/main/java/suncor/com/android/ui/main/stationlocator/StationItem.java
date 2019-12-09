@@ -19,12 +19,11 @@ import suncor.com.android.model.station.Station;
 
 public class StationItem extends BaseObservable {
 
-    private FavouriteRepository favouriteRepository;
-
-
+    public FavouriteRepository favouriteRepository;
+    
     private Station station;
     private DirectionsResult distanceDuration;
-    private boolean isFavourite;
+    public boolean isFavourite;
 
     public StationItem(FavouriteRepository favouriteRepository, Station station, boolean isFavourite) {
         this.favouriteRepository = favouriteRepository;
