@@ -8,12 +8,18 @@ import android.util.Pair;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class AnalyticsUtils {
 
     public enum Event {
         viewItem("view_item"),
-        selectContent("select_content")
+        selectContent("select_content"),
+        videoStart("video_start"),
+        videoThreshold25("video_threshold_25"),
+        videoThreshold50("video_threshold_50"),
+        videoThreshold75("video_threshold_75"),
+        videoComplete("video_complete")
         ;
 
         private final String name;
@@ -34,7 +40,8 @@ public class AnalyticsUtils {
         creativeName("creative_name"),
         creativeSlot("creative_slot"),
         contentType("content_type"),
-        promotions("promotions")
+        promotions("promotions"),
+        videoTitle("videoTitle")
         ;
 
         private final String name;
@@ -61,6 +68,15 @@ public class AnalyticsUtils {
             bundle.putString("user_id", userID);
         }
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
+    }
+
+    @SafeVarargs
+    public static void logEvent(Context context, Event event, Pair<Param,String>... parameters) {
+        ArrayList<Pair<String, String>> params = new ArrayList();
+        for (Pair<Param, String> param: parameters) {
+            params.add(new Pair<>(param.first.toString(), param.second));
+        }
+        logEvent(context, event.toString(), params.toArray(new Pair[params.size()]));
     }
 
     public static void logPromotionEvent(Context context, Event event, String itemId, String itemName, String creativeName, String creativeSlot, String contentType) {
