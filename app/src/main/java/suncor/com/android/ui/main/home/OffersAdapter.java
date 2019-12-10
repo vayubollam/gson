@@ -34,23 +34,21 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
                     activity.getDrawable(R.drawable.banner_1_signin),
                     new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
-//                        AnalyticsUtils.logEvent(activity, "select_content",
-//                            new Pair<>("creative_slot", "1"),
-//                            new Pair<>("creative_name", activity.getString(R.string.offers_banner_1_text)),
-//                            new Pair<>("item_name", activity.getString(R.string.offers_banner_1_text)),
-//                            new Pair<>("item_id", "1|"+activity.getString(R.string.offers_banner_1_text)),
-//                            new Pair<>("content_type", "Internal Promotions")
-//                        );
+                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                                "1|"+activity.getString(R.string.offers_banner_1_text),
+                                activity.getString(R.string.offers_banner_1_text),
+                                activity.getString(R.string.offers_banner_1_text),
+                                "1"
+                        );
                         activity.startActivity(new Intent(activity, EnrollmentActivity.class));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
-//                        AnalyticsUtils.logEvent(activity, "select_content",
-//                            new Pair<>("creative_slot", "1"),
-//                            new Pair<>("creative_name", activity.getString(R.string.offers_banner_1_text)),
-//                            new Pair<>("item_name", activity.getString(R.string.offers_banner_1_text)),
-//                            new Pair<>("item_id", "1|"+activity.getString(R.string.offers_banner_1_text)),
-//                            new Pair<>("content_type", "Internal Promotions")
-//                        );
+                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                                "1|"+activity.getString(R.string.offers_banner_1_text),
+                                activity.getString(R.string.offers_banner_1_text),
+                                activity.getString(R.string.offers_banner_1_text),
+                                "1"
+                        );
                         activity.startActivity(new Intent(activity, LoginActivity.class));
                     }));
             offerCards.add(banner1);
@@ -62,13 +60,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_3_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-//                            AnalyticsUtils.logEvent(activity, "select_content",
-//                                new Pair<>("creative_slot", isSignedIn? "2":"3"),
-//                                new Pair<>("creative_name", activity.getString(R.string.offers_banner_3_text)),
-//                                new Pair<>("item_name", activity.getString(R.string.offers_banner_3_text)),
-//                                new Pair<>("item_id", (isSignedIn? "2":"3")+"|"+activity.getString(R.string.offers_banner_3_text)),
-//                                new Pair<>("content_type", "Internal Promotions")
-//                            );
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                                    (isSignedIn? "2":"3") +"|"+activity.getString(R.string.offers_banner_3_text),
+                                    activity.getString(R.string.offers_banner_3_text),
+                                    activity.getString(R.string.offers_banner_3_text),
+                                    (isSignedIn? "2":"3")
+                            );
                             Intent intent = new Intent(activity, YoutubePlayerActivity.class);
                             intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
                             intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_3_text));
@@ -91,13 +88,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             {
                                 activity.getNavController().navigate(R.id.rewards_tab);
                             }
-//                            AnalyticsUtils.logEvent(activity, "select_content",
-//                                new Pair<>("creative_slot", isSignedIn? "1":"2"),
-//                                new Pair<>("creative_name", activity.getString(R.string.offers_banner_2_text)),
-//                                new Pair<>("item_name", activity.getString(R.string.offers_banner_2_text)),
-//                                new Pair<>("item_id", (isSignedIn? "1":"2")+"|"+activity.getString(R.string.offers_banner_2_text)),
-//                                new Pair<>("content_type", "Internal Promotions")
-//                            );
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                                    (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
+                                    activity.getString(R.string.offers_banner_2_text),
+                                    activity.getString(R.string.offers_banner_2_text),
+                                    (isSignedIn? "1":"2")
+                            );
                         }
                 ));
         offerCards.add(banner3);
@@ -109,13 +105,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_4_button),
                         activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
-//                            AnalyticsUtils.logEvent(activity, "select_content",
-//                                    new Pair<>("creative_slot", isSignedIn? "3":"4"),
-//                                    new Pair<>("creative_name", activity.getString(R.string.offers_banner_4_text)),
-//                                    new Pair<>("item_name", activity.getString(R.string.offers_banner_4_text)),
-//                                    new Pair<>("item_id", (isSignedIn? "3":"4")+"|"+activity.getString(R.string.offers_banner_4_text)),
-//                                    new Pair<>("content_type", "Internal Promotions")
-//                            );
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                                    (isSignedIn? "3":"4") +"|"+activity.getString(R.string.offers_banner_4_text),
+                                    activity.getString(R.string.offers_banner_4_text),
+                                    activity.getString(R.string.offers_banner_4_text),
+                                    (isSignedIn? "3":"4")
+                            );
                             Intent intent = new Intent(activity, YoutubePlayerActivity.class);
                             AnalyticsUtils.logEvent(activity, "video_start", new Pair<>("videoTitle", activity.getString(R.string.offers_banner_4_text)));
                             intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "xsa9QjRgy5w");
@@ -131,13 +126,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_5_button),
                         () -> {
-//                            AnalyticsUtils.logEvent(activity, "select_content",
-//                                    new Pair<>("creative_slot", isSignedIn? "4":"5"),
-//                                    new Pair<>("creative_name", activity.getString(R.string.offers_banner_5_text)),
-//                                    new Pair<>("item_name", activity.getString(R.string.offers_banner_5_text)),
-//                                    new Pair<>("item_id", (isSignedIn? "4":"5")+"|"+activity.getString(R.string.offers_banner_5_text)),
-//                                    new Pair<>("content_type", "Internal Promotions")
-//                            );
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                                    (isSignedIn? "4":"5") +"|"+activity.getString(R.string.offers_banner_5_text),
+                                    activity.getString(R.string.offers_banner_5_text),
+                                    activity.getString(R.string.offers_banner_5_text),
+                                    (isSignedIn? "4":"5")
+                            );
                             AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert", new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)));
                             new AlertDialog.Builder(activity)
                                     .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))

@@ -96,12 +96,7 @@ public class HomeFragment extends BottomNavigationFragment {
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
                 OfferCard card = offersAdapter.getOffer(position);
-//                AnalyticsUtils.logEvent(getContext(), "view_item",
-//                        new Pair<>("creative_slot", position + ""),
-//                        new Pair<>("item_name", card.getText()),
-//                        new Pair<>("creative_name", card.getText()),
-//                        new Pair<>("item_id", position + "|" + card.getText())
-//                );
+                AnalyticsUtils.logPromotionEvent(getContext(), AnalyticsUtils.Event.viewItem , position + "|" + card.getText(),card.getText(),card.getText(),position+"");
             }
         }
     };

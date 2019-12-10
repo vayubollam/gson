@@ -11,6 +11,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
@@ -114,13 +115,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         @Override
         public void onVideoEnded() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_complete", new Pair<>("videoTitle", videoTitle));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoStart, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
 
         }
 
         @Override
         public void onVideoStarted() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_start", new Pair<>("videoTitle",  videoTitle));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoComplete, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
         }
     };
     private void displayCurrentTime() {
@@ -129,13 +130,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
             int percentage =  ( mPlayer.getCurrentTimeMillis() * 100 ) / mPlayer.getDurationMillis();
             if (percentage > 25 && !show25) {
                 show25 = true;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_threshold_25");
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold25, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
             } else if (percentage > 50 && !show50) {
                 show50 = true;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_threshold_50");
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold50, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
             } else if (percentage > 75 && !show75) {
-                show25 = true;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_threshold_75");
+                show75 = true;
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold75, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
             }
         }
     }
