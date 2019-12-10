@@ -64,11 +64,8 @@ pipeline {
 		stage('upload to perfecto public cloud') {
 			steps {
 				script {
-					if (env.BUILD_ENV == "QA") {
-						sh (
-							script: 'curl -X POST -T app/build/outputs/apk/QA/release/app-QA-release.apk "https://ibmgbs.perfectomobile.com/services/repositories/media/app-QA-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
-							returnStdout: false
-						)
+					if (env.BUILD_ENV == "QA" || env.BUILD_ENV == "QASus") {
+						sh "curl -X POST -T app/build/outputs/apk/${env.BUILD_ENV}/release/app-${env.BUILD_ENV}-release.apk 'https://ibmgbs.perfectomobile.com/services/repositories/media/app-${env.BUILD_ENV}-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN'"
 					}
 				}
 			}
