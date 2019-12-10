@@ -3,6 +3,7 @@
 
     <data>
 
+        <import type="android.text.Html" />
         <variable
             name="question"
             type="suncor.com.android.model.account.Question" />
@@ -43,7 +44,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginRight="16dp"
-            android:autoLink="web"
+            android:text="@{Html.fromHtml(question.response)}"
             android:lineSpacingMultiplier="1.44"
             android:textAlignment="textStart"
             android:textAppearance="@style/Body"

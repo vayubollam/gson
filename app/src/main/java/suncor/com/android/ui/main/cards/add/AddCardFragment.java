@@ -78,7 +78,7 @@ public class AddCardFragment extends MainActivityFragment {
             AnalyticsUtils.logEvent(
                     getContext(),
                     "form_complete",
-                     new Pair<>("formName", "Add card"),
+                     new Pair<>("formName", "Add Card"),
                      new Pair<>("formSelection", optionsChecked)
                         );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
@@ -131,7 +131,7 @@ public class AddCardFragment extends MainActivityFragment {
         }
         viewModel.showCvvField.observe(this, result -> {
             if (viewModel.showCvvField.getValue().booleanValue())
-                AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add card"), new Pair<>("stepName", "CVV"));
+                AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add Card"), new Pair<>("stepName", "CVV"));
 
         });
 

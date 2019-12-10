@@ -77,7 +77,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                     application.startActivity(homeActivityIntent);
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
-                adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
+                adb.setMessage(getResources().getString(R.string.alert_signed_out_conflicting_login));
                 AnalyticsUtils.logEvent(application.getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)));
                 adb.show();
             }

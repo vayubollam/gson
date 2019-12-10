@@ -82,6 +82,9 @@ public class HomeFragment extends BottomNavigationFragment {
 
     private OnClickListener showCardDetail = v -> {
         Resource<StationItem> resource = mViewModel.nearestStation.getValue();
+
+        resource.data.isFavourite = resource.data.favouriteRepository.isFavourite(resource.data.getStation());
+
         if (resource != null && resource.data != null && !mViewModel.isLoading.get()) {
             StationDetailsDialog.showCard(this, resource.data, nearestCard.getRoot(), false);
         }
@@ -93,12 +96,7 @@ public class HomeFragment extends BottomNavigationFragment {
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
                 OfferCard card = offersAdapter.getOffer(position);
-//                AnalyticsUtils.logEvent(getContext(), "view_item",
-//                        new Pair<>("creative_slot", position + ""),
-//                        new Pair<>("item_name", card.getText()),
-//                        new Pair<>("creative_name", card.getText()),
-//                        new Pair<>("item_id", position + "|" + card.getText())
-//                );
+                AnalyticsUtils.logPromotionEvent(getContext(), AnalyticsUtils.Event.viewItem , position + "|" + card.getText(),card.getText(),card.getText(),position+"");
             }
         }
     };
@@ -306,13 +304,13 @@ public class HomeFragment extends BottomNavigationFragment {
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)),
-                    new Pair<>("alertSelection",getString(R.string.cancel))
+                    new Pair<>("alertSelection", getString(R.string.cancel))
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)),
-                    new Pair<>("alertSelection",getString(R.string.ok))
+                    new Pair<>("alertSelection", getString(R.string.ok))
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
