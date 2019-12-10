@@ -67,7 +67,7 @@ public class CardsApiImpl implements CardsApi {
 
     @Override
     public LiveData<Resource<CardDetail>> addCard(AddCardRequest cardRequest) {
-        Timber.d("Add card: " + cardRequest.getCardNumber());
+        Timber.d("Add Card: " + cardRequest.getCardNumber());
         MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
