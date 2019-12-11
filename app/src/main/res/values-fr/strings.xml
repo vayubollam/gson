@@ -182,8 +182,8 @@
     <string name="login_create_password_duplicated_alert_title">Mot de passe invalide</string>
     <string name="login_create_password_duplicated_alert_message">Votre nouveau mot de passe ne peut pas être le même que votre temporaire mot de passe.</string>
     <string name="enrollment_form_header_ghost">Remplissez votre adhésion et obtenez 2 500 points.</string>
-    <string name="navigation_cards_tab">Cartes</string>
-    <string name="cards_fragment_title">Cartes</string>
+    <string name="navigation_cards_tab">Portefeuille</string>
+    <string name="cards_fragment_title">Portefeuille</string>
     <string name="profile_top_questions">Questions les plus fréquentes</string>
     <string name="profile_faq_get_help_title">Obtenir de l\'aide</string>
     <string name="profile_get_help_footer">Besoin d\'aide? Communiquez avec nous.</string>
@@ -484,7 +484,7 @@
     <string name="redeem_receipt_point_redeemeed">Points échangés</string>
     <string name="redeem_receipt_new_balance">Nouveau solde</string>
     <string name="redeem_receipt_details_label">Détails</string>
-    <string name="redeem_receipt_order_id_label">Numéro de commande</string>
+    <string name="redeem_receipt_order_id_label">Numéro</string>
     <string name="msg_e030_message">Si ce problème persiste, appelez-nous au 1-800-668-0222.</string>
     <string name="msg_e030_title">Échange de points non accepté</string>
     <string name="redeem_receipt_email_sent_to_label">Envoyée à</string>
@@ -524,15 +524,15 @@
     <string name="carddetail_active_wash">ACTIVER LE LAVAGE</string>
 
     <string name="carwash_activation_header">Activez le lave-auto</string>
-    <string name="carwash_activation_subtitle">Entrez le code affiché sur l\'écran du lave-auto.</string>
+    <string name="carwash_activation_subtitle">Tapez le numéro affiché sur l\'écran du lave-auto.</string>
     <string name="carwash_activation_confirm_button">CONFIRMER</string>
     <string name="carwash_activation_pin_error_title">Code à trois chiffres requis</string>
     <string name="carwash_activation_pin_error_message">Nous pourrons activer le lave-auto dès que vous aurez entré le code indiqué à l\'écran du lave-auto.</string>
 
     <string name="carwash_barcode_header">Scannez pour commencer votre lavage</string>
     <string name="carwash_barcode_subtitle">Placez votre code à barres devant le scanneur.</string>
-    <string name="carwash_barcode_trouble_hint">Vous n\'arrivez pas à scanner?</string>
-    <string name="carwash_barcode_reenter">Entrer le code à nouveau</string>
+    <string name="carwash_barcode_trouble_hint">Avez-vous le bon numéro?</string>
+    <string name="carwash_barcode_reenter">Mettez à jour votre numéro</string>
 
     <string name="carwash_independent_alert_title">Il s\'agit d\'un lave-auto indépendant</string>
     <string name="carwash_independent_alert_message">Les cartes et billets de lavage Petro-Canada ne peuvent être utilisés à cet établissement. Achetez un billet à l\'intérieur pour laver votre voiture.</string>
