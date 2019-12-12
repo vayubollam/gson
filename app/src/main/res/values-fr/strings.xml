@@ -512,7 +512,8 @@
     <string name="carwash_getwash_header">Obtenez votre lavage</string>
     <string name="carwash_no_card_get_ticket_header">Obtenir un billet de lavage</string>
     <string name="carwash_no_card_get_ticket_message">Achetez un billet de lavage ou ajoutez votre carte de lave-auto à votre application Wallet.</string>
-    <string name="carwash_get_ticket_button">Acheter un billet</string>
+    <string name="carwash_nocard_add_card_button">Ajouter une carte</string>
+    <string name="carwash_get_ticket_button">Rechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
     <string name="carwash_getwash_message_card_only">Sélectionnez votre carte de lavage pour commencer.</string>
     <string name="carwash_getwash_message_ticket_only">Sélectionnez votre billet de lavage pour commencer.</string>
     <string name="carwash_getwash_message_card_and_ticket">Sélectionnez votre carte ou billet de lavage pour commencer.</string>
@@ -559,7 +560,7 @@
     <string name="single_ticket_barcode_trouble_message">Vous n\'arrivez pas à scanner?  \nEssayez d\'entrer votre numéro de billet à l\'écran du lave-auto.</string>
 
     <string name="zero_balance_alert_title">Votre carte est vide</string>
-    <string name="zero_balance_alert_message">Votre carte semble vide. Rechargez-la sur le site \u003ca href="https://www.petro-canada.ca/fr/"\u003epetro-canada.ca\u003c/a\u003e ou obtenez une carte de lavage au dépanneur.</string>
+    <string name="zero_balance_alert_message">Votre carte semble vide. Rechargez-la sur le site petro-canada.ca ou obtenez une carte de lavage au dépanneur.</string>
     <string name="zero_balance_alert_close">Fermer</string>
     <string name="zero_balance_alert_buy">Acheter un lavage</string>
     <string name="zero_balance_alert_view">Voir les détails de la carte</string>
