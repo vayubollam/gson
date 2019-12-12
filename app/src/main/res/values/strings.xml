@@ -37,7 +37,7 @@
     <string name="suggestions_no_results">No results</string>
     <string name="station_clear_filters_button">clear filters</string>
     <string name="station_clear_all_filters_chip">Clear all</string>
-    <string name="suggestions_search_hint">Search</string>
+    <string name="suggestions_search_hint">Where to?</string>
     <string name="station_recently_searched">Recent search</string>
     <string name="join">join</string>
     <string name="sign_in">sign in</string>
