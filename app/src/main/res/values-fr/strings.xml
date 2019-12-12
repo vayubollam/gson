@@ -2,7 +2,7 @@
 <resources>
     <string name="navigation_profile_tab">Comptes</string>
     <string name="navigation_stations_tab">Stations</string>
-    <string name="station_search_hint">Où va-t-on ?</string>
+    <string name="station_search_hint">Où va-t-on?</string>
     <string name="station_distance_generic">%.1f km de vous</string>
     <string name="station_duration_generic">%1s en auto</string>
     <string name="suggestions_search_hint">Recherche</string>
