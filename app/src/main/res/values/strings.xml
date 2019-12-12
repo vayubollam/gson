@@ -26,7 +26,7 @@
     <string name="station_hours_list_title">Hours</string>
     <string name="station_open_24hrs">Open 24 hours</string>
     <string name="station_directions_button">Get directions</string>
-    <string name="station_search_hint">_Where to?</string>
+    <string name="station_search_hint">Where to?</string>
     <string name="filters_fragment_title">Filter by</string>
     <string name="filters_apply_button">Apply</string>
     <string name="filters_clear_button">Clear All</string>
