@@ -71,7 +71,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/carwash_get_ticket_button"
+                android:text="@string/carwash_nocard_add_card_button"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/no_card_description"

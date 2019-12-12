@@ -92,7 +92,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/car_wash_cards_list"
-            app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; vm.viewState != ViewState.FAILED &amp;&amp; vm.isBalanceZero}">
+            app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; vm.viewState != ViewState.FAILED &amp;&amp; vm.isCardAvailable &amp;&amp; vm.isBalanceZero}">
 
             <suncor.com.android.ui.common.LinkableTextView
                 android:layout_width="match_parent"

@@ -99,6 +99,10 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate(action);
+                } else if (mainViewModel.isNewCardAdded()) {
+                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+                    action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
+                    Navigation.findNavController(getView()).navigate(action);
                 } else {
                     ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
                     for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
@@ -210,7 +214,8 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
 
         //setup no card click listener
-        binding.carwashNoCard.buyTicketButton.setOnClickListener(buyTicketListener);
+        //binding.carwashNoCard.buyTicketButton.setOnClickListener(buyTicketListener);
+        binding.carwashNoCard.buyTicketButton.setOnClickListener(addNewCardListener);
 
         //Setup nearest card click listeners
         nearestCardBinding = binding.carwashNearestCards;
@@ -272,8 +277,13 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         Navigation.findNavController(getView()).navigate(action);
     }
 
-    private View.OnClickListener buyTicketListener = v -> {
-        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
+    //TODO: UNCOMMENT THIS WHEN REDDEM/BUY SINGLE TICKET IS IN THE SCOPR
+//    private View.OnClickListener buyTicketListener = v -> {
+//        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
+//    };
+
+    private View.OnClickListener addNewCardListener = v ->{
+        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_addCardFragment);
     };
 
     private View.OnClickListener tryAgainLister = v -> {
