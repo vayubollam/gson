@@ -26,7 +26,7 @@
     <string name="station_hours_list_title">Hours</string>
     <string name="station_open_24hrs">Open 24 hours</string>
     <string name="station_directions_button">Get directions</string>
-    <string name="station_search_hint">Search</string>
+    <string name="station_search_hint">Where to?</string>
     <string name="filters_fragment_title">Filter by</string>
     <string name="filters_apply_button">Apply</string>
     <string name="filters_clear_button">Clear All</string>
@@ -37,7 +37,7 @@
     <string name="suggestions_no_results">No results</string>
     <string name="station_clear_filters_button">clear filters</string>
     <string name="station_clear_all_filters_chip">Clear all</string>
-    <string name="suggestions_search_hint">Search</string>
+    <string name="suggestions_search_hint">Where to?</string>
     <string name="station_recently_searched">Recent search</string>
     <string name="join">join</string>
     <string name="sign_in">sign in</string>
@@ -273,7 +273,7 @@
     <string name="cards_add_fragment_card_field_label">Card number</string>
     <string name="cards_add_fragment_continue_button">Continue</string>
     <string name="cards_add_fragment_cvv_field_label">Security code</string>
-    <string name="cards_add_fragment_cvv_subcopy">Enter the the security code located on the back of your card.</string>
+    <string name="cards_add_fragment_cvv_subcopy">Enter the security code located on the back of your card.</string>
     <string name="cards_add_fragment_cvv_subcopy_more">Enter the activation code (AC#) located on the back of your card.</string>
     <string name="cards_add_fragment_card_field_empty_error">Please enter the card number.</string>
     <string name="cards_add_fragment_card_field_format_error">Please enter a valid card number.</string>
