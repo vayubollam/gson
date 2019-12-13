@@ -37,6 +37,7 @@ import suncor.com.android.databinding.FragmentCarWashBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -99,11 +100,12 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate(action);
-                } else if (mainViewModel.isNewCardAdded()) {
+                } else if (mainViewModel.isNewCardAdded() && (mainViewModel.getNewAddedCard().getCardType() == CardType.WAG ||mainViewModel.getNewAddedCard().getCardType() == CardType.SP )) {
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
                     Navigation.findNavController(getView()).navigate(action);
                 } else {
+                    mainViewModel.setNewCardAdded(false);
                     ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
                     for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
                         petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
