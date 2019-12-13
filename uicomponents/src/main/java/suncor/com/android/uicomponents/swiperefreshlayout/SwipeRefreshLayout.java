@@ -107,7 +107,7 @@ public class SwipeRefreshLayout extends ViewGroup implements NestedScrollingPare
     // Default background for the progress spinner
     private static final int CIRCLE_BG_LIGHT = 0xFFFAFAFA;
     // Default offset in dips from the top of the view to where the progress spinner should stop
-    private static final int DEFAULT_CIRCLE_TARGET = 24;
+    private static final int DEFAULT_CIRCLE_TARGET = 0;
 
     private static final int DEFAULT_DRAGGING_DISTANCE = 64;
 
