@@ -42,7 +42,7 @@ public class PasswordInputField extends InputField {
     @Override
     @Bindable
     public int getError() {
-        if (!super.isValid() && !hasFocus) {
+        if (!super.isValid()) {
             return super.getError();
         } else {
             return -1;

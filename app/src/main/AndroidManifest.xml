@@ -64,7 +64,8 @@
 
                 <data
                     android:scheme="https"
-                    android:host="www.petro-canada.ca" />
+                    android:host="www.petro-canada.ca"
+                    android:pathPattern="/.*/.*/security-question" />
             </intent-filter>
         </activity>
 

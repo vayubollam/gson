@@ -1,6 +1,8 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.DateUtils;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.MerchantsUtil;
 
 public class RedeemReceiptFragment extends MainActivityFragment implements OnBackPressedListener {
@@ -90,6 +93,11 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
             binding.dateValue.setText(DateUtils.getFormattedDate(Calendar.getInstance().getTime()));
         }
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
+        AnalyticsUtils.logEvent(this.getContext(),"form_complete",
+                new Pair<>("formName", "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card"),
+                new Pair<>("formSelection","$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card")
+        );
         binding.setImage(getContext().getDrawable(imageId));
         binding.redeemReceiptCardviewTitle.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
         return binding.getRoot();

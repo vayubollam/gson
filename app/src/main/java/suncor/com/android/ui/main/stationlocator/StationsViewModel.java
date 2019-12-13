@@ -96,7 +96,7 @@ public class StationsViewModel extends ViewModel {
             ArrayList<StationItem> filteredStations = filterStations();
 
             _stationsAround.setValue(Resource.success(filteredStations));
-
+            shouldUpdateSectedStation = true;
             updateSelectedStationIfNeeded(filteredStations);
         } else {
             Timber.d("Load stations from API");
@@ -121,6 +121,7 @@ public class StationsViewModel extends ViewModel {
                         if (resource.data.isEmpty()) {
                             _stationsAround.postValue(Resource.success(new ArrayList<>()));
                         } else {
+                            shouldUpdateSectedStation = true;
                             ArrayList<StationItem> stations = new ArrayList<>();
                             for (Station station : resource.data) {
                                 boolean isFavourite = false;

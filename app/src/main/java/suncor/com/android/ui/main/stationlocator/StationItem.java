@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import suncor.com.android.BR;
@@ -19,12 +20,11 @@ import suncor.com.android.model.station.Station;
 
 public class StationItem extends BaseObservable {
 
-    private FavouriteRepository favouriteRepository;
-
-
+    public FavouriteRepository favouriteRepository;
+    
     private Station station;
     private DirectionsResult distanceDuration;
-    private boolean isFavourite;
+    public boolean isFavourite;
 
     public StationItem(FavouriteRepository favouriteRepository, Station station, boolean isFavourite) {
         this.favouriteRepository = favouriteRepository;
@@ -32,7 +32,8 @@ public class StationItem extends BaseObservable {
         this.isFavourite = isFavourite;
     }
 
-    public StationItem(Station station, DirectionsResult distanceDuration) {
+    public StationItem(FavouriteRepository favouriteRepository, Station station, DirectionsResult distanceDuration) {
+        this.favouriteRepository = favouriteRepository;
         this.station = station;
         this.distanceDuration = distanceDuration;
     }
@@ -73,20 +74,27 @@ public class StationItem extends BaseObservable {
     }
 
     public LiveData<Resource<Boolean>> toggleFavourite() {
-        if (isFavourite) {
-            return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
-                if (r.status == Resource.Status.SUCCESS) {
-                    setFavourite(false);
-                }
-                return r;
-            });
-        } else {
-            return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
-                if (r.status == Resource.Status.SUCCESS) {
-                    setFavourite(true);
-                }
-                return r;
-            });
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        try {
+            if (isFavourite) {
+                return Transformations.map(favouriteRepository.removeFavourite(station), (r) -> {
+                    if (r.status == Resource.Status.SUCCESS) {
+                        setFavourite(false);
+                    }
+                    return r;
+                });
+            } else {
+                return Transformations.map(favouriteRepository.addFavourite(station), (r) -> {
+                    if (r.status == Resource.Status.SUCCESS) {
+                        setFavourite(true);
+                    }
+                    return r;
+                });
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            result.postValue(Resource.error(ex.getMessage(), false));
+            return result;
         }
     }
 
@@ -110,6 +118,10 @@ public class StationItem extends BaseObservable {
     public boolean isOpen24Hrs() {
         Hour workHours = getTodaysHours();
         return workHours.getOpen().equals("0000") && workHours.getClose().equals("2400");
+    }
+    public boolean isClosed(int i) {
+        Hour workHours = station.getHours().get(i);
+        return workHours.getOpen().equals("0000") && workHours.getClose().equals("0000");
     }
 
     public String getDayName(int i) {

@@ -126,18 +126,30 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         initBuild();
 
         binding.signoutButton.setOnClickListener((v) -> {
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)));
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
                     .setPositiveButton(getString(R.string.profil_sign_out_dialog_positive_button), (dialog, which) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)),
+                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_positive_button))
+                        );
                         signUserOut();
                     })
-                    .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> dialog.dismiss()));
+                    .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)),
+                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_negative_button))
+                        );
+                        dialog.dismiss();
+                    }));
             builder.create().show();
 
         });
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update personal information"));
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
             } else {
@@ -146,10 +158,12 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             }
         });
         binding.preferencesButton.setOnClickListener(v -> {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Change preferences"));
+            Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
         });
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
         binding.addressButton.setOnClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update address"));
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment);
             } else {

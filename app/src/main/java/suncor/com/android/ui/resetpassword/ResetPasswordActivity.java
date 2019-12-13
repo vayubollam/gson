@@ -16,6 +16,7 @@ import suncor.com.android.ui.common.OnBackPressedListener;
 public class ResetPasswordActivity extends DaggerAppCompatActivity {
     private Fragment mNavHostFragment;
     private NavController navController;
+    private String ID = null;
 
 
 
@@ -30,7 +31,7 @@ public class ResetPasswordActivity extends DaggerAppCompatActivity {
         String appLinkAction = appLinkIntent.getAction();
         Uri appLinkData = appLinkIntent.getData();
 
-        String ID = getIDFromApplink(appLinkData.toString());
+        ID = getIDFromApplink(appLinkData.toString());
 
         if(ID != null) {
             Bundle bundle = new Bundle();
@@ -52,12 +53,14 @@ public class ResetPasswordActivity extends DaggerAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final Fragment currentFragment = mNavHostFragment.getChildFragmentManager().getFragments().get(0);
-        final NavController controller = Navigation.findNavController(this, R.id.nav_host_fragment);
-        if (currentFragment instanceof OnBackPressedListener)
-            ((OnBackPressedListener) currentFragment).onBackPressed();
-        else if (!controller.popBackStack())
-            finish();
+        if(ID != null) {
+            final Fragment currentFragment = mNavHostFragment.getChildFragmentManager().getFragments().get(0);
+            final NavController controller = Navigation.findNavController(this, R.id.nav_host_fragment);
+            if (currentFragment instanceof OnBackPressedListener)
+                ((OnBackPressedListener) currentFragment).onBackPressed();
+            else if (!controller.popBackStack())
+                finish();
+        }
     }
 
 

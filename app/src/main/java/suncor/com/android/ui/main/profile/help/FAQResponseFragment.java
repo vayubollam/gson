@@ -34,7 +34,6 @@ public class FAQResponseFragment extends MainActivityFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.answerTxt.setText(faqViewModel.getSelectedQuestion().getResponse());
         binding.okButton.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
     }

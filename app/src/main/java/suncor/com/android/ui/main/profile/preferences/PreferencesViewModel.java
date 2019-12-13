@@ -17,6 +17,7 @@ import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.account.ProfileRequest;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 
 public class PreferencesViewModel extends ViewModel {

@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.profile.preferences;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import suncor.com.android.databinding.FragmentPreferencesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class PreferencesFragment extends MainActivityFragment {
 
@@ -52,6 +54,7 @@ public class PreferencesFragment extends MainActivityFragment {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
+        AnalyticsUtils.logEvent(this.getContext(), "form_start", new Pair<>("formName","change-preferences"));
         return binding.getRoot();
     }
 

@@ -72,9 +72,14 @@ public class CreatePasswordFragment extends BaseFragment {
                     AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.login_create_password_duplicated_alert_title)));
 
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)));
                     alertBuilder.setTitle(R.string.login_create_password_duplicated_alert_title);
                     alertBuilder.setMessage(R.string.login_create_password_duplicated_alert_message);
                     alertBuilder.setPositiveButton(R.string.ok, ((dialog, which) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)),
+                                new Pair<>("alertSelection",getString(R.string.ok))
+                        );
                         binding.passwordInput.setText("");
                         dialog.dismiss();
                     }));

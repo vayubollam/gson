@@ -39,7 +39,7 @@ public class CardsApiImpl implements CardsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
@@ -67,14 +67,12 @@ public class CardsApiImpl implements CardsApi {
 
     @Override
     public LiveData<Resource<CardDetail>> addCard(AddCardRequest cardRequest) {
-        Timber.d("Add card: " + cardRequest.getCardNumber());
+        Timber.d("Add Card: " + cardRequest.getCardNumber());
         MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            //TODO: DELETE HARD CODED END POINT WHEN BACK END IS READY
-            URI adapterPath = new URI("/adapters/suncor/v1/cards");
-            //URI adapterPath = new URI(ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
+            URI adapterPath = new URI(ADAPTER_PATH);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(cardRequest));
             request.send(body, new WLResponseListener() {
                 @Override
@@ -110,10 +108,8 @@ public class CardsApiImpl implements CardsApi {
         MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            //TODO: DELETE HARD CODED END POINT WHEN BACK END IS READY
-            URI adapterPath = new URI("/adapters/suncor/v1/cards");
-            //URI adapterPath = new URI(ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT);
+            URI adapterPath = new URI(ADAPTER_PATH);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("x-card-number", cardDetail.getCardNumber());
             request.addHeader("x-service-id", cardDetail.getServiceId());
             request.send(new WLResponseListener() {
