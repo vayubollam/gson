@@ -224,6 +224,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             isRemoving.set(false);
                             new Handler().postDelayed(() -> {
                                 cardsDetailsAdapter.removeCard(new ExpandedCardItem(getContext(), cardDetailResource.data));
+                                if (cardsDetailsAdapter.getCardItems().size() == 0)
+                                    Navigation.findNavController(getView()).popBackStack();
                             }, 200);
 
                             AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", cardDetailResource.data.getCardName()));
