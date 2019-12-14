@@ -25,7 +25,7 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Timber;
 
 public class CardsApiImpl implements CardsApi {
-    private final static String ADAPTER_PATH = "/adapters/suncor/v2/cards";
+    private final static String ADAPTER_PATH = "/adapters/suncor/v1/cards"; //SWICTH TO V2 IF NEED SINGLE TICKET MOCK DATA
     private Gson gson;
 
     public CardsApiImpl(Gson gson) {

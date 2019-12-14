@@ -3,8 +3,6 @@ package suncor.com.android.utilities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.method.LinkMovementMethod;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -33,7 +31,6 @@ public class CardsUtil {
         }
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-        ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public static void showOtherCardAvailableAlert(Context context) {
