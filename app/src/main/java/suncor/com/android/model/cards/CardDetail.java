@@ -73,13 +73,13 @@ public class CardDetail {
     public String getCardName() {
         switch (cardType) {
             case FSR:
-                return "fsr-" + (cpl == 0.05 ? 5 : 10) + "c";
+                return "FSR-" + (cpl == 0.05 ? 5 : 10) + "c";
             case PPC:
-                return "ppc";
+                return "PPC";
             case WAG:
-                return "wash-and-go";
+                return "Wash & Go";
             case SP:
-                return "season-pass";
+                return "Season Pass";
             case CAA:
                 return "caa";
             case BCAA:
