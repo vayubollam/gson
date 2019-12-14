@@ -64,4 +64,11 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         });
         return dialog;
     }
+
+    @Override
+    public void onActivityCreated(Bundle arg0) {
+        super.onActivityCreated(arg0);
+        if (getDialog() != null && getDialog().getWindow() != null)
+            getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+    }
 }
