@@ -64,40 +64,20 @@ pipeline {
 		stage('upload to perfecto public cloud') {
 			steps {
 				script {
-					if (env.BUILD_ENV == "QA") {
-						sh (
-							script: 'curl -X POST -T app/build/outputs/apk/QACarwash/release/app-QACarwash-release.apk "https://ibmgbs.perfectomobile.com/services/repositories/media/app-QACarwash-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN"',
-							returnStdout: false
-						)
-					}
+					if (env.BUILD_ENV == "QA" || env.BUILD_ENV == "QASus") {
+                    	sh "curl -X POST -T app/build/outputs/apk/${env.BUILD_ENV}${env.FEATURE}/release/app-${env.BUILD_ENV}${env.FEATURE}-release.apk 'https://ibmgbs.perfectomobile.com/services/repositories/media/app-${env.BUILD_ENV}${env.FEATURE}-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN'"
+                    }
 				}
 			}
 		}
 
 		stage('uploading into IBM app store') {
-			steps {
-            	script {
-                    if (env.BUILD_ENV == "Dev"){
-                        sh (
-                            script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -isInstaller true -l "Petro-Canada Carwash (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/DevCarwash/release/app-DevCarwash-release.apk',
-                            returnStdout: false
-                        )
-                    }
-                    if (env.BUILD_ENV == "QA"){
-                        sh (
-                            script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -isInstaller true -l "Petro-Canada Carwash (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/QACarwash/release/app-QACarwash-release.apk',
-                            returnStdout: false
-                        )
-                    }
-                    if (env.BUILD_ENV == "Prod"){
-                        sh (
-                            script: 'java -Dhttp.agent="Mozilla/5.0 (Windows NT 6.1)" -cp "applicationcenterdeploytool.jar:json4j.jar" com.ibm.appcenter.Upload -isInstaller true -l "Petro-Canada Carwash (Android)" -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/Prod/release/app-Prod-release.apk',
-                            returnStdout: false
-                        )
-                    }
-				}		
-			}
-		}
+            steps {
+                script {
+                    sh "java -Dhttp.agent='Mozilla/5.0 (Windows NT 6.1)' -cp 'applicationcenterdeploytool.jar:json4j.jar' com.ibm.appcenter.Upload -l 'Petro-Canada (Carwash)' -s $APPCTNR_URL -c applicationcenter -u $APPCTNR_USERNAME -p $APPCTNR_PASSWORD -e -f app/build/outputs/apk/${env.BUILD_ENV}${env.FEATURE}/release/app-${env.BUILD_ENV}${env.FEATURE}-release.apk"
+                }
+            }
+        }
 
 		stage('Jenkins Logs Build Information') {
             steps {
@@ -122,71 +102,72 @@ pipeline {
 
                     def shortCommitHash = env.GIT_COMMIT.substring(0, 6)
 
-                    def SLACK_CHANNEL_DEV = "CFRDD6XLG"
-                    def SLACK_CHANNEL_QA = "GFG4ELAJF"
-                    def SLACK_CHANNEL_UAT = ""
-                    def SLACK_CHANNEL_PROD = "CG4FLFNP3"
-                    def slackChannels = ""
-
                     def slackMessage = ""
 
-                    if (env.BUILD_ENV == 'Dev'){
-                        def lastTenCommitMessages = sh(
-                            script: 'git log --oneline -n 5',
-                            returnStdout: true
-                        )
-                        lastTenCommitMessages = SlackUtils.addRMPLinks(lastTenCommitMessages)
+                    switch (env.Build_ENV) {
+                        case 'Dev':
+                            def lastTenCommitMessages = sh(
+                                script: 'git log --oneline -n 5',
+                                returnStdout: true
+                            )
+                            lastTenCommitMessages = SlackUtils.addRMPLinks(lastTenCommitMessages)
 
-                        slackMessage = "*Android ${env.FEATURE} ${env.BUILD_ENV} Build Completed on Master Push Commit: ${shortCommitHash}*\n"
-                        slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
-                        slackMessage += "${env.BUILD_URL}console\n"
-                        slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_COMMIT}\n"
-                        slackMessage += "Last 5 commit messages on Master:\n ${lastTenCommitMessages}"
+                            slackMessage = "*Android ${env.BUILD_ENV} ${env.FEATURE} Build Completed on Master Push Commit: ${shortCommitHash}*\n"
+                            slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
+                            slackMessage += "${env.BUILD_URL}console\n"
+                            slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-carwash/commits/${env.GIT_COMMIT}\n"
+                            slackMessage += "Last 5 commit messages on Master:\n ${lastTenCommitMessages}"
 
-                        slackChannels = SLACK_CHANNEL_DEV
+                            break;
+
+                        case 'QA':
+                            def commitMessagesSinceLastTag = sh(
+                                script: 'git log --oneline $(git describe --tags --abbrev=0 @^)..@',
+                                returnStdout: true
+                            ).trim()
+                            def androidTagName = sh(
+                                script: 'git describe --abbrev=0 --tags',
+                                returnStdout: true
+                            ).trim()
+
+                            commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
+
+                            slackMessage = "*Android ${env.BUILD_ENV} ${env.FEATURE} Build Completed on Tag Push: ${androidTagName} Commit: ${shortCommitHash}*\n"
+                            slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
+                            slackMessage += "${env.BUILD_URL}console\n"
+                            slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-carwash/commits/tag/${androidTagName}\n"
+                            slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
+
+                            break;
+
+                        case ['Prod', 'DevSus', 'QASus', 'UAT']:
+                            def commitMessagesSinceLastTag = sh(
+                                script: 'git log --oneline $(git describe --tags --abbrev=0 @^)..@',
+                                returnStdout: true
+                            ).trim()
+                            def androidTagName = sh(
+                                script: 'git describe --abbrev=0 --tags',
+                                returnStdout: true
+                            ).trim()
+
+                            commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
+
+                            slackMessage = "*Android ${env.BUILD_ENV} ${env.FEATURE} Build Completed for Git commit: ${env.GIT_SHA} [Tag: ${androidTagName}]*\n"
+                            slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
+                            slackMessage += "${env.BUILD_URL}console\n"
+                            slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-carwash/commits/${env.GIT_SHA}\n"
+                            slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
+
+                            break;
+
+                        default:
+                            echo "Cannot resolve build enviornment ${env.BUILD_ENV} ${env.FEATURE}"
+                            break;
                     }
-                    if (env.BUILD_ENV == 'QA'){
-                        def commitMessagesSinceLastTag = sh(
-							script: 'git log --oneline $(git describe --tags --abbrev=0 @^)..@',
-							returnStdout: true
-						).trim()
-						def androidTagName = sh(
-							script: 'git describe --abbrev=0 --tags',
-							returnStdout: true
-						).trim()
 
-						commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
+                    def slackChannel = SlackUtils.getSlackChannel(env.BUILD_ENV)
 
-						slackMessage = "*Android ${env.FEATURE} ${env.BUILD_ENV} Build Completed on Tag Push: ${androidTagName} Commit: ${shortCommitHash}*\n"
-						slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
-						slackMessage += "${env.BUILD_URL}console\n"
-						slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/tag/${androidTagName}\n"
-						slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
-
-						slackChannels = SLACK_CHANNEL_QA
-                    }
-                    if (env.BUILD_ENV == 'Prod') {
-                        def commitMessagesSinceLastTag = sh(
-                            script: 'git log --oneline $(git describe --tags --abbrev=0 @^)..@',
-                            returnStdout: true
-                        ).trim()
-                        def androidTagName = sh(
-                            script: 'git describe --abbrev=0 --tags',
-                            returnStdout: true
-                        ).trim()
-
-                        commitMessagesSinceLastTag = SlackUtils.addRMPLinks(commitMessagesSinceLastTag)
-
-                        slackMessage = "*Android ${env.FEATURE} ${env.BUILD_ENV} Build Completed for Git commit: ${env.GIT_SHA} [Tag: ${androidTagName}]*\n"
-                        slackMessage += "*Build time: ${SlackUtils.getFormattedTime()}*\n"
-                        slackMessage += "${env.BUILD_URL}console\n"
-                        slackMessage += "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_SHA}\n"
-                        slackMessage += "Commit messages since last tag:\n ${commitMessagesSinceLastTag}"
-
-                        slackChannels = SLACK_CHANNEL_PROD
-                    }
-
-                    slackSend color: "good", channel: "${slackChannels}", message: slackMessage
+                    slackSend color: "good", channel: "${slackChannel}", message: slackMessage
                 }
             }
         }
@@ -199,54 +180,60 @@ pipeline {
 
                 SlackUtils = load 'deploy/SlackUtils.groovy'
 
-                def SLACK_CHANNEL_DEV = "CFRDD6XLG"
-                def SLACK_CHANNEL_QA = "GFG4ELAJF"
-                def SLACK_CHANNEL_PROD = "CG4FLFNP3"
-                def slackChannels = ""
+
                 def slackMessage = ""
 
-                if (env.BUILD_ENV == "Dev"){
-                    def shortCommitHash = env.GIT_COMMIT.substring(0, 6)
+                switch (env.Build_ENV) {
+                    case 'Dev':
+                        def androidTagName = sh(
+                            script: 'git describe --abbrev=0 --tags',
+                            returnStdout: true
+                        ).trim()
 
-                    slackChannels = SLACK_CHANNEL_DEV
+                        slackMessage = "*!!! Android ${env.BUILD_ENV} ${env.FEATURE} BUILD FAILED !!!*\n" +
+                        "*Failed on Tag: ${androidTagName}*\n" +
+                        "https://bitbucket.org/rfmp-suncor/suncor-android-carwash/commits/${env.GIT_COMMIT}\n" +
+                        "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
+                        "${env.BUILD_URL}console"
 
-                    slackMessage = "*!!! Android ${env.FEATURE} ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
-                    "*Failed on commit: ${shortCommitHash}*\n" +
-                    "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_COMMIT}\n" +
-                    "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
-                    "${env.BUILD_URL}console"
+                        break;
+
+                    case 'QA':
+                        def androidTagName = sh(
+                            script: 'git describe --abbrev=0 --tags',
+                            returnStdout: true
+                        ).trim()
+
+                        slackMessage = "*!!! Android ${env.BUILD_ENV} ${env.FEATURE} BUILD FAILED !!!*\n" +
+                        "*Failed on Tag: ${androidTagName}*\n" +
+                        "https://bitbucket.org/rfmp-suncor/suncor-android-carwash/src/${androidTagName}\n" +
+                        "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
+                        "${env.BUILD_URL}console"
+
+                        break;
+
+                    case ['Prod', 'DevSus', 'QASus', 'UAT']:
+                        def androidTagName = sh(
+                            script: 'git describe --abbrev=0 --tags',
+                            returnStdout: true
+                        ).trim()
+
+                        slackMessage = "*!!! Android ${env.BUILD_ENV} ${env.FEATURE} BUILD FAILED !!!*\n" +
+                        "*Failed on Tag: ${androidTagName}*\n" +
+                        "https://bitbucket.org/rfmp-suncor/suncor-android-carwash/commits/${env.GIT_COMMIT}\n" +
+                        "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
+                        "${env.BUILD_URL}console"
+
+                        break;
+
+                    default:
+                        echo "Cannot resolve build enviornment ${env.BUILD_ENV}"
+                        break;
                 }
 
-                if (env.BUILD_ENV == "QA"){
-                    def androidTagName = sh(
-                        script: 'git describe --abbrev=0 --tags',
-                        returnStdout: true
-					).trim()
+                def slackChannel = SlackUtils.getSlackChannel(env.BUILD_ENV)
 
-                    slackChannels = SLACK_CHANNEL_QA
-
-                    slackMessage = "*!!! Android ${env.FEATURE} ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
-                    "*Failed on Tag: ${androidTagName}*\n" +
-                    "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/tag/${androidTagName}\n" +
-                    "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
-                    "${env.BUILD_URL}console"
-                }
-
-                if (env.BUILD_ENV == "Prod") {
-                    def androidTagName = sh(
-                        script: 'git describe --abbrev=0 --tags',
-                        returnStdout: true
-                    ).trim()
-
-                    slackChannels = SLACK_CHANNEL_PROD
-
-                    slackMessage = "*!!! Android ${env.FEATURE} ${env.BUILD_ENV} BUILD FAILED !!!*\n" +
-                    "*Failed on Commit: ${env.GIT_SHA}*\n" +
-                    "https://bitbucket.org/rfmp-suncor/suncor-android-${env.FEATURE}/commits/${env.GIT_SHA}\n" +
-                    "*Fail time: ${SlackUtils.getFormattedTime()}*\n" +
-                    "${env.BUILD_URL}console"
-                }
-                slackSend color: "#CC0000", channel: "${slackChannels}", message: slackMessage
+                slackSend color: "#CC0000", channel: "${slackChannel}", message: slackMessage
             }
         }
 
