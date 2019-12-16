@@ -10,17 +10,17 @@
       {
         "id": "how-do-i-reload-my-fuel-savings-reward-card",
         "question": "Comment recharger ma carte Économie sur l’essence en prime?",
-        "response": "Bientôt - rechargez votre carte avec l'app. Pour le moment, visitez petro-points.com"
+        "response": "Bientôt - rechargez votre carte avec l'app. Pour le moment, visitez <a href=\"https://www.petro-canada.ca/fr/personnel/mes-petro-points\">petro-points.com</a>."
       },
       {
         "id": "how-do-i-reload-my-wash-and-go-card-or-season-pass",
         "question": "Comment recharger ma carte Lavez Partez ou ma carte accès lave-auto?",
-        "response": "Bientôt - rechargez vos cartes avec l'app. Pour le moment, visitez petro-canada.ca"
+        "response": "Bientôt - rechargez vos cartes avec l'app. Pour le moment, visitez <a href=\"https://www.petro-canada.ca/fr/personnel\">petro-points.com</a>."
       },
       {
         "id": "how-do-i-add-my-partner-card-to-my-petro-points-account",
         "question": "Comment ajouter ma carte de partenaire à mon compte Petro-Points (CAA, More Rewards)?",
-        "response": "Bientôt - ajoutez vos cartes - partenaire avec l'app. Pour le moment - petro-points.com"
+        "response": "Bientôt - ajoutez vos cartes - partenaire avec l'app. Pour le moment - <a href=\"https://www.petro-canada.ca/fr/personnel/mes-petro-points\">petro-points.com</a>."
       },
       {
         "id": "can-i-redeem-my-points-using-the-app",

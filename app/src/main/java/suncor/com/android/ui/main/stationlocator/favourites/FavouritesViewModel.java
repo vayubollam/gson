@@ -39,7 +39,7 @@ public class FavouritesViewModel extends ViewModel {
                 ArrayList<Station> stations = favouriteRepository.getFavouriteList();
                 ArrayList<StationItem> stationItems = new ArrayList<>();
                 for (Station station : stations) {
-                    StationItem stationItem = new StationItem(station, null);
+                    StationItem stationItem = new StationItem(favouriteRepository,station, null);
                     stationItems.add(stationItem);
                 }
                 Collections.sort(stationItems, stationsComparator);

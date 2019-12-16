@@ -38,9 +38,53 @@ def addBuildInfo(mfpTagName) {
 }
 
 @NonCPS
+def getSlackChannel(environment) {
+
+	def SLACK_CHANNEL_DEV = "CFRDD6XLG"
+	def SLACK_CHANNEL_QA = "GFG4ELAJF"
+	def SLACK_CHANNEL_UAT = "CQT00VABF"
+	def SLACK_CHANNEL_PROD = "CG4FLFNP3"
+	def SLACK_CHANNEL_SUSTAINMENT_DEV = "CQV630ER4"
+	def SLACK_CHANNEL_SUSTAINMENT_QA = "CQT041Y5B"
+
+	def slackChannel = "";
+	switch (environment) {
+		case 'Dev':
+			slackChannel = SLACK_CHANNEL_DEV
+			break;
+		case 'QA':
+			slackChannel = SLACK_CHANNEL_QA
+			break;
+		case 'Prod':
+			slackChannel = SLACK_CHANNEL_PROD
+			break;
+		case 'DevSus':
+			slackChannel = SLACK_CHANNEL_SUSTAINMENT_DEV
+			break;
+		case 'QASus':
+			slackChannel = SLACK_CHANNEL_SUSTAINMENT_QA
+			break;
+		case 'UAT':
+			slackChannel = SLACK_CHANNEL_UAT
+			break;
+		default:
+			echo "Cannot resolve build environment ${env.BUILD_ENV}"
+			break;
+	}
+
+	return slackChannel;
+}
+
+@NonCPS
 def getFormattedTime() {
 	def now = new Date()
 	return now.format("EEE MMM d, yyyy HH:mm:ss z", TimeZone.getTimeZone("EST5EDT"))
+}
+
+@NonCPS
+def getBuildDate() {
+	def now = new Date()
+	return now.format("YYYYMMddHH", TimeZone.getTimeZone("EST5EDT"))
 }
 
 

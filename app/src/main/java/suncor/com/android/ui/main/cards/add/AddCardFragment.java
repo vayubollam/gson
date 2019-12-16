@@ -50,11 +50,18 @@ public class AddCardFragment extends MainActivityFragment {
                 hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_LIKING_CARD_FAILED.equals(result.message)) {
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.cards_add_fragment_invalid_card_title)));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.cards_add_fragment_invalid_card_title) ));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.cards_add_fragment_invalid_card_title)));
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.cards_add_fragment_invalid_card_title)
                             .setMessage(R.string.cards_add_fragment_invalid_card_message)
-                            .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                            .setPositiveButton(R.string.ok, (dialog, which) -> {
+                                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                        new Pair<>("alertTitle", getString(R.string.cards_add_fragment_invalid_card_title)),
+                                        new Pair<>("alertSelection",getString(R.string.ok))
+                                );
+                                dialog.dismiss();
+                            })
                             .show();
                 } else {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
@@ -70,9 +77,9 @@ public class AddCardFragment extends MainActivityFragment {
             AnalyticsUtils.logEvent(
                     getContext(),
                     "form_complete",
-                    new Pair<>("formName", "Add card"),
-                    new Pair<>("formSelection", optionsChecked)
-            );
+                     new Pair<>("formName", "Add Card"),
+                     new Pair<>("formSelection", optionsChecked)
+                        );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             goBack();
         });
@@ -114,7 +121,7 @@ public class AddCardFragment extends MainActivityFragment {
         }
         viewModel.showCvvField.observe(this, result -> {
             if (viewModel.showCvvField.getValue().booleanValue())
-                AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add card"), new Pair<>("stepName", "CVV"));
+                AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add Card"), new Pair<>("stepName", "CVV"));
 
         });
 
@@ -124,10 +131,16 @@ public class AddCardFragment extends MainActivityFragment {
 
     private void showCvvHelp() {
         AnalyticsUtils.setCurrentScreenName(getActivity(), "card-security-code-info");
+        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.cards_add_fragment_help_dialog_title)));
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.cards_add_fragment_help_dialog_title)
                 .setView(getLayoutInflater().inflate(R.layout.cvv_help_layout, null))
-                .setPositiveButton(R.string.ok, null)
+                .setPositiveButton(R.string.ok, (dialog, which)-> {
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                            new Pair<>("alertTitle", getString(R.string.cards_add_fragment_help_dialog_title)),
+                            new Pair<>("alertSelection",getString(R.string.ok))
+                    );
+                })
                 .show();
     }
 

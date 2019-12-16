@@ -123,7 +123,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         super.handleFailure(error);
         Timber.d("Handle failure");
         Timber.v(error.toString());
-        AnalyticsUtils.userID = "none";
+        AnalyticsUtils.userID = null;
         isChallenged = false;
         listener.onLoginFailed(SigninResponse.generalFailure());
     }
@@ -162,7 +162,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     //TODO handle failures related to connection issue
-                    AnalyticsUtils.userID = "none";
+                    AnalyticsUtils.userID = null;
                     Timber.d("Login Preemptive Failure, error: " + wlFailResponse.toString());
                     if (listener != null && !WLErrorCode.CHALLENGE_HANDLING_CANCELED.getDescription().equals(wlFailResponse.getErrorMsg())) {
                         listener.onLoginFailed(SigninResponse.generalFailure());
@@ -193,7 +193,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         WLAuthorizationManager.getInstance().logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
-                AnalyticsUtils.userID = "none";
+                AnalyticsUtils.userID = null;
                 fingerPrintManager.deactivateAutoLogin();
                 listener.onSuccess();
             }

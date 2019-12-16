@@ -20,6 +20,7 @@ import suncor.com.android.model.redeem.request.ShoppingCart;
 import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.main.rewards.MerchantItem;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.Timber;
 
 public class GiftCardValueConfirmationViewModel extends ViewModel {

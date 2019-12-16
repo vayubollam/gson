@@ -26,7 +26,7 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
 
     private FragmentRewardsDiscoveryBinding binding;
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();
-
+    private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,25 +39,34 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "discover-petro-points");
         String language = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr" : "en";
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-" + language + ".html");
         isWebViewLoading.set(true);
         binding.webview.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback(){
             public void onScroll(int l, int t, int oldl, int oldt){
-                if(t> oldt){
-                    float contentHeight = binding.webview.getContentHeight() * binding.webview.getScaleY();
-                    float total = contentHeight * getResources().getDisplayMetrics().density - getView().getHeight();
+                float contentHeight = binding.webview.getContentHeight() * binding.webview.getScaleY();
+                float total = contentHeight * getResources().getDisplayMetrics().density - getView().getHeight();
 
-                    double scrollPosition = (t / (total - getResources().getDisplayMetrics().density))  * 100d;
-                    int pourcentage = (int) scrollPosition;
-                    if (pourcentage == 20 || pourcentage == 40 || pourcentage == 60 || pourcentage == 80 || pourcentage == 100){
-                        AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold",Integer.toString(pourcentage) ));
-
-                    }
+                double scrollPosition = (t / (total - getResources().getDisplayMetrics().density))  * 100d;
+                int percentage = (int) scrollPosition;
+                if (percentage > 20 && !scroll20) {
+                    scroll20 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","20"));
+                } else if (percentage > 40 && !scroll40){
+                    scroll40 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","40"));
+                } else if (percentage > 60 && !scroll60){
+                    scroll60 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","60"));
+                } else if (percentage > 80 && !scroll80){
+                    scroll80 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","80"));
+                } else if (percentage > 100 && !scroll100) {
+                    scroll100 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "100"));
                 }
-
-
             }
         });
         binding.webview.setWebViewClient(new WebViewClient() {

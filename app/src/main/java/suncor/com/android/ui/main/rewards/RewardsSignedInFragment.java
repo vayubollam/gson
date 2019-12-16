@@ -33,6 +33,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private FragmentRewardsSignedinBinding binding;
     private RewardsSignedInViewModel viewModel;
     private boolean isHeaderVisible;
+    private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
     RewardsAdapter rewardsAdapter;
 
     @Inject
@@ -104,9 +105,22 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 double scrollViewHeight = v.getChildAt(0).getBottom() - v.getHeight();
                 double getScrollY = v.getScrollY();
                 double scrollPosition = (getScrollY / scrollViewHeight) * 100d;
-                int pourcentage = (int) scrollPosition;
-                if (pourcentage == 20 || pourcentage == 40 || pourcentage == 60 || pourcentage == 80 || pourcentage == 100) {
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", Integer.toString(pourcentage)));
+                int percentage = (int) scrollPosition;
+                if (percentage > 20 && !scroll20) {
+                    scroll20 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","20"));
+                } else if (percentage > 40 && !scroll40){
+                    scroll40 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","40"));
+                } else if (percentage > 60 && !scroll60){
+                    scroll60 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","60"));
+                } else if (percentage > 80 && !scroll80){
+                    scroll80 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","80"));
+                } else if (percentage > 100 && !scroll100){
+                    scroll100 = true;
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","100"));
                 }
             }
             if (scrollY >= threshold) {

@@ -11,6 +11,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
@@ -24,6 +25,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
     private String videoId;
     private String videoTitle;
     Handler mHandler;
+    private boolean show25 = false, show50 = false, show75 = false;
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -113,24 +115,29 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         @Override
         public void onVideoEnded() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_complete", new Pair<>("videoTitle", videoTitle));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoStart, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
 
         }
 
         @Override
         public void onVideoStarted() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), "video_start", new Pair<>("videoTitle",  videoTitle));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoComplete, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
         }
     };
     private void displayCurrentTime() {
         if (null == mPlayer) return;
         if ( mPlayer.getCurrentTimeMillis() != 0){
-        int pourcentage =  ( mPlayer.getCurrentTimeMillis() * 100 ) / mPlayer.getDurationMillis();
-
-            if ( pourcentage == 25 || pourcentage == 50|| pourcentage == 75  ){
-                String  pour = "video_threshold_"+ Integer.toString(pourcentage) ;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), pour, new Pair<>("videoTitle", videoTitle));
-    }
+            int percentage =  ( mPlayer.getCurrentTimeMillis() * 100 ) / mPlayer.getDurationMillis();
+            if (percentage > 25 && !show25) {
+                show25 = true;
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold25, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+            } else if (percentage > 50 && !show50) {
+                show50 = true;
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold50, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+            } else if (percentage > 75 && !show75) {
+                show75 = true;
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold75, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+            }
         }
     }
     private Runnable runnable = new Runnable() {
