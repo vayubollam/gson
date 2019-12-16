@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import suncor.com.android.data.redeem.MerchantsRepository;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.utilities.Timber;
@@ -17,7 +18,7 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<Event> userLoggedOut = new MutableLiveData<>();
     private boolean isLinkedToAccount = false;
     private boolean isNewCardAdded = false;
-    private String newAddedCardNumber;
+    private CardDetail newAddedCard;
     private Set<String> singleTicketNumber;
     private MutableLiveData<Station> nearestStation = new MutableLiveData<>();
 
@@ -67,11 +68,11 @@ public class MainViewModel extends ViewModel {
         isNewCardAdded = newCardAdded;
     }
 
-    public String getNewAddedCardNumber() {
-        return newAddedCardNumber;
+    public CardDetail getNewAddedCard() {
+        return newAddedCard;
     }
 
-    public void setNewAddedCardNumber(String newAddedCardNumber) {
-        this.newAddedCardNumber = newAddedCardNumber;
+    public void setNewAddedCard(CardDetail newAddedCard) {
+        this.newAddedCard = newAddedCard;
     }
 }

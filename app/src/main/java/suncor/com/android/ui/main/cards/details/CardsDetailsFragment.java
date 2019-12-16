@@ -86,8 +86,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
         loadType = CardsDetailsFragmentArgs.fromBundle(getArguments()).getLoadType();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setLoadType(loadType);
-        viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
-        viewModel.setNewlyAddedCardNumber(mainViewModel.getNewAddedCardNumber());
+        if (loadType == CardsLoadType.REDEEMED_SINGLE_TICKETS)
+            viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
+        if (loadType == CardsLoadType.NEWLY_ADD_CARD)
+            viewModel.setNewlyAddedCardNumber(mainViewModel.getNewAddedCard().getCardNumber());
         viewModel.retrieveCards();
         viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
             ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
@@ -224,6 +226,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             isRemoving.set(false);
                             new Handler().postDelayed(() -> {
                                 cardsDetailsAdapter.removeCard(new ExpandedCardItem(getContext(), cardDetailResource.data));
+                                if (cardsDetailsAdapter.getCardItems().size() == 0)
+                                    Navigation.findNavController(getView()).popBackStack();
                             }, 200);
 
                             AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", cardDetailResource.data.getCardName()));

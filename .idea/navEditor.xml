@@ -493,6 +493,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_carWashCardFragment_to_addCardFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_carWashCardFragment_to_carWashPurchaseFragment">
                               <value>
                                 <LayoutPositions />

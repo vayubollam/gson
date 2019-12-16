@@ -37,6 +37,7 @@ import suncor.com.android.databinding.FragmentCarWashBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -99,7 +100,12 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate(action);
+                } else if (mainViewModel.isNewCardAdded() && (mainViewModel.getNewAddedCard().getCardType() == CardType.WAG ||mainViewModel.getNewAddedCard().getCardType() == CardType.SP )) {
+                    CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
+                    action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
+                    Navigation.findNavController(getView()).navigate(action);
                 } else {
+                    mainViewModel.setNewCardAdded(false);
                     ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
                     for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
                         petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
@@ -195,7 +201,8 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding.refreshLayout.setOnRefreshListener(this);
 
         CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
-        binding.carwashWashCards.carWashGetMoreCard.setOnClickListener(buyTicketListener);
+        //TODO: UNCOMMENT THIS ONCE SINGLE TICKET IS IN SCOPE
+        //binding.carwashWashCards.carWashGetMoreCard.setOnClickListener(buyTicketListener);
         binding.carwashWashCards.carWashCardsList.setAdapter(petroCanadaCardsAdapter);
         binding.carwashWashCards.carWashCardsList.addItemDecoration(listDecorator);
         binding.carwashWashCards.carWashCardsList.setNestedScrollingEnabled(false);
@@ -209,7 +216,8 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         });
 
         //setup no card click listener
-        binding.carwashNoCard.buyTicketButton.setOnClickListener(buyTicketListener);
+        //binding.carwashNoCard.buyTicketButton.setOnClickListener(buyTicketListener);
+        binding.carwashNoCard.buyTicketButton.setOnClickListener(addNewCardListener);
 
         //Setup nearest card click listeners
         nearestCardBinding = binding.carwashNearestCards;
@@ -271,8 +279,13 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         Navigation.findNavController(getView()).navigate(action);
     }
 
-    private View.OnClickListener buyTicketListener = v -> {
-        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
+    //TODO: UNCOMMENT THIS WHEN REDDEM/BUY SINGLE TICKET IS IN THE SCOPR
+//    private View.OnClickListener buyTicketListener = v -> {
+//        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
+//    };
+
+    private View.OnClickListener addNewCardListener = v ->{
+        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_addCardFragment);
     };
 
     private View.OnClickListener tryAgainLister = v -> {

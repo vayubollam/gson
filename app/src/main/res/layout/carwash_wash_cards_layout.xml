@@ -92,15 +92,14 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/car_wash_cards_list"
-            app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; vm.viewState != ViewState.FAILED &amp;&amp; vm.isBalanceZero}">
+            app:visibleGone="@{vm.viewState != ViewState.LOADING &amp;&amp; vm.viewState != ViewState.FAILED &amp;&amp; vm.isCardAvailable &amp;&amp; vm.isBalanceZero}">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <suncor.com.android.ui.common.LinkableTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/carwash_margin_16"
                 android:layout_marginTop="@dimen/carwash_margin_16"
                 android:text="@string/carwash_get_ticket_button"
-                android:textAllCaps="true"
                 android:textColor="#EC1C2F"
                 android:textSize="14sp"
                 app:fontFamily="@font/gibson_semibold" />

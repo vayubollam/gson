@@ -426,6 +426,12 @@
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down"/>
+        <action
+            android:id="@+id/action_carWashCardFragment_to_addCardFragment"
+            app:destination="@id/addCardFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_down" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashPurchaseFragment"

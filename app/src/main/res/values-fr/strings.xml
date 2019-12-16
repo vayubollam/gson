@@ -218,6 +218,7 @@
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
+    <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
     <string name="cards_sp_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_ppc_description">Économisez chaque fois que vous utilisez votre Carte Prix Préférentiel.</string>
     <string name="cards_rbc_description">Notre programme RBC Petro‑Canada vous aide à économiser sur l\'essence et à accumuler des points plus rapidement.</string>
@@ -512,7 +513,8 @@
     <string name="carwash_getwash_header">Obtenez votre lavage</string>
     <string name="carwash_no_card_get_ticket_header">Obtenir un billet de lavage</string>
     <string name="carwash_no_card_get_ticket_message">Achetez un billet de lavage ou ajoutez votre carte de lave-auto à votre application Wallet.</string>
-    <string name="carwash_get_ticket_button">Acheter un billet</string>
+    <string name="carwash_nocard_add_card_button">Ajouter une carte</string>
+    <string name="carwash_get_ticket_button">Rechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
     <string name="carwash_getwash_message_card_only">Sélectionnez votre carte de lavage pour commencer.</string>
     <string name="carwash_getwash_message_ticket_only">Sélectionnez votre billet de lavage pour commencer.</string>
     <string name="carwash_getwash_message_card_and_ticket">Sélectionnez votre carte ou billet de lavage pour commencer.</string>
@@ -559,7 +561,8 @@
     <string name="single_ticket_barcode_trouble_message">Vous n\'arrivez pas à scanner?  \nEssayez d\'entrer votre numéro de billet à l\'écran du lave-auto.</string>
 
     <string name="zero_balance_alert_title">Votre carte est vide</string>
-    <string name="zero_balance_alert_message">Votre carte semble vide. Ne vous en faites pas, vous pouvez acheter un lavage ci-dessous.</string>
+    <string name="zero_balance_alert_message">Votre carte semble vide. Rechargez-la sur le site petro-canada.ca ou obtenez une carte de lavage au dépanneur.</string>
+    <string name="zero_balance_alert_close">Fermer</string>
     <string name="zero_balance_alert_buy">Acheter un lavage</string>
     <string name="zero_balance_alert_view">Voir les détails de la carte</string>
     <string name="zero_balance_other_available_message">Votre carte semble vide. Ne vous inquiétez pas - vous avez d\'autres options dans votre compte.</string>
