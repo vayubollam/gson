@@ -32,6 +32,6 @@ public class RewardsDetailsFragment extends MainActivityFragment {
 
     @Override
     protected String getScreenName() {
-        return "reward-detail-loggedin" + binding.getReward().getName();
+        return "my-petro-points-redeem-info-" + binding.getReward().getName();
     }
 }

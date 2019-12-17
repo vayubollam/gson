@@ -87,12 +87,12 @@ window.onload = function () {
     // (Panel-7) Article Rewards-Partners 
     document.getElementById("rewards-partners-title").innerHTML = data.rewardsPartners.title
     document.getElementById("rewards-partners-partner-1-description").innerHTML = data.rewardsPartners.partner1.description;
-    document.getElementById("rewards-partners-partner-2-description").innerHTML = data.rewardsPartners.partner2.description;
+//    document.getElementById("rewards-partners-partner-2-description").innerHTML = data.rewardsPartners.partner2.description;
     document.getElementById("rewards-partners-partner-3-description").innerHTML = data.rewardsPartners.partner3.description;
     
 
     document.getElementById("rewards-partners-partner-1-image").src="images/panel-7/card-askingcdns.png";
-    document.getElementById("rewards-partners-partner-2-image").src="images/panel-7/card-carrot.png";
+//    document.getElementById("rewards-partners-partner-2-image").src="images/panel-7/card-carrot.png";
     document.getElementById("rewards-partners-partner-3-image").src="images/panel-7/card-itravel2000.png";
 
     // (Panel-8) Article Rewards-Exchange

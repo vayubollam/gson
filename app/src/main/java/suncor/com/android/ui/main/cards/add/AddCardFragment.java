@@ -41,7 +41,7 @@ public class AddCardFragment extends MainActivityFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddCardViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Add Card"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Add Card"));
 
         viewModel.addCardApiResult.observe(this, result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -77,10 +77,10 @@ public class AddCardFragment extends MainActivityFragment {
             String optionsChecked = "";
             AnalyticsUtils.logEvent(
                     getContext(),
-                    "form_complete",
-                     new Pair<>("formName", "Add Card"),
-                     new Pair<>("formSelection", optionsChecked)
-                        );
+                    AnalyticsUtils.Event.formComplete,
+                    new Pair<>(AnalyticsUtils.Param.formName, "Add Card"),
+                    new Pair<>(AnalyticsUtils.Param.formSelection, optionsChecked)
+            );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
 
         });
@@ -127,7 +127,7 @@ public class AddCardFragment extends MainActivityFragment {
         binding.cardInput.requestFocus();
         showKeyBoard();
         if (binding.cardInput.hasFocus()){
-            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add card"), new Pair<>("stepName", "Card number"));
+            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", "Add Card"), new Pair<>("stepName", "Card number"));
         }
         viewModel.showCvvField.observe(this, result -> {
             if (viewModel.showCvvField.getValue().booleanValue())
