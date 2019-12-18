@@ -516,7 +516,7 @@
     <string name="carwash_getwash_message_card_and_ticket">Select your car wash card or ticket to get started.</string>
     <string name="carwash_no_card_get_ticket_header">Get a car wash ticket</string>
     <string name="carwash_no_card_get_ticket_message">Purchase a car wash ticket now, or add your car wash card to your wallet.</string>
-    <string name="carwash_get_ticket_button">Reload on <a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">petro-canada.ca</a>.</string>
+    <string name="carwash_get_ticket_button"><a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">Reload online</a></string>
     <string name="carwash_nocard_add_card_button">Add a card</string>
     <string name="carwash_no_carwash_station_available">Car wash not available</string>
     <string name="carwash_user_onsite_header">This station</string>

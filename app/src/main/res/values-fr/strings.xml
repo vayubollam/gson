@@ -514,7 +514,7 @@
     <string name="carwash_no_card_get_ticket_header">Obtenir un billet de lavage</string>
     <string name="carwash_no_card_get_ticket_message">Achetez un billet de lavage ou ajoutez votre carte de lave-auto à votre application Wallet.</string>
     <string name="carwash_nocard_add_card_button">Ajouter une carte</string>
-    <string name="carwash_get_ticket_button">Rechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
+    <string name="carwash_get_ticket_button"><a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">Recharger en Ligne</a></string>
     <string name="carwash_getwash_message_card_only">Sélectionnez votre carte de lavage pour commencer.</string>
     <string name="carwash_getwash_message_ticket_only">Sélectionnez votre billet de lavage pour commencer.</string>
     <string name="carwash_getwash_message_card_and_ticket">Sélectionnez votre carte ou billet de lavage pour commencer.</string>
