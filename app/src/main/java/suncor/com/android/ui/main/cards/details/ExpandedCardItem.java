@@ -31,7 +31,6 @@ public class ExpandedCardItem {
     private CardDetail.CardCategory cardCategory;
     private CardDetail cardDetail;
     private boolean isRemovable = true;
-    private boolean isBalanceZero = false;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
@@ -107,7 +106,6 @@ public class ExpandedCardItem {
                             : null;
                     cardDescription = context.getString(R.string.cards_sp_description);
                     isBalanceDetailsVisible = false;
-                    isBalanceZero = balanceValue <= 0;
                     break;
                 case WAG:
                     cardImage = context.getDrawable(R.drawable.wag_card);
@@ -118,7 +116,6 @@ public class ExpandedCardItem {
                             : null;
                     cardDescription = context.getString(R.string.cards_wag_description);
                     isBalanceDetailsVisible = false;
-                    isBalanceZero = balanceValue <= 0;
                     break;
                 case PPC:
                     cardImage = context.getDrawable(R.drawable.preferred_price_card);
@@ -179,10 +176,6 @@ public class ExpandedCardItem {
 
     public boolean isBalanceDetailsVisible() {
         return isBalanceDetailsVisible;
-    }
-
-    public boolean isBalanceZero() {
-        return isBalanceZero;
     }
 
     public Drawable getBarCode() {

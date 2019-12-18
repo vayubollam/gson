@@ -102,6 +102,7 @@
                 android:text="@string/carwash_get_ticket_button"
                 android:textColor="#EC1C2F"
                 android:textSize="14sp"
+                android:textAllCaps="true"
                 app:fontFamily="@font/gibson_semibold" />
 
         </LinearLayout>
