@@ -22,6 +22,8 @@ import android.view.animation.Interpolator;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.Fade;
 
 import javax.inject.Inject;
 
@@ -35,6 +37,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.tutorial.TutorialFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
@@ -202,10 +205,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         } else {
             sessionManager.setCarWashKey(settingsResponse.getSettings().getCarwash().getKey());
             if (firstTimeUse) {
-                delayHandler.postDelayed(() -> {
-                    startExitAnimation(false);
-
-                }, delayExit);
+                delayHandler.postDelayed(this::showTutorialFragment, delayExit);
             } else {
                 if (fingerPrintManager.isAutoLoginActivated()) {
                     sessionManager.checkLoginState().observe(this, loginState -> {
@@ -275,13 +275,23 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         }
     }
 
-    private void openMainActivity(boolean loginFailed) {
+    public void openMainActivity(boolean loginFailed) {
         delayHandler.removeCallbacksAndMessages(null);
         Intent homeIntent = new Intent(this, MainActivity.class);
         homeIntent.putExtra(LOGINFAILED, loginFailed);
         startActivity(homeIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
+    }
+
+    private void showTutorialFragment() {
+        Fade enterFade = new Fade();
+        enterFade.setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
+        TutorialFragment fragment = new TutorialFragment();
+        fragment.setEnterTransition(enterFade);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.relativeLayout ,fragment);
+        transaction.commit();
     }
 
     @Override
