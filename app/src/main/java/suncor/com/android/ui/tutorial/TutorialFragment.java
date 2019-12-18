@@ -1,5 +1,6 @@
 package suncor.com.android.ui.tutorial;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentTutorialBinding;
@@ -23,6 +26,7 @@ import suncor.com.android.databinding.TutorialScreenListitemBinding;
 import suncor.com.android.ui.SplashActivity;
 
 public class TutorialFragment extends Fragment {
+    private boolean isFrench = false;
 
     @Nullable
     @Override
@@ -31,26 +35,43 @@ public class TutorialFragment extends Fragment {
             getActivity().getWindow().setStatusBarColor(Color.WHITE);
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        verifySystemLanguage();
         FragmentTutorialBinding binding = FragmentTutorialBinding.inflate(inflater, container, false);
-        TutorialContent slide1 = new TutorialContent(getString(R.string.tutorial_silde_page1_header), getResources().getDrawable(R.drawable.feature_img_1, null));
-        TutorialContent slide2 = new TutorialContent(getString(R.string.tutorial_silde_page2_header), getResources().getDrawable(R.drawable.feature_img_2, null));
-        TutorialContent slide3 = new TutorialContent(getString(R.string.tutorial_silde_page3_header), getResources().getDrawable(R.drawable.feature_img_3, null));
-        List<TutorialContent> tutorialContents = new ArrayList<>();
-        tutorialContents.add(slide1);
-        tutorialContents.add(slide2);
-        tutorialContents.add(slide3);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-
         binding.tutorialRecycler.setLayoutManager(linearLayoutManager);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.tutorialRecycler);
-        TutorialAdapter adapter = new TutorialAdapter(tutorialContents);
+        TutorialAdapter adapter = new TutorialAdapter(setUpTutorialSlides());
         binding.tutorialRecycler.setAdapter(adapter);
         binding.pageIndicator.attachToRecyclerView(binding.tutorialRecycler, pagerSnapHelper);
         adapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
         binding.buttonClose.setOnClickListener(v -> ((SplashActivity) getActivity()).openMainActivity(false));
 
         return binding.getRoot();
+    }
+
+    private List<TutorialContent> setUpTutorialSlides() {
+        List<TutorialContent> tutorialContents = new ArrayList<>();
+        TutorialContent slide1, slide2, slide3;
+        if (isFrench) {
+            slide1 = new TutorialContent(getString(R.string.tutorial_silde_page1_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+            slide2 = new TutorialContent(getString(R.string.tutorial_silde_page2_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+            slide3 = new TutorialContent(getString(R.string.tutorial_silde_page3_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+        } else {
+            slide1 = new TutorialContent(getString(R.string.tutorial_silde_page1_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+            slide2 = new TutorialContent(getString(R.string.tutorial_silde_page2_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+            slide3 = new TutorialContent(getString(R.string.tutorial_silde_page3_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+        }
+        tutorialContents.add(slide1);
+        tutorialContents.add(slide2);
+        tutorialContents.add(slide3);
+        return tutorialContents;
+    }
+
+    private void verifySystemLanguage() {
+        Locale local = Resources.getSystem().getConfiguration().getLocales().get(0);
+        isFrench = local.equals(Locale.CANADA_FRENCH) ||
+                local.equals(Locale.FRENCH) || local.equals(Locale.FRANCE);
     }
 
 
@@ -72,7 +93,7 @@ public class TutorialFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull TutorialViewHolder holder, int position) {
             holder.binding.tutorialHeader.setText(tutorials.get(position).getHeader());
-            holder.binding.tutorialImage.setImageDrawable(tutorials.get(position).getImage());
+            holder.binding.tutorialImage.setGifImageResource(tutorials.get(position).getImage());
         }
 
         @Override

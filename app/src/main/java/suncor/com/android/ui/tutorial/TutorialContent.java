@@ -1,22 +1,20 @@
 package suncor.com.android.ui.tutorial;
 
-import android.graphics.drawable.Drawable;
-
 public class TutorialContent {
     private String header;
-    private Drawable image;
+    private int imageId;
 
-    public TutorialContent(String header, Drawable image) {
+    TutorialContent(String header, int image) {
         this.header = header;
-        this.image = image;
+        this.imageId = image;
     }
 
     public String getHeader() {
         return header;
     }
 
-    public Drawable getImage() {
-        return image;
+    public int getImage() {
+        return imageId;
     }
 
 }
