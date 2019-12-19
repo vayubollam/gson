@@ -19,7 +19,10 @@ public class AnalyticsUtils {
         videoThreshold25("video_threshold_25"),
         videoThreshold50("video_threshold_50"),
         videoThreshold75("video_threshold_75"),
-        videoComplete("video_complete")
+        videoComplete("video_complete"),
+        formStart("form_start"),
+        formStep("form_step"),
+        formComplete("form_complete")
         ;
 
         private final String name;
@@ -41,7 +44,10 @@ public class AnalyticsUtils {
         creativeSlot("creative_slot"),
         contentType("content_type"),
         promotions("promotions"),
-        videoTitle("videoTitle")
+        videoTitle("videoTitle"),
+        formName("formName"),
+        stepName("stepName"),
+        formSelection("formSelection")
         ;
 
         private final String name;

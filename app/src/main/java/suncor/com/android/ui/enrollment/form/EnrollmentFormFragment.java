@@ -455,16 +455,16 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             if (view == binding.firstNameInput) {
                 AnalyticsUtils.logEvent(
                         getContext(),
-                        "form_step",
-                        new Pair<>("formName", formName),
-                        new Pair<>("stepName", binding.personalCategoryTitle.getText().toString())
+                        AnalyticsUtils.Event.formStep,
+                        new Pair<>(AnalyticsUtils.Param.formName, formName),
+                        new Pair<>(AnalyticsUtils.Param.stepName, "Personal Information")
                 );
             } else if (view == binding.streetAddressInput) {
                 AnalyticsUtils.logEvent(
                         getContext(),
-                        "form_step",
-                        new Pair<>("formName", formName),
-                        new Pair<>("stepName", binding.addressCategoryTitle.getText().toString())
+                        AnalyticsUtils.Event.formStep,
+                        new Pair<>(AnalyticsUtils.Param.formName, formName),
+                        new Pair<>(AnalyticsUtils.Param.stepName, "Address")
                 );
             }
         }
