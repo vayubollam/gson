@@ -1,14 +1,10 @@
 package suncor.com.android.uicomponents;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 
 import java.io.InputStream;
@@ -48,15 +44,6 @@ public class SuncorGIFView extends View {
 
         requestLayout();
     }
-
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        float height = Resources.getSystem().getDisplayMetrics().heightPixels - convertDpToPixel(180, mContext);
-//        float factor = height / mHeight;
-//        float width = mWidth * factor;
-//        setMeasuredDimension((int) width, (int) height);
-//    }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
