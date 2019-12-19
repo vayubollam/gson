@@ -50,6 +50,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     private int delayExit = 900;
     private ActivitySplashBinding binding;
     private boolean firstTimeUse = false;
+    private boolean newVersionUpdated = false;
     public static final String LOGINFAILED = "loginFailed";
 
     @Inject
@@ -106,6 +107,8 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                 break;
             case FIRST_TIME_VERSION:
                 //new update show what's new if applicable
+                newVersionUpdated = true;
+                showTutorialFragment();
                 break;
             default:
                 break;
@@ -222,7 +225,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                         }
                     });
                 } else {
-                    startExitAnimation(false);
+                    if (!newVersionUpdated) startExitAnimation(false);
                 }
 
             }
