@@ -43,7 +43,7 @@ public class AddCardFragment extends MainActivityFragment {
         super.onCreate(savedInstanceState);
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddCardViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Add Card"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Add Card"));
 
         viewModel.addCardApiResult.observe(this, result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -76,10 +76,10 @@ public class AddCardFragment extends MainActivityFragment {
             String optionsChecked = "";
             AnalyticsUtils.logEvent(
                     getContext(),
-                    "form_complete",
-                     new Pair<>("formName", "Add Card"),
-                     new Pair<>("formSelection", optionsChecked)
-                        );
+                    AnalyticsUtils.Event.formComplete,
+                    new Pair<>(AnalyticsUtils.Param.formName, "Add Card"),
+                    new Pair<>(AnalyticsUtils.Param.formSelection, optionsChecked)
+            );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             goBack();
         });
