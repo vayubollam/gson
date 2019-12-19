@@ -75,17 +75,16 @@ public class SuncorGIFView extends View {
             }
 
             int relTime = (int) ((now - mStart) % duration);
+            mMovie.setTime(relTime);
 
             int height = getHeight();
             int scaleFactor = height / mHeight;
-//            int padding = (Resources.getSystem().getDisplayMetrics().widthPixels - (mWidth * scaleFactor)) / 4;
-//            Log.i("TTT", padding + " " + Resources.getSystem().getDisplayMetrics().widthPixels);
-
             canvas.scale(scaleFactor, scaleFactor);
-            // canvas.translate(padding, 0);
+            int mLeft = (getWidth() - (mWidth * scaleFactor)) / 2;
+            int mTop = (getHeight() - (mHeight * scaleFactor)) / 2;
 
-            mMovie.setTime(relTime);
-            mMovie.draw(canvas, 0, 0);
+            mMovie.draw(canvas, mLeft / scaleFactor, mTop / scaleFactor);
+
             invalidate();
         }
     }
@@ -95,11 +94,4 @@ public class SuncorGIFView extends View {
         init();
     }
 
-    public static float convertDpToPixel(float dp, Context context) {
-        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-    }
-
-    public static float convertPixelsToDp(float px, Context context) {
-        return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-    }
 }
