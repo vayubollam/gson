@@ -54,13 +54,13 @@ public class TutorialFragment extends Fragment {
         List<TutorialContent> tutorialContents = new ArrayList<>();
         TutorialContent slide1, slide2, slide3;
         if (isFrench) {
-            slide1 = new TutorialContent(getString(R.string.tutorial_silde_page1_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
-            slide2 = new TutorialContent(getString(R.string.tutorial_silde_page2_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
-            slide3 = new TutorialContent(getString(R.string.tutorial_silde_page3_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+            slide1 = new TutorialContent(getString(R.string.tutorial_silde_page1_header), getResources().getIdentifier("pc_cw_ft_1_french", "drawable", getActivity().getPackageName()));
+            slide2 = new TutorialContent(getString(R.string.tutorial_silde_page2_header), getResources().getIdentifier("pc_cw_ft_1_french", "drawable", getActivity().getPackageName()));
+            slide3 = new TutorialContent(getString(R.string.tutorial_silde_page3_header), getResources().getIdentifier("pc_cw_ft_1_french", "drawable", getActivity().getPackageName()));
         } else {
-            slide1 = new TutorialContent(getString(R.string.tutorial_silde_page1_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
-            slide2 = new TutorialContent(getString(R.string.tutorial_silde_page2_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
-            slide3 = new TutorialContent(getString(R.string.tutorial_silde_page3_header), getResources().getIdentifier("giphy", "drawable", getActivity().getPackageName()));
+            slide1 = new TutorialContent(getString(R.string.tutorial_silde_page1_header), getResources().getIdentifier("pc_cw_ft_1_english", "drawable", getActivity().getPackageName()));
+            slide2 = new TutorialContent(getString(R.string.tutorial_silde_page2_header), getResources().getIdentifier("pc_cw_ft_1_english", "drawable", getActivity().getPackageName()));
+            slide3 = new TutorialContent(getString(R.string.tutorial_silde_page3_header), getResources().getIdentifier("pc_cw_ft_1_english", "drawable", getActivity().getPackageName()));
         }
         tutorialContents.add(slide1);
         tutorialContents.add(slide2);

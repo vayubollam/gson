@@ -1,10 +1,14 @@
 package suncor.com.android.uicomponents;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import java.io.InputStream;
@@ -16,6 +20,7 @@ public class SuncorGIFView extends View {
     private int mWidth, mHeight;
     private long mStart;
     private Context mContext;
+
 
     public SuncorGIFView(Context context) {
         super(context);
@@ -44,10 +49,13 @@ public class SuncorGIFView extends View {
         requestLayout();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(mWidth, mHeight);
-    }
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        float height = Resources.getSystem().getDisplayMetrics().heightPixels - convertDpToPixel(180, mContext);
+//        float factor = height / mHeight;
+//        float width = mWidth * factor;
+//        setMeasuredDimension((int) width, (int) height);
+//    }
 
 
     @Override
@@ -68,6 +76,14 @@ public class SuncorGIFView extends View {
 
             int relTime = (int) ((now - mStart) % duration);
 
+            int height = getHeight();
+            int scaleFactor = height / mHeight;
+//            int padding = (Resources.getSystem().getDisplayMetrics().widthPixels - (mWidth * scaleFactor)) / 4;
+//            Log.i("TTT", padding + " " + Resources.getSystem().getDisplayMetrics().widthPixels);
+
+            canvas.scale(scaleFactor, scaleFactor);
+            // canvas.translate(padding, 0);
+
             mMovie.setTime(relTime);
             mMovie.draw(canvas, 0, 0);
             invalidate();
@@ -79,4 +95,11 @@ public class SuncorGIFView extends View {
         init();
     }
 
+    public static float convertDpToPixel(float dp, Context context) {
+        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    public static float convertPixelsToDp(float px, Context context) {
+        return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
 }

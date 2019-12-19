@@ -100,9 +100,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                 splashText2.setVisibility(View.VISIBLE);
                 splashText1.setText(R.string.drive_safely);
                 binding.imgSplashFullScreen.setImageDrawable(getResources().getDrawable(R.drawable.safety_image));
-                binding.imgSplashFullScreen.setOnClickListener((v) -> {
-                    showTutorialFragment();
-                });
                 delayExit = 3000;
                 break;
             case FIRST_TIME_VERSION:
