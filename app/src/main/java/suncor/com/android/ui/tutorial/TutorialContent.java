@@ -1,20 +1,25 @@
 package suncor.com.android.ui.tutorial;
 
+import android.net.Uri;
+
 public class TutorialContent {
     private String header;
-    private int imageId;
+    private String videoPath;
 
-    TutorialContent(String header, int image) {
+    TutorialContent(String header, String videoPath) {
         this.header = header;
-        this.imageId = image;
+        this.videoPath = videoPath;
     }
 
     public String getHeader() {
         return header;
     }
 
-    public int getImage() {
-        return imageId;
+    public String getVideoPath() {
+        return videoPath;
     }
 
+    public Uri getVideoUri() {
+        return Uri.parse(videoPath);
+    }
 }
