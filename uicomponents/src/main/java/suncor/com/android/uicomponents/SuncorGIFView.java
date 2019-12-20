@@ -11,7 +11,6 @@ import java.io.InputStream;
 
 public class SuncorGIFView extends View {
 
-    private static final int SPEED_UP_CONSTANT = 700;
     private InputStream mInputStream;
     private Movie mMovie;
     private float movieWidth, movieHeight, viewWidth, viewHeight;
@@ -67,7 +66,9 @@ public class SuncorGIFView extends View {
         if (mMovie != null) {
 
             int duration = mMovie.duration();
-            int relTime = (int) ((now - mStart + SPEED_UP_CONSTANT) % duration);
+
+            double rateConstant = 1.1 * duration / 6000;
+            int relTime = (int) ((rateConstant * now - mStart) % duration);
             mMovie.setTime(relTime);
 
             canvas.scale(scaleFactor, scaleFactor);
