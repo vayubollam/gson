@@ -66,9 +66,8 @@ public class SuncorGIFView extends View {
         if (mMovie != null) {
 
             int duration = mMovie.duration();
-
-            double rateConstant = 1.1 * duration / 6000;
-            int relTime = (int) ((rateConstant * now - mStart) % duration);
+            if (duration == 0) duration = 1000;
+            int relTime = (int) ((now - mStart) % duration);
             mMovie.setTime(relTime);
 
             canvas.scale(scaleFactor, scaleFactor);
