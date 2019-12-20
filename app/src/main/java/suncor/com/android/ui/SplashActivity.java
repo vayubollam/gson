@@ -105,7 +105,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
             case FIRST_TIME_VERSION:
                 //new update show what's new if applicable
                 newVersionUpdated = true;
-                showTutorialFragment();
                 break;
             default:
                 break;
@@ -222,7 +221,11 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                         }
                     });
                 } else {
-                    if (!newVersionUpdated) startExitAnimation(false);
+                    if (!newVersionUpdated) {
+                        startExitAnimation(false);
+                    } else {
+                        showTutorialFragment();
+                    }
                 }
 
             }

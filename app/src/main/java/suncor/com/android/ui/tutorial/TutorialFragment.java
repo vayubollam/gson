@@ -1,7 +1,6 @@
 package suncor.com.android.ui.tutorial;
 
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,6 @@ public class TutorialFragment extends Fragment {
             TUTORIAL_URI_PREFIX = "android.resource://" + getActivity().getPackageName() + "/";
             getActivity().getWindow().setStatusBarColor(Color.WHITE);
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getActivity().getWindow().setFormat(PixelFormat.TRANSLUCENT);
         }
         FragmentTutorialBinding binding = FragmentTutorialBinding.inflate(inflater, container, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -81,6 +79,7 @@ public class TutorialFragment extends Fragment {
         public void onBindViewHolder(@NonNull TutorialViewHolder holder, int position) {
             holder.binding.tutorialHeader.setText(tutorials.get(position).getHeader());
             holder.binding.tutorialVideo.setVideoURI(tutorials.get(position).getVideoUri());
+            holder.binding.tutorialVideo.setZOrderOnTop(true);
             holder.binding.tutorialVideo.setOnPreparedListener(mp -> mp.setLooping(true));
             holder.binding.tutorialVideo.start();
         }
