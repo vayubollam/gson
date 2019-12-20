@@ -24,39 +24,38 @@ import suncor.com.android.databinding.TutorialScreenListitemBinding;
 import suncor.com.android.ui.SplashActivity;
 
 public class TutorialFragment extends Fragment {
-    private String TUTORIAL_URI_PREFIX;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FragmentTutorialBinding binding = FragmentTutorialBinding.inflate(inflater, container, false);
         if (getActivity() != null) {
-            TUTORIAL_URI_PREFIX = "android.resource://" + getActivity().getPackageName() + "/";
+            String uriPrefix = "android.resource://" + getActivity().getPackageName() + "/";
             getActivity().getWindow().setStatusBarColor(Color.WHITE);
             getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-        FragmentTutorialBinding binding = FragmentTutorialBinding.inflate(inflater, container, false);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-        binding.tutorialRecycler.setLayoutManager(linearLayoutManager);
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(binding.tutorialRecycler);
-        TutorialAdapter adapter = new TutorialAdapter(setUpTutorialSlides());
-        binding.tutorialRecycler.setAdapter(adapter);
-        binding.tutorialRecycler.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            VideoView video = v.findViewById(R.id.tutorial_video);
-            video.start();
-        });
-        binding.pageIndicator.attachToRecyclerView(binding.tutorialRecycler, pagerSnapHelper);
-        adapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
-        binding.buttonClose.setOnClickListener(v -> ((SplashActivity) getActivity()).openMainActivity(false));
 
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+            binding.tutorialRecycler.setLayoutManager(linearLayoutManager);
+            PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+            pagerSnapHelper.attachToRecyclerView(binding.tutorialRecycler);
+            TutorialAdapter adapter = new TutorialAdapter(setUpTutorialSlides(uriPrefix));
+            binding.tutorialRecycler.setAdapter(adapter);
+            binding.tutorialRecycler.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                VideoView video = v.findViewById(R.id.tutorial_video);
+                video.start();
+            });
+            binding.pageIndicator.attachToRecyclerView(binding.tutorialRecycler, pagerSnapHelper);
+            adapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
+            binding.buttonClose.setOnClickListener(v -> ((SplashActivity) getActivity()).openMainActivity(false));
+        }
         return binding.getRoot();
     }
 
-    private List<TutorialContent> setUpTutorialSlides() {
+    private List<TutorialContent> setUpTutorialSlides(String uriPrefix) {
         List<TutorialContent> tutorialContents = new ArrayList<>();
-        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page1_header), TUTORIAL_URI_PREFIX + R.raw.tutorial_1));
-        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page2_header), TUTORIAL_URI_PREFIX + R.raw.tutorial_2));
-        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page3_header), TUTORIAL_URI_PREFIX + R.raw.tutorial_3));
+        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page1_header), uriPrefix + R.raw.tutorial_1));
+        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page2_header), uriPrefix + R.raw.tutorial_2));
+        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page3_header), uriPrefix + R.raw.tutorial_3));
         return tutorialContents;
     }
 
