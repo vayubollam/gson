@@ -13,10 +13,10 @@ public class SuncorGIFView extends View {
 
     private InputStream mInputStream;
     private Movie mMovie;
-    private int mWidth, mHeight;
+    private float movieWidth, movieHeight, viewWidth, viewHeight;
+    private float scaleFactor;
     private long mStart;
     private Context mContext;
-
 
     public SuncorGIFView(Context context) {
         super(context);
@@ -36,11 +36,20 @@ public class SuncorGIFView extends View {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        viewWidth = getMeasuredWidth();
+        viewHeight = getMeasuredHeight();
+        scaleFactor = viewHeight / movieHeight;
+        setMeasuredDimension((int) viewWidth, (int) viewHeight);
+    }
+
     private void init() {
         setFocusable(true);
         mMovie = Movie.decodeStream(mInputStream);
-        mWidth = mMovie.width();
-        mHeight = mMovie.height();
+        movieWidth = mMovie.width();
+        movieHeight = mMovie.height();
 
         requestLayout();
     }
@@ -64,12 +73,9 @@ public class SuncorGIFView extends View {
             int relTime = (int) ((now - mStart) % duration);
             mMovie.setTime(relTime);
 
-            int height = getHeight();
-            int scaleFactor = height / mHeight;
             canvas.scale(scaleFactor, scaleFactor);
-            int mLeft = (getWidth() - (mWidth * scaleFactor)) / 2;
-            int mTop = (getHeight() - (mHeight * scaleFactor)) / 2;
-
+            float mLeft = (viewWidth - (movieWidth * scaleFactor)) / 2f;
+            float mTop = (viewHeight - (movieHeight * scaleFactor)) / 2f;
             mMovie.draw(canvas, mLeft / scaleFactor, mTop / scaleFactor);
 
             invalidate();
