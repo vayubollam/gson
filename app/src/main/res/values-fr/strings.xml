@@ -569,4 +569,8 @@
 
     <string name="account_page_header">Compte</string>
 
+    <string name="tutorial_silde_page1_header">Tout nouveau menu</string>
+    <string name="tutorial_silde_page2_header">Accès rapide aux fonctions</string>
+    <string name="tutorial_silde_page3_header">Activer le lave-auto</string>
+
 </resources>

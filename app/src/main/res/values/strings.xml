@@ -585,4 +585,8 @@
 
     <string name="account_page_header">Account</string>
 
+    <string name="tutorial_silde_page1_header">Brand new menu</string>
+    <string name="tutorial_silde_page2_header">Quickly access features</string>
+    <string name="tutorial_silde_page3_header">Activate car wash</string>
+
 </resources>
