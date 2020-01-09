@@ -25,7 +25,8 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Timber;
 
 public class CardsApiImpl implements CardsApi {
-    private final static String ADAPTER_PATH = "/adapters/suncor/v2/cards";
+    private final static String ADAPTER_PATH2 = "/adapters/suncor/v2/cards";
+    private final static String ADAPTER_PATH = "/adapters/suncor/v1/cards";
     private Gson gson;
 
     public CardsApiImpl(Gson gson) {
@@ -38,7 +39,7 @@ public class CardsApiImpl implements CardsApi {
         MutableLiveData<Resource<ArrayList<CardDetail>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            URI adapterPath = new URI(ADAPTER_PATH2);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
