@@ -166,7 +166,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding = FragmentCarWashBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.msg_sl005_button,
+        binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.ok,
                 () -> viewModel.loadData(CarWashCardViewModel.ViewState.LOADING)));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
