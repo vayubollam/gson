@@ -22,7 +22,8 @@ public class AnalyticsUtils {
         videoComplete("video_complete"),
         formStart("form_start"),
         formStep("form_step"),
-        formComplete("form_complete")
+        formComplete("form_complete"),
+        navigation("navigation")
         ;
 
         private final String name;
@@ -47,7 +48,8 @@ public class AnalyticsUtils {
         videoTitle("videoTitle"),
         formName("formName"),
         stepName("stepName"),
-        formSelection("formSelection")
+        formSelection("formSelection"),
+        actionBarTap("actionBarTap")
         ;
 
         private final String name;

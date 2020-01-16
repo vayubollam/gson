@@ -168,7 +168,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             isProfileTabSelected = false;
         });
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            AnalyticsUtils.logEvent(MainActivity.this, "navigation", new Pair<>("actionBarTap", item.getTitle().toString()));
+            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, item.getTitle().toString()));
             if (item.getItemId() == R.id.profile_tab) {
                 isProfileTabSelected = true;
             }
