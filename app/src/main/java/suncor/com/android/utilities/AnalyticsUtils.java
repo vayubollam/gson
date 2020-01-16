@@ -23,7 +23,8 @@ public class AnalyticsUtils {
         formStart("form_start"),
         formStep("form_step"),
         formComplete("form_complete"),
-        navigation("navigation")
+        navigation("navigation"),
+        buttonTap("button_tap")
         ;
 
         private final String name;
@@ -49,7 +50,8 @@ public class AnalyticsUtils {
         formName("formName"),
         stepName("stepName"),
         formSelection("formSelection"),
-        actionBarTap("actionBarTap")
+        actionBarTap("actionBarTap"),
+        buttonText("buttonText")
         ;
 
         private final String name;
