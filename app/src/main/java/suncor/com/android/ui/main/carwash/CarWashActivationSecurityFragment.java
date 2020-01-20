@@ -101,6 +101,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
             CarWashActivationSecurityFragmentDirections.ActionCarWashActivationSecurityFragmentToCarWashBarCodeFragment
                     action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashBarCodeFragment(loadFromCarWash);
+            AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Generate Barcode");
             Navigation.findNavController(getView()).navigate(action);
         } else {
             String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title)+getContext().getString(R.string.carwash_activation_pin_error_message);
