@@ -132,13 +132,15 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     activity.getString(R.string.offers_banner_5_text),
                                     (isSignedIn? "4":"5")
                             );
-                            AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert", new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)));
+                            AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert",
+                                    new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")")
+                            );
                             new AlertDialog.Builder(activity)
                                     .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
                                     .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
                                     .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
                                         AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert_interaction",
-                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)),
+                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
                                                 new Pair<>("alertSelection",activity.getString(R.string.offers_leaving_app_alert_button))
                                         );
                                         String url = activity.getString(R.string.rbc_url);
@@ -150,7 +152,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     })
                                     .setNegativeButton(R.string.cancel, (dialog, which) -> {
                                         AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert_interaction",
-                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)),
+                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
                                                 new Pair<>("alertSelection",activity.getString(R.string.cancel))
                                         );
                                     })

@@ -104,7 +104,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Generate Barcode");
             Navigation.findNavController(getView()).navigate(action);
         } else {
-            String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title)+getContext().getString(R.string.carwash_activation_pin_error_message);
+            String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title)+"("+getContext().getString(R.string.carwash_activation_pin_error_message)+")";
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                     new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle)
             );

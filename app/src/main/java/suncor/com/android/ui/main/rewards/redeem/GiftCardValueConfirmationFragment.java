@@ -103,13 +103,15 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                             new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"),
                             new Pair<>("errorMessage",orderResponseResource.message));
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.msg_e030_title)));
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
+                                new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")")
+                        );
                         new AlertDialog.Builder(getContext())
                                 .setTitle(R.string.msg_e030_title)
                                 .setMessage(R.string.msg_e030_message)
                                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                                     AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                            new Pair<>("alertTitle", getString(R.string.msg_e030_title)),
+                                            new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")"),
                                             new Pair<>("alertSelection",getString(R.string.ok))
                                     );
                                     dialog.dismiss();

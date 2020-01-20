@@ -217,7 +217,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
-        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + getResources().getString(R.string.cards_remove_card_alert_message);
+        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                 new Pair<>(AnalyticsUtils.Param.cardType,expandedCardItem.getCardType().toString())

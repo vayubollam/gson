@@ -3,6 +3,7 @@ package suncor.com.android.utilities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -31,11 +32,20 @@ public class CardsUtil {
 //                    .setCancelable(false)
 //                    .create();
 //        }
+        String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
+        );
         if (negListener == null) {
             dialog = new AlertDialog.Builder(context)
                     .setTitle(R.string.zero_balance_alert_title)
                     .setMessage(R.string.zero_balance_alert_message)
-                    .setPositiveButton(R.string.cancel, null)
+                    .setPositiveButton(R.string.cancel, (dial, which) -> {
+                        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
+                                new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.cancel))
+                        );
+                    })
                     .setCancelable(false)
                     .create();
         } else {
@@ -43,7 +53,12 @@ public class CardsUtil {
                     .setTitle(R.string.zero_balance_alert_title)
                     .setMessage(R.string.zero_balance_alert_message)
                     .setPositiveButton(R.string.zero_balance_alert_view, negListener)
-                    .setNegativeButton(R.string.cancel, null)
+                    .setNegativeButton(R.string.cancel, (dial, which) -> {
+                        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
+                                new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.cancel))
+                        );
+                    })
                     .setCancelable(false)
                     .create();
         }
@@ -53,10 +68,19 @@ public class CardsUtil {
 
     public static void showOtherCardAvailableAlert(Context context) {
         Dialog dialog;
+        String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
+        );
         dialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.zero_balance_alert_title)
                 .setMessage(R.string.zero_balance_other_available_message)
-                .setPositiveButton(R.string.cancel, null)
+                .setPositiveButton(R.string.cancel, (dial, which) -> {
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.cancel))
+                    );
+                })
                 .setCancelable(false)
                 .create();
 

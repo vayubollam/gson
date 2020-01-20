@@ -15,7 +15,7 @@ public class Alerts {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
 
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
-                + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message);
+                + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
         );
@@ -36,7 +36,7 @@ public class Alerts {
     public static AlertDialog prepareGeneralErrorDialogWithTryAgain(Context context, DialogInterface.OnClickListener listener) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
-                + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message);
+                + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
         );
@@ -56,7 +56,7 @@ public class Alerts {
 
     public static AlertDialog prepareCustomDialogWithTryAgain(String title, String message, Context context, DialogInterface.OnClickListener listener) {
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, title+message)
+                new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")")
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -64,7 +64,7 @@ public class Alerts {
                 .setPositiveButton(R.string.msg_001_dialog_try_again, listener)
                 .setNegativeButton(R.string.msg_001_dialog_cancel, (dialog, which) -> {
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
-                            new Pair<>(AnalyticsUtils.Param.alertTitle, title+message),
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.msg_001_dialog_cancel))
                     );
                     dialog.dismiss();
