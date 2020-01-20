@@ -78,7 +78,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
                     AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)),
+                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")"),
                         new Pair<>("alertSelection",getString(R.string.login_conflict_alert_positive_button))
                     );
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
@@ -87,7 +87,9 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
                 adb.setMessage(getResources().getString(R.string.alert_signed_out_conflicting_login));
-                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)));
+                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
+                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")")
+                );
                 adb.show();
             }
         }
@@ -102,7 +104,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
                     AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)),
+                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")"),
                         new Pair<>("alertSelection",getString(R.string.login_conflict_alert_positive_button))
                     );
                     Intent loginActivityIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -110,7 +112,9 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
                 adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
-                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)));
+                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
+                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")")
+                );
                 adb.show();
             }
             autoLoginFailed = false;
@@ -168,7 +172,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             isProfileTabSelected = false;
         });
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            AnalyticsUtils.logEvent(MainActivity.this, "navigation", new Pair<>("actionBarTap", item.getTitle().toString()));
+            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, item.getTitle().toString()));
             if (item.getItemId() == R.id.profile_tab) {
                 isProfileTabSelected = true;
             }

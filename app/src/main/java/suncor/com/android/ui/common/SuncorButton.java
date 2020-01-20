@@ -25,7 +25,7 @@ public class SuncorButton extends MaterialButton {
 
     @Override
     public boolean performClick() {
-        AnalyticsUtils.logEvent(getContext(), "button_tap", new Pair<>("buttonText", getText().toString().toLowerCase()));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getText().toString().toLowerCase()));
         return super.performClick();
     }
 }

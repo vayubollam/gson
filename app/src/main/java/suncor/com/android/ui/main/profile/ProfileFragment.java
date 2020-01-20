@@ -126,19 +126,21 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         initBuild();
 
         binding.signoutButton.setOnClickListener((v) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)));
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
+                    new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()")
+            );
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
                     .setPositiveButton(getString(R.string.profil_sign_out_dialog_positive_button), (dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)),
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
                                 new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_positive_button))
                         );
                         signUserOut();
                     })
                     .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)),
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
                                 new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_negative_button))
                         );
                         dialog.dismiss();

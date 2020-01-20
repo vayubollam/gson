@@ -10,6 +10,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.Map;
 
+import suncor.com.android.model.cards.CardType;
+
 public class AnalyticsUtils {
 
     public enum Event {
@@ -22,7 +24,11 @@ public class AnalyticsUtils {
         videoComplete("video_complete"),
         formStart("form_start"),
         formStep("form_step"),
-        formComplete("form_complete")
+        formComplete("form_complete"),
+        navigation("navigation"),
+        buttonTap("button_tap"),
+        alert("alert"),
+        alertInteraction("alert_interaction")
         ;
 
         private final String name;
@@ -47,7 +53,12 @@ public class AnalyticsUtils {
         videoTitle("videoTitle"),
         formName("formName"),
         stepName("stepName"),
-        formSelection("formSelection")
+        formSelection("formSelection"),
+        actionBarTap("actionBarTap"),
+        buttonText("buttonText"),
+        alertTitle("alertTitle"),
+        alertSelection("alertSelection"),
+        cardType("cardType")
         ;
 
         private final String name;
@@ -63,6 +74,7 @@ public class AnalyticsUtils {
     }
 
     public static String userID;
+    public static CardType currentCardType;
 
     @SafeVarargs
     public static void logEvent(Context context, String eventName, Pair<String, String>... variables) {
@@ -106,6 +118,25 @@ public class AnalyticsUtils {
 
     public static void logPromotionEvent(Context context, Event event, String itemId, String itemName, String creativeName, String creativeSlot){
         logPromotionEvent(context, event, itemId, itemName, creativeName, creativeSlot, "Internal Promotions");
+    }
+
+    public static void logCarwashActivationEvent(Context context, Event event, String stepName, CardType cardType) {
+        AnalyticsUtils.currentCardType = cardType;
+        logCarwashActivationEvent(context, event, stepName);
+    }
+
+    public static void logCarwashActivationEvent(Context context, Event event, String stepName) {
+        if (currentCardType == CardType.WAG) {
+            logEvent(context, event,
+                    new Pair<>(Param.formName, "Activate Wash by Wash & Go card"),
+                    new Pair<>(Param.stepName, stepName)
+            );
+        } else if (currentCardType == CardType.SP) {
+            logEvent(context, event,
+                    new Pair<>(Param.formName, "Activate Wash by Season Pass card"),
+                    new Pair<>(Param.stepName, stepName)
+            );
+        }
     }
 
     public static void setCurrentScreenName(Activity activity, String screenName) {

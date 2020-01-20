@@ -218,9 +218,17 @@ public class LoginFragment extends BaseFragment {
         } else {
             message = getString(response.message.content);
         }
+        String analyticName = getString(response.title) + "("+message+")";
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
+        );
         builder.setMessage(message)
                 .setTitle(response.title);
         builder.setPositiveButton(response.positiveButtonTitle, ((dialog, which) -> {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                    new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
+                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(response.positiveButtonTitle))
+            );
             if (response.positiveButtonCallback != null) {
                 response.positiveButtonCallback.call();
             }

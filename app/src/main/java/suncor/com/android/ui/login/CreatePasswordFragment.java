@@ -69,7 +69,9 @@ public class CreatePasswordFragment extends BaseFragment {
                 }
             } else if (r.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_PASSWORD_DUPLICATED.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.login_create_password_duplicated_alert_title)));
+                    AnalyticsUtils.logEvent(getContext(), "error_log",
+                            new Pair<>("errorMessage",getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")")
+                    );
 
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
                     AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)));
@@ -77,7 +79,7 @@ public class CreatePasswordFragment extends BaseFragment {
                     alertBuilder.setMessage(R.string.login_create_password_duplicated_alert_message);
                     alertBuilder.setPositiveButton(R.string.ok, ((dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)),
+                                new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
                                 new Pair<>("alertSelection",getString(R.string.ok))
                         );
                         binding.passwordInput.setText("");

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class SingleTicketFragment extends MainActivityFragment implements OnBackPressedListener {
 
@@ -112,10 +114,20 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     break;
                 case ERROR:
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
+                        String analyticName = getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")";
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+                                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
+                        );
                         new AlertDialog.Builder(getContext())
                                 .setTitle(R.string.msg_e030_title)
                                 .setMessage(R.string.msg_e030_message)
-                                .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
+                                            new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.msg_e030_message))
+                                    );
+                                    dialog.dismiss();
+                                })
                                 .create()
                                 .show();
                     } else {
@@ -186,11 +198,20 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
     }
 
     private View.OnClickListener addToAccountHelpListener = view -> {
+        String analyticName = getString(R.string.single_ticket_add_to_account_help_title)+"("+getString(R.string.single_ticket_add_to_account_help_message)+")";
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
+        );
         Dialog dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.single_ticket_add_to_account_help_title)
                 .setMessage(R.string.single_ticket_add_to_account_help_message)
                 .setCancelable(false)
-                .setPositiveButton(R.string.ok, null)
+                .setPositiveButton(R.string.ok, (dial, which)->{
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.ok))
+                    );
+                })
                 .create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();

@@ -203,6 +203,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
                 } else {
+                    AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
@@ -216,14 +217,18 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
-        AnalyticsUtils.logEvent(getContext(), "alert", new Pair<>("alertTitle", getString(R.string.cards_remove_card_alert_title)));
-
+        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                new Pair<>(AnalyticsUtils.Param.cardType,expandedCardItem.getCardType().toString())
+        );
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
                     viewModel.deleteCard(expandedCardItem.getCardDetail()).observe(this, cardDetailResource -> {
-                        AnalyticsUtils.logEvent(getContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.cards_remove_card_alert_title)),
-                                new Pair<>("alertSelection",getString(R.string.cards_remove_card_alert_remove))
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                                new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
+                                new Pair<>(AnalyticsUtils.Param.cardType,expandedCardItem.getCardType().toString())
                         );
                         if (cardDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
