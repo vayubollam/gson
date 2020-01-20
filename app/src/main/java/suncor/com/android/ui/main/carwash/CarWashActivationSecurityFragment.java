@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +24,10 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCarwashSecurityBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CarWashActivationSecurityFragment extends MainActivityFragment implements OnBackPressedListener {
 
@@ -32,6 +35,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     private AppCompatEditText pinText1, pinText2, pinText3;
     private InputMethodManager inputMethodManager;
     private CarWashSharedViewModel viewModel;
+    private CardDetail cardDetail;
     @Inject
     ViewModelFactory viewModelFactory;
 
@@ -99,10 +103,20 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                     action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashBarCodeFragment(loadFromCarWash);
             Navigation.findNavController(getView()).navigate(action);
         } else {
+            String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title)+getContext().getString(R.string.carwash_activation_pin_error_message);
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+                    new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle)
+            );
             new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
                     .setMessage(R.string.carwash_activation_pin_error_message)
-                    .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle),
+                                new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok))
+                        );
+                        dialog.dismiss();
+                    })
                     .show();
         }
     };

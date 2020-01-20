@@ -203,6 +203,17 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
                 } else {
+                    if (cardDetail.getCardType() == CardType.WAG) {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
+                                new Pair<>(AnalyticsUtils.Param.formName, "Activate Wash by Wash & Go card"),
+                                new Pair<>(AnalyticsUtils.Param.stepName, "Enter 3 digits")
+                        );
+                    } else if (cardDetail.getCardType() == CardType.SP) {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
+                                new Pair<>(AnalyticsUtils.Param.formName, "Activate Wash by Season Pass card"),
+                                new Pair<>(AnalyticsUtils.Param.stepName, "Enter 3 digits")
+                        );
+                    }
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());

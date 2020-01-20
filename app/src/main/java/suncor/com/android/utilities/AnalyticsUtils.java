@@ -24,7 +24,9 @@ public class AnalyticsUtils {
         formStep("form_step"),
         formComplete("form_complete"),
         navigation("navigation"),
-        buttonTap("button_tap")
+        buttonTap("button_tap"),
+        alert("alert"),
+        alertInteraction("alert_interaction")
         ;
 
         private final String name;
@@ -51,7 +53,10 @@ public class AnalyticsUtils {
         stepName("stepName"),
         formSelection("formSelection"),
         actionBarTap("actionBarTap"),
-        buttonText("buttonText")
+        buttonText("buttonText"),
+        alertTitle("alertTitle"),
+        alertSelection("alertSelection"),
+        cardType("cardType")
         ;
 
         private final String name;
