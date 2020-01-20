@@ -40,7 +40,7 @@ public class FavouriteRepositoryImpl implements FavouriteRepository {
 
     public FavouriteRepositoryImpl(SessionManager sessionManager, Gson gson) {
         try {
-            adapterURI = new URI("/adapters/suncor/v1/favourite-stations");
+            adapterURI = new URI("/adapters/suncor/v2/favourite-stations");
             this.sessionManager = sessionManager;
             this.gson = gson;
             isLoaded.setValue(false);
