@@ -50,15 +50,18 @@ public class AddCardFragment extends MainActivityFragment {
                 hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_LIKING_CARD_FAILED.equals(result.message)) {
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.cards_add_fragment_invalid_card_title) ));
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.cards_add_fragment_invalid_card_title)));
+                    String analyticsName = getContext().getString(R.string.cards_add_fragment_invalid_card_title)
+                            + getContext().getString(R.string.cards_add_fragment_invalid_card_message);
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
+                    );
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.cards_add_fragment_invalid_card_title)
                             .setMessage(R.string.cards_add_fragment_invalid_card_message)
                             .setPositiveButton(R.string.ok, (dialog, which) -> {
-                                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                        new Pair<>("alertTitle", getString(R.string.cards_add_fragment_invalid_card_title)),
-                                        new Pair<>("alertSelection",getString(R.string.ok))
+                                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                        new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                                        new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok))
                                 );
                                 dialog.dismiss();
                             })
