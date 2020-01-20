@@ -227,6 +227,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
     }
 
     private void goBack() {
+        profileSharedViewModel.setEcryptedSecurityAnswer(null);
         Navigation.findNavController(getView()).popBackStack();
     }
 }
