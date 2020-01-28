@@ -105,15 +105,13 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getView()).navigate(action);
         } else {
-            if (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG) {
-                if (viewModel.getIsBalanceZero().getValue() != null &&
-                        viewModel.getIsBalanceZero().getValue()) {
-                    CardsUtil.showZeroBalanceAlert(getContext(),
-                            (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment),
-                            (dialog, v) -> navigateToCardDetail(cardDetail));
-                } else if (cardDetail.getBalance() <= 0) {
-                    CardsUtil.showOtherCardAvailableAlert(getContext());
-                }
+            if (viewModel.getIsBalanceZero().getValue() != null &&
+                    viewModel.getIsBalanceZero().getValue() && (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG)) {
+                CardsUtil.showZeroBalanceAlert(getContext(),
+                        (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment),
+                        (dialog, v) -> navigateToCardDetail(cardDetail));
+            } else if (cardDetail.getBalance() <= 0 && (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG)) {
+                CardsUtil.showOtherCardAvailableAlert(getContext());
             } else {
                 navigateToCardDetail(cardDetail);
 
