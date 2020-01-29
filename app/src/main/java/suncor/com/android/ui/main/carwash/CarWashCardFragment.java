@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -243,6 +244,13 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @Override
     public void onRefresh() {
         viewModel.loadData(CarWashCardViewModel.ViewState.REFRESHING);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-card", getActivity().getClass().getSimpleName());
     }
 
     @Override

@@ -19,6 +19,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -154,6 +156,13 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     @Override
     public void onBackPressed() {
         goBack();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-security-code", getActivity().getClass().getSimpleName());
     }
 
     class mInputTextWatcher implements TextWatcher {
