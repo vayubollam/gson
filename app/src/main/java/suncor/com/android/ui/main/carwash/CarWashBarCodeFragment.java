@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -96,6 +97,13 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         attributes.screenBrightness = previousBrightness;
         getActivity().getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-barcode", getActivity().getClass().getSimpleName());
     }
 
     private void goBack(boolean reEnter) {
