@@ -28,6 +28,7 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainViewModel;
@@ -105,11 +106,11 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
             Navigation.findNavController(getView()).navigate(action);
         } else {
             if (viewModel.getIsBalanceZero().getValue() != null &&
-                    viewModel.getIsBalanceZero().getValue()) {
+                    viewModel.getIsBalanceZero().getValue() && (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG)) {
                 CardsUtil.showZeroBalanceAlert(getContext(),
                         (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_carWashPurchaseFragment),
                         (dialog, v) -> navigateToCardDetail(cardDetail));
-            } else if (cardDetail.getBalance() <= 0) {
+            } else if (cardDetail.getBalance() <= 0 && (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG)) {
                 CardsUtil.showOtherCardAvailableAlert(getContext());
             } else {
                 navigateToCardDetail(cardDetail);

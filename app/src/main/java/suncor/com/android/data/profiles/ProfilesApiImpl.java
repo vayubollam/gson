@@ -28,8 +28,7 @@ import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
-    private static final String ADAPTER_PATH_V2 = "/adapters/suncor/v2/profiles";
-    private static final String ADAPTER_PATH_V3 = "/adapters/suncor/v3/profiles";
+    private static final String ADAPTER_PATH_V4 = "/adapters/suncor/v4/profiles";
     private Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
@@ -48,7 +47,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH_V3);
+            URI adapterPath = new URI(ADAPTER_PATH_V4);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
@@ -84,7 +83,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH_V2.concat("/security-question"));
+            adapterPath = new URI(ADAPTER_PATH_V4.concat("/security-question"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -127,7 +126,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH_V3.concat("/security-answer-verification"));
+            adapterPath = new URI(ADAPTER_PATH_V4.concat("/security-answer-verification"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             String base64Answer = BaseEncoding.base64().encode(answer.getBytes());
             request.addHeader("x-security-answer", base64Answer);

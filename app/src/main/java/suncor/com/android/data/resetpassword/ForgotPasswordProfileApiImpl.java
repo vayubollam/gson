@@ -27,7 +27,7 @@ import suncor.com.android.utilities.Timber;
 public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
 
 
-    private final static String FORGOT_PASSWORD_ADAPTER_PATH = "adapters/suncor/v2/profiles/forgot-password";
+    private final static String FORGOT_PASSWORD_ADAPTER_PATH = "adapters/suncor/v3/profiles/forgot-password";
     private Gson gson;
 
     public ForgotPasswordProfileApiImpl(Gson gson) {
