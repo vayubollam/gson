@@ -80,13 +80,13 @@ public class CardDetail {
     public String getCardName() {
         switch (cardType) {
             case FSR:
-                return "FSR-" + (cpl == 0.05 ? 5 : 10) + "c";
+                return "fsr-" + (cpl == 0.05 ? 5 : 10) + "c";
             case PPC:
-                return "PPC";
+                return "ppc";
             case WAG:
-                return "Wash & Go";
+                return "wash-and-go";
             case SP:
-                return "Season Pass";
+                return "season-pass";
             case CAA:
                 return "caa";
             case BCAA:
@@ -101,6 +101,41 @@ public class CardDetail {
                 return "single_ticket";
         }
         return "card";
+    }
+
+    public String getFirebaseScreenName() {
+        return "my-petro-points-wallet-view-"+getCardName();
+    }
+
+    public String getFirebaseCarwashScreenName() {
+        return "car-wash-card-view-"+getCardName();
+    }
+
+    public String getLongName() {
+        switch (cardType) {
+            case PPTS:
+                return "Petro Points Card";
+            case FSR:
+                return "Fuel Saving Reward Card";
+            case PPC:
+                return "Preferred Price Card";
+            case SP:
+                return "Season Pass";
+            case WAG:
+                return "Wash and Go Card";
+            case MORE:
+                return "More Rewards Partner Card";
+            case CAA:
+                return "CAA";
+            case BCAA:
+                return "BCAA";
+            case HBC:
+                return "Hudson Bay Company Partner Card";
+            case RBC:
+                return "RBC Credit Card";
+            default:
+                return "";
+        }
     }
 
 
