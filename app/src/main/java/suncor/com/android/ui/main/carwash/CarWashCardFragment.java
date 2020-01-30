@@ -51,6 +51,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
@@ -98,10 +99,12 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     && result != CarWashCardViewModel.ViewState.FAILED && viewModel.getIsCardAvailable().getValue()) {
 
                 if (mainViewModel.isLinkedToAccount()) {
+                    AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseCarwashScreenName());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate(action);
                 } else if (mainViewModel.isNewCardAdded() && (mainViewModel.getNewAddedCard().getCardType() == CardType.WAG ||mainViewModel.getNewAddedCard().getCardType() == CardType.SP )) {
+                    AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseCarwashScreenName());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
                     Navigation.findNavController(getView()).navigate(action);
@@ -249,8 +252,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @Override
     public void onResume() {
         super.onResume();
-
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-card", getActivity().getClass().getSimpleName());
+        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-card-list", getActivity().getClass().getSimpleName());
     }
 
     @Override
@@ -281,6 +283,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     }
 
     private void navigateToCardDetail(CardDetail cardDetail) {
+        AnalyticsUtils.setCurrentScreenName(getActivity(), cardDetail.getFirebaseCarwashScreenName());
         CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
         action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
         action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);

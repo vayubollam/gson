@@ -220,7 +220,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.cardType,expandedCardItem.getCardType().toString())
+                new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
@@ -228,7 +228,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
-                                new Pair<>(AnalyticsUtils.Param.cardType,expandedCardItem.getCardType().toString())
+                                new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
                         );
                         if (cardDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);

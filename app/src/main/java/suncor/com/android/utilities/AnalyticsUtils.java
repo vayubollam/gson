@@ -139,6 +139,15 @@ public class AnalyticsUtils {
         }
     }
 
+    public static String getCardFormName() {
+        if (currentCardType == CardType.WAG) {
+            return "Activate Wash by Wash & Go card";
+        } else if (currentCardType == CardType.SP) {
+            return "Activate Wash by Season Pass card";
+        }
+        return "None";
+    }
+
     public static void setCurrentScreenName(Activity activity, String screenName) {
         FirebaseAnalytics.getInstance(activity).setCurrentScreen(activity, screenName, activity.getClass().getSimpleName());
     }

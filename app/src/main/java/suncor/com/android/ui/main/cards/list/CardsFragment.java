@@ -34,6 +34,7 @@ import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.cards.CardsLoadType;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 
 public class CardsFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -69,10 +70,12 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
 
                 if (result != CardsViewModel.ViewState.FAILED) {
                     if (mainViewModel.isLinkedToAccount()) {
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseScreenName());
                         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
                         action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                         Navigation.findNavController(getView()).navigate(action);
                     } else if (mainViewModel.isNewCardAdded()) {
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseScreenName());
                         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
                         action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
                         Navigation.findNavController(getView()).navigate(action);
@@ -101,6 +104,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
     private void cardClick(CardDetail cardDetail) {
         if (viewModel.viewState.getValue() == CardsViewModel.ViewState.FAILED) {
             //the card was loaded from profile, so the repository is still empty
+            AnalyticsUtils.setCurrentScreenName(getActivity(), viewModel.getPetroPointsCard().getValue().getFirebaseScreenName());
             CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getView()).navigate(action);
@@ -120,6 +124,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
     }
 
     private void navigateToCardDetail(CardDetail cardDetail) {
+        AnalyticsUtils.setCurrentScreenName(getActivity(), cardDetail.getFirebaseScreenName());
         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
         action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
         Navigation.findNavController(getView()).navigate(action);
