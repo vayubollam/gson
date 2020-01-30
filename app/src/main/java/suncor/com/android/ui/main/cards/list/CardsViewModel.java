@@ -73,6 +73,11 @@ public class CardsViewModel extends ViewModel {
             if (result.status != Resource.Status.LOADING) {
                 //even in error state, we may get some data
                 if (result.data != null) {
+                    for (CardDetail newCard : result.data) {
+                        if (newCard.getCardType() == CardType.PPTS) {
+                            profile.setPointsBalance(newCard.getBalance());
+                        }
+                    }
                     saveCards(result.data);
                 } else {
                     loadBalanceFromProfile();
