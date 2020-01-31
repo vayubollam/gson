@@ -52,7 +52,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         profileSharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
         profileSharedViewModel.alertObservable.observe(getActivity(), event -> {
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
-            if (alert != null) {
+            if (alert != null && getActivity() != null) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
