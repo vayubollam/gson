@@ -10,13 +10,16 @@ repositories {
     jcenter()
 }
 
+static def getDate() {
+    return new Date().format('yyMMddHHmm').toInteger()
+}
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
         applicationId "com.petrocanada.my_petro_canada"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 3
+        versionCode getDate()
         versionName "3.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY

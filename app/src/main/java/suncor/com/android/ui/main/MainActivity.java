@@ -142,6 +142,8 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton = findViewById(R.id.action_float_button);
         actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
+            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, "Action Menu"));
+
             ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
             actionMenuFragment.show(getSupportFragmentManager(), null);
         });

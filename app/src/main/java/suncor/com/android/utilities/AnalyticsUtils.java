@@ -2,6 +2,7 @@ package suncor.com.android.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.util.Pair;
 
@@ -75,6 +76,7 @@ public class AnalyticsUtils {
 
     public static String userID;
     public static CardType currentCardType;
+    public static int buildNumber;
 
     @SafeVarargs
     public static void logEvent(Context context, String eventName, Pair<String, String>... variables) {
@@ -84,6 +86,9 @@ public class AnalyticsUtils {
         }
         if (userID != null) {
             bundle.putString("user_id", userID);
+        }
+        if (buildNumber != 0) {
+            bundle.putString("BuildNumber", String.valueOf(buildNumber));
         }
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
     }
