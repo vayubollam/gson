@@ -52,7 +52,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         profileSharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
         profileSharedViewModel.alertObservable.observe(getActivity(), event -> {
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
-            if (alert != null && getActivity() != null) {
+            if (alert != null) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
@@ -88,6 +88,13 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                 SuncorToast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        profileSharedViewModel.toastObservable.removeObservers(getActivity());
+        profileSharedViewModel.alertObservable.removeObservers(getActivity());
+        super.onDestroy();
     }
 
     @Override
