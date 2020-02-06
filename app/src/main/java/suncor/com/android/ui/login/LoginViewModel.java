@@ -86,8 +86,8 @@ public class LoginViewModel extends ViewModel {
                         break;
                     case OTHER_FAILURE:
                         LoginFailResponse failResponse = new LoginFailResponse(
-                                R.string.msg_e001_title,
-                                new ErrorMessage(R.string.msg_e001_message)
+                                R.string.login_invalid_credentials_dialog_title,
+                                new ErrorMessage(R.string.login_invalid_credentials_dialog_1st_message)
 
                         );
                         failResponse.positiveButtonCallback = () -> navigateToHomeEvent.postValue(Event.newEvent(true));
