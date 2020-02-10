@@ -101,7 +101,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                         emailOffersField.get(),
                         smsOffersField.get(),
                         selectedQuestion.getId(),
-                        securityAnswerField.getText()
+                        securityAnswerField.getText().trim()
                 );
 
                 return enrollmentsApi.registerAccount(account);
