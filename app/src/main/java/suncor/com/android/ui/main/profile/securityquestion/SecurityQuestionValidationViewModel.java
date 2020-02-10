@@ -32,7 +32,7 @@ public class SecurityQuestionValidationViewModel extends ViewModel {
         );
         securityAnswerLiveData = Transformations.switchMap(validateSecurityQuestion, event -> {
             if (event.getContentIfNotHandled() != null) {
-                return profilesApi.validateSecurityQuestion(questionAnswerField.getText());
+                return profilesApi.validateSecurityQuestion(questionAnswerField.getText().trim());
             }
             return new MutableLiveData<>();
         });

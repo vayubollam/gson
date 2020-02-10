@@ -37,7 +37,7 @@ public class ResetPasswordSecurityQuestionValidationViewModel extends ViewModel 
 
         securityAnswerLiveData = Transformations.switchMap(validateSecurityQuestion, event -> {
             if (event.getContentIfNotHandled() != null) {
-                return api.validateSecurityQuestion(questionId, questionAnswerField.getText(),profileIdEncrypted, GUID);
+                return api.validateSecurityQuestion(questionId, questionAnswerField.getText().trim(),profileIdEncrypted, GUID);
             }
             return new MutableLiveData<>();
         });
