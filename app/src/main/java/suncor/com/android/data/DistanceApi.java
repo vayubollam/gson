@@ -1,5 +1,7 @@
 package suncor.com.android.data;
 
+import android.location.Location;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
@@ -50,7 +52,6 @@ public class DistanceApi {
         String mapKey = "key=" + BuildConfig.GOOGLE_API_KEY;
         String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode + "&" + mapKey;
 
-
         Request request = new Request.Builder()
                 .url("https://maps.googleapis.com/maps/api/distancematrix/json?" + parameters)
                 .build();
@@ -71,9 +72,21 @@ public class DistanceApi {
                         if (status.equals("OK")) {
                             JSONObject distanceResult = jsonObj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
                             if ("OK".equals(distanceResult.getString("status"))) {
+                                Location locationA = new Location("point A");
+
+                                locationA.setLatitude(origin.latitude);
+                                locationA.setLongitude(origin.longitude);
+
+                                Location locationB = new Location("point B");
+
+                                locationB.setLatitude(dest.latitude);
+                                locationB.setLongitude(dest.longitude);
+
+                                float distance = locationA.distanceTo(locationB);
+
                                 result.postValue(Resource.success(
                                         new DirectionsResult(
-                                                distanceResult.getJSONObject("distance").getInt("value"),
+                                                (int) distance,
                                                 distanceResult.getJSONObject("duration").getInt("value"))));
                             } else {
                                 result.postValue(Resource.error(distanceResult.getString("status"), null));
