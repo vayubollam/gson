@@ -28,6 +28,7 @@ import suncor.com.android.databinding.FragmentCarwashSecurityBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.OnBackPressedListener;
+import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -38,6 +39,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     private InputMethodManager inputMethodManager;
     private CarWashSharedViewModel viewModel;
     private CardDetail cardDetail;
+    private SuncorButton confirmButton;
     @Inject
     ViewModelFactory viewModelFactory;
 
@@ -89,6 +91,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
 
         });
         binding.confirmButton.setOnClickListener(confirmListener);
+        confirmButton = binding.confirmButton;
         return binding.getRoot();
     }
 
@@ -233,6 +236,8 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                         }
                         break;
                 }
+            } else if (i == KeyEvent.KEYCODE_ENTER) {
+                confirmButton.performClick();
             }
             return false;
         }
