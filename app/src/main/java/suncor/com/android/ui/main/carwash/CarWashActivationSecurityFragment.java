@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
@@ -98,6 +99,8 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     private View.OnClickListener confirmListener = v -> {
         String pin = isPinEntered();
         if (pin != null && pin.length() == VERIFICATION_PIN_LENGTH) {
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             viewModel.setSecurityPin(pin);
             View view = getActivity().getCurrentFocus();
             if (view != null) {
@@ -109,11 +112,12 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Generate Barcode");
             Navigation.findNavController(getView()).navigate(action);
         } else {
+            confirmButton.setEnabled(false);
             String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title)+"("+getContext().getString(R.string.carwash_activation_pin_error_message)+")";
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                     new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle)
             );
-            new AlertDialog.Builder(getContext())
+            AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
                     .setMessage(R.string.carwash_activation_pin_error_message)
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
@@ -122,8 +126,10 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok))
                         );
                         dialog.dismiss();
-                    })
-                    .show();
+                        confirmButton.setEnabled(true);
+                    }).create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
         }
     };
 

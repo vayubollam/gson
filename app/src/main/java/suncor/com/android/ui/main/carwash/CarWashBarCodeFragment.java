@@ -102,6 +102,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-barcode", getActivity().getClass().getSimpleName());
     }
