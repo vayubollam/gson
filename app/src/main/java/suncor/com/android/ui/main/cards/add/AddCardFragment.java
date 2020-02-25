@@ -80,7 +80,7 @@ public class AddCardFragment extends MainActivityFragment {
             AnalyticsUtils.logEvent(
                     getContext(),
                     AnalyticsUtils.Event.formComplete,
-                    new Pair<>(AnalyticsUtils.Param.formName, "Add Card"),
+                    new Pair<>(AnalyticsUtils.Param.formName, cardDetail.getLongName()+ " Added"),
                     new Pair<>(AnalyticsUtils.Param.formSelection, optionsChecked)
             );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
