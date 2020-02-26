@@ -58,7 +58,7 @@ public class CardDetail {
             case SP:
                 return daysRemaining;
             default:
-                throw new IllegalStateException("partner cards have no balance");
+                return INVALID_BALANCE;
         }
     }
 
