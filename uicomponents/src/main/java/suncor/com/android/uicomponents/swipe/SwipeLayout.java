@@ -76,16 +76,16 @@ public class SwipeLayout extends FrameLayout {
             return;
         }
         ObjectAnimator openAnimation = ObjectAnimator.ofFloat(surface, "translationX",
-                -dimensionPixelSize).setDuration(0);
+                -dimensionPixelSize).setDuration(300);
         ObjectAnimator closeAnimation = ObjectAnimator.ofFloat(surface, "translationX",
-                0).setDuration(0);
+                0).setDuration(300);
 
         openAnimation.setInterpolator(new SuncorBounceInterpolator(1));
         closeAnimation.setInterpolator(new SuncorBounceInterpolator(1));
-        closeAnimation.setStartDelay(0);
+        closeAnimation.setStartDelay(400);
 
         ObjectAnimator seconOpenAnimation = openAnimation.clone();
-        seconOpenAnimation.setStartDelay(0);
+        seconOpenAnimation.setStartDelay(1000);
 
         AnimatorSet as = new AnimatorSet();
         as.play(closeAnimation).after(openAnimation);
