@@ -7,7 +7,7 @@
     <string name="station_duration_generic">%1s en auto</string>
     <string name="suggestions_search_hint">Où va-t-on?</string>
     <string name="station_open_generic">Ouvert jusqu\'à %s</string>
-    <string name="station_directions_button">instructions</string>
+    <string name="station_directions_button">Obtenir un itinéraire</string>
     <string name="enable_location_dialog_title">Activer les services de localisation</string>
     <string name="station_call_button_generic">Appeler · %s</string>
     <string name="station_services_header">Produits et services</string>
@@ -50,7 +50,7 @@
     </plurals>
 
     <string name="favourites_no_result_text">Vous pouvez utiliser vos Favoris pour trouver rapidement le lave-auto que vous aimez ou le dépanneur offrant votre saveur préférée de barbotine.</string>
-    <string name="home_nearest_card_title">Gare la plus proche</string>
+    <string name="home_nearest_card_title">À proximité</string>
     <string name="suggestions_fragment_nearby_title">À proximité</string>
     <string name="filters_apply_button">Appliquer</string>
     <string name="filters_clear_button">Effacer filtres</string>
@@ -520,7 +520,7 @@
     <string name="carwash_getwash_message_card_and_ticket">Sélectionnez votre carte ou billet de lavage pour commencer.</string>
     <string name="carwash_no_carwash_station_available">Pas de lave-auto</string>
     <string name="carwash_user_onsite_header">Cette station</string>
-    <string name="carwash_user_not_onsite_header">Gare la plus proche</string>
+    <string name="carwash_user_not_onsite_header">Station la plus près</string>
 
     <string name="cardetail_balance_update_message">La mise à jour du solde peut prendre jusqu\'à 24 heures</string>
     <string name="carddetail_active_wash">ACTIVER LE LAVAGE</string>
