@@ -73,7 +73,7 @@
         <item quantity="other">%d hours</item>
     </plurals>
     <string name="minutes_distance">min</string>
-    <string name="home_nearest_card_title">Nearest</string>
+    <string name="home_nearest_card_title">Nearest Station</string>
     <string name="suggestions_fragment_nearby_title">Nearest</string>
     <string name="enrollment_card_question">Do you have a \n Petro\u2011Points card?</string>
     <string name="enrollment_card_question_body">You can use your points for dollars off fuel, car wash, or store purchases.</string>
