@@ -7,7 +7,7 @@
     <string name="enable_location_dialog_message">Petro-Canada uses locations services to show stations around you.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="welcome_to_petro_canda_on_the_go" translatable="false">Welcome to Petro-Canada on the go!</string>
+    <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canada on the go!</string>
     <string name="station_fav_button_add">Add as favourite location</string>
     <string name="station_fav_button_remove">Favourite</string>
     <string name="station_fav_button_signing">Sign in or join to favourite</string>
@@ -25,7 +25,7 @@
     <string name="station_closed">Closed</string>
     <string name="station_hours_list_title">Hours</string>
     <string name="station_open_24hrs">Open 24 hours</string>
-    <string name="station_directions_button">Directions</string>
+    <string name="station_directions_button">Get directions</string>
     <string name="station_search_hint">Where to?</string>
     <string name="filters_fragment_title">Filter by</string>
     <string name="filters_apply_button">Apply</string>
@@ -73,7 +73,7 @@
         <item quantity="other">%d hours</item>
     </plurals>
     <string name="minutes_distance">min</string>
-    <string name="home_nearest_card_title">Nearest Station</string>
+    <string name="home_nearest_card_title">Nearest</string>
     <string name="suggestions_fragment_nearby_title">Nearest</string>
     <string name="enrollment_card_question">Do you have a \n Petro\u2011Points card?</string>
     <string name="enrollment_card_question_body">You can use your points for dollars off fuel, car wash, or store purchases.</string>
@@ -95,8 +95,8 @@
     <string name="enrollment_preferences_category">Preferences and terms</string>
     <string name="enrollment_email_offers_label">Yes, I\'d like to receive news, offers and partner discounts from Petro-Points.</string>
     <string name="enrollment_email_offers_hint">You can unsubscribe at any time.</string>
-    <string name="enrollment_fingerprint_label" translatable="false">I\'d like to use Touch ID to sign in</string>
-    <string name="enrollment_fingerprint_hint" translatable="false">Use Touch ID to sign in, authorize purchases, reload your Petro-Canada cards and more.</string>
+    <string name="enrollment_fingerprint_label">I\'d like to use Touch ID to sign in</string>
+    <string name="enrollment_fingerprint_hint">Use Touch ID to sign in, authorize purchases, reload your Petro-Canada cards and more.</string>
     <string name="enrollment_terms_agreement">By creating an account, I agree to the Petro-Points <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
     <string name="enrollment_join_button">Join</string>
     <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect 2,500 Petro-Points.</string>
@@ -413,7 +413,7 @@
     <string name="msg_cm001_button">Please try again</string>
     <string name="cards_partners_balance_value">20%</string>
     <string name="navigation_rewards_signedin_tab">Redeem</string>
-    <string name="rewards_signedin_fragment_header" translatable="false">@string/navigation_rewards_signedin_tab</string>
+    <string name="rewards_signedin_fragment_header">@string/navigation_rewards_signedin_tab</string>
     <string name="rewards_signedin_how_to_redeem_title">How to redeem</string>
     <string name="rewards_signedin_petropoints_balance">You have\n%s points</string>
     <string name="rewards_signedin_petropoints_value">or $%d off</string>
@@ -439,7 +439,7 @@
     <string name="login_fingerprint_alert_title">Sign in</string>
     <string name="login_fingerprint_alert_desc">Touch the fingerprint sensor.</string>
     <string name="login_fingerprint_alert_negative_button">Cancel</string>
-    <string name="profile_preferences_authentication_header" translatable="false">Authentication</string>
+    <string name="profile_preferences_authentication_header">Authentication</string>
     <string name="profile_preferences_enable_fingerprint_message">Enable fingerprint?</string>
     <string name="profile_preferences_enable_fingerprint_hint">Sign in faster next time.</string>
 
@@ -483,7 +483,7 @@
     <string name="rewards_signedin_egift_value_in_dollar_generic">$%d</string>
     <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
     <string name="redeem_egift_current_value">Value</string>
-    <string name="redeem_egift_not_enough_points" translatable="false">Looks like you don’t have enough points yet.</string>
+    <string name="redeem_egift_not_enough_points">Looks like you don’t have enough points yet.</string>
     <string name="redeem_egift_address_title">Order will be sent to:</string>
     <string name="redeem_egift_change_btn">Update</string>
     <string name="redeem_egift_confirm_and_redeem">Confirm and redeem</string>
@@ -498,7 +498,7 @@
     <string name="redeem_receipt_point_redeemeed">Points redeemed</string>
     <string name="redeem_receipt_new_balance">New balance</string>
     <string name="redeem_receipt_details_label">Details</string>
-    <string name="redeem_receipt_date_label" translatable="false">Date</string>
+    <string name="redeem_receipt_date_label">Date</string>
     <string name="redeem_receipt_order_id_label">Order ID</string>
     <string name="msg_e030_message">You cannot redeem for this item at this time. If this issue continues, contact customer service at 1 (800) 668-0220 (TTY: 1 (888) 290-7377).</string>
 
@@ -519,8 +519,8 @@
     <string name="carwash_get_ticket_button"><a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">Reload online</a></string>
     <string name="carwash_nocard_add_card_button">Add a card</string>
     <string name="carwash_no_carwash_station_available">Car wash not available</string>
-    <string name="carwash_user_onsite_header">This Station</string>
-    <string name="carwash_user_not_onsite_header">Nearest Station</string>
+    <string name="carwash_user_onsite_header">This station</string>
+    <string name="carwash_user_not_onsite_header">Nearest station</string>
 
     <string name="carwash_activation_header">Activate car wash</string>
     <string name="carwash_activation_subtitle">Type the digits shown on the car wash screen.</string>
@@ -538,7 +538,7 @@
 
     <string name="msg_e030_title">You can’t redeem for this</string>
     <string name="redeem_receipt_email_sent_to_label">Sent to</string>
-    <string name="points_redeemed_value" translatable="false">%1$s points</string>
+    <string name="points_redeemed_value">%1$s points</string>
     <string name="forgot_password_header">Forgot password</string>
     <string name="forgot_password_message">No problem. Enter your email and we\'ll help you set up a new one.</string>
     <string name="forgot_password_email_field_label">Email</string>
@@ -558,7 +558,7 @@
     <string name="single_ticket_update_button">Update</string>
     <string name="single_ticket_payment_title">Payment</string>
     <string name="single_ticket_add_to_account">Add ticket to my account</string>
-    <string name="single_ticket_email_agreement" translatable="false">If you changed your email in the last 24 hours, there will be a hold on redeemed Single-Ticket tickets</string>
+    <string name="single_ticket_email_agreement">If you changed your email in the last 24 hours, there will be a hold on redeemed Single-Ticket tickets</string>
     <string name="single_ticket_terms_and_agreement">Transactions are irreversible. By selecting \"confirm and redeem,\" you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints"><u>Terms and conditions.</u></a></string>
     <string name="single_ticket_email_title">Sent to</string>
     <string name="single_ticket_new_balance_title">New balance</string>

@@ -5,6 +5,7 @@
         <import type="suncor.com.android.model.Resource" />
 
         <import type="suncor.com.android.model.DirectionsResult" />
+
         <variable
             name="vm"
             type="suncor.com.android.ui.main.home.HomeViewModel" />
@@ -15,7 +16,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/station_card"
         android:layout_width="match_parent"
-        android:layout_height="186dp"
+        android:layout_height="166dp"
         android:clipChildren="false"
         app:cardCornerRadius="@dimen/cards_default_radius"
         app:cardElevation="2dp"
@@ -35,6 +36,7 @@
                 style="@style/Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/img_bottom_sheet"
                 android:fontFamily="@font/gibson_semibold"
                 android:text="@string/home_nearest_card_title" />
 
@@ -44,59 +46,36 @@
                 android:layout_height="16dp"
                 android:layout_below="@id/station_title_text"
                 android:layout_marginLeft="6dp"
-                android:layout_marginTop="33dp"
+                android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/img_car_station"
                 app:visibleGone="@{vm.nearestStation.data.distanceDuration==null}" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img_address_station"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_below="@+id/station_title_text"
-                android:layout_marginTop="8dp"
-                android:scaleType="fitCenter"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/station_title_text"
-                app:srcCompat="@drawable/ic_locations_light" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/address_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/station_title_text"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/img_address_station"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textAppearance="@style/Caption1"
-                app:layout_constraintTop_toBottomOf="@+id/station_title_text"
-                android:text="@{vm.nearestStation.data.station.address.addressLine + `, ` + vm.nearestStation.data.station.address.primaryCity}"
-                tools:text="Station Address" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_car_station"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_below="@+id/img_address_station"
-                android:layout_marginTop="10dp"
+                android:layout_below="@+id/station_title_text"
+                android:layout_marginTop="20dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/station_title_text"
                 app:srcCompat="@drawable/ic_car" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/distance_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/address_text"
+                android:layout_below="@id/station_title_text"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_toRightOf="@id/img_car_station"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:textAppearance="@style/Caption1"
                 android:text="@{DirectionsResult.formatDistanceDuration(context, vm.nearestStation.data.distanceDuration)}"
+                android:textAppearance="@style/Caption1"
                 android:textColor="@{vm.nearestStation.data.distanceDuration == DirectionsResult.INVALID ? @color/black_60 : @color/black_80}"
+                app:layout_constraintTop_toBottomOf="@+id/station_title_text"
                 app:visibleGone="@{vm.nearestStation.data.distanceDuration != null}"
                 tools:text="0.5 Km away . 2 min drive" />
 
@@ -112,16 +91,15 @@
                 android:id="@+id/txt_station_open"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/distance_text"
+                android:layout_below="@id/img_car_station"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/open_hours_text"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:textAppearance="@style/Caption1"
-                app:visibleGone="@{vm.nearestStation.data.distanceDuration != null}"
                 android:text="@{vm.nearestStation.data.isOpen24Hrs()?@string/station_open_24hrs:vm.nearestStation.data.isOpen()?@string/station_open_generic(vm.nearestStation.data.getCloseHour()) : @string/station_closed}"
+                android:textAppearance="@style/Caption1"
                 tools:text="Open, closes at 12:00 AM" />
 
             <suncor.com.android.ui.common.SuncorButton
@@ -131,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/open_hours_text"
                 android:layout_marginLeft="-8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:onClick="@{v -> vm.openNavigationApps()}"
                 android:paddingStart="8dp"
                 android:paddingLeft="8dp"

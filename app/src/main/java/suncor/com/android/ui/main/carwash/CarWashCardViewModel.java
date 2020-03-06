@@ -1,6 +1,5 @@
 package suncor.com.android.ui.main.carwash;
 
-import android.os.Handler;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -108,6 +107,7 @@ public class CarWashCardViewModel extends ViewModel {
         });
 
         _nearestStation.addSource(nearestStationLoad, ((resource) -> {
+            isLoading.set(resource.status == Resource.Status.LOADING);
             switch (resource.status) {
                 case LOADING:
                     _nearestStation.setValue(Resource.loading());
@@ -124,14 +124,11 @@ public class CarWashCardViewModel extends ViewModel {
                             _nearestStation.setValue(Resource.success(null));
                         } else {
                             _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, station, favouriteRepository.isFavourite(station))));
+
                         }
                     }
                     break;
             }
-            new Handler().postDelayed(() ->
-            {
-                isLoading.set(resource.status == Resource.Status.LOADING);
-            }, 1000);
         }));
 
         LiveData<Resource<DirectionsResult>> directionsResultLiveData = Transformations.switchMap(_nearestStation, resource -> {
