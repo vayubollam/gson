@@ -78,6 +78,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
+            mViewModel.isLoading.set(true);
             mViewModel.setUserLocation(mViewModel.getUserLocation());
         } else {
             mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
@@ -87,9 +88,9 @@ public class HomeFragment extends BottomNavigationFragment {
     private OnClickListener showCardDetail = v -> {
         Resource<StationItem> resource = mViewModel.nearestStation.getValue();
 
-        resource.data.isFavourite = resource.data.favouriteRepository.isFavourite(resource.data.getStation());
 
         if (resource != null && resource.data != null && !mViewModel.isLoading.get()) {
+            resource.data.isFavourite = resource.data.favouriteRepository.isFavourite(resource.data.getStation());
             StationDetailsDialog.showCard(this, resource.data, nearestCard.getRoot(), false);
         }
     };
