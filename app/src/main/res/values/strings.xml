@@ -25,7 +25,7 @@
     <string name="station_closed">Closed</string>
     <string name="station_hours_list_title">Hours</string>
     <string name="station_open_24hrs">Open 24 hours</string>
-    <string name="station_directions_button">Get directions</string>
+    <string name="station_directions_button">Directions</string>
     <string name="station_search_hint">Where to?</string>
     <string name="filters_fragment_title">Filter by</string>
     <string name="filters_apply_button">Apply</string>
@@ -73,7 +73,7 @@
         <item quantity="other">%d hours</item>
     </plurals>
     <string name="minutes_distance">min</string>
-    <string name="home_nearest_card_title">Nearest</string>
+    <string name="home_nearest_card_title">Nearest Station</string>
     <string name="suggestions_fragment_nearby_title">Nearest</string>
     <string name="enrollment_card_question">Do you have a \n Petro\u2011Points card?</string>
     <string name="enrollment_card_question_body">You can use your points for dollars off fuel, car wash, or store purchases.</string>
@@ -519,8 +519,8 @@
     <string name="carwash_get_ticket_button"><a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">Reload online</a></string>
     <string name="carwash_nocard_add_card_button">Add a card</string>
     <string name="carwash_no_carwash_station_available">Car wash not available</string>
-    <string name="carwash_user_onsite_header">This station</string>
-    <string name="carwash_user_not_onsite_header">Nearest station</string>
+    <string name="carwash_user_onsite_header">This Station</string>
+    <string name="carwash_user_not_onsite_header">Nearest Station</string>
 
     <string name="carwash_activation_header">Activate car wash</string>
     <string name="carwash_activation_subtitle">Type the digits shown on the car wash screen.</string>
