@@ -301,6 +301,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
     private View.OnClickListener tryAgainLister = v -> {
         if (viewModel.getUserLocation() != null) {
+            viewModel.isLoading.set(true);
             viewModel.setUserLocation(viewModel.getUserLocation());
         } else {
             viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
