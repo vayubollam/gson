@@ -79,6 +79,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                         } else {
                             listener.onLoginFailed(SigninResponse.wrongCredentials());
                         }
+                        cancel();
                         break;
                     case ErrorCodes.ERR_ACCOUNT_SOFT_LOCK:
                         int timeout = pubWebResponse.getInt(RETRY_TIMEOUT);
