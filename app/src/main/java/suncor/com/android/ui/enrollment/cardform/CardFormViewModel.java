@@ -17,6 +17,8 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.CardNumberInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
+import java.text.Normalizer;
+
 
 public class CardFormViewModel extends ViewModel {
 
@@ -37,7 +39,8 @@ public class CardFormViewModel extends ViewModel {
                 return enrollmentsApi.checkCardStatus(
                         cardNumberField.getText().replace(" ", ""),
                         postalCodeField.getText().replace(" ", ""),
-                        lastNameField.getText());
+                        Normalizer.normalize(lastNameField.getText(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", ""));
+
             } else {
                 return new MutableLiveData<>();
             }
@@ -47,7 +50,7 @@ public class CardFormViewModel extends ViewModel {
                 CardStatus cardStatus = result.data;
                 if (cardStatus.getCardType() == NewEnrollment.EnrollmentType.GHOST) {
                     UserInfo userInfo = new UserInfo();
-                    userInfo.setLastName(lastNameField.getText());
+                    userInfo.setLastName(Normalizer.normalize(lastNameField.getText(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", ""));
                     cardStatus.setUserInfo(userInfo);
                     Address address = new Address();
                     address.setPostalCode(postalCodeField.getText());
