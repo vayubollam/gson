@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -25,8 +26,12 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.databinding.FragmentCarwashSecurityBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorButton;
@@ -44,10 +49,32 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     @Inject
     ViewModelFactory viewModelFactory;
 
+    @Inject
+    SettingsApi settingsApi;
+
+    @Inject
+    SessionManager sessionManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(CarWashSharedViewModel.class);
+
+        viewModel.securityKey = sessionManager.getCarWashKey();
+
+        if (viewModel.securityKey != null) {
+            viewModel.getMobileCode();
+        } else {
+            settingsApi.retrieveSettings().observe(this, resource -> {
+                if (resource.status == Resource.Status.SUCCESS) {
+                    SettingsResponse settingsResponse = resource.data;
+                    sessionManager.setCarWashKey(settingsResponse.getSettings().getCarwash().getKey());
+                    viewModel.securityKey = sessionManager.getCarWashKey();
+                    viewModel.getMobileCode();
+                }
+            });
+        }
+
         viewModel.getReEnter().observe(this, reEnter -> {
             if (reEnter) {
                 clearText();
@@ -109,11 +136,11 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
             CarWashActivationSecurityFragmentDirections.ActionCarWashActivationSecurityFragmentToCarWashBarCodeFragment
                     action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashBarCodeFragment(loadFromCarWash);
-            AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Generate Barcode");
+            AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep, "Generate Barcode");
             Navigation.findNavController(getView()).navigate(action);
         } else {
             confirmButton.setEnabled(false);
-            String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title)+"("+getContext().getString(R.string.carwash_activation_pin_error_message)+")";
+            String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title) + "(" + getContext().getString(R.string.carwash_activation_pin_error_message) + ")";
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                     new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle)
             );
@@ -122,7 +149,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                     .setMessage(R.string.carwash_activation_pin_error_message)
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
-                                new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle),
+                                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok))
                         );
                         dialog.dismiss();

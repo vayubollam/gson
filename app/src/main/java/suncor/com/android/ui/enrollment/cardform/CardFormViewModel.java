@@ -39,6 +39,7 @@ public class CardFormViewModel extends ViewModel {
                 return enrollmentsApi.checkCardStatus(
                         cardNumberField.getText().replace(" ", ""),
                         postalCodeField.getText().replace(" ", ""),
+                        // converting  Accent character to normal ASCII character
                         Normalizer.normalize(lastNameField.getText(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", ""));
 
             } else {
@@ -53,7 +54,7 @@ public class CardFormViewModel extends ViewModel {
                     userInfo.setLastName(Normalizer.normalize(lastNameField.getText(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", ""));
                     cardStatus.setUserInfo(userInfo);
                     Address address = new Address();
-                    address.setPostalCode(postalCodeField.getText());
+                    address.setPostalCode(postalCodeField.getText().replace(" ", ""));
                     cardStatus.setAddress(address);
                     cardStatus.setCardNumber(cardNumberField.getText().replace(" ", ""));
                 } else {
