@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.carwash;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,17 +12,19 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 
 public class CarWashSharedViewModel extends ViewModel {
-    private String cardNumber;
-    private String securityKey;
+    public String cardNumber;
+    public String securityKey;
     private MutableLiveData<String> encryptedCarWashCode = new MutableLiveData<>();
     private MutableLiveData<Boolean> reEnter = new MutableLiveData<>();
     private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>();
-    private MutableLiveData<String> securityPin = new MutableLiveData<>();
+    public MutableLiveData<String> securityPin = new MutableLiveData<>();
     private MutableLiveData<Boolean> isBackFromBarCode = new MutableLiveData<>();
 
     @Inject
     public CarWashSharedViewModel(SessionManager sessionManager) {
-        securityKey = sessionManager.getCarWashKey();
+    }
+
+    public void getMobileCode() {
         this.securityPin.observeForever(s -> {
             try {
                 String code = CardFormatUtils.getMobileScancode(cardNumber, securityKey, Integer.parseInt(s));

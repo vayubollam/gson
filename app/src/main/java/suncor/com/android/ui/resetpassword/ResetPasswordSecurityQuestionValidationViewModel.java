@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.text.Normalizer;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -37,7 +38,8 @@ public class ResetPasswordSecurityQuestionValidationViewModel extends ViewModel 
 
         securityAnswerLiveData = Transformations.switchMap(validateSecurityQuestion, event -> {
             if (event.getContentIfNotHandled() != null) {
-                return api.validateSecurityQuestion(questionId, questionAnswerField.getText().trim(),profileIdEncrypted, GUID);
+                // converting  Accent character to normal ASCII character for Reset Security Answer Field
+                return api.validateSecurityQuestion(questionId, Normalizer.normalize(questionAnswerField.getText().trim(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", ""),profileIdEncrypted, GUID);
             }
             return new MutableLiveData<>();
         });
