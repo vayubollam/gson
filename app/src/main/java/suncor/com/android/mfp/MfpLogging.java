@@ -30,7 +30,7 @@ public class MfpLogging {
                 .append(Build.MODEL)
                 .append(";")
                 .append(Build.BRAND);
-        String deviceonfoNormalized = flattenToAscii(deviceInfo.toString());
+        String deviceonfoNormalized = Normalizer.normalize((deviceInfo.toString()), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 
         WLClient.getInstance().addGlobalHeader("X-Device-Info", deviceonfoNormalized);
 
