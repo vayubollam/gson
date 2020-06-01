@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards.details;
+package suncor.com.android.ui.main.wallet.cards.details;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -18,7 +18,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
-import suncor.com.android.ui.main.cards.CardsLoadType;
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 
 public class CardDetailsViewModel extends ViewModel {
 

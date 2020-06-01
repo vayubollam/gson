@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards.details;
+package suncor.com.android.ui.main.wallet.cards.details;
 
 import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
@@ -44,7 +44,7 @@ import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainViewModel;
-import suncor.com.android.ui.main.cards.CardsLoadType;
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;

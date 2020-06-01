@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards;
+package suncor.com.android.ui.main.wallet.cards;
 
 public enum CardsLoadType {
     PETRO_POINT_ONLY,

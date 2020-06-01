@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards.details;
+package suncor.com.android.ui.main.wallet.cards.details;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

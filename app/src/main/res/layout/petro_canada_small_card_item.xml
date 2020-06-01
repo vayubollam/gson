@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="suncor.com.android.ui.main.cards.list.CardListItem" />
+            type="suncor.com.android.ui.main.wallet.cards.list.CardListItem" />
     </data>
 
     <LinearLayout

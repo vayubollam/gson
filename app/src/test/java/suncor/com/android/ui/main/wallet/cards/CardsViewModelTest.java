@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards;
+package suncor.com.android.ui.main.wallet.cards;
 
 import com.google.gson.Gson;
 
@@ -19,7 +19,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
-import suncor.com.android.ui.main.cards.list.CardsViewModel;
+import suncor.com.android.ui.main.wallet.cards.list.CardsViewModel;
 
 public class CardsViewModelTest {
 

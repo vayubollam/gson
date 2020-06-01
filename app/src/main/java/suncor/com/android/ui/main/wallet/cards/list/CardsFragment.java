@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards.list;
+package suncor.com.android.ui.main.wallet.cards.list;
 
 import android.graphics.Outline;
 import android.graphics.Rect;
@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -32,12 +33,14 @@ import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainViewModel;
-import suncor.com.android.ui.main.cards.CardsLoadType;
+import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.wallet.WalletFragment;
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 
-public class CardsFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class CardsFragment extends MainActivityFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -46,13 +49,11 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
     private MainViewModel mainViewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
     private CardsListAdapter partnerCardsAdapter;
-    private float appBarElevation;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
 
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
@@ -61,7 +62,10 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
 
         viewModel.viewState.observe(this, (result) -> {
             if (result != CardsViewModel.ViewState.REFRESHING) {
-                binding.refreshLayout.setRefreshing(false);
+                Fragment parent = getParentFragment();
+                if (parent instanceof WalletFragment) {
+                    ((WalletFragment) parent).stopRefresh();
+                }
             }
 
             if (result != CardsViewModel.ViewState.REFRESHING && result != CardsViewModel.ViewState.LOADING) {
@@ -140,7 +144,7 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         binding.errorLayout.setModel(new CardsErrorView(getContext(), () -> viewModel.retryAgain()));
         binding.cardsLayout.post(() -> {
             //give the cards layout a minimum height, to anchor the date to the bottom screen
-            binding.cardsLayout.setMinHeight(binding.scrollView.getHeight() - binding.appBar.getHeight());
+            //binding.cardsLayout.setMinHeight(binding.scrollView.getHeight() - binding.appBar.getHeight());
         });
 
         CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
@@ -159,29 +163,6 @@ public class CardsFragment extends BottomNavigationFragment implements SwipeRefr
         binding.partnerCardsList.setAdapter(partnerCardsAdapter);
         binding.partnerCardsList.addItemDecoration(listDecorator);
 
-        binding.refreshLayout.setColorSchemeResources(R.color.red);
-        binding.refreshLayout.setOnRefreshListener(this);
-
-        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            int[] headerLocation = new int[2];
-            int[] appBarLocation = new int[2];
-
-            binding.header.getLocationInWindow(headerLocation);
-            binding.appBar.getLocationInWindow(appBarLocation);
-            int appBarBottom = appBarLocation[1] + binding.appBar.getMeasuredHeight();
-            int headerBottom = headerLocation[1] + binding.header.getMeasuredHeight() - binding.header.getPaddingBottom();
-
-            if (headerBottom <= appBarBottom) {
-                binding.appBar.setTitle(binding.header.getText());
-                ViewCompat.setElevation(binding.appBar, appBarElevation);
-                binding.appBar.findViewById(R.id.collapsed_title).setAlpha(Math.min(1, (float) (appBarBottom - headerBottom) / 100));
-            } else {
-                binding.appBar.setTitle("");
-                ViewCompat.setElevation(binding.appBar, 0);
-            }
-        });
-
-        binding.appBar.setRightButtonOnClickListener((v) -> navigateToAddCard());
         binding.addCardButton.setOnClickListener((v) -> navigateToAddCard());
 
         binding.petroPointsCard.setOnClickListener((v) -> cardClick(viewModel.getPetroPointsCard().getValue()));

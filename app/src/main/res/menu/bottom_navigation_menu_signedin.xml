@@ -22,7 +22,7 @@
         android:iconTint="@color/black_60"
         android:title="@string/navigation_rewards_signedin_tab" />
     <item
-        android:id="@+id/cards_tab"
+        android:id="@+id/wallet_tab"
         android:icon="@drawable/ic_cards"
         android:iconTint="@color/black_60"
         android:title="@string/navigation_cards_tab" />

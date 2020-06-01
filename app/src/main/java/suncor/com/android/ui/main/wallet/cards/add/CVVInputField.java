@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards.add;
+package suncor.com.android.ui.main.wallet.cards.add;
 
 import java.util.regex.Pattern;
 

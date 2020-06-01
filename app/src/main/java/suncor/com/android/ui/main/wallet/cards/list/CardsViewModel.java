@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.cards.list;
+package suncor.com.android.ui.main.wallet.cards.list;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
