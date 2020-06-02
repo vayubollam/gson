@@ -158,6 +158,18 @@
                 android:defaultValue="true"
                 app:argType="boolean"/>
         </action>
+        <action
+            android:id="@+id/action_payments_tab_to_paymentsDetailsFragment"
+            app:destination="@id/paymentsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_payments_tab_to_addCardFragment"
+            app:destination="@id/addCardFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
 
     </keep_state_fragment>
 
@@ -295,6 +307,15 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/transactionsFragment" />
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/paymentsDetailsFragment"
+        android:name="suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragment"
+        android:label="PaymentsDetailsFragment">
+        <argument
+            android:name="cardIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/preferencesFragment"

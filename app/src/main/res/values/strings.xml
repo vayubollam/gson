@@ -256,6 +256,10 @@
     <string name="cards_fragment_add_card_button">Add a card</string>
     <string name="cards_fragment_try_again">try again</string>
     <string name="cards_fragment_you_have">You have</string>
+    <string name="payments_fragment_add_card_header">No card on file</string>
+    <string name="payments_fragment_add_card_description">Add your credit card details.</string>
+    <string name="payments_fragment_add_card_button">Add a card</string>
+    <string name="payment_details_description">Use your credit card to purchase Petro-Canada products and services.</string>
     <string name="msg_cm003">Couldn\'t update your balance</string>
     <string name="cards_fragment_update_date">As of %1s at %2s</string>
     <string name="cards_wag_label">Wash &amp; Go</string>

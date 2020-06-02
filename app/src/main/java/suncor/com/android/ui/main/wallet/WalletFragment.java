@@ -16,10 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.google.android.material.tabs.TabLayout;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentWalletBinding;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.wallet.cards.list.CardsFragment;
+import suncor.com.android.ui.main.wallet.payments.list.PaymentsFragment;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 
 public class WalletFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -72,6 +75,8 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
         super.onViewCreated(view, savedInstanceState);
         adapter = new WalletPagerAdapter(getChildFragmentManager());
         binding.pager.setAdapter(adapter);
+
+        binding.tabLayout.setupWithViewPager(binding.pager);
     }
 
     @Override
@@ -80,6 +85,10 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
 
         if (fragment instanceof CardsFragment) {
             ((CardsFragment) fragment).onRefresh();
+        }
+
+        if (fragment instanceof PaymentsFragment) {
+            ((PaymentsFragment) fragment).onRefresh();
         }
     }
 

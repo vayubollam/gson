@@ -52,10 +52,31 @@
                         android:text="@string/cards_fragment_title"
                         android:textAppearance="@style/Title1" />
 
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:minHeight="0dp"
+                        android:padding="0dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabMinWidth="0dp"
+                        app:tabPadding="0dp"
+                        app:tabPaddingTop="0dp"
+                        app:tabPaddingBottom="0dp"
+                        app:tabTextAppearance="@style/AppTabTextAppearance"
+                        app:tabBackground="@drawable/tab_background_selector"
+                        app:tabSelectedTextColor="@color/red"
+                        app:tabTextColor="@color/black_80"/>
+
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/pager"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent">
+
+                    </androidx.viewpager.widget.ViewPager>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout>
