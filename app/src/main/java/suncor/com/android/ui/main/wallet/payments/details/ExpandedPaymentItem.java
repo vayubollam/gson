@@ -9,38 +9,22 @@ import suncor.com.android.R;
 import suncor.com.android.model.payments.PaymentDetail;
 
 public class ExpandedPaymentItem {
-    private String cardName;
     private Drawable cardImage;
     private String cardNumber;
     private PaymentDetail paymentDetail;
     private PaymentDetail.PaymentType paymentType;
     private boolean isRemovable = true;
 
-    public ExpandedPaymentItem(Context context, PaymentDetail paymentDetail) {
+    ExpandedPaymentItem(Context context, PaymentDetail paymentDetail) {
         this.paymentDetail = paymentDetail;
-        this.cardNumber = paymentDetail.getCardNumber();
+        this.cardNumber = context.getString(R.string.payment_card_number, paymentDetail.getCardNumber().replaceAll("[^\\d]", ""));
         this.paymentType = paymentDetail.getPaymentType();
-
-        switch (paymentType) {
-            case VISA:
-                cardImage = context.getDrawable(R.drawable.visa);
-                break;
-            case MASTERCARD:
-                cardImage = context.getDrawable(R.drawable.mastercard);
-                break;
-            case AMEX:
-                cardImage = context.getDrawable(R.drawable.amex);
-                break;
-        }
+        this.cardImage = context.getDrawable(paymentDetail.getCardImage());
 
     }
 
     public PaymentDetail.PaymentType getPaymentType() {
         return paymentType;
-    }
-
-    public String getCardName() {
-        return cardName;
     }
 
     public String getCardNumber() {

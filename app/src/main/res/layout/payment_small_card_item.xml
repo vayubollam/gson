@@ -61,7 +61,7 @@
             android:ellipsize="end"
             android:gravity="end"
             android:lines="1"
-            android:text="@{item.paymentDetail.cardNumber}"
+            android:text="@{item.cardNumber}"
             android:textColor="@{item.textColor}"
             android:textSize="16sp"
             app:fontFamily="@font/gibson_semibold"

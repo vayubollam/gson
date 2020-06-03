@@ -32,7 +32,6 @@
                 android:clipToPadding="false"
                 app:visibleGone="@{vm.viewState != ViewState.LOADING}">
 
-
                 <FrameLayout
                     android:id="@+id/credit_card_layout"
                     android:layout_width="match_parent"
@@ -42,7 +41,7 @@
                     android:paddingStart="16dp"
                     android:paddingTop="20dp"
                     android:paddingEnd="16dp"
-                    app:layout_constraintBottom_toTopOf="@id/update_time_text"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="spread_inside"
                     app:visibleGone="@{vm.viewState != ViewState.FAILED}">
 
@@ -114,23 +113,24 @@
                         layout="@layout/layout_error" />
                 </FrameLayout>
 
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/update_time_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="32dp"
-                    android:text="@{vm.dateOfUpdate != null ? @string/cards_fragment_update_date(TimeUtils.formatDate(vm.dateOfUpdate), TimeUtils.formatTime(vm.dateOfUpdate)) : ``}"
-                    android:textAppearance="@style/Caption1"
-                    android:textColor="@color/black_40"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cards_layout"
-                    app:visibleGone="@{vm.viewState != ViewState.FAILED}" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/update_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:text="@{vm.dateOfUpdate != null ? @string/cards_fragment_update_date(TimeUtils.formatDate(vm.dateOfUpdate), TimeUtils.formatTime(vm.dateOfUpdate)) : ``}"
+                android:textAppearance="@style/Caption1"
+                android:textColor="@color/black_40"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cards_layout"
+                app:visibleGone="@{vm.viewState == ViewState.SUCCESS}"
+                tools:text="As of June 12, 2020"/>
 
             <FrameLayout
                 android:layout_width="match_parent"

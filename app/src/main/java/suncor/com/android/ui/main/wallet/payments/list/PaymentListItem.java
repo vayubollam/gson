@@ -17,25 +17,16 @@ public class PaymentListItem {
     private Drawable cardImage;
     private PaymentDetail.PaymentType paymentType;
     private PaymentDetail paymentDetail;
+    private String cardNumber;
 
-    public PaymentListItem(Context context, PaymentDetail paymentDetail) {
+    PaymentListItem(Context context, PaymentDetail paymentDetail) {
         this.paymentDetail = paymentDetail;
         this.paymentType = paymentDetail.getPaymentType();
+        this.cardImage = context.getDrawable(paymentDetail.getCardImage());
+        this.cardNumber = context.getString(R.string.payment_card_number, paymentDetail.getCardNumber().replaceAll("[^\\d]", ""));
 
         backgroundColor = Color.WHITE;
         textColor = Color.parseColor("#CC000000");
-
-        switch (paymentType) {
-            case VISA:
-                cardImage = context.getDrawable(R.drawable.visa);
-                break;
-            case MASTERCARD:
-                cardImage = context.getDrawable(R.drawable.mastercard);
-                break;
-            case AMEX:
-                cardImage = context.getDrawable(R.drawable.amex);
-                break;
-        }
     }
 
     public int getTextColor() {
@@ -56,6 +47,10 @@ public class PaymentListItem {
 
     public Drawable getCardImage() {
         return cardImage;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
     }
 
 }
