@@ -59,12 +59,15 @@ public class SuncorApplication extends DaggerApplication {
     }
 
     private void initMFP() {
+        Logger.setAutoSendLogs(false);
+        Logger.setCapture(false);
+
         wlClient.registerChallengeHandler(challengeHandler);
         MFPRequestInterceptor.attachRequestInterceptor(requestInterceptor, HttpClientManager.getInstance());
         MfpLogging.logDeviceInfo(this);
         WLAuthorizationManager.getInstance().setLoginTimeout(DEFAULT_TIMEOUT / 1000);
         if (BuildConfig.DEBUG) {
-            Logger.setLevel(Logger.LEVEL.TRACE);
+//            Logger.setLevel(Logger.LEVEL.TRACE);
         }
     }
 
