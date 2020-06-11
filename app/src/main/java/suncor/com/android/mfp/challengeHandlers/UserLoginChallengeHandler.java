@@ -38,10 +38,10 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private static final String PUBWEB = "pubWeb";
     private static final String RETRY_TIMEOUT = "retryTimeout";
     private static final String CREDENTIALS_KEY = "credentials";
+    private boolean callOnceOnCredentialValidation = false;
 
     private boolean isChallenged = false;
     private SessionChangeListener listener;
-
     private JSONObject credentials;
 
     @Inject
@@ -111,6 +111,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                         listener.onTokenInvalid();
                     }
                 }
+                listener.onLoginFailed(SigninResponse.generalFailure());
             }
         } catch (JSONException e) {
             Timber.e(e, "parsing challenge response failed");
@@ -142,7 +143,10 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             String profileStr = identity.getJSONObject("user").getString("attributes");
             Profile profile = gson.fromJson(profileStr, Profile.class);
             AnalyticsUtils.userID = profile.getRetailId();
-            listener.onLoginSuccess(profile);
+            if (callOnceOnCredentialValidation) {
+                callOnceOnCredentialValidation = false;
+                listener.onLoginSuccess(profile);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -150,6 +154,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     public void login(JSONObject credentials) {
         this.credentials = credentials;
+        callOnceOnCredentialValidation = true;
         if (isChallenged) {
             submitChallengeAnswer(credentials);
         } else {
@@ -184,7 +189,6 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
 
     public void logout(WLLogoutResponseListener listener) {
-
         String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
         if (!fingerPrintManager.isFingerprintActivated()) {
             //Remove saved credentials
