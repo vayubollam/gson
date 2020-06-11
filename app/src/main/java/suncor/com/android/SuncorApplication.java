@@ -67,7 +67,7 @@ public class SuncorApplication extends DaggerApplication {
         MfpLogging.logDeviceInfo(this);
         WLAuthorizationManager.getInstance().setLoginTimeout(DEFAULT_TIMEOUT / 1000);
         if (BuildConfig.DEBUG) {
-//            Logger.setLevel(Logger.LEVEL.TRACE);
+            Logger.setLevel(Logger.LEVEL.TRACE);
         }
     }
 
