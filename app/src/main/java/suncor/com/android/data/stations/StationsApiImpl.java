@@ -41,7 +41,7 @@ public class StationsApiImpl implements StationsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterURI = new URI(BASE_PATH + "?southWestLat=" + bounds.southwest.latitude + "&southWestLong=" + bounds.southwest.longitude + "0&northEastLat=" + bounds.northeast.latitude + "&northEastLong=" + bounds.northeast.longitude + "&tryNearestLocation=" + tryNearest);
-            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
