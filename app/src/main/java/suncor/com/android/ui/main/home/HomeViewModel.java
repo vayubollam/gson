@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.home;
 
+import android.os.Handler;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
@@ -164,8 +165,15 @@ public class HomeViewModel extends ViewModel {
 
             if (!LAT_LNG_BOUNDS.contains(userLocation)) {
                 _nearestStation.setValue(Resource.success(null));
+                new Handler().postDelayed(() -> {
+                    isLoading.set(false);
+                }, 1000);
             } else if (_nearestStation.getValue() != null && _nearestStation.getValue().status != Resource.Status.SUCCESS) {
                 loadNearest.setValue(Event.newEvent(true));
+            } else {
+                new Handler().postDelayed(() -> {
+                    isLoading.set(false);
+                }, 1000);
             }
         } else {
             this.userLocation = userLocation;

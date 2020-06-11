@@ -101,7 +101,7 @@
                         android:id="@+id/carwash_nearest_cards"
                         layout="@layout/carwash_nearest_card"
                         android:layout_width="match_parent"
-                        android:layout_height="196dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/carwash_margin_16"
                         android:visibility="@{(vm.viewState != ViewState.FAILED &amp;&amp; vm.viewState != ViewState.LOADING)? View.VISIBLE : View.GONE}"
                         app:layout_constraintLeft_toLeftOf="parent"

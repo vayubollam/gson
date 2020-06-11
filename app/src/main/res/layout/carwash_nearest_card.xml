@@ -16,7 +16,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/station_card"
         android:layout_width="match_parent"
-        android:layout_height="196dp"
+        android:layout_height="wrap_content"
         android:clipChildren="false"
         app:cardCornerRadius="@dimen/cards_default_radius"
         app:cardElevation="2dp"
@@ -42,16 +42,16 @@
 
             <ProgressBar
                 android:id="@+id/progress_bar"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
                 android:layout_below="@id/station_title_text"
                 android:layout_marginLeft="6dp"
                 android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/img_car_station"
-                app:visibleGone="@{vm.nearestStation.data.distanceDuration==null}" />
+                app:visibleGone="@{false}"/>
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img_car_station"
+                android:id="@+id/img_address_station"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_below="@+id/station_title_text"
@@ -62,12 +62,41 @@
                 app:srcCompat="@drawable/ic_pin_carwash" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/distance_text"
+                android:id="@+id/address_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/station_title_text"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="18dp"
+                android:layout_toRightOf="@id/img_address_station"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textAppearance="@style/Caption1"
+                android:text="@{vm.nearestStation.data.station.address.addressLine + `, ` + vm.nearestStation.data.station.address.primaryCity}"
+                app:layout_constraintTop_toBottomOf="@+id/station_title_text"
+                tools:text="Station Address" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_car_station"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_below="@+id/img_address_station"
+                android:layout_marginTop="8dp"
+                app:srcCompat="@drawable/ic_car"
+                app:visibleGone="@{DirectionsResult.isOnsite(vm.nearestStation.data.distanceDuration)?false:true }"
+                />
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/distance_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_address_station"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/img_car_station"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
@@ -76,7 +105,7 @@
                 android:textAppearance="@style/Caption1"
                 android:textColor="@{vm.nearestStation.data.distanceDuration == DirectionsResult.INVALID ? @color/black_60 : @color/black_80}"
                 app:layout_constraintTop_toBottomOf="@+id/station_title_text"
-                app:visibleGone="@{vm.nearestStation.data.distanceDuration != null}"
+                app:visibleGone="@{!DirectionsResult.isOnsite(vm.nearestStation.data.distanceDuration) }"
                 tools:text="0.5 Km away . 2 min drive" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -93,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/img_car_station"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="7dp"
                 android:layout_toRightOf="@+id/open_hours_text"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
@@ -108,7 +137,7 @@
                 android:layout_height="16dp"
                 android:layout_below="@+id/open_hours_text"
                 android:layout_marginTop="8dp"
-                app:srcCompat="@drawable/ic_car" />
+                app:srcCompat="@drawable/ic_info_outline_light"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/carwash_type_text"
@@ -132,10 +161,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/carwash_type_icon"
                 android:layout_marginLeft="-8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:paddingStart="8dp"
                 android:paddingLeft="8dp"
-                android:text="@string/station_directions_button" />
+                android:text="@string/station_directions_button"
+                app:visibleGone="@{!DirectionsResult.isOnsite(vm.nearestStation.data.distanceDuration) }" />
 
         </RelativeLayout>
 

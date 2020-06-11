@@ -98,6 +98,13 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             showDuplicateEmailAlert();
         });
 
+        AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+        if (viewModel.getCardStatus() == null) {
+            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", formName));
+        } else {
+            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", formName), new Pair<>("stepName", "Personal Information"));
+        }
+        
         //enrollments api call result
         viewModel.joinLiveData.observe(this, (r) -> {
             if (r.status == Resource.Status.SUCCESS) {
@@ -144,14 +151,14 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_email_restricted_alert_title)));
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title)+"("+")"));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"));
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title)+"("+")"),
-                                new Pair<>("alertSelection",getString(R.string.ok))
+                                new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
+                                new Pair<>("alertSelection", getString(R.string.ok))
                         );
                         binding.emailInput.setText("");
                         d.dismiss();
@@ -219,34 +226,34 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         });
         viewModel.showBiometricAlert.observe(this, booleanEvent -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title)+"("+getString(R.string.sign_enable_fb_message)+")")
+                    new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")")
             );
             new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.sign_enable_fp_title)
-                        .setMessage(R.string.sign_enable_fb_message)
-                        .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
-                            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                    new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title)+"("+getString(R.string.sign_enable_fb_message)+")"),
-                                    new Pair<>("alertSelection",getString(R.string.sign_enable_fb_possitive_button))
-                            );
-                            viewModel.proccedToJoin(true);
-                        })
-                        .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
-                            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                    new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title)+"("+getString(R.string.sign_enable_fb_message)+")"),
-                                    new Pair<>("alertSelection",getString(R.string.sign_enable_fb_negative_button))
-                            );
-                            viewModel.proccedToJoin(false);
-                        })
-                        .create()
-                        .show();
+                    .setTitle(R.string.sign_enable_fp_title)
+                    .setMessage(R.string.sign_enable_fb_message)
+                    .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
+                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_possitive_button))
+                        );
+                        viewModel.proccedToJoin(true);
+                    })
+                    .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
+                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_negative_button))
+                        );
+                        viewModel.proccedToJoin(false);
+                    })
+                    .create()
+                    .show();
         });
     }
 
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
-        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enrollment_invalid_email_title)));
+        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_invalid_email_title)));
 
         dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
                 .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
@@ -320,12 +327,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
-        if (viewModel.getCardStatus() == null) {
-            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", formName));
-        } else {
-            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", formName), new Pair<>("stepName", "Personal Information"));
-        }
     }
 
     @Override
@@ -352,19 +353,19 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         int percentage = (int) scrollPosition;
                         if (percentage > 20 && !scroll20) {
                             scroll20 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","20"));
-                        } else if (percentage > 40 && !scroll40){
+                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "20"));
+                        } else if (percentage > 40 && !scroll40) {
                             scroll40 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","40"));
-                        } else if (percentage > 60 && !scroll60){
+                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "40"));
+                        } else if (percentage > 60 && !scroll60) {
                             scroll60 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","60"));
-                        } else if (percentage > 80 && !scroll80){
+                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "60"));
+                        } else if (percentage > 80 && !scroll80) {
                             scroll80 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","80"));
-                        } else if (percentage > 100 && !scroll100){
+                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "80"));
+                        } else if (percentage > 100 && !scroll100) {
                             scroll100 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","100"));
+                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "100"));
                         }
                     }
 
@@ -383,21 +384,21 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         } else if (viewModel.isOneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title)+"("+getString(R.string.enrollment_leave_alert_message)+")")
+                    new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")")
             );
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
             alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
                 AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title)+"("+getString(R.string.enrollment_leave_alert_message)+")"),
-                        new Pair<>("alertSelection",getString(R.string.ok))
+                        new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
+                        new Pair<>("alertSelection", getString(R.string.ok))
                 );
                 getActivity().finish();
             });
             alertDialog.setNegativeButton(R.string.cancel, (d, w) -> {
                 AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title)+"("+getString(R.string.enrollment_leave_alert_message)+")"),
-                        new Pair<>("alertSelection",getString(R.string.cancel))
+                        new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
+                        new Pair<>("alertSelection", getString(R.string.cancel))
                 );
             });
             alertDialog.show();

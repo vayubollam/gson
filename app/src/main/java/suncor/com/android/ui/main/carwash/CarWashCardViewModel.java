@@ -1,11 +1,13 @@
 package suncor.com.android.ui.main.carwash;
 
+import android.os.Handler;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+import android.os.Handler;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -43,7 +45,7 @@ public class CarWashCardViewModel extends ViewModel {
     private MutableLiveData<List<CardDetail>> petroCanadaCards = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> refreshCardsEvent = new MutableLiveData<>();
 
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
+    public ObservableBoolean isLoading = new ObservableBoolean(false);
     private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
     private LiveData<Resource<StationItem>> nearestStation = _nearestStation;
 
@@ -107,7 +109,6 @@ public class CarWashCardViewModel extends ViewModel {
         });
 
         _nearestStation.addSource(nearestStationLoad, ((resource) -> {
-            isLoading.set(resource.status == Resource.Status.LOADING);
             switch (resource.status) {
                 case LOADING:
                     _nearestStation.setValue(Resource.loading());
@@ -124,11 +125,14 @@ public class CarWashCardViewModel extends ViewModel {
                             _nearestStation.setValue(Resource.success(null));
                         } else {
                             _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, station, favouriteRepository.isFavourite(station))));
-
                         }
                     }
                     break;
             }
+            new Handler().postDelayed(() ->
+            {
+                isLoading.set(resource.status == Resource.Status.LOADING);
+            }, 1000);
         }));
 
         LiveData<Resource<DirectionsResult>> directionsResultLiveData = Transformations.switchMap(_nearestStation, resource -> {
@@ -249,8 +253,15 @@ public class CarWashCardViewModel extends ViewModel {
 
             if (!LAT_LNG_BOUNDS.contains(userLocation)) {
                 _nearestStation.setValue(Resource.success(null));
+                new Handler().postDelayed(() -> {
+                    isLoading.set(false);
+                }, 1000);
             } else if (_nearestStation.getValue() != null && _nearestStation.getValue().status != Resource.Status.SUCCESS) {
                 loadNearest.setValue(Event.newEvent(true));
+            }else {
+                new Handler().postDelayed(() -> {
+                    isLoading.set(false);
+                }, 1000);
             }
         } else {
             this.userLocation = userLocation;

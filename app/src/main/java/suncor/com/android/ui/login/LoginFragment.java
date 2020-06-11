@@ -110,6 +110,7 @@ public class LoginFragment extends BaseFragment {
                         }
                         fingerPrintManager.activateAutoLogin();
                         AnalyticsUtils.logEvent(getContext(), "login");
+                        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login", getActivity().getClass().getSimpleName());
                     }
                 }
         );
@@ -163,8 +164,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login", getActivity().getClass().getSimpleName());
-        new Handler().postDelayed(() -> {
+                new Handler().postDelayed(() -> {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
                 String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
 
@@ -205,7 +205,6 @@ public class LoginFragment extends BaseFragment {
                 biometricPrompt.authenticate(promptInfo);
             }
         }, 100);
-
 
     }
 

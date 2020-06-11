@@ -59,6 +59,9 @@ public class StationsViewModel extends ViewModel {
         this.favouriteRepository = favouriteRepository;
         this.stationsApi = stationsApi;
         filters.observeForever((l) -> {
+            if (stationsAround.getValue().status == null){
+                return;
+            }
             if (stationsAround.getValue().status != Resource.Status.SUCCESS) {
                 return;
             }
