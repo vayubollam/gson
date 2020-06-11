@@ -59,6 +59,9 @@ public class SuncorApplication extends DaggerApplication {
     }
 
     private void initMFP() {
+        Logger.setAutoSendLogs(false);
+        Logger.setCapture(false);
+
         wlClient.registerChallengeHandler(challengeHandler);
         MFPRequestInterceptor.attachRequestInterceptor(requestInterceptor, HttpClientManager.getInstance());
         MfpLogging.logDeviceInfo(this);
