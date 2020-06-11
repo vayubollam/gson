@@ -20,7 +20,7 @@ import suncor.com.android.utilities.Timber;
 public class SuncorApplication extends DaggerApplication {
 
     public static final int DEFAULT_TIMEOUT = 30_000;
-    public static final String UNPROTECTED_SCOPE = "RegisteredClient";
+    public static final String DEFAULT_PROTECTED_SCOPE = "RegisteredClient";
     public static final String PROTECTED_SCOPE = "LoggedIn";
 
 
