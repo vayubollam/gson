@@ -52,14 +52,16 @@ public class StationsViewModel extends ViewModel {
 
     private float regionRatio = 1f;
 
-    private boolean shouldUpdateSectedStation;
+    private boolean shouldUpdateSectedStation ;
 
     @Inject
     public StationsViewModel(StationsApi stationsApi, FavouriteRepository favouriteRepository) {
         this.favouriteRepository = favouriteRepository;
         this.stationsApi = stationsApi;
         filters.observeForever((l) -> {
-            if (stationsAround.getValue().status == null){
+
+
+            if (stationsAround == null && stationsAround.getValue() == null && stationsAround.getValue().status == null) {
                 return;
             }
             if (stationsAround.getValue().status != Resource.Status.SUCCESS) {

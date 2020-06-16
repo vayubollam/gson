@@ -42,7 +42,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH_V3);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(account));
             request.send(body, new WLResponseListener() {
                 @Override
@@ -82,7 +82,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         URI adapterPath;
         try {
             adapterPath = new URI(ADAPTER_PATH_V3.concat("/security-questions"));
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
             } else {
@@ -125,7 +125,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH_V3.concat("/card-status"));
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.UNPROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.addHeader("x-card-number", cardNumber);
             request.addHeader("x-postal-code", postalCode);
             request.addHeader("x-last-name", lastName);

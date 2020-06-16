@@ -80,9 +80,9 @@ window.onload = function () {
     document.getElementById("rewards-link-bcaa-title").innerHTML = data.rewardsLink.bcaa.title
     document.getElementById("rewards-link-bcaa-description").innerHTML = data.rewardsLink.bcaa.description;
 
-    document.getElementById("rewards-link-more-image").src="images/panel-6/card-morerewards.png";
-    document.getElementById("rewards-link-more-title").innerHTML = data.rewardsLink.more.title
-    document.getElementById("rewards-link-more-description").innerHTML = data.rewardsLink.more.description;
+//    document.getElementById("rewards-link-more-image").src="images/panel-6/card-morerewards.png";
+//    document.getElementById("rewards-link-more-title").innerHTML = data.rewardsLink.more.title
+//    document.getElementById("rewards-link-more-description").innerHTML = data.rewardsLink.more.description;
 
     // (Panel-7) Article Rewards-Partners 
     document.getElementById("rewards-partners-title").innerHTML = data.rewardsPartners.title
