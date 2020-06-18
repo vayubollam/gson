@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.wallet;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.Objects;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentWalletBinding;
@@ -77,6 +80,9 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
         binding.pager.setAdapter(adapter);
 
         binding.tabLayout.setupWithViewPager(binding.pager);
+
+        // Default select petro-canada cards
+        new Handler().postDelayed(() -> Objects.requireNonNull(binding.tabLayout.getTabAt(0)).select(),100);
     }
 
     @Override
