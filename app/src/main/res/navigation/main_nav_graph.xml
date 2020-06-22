@@ -165,8 +165,8 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
         <action
-            android:id="@+id/action_payments_tab_to_addCardFragment"
-            app:destination="@id/addCardFragment"
+            android:id="@+id/action_payments_tab_to_addPaymentFragment"
+            app:destination="@id/addPaymentFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_down" />
@@ -317,6 +317,13 @@
             android:defaultValue="0"
             app:argType="integer" />
     </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/addPaymentFragment"
+        android:name="suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragment"
+        android:label="AddPaymentFragment"
+        tools:layout="@layout/fragment_add_payment" />
+
     <keep_state_fragment
         android:id="@+id/preferencesFragment"
         android:name="suncor.com.android.ui.main.profile.preferences.PreferencesFragment"

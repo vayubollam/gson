@@ -23,12 +23,12 @@ import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.payments.AddPayment;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.model.payments.PaymentResponse;
 import suncor.com.android.utilities.Timber;
 
 public class PaymentsApiImpl implements PaymentsApi {
-    private final static String ADAPTER_PATH = "/adapters/suncorpayatpump/v1/payatpump/wallet";
     private Gson gson;
 
     public PaymentsApiImpl(Gson gson) {
@@ -41,11 +41,8 @@ public class PaymentsApiImpl implements PaymentsApi {
         MutableLiveData<Resource<ArrayList<PaymentDetail>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/wallet/funding");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
-
-            // TODO: Remove, just for mocking
-            request.addHeader("X-Mock-Variant", "/v1/payatpump/wallet:success");
 
             request.send(new WLResponseListener() {
                 @Override
@@ -53,11 +50,11 @@ public class PaymentsApiImpl implements PaymentsApi {
                     String jsonText = wlResponse.getResponseText();
                     Timber.d("Payments API success, response:\n" + jsonText);
 
-                    PaymentResponse.WalletResponse[] wallet = gson.fromJson(jsonText, PaymentResponse.class).getWallet();
+                    PaymentResponse.WalletResponse[] wallets = gson.fromJson(jsonText, PaymentResponse.class).getWallet();
+                    PaymentResponse.WalletResponse wallet = Arrays.stream(wallets).filter(x -> x.getSource().equals("moneris")).findFirst().orElse(null);
 
-                    if (wallet.length == 1) {
-                        PaymentDetail[] payments = wallet[0].getPayments();
-                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(payments))));
+                    if (wallet != null) {
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(wallet.getPayments()))));
                     } else {
                         result.postValue(Resource.success(new ArrayList<>()));
                     }
@@ -79,14 +76,77 @@ public class PaymentsApiImpl implements PaymentsApi {
     }
 
     @Override
-    public LiveData<Resource<PaymentDetail>> addPayment() {
-        // TODO: Implement
-        return null;
+    public LiveData<Resource<AddPayment>> addPayment() {
+        Timber.d("Retrieve Add Payment info ");
+        MutableLiveData<Resource<AddPayment>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/wallet/iframeurl");
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Get Add Payment API success, response:\n" + jsonText);
+
+                    AddPayment addPayment = gson.fromJson(jsonText, AddPayment.class);
+                    result.postValue(Resource.success(addPayment));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Get Add Payment API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
     }
 
     @Override
-    public LiveData<Resource<PaymentDetail>> removePayment(PaymentDetail paymentDetail) {
-        // TODO: Implement
-        return null;
+    public LiveData<Resource<ArrayList<PaymentDetail>>> removePayment(PaymentDetail paymentDetail) {
+        Timber.d("Removing payment: " + paymentDetail.getCardNumber());
+        MutableLiveData<Resource<ArrayList<PaymentDetail>>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/wallet/funding/" + paymentDetail.getId());
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Payments deletion API success, response:\n" + jsonText);
+
+                    PaymentResponse.WalletResponse[] wallets = gson.fromJson(jsonText, PaymentResponse.class).getWallet();
+                    PaymentResponse.WalletResponse wallet = Arrays.stream(wallets).filter(x -> x.getSource().equals("moneris")).findFirst().orElse(null);
+
+                    if (wallet != null) {
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(wallet.getPayments()))));
+                    } else {
+                        result.postValue(Resource.success(new ArrayList<>()));
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Payment deletion failed due to: " + wlFailResponse.getErrorMsg());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            result.postValue(Resource.error(e.getMessage()));
+            Timber.d("Payment deletion failed due to: " + e.getMessage());
+        }
+
+        return result;
     }
 }

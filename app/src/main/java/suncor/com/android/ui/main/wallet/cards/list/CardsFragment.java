@@ -1,11 +1,11 @@
 package suncor.com.android.ui.main.wallet.cards.list;
 
+import android.content.Context;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -31,16 +29,16 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.ui.common.SuncorToast;
-import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.wallet.WalletFragment;
+import suncor.com.android.ui.main.wallet.WalletTabInterface;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 
-public class CardsFragment extends MainActivityFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class CardsFragment extends MainActivityFragment implements SwipeRefreshLayout.OnRefreshListener, WalletTabInterface {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -50,6 +48,11 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
     private CardsListAdapter petroCanadaCardsAdapter;
     private CardsListAdapter partnerCardsAdapter;
 
+
+    @Override
+    public String getTabName(Context context) {
+        return context.getString(R.string.wallet_card_tab);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,7 +173,8 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
         return binding.getRoot();
     }
 
-    private void navigateToAddCard() {
+    @Override
+    public void navigateToAddCard() {
         Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_addCardFragment);
     }
 

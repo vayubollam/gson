@@ -256,11 +256,6 @@
     <string name="cards_fragment_add_card_button">Add a card</string>
     <string name="cards_fragment_try_again">try again</string>
     <string name="cards_fragment_you_have">You have</string>
-    <string name="payments_fragment_add_card_header">No card on file</string>
-    <string name="payments_fragment_add_card_description">Add your credit card details.</string>
-    <string name="payments_fragment_add_card_button">Add a card</string>
-    <string name="payment_details_description">Use your credit card to purchase Petro-Canada products and services.</string>
-    <string name="payment_card_number">\u2022\u2022\u2022\u2022%s</string>
     <string name="msg_cm003">Couldn\'t update your balance</string>
     <string name="cards_fragment_update_date">As of %1s at %2s</string>
     <string name="cards_wag_label">Wash &amp; Go</string>
@@ -593,5 +588,18 @@
     <string name="tutorial_silde_page1_header">Brand new menu</string>
     <string name="tutorial_silde_page2_header">Quickly access features</string>
     <string name="tutorial_silde_page3_header">Activate car wash</string>
+
+    <!-- View Wallet Screen -->
+    <string name="wallet_card_tab">Petro-Canada cards</string>
+    <string name="wallet_payment_tab">Credit cards</string>
+
+    <!-- View Credit Card Screen -->
+    <string name="payments_fragment_add_card_header">No credit cards</string>
+    <string name="payments_fragment_add_card_description">Add a credit card to your account for a faster experience.</string>
+    <string name="payments_fragment_add_card_button">Add a card</string>
+    <string name="payment_details_description">Pay at the pump through the app with this credit card.</string>
+    <string name="payment_card_number">\u2022\u2022\u2022\u2022%s</string>
+
+    <string name="payment_add_fragment_header">Credit card details</string>
 
 </resources>

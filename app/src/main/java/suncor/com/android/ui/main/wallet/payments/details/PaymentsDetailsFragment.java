@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.wallet.payments.details;
 
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,12 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
 import suncor.com.android.model.payments.PaymentDetail;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragmentArgs;
-import suncor.com.android.ui.main.wallet.cards.details.RemoveCardBottomSheet;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class PaymentsDetailsFragment extends MainActivityFragment {
@@ -141,14 +143,14 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    void cardViewMoreHandler(ExpandedPaymentItem expandedCardItem) {
-        RemoveCardBottomSheet removeCardBottomSheet = new RemoveCardBottomSheet();
-        removeCardBottomSheet.setClickListener(v -> {
+    private void cardViewMoreHandler(ExpandedPaymentItem expandedCardItem) {
+        RemovePaymentBottomSheet removePaymentBottomSheet = new RemovePaymentBottomSheet();
+        removePaymentBottomSheet.setClickListener(v -> {
             AnalyticsUtils.logEvent(getContext(), "menu_tap", new Pair<>("menuSelection", getString(R.string.card_remove_bottom_sheet_title)));
-            removeCardBottomSheet.dismiss();
+            removePaymentBottomSheet.dismiss();
             showConfirmationAlert(expandedCardItem);
         });
-        removeCardBottomSheet.show(getFragmentManager(), RemoveCardBottomSheet.TAG);
+        removePaymentBottomSheet.show(getFragmentManager(), RemovePaymentBottomSheet.TAG);
     }
 
     private void showConfirmationAlert(ExpandedPaymentItem expandedCardItem) {
@@ -159,7 +161,29 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
-                    // TODO: Remove card
+                    viewModel.deletePayment(expandedCardItem.getPaymentDetail()).observe(this, paymentDetailResource -> {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                                new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
+                                new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
+                        );
+                        if (paymentDetailResource.status == Resource.Status.ERROR) {
+                            isRemoving.set(false);
+                            Alerts.prepareGeneralErrorDialog(getContext()).show();
+                        } else if (paymentDetailResource.status == Resource.Status.SUCCESS) {
+                            isRemoving.set(false);
+                            new Handler().postDelayed(() -> {
+                                adapter.removeCard(new ExpandedPaymentItem(getContext(), paymentDetailResource.data));
+                                if (adapter.getCardItems().size() == 0)
+                                    Navigation.findNavController(getView()).popBackStack();
+                            }, 200);
+
+                            AnalyticsUtils.logEvent(getContext(), "payment_remove", new Pair<>("cardNumber", paymentDetailResource.data.getCardNumber()));
+                        } else if (paymentDetailResource.status == Resource.Status.LOADING) {
+                            isRemoving.set(true);
+                        }
+                    });
+
                 }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {
                     AnalyticsUtils.logEvent(getContext(), "alert_interaction",
                             new Pair<>("alertTitle", getString(R.string.cards_remove_card_alert_title)),

@@ -34,6 +34,7 @@ import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationsFragment;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesFragment;
 import suncor.com.android.ui.main.stationlocator.search.SearchFragment;
+import suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragment;
 import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragment;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentsFragment;
 
@@ -77,6 +78,9 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract PaymentsDetailsFragment contributesPaymentsDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract AddPaymentFragment contributesAddPaymentFragment();
 
     @ContributesAndroidInjector
     abstract FAQFragment contributesFAQFragment();

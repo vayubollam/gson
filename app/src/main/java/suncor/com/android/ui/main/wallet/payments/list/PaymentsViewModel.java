@@ -82,7 +82,7 @@ public class PaymentsViewModel extends ViewModel {
         });
     }
 
-    public void onAttached() {
+    void onAttached() {
         retrieveCardsEvent.setValue(Event.newEvent(true));
     }
 
@@ -99,11 +99,11 @@ public class PaymentsViewModel extends ViewModel {
         dateOfUpdate.setValue(repository.getTimeOfLastUpdate());
     }
 
-    public void retryAgain() {
+    void retryAgain() {
         retrieveCardsEvent.setValue(Event.newEvent(true));
     }
 
-    public void refreshPayments() {
+    void refreshPayments() {
         refreshCardsEvent.setValue(Event.newEvent(true));
     }
 
@@ -115,7 +115,7 @@ public class PaymentsViewModel extends ViewModel {
         LOADING, FAILED, SUCCESS, REFRESHING
     }
 
-    public int getIndexofPaymentDetail(PaymentDetail PaymentDetail) {
+    int getIndexofPaymentDetail(PaymentDetail PaymentDetail) {
         return cards.indexOf(PaymentDetail);
     }
 }

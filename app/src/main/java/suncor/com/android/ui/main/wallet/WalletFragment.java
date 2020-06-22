@@ -13,19 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentWalletBinding;
 import suncor.com.android.ui.main.BottomNavigationFragment;
-import suncor.com.android.ui.main.wallet.cards.list.CardsFragment;
-import suncor.com.android.ui.main.wallet.payments.list.PaymentsFragment;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 
 public class WalletFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -50,7 +43,8 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
         binding.refreshLayout.setColorSchemeResources(R.color.red);
         binding.refreshLayout.setOnRefreshListener(this);
 
-        //binding.appBar.setRightButtonOnClickListener((v) -> navigateToAddCard());
+        binding.appBar.setRightButtonOnClickListener((v) -> adapter.tabs[binding.pager.getCurrentItem()].navigateToAddCard());
+
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             int[] headerLocation = new int[2];
             int[] appBarLocation = new int[2];
@@ -76,7 +70,7 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new WalletPagerAdapter(getChildFragmentManager());
+        adapter = new WalletPagerAdapter(getChildFragmentManager(), getContext());
         binding.pager.setAdapter(adapter);
 
         binding.tabLayout.setupWithViewPager(binding.pager);
@@ -87,15 +81,7 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
 
     @Override
     public void onRefresh() {
-        Fragment fragment = adapter.getItem(binding.pager.getCurrentItem());
-
-        if (fragment instanceof CardsFragment) {
-            ((CardsFragment) fragment).onRefresh();
-        }
-
-        if (fragment instanceof PaymentsFragment) {
-            ((PaymentsFragment) fragment).onRefresh();
-        }
+        adapter.tabs[binding.pager.getCurrentItem()].onRefresh();
     }
 
     public void stopRefresh() {

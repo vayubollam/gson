@@ -37,7 +37,6 @@ public class AddCardFragment extends MainActivityFragment {
     @Inject
     MainViewModel mainViewModel;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

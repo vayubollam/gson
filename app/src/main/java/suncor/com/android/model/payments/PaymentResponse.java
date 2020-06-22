@@ -2,11 +2,9 @@ package suncor.com.android.model.payments;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class PaymentResponse {
     @SerializedName("wallets")
-    WalletResponse[] wallet;
+    private WalletResponse[] wallet;
 
     public PaymentResponse(WalletResponse[] wallet) {
         this.wallet = wallet;
@@ -20,12 +18,15 @@ public class PaymentResponse {
         @SerializedName("wallets")
         PaymentDetail[] payments;
 
-        public WalletResponse(PaymentDetail[] payments) {
-            this.payments = payments;
-        }
+        @SerializedName("fundingProviderName")
+        String source;
 
         public PaymentDetail[] getPayments() {
             return payments;
+        }
+
+        public String getSource() {
+            return source;
         }
     }
 }

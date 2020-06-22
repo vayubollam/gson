@@ -27,7 +27,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cards_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 app:visibleGone="@{vm.viewState != ViewState.LOADING}">
@@ -35,7 +35,7 @@
                 <FrameLayout
                     android:id="@+id/credit_card_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:paddingStart="16dp"
@@ -53,7 +53,7 @@
                         android:orientation="vertical"
                         android:visibility="gone"
                         app:visibleGone="@{!vm.payments.isEmpty()}"
-                        tools:visibility="visible">
+                        tools:visibility="gone">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/credit_cards_list"
@@ -67,17 +67,26 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center"
                         android:orientation="vertical"
                         app:visibleGone="@{vm.payments.isEmpty()}"
-                        tools:visibility="gone">
+                        tools:visibility="visible">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/card_image"
+                            android:layout_width="66dp"
+                            android:layout_height="48dp"
+                            app:srcCompat="@drawable/ic_no_credit_cards"
+                            android:src="@drawable/ic_no_credit_cards"
+                            android:tint="@color/quantum_grey"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/payments_fragment_add_card_header"
-                            android:textAppearance="@style/Title1" />
+                            android:textAppearance="@style/Title1"
+                            android:layout_marginTop="40dp"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"

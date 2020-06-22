@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.wallet;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,23 +27,29 @@ public class WalletPagerAdapter extends FragmentPagerAdapter {
         return LazyPaymentsFragment.INSTANCE;
     }
 
-    WalletPagerAdapter(FragmentManager fm) {
+    WalletTabInterface[] tabs = new WalletTabInterface[]{ cardsFragment(), paymentsFragment() };
+
+    private Context context;
+
+    WalletPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+
+        this.context = context;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int i) {
-        return i == 0 ? cardsFragment() : paymentsFragment();
+        return (Fragment) tabs[i];
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return tabs.length;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return position == 0 ? "Petro-Canada Cards" : "Credit Cards";
+        return tabs[position].getTabName(context);
     }
 }

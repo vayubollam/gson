@@ -12,15 +12,23 @@ import suncor.com.android.R;
 public class PaymentDetail {
 
     @Expose
-    @SerializedName("cardIssuer")
+    @SerializedName("userPaymentSourceId")
+    private String id;
+
+    @Expose
+    @SerializedName("cardIssuerId")
     private PaymentType paymentType;
 
     @Expose
-    @SerializedName("mainDisplayText")
+    @SerializedName("lastFour")
     private String cardNumber;
 
     @DrawableRes
     private int cardImage;
+
+    public String getId() {
+        return id;
+    }
 
     public PaymentType getPaymentType() {
         return paymentType;
@@ -55,7 +63,7 @@ public class PaymentDetail {
             return false;
         } else {
             PaymentDetail cardDetail = (PaymentDetail) obj;
-            return cardDetail.getCardNumber().equals(this.getCardNumber());
+            return cardDetail.getId().equals(this.getId());
         }
     }
 

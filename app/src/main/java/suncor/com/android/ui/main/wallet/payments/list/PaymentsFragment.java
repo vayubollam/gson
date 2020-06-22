@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.wallet.payments.list;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPaymentsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.payments.PaymentDetail;
@@ -25,14 +27,14 @@ import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.wallet.WalletFragment;
 import suncor.com.android.ui.main.wallet.WalletFragmentDirections;
+import suncor.com.android.ui.main.wallet.WalletTabInterface;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.wallet.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.wallet.cards.list.CardsErrorView;
 import suncor.com.android.ui.main.wallet.cards.list.CardsFragmentDirections;
-import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class PaymentsFragment extends MainActivityFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class PaymentsFragment extends MainActivityFragment implements WalletTabInterface {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -40,7 +42,12 @@ public class PaymentsFragment extends MainActivityFragment implements SwipeRefre
     private PaymentsViewModel viewModel;
     private MainViewModel mainViewModel;
     private PaymentsListAdapter adapter;
-    
+
+    @Override
+    public String getTabName(Context context) {
+        return context.getString(R.string.wallet_payment_tab);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +123,9 @@ public class PaymentsFragment extends MainActivityFragment implements SwipeRefre
         return binding.getRoot();
     }
 
-    private void navigateToAddCard() {
-        Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_addCardFragment);
+    @Override
+    public void navigateToAddCard() {
+        Navigation.findNavController(getView()).navigate(R.id.action_payments_tab_to_addPaymentFragment);
     }
 
     @Override

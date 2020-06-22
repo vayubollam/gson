@@ -31,7 +31,7 @@ public class PaymentDetailsViewModel extends ViewModel {
         });
     }
 
-    LiveData<Resource<PaymentDetail>> deleteCard(PaymentDetail paymentDetail) {
+    LiveData<Resource<PaymentDetail>> deletePayment(PaymentDetail paymentDetail) {
         return paymentsRepository.removePayment(paymentDetail);
     }
 }

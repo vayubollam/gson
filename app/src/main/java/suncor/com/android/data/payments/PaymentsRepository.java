@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.payments.AddPayment;
 import suncor.com.android.model.payments.PaymentDetail;
 
 @Singleton
@@ -47,7 +48,7 @@ public class PaymentsRepository {
 
                 //clearing old cards
                 for (int i = cachedPayments.size() - 1; i >= 0; i--) {
-                    if (findCardIn(resource.data, cachedPayments.get(i)) == null) {
+                    if (!findCardIn(resource.data, cachedPayments.get(i))) {
                         cachedPayments.remove(i);
                     }
                 }
@@ -65,27 +66,38 @@ public class PaymentsRepository {
         });
     }
 
-    public LiveData<Resource<PaymentDetail>> addPayment() {
-        // TODO: Implement function
-        return null;
+    public LiveData<Resource<AddPayment>> addPayment() {
+        return paymentsApi.addPayment();
     }
 
     public LiveData<Resource<PaymentDetail>> removePayment(PaymentDetail paymentDetail) {
-        // TODO: Implement function
-        return null;
+        return Transformations.map(paymentsApi.removePayment(paymentDetail), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                for (int i = cachedPayments.size() - 1; i >= 0; i--) {
+                    if (!findCardIn(result.data, cachedPayments.get(i))) {
+                        cachedPayments.remove(i);
+                    }
+                }
+
+                timeOfLastUpdate = Calendar.getInstance();
+                return Resource.success(paymentDetail);
+            }
+
+            return new Resource<>(result.status, paymentDetail, result.message);
+        });
     }
 
     public Calendar getTimeOfLastUpdate() {
         return timeOfLastUpdate;
     }
 
-    private static PaymentDetail findCardIn(ArrayList<PaymentDetail> payments, PaymentDetail otherPayment) {
+    private static boolean findCardIn(ArrayList<PaymentDetail> payments, PaymentDetail otherPayment) {
         for (PaymentDetail payment : payments) {
-            if (payment.getCardNumber() != null && payment.getCardNumber().equals(otherPayment.getCardNumber())) {
-                return payment;
+            if (payment.equals(otherPayment)) {
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
 }
