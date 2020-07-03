@@ -32,6 +32,7 @@ public class ExpandedCardItem {
     private CardDetail.CardCategory cardCategory;
     private CardDetail cardDetail;
     private boolean isRemovable = true;
+    private boolean isPdfShown = false;
     private int width = 0;
     private int height = 0;
 
@@ -191,6 +192,14 @@ public class ExpandedCardItem {
         return barCodePDF;
     }
 
+    public boolean isPdfShown() {
+        return isPdfShown;
+    }
+
+    public void setPdfShown(boolean pdfShown) {
+        isPdfShown = pdfShown;
+    }
+
     private Bitmap generateBarcode(CardDetail cardDetail, BarcodeFormat barcodeFormat) {
         String petroPointsCardNumber = cardDetail.getCardNumber();
         String dataForBarCode = "";
@@ -202,8 +211,8 @@ public class ExpandedCardItem {
                 break;
             case PDF_417:
                 dataForBarCode = petroPointsCardNumber;
-                width = 1400;
-                height = 308;
+                width = 1500;
+                height = 330;
                 break;
         }
 

@@ -92,13 +92,16 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
 
                         float diffTime = Math.abs(t2 - t1);
                         float diffX = x2 - x1;
-                        float diffY = y2 - (y1 + v.getY());
 
                         if (diffTime < 500) {
-                            if (diffY > 10 && diffX < 200) {
-                                binding.barcodeImage.setImageDrawable(cardItems.get(getAdapterPosition()).getBarCode());
-                            } else if (diffY < (-10) && diffX < 200) {
-                                binding.barcodeImage.setImageDrawable(cardItems.get(getAdapterPosition()).getBarCodePDF());
+                            if (diffX < 200) {
+                                if (cardItems.get(getAdapterPosition()).isPdfShown()) {
+                                    binding.barcodeImage.setImageDrawable(cardItems.get(getAdapterPosition()).getBarCode());
+                                    cardItems.get(getAdapterPosition()).setPdfShown(false);
+                                } else {
+                                    binding.barcodeImage.setImageDrawable(cardItems.get(getAdapterPosition()).getBarCodePDF());
+                                    cardItems.get(getAdapterPosition()).setPdfShown(true);
+                                }
                             }
                         }
                         return true;
