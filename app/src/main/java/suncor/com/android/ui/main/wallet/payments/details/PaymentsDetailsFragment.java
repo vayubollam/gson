@@ -146,7 +146,7 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
     private void cardViewMoreHandler(ExpandedPaymentItem expandedCardItem) {
         RemovePaymentBottomSheet removePaymentBottomSheet = new RemovePaymentBottomSheet();
         removePaymentBottomSheet.setClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), "menu_tap", new Pair<>("menuSelection", getString(R.string.card_remove_bottom_sheet_title)));
+            AnalyticsUtils.logEvent(getContext(), "menu_tap", new Pair<>("menuSelection", getString(R.string.payment_remove_bottom_sheet_title)));
             removePaymentBottomSheet.dismiss();
             showConfirmationAlert(expandedCardItem);
         });
@@ -154,17 +154,17 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
     }
 
     private void showConfirmationAlert(ExpandedPaymentItem expandedCardItem) {
-        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
+        String analyticsName = getResources().getString(R.string.payments_remove_card_alert_title) + "("+getResources().getString(R.string.payments_remove_card_alert_message)+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                 new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
         );
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
-                .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.payments_remove_card_alert_title)).setMessage(getResources().getString(R.string.payments_remove_card_alert_message))
+                .setPositiveButton(getResources().getString(R.string.payments_remove_card_alert_remove), (dialog, which) -> {
                     viewModel.deletePayment(expandedCardItem.getPaymentDetail()).observe(this, paymentDetailResource -> {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                                new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
+                                new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.payments_remove_card_alert_remove)),
                                 new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
                         );
                         if (paymentDetailResource.status == Resource.Status.ERROR) {
@@ -184,10 +184,10 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                         }
                     });
 
-                }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {
+                }).setNegativeButton(getResources().getString(R.string.payments_remove_card_alert_cancel), (dialog, which) -> {
                     AnalyticsUtils.logEvent(getContext(), "alert_interaction",
-                            new Pair<>("alertTitle", getString(R.string.cards_remove_card_alert_title)),
-                            new Pair<>("alertSelection",getString(R.string.cards_remove_card_alert_cancel))
+                            new Pair<>("alertTitle", getString(R.string.payments_remove_card_alert_title)),
+                            new Pair<>("alertSelection",getString(R.string.payments_remove_card_alert_cancel))
                     );
                 });
         builder.show();

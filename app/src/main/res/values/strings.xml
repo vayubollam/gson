@@ -600,6 +600,18 @@
     <string name="payment_details_description">Pay at the pump through the app with this credit card.</string>
     <string name="payment_card_number">\u2022\u2022\u2022\u2022%s</string>
 
+    <!-- Add Credit Card Screen -->
     <string name="payment_add_fragment_header">Credit card details</string>
+    <string name="payment_added">Card saved</string>
+
+    <!-- Remove Credit Card Screen -->
+    <string name="payments_remove_card_alert_title">Remove payment card?</string>
+    <string name="payments_remove_card_alert_message">Are you sure you want to remove this card from your account?</string>
+    <string name="payments_remove_card_alert_remove">Remove</string>
+    <string name="payments_remove_card_alert_cancel">Cancel</string>
+    <string name="payment_remove_bottom_sheet_title">Remove</string>
+    <string name="payment_remove_bottom_sheet_message">Removes the card from your account.</string>
+    <string name="payment_remove_bottom_sheet_cancel">Cancel</string>
+    <string name="payment_remove_toast">Credit card removed</string>
 
 </resources>

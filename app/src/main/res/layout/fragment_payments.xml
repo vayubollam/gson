@@ -27,7 +27,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cards_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 app:visibleGone="@{vm.viewState != ViewState.LOADING}">
@@ -35,7 +35,7 @@
                 <FrameLayout
                     android:id="@+id/credit_card_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:paddingStart="16dp"
@@ -62,14 +62,16 @@
                             android:layout_marginTop="8dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:visibleGone="@{!vm.payments.isEmpty()}"
-                            tools:listitem="@layout/payment_small_card_item" />
+                            tools:listitem="@layout/payment_small_card_item"
+                            android:nestedScrollingEnabled="false"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
+                        android:layout_gravity="center"
                         app:visibleGone="@{vm.payments.isEmpty()}"
                         tools:visibility="visible">
 

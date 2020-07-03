@@ -39,20 +39,14 @@ public class PaymentsRepository {
             return result;
         }
         return Transformations.map(paymentsApi.retrievePayments(), resource -> {
-            if (resource.status == Resource.Status.SUCCESS) {
-                if (cachedPayments == null || cachedPayments.size() == 0) {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                if (cachedPayments == null) {
                     cachedPayments = resource.data;
-                    timeOfLastUpdate = Calendar.getInstance();
-                    return resource;
+                } else {
+                    //clearing old cards & adding new
+                    cachedPayments.clear();
+                    cachedPayments.addAll(resource.data);
                 }
-
-                //clearing old cards
-                for (int i = cachedPayments.size() - 1; i >= 0; i--) {
-                    if (!findCardIn(resource.data, cachedPayments.get(i))) {
-                        cachedPayments.remove(i);
-                    }
-                }
-
                 timeOfLastUpdate = Calendar.getInstance();
                 return Resource.success(cachedPayments);
             } else if (resource.status == Resource.Status.ERROR) {
@@ -72,12 +66,10 @@ public class PaymentsRepository {
 
     public LiveData<Resource<PaymentDetail>> removePayment(PaymentDetail paymentDetail) {
         return Transformations.map(paymentsApi.removePayment(paymentDetail), result -> {
-            if (result.status == Resource.Status.SUCCESS) {
-                for (int i = cachedPayments.size() - 1; i >= 0; i--) {
-                    if (!findCardIn(result.data, cachedPayments.get(i))) {
-                        cachedPayments.remove(i);
-                    }
-                }
+            if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                //clearing old cards & adding new
+                cachedPayments.clear();
+                cachedPayments.addAll(result.data);
 
                 timeOfLastUpdate = Calendar.getInstance();
                 return Resource.success(paymentDetail);

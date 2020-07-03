@@ -584,4 +584,17 @@
     <string name="payment_details_description">Payez au distributeur avec cette carte de crédit par l\'entremise de l\'application.</string>
     <string name="payment_card_number">\u2022\u2022\u2022\u2022%s</string>
 
+    <!-- Add Credit Card Screen -->
+    <string name="payment_add_fragment_header">Détails concernant la carte de crédit</string>
+    <string name="payment_added">Carte enregistrée</string>
+
+    <!-- Remove Credit Card Screen -->
+    <string name="payments_remove_card_alert_title">Supprimer la carte de paiement?</string>
+    <string name="payments_remove_card_alert_message">Êtes-vous sûr de vouloir supprimer cette carte de votre compte?</string>
+    <string name="payments_remove_card_alert_remove">Supprimer</string>
+    <string name="payments_remove_card_alert_cancel">Annuler</string>
+    <string name="payment_remove_bottom_sheet_title">Supprimer</string>
+    <string name="payment_remove_bottom_sheet_message">Supprimer la carte de votre compte.</string>
+    <string name="payment_remove_bottom_sheet_cancel">Annuler</string>
+    <string name="payment_remove_toast">Carte de crédit supprimée</string>
 </resources>

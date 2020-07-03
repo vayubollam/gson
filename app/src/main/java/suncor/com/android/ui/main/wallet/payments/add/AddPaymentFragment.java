@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.wallet.payments.add;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ public class AddPaymentFragment extends MainActivityFragment {
     private AddPaymentViewModel viewModel;
 
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();
-    private ObservableWebView webView;
+    private ObservableBoolean isAdding = new ObservableBoolean(false);
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -53,6 +54,7 @@ public class AddPaymentFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAddPaymentBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
+        binding.setIsAdding(isAdding);
         binding.setLifecycleOwner(this);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
@@ -70,26 +72,7 @@ public class AddPaymentFragment extends MainActivityFragment {
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
-                if (ErrorCodes.ERR_LIKING_CARD_FAILED.equals(result.message)) {
-                    String analyticsName = getContext().getString(R.string.cards_add_fragment_invalid_card_title)
-                            + "(" + getContext().getString(R.string.cards_add_fragment_invalid_card_message) +")";
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
-                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
-                    );
-                    new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.cards_add_fragment_invalid_card_title)
-                            .setMessage(R.string.cards_add_fragment_invalid_card_message)
-                            .setPositiveButton(R.string.ok, (dialog, which) -> {
-                                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
-                                        new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                                        new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok))
-                                );
-                                dialog.dismiss();
-                            })
-                            .show();
-                } else {
-                    Alerts.prepareGeneralErrorDialog(getContext()).show();
-                }
+                Alerts.prepareGeneralErrorDialog(getContext()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 binding.webView.loadUrl(result.data.toString());
             }
@@ -107,9 +90,15 @@ public class AddPaymentFragment extends MainActivityFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 binding.webView.postDelayed(() -> isWebViewLoading.set(false), 50);
+
+                if (url.toLowerCase().contains(viewModel.redirectUrl.toLowerCase())) {
+                    isAdding.set(true);
+                    new Handler().postDelayed(() -> {
+                        goBack();
+                    }, 200);
+                }
             }
         });
-        webView = binding.webView;
     }
 
     private void goBack() {

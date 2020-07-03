@@ -35,11 +35,11 @@ public class AddPayment {
         return url;
     }
 
-    public Uri getEndpointUrl() {
-        return Uri.parse("https://h5-suncor-ca-fuel-uat.petrozone.com/card-on-file")
+    public Uri getP97Url() {
+        return Uri.parse(url)
                 .buildUpon()
-                .appendQueryParameter("token", token.replaceAll("Bearer ", ""))
-                .appendQueryParameter("redirectURL", redirectUrl)
+                .appendQueryParameter("token", token)
+                .appendQueryParameter("redirectUrl", redirectUrl)
                 .appendQueryParameter("deviceId", deviceId)
                 .appendQueryParameter("language", Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr" : "en")
                 .build();
