@@ -32,6 +32,8 @@ public class ExpandedCardItem {
     private CardDetail.CardCategory cardCategory;
     private CardDetail cardDetail;
     private boolean isRemovable = true;
+    private int width = 0;
+    private int height = 0;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
@@ -195,16 +197,19 @@ public class ExpandedCardItem {
         switch (barcodeFormat) {
             case UPC_A:
                 dataForBarCode = petroPointsCardNumber.substring(4, petroPointsCardNumber.length() - 1);
+                width = 350;
+                height = 77;
                 break;
             case PDF_417:
                 dataForBarCode = petroPointsCardNumber;
+                width = 1400;
+                height = 308;
                 break;
         }
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            int width = 500;
-            int height = 110;
+           
             BitMatrix bitMatrix = multiFormatWriter.encode(dataForBarCode, barcodeFormat, width, height);
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             for (int i = 0; i < width; i++) {
