@@ -402,14 +402,17 @@
                             <option name="y" value="350" />
                           </Point>
                         </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_addCardFragment_to_cardsDetailsFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="addPaymentFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -524,7 +527,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_carWashPurchaseFragment_to_redeemReceiptFragment">
+                            <entry key="action_carWashPurchaseFragment_to_redeemReceiptFragment_pop_to_carWash">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_carWashPurchaseFragment_to_redeemReceiptFragment_pop_to_cards">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -555,6 +563,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_cardsDetailsFragment_to_carWashPurchaseFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -572,6 +585,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_cards_tab_to_addCardFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cards_tab_to_carWashPurchaseFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -674,6 +692,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="paymentsDetailsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -937,6 +967,47 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_transactionsFragment_to_transactionDetailFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="wallet_tab">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_cards_tab_to_addCardFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cards_tab_to_carWashPurchaseFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cards_tab_to_cardsDetailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_payments_tab_to_addPaymentFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_payments_tab_to_paymentsDetailsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

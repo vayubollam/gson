@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.actionmenu;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
-import suncor.com.android.ui.main.cards.CardsLoadType;
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
 

@@ -573,4 +573,28 @@
     <string name="tutorial_silde_page2_header">Accès rapide aux fonctions</string>
     <string name="tutorial_silde_page3_header">Activer le lave-auto</string>
 
+    <!-- View Wallet Screen -->
+    <string name="wallet_card_tab">Cartes Petro-Canada</string>
+    <string name="wallet_payment_tab">Cartes de crédit</string>
+
+    <!-- View Credit Card Screen -->
+    <string name="payments_fragment_add_card_header">Aucune carte de crédit</string>
+    <string name="payments_fragment_add_card_description">Ajouter une carte de crédit à votre compte pour une expérience plus rapide.</string>
+    <string name="payments_fragment_add_card_button">Ajouter une carte</string>
+    <string name="payment_details_description">Payez au distributeur avec cette carte de crédit par l\'entremise de l\'application.</string>
+    <string name="payment_card_number">\u2022\u2022\u2022\u2022%s</string>
+
+    <!-- Add Credit Card Screen -->
+    <string name="payment_add_fragment_header">Détails concernant la carte de crédit</string>
+    <string name="payment_added">Carte enregistrée</string>
+
+    <!-- Remove Credit Card Screen -->
+    <string name="payments_remove_card_alert_title">Supprimer la carte de paiement?</string>
+    <string name="payments_remove_card_alert_message">Êtes-vous sûr de vouloir supprimer cette carte de votre compte?</string>
+    <string name="payments_remove_card_alert_remove">Supprimer</string>
+    <string name="payments_remove_card_alert_cancel">Annuler</string>
+    <string name="payment_remove_bottom_sheet_title">Supprimer</string>
+    <string name="payment_remove_bottom_sheet_message">Supprimer la carte de votre compte.</string>
+    <string name="payment_remove_bottom_sheet_cancel">Annuler</string>
+    <string name="payment_remove_toast">Carte de crédit supprimée</string>
 </resources>

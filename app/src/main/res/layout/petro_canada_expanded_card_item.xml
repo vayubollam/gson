@@ -7,7 +7,7 @@
 
         <variable
             name="card"
-            type="suncor.com.android.ui.main.cards.details.ExpandedCardItem" />
+            type="suncor.com.android.ui.main.wallet.cards.details.ExpandedCardItem" />
 
         <variable
             name="hideMoreButton"
