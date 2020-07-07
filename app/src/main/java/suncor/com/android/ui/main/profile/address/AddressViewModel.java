@@ -197,9 +197,7 @@ public class AddressViewModel extends ViewModel {
 
         if (provincesList.indexOf(new Province(province, null, null)) != -1) {
             sharedViewModel.setSelectedProvince(provincesList.get(provincesList.indexOf(new Province(province, null, null))));
-        } else {
-            Log.d("suncor", "provinceField empty" );
-        }
+        } 
 
     }
 
