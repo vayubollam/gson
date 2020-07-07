@@ -206,13 +206,13 @@ public class ExpandedCardItem {
         switch (barcodeFormat) {
             case UPC_A:
                 dataForBarCode = petroPointsCardNumber.substring(4, petroPointsCardNumber.length() - 1);
-                width = 350;
-                height = 77;
+                width = 400;
+                height = 80;
                 break;
             case PDF_417:
                 dataForBarCode = petroPointsCardNumber;
-                width = 1500;
-                height = 330;
+                width = 2000;
+                height = 400;
                 break;
         }
 

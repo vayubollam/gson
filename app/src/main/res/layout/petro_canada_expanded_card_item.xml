@@ -263,8 +263,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/barcode_image"
-                            android:layout_width="193dp"
-                            android:layout_height="44dp"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
                             android:src="@{card.barCode}"
                             app:visibleGone="@{card.cardType==CardType.PPTS}" />
                         </FrameLayout>
