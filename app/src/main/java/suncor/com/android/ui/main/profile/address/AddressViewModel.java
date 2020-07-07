@@ -1,7 +1,5 @@
 package suncor.com.android.ui.main.profile.address;
 
-import android.util.Log;
-
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -197,7 +195,7 @@ public class AddressViewModel extends ViewModel {
 
         if (provincesList.indexOf(new Province(province, null, null)) != -1) {
             sharedViewModel.setSelectedProvince(provincesList.get(provincesList.indexOf(new Province(province, null, null))));
-        } 
+        }
 
     }
 
