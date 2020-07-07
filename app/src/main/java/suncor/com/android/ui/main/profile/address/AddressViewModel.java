@@ -105,7 +105,16 @@ public class AddressViewModel extends ViewModel {
     }
 
     private String getProvinceNameById(String province) {
-        return provincesList.get(provincesList.indexOf(new Province(province, null, null))).getName();
+
+        try {
+            if (provincesList.indexOf(new Province(province, null, null)) != -1) {
+                return provincesList.get(provincesList.indexOf(new Province(province, null, null))).getName();
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public StreetAddressInputField getStreetAddressField() {
@@ -179,8 +188,15 @@ public class AddressViewModel extends ViewModel {
 
     public void setProvincesList(ArrayList<Province> provincesList) {
         this.provincesList = provincesList;
-        provinceField.setText(getProvinceNameById(profile.getProvince()));
-        sharedViewModel.setSelectedProvince(provincesList.get(provincesList.indexOf(new Province(profile.getProvince(), null, null))));
+
+        String province = profile.getProvince();
+
+        provinceField.setText(getProvinceNameById(province));
+
+        if (provincesList.indexOf(new Province(province, null, null)) != -1) {
+            sharedViewModel.setSelectedProvince(provincesList.get(provincesList.indexOf(new Province(province, null, null))));
+        }
+
     }
 
     public void setSelectedProvince(Province selectedProvince) {
