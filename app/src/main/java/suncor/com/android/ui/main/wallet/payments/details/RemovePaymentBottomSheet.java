@@ -29,6 +29,8 @@ public class RemovePaymentBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.remove_card_bottom_sheet, container, false);
+        binding.removeCardTitle.setText(R.string.payment_remove_bottom_sheet_title);
+        binding.removeCardMessage.setText(R.string.payment_remove_bottom_sheet_message);
         binding.cancelButton.setOnClickListener(v -> dismiss());
         binding.removeArea.setOnClickListener(clickListener);
         return binding.getRoot();
