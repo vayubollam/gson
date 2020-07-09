@@ -35,8 +35,7 @@
                     android:paddingTop="20dp"
                     android:paddingEnd="16dp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="spread_inside"
-                    android:visibility="gone">
+                    app:layout_constraintVertical_chainStyle="spread_inside">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/credit_cards_list"
