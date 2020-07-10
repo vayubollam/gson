@@ -20,4 +20,5 @@ ext {
     generatedVersionCode = (year + day + time) as int
 
     println("Generated versionCode: $generatedVersionCode")
+    println("Generated versionCode time: $time")
 }

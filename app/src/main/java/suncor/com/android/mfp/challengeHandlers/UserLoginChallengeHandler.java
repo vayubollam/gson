@@ -43,7 +43,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private boolean isChallenged = false;
     private SessionChangeListener listener;
     private JSONObject credentials;
-
+private Profile profile;
     @Inject
     SuncorApplication application;
 
@@ -141,12 +141,12 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 keyStoreStorage.store(CREDENTIALS_KEY, credentials.toString());
             }
             String profileStr = identity.getJSONObject("user").getString("attributes");
-            Profile profile = gson.fromJson(profileStr, Profile.class);
+             profile = gson.fromJson(profileStr, Profile.class);
             AnalyticsUtils.userID = profile.getRetailId();
-            if (callOnceOnCredentialValidation) {
-                callOnceOnCredentialValidation = false;
-                listener.onLoginSuccess(profile);
-            }
+//            if (callOnceOnCredentialValidation) {
+//                callOnceOnCredentialValidation = false;
+////                listener.onLoginSuccess(profile);
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -161,6 +161,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
                 @Override
                 public void onSuccess() {
+                    listener.onLoginSuccess(profile);
                     Timber.d("Login Preemptive Success");
                 }
 
