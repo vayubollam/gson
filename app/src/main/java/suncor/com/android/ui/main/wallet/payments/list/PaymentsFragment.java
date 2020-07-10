@@ -108,10 +108,6 @@ public class PaymentsFragment extends MainActivityFragment implements WalletTabI
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.errorLayout.setModel(new CardsErrorView(getContext(), () -> viewModel.retryAgain()));
-        binding.cardsLayout.post(() -> {
-            //give the cards layout a minimum height, to anchor the date to the bottom screen
-            //binding.cardsLayout.setMinHeight(binding.scrollView.getHeight() - binding.appBar.getHeight());
-        });
 
         CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
 

@@ -83,6 +83,7 @@ public class AddPaymentFragment extends MainActivityFragment {
     private void initWebView() {
         AnalyticsUtils.setCurrentScreenName(this.getActivity(), "add-payment");
         binding.webView.getSettings().setJavaScriptEnabled(true);
+        binding.webView.clearCache(true);
         isWebViewLoading.set(true);
 
         binding.webView.setWebViewClient(new WebViewClient() {
