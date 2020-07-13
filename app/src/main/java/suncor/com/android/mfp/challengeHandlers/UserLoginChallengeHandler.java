@@ -38,7 +38,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private static final String PUBWEB = "pubWeb";
     private static final String RETRY_TIMEOUT = "retryTimeout";
     private static final String CREDENTIALS_KEY = "credentials";
-    private boolean callOnceOnCredentialValidation = false;
+//    private boolean callOnceOnCredentialValidation = false;
 
     private boolean isChallenged = false;
     private SessionChangeListener listener;
@@ -154,7 +154,7 @@ private Profile profile;
 
     public void login(JSONObject credentials) {
         this.credentials = credentials;
-        callOnceOnCredentialValidation = true;
+//        callOnceOnCredentialValidation = true;
         if (isChallenged) {
             submitChallengeAnswer(credentials);
         } else {
