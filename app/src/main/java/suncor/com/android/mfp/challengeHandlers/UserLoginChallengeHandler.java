@@ -38,12 +38,11 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private static final String PUBWEB = "pubWeb";
     private static final String RETRY_TIMEOUT = "retryTimeout";
     private static final String CREDENTIALS_KEY = "credentials";
-//    private boolean callOnceOnCredentialValidation = false;
 
     private boolean isChallenged = false;
     private SessionChangeListener listener;
     private JSONObject credentials;
-private Profile profile;
+    private Profile profile;
     @Inject
     SuncorApplication application;
 
@@ -143,10 +142,6 @@ private Profile profile;
             String profileStr = identity.getJSONObject("user").getString("attributes");
              profile = gson.fromJson(profileStr, Profile.class);
             AnalyticsUtils.userID = profile.getRetailId();
-//            if (callOnceOnCredentialValidation) {
-//                callOnceOnCredentialValidation = false;
-////                listener.onLoginSuccess(profile);
-//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -154,7 +149,6 @@ private Profile profile;
 
     public void login(JSONObject credentials) {
         this.credentials = credentials;
-//        callOnceOnCredentialValidation = true;
         if (isChallenged) {
             submitChallengeAnswer(credentials);
         } else {
