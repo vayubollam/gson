@@ -48,7 +48,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH_V4);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
             request.send(body, new WLResponseListener() {
