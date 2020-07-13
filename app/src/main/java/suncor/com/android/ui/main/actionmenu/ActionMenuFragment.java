@@ -9,32 +9,53 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import javax.inject.Inject;
+
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
+import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
+import suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
+    FragmentActionButtonMenuBinding binding;
+    private ActionMenuViewModel viewModel;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    @Inject
+    public ActionMenuFragment(){};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.BottomSheetDialog);
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActionMenuViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentActionButtonMenuBinding binding = FragmentActionButtonMenuBinding.inflate(inflater, container, false);
+        binding = FragmentActionButtonMenuBinding.inflate(inflater, container, false);
+
         binding.actionAccountButton.setOnClickListener(view -> {
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_profile_tab);
             dismiss();
+        });
+        binding.actionFuelUpButton.setOnClickListener(view -> {
+
         });
         binding.actionScanCardButton.setOnClickListener(view -> {
             HomeNavigationDirections.ActionToCardsDetailsFragment action = HomeNavigationDirections.actionToCardsDetailsFragment();
@@ -48,6 +69,20 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                boolean activeSession = result.data.getActiveSession();
+
+                binding.actionFuelUpButton.setText(activeSession ? R.string.action_fuelling : R.string.action_fuel_up);
+                binding.actionFuelUpButton.setLoading(activeSession);
+            }
+        });
     }
 
     //This is for fixing bottom sheet dialog not fully extended issue.

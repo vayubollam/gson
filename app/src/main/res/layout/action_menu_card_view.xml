@@ -8,26 +8,42 @@
     android:layout_margin="@dimen/action_menu_layout_margin"
     android:layout_gravity="center">
 
-    <ImageView
-        android:id="@+id/left_icon"
+    <FrameLayout
+        android:id="@+id/left_icon_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_wash_car" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/left_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@drawable/ic_wash_car" />
+
+        <ProgressBar
+            android:id="@+id/loading_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/red"
+            tools:src="@drawable/ic_wash_car" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/button_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/action_menu_layout_margin"
-        android:layout_toRightOf="@id/left_icon"
+        android:layout_toRightOf="@id/left_icon_wrapper"
         android:fontFamily="@font/gibson_regular"
         android:textColor="@color/black_100"
         android:textSize="@dimen/action_menu_icon_font_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/left_icon"
+        app:layout_constraintLeft_toRightOf="@id/left_icon_wrapper"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/action_menu_wash_car" />
 

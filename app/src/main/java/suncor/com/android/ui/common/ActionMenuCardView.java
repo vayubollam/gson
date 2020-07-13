@@ -6,8 +6,10 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -41,6 +43,29 @@ public class ActionMenuCardView extends CardView {
         setRadius(getResources().getDimension(R.dimen.action_menu_card_view_radius));
         setBackgroundResource(R.drawable.action_menu_button_background);
 
+    }
+
+    public void setText(int resid) {
+        TextView buttonText = findViewById(R.id.button_text);
+        buttonText.setText(resid);
+    }
+
+    public void setDrawable(int resid) {
+        ImageView icon = findViewById(R.id.left_icon);
+        icon.setImageResource(resid);
+    }
+
+    public void setLoading(boolean loading) {
+        ProgressBar loadingBar = findViewById(R.id.loading_icon);
+        ImageView icon = findViewById(R.id.left_icon);
+
+        if (loading) {
+            loadingBar.setVisibility(VISIBLE);
+            icon.setVisibility(GONE);
+        } else {
+            loadingBar.setVisibility(GONE);
+            icon.setVisibility(VISIBLE);
+        }
     }
 
 }
