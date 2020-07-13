@@ -617,4 +617,7 @@
     <string name="payment_remove_bottom_sheet_cancel">Cancel</string>
     <string name="payment_remove_toast">Credit card removed</string>
 
+    <!-- PAP Offsite Screen -->
+    <string name="nearest_station_offsite_header">Fuelling your vehicle is fast and easy!</string>
+
 </resources>

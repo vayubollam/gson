@@ -464,6 +464,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/dummy"
         app:popExitAnim="@anim/slide_out_right" />
+
     <keep_state_fragment
         android:id="@+id/carWashCardFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashCardFragment"
@@ -567,5 +568,14 @@
             app:popUpTo="@+id/cards_tab"
             app:popUpToInclusive="true"/>
     </keep_state_fragment>
-
+    <action
+        android:id="@+id/action_to_nearestStationFragment"
+        app:destination="@id/nearestStationFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" />
+    <keep_state_fragment
+        android:id="@+id/nearestStationFragment"
+        android:name="suncor.com.android.ui.main.stationlocator.NearestStationFragment"
+        android:label="NearestStationFragment"/>
 </navigation>

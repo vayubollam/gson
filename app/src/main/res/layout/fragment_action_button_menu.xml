@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data />
 
@@ -30,13 +31,13 @@
             android:layout_marginTop="@dimen/action_menu_margin_32"
             android:layout_marginEnd="@dimen/action_menu_card_view_margin_left_right"
             android:layout_marginRight="@dimen/action_menu_card_view_margin_left_right"
-            android:text="@string/action_location"
             android:fontFamily="@font/gibson_regular"
             android:textColor="@color/black_60"
             android:textSize="@dimen/action_menu_icon_font_size"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/action_location" />
 
         <TextView
             android:id="@+id/action_welcome_message"
