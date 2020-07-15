@@ -29,12 +29,14 @@ import suncor.com.android.databinding.FragmentNearestStationBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -87,6 +89,12 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
                 }
             }
         }));
+        mViewModel.openNavigationApps.observe(this, event -> {
+            Station station = event.getContentIfNotHandled();
+            if (station != null) {
+                NavigationAppsHelper.openNavigationApps(getActivity(), station);
+            }
+        });
     }
 
     @Override
