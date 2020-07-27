@@ -1,5 +1,7 @@
 package suncor.com.android.ui.login;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -149,6 +151,11 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void onClickSignIn() {
+
+        int a[]={1,2};
+            Log.d("token","Length is"+ a[1]);
+            Log.d("token","Length is2"+ a[3]);
+
         if (this.validateInput()) {
             loginEvent.postValue(Event.newEvent(true));
         }
