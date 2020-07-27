@@ -5,15 +5,13 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0-alpha02"
-        classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.29.0'
+        classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -45,7 +43,7 @@ ext {
     workManagerVersion = "1.0.0"
     daggerVersion = "2.17"
     firebaseVersion = "16.0.9"
-    crashlyticsVersion = "2.10.1"
+    crashlyticsVersion = "17.1.1"
     mockitoVersion = "2.25.1"
     junitVersion = "4.12"
     espressoVersion = "3.1.1"
