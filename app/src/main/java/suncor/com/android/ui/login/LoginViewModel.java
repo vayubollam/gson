@@ -149,7 +149,6 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void onClickSignIn() {
-
         if (this.validateInput()) {
             loginEvent.postValue(Event.newEvent(true));
         }
