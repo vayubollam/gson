@@ -68,14 +68,14 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
 
         viewModel.retrieveCards();
         viewModel.payments.observe(getViewLifecycleOwner(), arrayListResource -> {
+            // For payments we only want to display the selected card.
+            // In order to avoid changing the pager we will create an array with only the selected payment
             ArrayList<ExpandedPaymentItem> expandedPaymentItems = new ArrayList<>();
-            for (PaymentDetail paymentDetail : arrayListResource) {
-                expandedPaymentItems.add(new ExpandedPaymentItem(getContext(), paymentDetail));
-            }
+            expandedPaymentItems.add(new ExpandedPaymentItem(getContext(), arrayListResource.get(clickedCardIndex)));
+
             if (expandedPaymentItems.size() > 0) {
                 adapter.setCardItems(expandedPaymentItems);
                 adapter.notifyDataSetChanged();
-                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
                 binding.setNumCards(expandedPaymentItems.size());
                 binding.executePendingBindings();
 

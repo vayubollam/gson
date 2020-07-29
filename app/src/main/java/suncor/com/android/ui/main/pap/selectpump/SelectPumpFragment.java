@@ -50,7 +50,9 @@ public class SelectPumpFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel.getStoreDetails("hdjsahdajhda").observe(getViewLifecycleOwner(), result -> {
+        String storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
+
+        viewModel.isPAPAvailable(storeId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {

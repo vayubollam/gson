@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
+import suncor.com.android.model.pap.P97StoreDetailsResponse;
 
 @Singleton
 public class PapRepository {
@@ -46,7 +47,7 @@ public class PapRepository {
         });
     }
 
-    public LiveData<Resource<ActiveSession>> getStoreDetails(String storeId) {
+    public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
         return papApi.storeDetails(storeId);
     }
 }

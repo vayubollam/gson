@@ -583,9 +583,19 @@
         app:destination="@id/selectPumpFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/dummy"
-        app:popExitAnim="@anim/slide_out_right" />
+        app:popExitAnim="@anim/slide_out_right" >
+        <argument
+            android:name="storeId"
+            app:argType="string"/>
+    </action>
     <keep_state_fragment
         android:id="@+id/selectPumpFragment"
         android:name="suncor.com.android.ui.main.pap.selectpump.SelectPumpFragment"
-        android:label="SelectPumpFragment"/>
+        android:label="SelectPumpFragment">
+        <argument
+            android:name="storeId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+    </keep_state_fragment>
 </navigation>

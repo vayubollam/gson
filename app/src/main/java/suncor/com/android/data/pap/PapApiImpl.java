@@ -19,6 +19,7 @@ import suncor.com.android.data.payments.PaymentsApi;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
+import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.AddPayment;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.model.payments.PaymentResponse;
@@ -66,9 +67,9 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<ActiveSession>> storeDetails(String storeId) {
+    public LiveData<Resource<P97StoreDetailsResponse>> storeDetails(String storeId) {
         Timber.d("retrieve store details from backend");
-        MutableLiveData<Resource<ActiveSession>> result = new MutableLiveData<>();
+        MutableLiveData<Resource<P97StoreDetailsResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/stores");
@@ -81,8 +82,8 @@ public class PapApiImpl implements PapApi {
                     String jsonText = wlResponse.getResponseText();
                     Timber.d("PAP store details API success, response:\n" + jsonText);
 
-                    ActiveSession activeSession = gson.fromJson(jsonText, ActiveSession.class);
-                    result.postValue(Resource.success(activeSession));
+                    P97StoreDetailsResponse storeDetailsResponse = gson.fromJson(jsonText, P97StoreDetailsResponse.class);
+                    result.postValue(Resource.success(storeDetailsResponse));
                 }
 
                 @Override

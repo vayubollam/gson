@@ -1,5 +1,7 @@
 package suncor.com.android.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SettingsResponse {
     private Settings settings;
     private BuildInfo buildInfo;
@@ -21,6 +23,8 @@ public class SettingsResponse {
         private String descriptionEN;
         private String descriptionFR;
         private Carwash carwash;
+        @SerializedName("payatpump")
+        private Pap pap;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -44,6 +48,10 @@ public class SettingsResponse {
 
         public Carwash getCarwash() {
             return carwash;
+        }
+
+        public Pap getPap() {
+            return pap;
         }
     }
 
@@ -81,6 +89,56 @@ public class SettingsResponse {
 
         public String getKey() {
             return key;
+        }
+    }
+
+    public static class Pap {
+        private int otherAmountHighLimit;
+        private int otherAmountLowLimit;
+        private int geofenceDistanceMeters;
+        private Limits preAuthLimits;
+
+        public int getGeofenceDistanceMeters() {
+            return geofenceDistanceMeters;
+        }
+
+        public int getOtherAmountHighLimit() {
+            return otherAmountHighLimit;
+        }
+
+        public int getOtherAmountLowLimit() {
+            return otherAmountLowLimit;
+        }
+
+        public Limits getPreAuthLimits() {
+            return preAuthLimits;
+        }
+
+        public static class Limits {
+            @SerializedName("1")
+            private int limit1;
+            @SerializedName("2")
+            private int limit2;
+            @SerializedName("3")
+            private int limit3;
+            @SerializedName("4")
+            private int limit4;
+
+            public int getLimit1() {
+                return limit1;
+            }
+
+            public int getLimit2() {
+                return limit2;
+            }
+
+            public int getLimit3() {
+                return limit3;
+            }
+
+            public int getLimit4() {
+                return limit4;
+            }
         }
     }
 }

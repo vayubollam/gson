@@ -28,6 +28,7 @@ import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.home.HomeViewModel;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel;
@@ -45,6 +46,8 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
 
     private boolean inProximity = false;
     private boolean activeSession = false;
+    private String storeId;
+    private int geoFenceLimit;
 
     @Inject
     PermissionManager permissionManager;
@@ -99,7 +102,8 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 // Handle onsite transaction PAP
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_selectPumpFragment);
+                HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(storeId);
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }
         });
@@ -121,6 +125,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewModel.getGeoFenceLimit().observe(getViewLifecycleOwner(), result -> this.geoFenceLimit = result );
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 activeSession = result.data.getActiveSession();
@@ -136,9 +141,10 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
 
         homeViewModel.nearestStation.observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.SUCCESS && result.data != null
-                    && result.data.getDistanceDuration() != null && result.data.getDistanceDuration().getDistance() < 70) {
+                    && result.data.getDistanceDuration() != null && result.data.getDistanceDuration().getDistance() < geoFenceLimit) {
                 inProximity = true;
                 StationItem nearestStation = result.data;
+                storeId = nearestStation.getStation().getId();
 
                 binding.actionLocation.setText(getString(R.string.action_location, nearestStation.getStation().getAddress().getAddressLine()));
 
