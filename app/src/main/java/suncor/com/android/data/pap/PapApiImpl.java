@@ -52,7 +52,42 @@ public class PapApiImpl implements PapApi {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.d("Payments API failed, " + wlFailResponse.toString());
+                    Timber.d("PAP Active Session API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<ActiveSession>> storeDetails(String storeId) {
+        Timber.d("retrieve store details from backend");
+        MutableLiveData<Resource<ActiveSession>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/stores");
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            request.addHeader("x-store-id", storeId);
+
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("PAP store details API success, response:\n" + jsonText);
+
+                    ActiveSession activeSession = gson.fromJson(jsonText, ActiveSession.class);
+                    result.postValue(Resource.success(activeSession));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("PAP store details API failed, " + wlFailResponse.toString());
                     Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }

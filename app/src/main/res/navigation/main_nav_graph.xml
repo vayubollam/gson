@@ -578,4 +578,14 @@
         android:id="@+id/nearestStationFragment"
         android:name="suncor.com.android.ui.main.stationlocator.NearestStationFragment"
         android:label="NearestStationFragment"/>
+    <action
+        android:id="@+id/action_to_selectPumpFragment"
+        app:destination="@id/selectPumpFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" />
+    <keep_state_fragment
+        android:id="@+id/selectPumpFragment"
+        android:name="suncor.com.android.ui.main.pap.selectpump.SelectPumpFragment"
+        android:label="SelectPumpFragment"/>
 </navigation>

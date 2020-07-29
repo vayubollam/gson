@@ -620,4 +620,7 @@
     <!-- PAP Offsite Screen -->
     <string name="nearest_station_offsite_header">Fuelling your vehicle is fast and easy!</string>
 
+    <!-- PAP Select Pump -->
+    <string name="select_pump_header">Fuel up</string>
+
 </resources>

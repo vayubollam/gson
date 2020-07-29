@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.wallet.payments.add;
 import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -21,6 +22,8 @@ public class AddPaymentViewModel extends ViewModel {
 
     String redirectUrl;
 
+    public MutableLiveData<Resource.Status> viewState = new MutableLiveData<>();
+
     @Inject
     AddPaymentViewModel(PaymentsRepository repository, SessionManager sessionManager) {
         this.repository = repository;
@@ -29,12 +32,15 @@ public class AddPaymentViewModel extends ViewModel {
 
     LiveData<Resource<Uri>> getAddPaymentEndpoint() {
         return Transformations.switchMap(repository.addPayment(), result -> {
+            viewState.setValue(result.status);
+
             redirectUrl = result.data != null ? result.data.getRedirectUrl() : null;
 
             MutableLiveData<Resource<Uri>> data = new MutableLiveData<>();
             data.setValue(new Resource<>(result.status, result.data != null ?
                     result.data.getP97Url()
                             .buildUpon()
+                            .appendQueryParameter("isWallet", "Y")
                             .appendQueryParameter("streetAddress", profile.getStreetAddress())
                             .appendQueryParameter("city", profile.getCity())
                             .appendQueryParameter("province", profile.getProvince())

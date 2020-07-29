@@ -8,4 +8,5 @@ import suncor.com.android.model.pap.ActiveSession;
 
 public interface PapApi {
     LiveData<Resource<ActiveSession>> activeSession();
+    LiveData<Resource<ActiveSession>> storeDetails(String storeId);
 }

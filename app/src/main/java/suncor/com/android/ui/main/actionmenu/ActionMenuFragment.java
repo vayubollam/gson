@@ -37,7 +37,7 @@ import suncor.com.android.utilities.PermissionManager;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
-    FragmentActionButtonMenuBinding binding;
+    private FragmentActionButtonMenuBinding binding;
     private ActionMenuViewModel viewModel;
     private HomeViewModel homeViewModel;
 
@@ -99,6 +99,8 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 // Handle onsite transaction PAP
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_selectPumpFragment);
+                dismiss();
             }
         });
         binding.actionScanCardButton.setOnClickListener(view -> {

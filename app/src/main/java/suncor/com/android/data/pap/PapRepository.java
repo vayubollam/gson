@@ -45,4 +45,8 @@ public class PapRepository {
             }
         });
     }
+
+    public LiveData<Resource<ActiveSession>> getStoreDetails(String storeId) {
+        return papApi.storeDetails(storeId);
+    }
 }

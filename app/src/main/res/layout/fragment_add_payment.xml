@@ -7,6 +7,7 @@
             name="vm"
             type="suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel" />
 
+
         <variable
             name="isWebviewLoading"
             type="androidx.databinding.ObservableBoolean" />
@@ -15,7 +16,7 @@
             name="isAdding"
             type="androidx.databinding.ObservableBoolean" />
 
-        <import type="suncor.com.android.model.Resource" />
+        <import type="suncor.com.android.model.Resource.Status" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,15 +49,15 @@
             android:background="@color/white"
             android:clickable="true"
             android:visibility="gone"
-            app:visibleGone="@{isAdding}">
+            app:visibleGone="@{isAdding || isWebviewLoading}">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/verifying_card_pd"
                 android:layout_centerHorizontal="true"
+                android:layout_above="@+id/verifying_card_pd"
                 android:layout_marginBottom="24dp"
-                android:text="@string/payment_added"
+                android:text="@{isWebviewLoading ? @string/enrollment_loading_question_title : @string/payment_added}"
                 android:textAppearance="@style/Title1" />
 
             <ProgressBar
@@ -65,7 +66,6 @@
                 android:layout_height="64dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-
                 android:indeterminateTint="@color/red" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -73,13 +73,15 @@
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_check_thick"
-                android:tint="@color/red" />
+                android:tint="@color/red"
+                app:visibleGone="@{!isWebviewLoading}" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/circular_ring" />
+                android:src="@drawable/circular_ring"
+                app:visibleGone="@{!isWebviewLoading}" />
         </RelativeLayout>
     </FrameLayout>
 </layout>
