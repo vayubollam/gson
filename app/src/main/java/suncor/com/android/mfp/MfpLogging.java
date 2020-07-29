@@ -34,6 +34,8 @@ public class MfpLogging {
 
         WLClient.getInstance().addGlobalHeader("X-Device-Info", deviceonfoNormalized);
 
+        WLClient.getInstance().pinTrustedCertificatePublicKey("sni-cloudflaressl-com.der");
+
 
     }
 
