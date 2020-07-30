@@ -23,6 +23,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Inject;
 
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentNearestStationBinding;
@@ -33,6 +34,7 @@ import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.home.HomeViewModel;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
@@ -67,7 +69,6 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
     private OnClickListener showCardDetail = v -> {
         Resource<StationItem> resource = mViewModel.nearestStation.getValue();
-
 
         if (resource != null && resource.data != null && !mViewModel.isLoading.get()) {
             resource.data.isFavourite = resource.data.favouriteRepository.isFavourite(resource.data.getStation());
@@ -149,6 +150,17 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
                 } else {
                     StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
                 }
+            }
+        });
+
+        mViewModel.nearestStation.observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.SUCCESS && result.data != null
+                    && result.data.getDistanceDuration() != null && result.data.getDistanceDuration().getDistance() < 70) {
+
+                HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(result.data.getStation().getId());
+                Navigation.findNavController(getView()).popBackStack();
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+
             }
         });
 

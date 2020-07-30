@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +15,7 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/black_4"
             android:orientation="vertical">
 
             <suncor.com.android.uicomponents.SuncorAppBarLayout
@@ -20,6 +24,91 @@
                 android:layout_height="wrap_content"
                 app:title="@string/select_pump_header" />
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/black_8"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/pump_number_selected"
+                            style="@style/Headline2"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_80"
+                            android:textSize="18sp"
+                            android:text="@string/select_pump_select"
+                            app:autoSizeTextType="uniform"
+                            android:visibility="visible" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/help_button"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_help"
+                            android:background="?selectableItemBackground"/>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pump_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/select_pump_card_item"
+                        android:scrollbars="horizontal"
+                        android:scrollbarThumbHorizontal="@color/red"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/black_8"/>
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            tools:visibility="gone"
+            app:visibleGone="@{isLoading}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/verifying_card_pd"
+                android:layout_marginBottom="24dp"
+                android:text="@{@string/enrollment_loading_question_title}"
+                android:textAppearance="@style/Title1" />
+
+            <ProgressBar
+                android:id="@+id/verifying_card_pd"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateTint="@color/red" />
+        </RelativeLayout>
     </FrameLayout>
 </layout>

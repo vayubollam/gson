@@ -9,6 +9,9 @@ public class P97StoreDetailsResponse {
 
     public MobilePaymentStatus mobilePaymentStatus;
 
+    @SerializedName("fuelService")
+    public FuelService fuelService;
+
     public static class MobilePaymentStatus {
         @SerializedName("allowOutsidePayment")
         boolean papAvailable;
@@ -16,5 +19,17 @@ public class P97StoreDetailsResponse {
         public boolean getPapAvailable() {
             return papAvailable;
         }
+    }
+
+    public static class FuelService {
+        @SerializedName("fuelingPoints")
+        public PumpStatus[] pumpStatuses;
+    }
+
+    public static class PumpStatus {
+        public int pumpNumber;
+        public String serviceLevel;
+        @SerializedName("pumpStatus")
+        public String status;
     }
 }
