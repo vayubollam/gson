@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_4"
+            android:orientation="vertical">
+
+            <suncor.com.android.uicomponents.SuncorAppBarLayout
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/select_pump_header" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        app:cardBackgroundColor="@color/white"
+                       >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/petro_points"
+                            style="@style/Headline2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_80"
+                            android:textSize="18sp"
+                            android:padding="16dp"
+                            android:gravity="center"
+                            android:text="You have 1100 points."
+                            app:autoSizeTextType="uniform"
+                            android:visibility="gone" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardBackgroundColor="@color/white"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/pump_layout"
+                            style="@style/Headline2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_80"
+                            android:textSize="18sp"
+                            android:padding="16dp"
+                            android:text="PUMP"
+                            app:autoSizeTextType="uniform"
+                            android:visibility="visible" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <suncor.com.android.uicomponents.dropdown.ExpandableCardView
+                        android:id="@+id/fuel_up_limit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:header_title="FUEL UPTO"
+                        app:title_color="#000000"
+                        app:title_size="16sp"
+                        android:layout_marginTop="16dp"
+                        app:item_inner_view="@layout/fuel_up_preauth_dropdown_layout"
+                         />
+
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+</layout>

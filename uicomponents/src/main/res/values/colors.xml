@@ -13,4 +13,6 @@
     <color name="yellow">#FFDF00</color>
     <color name="orange">#EB182C</color>
     <color name="red">#EB182C</color>
+
+    <color name="transaparent_black">#88666666</color>
 </resources>

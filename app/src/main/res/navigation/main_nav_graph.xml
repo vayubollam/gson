@@ -598,4 +598,25 @@
             app:argType="string"
             app:nullable="true"/>
     </keep_state_fragment>
+    <action
+        android:id="@+id/action_to_fuelUpFragment"
+        app:destination="@id/fuelUpFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" >
+        <argument
+            android:name="pumpNumber"
+            app:argType="string"/>
+    </action>
+
+    <keep_state_fragment
+        android:id="@+id/fuelUpFragment"
+        android:name="suncor.com.android.ui.main.pap.fuelup.FuelUpFragment"
+        android:label="FuelUpFragment">
+        <argument
+            android:name="pumpNumber"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+    </keep_state_fragment>
 </navigation>
