@@ -2,6 +2,8 @@ package suncor.com.android.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+
 public class SettingsResponse {
     private Settings settings;
     private BuildInfo buildInfo;
@@ -96,7 +98,7 @@ public class SettingsResponse {
         private int otherAmountHighLimit;
         private int otherAmountLowLimit;
         private int geofenceDistanceMeters;
-        private Limits preAuthLimits;
+        private HashMap<String,Integer> preAuthLimits;
 
         public int getGeofenceDistanceMeters() {
             return geofenceDistanceMeters;
@@ -110,7 +112,11 @@ public class SettingsResponse {
             return otherAmountLowLimit;
         }
 
-        public Limits getPreAuthLimits() {
+        public HashMap<String, Integer> getPreAuthLimits() {
+            return preAuthLimits;
+        }
+
+        /*  public Limits getPreAuthLimits() {
             return preAuthLimits;
         }
 
@@ -139,7 +145,7 @@ public class SettingsResponse {
             public int getLimit4() {
                 return limit4;
             }
-        }
+        }*/
     }
 }
 

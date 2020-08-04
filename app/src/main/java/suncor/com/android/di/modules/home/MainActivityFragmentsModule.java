@@ -3,6 +3,7 @@ package suncor.com.android.di.modules.home;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import suncor.com.android.ui.main.actionmenu.ActionMenuFragment;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragment;
 import suncor.com.android.ui.main.stationlocator.NearestStationFragment;
 import suncor.com.android.ui.main.wallet.WalletFragment;
@@ -156,4 +157,7 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract SelectPumpFragment contributesSelectPumpFragment();
+
+    @ContributesAndroidInjector
+    abstract FuelUpFragment contributeFuelUpFragment();
 }
