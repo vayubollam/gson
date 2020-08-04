@@ -53,7 +53,7 @@ public class SelectPumpFragment extends MainActivityFragment {
         binding.setIsLoading(isLoading);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        adapter = new SelectPumpAdapter();
+        adapter = new SelectPumpAdapter(getActivity());
         binding.pumpRecyclerView.setAdapter(adapter);
         binding.helpButton.setOnClickListener(v -> showHelp());
 

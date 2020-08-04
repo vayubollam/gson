@@ -1,16 +1,22 @@
 package suncor.com.android.ui.main.pap.selectpump;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import suncor.com.android.HomeNavigationDirections;
+import suncor.com.android.R;
 import suncor.com.android.databinding.PaymentExpandedCardItemBinding;
 import suncor.com.android.databinding.SelectPumpCardItemBinding;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.wallet.payments.details.ExpandedPaymentItem;
 import suncor.com.android.utilities.Consumer;
 
@@ -18,9 +24,10 @@ public class SelectPumpAdapter extends RecyclerView.Adapter<SelectPumpAdapter.Ca
     private ArrayList<String> pumpNumbers = new ArrayList<>();
     private int selectedPos = RecyclerView.NO_POSITION;
     private Consumer<String> callBack;
+    private final Context context;
 
-    SelectPumpAdapter() {
-
+    SelectPumpAdapter(final  Context context) {
+        this.context = context;
     }
 
     @NonNull
@@ -40,6 +47,9 @@ public class SelectPumpAdapter extends RecyclerView.Adapter<SelectPumpAdapter.Ca
             notifyItemChanged(selectedPos);
             selectedPos = position;
             notifyItemChanged(selectedPos);
+
+            HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment("storeId");
+            Navigation.findNavController((Activity) context, R.id.nav_host_fragment).navigate(action);
         });
     }
 
