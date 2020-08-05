@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.pap.selectpump;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,10 @@ public class SelectPumpAdapter extends RecyclerView.Adapter<SelectPumpAdapter.Ca
             selectedPos = position;
             notifyItemChanged(selectedPos);
 
-            HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment("storeId");
-            Navigation.findNavController((Activity) context, R.id.nav_host_fragment).navigate(action);
+            new Handler().postDelayed(() -> {
+                HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(pumpNumbers.get(position));
+                Navigation.findNavController((Activity) context, R.id.nav_host_fragment).navigate(action);
+            }, 200);
         });
     }
 

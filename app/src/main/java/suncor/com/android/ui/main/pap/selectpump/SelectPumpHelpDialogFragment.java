@@ -1,17 +1,16 @@
 package suncor.com.android.ui.main.pap.selectpump;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,9 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import suncor.com.android.R;
-import suncor.com.android.databinding.TutorialScreenListitemBinding;
+import suncor.com.android.databinding.TutorialSelectPumpBinding;
 import suncor.com.android.ui.common.SuncorButton;
-import suncor.com.android.ui.tutorial.TutorialContent;
 import suncor.com.android.uicomponents.pagerindicator.CircleIndicator;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -50,59 +48,51 @@ public class SelectPumpHelpDialogFragment extends DialogFragment {
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(tutorialRecycler);
 
-        TutorialAdapter adapter = new TutorialAdapter(setUpTutorialSlides(uriPrefix));
+        TutorialAdapter adapter = new TutorialAdapter(setUpImageSlides());
         tutorialRecycler.setAdapter(adapter);
-        tutorialRecycler.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            VideoView video = v.findViewById(R.id.tutorial_video);
-            video.start();
-        });
 
         pageIndicator.attachToRecyclerView(tutorialRecycler, pagerSnapHelper);
         adapter.registerAdapterDataObserver(pageIndicator.getAdapterDataObserver());
         buttonClose.setOnClickListener(v -> dismissAllowingStateLoss());
     }
 
-    private List<TutorialContent> setUpTutorialSlides(String uriPrefix) {
-        List<TutorialContent> tutorialContents = new ArrayList<>();
-        tutorialContents.add(new TutorialContent("", uriPrefix + R.raw.tutorial_1));
-        tutorialContents.add(new TutorialContent("", uriPrefix + R.raw.tutorial_2));
-        return tutorialContents;
+    private List<Drawable> setUpImageSlides() {
+        List<Drawable> images = new ArrayList<>();
+        images.add(getContext().getDrawable(R.drawable.pump_tooltip_1));
+        images.add(getContext().getDrawable(R.drawable.pump_tooltip_2));
+        return images;
     }
 
     class TutorialAdapter extends RecyclerView.Adapter<TutorialViewHolder> {
 
-        private List<TutorialContent> tutorials;
+        private List<Drawable> images;
 
-        TutorialAdapter(List<TutorialContent> tutorials) {
-            this.tutorials = tutorials;
+        TutorialAdapter(List<Drawable> images) {
+            this.images = images;
         }
 
         @NonNull
         @Override
         public TutorialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            TutorialScreenListitemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.tutorial_screen_listitem, parent, false);
+            TutorialSelectPumpBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.tutorial_select_pump, parent, false);
             return new TutorialViewHolder(binding);
         }
 
         @Override
         public void onBindViewHolder(@NonNull TutorialViewHolder holder, int position) {
-            holder.binding.tutorialHeader.setText(tutorials.get(position).getHeader());
-            holder.binding.tutorialVideo.setVideoURI(tutorials.get(position).getVideoUri());
-            holder.binding.tutorialVideo.setZOrderOnTop(true);
-            holder.binding.tutorialVideo.setOnPreparedListener(mp -> mp.setLooping(true));
-            holder.binding.tutorialVideo.start();
+            holder.binding.imageView.setImageDrawable(images.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return tutorials.size();
+            return images.size();
         }
     }
 
     class TutorialViewHolder extends RecyclerView.ViewHolder {
-        TutorialScreenListitemBinding binding;
+        TutorialSelectPumpBinding binding;
 
-        TutorialViewHolder(@NonNull TutorialScreenListitemBinding binding) {
+        TutorialViewHolder(@NonNull TutorialSelectPumpBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -112,6 +102,11 @@ public class SelectPumpHelpDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
         AnalyticsUtils.setCurrentScreenName(getActivity(), "select-pump-help");
+
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 
 }

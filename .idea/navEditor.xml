@@ -388,6 +388,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_to_fuelUpFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="action_to_nearestStationFragment">
                     <value>
                       <LayoutPositions />
@@ -633,6 +638,18 @@
                           <Point>
                             <option name="x" value="268" />
                             <option name="y" value="1428" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="fuelUpFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>

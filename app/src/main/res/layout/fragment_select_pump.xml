@@ -29,6 +29,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
                 <LinearLayout
+                    android:id="@+id/select_pump_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -67,15 +68,29 @@
                             android:background="?selectableItemBackground"/>
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/pump_recycler_view"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        android:orientation="horizontal"
-                        tools:listitem="@layout/select_pump_card_item"
-                        android:scrollbars="horizontal"
-                        android:scrollbarThumbHorizontal="@color/red"/>
+                        android:minHeight="350dp">
+
+                        <ProgressBar
+                            android:id="@+id/verifying_card_pd"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@color/red"
+                            app:visibleGone="@{isLoading}" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/pump_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:orientation="horizontal"
+                            tools:listitem="@layout/select_pump_card_item"
+                            android:scrollbars="horizontal"
+                            android:scrollbarThumbHorizontal="@color/red"/>
+                    </FrameLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -84,31 +99,5 @@
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:clickable="true"
-            tools:visibility="gone"
-            app:visibleGone="@{isLoading}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_above="@+id/verifying_card_pd"
-                android:layout_marginBottom="24dp"
-                android:text="@{@string/enrollment_loading_question_title}"
-                android:textAppearance="@style/Title1" />
-
-            <ProgressBar
-                android:id="@+id/verifying_card_pd"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:indeterminateTint="@color/red" />
-        </RelativeLayout>
     </FrameLayout>
 </layout>

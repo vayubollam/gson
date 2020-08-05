@@ -64,6 +64,7 @@ public class SelectPumpFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        isLoading.set(true);
         String storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
 
         viewModel.isPAPAvailable(storeId).observe(getViewLifecycleOwner(), result -> {
@@ -81,6 +82,8 @@ public class SelectPumpFragment extends MainActivityFragment {
                                 dialogInterface.dismiss();
                                 goBack();
                             }).show();
+
+                    binding.selectPumpLayout.setVisibility(View.GONE);
                 } else {
                     viewModel.getStoreDetails(storeId).observe(getViewLifecycleOwner(), storeDetailsResponseResource -> {
                         if (storeDetailsResponseResource.status == Resource.Status.SUCCESS && storeDetailsResponseResource.data != null) {
@@ -115,7 +118,7 @@ public class SelectPumpFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(getView()).popBackStack(R.id.home_navigation, false);
     }
 
 }

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -49,6 +50,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;
     private FragmentNearestStationBinding binding;
+    private ObservableBoolean isLoading = new ObservableBoolean(true);
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -88,6 +90,8 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
                     mViewModel.isLoading.set(mViewModel.getUserLocation() == null);
                     locationLiveData.observe(getViewLifecycleOwner(), (location -> mViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()))));
                 }
+            } else {
+                isLoading.set(false);
             }
         }));
         mViewModel.openNavigationApps.observe(this, event -> {
@@ -102,6 +106,9 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = setupLayout(inflater, container);
+
+        isLoading.set(true);
+        binding.setIsLoading(isLoading);
 
         //Setup nearest card click listeners
         nearestCard.getRoot().setOnClickListener(showCardDetail);
@@ -154,13 +161,17 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
         });
 
         mViewModel.nearestStation.observe(getViewLifecycleOwner(), result -> {
+
             if (result.status == Resource.Status.SUCCESS && result.data != null
-                    && result.data.getDistanceDuration() != null && result.data.getDistanceDuration().getDistance() < 70) {
+                    && result.data.getDistanceDuration() != null ) {
 
-                HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(result.data.getStation().getId());
-                Navigation.findNavController(getView()).popBackStack();
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
-
+                if (result.data.getDistanceDuration().getDistance() < 70) {
+                    HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(result.data.getStation().getId());
+                    //Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+                } else {
+                    isLoading.set(false);
+                }
             }
         });
 

@@ -40,7 +40,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
-      //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
     }
 
     @Nullable

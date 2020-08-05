@@ -85,11 +85,10 @@
                         android:id="@+id/fuel_up_limit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:header_title="FUEL UPTO"
+                        app:header_title="FUEL UP TO"
                         app:title_color="#000000"
                         app:title_size="16sp"
-                        android:layout_marginTop="16dp"
-                        />
+                        app:item_inner_view="@layout/fragment_create_password"/>
 
 
                 </LinearLayout>
