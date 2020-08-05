@@ -89,8 +89,7 @@
                         app:title_color="#000000"
                         app:title_size="16sp"
                         android:layout_marginTop="16dp"
-                        app:item_inner_view="@layout/fuel_up_preauth_dropdown_layout"
-                         />
+                        />
 
 
                 </LinearLayout>
