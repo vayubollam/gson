@@ -96,11 +96,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         });
         binding.actionFuelUpButton.setOnClickListener(view -> {
 
-            HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment("storeId");
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
-            dismiss();
-            return;
-           /* if (activeSession) {
+            if (activeSession) {
                 // Handle Active session
             }
             else if (!inProximity) {
@@ -112,7 +108,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(storeId);
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
-            }*/
+            }
         });
         binding.actionScanCardButton.setOnClickListener(view -> {
             HomeNavigationDirections.ActionToCardsDetailsFragment action = HomeNavigationDirections.actionToCardsDetailsFragment();
