@@ -604,4 +604,11 @@
     <string name="other_amount">Autre montant</string>
     <string name="fuel_upto">Montant maximal du carburanto</string>
     <string name="edit">Modifier</string>
+
+    <string name="pump">Distributeur</string>
+    <string name="payment">PAIEMENT</string>
+    <string name="pre_authorized">Préautorisation</string>
+    <string name="tax_inclusion">Taxes incluses</string>
+    <string name="payment_term_aggrement">En appuyant sur <b>« Confirmer et autoriser »</b>, vous acceptez les conditions. </string>
+    <string name="confirm_and_authorized">Confirmer et autoriser</string>
 </resources>
