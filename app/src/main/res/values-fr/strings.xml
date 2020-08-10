@@ -597,4 +597,11 @@
     <string name="payment_remove_bottom_sheet_message">Supprimer la carte de votre compte.</string>
     <string name="payment_remove_bottom_sheet_cancel">Annuler</string>
     <string name="payment_remove_toast">Carte de crédit supprimée</string>
+
+  <!-- Fuel Up limit -->
+    <string name="from">De</string>
+    <string name="fuel_manual_price_limit">%1$s à %2$s</string>
+    <string name="other_amount">Autre montant</string>
+    <string name="fuel_upto">Montant maximal du carburanto</string>
+    <string name="edit">Modifier</string>
 </resources>

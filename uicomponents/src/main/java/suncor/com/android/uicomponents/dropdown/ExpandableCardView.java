@@ -8,13 +8,10 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -23,19 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.HashMap;
 
 import suncor.com.android.uicomponents.R;
 
 public  class ExpandableCardView extends CardView implements View.OnClickListener  , ChildViewListener{
 
-    /*
-     *  This is our expandable card view title --> It is a textview
-     * */
+    //expandable card view title
     private TextView textViewTitle;
-    //Image button of collapse sign
-    private ImageButton imageButtonCollapse;
     //Image button of Expand sign
     private ImageButton imageButtonExpand;
     private View titleBackgroundLayout;
@@ -57,10 +49,6 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     private int mTitleColor;
     //card view title custom background color
     private int mTitleBackgroundColor;
-    //card view inner item
-    private int mInterViewID;
-    //get inner view item
-    private View mInnerView;
     //card collapse icon
     private Drawable mCollapseIcon;
     //card expand icon
@@ -78,9 +66,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     public ExpandableCardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
-
         initAttrs(attrs);
-
         initView(context);
 
     }
@@ -90,63 +76,45 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         super.onFinishInflate();
 
         textViewTitle = findViewById(R.id.header_title);
-        imageButtonCollapse = findViewById(R.id.image_button_collapse);
         imageButtonExpand = findViewById(R.id.image_button_expand);
-        viewStub = (RecyclerView) findViewById(R.id.recycler_view);
+        viewStub = findViewById(R.id.recycler_view);
         titleBackgroundLayout = findViewById(R.id.header_layout);
         setTitle(mTitle);
         setTitleSize(mTitleSize);
         setTitleColor(mTitleColor);
-      //  setInnerItem(mInterViewID);
         setIcon(mCollapseIcon, mExpandIcon);
         setTitleBackgroundColor(mTitleBackgroundColor);
-        imageButtonCollapse.setOnClickListener(this);
-        imageButtonExpand.setOnClickListener(this);
+        findViewById(R.id.header_layout).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        int i = view.getId();
-        if (i == R.id.image_button_collapse) {
-            isExpand = true;
-            imageButtonCollapse.setVisibility(GONE);
-            imageButtonExpand.setVisibility(VISIBLE);
-            textViewTitle.setTypeface(textViewTitle.getTypeface(), Typeface.BOLD);
-            textViewTitle.setText(mTitle);
 
-            mExpandCollapseListener.onExpandCollapseListener(isExpand);
-
-            if (mInnerView != null) {
-                expand(mInnerView);
+        if (view.getId() == R.id.header_layout) {
+            imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
+            textViewTitle.setText(isExpand ? textViewTitle.getText().toString().toUpperCase() : mTitle);
+            textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
+            mExpandCollapseListener.onExpandCollapseListener(!isExpand);
+            if(isExpand){
+                collapse(findViewById(R.id.recycler_view));
+            } else {
+                expand(findViewById(R.id.recycler_view));
             }
-            findViewById(R.id.recycler_view).setVisibility(VISIBLE);
-            findViewById(R.id.selected_value).setVisibility(INVISIBLE);
+            findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
+            findViewById(R.id.selected_value).setVisibility(isExpand ? VISIBLE : INVISIBLE);
+            if(isExpand){
+                int selectedValue = mAdapter.getSelectedValue();
+                if(selectedValue == 0){
+                    Snackbar.make(getRootView(), mContext.getString(R.string.invalid_manual_fuel_up_limit), Snackbar.LENGTH_SHORT).show();
+                    ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", ""));
+                } else {
+                    ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
+                }
+            }
             if(mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
-
-        } else if (i == R.id.image_button_expand) {
-            isExpand = false;
-            imageButtonCollapse.setVisibility(VISIBLE);
-            imageButtonExpand.setVisibility(GONE);
-            textViewTitle.setText(textViewTitle.getText().toString().toUpperCase());
-            textViewTitle.setTypeface(textViewTitle.getTypeface(), Typeface.NORMAL);
-
-            mExpandCollapseListener.onExpandCollapseListener(isExpand);
-
-            ((RecyclerView)findViewById(R.id.recycler_view)).setVisibility(GONE);
-            findViewById(R.id.selected_value).setVisibility(VISIBLE);
-            if (mInnerView != null) {
-                collapse(mInnerView);
-            }
-            int selectedValue = mAdapter.getSelectedValue();
-            if(selectedValue == 0){
-                Snackbar.make(getRootView(), mContext.getString(R.string.invalid_manual_fuel_up_limit), Snackbar.LENGTH_SHORT).show();
-                ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", ""));
-            } else {
-                ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
-            }
-            mExpandCollapseListener.onSelectFuelUpLimit(selectedValue);
+            isExpand = !isExpand;
         }
     }
 
@@ -160,7 +128,6 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         mTitleSize = typedArray.getDimension(R.styleable.ExpandableCardView_title_size, DEFAULT_TITLE_SIZE);
         mTitleColor = typedArray.getColor(R.styleable.ExpandableCardView_title_color, DEFAULT_TITLE_COLOR);
         mTitleBackgroundColor = typedArray.getColor(R.styleable.ExpandableCardView_title_background_color, DEFAULT_TITLE_BACKGROUND_COLOR);
-        mInterViewID = typedArray.getResourceId(R.styleable.ExpandableCardView_item_inner_view, View.NO_ID);
         mCollapseIcon = typedArray.getDrawable(R.styleable.ExpandableCardView_collapse_icon);
         mExpandIcon = typedArray.getDrawable(R.styleable.ExpandableCardView_expand_icon);
         typedArray.recycle();
@@ -174,8 +141,10 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         }
     }
 
+
     public void setDropDownData(HashMap<String,String>  data, int otherLimitMaxValue, int otherLimitMinvalue){
         mAdapter = new ChildDropDownAdapter(mContext, data, this, otherLimitMaxValue, otherLimitMinvalue);
+
         ((RecyclerView)findViewById(R.id.recycler_view)).setLayoutManager(new LinearLayoutManager(mContext));
         ((RecyclerView)findViewById(R.id.recycler_view)).setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -202,21 +171,11 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         textViewTitle.setTextColor(color);
     }
 
-    private void setInnerItem(int id) {
-      //  viewStub.setLayoutResource(R.id.recycler_view);
-        viewStub.setVisibility(View.GONE);
-        if (id != View.NO_ID) {
-          //  mInnerView = viewStub.inflate();
-            mInnerView.setVisibility(GONE);
-        }
-      //  viewStub.getInflatedId();
-
-    }
 
     private void setIcon(Drawable collapseIcon, Drawable expandIcon) {
 
         if (collapseIcon != null) {
-            imageButtonCollapse.setImageDrawable(collapseIcon);
+          //  imageButtonCollapse.setImageDrawable(collapseIcon);
         }
         if (expandIcon != null) {
             imageButtonExpand.setImageDrawable(expandIcon);
@@ -361,7 +320,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
      * */
 
     public View getChildView() {
-        if (mInnerView != null) return mInnerView;
+       // if (mInnerView != null) return mInnerView;
         return null;
     }
 

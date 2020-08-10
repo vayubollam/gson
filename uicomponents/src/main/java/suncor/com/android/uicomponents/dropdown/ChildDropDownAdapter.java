@@ -77,13 +77,16 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
     protected int getSelectedValue(){
             if(selectedPos < childList.size() - 1){
                 return Integer.parseInt(childList.get(String.valueOf(selectedPos + 1)));
-            } else if(manualValue >=  otherLimitMinLimit && manualValue <= otherLimitMaxLimit)  {
-                return manualValue;
-            }
-            manualValue = -1;
-            return 0;
+            }            } else if(manualValue <  otherLimitMinLimit) {
+                manualValue =  otherLimitMinLimit;
+            } else if (manualValue > otherLimitMaxLimit)  {
+                manualValue =  otherLimitMaxLimit;
+             }
+     	return manualValue;
+	
     }
 
+//fixed limit listing
      class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
             ChildDropDownItemBinding binding;
 
@@ -113,6 +116,7 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
         }
 
+	//Manual limit
      class ManualLimitViewHolder extends RecyclerView.ViewHolder {
         ManualLimitDropDownItemBinding binding;
 
