@@ -77,7 +77,7 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
     protected int getSelectedValue(){
             if(selectedPos < childList.size() - 1){
                 return Integer.parseInt(childList.get(String.valueOf(selectedPos + 1)));
-            }            } else if(manualValue <  otherLimitMinLimit) {
+            } else if(manualValue <  otherLimitMinLimit) {
                 manualValue =  otherLimitMinLimit;
             } else if (manualValue > otherLimitMaxLimit)  {
                 manualValue =  otherLimitMaxLimit;
