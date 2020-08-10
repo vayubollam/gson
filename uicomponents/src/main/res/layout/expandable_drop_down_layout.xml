@@ -31,17 +31,13 @@
             android:textColor="@color/black_80"
             android:textSize="16sp"
             android:gravity="center"
-            android:text="$200"
             app:autoSizeTextType="uniform"
             android:visibility="visible" />
 
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-
-         
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/image_button_expand"
