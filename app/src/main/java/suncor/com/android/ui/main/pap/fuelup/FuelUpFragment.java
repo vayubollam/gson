@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
@@ -68,10 +69,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 SettingsResponse.Pap papData = result.data.getSettings().getPap();
                 if(Objects.nonNull(papData) && Objects.nonNull(papData.getPreAuthLimits())){
-                    papData.getPreAuthLimits().put("100", 0);
-                    binding.fuelUpLimit.setDropDownData( papData.getPreAuthLimits());
+                    papData.getPreAuthLimits().put(String.valueOf(papData.getPreAuthLimits().size() + 1), getString(R.string.other_amount));
+                    binding.fuelUpLimit.setDropDownData(papData.getPreAuthLimits(), papData.getOtherAmountHighLimit(),papData.getOtherAmountLowLimit());
                 }
-
             }
         });
 
@@ -83,7 +83,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     @Override
-    public void onSelectFuelUpLimit(String value) {
+    public void onSelectFuelUpLimit(int value) {
 
         Log.i("FuelUpFragment", "Selected PreAuth value " + value );
     }

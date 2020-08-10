@@ -29,12 +29,47 @@
         android:src="@drawable/radio_button_selector"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/title"
+        android:id="@+id/prefix_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_80"
+        android:text="@string/currency_dollar"
+        android:textSize="16sp"
+        app:autoSizeTextType="uniform"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/input_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black_80"
         android:textSize="16sp"
+        android:background="@null"
+        android:hint="@string/from"
+        android:inputType="number"
+        android:visibility="gone"
         app:autoSizeTextType="uniform"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/manual_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_80"
+        android:textSize="16sp"
+        android:paddingLeft="5dp"
+        android:visibility="gone"
+        android:text="@string/fuel_manual_price_limit"
+        app:autoSizeTextType="uniform"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_80"
+        android:textSize="16sp"
+        android:paddingLeft="5dp"
+        android:text="@string/edit"
+        app:autoSizeTextType="uniform"/>
+
 
 </LinearLayout>
     </LinearLayout>
