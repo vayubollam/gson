@@ -104,12 +104,8 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
             findViewById(R.id.selected_value).setVisibility(isExpand ? VISIBLE : INVISIBLE);
             if(isExpand){
                 int selectedValue = mAdapter.getSelectedValue();
-                if(selectedValue == 0){
-                    Snackbar.make(getRootView(), mContext.getString(R.string.invalid_manual_fuel_up_limit), Snackbar.LENGTH_SHORT).show();
-                    ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", ""));
-                } else {
-                    ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
-                }
+                ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
+                mExpandCollapseListener.onSelectFuelUpLimit(selectedValue);
             }
             if(mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
