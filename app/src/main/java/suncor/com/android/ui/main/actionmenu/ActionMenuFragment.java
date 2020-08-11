@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.actionmenu;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.home.HomeViewModel;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
@@ -93,6 +95,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             dismiss();
         });
         binding.actionFuelUpButton.setOnClickListener(view -> {
+
             if (activeSession) {
                 // Handle Active session
             }

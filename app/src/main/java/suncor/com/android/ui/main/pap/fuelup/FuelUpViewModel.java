@@ -18,6 +18,7 @@ public class FuelUpViewModel extends ViewModel {
         this.settingsApi = settingsApi;
     }
 
+
     LiveData<Resource<SettingsResponse>> getSettingResponse() {
         return settingsApi.retrieveSettings();
     }

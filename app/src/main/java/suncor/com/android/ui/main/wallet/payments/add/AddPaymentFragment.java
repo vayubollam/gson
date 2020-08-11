@@ -20,11 +20,14 @@ import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddPaymentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentArgs;
+import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AddPaymentFragment extends MainActivityFragment {
@@ -65,7 +68,9 @@ public class AddPaymentFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel.getAddPaymentEndpoint().observe(getViewLifecycleOwner(), result -> {
+        boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
+
+        viewModel.getAddPaymentEndpoint(inTransaction).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
@@ -101,6 +106,7 @@ public class AddPaymentFragment extends MainActivityFragment {
     }
 
     private void goBack() {
+        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", true);
         Navigation.findNavController(getView()).popBackStack();
     }
 }

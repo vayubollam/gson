@@ -98,7 +98,7 @@ public class SettingsResponse {
         private int otherAmountHighLimit;
         private int otherAmountLowLimit;
         private int geofenceDistanceMeters;
-        private HashMap<String,Integer> preAuthLimits;
+        private HashMap<String,String> preAuthLimits;
 
         public int getGeofenceDistanceMeters() {
             return geofenceDistanceMeters;
@@ -112,40 +112,10 @@ public class SettingsResponse {
             return otherAmountLowLimit;
         }
 
-        public HashMap<String, Integer> getPreAuthLimits() {
+        public HashMap<String, String> getPreAuthLimits() {
             return preAuthLimits;
         }
 
-        /*  public Limits getPreAuthLimits() {
-            return preAuthLimits;
-        }
-
-        public static class Limits {
-            @SerializedName("1")
-            private int limit1;
-            @SerializedName("2")
-            private int limit2;
-            @SerializedName("3")
-            private int limit3;
-            @SerializedName("4")
-            private int limit4;
-
-            public int getLimit1() {
-                return limit1;
-            }
-
-            public int getLimit2() {
-                return limit2;
-            }
-
-            public int getLimit3() {
-                return limit3;
-            }
-
-            public int getLimit4() {
-                return limit4;
-            }
-        }*/
     }
 }
 

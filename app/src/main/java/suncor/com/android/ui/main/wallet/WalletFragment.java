@@ -13,12 +13,18 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import java.util.Objects;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentWalletBinding;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragmentArgs;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 
 public class WalletFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -26,6 +32,7 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
     private FragmentWalletBinding binding;
     private WalletPagerAdapter adapter;
     private float appBarElevation;
+    private boolean fromPayment = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,8 +82,22 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
 
         binding.tabLayout.setupWithViewPager(binding.pager);
 
+        NavController navController = NavHostFragment.findNavController(this);
+        // We use a String here, but any type that can be put in a Bundle is supported
+        MutableLiveData<Boolean> liveData = navController.getCurrentBackStackEntry()
+                .getSavedStateHandle()
+                .getLiveData("fromPayment");
+
+        liveData.observe(getActivity(), s -> {
+            // Do something with the result.
+            fromPayment = s;
+        });
+
         // Default select petro-canada cards
-        new Handler().postDelayed(() -> Objects.requireNonNull(binding.tabLayout.getTabAt(0)).select(),100);
+        new Handler().postDelayed(() -> {
+            Objects.requireNonNull(binding.tabLayout.getTabAt(fromPayment ? 1 : 0)).select();
+            fromPayment = false;
+        },100);
     }
 
     @Override

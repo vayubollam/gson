@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
@@ -38,6 +39,7 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragmentArgs;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -115,7 +117,7 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
         });
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
         adapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
-        binding.buttonClose.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.buttonClose.setOnClickListener(v -> goBack());
         binding.setIsRemoving(isRemoving);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
@@ -174,8 +176,9 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                             isRemoving.set(false);
                             new Handler().postDelayed(() -> {
                                 adapter.removeCard(new ExpandedPaymentItem(getContext(), paymentDetailResource.data));
-                                if (adapter.getCardItems().size() == 0)
-                                    Navigation.findNavController(getView()).popBackStack();
+                                if (adapter.getCardItems().size() == 0) {
+                                    goBack();
+                                }
                             }, 200);
 
                             AnalyticsUtils.logEvent(getContext(), "payment_remove", new Pair<>("cardNumber", paymentDetailResource.data.getCardNumber()));
@@ -216,5 +219,11 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
         }
     }
 
+    void goBack() {
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", true);
 
+        PaymentsDetailsFragmentDirections.ActionDetailsToWalletFragment action = PaymentsDetailsFragmentDirections.actionDetailsToWalletFragment();
+        Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+
+    }
 }

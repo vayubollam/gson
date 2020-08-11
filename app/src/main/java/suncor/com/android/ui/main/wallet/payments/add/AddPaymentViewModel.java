@@ -30,7 +30,7 @@ public class AddPaymentViewModel extends ViewModel {
         this.profile = sessionManager.getProfile();
     }
 
-    LiveData<Resource<Uri>> getAddPaymentEndpoint() {
+    LiveData<Resource<Uri>> getAddPaymentEndpoint(boolean inTransaction) {
         return Transformations.switchMap(repository.addPayment(), result -> {
             viewState.setValue(result.status);
 
@@ -40,7 +40,7 @@ public class AddPaymentViewModel extends ViewModel {
             data.setValue(new Resource<>(result.status, result.data != null ?
                     result.data.getP97Url()
                             .buildUpon()
-                            .appendQueryParameter("isWallet", "Y")
+                            .appendQueryParameter("isWallet", inTransaction ? "N" : "Y")
                             .appendQueryParameter("streetAddress", profile.getStreetAddress())
                             .appendQueryParameter("city", profile.getCity())
                             .appendQueryParameter("province", profile.getProvince())
