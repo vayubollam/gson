@@ -85,12 +85,12 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         setIcon(mCollapseIcon, mExpandIcon);
         setTitleBackgroundColor(mTitleBackgroundColor);
         findViewById(R.id.header_layout).setOnClickListener(this);
+        findViewById(R.id.image_button_expand).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-
-        if (view.getId() == R.id.header_layout) {
+        if (view.getId() == R.id.header_layout || view.getId() == R.id.image_button_expand) {
             imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
             textViewTitle.setText(isExpand ? textViewTitle.getText().toString().toUpperCase() : mTitle);
             textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);

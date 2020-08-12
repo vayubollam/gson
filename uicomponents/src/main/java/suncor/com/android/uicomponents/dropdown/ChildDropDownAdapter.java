@@ -120,7 +120,7 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
                 binding.container.setSelected(selectedPos== getAdapterPosition());
 
-                binding.radioBtn.setOnClickListener(v -> {
+                binding.container.setOnClickListener(v -> {
                     notifyItemChanged(selectedPos);
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
@@ -162,7 +162,7 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
             });
 
-            binding.radioBtn.setOnClickListener(v -> {
+            binding.container.setOnClickListener(v -> {
                 notifyItemChanged(selectedPos);
                 selectedPos = getAdapterPosition();
                 notifyItemChanged(selectedPos);
