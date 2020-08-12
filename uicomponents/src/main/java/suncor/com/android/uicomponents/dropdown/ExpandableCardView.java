@@ -148,7 +148,14 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
 
     @Override
     public void onSelectFuelUpLimit(int value) {
-
+        int selectedValue = value;
+        if(mAdapter != null) {
+             selectedValue = mAdapter.getSelectedValue();
+        }
+        ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
+        if(mExpandCollapseListener != null) {
+            mExpandCollapseListener.onSelectFuelUpLimit(selectedValue);
+        }
     }
 
     private void setTitle(String title) {
