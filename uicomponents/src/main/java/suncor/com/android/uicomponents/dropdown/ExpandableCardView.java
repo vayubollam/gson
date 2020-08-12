@@ -138,8 +138,8 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
 
-    public void setDropDownData(HashMap<String,String>  data, int otherLimitMaxValue, int otherLimitMinvalue){
-        mAdapter = new ChildDropDownAdapter(mContext, data, this, otherLimitMaxValue, otherLimitMinvalue);
+    public void setDropDownData(HashMap<String,String>  data, int otherLimitMaxValue, int otherLimitMinvalue, Double lastFuelupTransaction){
+        mAdapter = new ChildDropDownAdapter(mContext, data, this, otherLimitMaxValue, otherLimitMinvalue, lastFuelupTransaction);
 
         ((RecyclerView)findViewById(R.id.recycler_view)).setLayoutManager(new LinearLayoutManager(mContext));
         ((RecyclerView)findViewById(R.id.recycler_view)).setAdapter(mAdapter);

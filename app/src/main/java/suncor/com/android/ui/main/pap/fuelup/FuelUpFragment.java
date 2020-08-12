@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
+    private Double lastTransactionFuelUpLimit;
+    SettingsResponse.Pap mPapData;
+
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -61,6 +65,16 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
+            if (result.status == Resource.Status.LOADING) {
+
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(getContext()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                lastTransactionFuelUpLimit = result.data.getLastFuelUpAmount();
+                initializeFuelUpLimit();
+            }
+        });
 
         viewModel.getSettingResponse().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -68,15 +82,21 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             } else if (result.status == Resource.Status.ERROR) {
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                SettingsResponse.Pap papData = result.data.getSettings().getPap();
-                if(Objects.nonNull(papData) && Objects.nonNull(papData.getPreAuthLimits())){
-                    papData.getPreAuthLimits().put(String.valueOf(papData.getPreAuthLimits().size() + 1), getString(R.string.other_amount));
-                    binding.fuelUpLimit.setDropDownData(papData.getPreAuthLimits(), papData.getOtherAmountHighLimit(),papData.getOtherAmountLowLimit());
-                    binding.totalAmount.setText(String.format("$%s", papData.getPreAuthLimits().get("1")));
-                }
+                mPapData = result.data.getSettings().getPap();
+                mPapData.getPreAuthLimits().put(String.valueOf(mPapData.getPreAuthLimits().size() + 1), getString(R.string.other_amount));
+                initializeFuelUpLimit();
             }
         });
 
+    }
+
+    private void initializeFuelUpLimit(){
+       new Handler().postDelayed(() -> {
+           if (Objects.nonNull(mPapData) && Objects.nonNull(mPapData.getPreAuthLimits())) {
+               binding.fuelUpLimit.setDropDownData(mPapData.getPreAuthLimits(), mPapData.getOtherAmountHighLimit(), mPapData.getOtherAmountLowLimit(), lastTransactionFuelUpLimit);
+               binding.totalAmount.setText(String.format("$%s", mPapData.getPreAuthLimits().get("1")));
+           }
+       }, 200);
     }
 
     @Override

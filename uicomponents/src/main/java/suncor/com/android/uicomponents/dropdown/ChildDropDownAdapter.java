@@ -36,12 +36,13 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
         ChildDropDownAdapter(final Context context, final HashMap<String,String> data, ChildViewListener listener, final int otherLimitMaxLimit,
-                             final int otherLimitMinLimit) {
+                             final int otherLimitMinLimit, Double lastFuelUpTransaction) {
             this.childList = data;
             this.listener = listener;
             this.otherLimitMaxLimit = otherLimitMaxLimit;
             this.otherLimitMinLimit = otherLimitMinLimit;
             this.mContext = context;
+            findLastFuelUpTransaction(lastFuelUpTransaction);
         }
 
         @NonNull
@@ -72,6 +73,22 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public int getItemViewType(int position) {
         return position != childList.size()-1 ? DROP_DOWN_LAYOUT : MANUAL_DROP_DOWN_LAYOUT;
+    }
+
+    private void findLastFuelUpTransaction(Double lastFuelupTransaction){
+            if(lastFuelupTransaction != null){
+                childList.forEach((position, value)-> {
+                    if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
+                        selectedPos =  Integer.parseInt(position) -1;
+                        listener.onSelectFuelUpLimit(Integer.parseInt(value));
+                    }
+                });
+                if(selectedPos == 0){
+                    manualValue = lastFuelupTransaction.intValue();
+                    selectedPos = childList.size() -1 ;
+                    listener.onSelectFuelUpLimit(manualValue);
+                }
+            }
     }
 
     protected int getSelectedValue(){
