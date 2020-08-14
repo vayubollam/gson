@@ -173,7 +173,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
     implementation "com.google.firebase:firebase-crashlytics:$rootProject.crashlyticsVersion"
-    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+    implementation "com.google.firebase:firebase-analytics: $rootProject.firebaseAnalyticsVersion"
     implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagManagerVersion"
     implementation "androidx.biometric:biometric:1.0.0-alpha04"
     testImplementation "androidx.arch.core:core-testing:$rootProject.archLifecycleVersion"
