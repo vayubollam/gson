@@ -49,8 +49,4 @@
 #OkHttp
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
--dontwarn org.apache.http.**
--dontwarn android.net.http.AndroidHttpClient
--dontwarn com.google.android.gms.**
--dontwarn com.android.volley.toolbox.**
--dontwarn com.instabug.**   
+-ignorewarnings
