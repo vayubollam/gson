@@ -85,12 +85,12 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         setIcon(mCollapseIcon, mExpandIcon);
         setTitleBackgroundColor(mTitleBackgroundColor);
         findViewById(R.id.header_layout).setOnClickListener(this);
+        findViewById(R.id.image_button_expand).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-
-        if (view.getId() == R.id.header_layout) {
+        if (view.getId() == R.id.header_layout || view.getId() == R.id.image_button_expand) {
             imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
             textViewTitle.setText(isExpand ? textViewTitle.getText().toString().toUpperCase() : mTitle);
             textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
@@ -138,8 +138,8 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
 
-    public void setDropDownData(HashMap<String,String>  data, int otherLimitMaxValue, int otherLimitMinvalue){
-        mAdapter = new ChildDropDownAdapter(mContext, data, this, otherLimitMaxValue, otherLimitMinvalue);
+    public void setDropDownData(HashMap<String,String>  data, int otherLimitMaxValue, int otherLimitMinvalue, Double lastFuelupTransaction){
+        mAdapter = new ChildDropDownAdapter(mContext, data, this, otherLimitMaxValue, otherLimitMinvalue, lastFuelupTransaction);
 
         ((RecyclerView)findViewById(R.id.recycler_view)).setLayoutManager(new LinearLayoutManager(mContext));
         ((RecyclerView)findViewById(R.id.recycler_view)).setAdapter(mAdapter);
@@ -148,7 +148,14 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
 
     @Override
     public void onSelectFuelUpLimit(int value) {
-
+        int selectedValue = value;
+        if(mAdapter != null) {
+             selectedValue = mAdapter.getSelectedValue();
+        }
+        ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
+        if(mExpandCollapseListener != null) {
+            mExpandCollapseListener.onSelectFuelUpLimit(selectedValue);
+        }
     }
 
     private void setTitle(String title) {
