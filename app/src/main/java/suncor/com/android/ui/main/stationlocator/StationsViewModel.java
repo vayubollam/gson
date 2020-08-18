@@ -64,6 +64,11 @@ public class StationsViewModel extends ViewModel {
             if (stationsAround == null && stationsAround.getValue() == null && stationsAround.getValue().status == null) {
                 return;
             }
+
+            if (Resource.Status.SUCCESS ==  null){
+               return;
+
+            }
             if (stationsAround.getValue().status != Resource.Status.SUCCESS) {
                 return;
             }
