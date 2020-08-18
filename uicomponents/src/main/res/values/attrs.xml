@@ -85,4 +85,16 @@
         </attr>
 
     </declare-styleable>
+
+    <declare-styleable name="ExpandableCardView">
+        <attr name="header_title" format="string" />
+        <attr name="expanded_title" format="string" />
+        <attr name="title_size" format="dimension" />
+        <attr name="title_color" format="color" />
+        <attr name="title_background_color" format="color" />
+        <attr name="item_inner_view" format="reference" />
+        <attr name="expand_icon" format="reference" />
+        <attr name="collapse_icon" format="reference" />
+
+    </declare-styleable>
 </resources>

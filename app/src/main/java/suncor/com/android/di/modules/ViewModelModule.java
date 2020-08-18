@@ -14,6 +14,9 @@ import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.login.CreatePasswordViewModel;
 import suncor.com.android.ui.login.LoginViewModel;
 import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.actionmenu.ActionMenuViewModel;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.cards.add.AddCardViewModel;
 import suncor.com.android.ui.main.wallet.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.main.wallet.cards.list.CardsViewModel;
@@ -68,6 +71,11 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(ActionMenuViewModel.class)
+    protected abstract ViewModel actionMenuViewModel(ActionMenuViewModel actionMenuViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(SearchViewModel.class)
     protected abstract ViewModel searchViewModel(SearchViewModel searchViewModel);
 
@@ -100,6 +108,11 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AddPaymentViewModel.class)
     protected abstract ViewModel addPaymentViewModel(AddPaymentViewModel addPaymentViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectPumpViewModel.class)
+    protected abstract ViewModel selectPumpViewModel(SelectPumpViewModel selectPumpViewModel);
 
     @Binds
     @IntoMap
@@ -207,5 +220,10 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SingleTicketViewModel.class)
     protected abstract ViewModel SingleTicketViewModel(SingleTicketViewModel singleTicketViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FuelUpViewModel.class)
+    protected abstract ViewModel fuelUpViewModel(FuelUpViewModel fuelUpViewModel);
 
 }

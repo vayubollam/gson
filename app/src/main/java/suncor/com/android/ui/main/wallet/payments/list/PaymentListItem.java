@@ -18,12 +18,16 @@ public class PaymentListItem {
     private PaymentDetail.PaymentType paymentType;
     private PaymentDetail paymentDetail;
     private String cardNumber;
+    private String exp;
+    private String cardInfo;
 
-    PaymentListItem(Context context, PaymentDetail paymentDetail) {
+    public PaymentListItem(Context context, PaymentDetail paymentDetail) {
         this.paymentDetail = paymentDetail;
         this.paymentType = paymentDetail.getPaymentType();
         this.cardImage = context.getDrawable(paymentDetail.getCardImage());
         this.cardNumber = context.getString(R.string.payment_card_number, paymentDetail.getCardNumber().replaceAll("[^\\d]", ""));
+        this.exp = paymentDetail.getExpDate();
+        this.cardInfo = paymentType + " " +cardNumber;
 
         backgroundColor = Color.WHITE;
         textColor = Color.parseColor("#CC000000");
@@ -53,4 +57,11 @@ public class PaymentListItem {
         return cardNumber;
     }
 
+    public String getExp() {
+        return exp;
+    }
+
+    public String getCardInfo() {
+        return cardInfo;
+    }
 }

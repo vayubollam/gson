@@ -65,6 +65,9 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
 
+    @Inject
+    ActionMenuFragment actionMenuFragment;
+
     public ArrayList<Province> getProvinces() {
         return provinces;
     }
@@ -148,7 +151,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, "Action Menu"));
 
-            ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
             actionMenuFragment.show(getSupportFragmentManager(), null);
         });
 

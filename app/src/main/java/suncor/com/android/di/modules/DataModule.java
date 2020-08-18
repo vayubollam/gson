@@ -17,6 +17,8 @@ import suncor.com.android.data.cards.CardsApi;
 import suncor.com.android.data.cards.CardsApiImpl;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.favourite.FavouriteRepositoryImpl;
+import suncor.com.android.data.pap.PapApi;
+import suncor.com.android.data.pap.PapApiImpl;
 import suncor.com.android.data.payments.PaymentsApi;
 import suncor.com.android.data.payments.PaymentsApiImpl;
 import suncor.com.android.data.profiles.ProfilesApi;
@@ -69,13 +71,13 @@ public class DataModule {
 
     @Provides
     @Singleton
-    CardsApi providesCardsRepository(Gson gson) {
+    CardsApi providesCardsApi(Gson gson) {
         return new CardsApiImpl(gson);
     }
 
     @Provides
     @Singleton
-    PaymentsApi providesPaymentsRepository(Gson gson) {
+    PaymentsApi providesPaymentsApi(Gson gson) {
         return new PaymentsApiImpl(gson);
     }
 
@@ -119,6 +121,12 @@ public class DataModule {
     @Singleton
     TransactionApi provideTransactionApi(Gson gson) {
         return new TransactionApiImpl(gson);
+    }
+
+    @Provides
+    @Singleton
+    PapApi providesPapApi(Gson gson) {
+        return new PapApiImpl(gson);
     }
 
     @Provides

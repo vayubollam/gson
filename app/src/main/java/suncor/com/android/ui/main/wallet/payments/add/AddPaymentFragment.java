@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.wallet.payments.add;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -12,23 +13,21 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddPaymentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentArgs;
+import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AddPaymentFragment extends MainActivityFragment {
@@ -55,6 +54,7 @@ public class AddPaymentFragment extends MainActivityFragment {
         binding = FragmentAddPaymentBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setIsAdding(isAdding);
+        binding.setIsWebviewLoading(isWebViewLoading);
         binding.setLifecycleOwner(this);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
@@ -68,7 +68,9 @@ public class AddPaymentFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel.getAddPaymentEndpoint().observe(getViewLifecycleOwner(), result -> {
+        boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
+
+        viewModel.getAddPaymentEndpoint(inTransaction).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
@@ -87,10 +89,11 @@ public class AddPaymentFragment extends MainActivityFragment {
         isWebViewLoading.set(true);
 
         binding.webView.setWebViewClient(new WebViewClient() {
+
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                binding.webView.postDelayed(() -> isWebViewLoading.set(false), 50);
+                isWebViewLoading.set(false);
 
                 if (url.toLowerCase().contains(viewModel.redirectUrl.toLowerCase())) {
                     isAdding.set(true);
@@ -103,6 +106,7 @@ public class AddPaymentFragment extends MainActivityFragment {
     }
 
     private void goBack() {
+        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", true);
         Navigation.findNavController(getView()).popBackStack();
     }
 }

@@ -615,4 +615,35 @@
     <string name="payment_remove_bottom_sheet_cancel">Cancel</string>
     <string name="payment_remove_toast">Credit card removed</string>
 
+    <!-- PAP Offsite Screen -->
+    <string name="nearest_station_offsite_header">Fuelling your vehicle is fast and easy.</string>
+
+    <!-- PAP Action Menu -->
+    <string name="action_fuel_up">Fuel up</string>
+    <string name="action_fuelling">Fuelling up…</string>
+    <string name="action_location">You\'re at %s station</string>
+
+    <!-- PAP Select Pump -->
+    <string name="select_pump_header">Fuel up</string>
+    <string name="pap_not_available_header">In-app payment unavailable</string>
+    <string name="pap_not_available_description">You can\’t use your app to pay at this station.</string>
+    <string name="select_pump_select">Select your pump number</string>
+    <string name="select_pump_selected">Selected</string>
+    <string name="select_pump_help_header">Pump number</string>
+    <string name="select_pump_help_subheader">Your pump number is on the top or the side of the pump.</string>
+
+    <!-- Fuel Up limit -->
+    <string name="from">From</string>
+    <string name="fuel_manual_price_limit">%1$s to %2$s</string>
+    <string name="other_amount">Other amount</string>
+    <string name="fuel_upto">Fuel up to</string>
+    <string name="edit">Edit</string>
+
+    <string name="pump">PUMP</string>
+    <string name="payment">PAYMENT</string>
+    <string name="pre_authorized">Pre-authorize</string>
+    <string name="tax_inclusion">Tax incl.</string>
+    <string name="payment_term_aggrement">By pressing \'Confirm and Authorize\', you agree to the <b>Terms and Conditions.</b> </string>
+    <string name="confirm_and_authorized">CONFIRM AND AUTHORIZED</string>
+
 </resources>
