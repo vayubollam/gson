@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -54,7 +56,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding = FragmentFuelUpBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-      //  binding.setIsLoading(isLoading);
+        binding.setIsLoading(isLoading);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> {});
@@ -88,12 +90,18 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             }
         });
 
+        binding.termsAgreement.setOnClickListener((v) -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)));
+            startActivity(browserIntent);
+
+        });
+        binding.preauthorizeButton.setOnClickListener((v) ->{});
+
     }
 
     private void initializeFuelUpLimit(){
        new Handler().postDelayed(() -> {
            if (Objects.nonNull(mPapData) && Objects.nonNull(mPapData.getPreAuthLimits())) {
-              // binding.totalAmount.setText(String.format("$%s", mPapData.getPreAuthLimits().get("1")));
                binding.fuelUpLimit.setDropDownData(mPapData.getPreAuthLimits(), mPapData.getOtherAmountHighLimit(), mPapData.getOtherAmountLowLimit(), lastTransactionFuelUpLimit);
            }
        }, 200);
@@ -105,7 +113,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     @Override
-    public void onSelectFuelUpLimit(int value) {
+    public void onSelectFuelUpLimit(double value) {
         Log.i("FuelUpFragment", "Selected PreAuth value " + value );
         binding.totalAmount.setText(String.format("$%s", value));
     }

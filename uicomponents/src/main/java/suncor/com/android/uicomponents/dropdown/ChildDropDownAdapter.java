@@ -6,11 +6,14 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -22,6 +25,7 @@ import suncor.com.android.uicomponents.databinding.ManualLimitDropDownItemBindin
 public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = ChildDropDownAdapter.class.getSimpleName();
+    private DecimalFormat formatter = new DecimalFormat("#.##");
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
@@ -32,7 +36,7 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
         private final int otherLimitMaxLimit;
         private final int otherLimitMinLimit;
         private final Context mContext;
-        private int manualValue = -1;
+        private double manualValue = -1;
 
 
         ChildDropDownAdapter(final Context context, final HashMap<String,String> data, ChildViewListener listener, final int otherLimitMaxLimit,
@@ -78,20 +82,22 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
     private void findLastFuelUpTransaction(Double lastFuelupTransaction){
             if(lastFuelupTransaction != null){
                 childList.forEach((position, value)-> {
-                    if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
+                    if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction == Integer.parseInt(value) ){
                         selectedPos =  Integer.parseInt(position) -1;
-                        listener.onSelectFuelUpLimit(Integer.parseInt(value));
+                        listener.onSelectFuelUpLimit(Double.parseDouble(value));
                     }
                 });
                 if(selectedPos == 0){
-                    manualValue = lastFuelupTransaction.intValue();
+                    manualValue = lastFuelupTransaction;
                     selectedPos = childList.size() -1 ;
                     listener.onSelectFuelUpLimit(manualValue);
                 }
+            } else if(childList.get("1") != null){
+                listener.onSelectFuelUpLimit(Double.valueOf(childList.get("1")));
             }
     }
 
-    protected int getSelectedValue(){
+    protected double getSelectedValue(){
             if(selectedPos < childList.size() - 1){
                 return Integer.parseInt(childList.get(String.valueOf(selectedPos + 1)));
             } else if(manualValue <  otherLimitMinLimit) {
@@ -114,7 +120,7 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             public void setDataOnView(String value){
                 try {
-                    binding.title.setText(String.format("$%s", value));
+                    binding.title.setText(String.format("$%s", Double.valueOf(value)));
                 }catch (NullPointerException ex){
                     Log.e(TAG,  "Error on inflating data , " + ex.getMessage());
                 }
@@ -140,7 +146,7 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
         ManualLimitViewHolder(@NonNull ManualLimitDropDownItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            binding.inputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(otherLimitMaxLimit).length())});
+            binding.inputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter( 3 + String.valueOf(otherLimitMaxLimit).length())});
         }
 
         public void setDataOnView(String value){
@@ -149,14 +155,16 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
             binding.inputField.setVisibility((selectedPos == getAdapterPosition()) ? View.VISIBLE : View.GONE);
             binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ?  View.VISIBLE : View.GONE);
             binding.prefixCurrency.setText((selectedPos == getAdapterPosition()) ? mContext.getString(R.string.currency_dollar) : value);
-            binding.inputField.setText(manualValue > 0 ? String.valueOf(manualValue) : "");
+            binding.inputField.setText(manualValue > 0 ? Double.valueOf(manualValue).toString() : "");
             binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
+            binding.inputField.setEnabled(!(manualValue > 0));
 
             binding.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.setVisibility(View.GONE);
                 binding.manualLimit.setVisibility(View.VISIBLE);
+                binding.inputField.setEnabled(true);
                 binding.inputField.requestFocus();
                 binding.inputField.setSelection(binding.inputField.getText().length());
             }
@@ -182,11 +190,29 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    manualValue = editable.length() > 0 ? Integer.parseInt(editable.toString()) : 0;
-                    if(Objects.nonNull(listener) ) {
-                        listener.onSelectFuelUpLimit(manualValue);
+                    try {
+                        manualValue = editable.toString().trim().length() > 0 ? Double.valueOf(editable.toString()) : 0;
+                        if (Objects.nonNull(listener) && manualValue >= 0) {
+                            manualValue = Double.parseDouble(formatter.format(manualValue));
+                            listener.onSelectFuelUpLimit(manualValue);
+                        }
+                    }catch (NumberFormatException ex){
+                        Log.e(TAG, "enter invalid number");
                     }
                 }
+            });
+
+            binding.inputField.setOnKeyListener((view,  keyCode, event) -> {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                        if(manualValue > 0) {
+                            binding.inputField.setText(String.valueOf(manualValue));
+                            binding.edit.setVisibility(manualValue > 0 ? View.VISIBLE : View.GONE);
+                            binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ? View.VISIBLE : View.GONE);
+                            binding.inputField.setEnabled(!(manualValue > 0));
+                        }
+                        return true;
+                    }
+                    return false;
             });
         }
     }

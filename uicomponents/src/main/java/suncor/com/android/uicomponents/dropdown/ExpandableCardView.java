@@ -103,7 +103,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
             findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
             findViewById(R.id.selected_value).setVisibility(isExpand ? VISIBLE : INVISIBLE);
             if(isExpand){
-                int selectedValue = mAdapter.getSelectedValue();
+                double selectedValue = mAdapter.getSelectedValue();
                 ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
                 mExpandCollapseListener.onSelectFuelUpLimit(selectedValue);
             }
@@ -147,8 +147,8 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
     @Override
-    public void onSelectFuelUpLimit(int value) {
-        int selectedValue = value;
+    public void onSelectFuelUpLimit(double value) {
+        double selectedValue = value;
         if(mAdapter != null) {
              selectedValue = mAdapter.getSelectedValue();
         }

@@ -641,8 +641,10 @@
     <string name="payment">PAYMENT</string>
     <string name="pre_authorized">Pre-authorize</string>
     <string name="tax_inclusion">Tax incl.</string>
-    <string name="payment_term_aggrement">By pressing \'Confirm and Authorize\', you agree to the <b>Terms and Conditions.</b> </string>
-    <string name="confirm_and_authorized">CONFIRM AND AUTHORIZED</string>
+    <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to the our <b>Legal and Privacy policies.</b> </string>
+    <string name="confirm_and_authorized">CONFIRM AND AUTHORIZE</string>
+    <string name="privacy_policy_url">https://www.petro-canada.ca/en/legal-privacy</string>
+
     
     
 </resources>
