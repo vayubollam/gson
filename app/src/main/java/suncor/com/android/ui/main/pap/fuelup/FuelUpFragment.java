@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -24,12 +25,14 @@ import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
+import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentArgs;
+import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
-import suncor.com.android.utilities.AnalyticsUtils;
 
-public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener {
+public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener, FuelUpLimitCallbacks {
 
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
@@ -58,8 +61,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> {});
-        binding.paymentLayout.setOnClickListener(v -> {
-            Navigation.findNavController(getView()).navigate(R.id.action_fuel_up_to_addPaymentFragment);
+        binding.pumpLayout.setOnClickListener(v -> {
+            Navigation.findNavController(getView()).popBackStack();
         });
         return binding.getRoot();
     }
@@ -67,7 +70,13 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String pumpNumber = FuelUpFragmentArgs.fromBundle(getArguments()).getPumpNumber();
+
+        binding.pumpNumberText.setText(pumpNumber);
+
         binding.fuelUpLimit.initListener(this);
+        binding.paymentExpandable.initListener(this);
+
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
 
@@ -91,16 +100,42 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             }
         });
 
+        viewModel.getPayments(getContext()).observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+                //hideKeyBoard();
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(getContext()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                List<PaymentListItem> payments = result.data;
+
+                PaymentDropDownAdapter adapter = new PaymentDropDownAdapter(
+                        getContext(),
+                        payments
+                );
+
+                binding.paymentExpandable.setDropDownData(adapter);
+            }
+        });
+
 
     }
 
     private void initializeFuelUpLimit(){
-       new Handler().postDelayed(() -> {
-           if (Objects.nonNull(mPapData) && Objects.nonNull(mPapData.getPreAuthLimits())) {
-              // binding.totalAmount.setText(String.format("$%s", mPapData.getPreAuthLimits().get("1")));
-               binding.fuelUpLimit.setDropDownData(mPapData.getPreAuthLimits(), mPapData.getOtherAmountHighLimit(), mPapData.getOtherAmountLowLimit(), lastTransactionFuelUpLimit);
-           }
-       }, 200);
+       if (Objects.nonNull(mPapData) && Objects.nonNull(mPapData.getPreAuthLimits())) {
+          // binding.totalAmount.setText(String.format("$%s", mPapData.getPreAuthLimits().get("1")));
+
+           FuelLimitDropDownAdapter adapter = new FuelLimitDropDownAdapter(
+                   getContext(),
+                   mPapData.getPreAuthLimits(),
+                   this,
+                   mPapData.getOtherAmountHighLimit(),
+                   mPapData.getOtherAmountLowLimit(),
+                   lastTransactionFuelUpLimit
+           );
+
+           binding.fuelUpLimit.setDropDownData(adapter);
+
+       }
     }
 
     @Override
@@ -108,14 +143,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         
     }
 
-    @Override
-    public void onSelectFuelUpLimit(int value) {
-        Log.i("FuelUpFragment", "Selected PreAuth value " + value );
-        binding.totalAmount.setText(String.format("$%s", value));
-    }
-
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(getView()).popBackStack(R.id.home_navigation, false);
     }
 
+    @Override
+    public void onPreAuthChanged(String value) {
+        binding.totalAmount.setText(value);
+    }
 }

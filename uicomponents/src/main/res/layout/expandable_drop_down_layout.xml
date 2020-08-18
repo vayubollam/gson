@@ -16,23 +16,41 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/header_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black_80"
-            android:textSize="16sp"
-            app:autoSizeTextType="uniform"
-            android:visibility="visible" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/selected_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/black_80"
-            android:textSize="16sp"
-            android:gravity="center"
+            android:textSize="14sp"
             app:autoSizeTextType="uniform"
             android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/selected_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginStart="6dp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/selected_value"
+                android:textColor="@color/black_80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                android:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/selected_subheader_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_60"
+                android:textSize="14sp"
+                app:autoSizeTextType="uniform"
+                android:visibility="gone"/>
+        </LinearLayout>
 
             <ImageButton
                 android:id="@+id/image_button_expand"

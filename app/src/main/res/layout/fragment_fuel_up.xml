@@ -44,15 +44,27 @@
                     android:padding="16dp"
                     android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:text="@string/pump"
-                    android:textColor="@color/black_80"
-                    app:autoSizeTextType="uniform"
-                    android:visibility="visible" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        android:text="@string/pump"
+                        android:textColor="@color/black_80"
+                        app:autoSizeTextType="uniform"
+                        android:visibility="visible" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pump_number_text"
+                        android:textColor="@color/black_80"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:gravity="start"
+                        app:autoSizeTextType="uniform"
+                        android:visibility="visible" />
+
 
                     <ImageButton
                         android:id="@+id/pump_image_button_expand"
@@ -72,14 +84,24 @@
                 app:header_title="@string/fuel_upto"
                 app:title_color="@color/black_80"
                 app:title_size="16sp"
-                android:layout_marginTop="1dp"
-            />
+                android:layout_marginTop="1dp" />
+
+            <suncor.com.android.uicomponents.dropdown.ExpandableCardView
+                android:id="@+id/payment_expandable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:header_title="@string/payment"
+                app:title_color="@color/black_80"
+                app:title_size="16sp"
+                app:expanded_title="Select payment method"
+                android:layout_marginTop="1dp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardBackgroundColor="@color/white"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/payment_layout"

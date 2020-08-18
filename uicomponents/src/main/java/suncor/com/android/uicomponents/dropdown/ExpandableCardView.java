@@ -19,12 +19,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-import java.util.HashMap;
+import java.util.List;
 
 import suncor.com.android.uicomponents.R;
 
-public  class ExpandableCardView extends CardView implements View.OnClickListener  , ChildViewListener{
+public  class ExpandableCardView extends CardView implements View.OnClickListener, ChildViewListener{
 
     //expandable card view title
     private TextView textViewTitle;
@@ -43,6 +42,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     private boolean isExpand = false;
     //Card view custom text
     private String mTitle;
+    private String mExpandedTitle;
     //card view title custom size
     private float mTitleSize;
     //card view title custom color
@@ -54,7 +54,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     //card expand icon
     private Drawable mExpandIcon;
     private ExpandableViewListener mExpandCollapseListener;
-    private ChildDropDownAdapter mAdapter;
+    private DropDownAdapter mAdapter;
     private Context mContext;
 
 
@@ -92,21 +92,19 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     public void onClick(View view) {
         if (view.getId() == R.id.header_layout || view.getId() == R.id.image_button_expand) {
             imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
-            textViewTitle.setText(isExpand ? textViewTitle.getText().toString().toUpperCase() : mTitle);
+            textViewTitle.setText(isExpand ? mTitle.toUpperCase() : mExpandedTitle == null || mExpandedTitle.isEmpty() ? mTitle : mExpandedTitle);
             textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
             mExpandCollapseListener.onExpandCollapseListener(!isExpand);
+
+            findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
+            findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : GONE);
+
             if(isExpand){
                 collapse(findViewById(R.id.recycler_view));
             } else {
                 expand(findViewById(R.id.recycler_view));
             }
-            findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
-            findViewById(R.id.selected_value).setVisibility(isExpand ? VISIBLE : INVISIBLE);
-            if(isExpand){
-                int selectedValue = mAdapter.getSelectedValue();
-                ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
-                mExpandCollapseListener.onSelectFuelUpLimit(selectedValue);
-            }
+
             if(mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
@@ -126,6 +124,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         mTitleBackgroundColor = typedArray.getColor(R.styleable.ExpandableCardView_title_background_color, DEFAULT_TITLE_BACKGROUND_COLOR);
         mCollapseIcon = typedArray.getDrawable(R.styleable.ExpandableCardView_collapse_icon);
         mExpandIcon = typedArray.getDrawable(R.styleable.ExpandableCardView_expand_icon);
+        mExpandedTitle = typedArray.getString(R.styleable.ExpandableCardView_expanded_title);
         typedArray.recycle();
 
     }
@@ -138,24 +137,29 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
 
-    public void setDropDownData(HashMap<String,String>  data, int otherLimitMaxValue, int otherLimitMinvalue, Double lastFuelupTransaction){
-        mAdapter = new ChildDropDownAdapter(mContext, data, this, otherLimitMaxValue, otherLimitMinvalue, lastFuelupTransaction);
+    public void setDropDownData(DropDownAdapter adapter){
+        mAdapter = adapter;
+        mAdapter.setListener(this);
 
         ((RecyclerView)findViewById(R.id.recycler_view)).setLayoutManager(new LinearLayoutManager(mContext));
         ((RecyclerView)findViewById(R.id.recycler_view)).setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
+
+        onSelectValue(null, null);
     }
 
     @Override
-    public void onSelectFuelUpLimit(int value) {
-        int selectedValue = value;
+    public void onSelectValue(String header, String subheader) {
+        String selectedValue = header;
+        String selectedSubValue = subheader;
         if(mAdapter != null) {
              selectedValue = mAdapter.getSelectedValue();
+             selectedSubValue = mAdapter.getSelectedSubValue();
         }
-        ((TextView)findViewById(R.id.selected_value)).setText(String.format("$%s", selectedValue));
-        if(mExpandCollapseListener != null) {
-            mExpandCollapseListener.onSelectFuelUpLimit(selectedValue);
-        }
+        ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
+        ((TextView)findViewById(R.id.selected_subheader_value)).setText(selectedSubValue);
+
+        ((TextView)findViewById(R.id.selected_subheader_value)).setVisibility(selectedSubValue == null || selectedSubValue.isEmpty() ? GONE : VISIBLE);
     }
 
     private void setTitle(String title) {

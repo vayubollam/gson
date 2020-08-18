@@ -1,5 +1,5 @@
 package suncor.com.android.uicomponents.dropdown;
 
-public interface ExpandableViewListener extends  ChildViewListener{
+public interface ExpandableViewListener {
         void onExpandCollapseListener(boolean isExpand);
 }

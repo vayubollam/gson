@@ -7,6 +7,13 @@ import androidx.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import suncor.com.android.R;
 
 public class PaymentDetail {
@@ -23,6 +30,10 @@ public class PaymentDetail {
     @SerializedName("lastFour")
     private String cardNumber;
 
+    @Expose
+    @SerializedName("expDate")
+    private String expDate;
+
     @DrawableRes
     private int cardImage;
 
@@ -36,6 +47,19 @@ public class PaymentDetail {
 
     public String getCardNumber() {
         return cardNumber;
+    }
+
+    public String getExpDate() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+        SimpleDateFormat toFormat = new SimpleDateFormat("MM/yyyy", Locale.CANADA);
+
+        try {
+            return toFormat.format(format.parse(expDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
     public int getCardImage() {

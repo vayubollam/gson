@@ -1,5 +1,5 @@
 package suncor.com.android.uicomponents.dropdown;
 
 public interface ChildViewListener {
-        void onSelectFuelUpLimit(int value);
+        void onSelectValue(String header, String subheader);
 }

@@ -1,9 +1,8 @@
-package suncor.com.android.uicomponents.dropdown;
+package suncor.com.android.ui.main.pap.fuelup;
 
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,61 +13,64 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.Objects;
 
+import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
 import suncor.com.android.uicomponents.R;
-import suncor.com.android.uicomponents.databinding.ChildDropDownItemBinding;
-import suncor.com.android.uicomponents.databinding.ManualLimitDropDownItemBinding;
+import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
+import suncor.com.android.uicomponents.dropdown.ChildViewListener;
+import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 
 
-public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
-    private static final String TAG = ChildDropDownAdapter.class.getSimpleName();
+    private static final String TAG = FuelLimitDropDownAdapter.class.getSimpleName();
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
 
-        private  HashMap<String,String> childList;
-        private int selectedPos = 0;
-        private ChildViewListener listener;
-        private final int otherLimitMaxLimit;
-        private final int otherLimitMinLimit;
-        private final Context mContext;
-        private int manualValue = -1;
+    private  HashMap<String,String> childList;
+    private int selectedPos = 0;
+    private ChildViewListener listener;
+    private FuelUpLimitCallbacks callbackListener;
+    private final int otherLimitMaxLimit;
+    private final int otherLimitMinLimit;
+    private final Context mContext;
+    private int manualValue = -1;
 
 
-        ChildDropDownAdapter(final Context context, final HashMap<String,String> data, ChildViewListener listener, final int otherLimitMaxLimit,
+    FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
                              final int otherLimitMinLimit, Double lastFuelUpTransaction) {
-            this.childList = data;
-            this.listener = listener;
-            this.otherLimitMaxLimit = otherLimitMaxLimit;
-            this.otherLimitMinLimit = otherLimitMinLimit;
-            this.mContext = context;
-            findLastFuelUpTransaction(lastFuelUpTransaction);
+        this.childList = data;
+        this.otherLimitMaxLimit = otherLimitMaxLimit;
+        this.otherLimitMinLimit = otherLimitMinLimit;
+        this.mContext = context;
+        this.callbackListener = callbackListener;
+        findLastFuelUpTransaction(lastFuelUpTransaction);
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == MANUAL_DROP_DOWN_LAYOUT){
+            return new ManualLimitViewHolder(ManualLimitDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        } else {
+            return new ChildDropDownViewHolder(FuelUpLimitDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
 
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            if(viewType == MANUAL_DROP_DOWN_LAYOUT){
-                return new ManualLimitViewHolder(ManualLimitDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-            } else {
-                return new ChildDropDownViewHolder(ChildDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-            }
+    }
 
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if(position != childList.size()-1){
+            ((ChildDropDownViewHolder)holder).setDataOnView(childList.get(String.valueOf(position + 1)));
+        } else {
+            ((ManualLimitViewHolder)holder).setDataOnView(childList.get(String.valueOf(position + 1)));
         }
+    }
 
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if(position != childList.size()-1){
-                ((ChildDropDownViewHolder)holder).setDataOnView(childList.get(String.valueOf(position + 1)));
-            } else {
-                ((ManualLimitViewHolder)holder).setDataOnView(childList.get(String.valueOf(position + 1)));
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return childList.size();
-        }
+    @Override
+    public int getItemCount() {
+        return childList.size();
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -76,38 +78,52 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     private void findLastFuelUpTransaction(Double lastFuelupTransaction){
-            if(lastFuelupTransaction != null){
-                childList.forEach((position, value)-> {
-                    if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
-                        selectedPos =  Integer.parseInt(position) -1;
-                        listener.onSelectFuelUpLimit(Integer.parseInt(value));
-                    }
-                });
-                if(selectedPos == 0){
-                    manualValue = lastFuelupTransaction.intValue();
-                    selectedPos = childList.size() -1 ;
-                    listener.onSelectFuelUpLimit(manualValue);
+        if(lastFuelupTransaction != null){
+            childList.forEach((position, value)-> {
+                if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
+                    selectedPos =  Integer.parseInt(position) - 1;
+                    listener.onSelectValue(String.format("$%s", value), null);
+                    callbackListener.onPreAuthChanged(String.format("$%s", value));
                 }
+            });
+            if(selectedPos == 0){
+                manualValue = lastFuelupTransaction.intValue();
+                selectedPos = childList.size() -1 ;
+                listener.onSelectValue(String.format("$%s", manualValue), null);
+                callbackListener.onPreAuthChanged(String.format("$%s", manualValue));
             }
+        } else {
+            callbackListener.onPreAuthChanged(getSelectedValue());
+        }
     }
 
-    protected int getSelectedValue(){
+    @Override
+    public String getSelectedValue(){
             if(selectedPos < childList.size() - 1){
-                return Integer.parseInt(childList.get(String.valueOf(selectedPos + 1)));
+                return String.format("$%s", childList.get(String.valueOf(selectedPos + 1)));
             } else if(manualValue <  otherLimitMinLimit) {
                 manualValue =  otherLimitMinLimit;
             } else if (manualValue > otherLimitMaxLimit)  {
                 manualValue =  otherLimitMaxLimit;
              }
-     	return manualValue;
-	
+     	return String.format("$%s", manualValue);
     }
 
-//fixed limit listing
-     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
-            ChildDropDownItemBinding binding;
+    @Override
+    public String getSelectedSubValue() {
+        return null;
+    }
 
-            ChildDropDownViewHolder(@NonNull ChildDropDownItemBinding binding) {
+    @Override
+    public void setListener(ChildViewListener listener) {
+        this.listener = listener;
+    }
+
+    //fixed limit listing
+     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
+        FuelUpLimitDropDownItemBinding binding;
+
+            ChildDropDownViewHolder(@NonNull FuelUpLimitDropDownItemBinding binding) {
                 super(binding.getRoot());
                 this.binding = binding;
             }
@@ -126,7 +142,8 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
                     notifyItemChanged(selectedPos);
                     manualValue = -1;
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectFuelUpLimit(Integer.parseInt(value));
+                        listener.onSelectValue(String.format("$%s", value), null);
+                        callbackListener.onPreAuthChanged(String.format("$%s", value));
                     }
                 });
 
@@ -183,11 +200,16 @@ public class ChildDropDownAdapter extends RecyclerView.Adapter<RecyclerView.View
                 @Override
                 public void afterTextChanged(Editable editable) {
                     manualValue = editable.length() > 0 ? Integer.parseInt(editable.toString()) : 0;
-                    if(Objects.nonNull(listener) ) {
-                        listener.onSelectFuelUpLimit(manualValue);
+                    if(Objects.nonNull(listener) && selectedPos == childList.size() - 1 ) {
+                        listener.onSelectValue(String.format("$%s", manualValue), null);
+                        callbackListener.onPreAuthChanged(String.format("$%s", manualValue));
                     }
                 }
             });
         }
     }
+}
+
+interface FuelUpLimitCallbacks {
+    void onPreAuthChanged(String value);
 }
