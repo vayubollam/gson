@@ -35,10 +35,9 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     private static final int ADD_DROP_DOWN_LAYOUT = 2;
 
     private List<PaymentListItem> payments;
-    private int selectedPos = 0;
+    private int selectedPos = -1;
     private ChildViewListener listener;
     private final Context mContext;
-    private int manualValue = -1;
 
 
     PaymentDropDownAdapter(final Context context, final List<PaymentListItem> payments) {
@@ -78,12 +77,14 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
     @Override
     public String getSelectedValue(){
+        if (selectedPos == -1) return null;
         PaymentListItem payment = payments.get(selectedPos);
         return payment.getCardInfo();
     }
 
     @Override
     public String getSelectedSubValue() {
+        if (selectedPos == -1) return null;
         PaymentListItem payment = payments.get(selectedPos);
         return payment.getExp();
     }
@@ -115,7 +116,6 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
-                    manualValue = -1;
                     if(Objects.nonNull(listener)) {
                         listener.onSelectValue(value.getCardInfo(), value.getExp());
                     }
