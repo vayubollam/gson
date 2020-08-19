@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -57,7 +59,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding = FragmentFuelUpBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-      //  binding.setIsLoading(isLoading);
+        binding.setIsLoading(isLoading);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> {});
@@ -117,6 +119,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             }
         });
 
+        binding.termsAgreement.setOnClickListener((v) -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)));
+            startActivity(browserIntent);
+
+        });
+        binding.preauthorizeButton.setOnClickListener((v) ->{});
 
     }
 
@@ -142,7 +150,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void onExpandCollapseListener(boolean isExpand) {
         
     }
-
     private void goBack() {
         Navigation.findNavController(getView()).popBackStack(R.id.home_navigation, false);
     }
