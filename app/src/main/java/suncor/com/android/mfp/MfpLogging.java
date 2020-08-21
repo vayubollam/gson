@@ -12,7 +12,8 @@ import suncor.com.android.BuildConfig;
 
 public class MfpLogging {
     public static void logDeviceInfo(Context context) {
-        String[] certificates = {"opsqa_rfmp-mfp_com_p1.der", "opsqa_rfmp-mfp_com_b1.der"};
+
+        enableCertificatePinning();
 
         StringBuilder deviceInfo = new StringBuilder();
         deviceInfo.append(BuildConfig.VERSION_NAME)
@@ -35,6 +36,18 @@ public class MfpLogging {
         String deviceonfoNormalized = Normalizer.normalize((deviceInfo.toString()), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 
         WLClient.getInstance().addGlobalHeader("X-Device-Info", deviceonfoNormalized);
+
+    }
+
+    private static void enableCertificatePinning() {
+        String[] certificates;
+
+        if (BuildConfig.APPLICATION_ID == "com.suncor.android.SuncorApplicationOpsQA") {
+            certificates = new String[]{"opsqa_rfmp-mfp_com_p1.der", "opsqa_rfmp-mfp_com_b1.der"};
+        } else if (BuildConfig.APPLICATION_ID == "com.petrocanada.my_petro_canada") {
+            certificates = new String[]{"P1_mfp_petro-canada_ca.der", "B1_mfp_petro-canada_ca.der"};
+        } else
+            return;
 
         WLClient.getInstance().pinTrustedCertificatePublicKey(certificates);
     }
