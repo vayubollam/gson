@@ -12,6 +12,8 @@ import suncor.com.android.BuildConfig;
 
 public class MfpLogging {
     public static void logDeviceInfo(Context context) {
+        String[] certificates = {"opsqa_rfmp-mfp_com_p1.der", "opsqa_rfmp-mfp_com_b1.der"};
+
         StringBuilder deviceInfo = new StringBuilder();
         deviceInfo.append(BuildConfig.VERSION_NAME)
                 .append(";")
@@ -34,9 +36,7 @@ public class MfpLogging {
 
         WLClient.getInstance().addGlobalHeader("X-Device-Info", deviceonfoNormalized);
 
-        WLClient.getInstance().pinTrustedCertificatePublicKey("opsqa.der");
-
-
+        WLClient.getInstance().pinTrustedCertificatePublicKey(certificates);
     }
 
     private static String flattenToAscii(String string) {
