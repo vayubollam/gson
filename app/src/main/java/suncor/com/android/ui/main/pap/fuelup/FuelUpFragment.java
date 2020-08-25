@@ -80,8 +80,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> {});
+
+        binding.selectPumpLayout.appBar.setVisibility(View.GONE);
+        binding.selectPumpLayout.layout.setVisibility(View.GONE);
+
         binding.pumpLayout.setOnClickListener(v -> {
-            binding.pumpRecyclerView.setVisibility(binding.pumpRecyclerView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
         });
 
         paymentDropDownAdapter = new PaymentDropDownAdapter(
@@ -91,7 +95,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding.paymentExpandable.setDropDownData(paymentDropDownAdapter);
 
         adapter = new SelectPumpAdapter(this);
-        binding.pumpRecyclerView.setAdapter(adapter);
+        binding.selectPumpLayout.pumpRecyclerView.setAdapter(adapter);
 
         return binding.getRoot();
     }
@@ -210,7 +214,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
            );
 
            if (preAuth != null) {
-               adapter.setSelectedPosfromValue(preAuth.replace("$", ""));
+               adapter.setSelectedPosfromValue(preAuth.replace("$", "").replace(",", "."));
            }
 
            adapter.findLastFuelUpTransaction(lastTransactionFuelUpLimit);

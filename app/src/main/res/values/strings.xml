@@ -626,7 +626,7 @@
     <string name="select_pump_header">Fuel up</string>
     <string name="pap_not_available_header">In-app payment unavailable</string>
     <string name="pap_not_available_description">You can\’t use your app to pay at this station.</string>
-    <string name="select_pump_select">Select your pump number</string>
+    <string name="select_pump_select">Select your pump</string>
     <string name="select_pump_selected">Selected</string>
     <string name="select_pump_help_header">Pump number</string>
     <string name="select_pump_help_subheader">Your pump number is on the top or the side of the pump.</string>

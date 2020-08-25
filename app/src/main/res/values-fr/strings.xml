@@ -610,7 +610,7 @@
     <string name="select_pump_header">Ravitaillement</string>
     <string name="pap_not_available_header">Paiement dans l\'application non disponible</string>
     <string name="pap_not_available_description">Vous ne pouvez pas utiliser votre application pour payer à cette station-service.</string>
-    <string name="select_pump_select">Sélectionnez le numéro de votre distributeur</string>
+    <string name="select_pump_select">Sélectionnez votre distributeur</string>
     <string name="select_pump_selected">Sélectionné</string>
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
