@@ -85,14 +85,18 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
             childList.forEach((position, value)-> {
                 if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
                     selectedPos =  Integer.parseInt(position) - 1;
-                    listener.onSelectValue(String.format("$%s", value), null);
+                    if(listener != null) {
+                        listener.onSelectValue(String.format("$%s", value), null);
+                    }
                     callbackListener.onPreAuthChanged(String.format("$%s", value));
                 }
             });
             if(selectedPos == 0){
                 manualValue = lastFuelupTransaction.intValue();
                 selectedPos = childList.size() -1 ;
-                listener.onSelectValue(String.format("$%s", manualValue), null);
+                if(listener != null) {
+                    listener.onSelectValue(String.format("$%s", manualValue), null);
+                }
                 callbackListener.onPreAuthChanged(String.format("$%s", manualValue));
             }
         } else {

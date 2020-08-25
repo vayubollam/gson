@@ -227,7 +227,9 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
     public void collapse(final View v) {
-        final int initialHeight = v.getMeasuredHeight();
+
+        v.setVisibility(View.GONE);
+       /* final int initialHeight = v.getMeasuredHeight();
 
         Animation a = new Animation() {
             @Override
@@ -249,7 +251,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         // 1dp/ms
         //a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         a.setDuration(500);
-        v.startAnimation(a);
+        v.startAnimation(a);*/
     }
 
     public void slideUp(final View view) {
