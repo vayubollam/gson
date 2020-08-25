@@ -645,4 +645,6 @@
     <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to the our <b>Legal and Privacy policies.</b> </string>
     <string name="confirm_and_authorized">CONFIRM AND AUTHORIZE</string>
     <string name="privacy_policy_url">https://www.petro-canada.ca/en/legal-privacy</string>
+
+    <string name="add_new_payment">Add new</string>
 </resources>

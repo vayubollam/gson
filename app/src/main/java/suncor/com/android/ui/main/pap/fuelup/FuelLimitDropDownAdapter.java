@@ -52,6 +52,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         this.otherLimitMinLimit = otherLimitMinLimit;
         this.mContext = context;
         this.callbackListener = callbackListener;
+
+        formatter.setMinimumFractionDigits(0);
     }
 
     @NonNull
@@ -175,6 +177,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     if(Objects.nonNull(listener)) {
                         listener.onSelectValue(formatter.format(value), null);
                         callbackListener.onPreAuthChanged(formatter.format(value));
+
+                        listener.expandCollapse();
                     }
                 });
 

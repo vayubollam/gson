@@ -22,6 +22,7 @@ import java.util.Objects;
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.AddPaymentDropDownItemBinding;
+import suncor.com.android.databinding.GooglePayDropDownItemBinding;
 import suncor.com.android.databinding.PaymentDropDownItemBinding;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
@@ -34,6 +35,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int ADD_DROP_DOWN_LAYOUT = 2;
+    private static final int GOOGLE_PAY_LAYOUT = 3;
 
     private ArrayList<PaymentListItem> payments = new ArrayList<>();
     private int selectedPos = -1;
@@ -50,6 +52,8 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == ADD_DROP_DOWN_LAYOUT){
             return new AddPaymentViewHolder(AddPaymentDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        } else if(viewType == GOOGLE_PAY_LAYOUT){
+            return new GooglePayViewHolder(GooglePayDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else {
             return new ChildDropDownViewHolder(PaymentDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
@@ -60,6 +64,8 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(position < payments.size()){
             ((ChildDropDownViewHolder)holder).setDataOnView(payments.get(position));
+        } else if(position == payments.size()){
+            ((GooglePayViewHolder)holder).setDataOnView();
         } else {
             ((AddPaymentViewHolder)holder).setDataOnView();
         }
@@ -67,12 +73,12 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
     @Override
     public int getItemCount() {
-        return payments.size() + 1;
+        return payments.size() + 2;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position < payments.size() ? DROP_DOWN_LAYOUT : ADD_DROP_DOWN_LAYOUT;
+        return position < payments.size()  ? DROP_DOWN_LAYOUT : position  == payments.size() ? GOOGLE_PAY_LAYOUT : ADD_DROP_DOWN_LAYOUT;
     }
 
     @Override
@@ -154,10 +160,38 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
+
+                    if(Objects.nonNull(listener)) {
+                        listener.expandCollapse();
+                    }
                 });
 
             }
         }
+
+	//Manual limit
+     class GooglePayViewHolder extends RecyclerView.ViewHolder {
+        GooglePayDropDownItemBinding binding;
+
+        GooglePayViewHolder(@NonNull GooglePayDropDownItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        public void setDataOnView(){
+            binding.container.setSelected(selectedPos == getAdapterPosition());
+
+            binding.container.setOnClickListener(v -> {
+                notifyItemChanged(selectedPos);
+                selectedPos = getAdapterPosition();
+                notifyItemChanged(selectedPos);
+
+                if(Objects.nonNull(listener)) {
+                    listener.expandCollapse();
+                }
+            });
+        }
+    }
 
 	//Manual limit
      class AddPaymentViewHolder extends RecyclerView.ViewHolder {

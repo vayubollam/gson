@@ -214,7 +214,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
            );
 
            if (preAuth != null) {
-               adapter.setSelectedPosfromValue(preAuth.replace("$", "").replace(",", "."));
+               adapter.setSelectedPosfromValue(preAuth.replace("$", "").replace(",", ".").replaceAll("\\s",""));
            }
 
            adapter.findLastFuelUpTransaction(lastTransactionFuelUpLimit);
@@ -228,6 +228,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void selectPumpNumber(String pumpNumber) {
         this.pumpNumber = pumpNumber;
         binding.pumpNumberText.setText(pumpNumber);
+
+        new Handler().postDelayed(() -> binding.pumpLayout.callOnClick(), 400);
     }
 
     @Override

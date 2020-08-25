@@ -629,4 +629,6 @@
     <string name="payment_term_aggrement">En appuyant sur <b>« Confirmer et autoriser » </b>, vous acceptez nos politiques juridiques et de confidentialité. </string>
     <string name="confirm_and_authorized">Confirmer et autoriser</string>
     <string name="privacy_policy_url">https://www.petro-canada.ca/fr/avis-juridiques</string>
+
+    <string name="add_new_payment">Ajouter nouveau</string>
 </resources>
