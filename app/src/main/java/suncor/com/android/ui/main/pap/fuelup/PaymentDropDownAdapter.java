@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,14 +35,13 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int ADD_DROP_DOWN_LAYOUT = 2;
 
-    private List<PaymentListItem> payments;
+    private ArrayList<PaymentListItem> payments = new ArrayList<>();
     private int selectedPos = -1;
     private ChildViewListener listener;
     private final Context mContext;
 
 
-    PaymentDropDownAdapter(final Context context, final List<PaymentListItem> payments) {
-        this.payments = payments;
+    PaymentDropDownAdapter(final Context context) {
         this.mContext = context;
     }
 
@@ -89,6 +89,38 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
         return payment.getExp();
     }
 
+    public void addPayment(PaymentListItem paymentListItem, boolean setSelected) {
+        payments.add(paymentListItem);
+
+        if (setSelected) {
+            setSelectedPos(paymentListItem.getPaymentDetail().getId());
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void addPayments(List<PaymentListItem> paymentListItem) {
+        payments.addAll(paymentListItem);
+        notifyDataSetChanged();
+    }
+
+    public void setSelectedPos(String userPaymentSourceId) {
+        int i = 0;
+        boolean found = false;
+        for (PaymentListItem payment : payments) {
+            if (payment.getPaymentDetail().getId().equals(userPaymentSourceId)) {
+                found = true;
+                break;
+            }
+            i++;
+        }
+
+        if (found) {
+            selectedPos = i;
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void setListener(ChildViewListener listener) {
         this.listener = listener;
@@ -112,13 +144,16 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                 }
                 binding.container.setSelected(selectedPos == getAdapterPosition());
 
+                if (selectedPos == getAdapterPosition()) {
+                    if(Objects.nonNull(listener)) {
+                        listener.onSelectValue(value.getCardInfo(), value.getExp());
+                    }
+                }
+
                 binding.container.setOnClickListener(v -> {
                     notifyItemChanged(selectedPos);
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
-                    if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(value.getCardInfo(), value.getExp());
-                    }
                 });
 
             }

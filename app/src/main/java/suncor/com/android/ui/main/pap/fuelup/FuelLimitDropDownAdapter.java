@@ -42,13 +42,12 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
 
     FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
-                             final int otherLimitMinLimit, Double lastFuelUpTransaction) {
+                             final int otherLimitMinLimit) {
         this.childList = data;
         this.otherLimitMaxLimit = otherLimitMaxLimit;
         this.otherLimitMinLimit = otherLimitMinLimit;
         this.mContext = context;
         this.callbackListener = callbackListener;
-        findLastFuelUpTransaction(lastFuelUpTransaction);
     }
 
     @NonNull
@@ -81,7 +80,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         return position != childList.size()-1 ? DROP_DOWN_LAYOUT : MANUAL_DROP_DOWN_LAYOUT;
     }
 
-    private void findLastFuelUpTransaction(Double lastFuelupTransaction){
+    public void findLastFuelUpTransaction(Double lastFuelupTransaction){
         if(lastFuelupTransaction != null){
             childList.forEach((position, value)-> {
                 if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
@@ -121,6 +120,25 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     @Override
     public void setListener(ChildViewListener listener) {
         this.listener = listener;
+    }
+
+    public void setSelectedPosfromValue(String value) {
+        int index = 0;
+
+        for (String price : childList.values()) {
+            if (price.equals(value)) {
+                selectedPos = index;
+                break;
+            }
+            index++;
+        }
+
+        if (index >= childList.size() - 1) {
+            selectedPos = childList.size() - 1;
+            manualValue = Double.parseDouble(value);
+        }
+
+        notifyDataSetChanged();
     }
 
     //fixed limit listing

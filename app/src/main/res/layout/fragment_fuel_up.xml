@@ -77,6 +77,17 @@
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pump_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                tools:listitem="@layout/select_pump_card_item"
+                android:scrollbars="horizontal"
+                android:scrollbarThumbHorizontal="@color/red"
+                android:visibility="gone"/>
+
             <suncor.com.android.uicomponents.dropdown.ExpandableCardView
                 android:id="@+id/fuel_up_limit"
                 android:layout_width="wrap_content"
@@ -214,6 +225,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:gravity="center"
+                android:textAllCaps="true"
                 android:text="@string/confirm_and_authorized" />
 
 

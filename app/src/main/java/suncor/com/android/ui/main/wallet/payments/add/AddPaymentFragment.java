@@ -1,7 +1,7 @@
 package suncor.com.android.ui.main.wallet.payments.add;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -18,16 +18,18 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import javax.inject.Inject;
 
-import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddPaymentBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentArgs;
-import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class AddPaymentFragment extends MainActivityFragment {
@@ -97,6 +99,35 @@ public class AddPaymentFragment extends MainActivityFragment {
 
                 if (url.toLowerCase().contains(viewModel.redirectUrl.toLowerCase())) {
                     isAdding.set(true);
+                    Uri uri = Uri.parse(url);
+
+                    String isSingleUse = uri.getQueryParameter("isSingleUse");
+                    String userPaymentSourceId = uri.getQueryParameter("userPaymentSourceId");
+
+                    if (isSingleUse != null && isSingleUse.equals("Y")) {
+                        String cardName = uri.getQueryParameter("cardName");
+                        String lastFour = uri.getQueryParameter("lastFour");
+                        String exp = uri.getQueryParameter("expMonth") + "/" + uri.getQueryParameter("expYear");
+
+                        PaymentDetail paymentDetail = new PaymentDetail();
+                        paymentDetail.setId(userPaymentSourceId);
+                        paymentDetail.setCardNumber(lastFour);
+                        paymentDetail.setPaymentType(PaymentDetail.PaymentType.valueOf(cardName));
+
+                        SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.CANADA);
+                        SimpleDateFormat toFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+
+                        try {
+                            paymentDetail.setExpDate(toFormat.format(format.parse(exp)));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("tempPayment", paymentDetail);
+                    } else {
+                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("selectedPayment", userPaymentSourceId);
+                    }
+
                     new Handler().postDelayed(() -> {
                         goBack();
                     }, 200);

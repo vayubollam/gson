@@ -20,7 +20,7 @@ public class SelectPumpViewModel extends ViewModel {
     }
 
 
-    LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
+    public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
         return repository.getStoreDetails(storeId);
     }
 
