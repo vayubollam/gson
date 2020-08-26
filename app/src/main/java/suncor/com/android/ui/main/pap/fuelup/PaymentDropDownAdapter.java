@@ -40,11 +40,13 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     private ArrayList<PaymentListItem> payments = new ArrayList<>();
     private int selectedPos = -1;
     private ChildViewListener listener;
+    private PaymentDropDownCallbacks callbacks;
     private final Context mContext;
 
 
-    PaymentDropDownAdapter(final Context context) {
+    PaymentDropDownAdapter(final Context context, PaymentDropDownCallbacks callbacks) {
         this.mContext = context;
+        this.callbacks = callbacks;
     }
 
     @NonNull
@@ -123,6 +125,11 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
         if (found) {
             selectedPos = i;
+
+            if(Objects.nonNull(listener)) {
+                listener.onSelectValue(getSelectedValue(), getSelectedSubValue());
+            }
+
             notifyDataSetChanged();
         }
     }
@@ -165,6 +172,8 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                         listener.onSelectValue(value.getCardInfo(), value.getExp());
                         listener.expandCollapse();
                     }
+
+                    callbacks.onPaymentChanged(value.getPaymentDetail().getId());
                 });
 
             }
@@ -212,3 +221,8 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
         }
     }
 }
+
+interface PaymentDropDownCallbacks {
+    void onPaymentChanged(String userPaymentId);
+}
+

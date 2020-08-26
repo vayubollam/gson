@@ -42,7 +42,8 @@ import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 
-public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener, FuelUpLimitCallbacks, SelectPumpListener {
+public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
+        FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
 
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
@@ -57,6 +58,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String pumpNumber;
     private String storeId;
     private String preAuth;
+    private String userPaymentId;
 
 
     @Inject
@@ -89,7 +91,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         });
 
         paymentDropDownAdapter = new PaymentDropDownAdapter(
-                getContext()
+                getContext(),
+                this
         );
 
         binding.paymentExpandable.setDropDownData(paymentDropDownAdapter);
@@ -169,6 +172,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 List<PaymentListItem> payments = result.data;
                 paymentDropDownAdapter.addPayments(payments);
+
+                if (userPaymentId == null)
+                    this.userPaymentId = payments.get(0).getPaymentDetail().getId();
+                
+                paymentDropDownAdapter.setSelectedPos(userPaymentId);
+
             }
         });
 
@@ -196,6 +205,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 .getLiveData("selectedPayment");
 
         selectedPaymentLiveData.observe(getActivity(), userPaymentSourceId -> {
+            this.userPaymentId = userPaymentSourceId;
+
             // Do something with the result.
             paymentDropDownAdapter.setSelectedPos(userPaymentSourceId);
         });
@@ -244,5 +255,10 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void onPreAuthChanged(String value) {
         this.preAuth = value;
         binding.totalAmount.setText(value);
+    }
+
+    @Override
+    public void onPaymentChanged(String userPaymentId) {
+        this.userPaymentId = userPaymentId;
     }
 }
