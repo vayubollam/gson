@@ -1,6 +1,5 @@
 package suncor.com.android.ui.main.pap.selectpump;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -118,6 +117,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     public void selectPumpNumber(String pumpNumber) {
         new Handler().postDelayed(() -> {
             HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
         }, 200);
     }
@@ -128,7 +128,8 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack(R.id.home_navigation, false);
+       Navigation.findNavController(getView()).popBackStack();
     }
+
 
 }

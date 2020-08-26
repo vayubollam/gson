@@ -237,7 +237,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         
     }
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack(R.id.home_navigation, false);
+        Navigation.findNavController(getView()).popBackStack();
     }
 
     @Override

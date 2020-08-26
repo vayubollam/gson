@@ -162,6 +162,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
 
                     if(Objects.nonNull(listener)) {
+                        listener.onSelectValue(value.getCardInfo(), value.getExp());
                         listener.expandCollapse();
                     }
                 });
