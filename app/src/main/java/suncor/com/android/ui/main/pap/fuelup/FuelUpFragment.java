@@ -175,7 +175,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
                 if (userPaymentId == null)
                     this.userPaymentId = payments.get(0).getPaymentDetail().getId();
-                
+
                 paymentDropDownAdapter.setSelectedPos(userPaymentId);
 
             }
