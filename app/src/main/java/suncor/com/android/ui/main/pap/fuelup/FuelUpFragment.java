@@ -173,7 +173,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 List<PaymentListItem> payments = result.data;
                 paymentDropDownAdapter.addPayments(payments);
 
-                if (userPaymentId == null)
+                if (userPaymentId == null && payments.size() > 0)
                     this.userPaymentId = payments.get(0).getPaymentDetail().getId();
 
                 paymentDropDownAdapter.setSelectedPos(userPaymentId);
