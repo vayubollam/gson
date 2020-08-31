@@ -158,8 +158,8 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
                     String responseMessage = resource.message;
                     String unverifiedConnectionCode = "";
-                    if (responseMessage.contains("SSLPeerUnverifiedException")) {
-                        unverifiedConnectionCode = "\nS78945";
+                    if ((responseMessage.contains("SSLPeerUnverifiedException")) || (responseMessage.contains("SSLHandshakeException")) ||  (responseMessage.contains("java.security.cert"))) {
+                        unverifiedConnectionCode = "\nS000";
                     }
 
                     binding.profilePd.setVisibility(View.GONE);
