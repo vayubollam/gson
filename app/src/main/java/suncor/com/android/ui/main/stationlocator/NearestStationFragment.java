@@ -167,7 +167,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
                 if (result.data.getDistanceDuration().getDistance() < 70) {
                     HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(result.data.getStation().getId());
-                    //Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
                 } else {
                     isLoading.set(false);

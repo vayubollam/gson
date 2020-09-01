@@ -5,12 +5,18 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
@@ -23,6 +29,8 @@ import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = FuelLimitDropDownAdapter.class.getSimpleName();
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
@@ -34,17 +42,18 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     private final int otherLimitMaxLimit;
     private final int otherLimitMinLimit;
     private final Context mContext;
-    private int manualValue = -1;
+    private double manualValue = -1;
 
 
     FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
-                             final int otherLimitMinLimit, Double lastFuelUpTransaction) {
+                             final int otherLimitMinLimit) {
         this.childList = data;
         this.otherLimitMaxLimit = otherLimitMaxLimit;
         this.otherLimitMinLimit = otherLimitMinLimit;
         this.mContext = context;
         this.callbackListener = callbackListener;
-        findLastFuelUpTransaction(lastFuelUpTransaction);
+
+        formatter.setMinimumFractionDigits(0);
     }
 
     @NonNull
@@ -77,20 +86,24 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         return position != childList.size()-1 ? DROP_DOWN_LAYOUT : MANUAL_DROP_DOWN_LAYOUT;
     }
 
-    private void findLastFuelUpTransaction(Double lastFuelupTransaction){
+    public void findLastFuelUpTransaction(Double lastFuelupTransaction){
         if(lastFuelupTransaction != null){
             childList.forEach((position, value)-> {
                 if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
                     selectedPos =  Integer.parseInt(position) - 1;
-                    listener.onSelectValue(String.format("$%s", value), null);
-                    callbackListener.onPreAuthChanged(String.format("$%s", value));
+                    if(listener != null) {
+                        listener.onSelectValue(formatter.format(value), null);
+                    }
+                    callbackListener.onPreAuthChanged(formatter.format(value));
                 }
             });
             if(selectedPos == 0){
                 manualValue = lastFuelupTransaction.intValue();
                 selectedPos = childList.size() -1 ;
-                listener.onSelectValue(String.format("$%s", manualValue), null);
-                callbackListener.onPreAuthChanged(String.format("$%s", manualValue));
+                if(listener != null) {
+                    listener.onSelectValue(formatter.format(manualValue), null);
+                }
+                callbackListener.onPreAuthChanged(formatter.format(manualValue));
             }
         } else {
             callbackListener.onPreAuthChanged(getSelectedValue());
@@ -100,13 +113,13 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     @Override
     public String getSelectedValue(){
             if(selectedPos < childList.size() - 1){
-                return String.format("$%s", childList.get(String.valueOf(selectedPos + 1)));
+                return formatter.format(Double.parseDouble(childList.get(String.valueOf(selectedPos + 1))));
             } else if(manualValue <  otherLimitMinLimit) {
                 manualValue =  otherLimitMinLimit;
             } else if (manualValue > otherLimitMaxLimit)  {
                 manualValue =  otherLimitMaxLimit;
              }
-     	return String.format("$%s", manualValue);
+     	return formatter.format(manualValue);
     }
 
     @Override
@@ -119,6 +132,25 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         this.listener = listener;
     }
 
+    public void setSelectedPosfromValue(String value) {
+        int index = 0;
+
+        for (String price : childList.values()) {
+            if (price.equals(value)) {
+                selectedPos = index;
+                break;
+            }
+            index++;
+        }
+
+        if (index >= childList.size() - 1) {
+            selectedPos = childList.size() - 1;
+            manualValue = Double.parseDouble(value);
+        }
+
+        notifyDataSetChanged();
+    }
+
     //fixed limit listing
      class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         FuelUpLimitDropDownItemBinding binding;
@@ -128,9 +160,10 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 this.binding = binding;
             }
 
-            public void setDataOnView(String value){
+            public void setDataOnView(String price){
+                double value = Double.parseDouble(price);
                 try {
-                    binding.title.setText(String.format("$%s", value));
+                    binding.title.setText(formatter.format(value));
                 }catch (NullPointerException ex){
                     Log.e(TAG,  "Error on inflating data , " + ex.getMessage());
                 }
@@ -142,8 +175,10 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     manualValue = -1;
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(String.format("$%s", value), null);
-                        callbackListener.onPreAuthChanged(String.format("$%s", value));
+                        listener.onSelectValue(formatter.format(value), null);
+                        callbackListener.onPreAuthChanged(formatter.format(value));
+
+                        listener.expandCollapse();
                     }
                 });
 
@@ -157,23 +192,25 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         ManualLimitViewHolder(@NonNull ManualLimitDropDownItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            binding.inputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(otherLimitMaxLimit).length())});
+            binding.inputField.setFilters(new InputFilter[]{new InputFilter.LengthFilter( 3 + String.valueOf(otherLimitMaxLimit).length())});
         }
 
         public void setDataOnView(String value){
             binding.container.setSelected(selectedPos == getAdapterPosition());
-            binding.manualLimit.setText(String.format(mContext.getString(R.string.fuel_manual_price_limit), String.format("$%s", otherLimitMinLimit), String.format("$%s", otherLimitMaxLimit)));
+            binding.manualLimit.setText(String.format(mContext.getString(R.string.fuel_manual_price_limit), formatter.format(otherLimitMinLimit), formatter.format(otherLimitMaxLimit)));
             binding.inputField.setVisibility((selectedPos == getAdapterPosition()) ? View.VISIBLE : View.GONE);
             binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ?  View.VISIBLE : View.GONE);
             binding.prefixCurrency.setText((selectedPos == getAdapterPosition()) ? mContext.getString(R.string.currency_dollar) : value);
-            binding.inputField.setText(manualValue > 0 ? String.valueOf(manualValue) : "");
+            binding.inputField.setText(manualValue > 0 ? Double.valueOf(manualValue).toString() : "");
             binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
+            binding.inputField.setEnabled(!(manualValue > 0));
 
             binding.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.setVisibility(View.GONE);
                 binding.manualLimit.setVisibility(View.VISIBLE);
+                binding.inputField.setEnabled(true);
                 binding.inputField.requestFocus();
                 binding.inputField.setSelection(binding.inputField.getText().length());
             }
@@ -199,12 +236,29 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    manualValue = editable.length() > 0 ? Integer.parseInt(editable.toString()) : 0;
-                    if(Objects.nonNull(listener) && selectedPos == childList.size() - 1 ) {
-                        listener.onSelectValue(String.format("$%s", manualValue), null);
-                        callbackListener.onPreAuthChanged(String.format("$%s", manualValue));
+                    try {
+                        manualValue = editable.toString().trim().length() > 0 ? Double.valueOf(editable.toString()) : 0;
+                        if (Objects.nonNull(listener) && selectedPos == childList.size() - 1 && manualValue >= 0) {
+                            listener.onSelectValue(formatter.format(manualValue), null);
+                            callbackListener.onPreAuthChanged(formatter.format(manualValue));
+                        }
+                    } catch (NumberFormatException ex){
+                        Log.e(TAG, "enter invalid number");
                     }
                 }
+            });
+
+            binding.inputField.setOnKeyListener((view,  keyCode, event) -> {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                        if(manualValue > 0) {
+                            binding.inputField.setText(String.valueOf(manualValue));
+                            binding.edit.setVisibility(manualValue > 0 ? View.VISIBLE : View.GONE);
+                            binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ? View.VISIBLE : View.GONE);
+                            binding.inputField.setEnabled(!(manualValue > 0));
+                        }
+                        return true;
+                    }
+                    return false;
             });
         }
     }

@@ -91,25 +91,32 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.header_layout || view.getId() == R.id.image_button_expand) {
-            imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
-            textViewTitle.setText(isExpand ? mTitle.toUpperCase() : mExpandedTitle == null || mExpandedTitle.isEmpty() ? mTitle : mExpandedTitle);
-            textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
+            expandCollapse();
+        }
+    }
+
+    @Override
+    public void expandCollapse() {
+        imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
+        textViewTitle.setText(isExpand ? mTitle.toUpperCase() : mExpandedTitle == null || mExpandedTitle.isEmpty() ? mTitle : mExpandedTitle);
+        textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
+
+        if (mExpandCollapseListener != null)
             mExpandCollapseListener.onExpandCollapseListener(!isExpand);
 
-            findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
-            findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : GONE);
+        findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
+        findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : GONE);
 
-            if(isExpand){
-                collapse(findViewById(R.id.recycler_view));
-            } else {
-                expand(findViewById(R.id.recycler_view));
-            }
-
-            if(mAdapter != null) {
-                mAdapter.notifyDataSetChanged();
-            }
-            isExpand = !isExpand;
+        if(isExpand){
+            collapse(findViewById(R.id.recycler_view));
+        } else {
+            expand(findViewById(R.id.recycler_view));
         }
+
+        if(mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+        isExpand = !isExpand;
     }
 
     /**
@@ -227,7 +234,9 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
     public void collapse(final View v) {
-        final int initialHeight = v.getMeasuredHeight();
+
+        v.setVisibility(View.GONE);
+       /* final int initialHeight = v.getMeasuredHeight();
 
         Animation a = new Animation() {
             @Override
@@ -249,7 +258,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         // 1dp/ms
         //a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
         a.setDuration(500);
-        v.startAnimation(a);
+        v.startAnimation(a);*/
     }
 
     public void slideUp(final View view) {

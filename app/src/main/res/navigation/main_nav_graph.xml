@@ -617,6 +617,9 @@
         app:exitAnim="@anim/dummy"
         app:popExitAnim="@anim/slide_out_right" >
         <argument
+            android:name="storeId"
+            app:argType="string"/>
+        <argument
             android:name="pumpNumber"
             app:argType="string"/>
     </action>
@@ -630,6 +633,11 @@
             android:defaultValue="null"
             app:argType="string"
             app:nullable="true"/>
+        <argument
+            android:name="storeId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="false"/>
 
         <action
             android:id="@+id/action_fuel_up_to_addPaymentFragment"

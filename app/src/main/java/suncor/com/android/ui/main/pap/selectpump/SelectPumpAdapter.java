@@ -24,11 +24,10 @@ import suncor.com.android.utilities.Consumer;
 public class SelectPumpAdapter extends RecyclerView.Adapter<SelectPumpAdapter.CardsDetailHolder> {
     private ArrayList<String> pumpNumbers = new ArrayList<>();
     private int selectedPos = RecyclerView.NO_POSITION;
-    private Consumer<String> callBack;
-    private final Context context;
+    private final SelectPumpListener listener;
 
-    SelectPumpAdapter(final  Context context) {
-        this.context = context;
+    public SelectPumpAdapter(SelectPumpListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -49,10 +48,7 @@ public class SelectPumpAdapter extends RecyclerView.Adapter<SelectPumpAdapter.Ca
             selectedPos = position;
             notifyItemChanged(selectedPos);
 
-            new Handler().postDelayed(() -> {
-                HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(pumpNumbers.get(position));
-                Navigation.findNavController((Activity) context, R.id.nav_host_fragment).navigate(action);
-            }, 200);
+            listener.selectPumpNumber(pumpNumbers.get(position));
         });
     }
 
@@ -61,8 +57,14 @@ public class SelectPumpAdapter extends RecyclerView.Adapter<SelectPumpAdapter.Ca
         return pumpNumbers.size();
     }
 
-    void setPumpNumbers(ArrayList<String> pumpNumbers) {
+    public void setPumpNumbers(ArrayList<String> pumpNumbers) {
         this.pumpNumbers = pumpNumbers;
+        notifyDataSetChanged();
+    }
+
+    public void setSelectedPos(int selectedPos) {
+        this.selectedPos = selectedPos;
+        notifyDataSetChanged();
     }
 
     static class CardsDetailHolder extends RecyclerView.ViewHolder {

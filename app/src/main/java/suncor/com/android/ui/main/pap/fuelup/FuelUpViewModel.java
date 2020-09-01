@@ -43,7 +43,7 @@ public class FuelUpViewModel extends ViewModel {
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
-        return Transformations.map(paymentsRepository.getPayments(false), result -> {
+        return Transformations.map(paymentsRepository.getPayments(true), result -> {
             ArrayList<PaymentListItem> payments = new ArrayList<>();
 
             if (result.data != null) {

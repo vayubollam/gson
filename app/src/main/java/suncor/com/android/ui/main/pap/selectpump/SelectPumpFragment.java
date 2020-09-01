@@ -1,7 +1,7 @@
 package suncor.com.android.ui.main.pap.selectpump;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSelectPumpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -26,14 +26,16 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 
-public class SelectPumpFragment extends MainActivityFragment {
+public class SelectPumpFragment extends MainActivityFragment implements SelectPumpListener {
 
     private FragmentSelectPumpBinding binding;
     private SelectPumpViewModel viewModel;
     private SelectPumpAdapter adapter;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
+    private String storeId;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -53,9 +55,10 @@ public class SelectPumpFragment extends MainActivityFragment {
         binding.setIsLoading(isLoading);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        adapter = new SelectPumpAdapter(getActivity());
-        binding.pumpRecyclerView.setAdapter(adapter);
         binding.helpButton.setOnClickListener(v -> showHelp());
+
+        adapter = new SelectPumpAdapter(this);
+        binding.pumpRecyclerView.setAdapter(adapter);
 
         return binding.getRoot();
     }
@@ -65,7 +68,7 @@ public class SelectPumpFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
 
         isLoading.set(true);
-        String storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
+        storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
 
         viewModel.isPAPAvailable(storeId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -99,7 +102,6 @@ public class SelectPumpFragment extends MainActivityFragment {
                             }
 
                             adapter.setPumpNumbers(pumpNumbers);
-                            adapter.notifyDataSetChanged();
 
                             isLoading.set(false);
                         }
@@ -111,6 +113,14 @@ public class SelectPumpFragment extends MainActivityFragment {
     }
 
 
+    @Override
+    public void selectPumpNumber(String pumpNumber) {
+        new Handler().postDelayed(() -> {
+            HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+        }, 200);
+    }
 
     private void showHelp() {
         DialogFragment fragment = new SelectPumpHelpDialogFragment();
@@ -118,7 +128,8 @@ public class SelectPumpFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack(R.id.home_navigation, false);
+       Navigation.findNavController(getView()).popBackStack();
     }
+
 
 }

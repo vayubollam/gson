@@ -1,12 +1,15 @@
 package suncor.com.android.model.payments;
 
 
+import android.os.Parcelable;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +19,7 @@ import java.util.Locale;
 
 import suncor.com.android.R;
 
-public class PaymentDetail {
+public class PaymentDetail implements Serializable {
 
     @Expose
     @SerializedName("userPaymentSourceId")
@@ -41,12 +44,24 @@ public class PaymentDetail {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public PaymentType getPaymentType() {
         return paymentType;
     }
 
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
+
     public String getCardNumber() {
         return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public String getExpDate() {
@@ -60,6 +75,10 @@ public class PaymentDetail {
         }
 
         return "";
+    }
+
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
     }
 
     public int getCardImage() {

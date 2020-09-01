@@ -77,6 +77,10 @@
 
             </androidx.cardview.widget.CardView>
 
+            <include
+                android:id="@+id/select_pump_layout"
+                layout="@layout/fragment_select_pump"/>
+
             <suncor.com.android.uicomponents.dropdown.ExpandableCardView
                 android:id="@+id/fuel_up_limit"
                 android:layout_width="wrap_content"
@@ -214,6 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:gravity="center"
+                android:textAllCaps="true"
                 android:text="@string/confirm_and_authorized" />
 
 

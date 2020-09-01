@@ -627,7 +627,7 @@
     <string name="select_pump_header">Fuel up</string>
     <string name="pap_not_available_header">In-app payment unavailable</string>
     <string name="pap_not_available_description">You can\’t use your app to pay at this station.</string>
-    <string name="select_pump_select">Select your pump number</string>
+    <string name="select_pump_select">Select your pump</string>
     <string name="select_pump_selected">Selected</string>
     <string name="select_pump_help_header">Pump number</string>
     <string name="select_pump_help_subheader">Your pump number is on the top or the side of the pump.</string>
@@ -643,7 +643,9 @@
     <string name="payment">PAYMENT</string>
     <string name="pre_authorized">Pre-authorize</string>
     <string name="tax_inclusion">Tax incl.</string>
-    <string name="payment_term_aggrement">By pressing \'Confirm and Authorize\', you agree to the <b>Terms and Conditions.</b> </string>
-    <string name="confirm_and_authorized">CONFIRM AND AUTHORIZED</string>
+    <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>
+    <string name="confirm_and_authorized">CONFIRM AND AUTHORIZE</string>
+    <string name="privacy_policy_url">https://www.petro-canada.ca/en/legal-privacy</string>
 
+    <string name="add_new_payment">Add new</string>
 </resources>

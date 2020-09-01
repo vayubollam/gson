@@ -133,8 +133,6 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 activeSession = result.data.getActiveSession();
 
-                binding.actionLocation.setVisibility(activeSession ? View.GONE: View.VISIBLE);
-
                 binding.actionFuelUpButton.setText(activeSession ? R.string.action_fuelling : R.string.action_fuel_up);
                 binding.actionFuelUpButton.setLoading(activeSession);
             } else {

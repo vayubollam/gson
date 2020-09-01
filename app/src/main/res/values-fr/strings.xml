@@ -611,7 +611,7 @@
     <string name="select_pump_header">Ravitaillement</string>
     <string name="pap_not_available_header">Paiement dans l\'application non disponible</string>
     <string name="pap_not_available_description">Vous ne pouvez pas utiliser votre application pour payer à cette station-service.</string>
-    <string name="select_pump_select">Sélectionnez le numéro de votre distributeur</string>
+    <string name="select_pump_select">Sélectionnez votre distributeur</string>
     <string name="select_pump_selected">Sélectionné</string>
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
@@ -627,6 +627,9 @@
     <string name="payment">PAIEMENT</string>
     <string name="pre_authorized">Préautorisation</string>
     <string name="tax_inclusion">Taxes incluses</string>
-    <string name="payment_term_aggrement">En appuyant sur <b>« Confirmer et autoriser »</b>, vous acceptez les conditions. </string>
+    <string name="payment_term_aggrement">En appuyant sur « Confirmer et autoriser », vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>
     <string name="confirm_and_authorized">Confirmer et autoriser</string>
+    <string name="privacy_policy_url">https://www.petro-canada.ca/fr/avis-juridiques</string>
+
+    <string name="add_new_payment">Ajouter nouveau</string>
 </resources>
