@@ -647,4 +647,6 @@
     <string name="privacy_policy_url">https://www.petro-canada.ca/en/legal-privacy</string>
 
     <string name="add_new_payment">Add new</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="verify_google_pay">Verify Google pay</string>
 </resources>

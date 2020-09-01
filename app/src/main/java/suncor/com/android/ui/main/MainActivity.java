@@ -291,4 +291,13 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //todo check
+        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+        if(fragment != null){
+            fragment.onActivityResult(requestCode,resultCode, data );
+        }
+    }
 }

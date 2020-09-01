@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricPrompt;
 import androidx.databinding.ObservableBoolean;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -20,9 +24,24 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.wallet.AutoResolveHelper;
+import com.google.android.gms.wallet.IsReadyToPayRequest;
+import com.google.android.gms.wallet.PaymentData;
+import com.google.android.gms.wallet.PaymentDataRequest;
+import com.google.android.gms.wallet.PaymentsClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
@@ -35,15 +54,20 @@ import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.fuelup.googlepay.GooglePaymentUtils;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentArgs;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
+import suncor.com.android.utilities.FingerprintManager;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
         FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
+
+    // Arbitrarily-picked constant integer you define to track a request for payment data activity.
+    private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
 
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
@@ -60,6 +84,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String preAuth;
     private String userPaymentId;
 
+    // A client for interacting with the Google Pay API.
+    private PaymentsClient paymentsClient;
+
+    @Inject
+    FingerprintManager fingerPrintManager;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -69,6 +98,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
+        paymentsClient = GooglePaymentUtils.createPaymentsClient(getContext());
       //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
     }
 
@@ -81,7 +111,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding.setIsLoading(isLoading);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        binding.preauthorizeButton.setOnClickListener(v-> {});
+        binding.preauthorizeButton.setOnClickListener(v-> handleConfirmAndAuthorizedClick());
 
         binding.selectPumpLayout.appBar.setVisibility(View.GONE);
         binding.selectPumpLayout.layout.setVisibility(View.GONE);
@@ -173,10 +203,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 List<PaymentListItem> payments = result.data;
                 paymentDropDownAdapter.addPayments(payments);
 
-                if (userPaymentId == null)
+                if (userPaymentId == null && payments.size() != 0 )
                     this.userPaymentId = payments.get(0).getPaymentDetail().getId();
                 
                 paymentDropDownAdapter.setSelectedPos(userPaymentId);
+                checkForGooglePayOptions();
 
             }
         });
@@ -186,7 +217,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             startActivity(browserIntent);
 
         });
-        binding.preauthorizeButton.setOnClickListener((v) ->{});
 
         NavController navController = NavHostFragment.findNavController(this);
         // We use a String here, but any type that can be put in a Bundle is supported
@@ -260,5 +290,108 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onPaymentChanged(String userPaymentId) {
         this.userPaymentId = userPaymentId;
+    }
+
+
+    private void checkForGooglePayOptions(){
+        IsReadyToPayRequest request = viewModel.getGooglePayRequest();
+        if(Objects.isNull(request )){
+            return;
+        }
+        Task<Boolean> task = paymentsClient.isReadyToPay(request);
+        // The call to isReadyToPay is asynchronous and returns a Task. We need to provide an
+        // OnCompleteListener to be triggered when the result of the call is known.
+        task.addOnCompleteListener(requireActivity(), (data) -> {
+                        if (data.isSuccessful() && data.getResult() != null && data.getResult()){
+                                paymentDropDownAdapter.addGooglePayOption(userPaymentId);
+                        } else {
+                            Log.w("isReadyToPay failed", task.getException());
+                        }
+                });
+    }
+
+    private void handleConfirmAndAuthorizedClick(){
+        if(userPaymentId == null) {
+            //todo show select payment type error
+            return;
+        }
+        if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
+            verifyFingerPrints();
+        }
+    }
+
+
+    public void requestGooglePaymentTransaction() {
+        Double preAuthPrices = Double.parseDouble(preAuth.replace("$", ""));
+        //todo gateway fetch from api
+            PaymentDataRequest request = viewModel.createGooglePaymentRequest(preAuthPrices,
+                    "p97", mPapData.getP97TenantID() );
+
+            // Since loadPaymentData may show the UI asking the user to select a payment method, we use
+            // AutoResolveHelper to wait for the user interacting with it. Once completed,
+            // onActivityResult will be called with the result.
+            if (request != null) {
+                AutoResolveHelper.resolveTask(
+                        paymentsClient.loadPaymentData(request),
+                        requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+            }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            // value passed in AutoResolveHelper
+            case LOAD_PAYMENT_DATA_REQUEST_CODE:
+                switch (resultCode) {
+
+                    case Activity.RESULT_OK:
+                        PaymentData paymentData = PaymentData.getFromIntent(data);
+                         String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
+                        //todo call google pay api and null handling
+                        Toast.makeText(getContext(), "Google Pay token received", Toast.LENGTH_LONG).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        // The user cancelled the payment attempt
+                        break;
+
+                    case AutoResolveHelper.RESULT_ERROR:
+                        Status status = AutoResolveHelper.getStatusFromIntent(data);
+                        //todo handle error
+                        break;
+                }
+        }
+    }
+
+    private void verifyFingerPrints(){
+    //todo change contents
+        if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
+            BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle(getString(R.string.payment))
+                    .setSubtitle(getString(R.string.verify_google_pay))
+                    .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
+                    .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
+            Executor executor = Executors.newSingleThreadExecutor();
+            BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                }
+
+                @Override
+                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                     requestGooglePaymentTransaction();
+
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                }
+            });
+            biometricPrompt.authenticate(promptInfo);
+        }
     }
 }
