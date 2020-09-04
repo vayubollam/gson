@@ -105,8 +105,10 @@ public class CardsViewModel extends ViewModel {
     }
 
     private void loadBalanceFromProfile() {
-        CardDetail petroPointsCard = new CardDetail(CardType.PPTS, profile.getPetroPointsNumber(), profile.getPointsBalance());
-        saveCards(Collections.singletonList(petroPointsCard));
+        if (profile.getPetroPointsNumber() != null) {
+            CardDetail petroPointsCard = new CardDetail(CardType.PPTS, profile.getPetroPointsNumber(), profile.getPointsBalance());
+            saveCards(Collections.singletonList(petroPointsCard));
+        }
     }
 
     public void onAttached() {
