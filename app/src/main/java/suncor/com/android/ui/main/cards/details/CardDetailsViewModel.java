@@ -41,7 +41,7 @@ public class CardDetailsViewModel extends ViewModel {
         switch (loadType) {
             case PETRO_POINT_ONLY:
                 Profile profile = sessionManager.getProfile();
-                if (profile != null) {
+                if (profile != null && profile.getPetroPointsNumber() != null) {
                     CardDetail petroPointsCard = new CardDetail(CardType.PPTS, profile.getPetroPointsNumber(), profile.getPointsBalance());
                     _cards.setValue(Collections.singletonList(petroPointsCard));
                 }
