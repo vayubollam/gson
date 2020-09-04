@@ -1,11 +1,13 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.biometric.BiometricPrompt;
 import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
@@ -61,6 +64,8 @@ import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
+import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
@@ -72,7 +77,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
     private SelectPumpViewModel selectPumpViewModel;
-    private ObservableBoolean isLoading = new ObservableBoolean(true);
+    private ObservableBoolean isLoading = new ObservableBoolean(false);
     private Double lastTransactionFuelUpLimit;
     SettingsResponse.Pap mPapData;
     PaymentDropDownAdapter paymentDropDownAdapter;
@@ -294,7 +299,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
 
     private void checkForGooglePayOptions(){
-        IsReadyToPayRequest request = viewModel.getGooglePayRequest();
+        IsReadyToPayRequest request = viewModel.IsReadyToPayRequestForGooglePay();
         if(Objects.isNull(request )){
             return;
         }
@@ -324,7 +329,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void requestGooglePaymentTransaction() {
         Double preAuthPrices = Double.parseDouble(preAuth.replace("$", ""));
         //todo gateway fetch from api
-            PaymentDataRequest request = viewModel.createGooglePaymentRequest(preAuthPrices,
+            PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     "p97", mPapData.getP97TenantID() );
 
             // Since loadPaymentData may show the UI asking the user to select a payment method, we use
@@ -351,6 +356,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                          String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
                         //todo call google pay api and null handling
                         Toast.makeText(getContext(), "Google Pay token received", Toast.LENGTH_LONG).show();
+                        requestPayByGooglePay(paymentToken);
                         break;
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
@@ -383,7 +389,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
                      requestGooglePaymentTransaction();
-
                 }
 
                 @Override
@@ -393,5 +398,67 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             });
             biometricPrompt.authenticate(promptInfo);
         }
+    }
+
+    private void requestPayByGooglePay(String paymentToken){
+        int preAuthPrices = Integer.parseInt(preAuth.replace("$", ""));
+        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken).observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+                isLoading.set(true);
+            } else if (result.status == Resource.Status.ERROR) {
+                isLoading.set(false);
+                handleAuthorizationFail(result.message);
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                isLoading.set(false);
+                Toast.makeText(getContext(), "Payment success", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void handleAuthorizationFail(String errorCode){
+        if(errorCode == null){
+            return;
+        }
+        switch (errorCode.toUpperCase()){
+            case "SUNCOR118":
+                 transactionFailsAlert(getContext()).show();
+                break;
+            case "SUNCOR119":
+                pumpReservationFailsAlert(getContext()).show();
+                break;
+            case "SUNCOR120":
+                Alerts.prepareGeneralErrorDialog(getContext()).show();
+                break;
+        }
+    }
+
+
+    //todo update content
+    private  AlertDialog transactionFailsAlert(Context context) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(R.string.msg_e001_title )
+                .setMessage(  R.string.msg_e001_message)
+                .setNegativeButton(R.string.cancel, ((dialog, i) -> {
+                    dialog.dismiss();
+                }))
+
+                .setPositiveButton(R.string.msg_001_dialog_try_again, (dialog, which) -> {
+                    verifyFingerPrints();
+                    dialog.dismiss();
+                });
+        return builder.create();
+    }
+
+    private  AlertDialog pumpReservationFailsAlert(Context context) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(R.string.msg_e001_title )
+                .setMessage(  R.string.msg_e001_message)
+                .setPositiveButton(R.string.ok, ((dialog, i) -> {
+                    dialog.dismiss();
+                    binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                }));
+        return builder.create();
     }
 }

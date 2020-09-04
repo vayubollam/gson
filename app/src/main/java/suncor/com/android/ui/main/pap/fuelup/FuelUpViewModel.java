@@ -32,6 +32,8 @@ import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.pap.ActiveSession;
+import suncor.com.android.model.pap.PayByGooglePayRequest;
+import suncor.com.android.model.pap.PayByGooglePayResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.main.pap.fuelup.googlepay.GooglePaymentUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
@@ -82,12 +84,12 @@ public class FuelUpViewModel extends ViewModel {
      * PaymentsClient.html#isReadyToPay(com.google.android.gms.wallet.
      * IsReadyToPayRequest)">PaymentsClient#IsReadyToPay</a>
      */
-    public IsReadyToPayRequest getGooglePayRequest() {
+    public IsReadyToPayRequest IsReadyToPayRequestForGooglePay() {
         final Optional<JSONObject> isReadyToPayJson = GooglePaymentUtils.getIsReadyToPayRequest();
         return isReadyToPayJson.map(jsonObject -> IsReadyToPayRequest.fromJson(jsonObject.toString())).orElse(null);
     }
 
-    public PaymentDataRequest createGooglePaymentRequest(Double prices, String gateway, String merchantId) {
+    public PaymentDataRequest createGooglePayInitiationRequest(Double prices, String gateway, String merchantId) {
         Optional<JSONObject> paymentDataRequestJson = GooglePaymentUtils.getPaymentDataRequest(prices,gateway, merchantId );
         if (!paymentDataRequestJson.isPresent()) {
             return null;
@@ -126,6 +128,11 @@ public class FuelUpViewModel extends ViewModel {
             Log.e(FuelUpViewModel.class.getSimpleName(), "The selected garment cannot be parsed from the list of elements");
         }
         return null;
+    }
+
+    LiveData<Resource<PayByGooglePayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, int preAuthAmount, String paymentToken) {
+        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber, preAuthAmount, new PayByGooglePayRequest.FundingPayload(paymentToken));
+        return papRepository.authorizedPaymentByGooglePay(request);
     }
 
 }

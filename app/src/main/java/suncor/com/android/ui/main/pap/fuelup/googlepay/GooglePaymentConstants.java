@@ -61,14 +61,14 @@ public class GooglePaymentConstants {
      * @value #SUPPORTED_METHODS
      */
     public static final List<String> SUPPORTED_METHODS = Arrays.asList(
-            "CRYPTOGRAM_3DS");
+            "PAN_ONLY",  "CRYPTOGRAM_3DS");
 
     /**
      * Required by the API, but not visible to the user.
      *
      * @value #COUNTRY_CODE Your local country
      */
-    public static final String COUNTRY_CODE = "US";
+    public static final String COUNTRY_CODE = "CA";
 
     /**
      * Required by the API, but not visible to the user.
