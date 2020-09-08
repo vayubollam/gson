@@ -647,4 +647,6 @@
     <string name="privacy_policy_url">https://www.petro-canada.ca/en/legal-privacy</string>
 
     <string name="add_new_payment">Add new</string>
+    <string name="mobile_payment_accepted">Mobile payment</string>
+    <string name="mobile_payment_not_accepted">No mobile payment</string>
 </resources>

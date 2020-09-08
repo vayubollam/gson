@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.data.DistanceApi;
 import suncor.com.android.data.favourite.FavouriteRepository;
+import suncor.com.android.data.pap.PapRepository;
 import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
@@ -28,6 +29,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
@@ -61,7 +63,7 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt headerImage = new ObservableInt();
 
     @Inject
-    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi) {
+    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi, PapRepository papRepository) {
         this.sessionManager = sessionManager;
         this.favouriteRepository = favouriteRepository;
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
@@ -87,7 +89,7 @@ public class HomeViewModel extends ViewModel {
                     if (resource.data == null || resource.data.isEmpty()) {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
-                        _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
+                        _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, papRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
                         nearestCarWashStation.setValue(StationsUtil.filterNearestCarWashStation(resource.data));
                     }
                     break;
