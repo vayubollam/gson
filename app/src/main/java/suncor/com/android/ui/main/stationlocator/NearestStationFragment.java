@@ -140,7 +140,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
         });
 
         mViewModel.isPAPAvailable().observe(getViewLifecycleOwner(), value -> {
-            nearestCard.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.GONE : View.VISIBLE);
+            nearestCard.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.INVISIBLE : View.VISIBLE);
             nearestCard.mobilePaymentProgressBar.setVisibility(value.status != Resource.Status.LOADING ? View.GONE : View.VISIBLE);
 
             nearestCard.mobilePaymentText.setText(value.data != null && value.data ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
