@@ -26,6 +26,7 @@ import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
@@ -39,6 +40,7 @@ public class HomeViewModel extends ViewModel {
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(20, -180), new LatLng(90, -50));
     private final static int DISTANCE_API = 25000;
     private FavouriteRepository favouriteRepository;
+    private PapRepository papRepository;
     public ObservableBoolean isLoading = new ObservableBoolean(false);
     private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
     public LiveData<Resource<StationItem>> nearestStation = _nearestStation;
@@ -66,6 +68,7 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi, PapRepository papRepository) {
         this.sessionManager = sessionManager;
         this.favouriteRepository = favouriteRepository;
+        this.papRepository = papRepository;
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 LatLngBounds bounds = LocationUtils.calculateSquareBounds(userLocation, DISTANCE_API);
@@ -89,7 +92,7 @@ public class HomeViewModel extends ViewModel {
                     if (resource.data == null || resource.data.isEmpty()) {
                         _nearestStation.setValue(Resource.success(null));
                     } else {
-                        _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, papRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
+                        _nearestStation.setValue(Resource.success(new StationItem(favouriteRepository, resource.data.get(0), favouriteRepository.isFavourite(resource.data.get(0)))));
                         nearestCarWashStation.setValue(StationsUtil.filterNearestCarWashStation(resource.data));
                     }
                     break;
@@ -222,6 +225,25 @@ public class HomeViewModel extends ViewModel {
 
     public String getRewardedPoints() {
         return CardFormatUtils.formatBalance(sessionManager.getRewardedPoints());
+    }
+
+    public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
+        return papRepository.getStoreDetails(storeId);
+    }
+
+    public LiveData<Resource<Boolean>> isPAPAvailable() {
+        return Transformations.switchMap(nearestStation, stationItemResource -> {
+            if (stationItemResource.status == Resource.Status.SUCCESS && stationItemResource.data.getStation() != null) {
+                return Transformations.map(getStoreDetails(stationItemResource.data.getStation().getId()), result ->
+                        new Resource<>(result.status,
+                                result.data != null && result.data.mobilePaymentStatus.getPapAvailable(),
+                                result.message)
+                );
+            } else {
+                return new MutableLiveData<>(new Resource<>(stationItemResource.status, false, stationItemResource.message));
+            }
+        });
+
     }
 
 }

@@ -23,7 +23,6 @@ import suncor.com.android.model.station.Station;
 public class StationItem extends BaseObservable {
 
     public FavouriteRepository favouriteRepository;
-    public PapRepository papRepository;
 
     private Station station;
     private DirectionsResult distanceDuration;
@@ -33,13 +32,6 @@ public class StationItem extends BaseObservable {
         this.favouriteRepository = favouriteRepository;
         this.station = station;
         this.isFavourite = isFavourite;
-    }
-
-    public StationItem(FavouriteRepository favouriteRepository, PapRepository papRepository, Station station, boolean isFavourite) {
-        this.favouriteRepository = favouriteRepository;
-        this.station = station;
-        this.isFavourite = isFavourite;
-        this.papRepository = papRepository;
     }
 
     public StationItem(FavouriteRepository favouriteRepository, Station station, DirectionsResult distanceDuration) {
@@ -132,17 +124,6 @@ public class StationItem extends BaseObservable {
     public boolean isClosed(int i) {
         Hour workHours = station.getHours().get(i);
         return workHours.getOpen().equals("0000") && workHours.getClose().equals("0000");
-    }
-
-    public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
-        return papRepository.getStoreDetails(storeId);
-    }
-
-    public LiveData<Resource<Boolean>> isPAPAvailable() {
-        return Transformations.map(getStoreDetails(station.getId()), result ->
-                new Resource<>(result.status,
-                        result.data != null && result.data.mobilePaymentStatus.getPapAvailable(),
-                        result.message));
     }
 
     public String getDayName(int i) {

@@ -19,7 +19,7 @@
         android:clipChildren="false"
         app:cardCornerRadius="@dimen/cards_default_radius"
         app:cardElevation="2dp"
-        app:rippleColor="@android:color/txransparent">
+        app:rippleColor="@android:color/transparent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -139,8 +139,7 @@
                 android:layout_below="@id/txt_station_open"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_toRightOf="@id/img_mobile_payment"
-                app:visibleGone="@{vm.nearestStation.data.isPAPAvailable().status==Resource.Status.LOADING}" />
+                android:layout_toRightOf="@id/img_mobile_payment" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/mobile_payment_Text"
@@ -154,8 +153,8 @@
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:textAppearance="@style/Caption1"
-                android:text="@{vm.nearestStation.data.isPAPAvailable().data?@string/mobile_payment_accepted:@string/mobile_payment_not_accepted}"
-                app:visibleGone="@{vm.nearestStation.data.isPAPAvailable().status!=Resource.Status.LOADING}"
+                android:text="@string/mobile_payment_accepted"
+                android:visibility="gone"
                 tools:text="Mobile Payment" />
 
             <suncor.com.android.ui.common.SuncorButton
