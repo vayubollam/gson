@@ -625,6 +625,17 @@
     </action>
 
     <keep_state_fragment
+        android:id="@+id/fuellingFragment"
+        android:name="suncor.com.android.ui.main.pap.fuelling.FuellingFragment"
+        android:label="FuellingFragment">
+        <argument
+            android:name="pumpNumber"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+    </keep_state_fragment>
+
+    <keep_state_fragment
         android:id="@+id/fuelUpFragment"
         android:name="suncor.com.android.ui.main.pap.fuelup.FuelUpFragment"
         android:label="FuelUpFragment">
@@ -649,6 +660,17 @@
                 android:name="inTransaction"
                 app:argType="boolean"
                 android:defaultValue="true"/>
+        </action>
+
+        <action
+            android:id="@+id/action_fuel_up_to_fuellingFragment"
+            app:destination="@id/fuellingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" >
+            <argument
+                android:name="pumpNumber"
+                app:argType="string"/>
         </action>
     </keep_state_fragment>
 </navigation>

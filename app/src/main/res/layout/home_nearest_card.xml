@@ -15,7 +15,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/station_card"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:clipChildren="false"
         app:cardCornerRadius="@dimen/cards_default_radius"
         app:cardElevation="2dp"
@@ -175,6 +175,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:background="@color/white"
             android:clipToPadding="false"
             android:orientation="vertical"
@@ -211,7 +212,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:background="@color/white"
             android:clipToPadding="false"
             android:orientation="vertical"
@@ -253,17 +255,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:background="@color/white"
             android:orientation="vertical"
             android:visibility="gone"
-            app:visibleGone="@{vm.isLoading &amp;&amp; vm.locationServiceEnabled}">
+            app:visibleGone="@{vm.isLoading &amp;&amp; vm.locationServiceEnabled}"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/gibson_semibold"
                 android:text="@string/home_nearest_loading_title"
                 android:textAppearance="@style/Body" />
@@ -272,7 +277,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

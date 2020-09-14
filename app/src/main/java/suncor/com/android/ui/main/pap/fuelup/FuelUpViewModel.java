@@ -52,7 +52,7 @@ public class FuelUpViewModel extends ViewModel {
     }
 
 
-    LiveData<Resource<ActiveSession>> getActiveSession() {
+    public LiveData<Resource<ActiveSession>> getActiveSession() {
         return papRepository.getActiveSession();
     }
 

@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 public class ActiveSession {
     @SerializedName("activeSession")
     boolean activeSession;
-
     private Double lastFuelUpAmount;
 
     public boolean getActiveSession() {

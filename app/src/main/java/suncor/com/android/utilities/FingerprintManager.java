@@ -16,7 +16,7 @@ public class FingerprintManager {
     @Inject
     public FingerprintManager(SuncorApplication application, UserLocalSettings userLocalSettings) {
         this.application = application;
-        this.userLocalSettings = userLocalSettings;
+        FingerprintManager.userLocalSettings = userLocalSettings;
     }
 
     public boolean isFingerPrintExistAndEnrolled() {
@@ -24,11 +24,8 @@ public class FingerprintManager {
         FingerprintManagerCompat fingerprintManagerCompat = FingerprintManagerCompat.from(application);
         if (!fingerprintManagerCompat.isHardwareDetected()) {
             allGood = false;
-        } else if (!fingerprintManagerCompat.hasEnrolledFingerprints()) {
-            allGood = false;
-        } else {
-            allGood = true;
-        }
+        } else allGood = fingerprintManagerCompat.hasEnrolledFingerprints();
+
         return allGood;
     }
 

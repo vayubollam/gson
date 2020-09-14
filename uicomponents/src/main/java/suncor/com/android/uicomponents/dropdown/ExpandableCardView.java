@@ -178,6 +178,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         }
         ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
         findViewById(R.id.google_pay).setVisibility(VISIBLE);
+        findViewById(R.id.selected_subheader_value).setVisibility(GONE);
     }
 
     private void setTitle(String title) {

@@ -42,6 +42,7 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import suncor.com.android.BuildConfig;
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -314,6 +315,10 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
         if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
             verifyFingerPrints();
+        } else {
+            FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
+            //Navigation.findNavController(getView()).popBackStack();
+            Navigation.findNavController(getView()).navigate(action);
         }
     }
 
@@ -361,7 +366,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     private void verifyFingerPrints(){
-        if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
+        if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {
             BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                     .setTitle(getString(R.string.payment))
                     .setSubtitle(getString(R.string.google_pay))
