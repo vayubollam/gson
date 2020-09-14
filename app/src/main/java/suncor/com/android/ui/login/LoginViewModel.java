@@ -92,7 +92,6 @@ public class LoginViewModel extends ViewModel {
                                 R.string.settings_failure_dialog_button
                         );
                         failResponse.positiveButtonCallback = () ->deleteAppData();
-                        loginFailedEvent.postValue(Event.newEvent(failResponse));
                         break;
                     case PASSWORD_RESET:
                         createPasswordEvent.postValue(Event.newEvent(response.getAdditionalData()));
