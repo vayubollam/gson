@@ -648,7 +648,23 @@
 
     <string name="add_new_payment">Add new</string>
     <string name="google_pay">Google Pay</string>
-    <string name="verify_google_pay">Verify Google pay</string>
     <string name="try_agian">Retry</string>
     <string name="authorizing">Authorizing…</string>
+    <string name="fueling_up">Fuelling up…</string>
+    <string name="fuelling_about_to_begin">Fuelling is about to begin…</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </resources>

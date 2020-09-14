@@ -1,26 +1,20 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
-import com.google.android.gms.wallet.PaymentsClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -35,7 +29,7 @@ import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayByGooglePayResponse;
 import suncor.com.android.model.payments.PaymentDetail;
-import suncor.com.android.ui.main.pap.fuelup.googlepay.GooglePaymentUtils;
+import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 
 public class FuelUpViewModel extends ViewModel {
@@ -85,16 +79,14 @@ public class FuelUpViewModel extends ViewModel {
      * IsReadyToPayRequest)">PaymentsClient#IsReadyToPay</a>
      */
     public IsReadyToPayRequest IsReadyToPayRequestForGooglePay() {
-        final Optional<JSONObject> isReadyToPayJson = GooglePaymentUtils.getIsReadyToPayRequest();
+        final Optional<JSONObject> isReadyToPayJson = GooglePayUtils.getIsReadyToPayRequest();
         return isReadyToPayJson.map(jsonObject -> IsReadyToPayRequest.fromJson(jsonObject.toString())).orElse(null);
     }
 
+
     public PaymentDataRequest createGooglePayInitiationRequest(Double prices, String gateway, String merchantId) {
-        Optional<JSONObject> paymentDataRequestJson = GooglePaymentUtils.getPaymentDataRequest(prices,gateway, merchantId );
-        if (!paymentDataRequestJson.isPresent()) {
-            return null;
-        }
-        return PaymentDataRequest.fromJson(paymentDataRequestJson.get().toString());
+        Optional<JSONObject> paymentDataRequestJson = GooglePayUtils.getPaymentDataRequest(prices,gateway, merchantId );
+        return paymentDataRequestJson.map(jsonObject -> PaymentDataRequest.fromJson(jsonObject.toString())).orElse(null);
     }
 
 
@@ -118,20 +110,20 @@ public class FuelUpViewModel extends ViewModel {
             // token will only consist of "examplePaymentMethodToken".
 
             final JSONObject tokenizationData = paymentMethodData.getJSONObject("tokenizationData");
-            final String token = tokenizationData.getString("token");
-
-            // Logging token string.
-            Log.d("Google Pay token: ", token);
-            return token;
+            return tokenizationData.getString("token");
 
         } catch (JSONException e) {
-            Log.e(FuelUpViewModel.class.getSimpleName(), "The selected garment cannot be parsed from the list of elements");
+            Log.e(FuelUpViewModel.class.getSimpleName(), "Payment data cannot be parsed");
         }
         return null;
     }
 
-    LiveData<Resource<PayByGooglePayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, int preAuthAmount, String paymentToken) {
-        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber, preAuthAmount, new PayByGooglePayRequest.FundingPayload(paymentToken));
+    /**
+     * Payment initiate with google pay
+     */
+    LiveData<Resource<PayByGooglePayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken) {
+        DecimalFormat precision = new DecimalFormat("0.00");
+        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber, Double.parseDouble(precision.format(preAuthAmount)), new PayByGooglePayRequest.FundingPayload(paymentToken));
         return papRepository.authorizedPaymentByGooglePay(request);
     }
 

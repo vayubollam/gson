@@ -148,7 +148,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             notifyDataSetChanged();
         } else if(showGooglePayOption){
             selectedPos = payments.size();
-            listener.onSelectValue(getSelectedValue(), getSelectedSubValue());
+            listener.onSelectGooglePay(getSelectedValue());
             callbacks.onPaymentChanged(PAYMENT_TYPE_GOOGLE_PAY);
         }
     }
@@ -216,7 +216,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                 notifyItemChanged(selectedPos);
 
                 if(Objects.nonNull(listener)) {
-                    listener.onSelectValue(binding.header.getText().toString(), "");
+                    listener.onSelectGooglePay(binding.header.getText().toString());
                     listener.expandCollapse();
                 }
 

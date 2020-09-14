@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.biometric.BiometricPrompt;
 import androidx.databinding.ObservableBoolean;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -28,7 +26,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
@@ -36,36 +33,31 @@ import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
+import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.pap.fuelup.googlepay.GooglePaymentUtils;
+import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentArgs;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
-import suncor.com.android.utilities.AnalyticsUtils;
-import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
@@ -103,7 +95,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
-        paymentsClient = GooglePaymentUtils.createPaymentsClient(getContext());
+        paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
       //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
     }
 
@@ -329,8 +321,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void requestGooglePaymentTransaction() {
         Double preAuthPrices = Double.parseDouble(preAuth.replace("$", ""));
         //todo gateway fetch from api
-            PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
-                    "p97", mPapData.getP97TenantID() );
+        PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
+                BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, mPapData.getP97TenantID() );
 
             // Since loadPaymentData may show the UI asking the user to select a payment method, we use
             // AutoResolveHelper to wait for the user interacting with it. Once completed,
@@ -353,9 +345,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
                     case Activity.RESULT_OK:
                         PaymentData paymentData = PaymentData.getFromIntent(data);
-                         String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
-                        //todo call google pay api and null handling
-                        Toast.makeText(getContext(), "Google Pay token received", Toast.LENGTH_LONG).show();
+                        String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
                         requestPayByGooglePay(paymentToken);
                         break;
                     case Activity.RESULT_CANCELED:
@@ -364,18 +354,17 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
                     case AutoResolveHelper.RESULT_ERROR:
                         Status status = AutoResolveHelper.getStatusFromIntent(data);
-                        //todo handle error
+                        Alerts.prepareGeneralErrorDialog(getContext()).show();
                         break;
                 }
         }
     }
 
     private void verifyFingerPrints(){
-    //todo change contents
         if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
             BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                     .setTitle(getString(R.string.payment))
-                    .setSubtitle(getString(R.string.verify_google_pay))
+                    .setSubtitle(getString(R.string.google_pay))
                     .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                     .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
             Executor executor = Executors.newSingleThreadExecutor();
@@ -410,6 +399,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 handleAuthorizationFail(result.message);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
+                //todo initiate fuelling process
                 Toast.makeText(getContext(), "Payment success", Toast.LENGTH_LONG).show();
             }
         });
@@ -420,13 +410,13 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             return;
         }
         switch (errorCode.toUpperCase()){
-            case "SUNCOR118":
+            case ErrorCodes.ERR_TRANSACTION_FAILS:
                  transactionFailsAlert(getContext()).show();
                 break;
-            case "SUNCOR119":
+            case ErrorCodes.ERR_PUMP_RESERVATION_FAILS:
                 pumpReservationFailsAlert(getContext()).show();
                 break;
-            case "SUNCOR120":
+            default:
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
                 break;
         }
@@ -438,7 +428,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(R.string.msg_e001_title )
-                .setMessage(  R.string.msg_e001_message)
+                .setMessage( R.string.msg_e001_message)
                 .setNegativeButton(R.string.cancel, ((dialog, i) -> {
                     dialog.dismiss();
                 }))
@@ -450,6 +440,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         return builder.create();
     }
 
+    //todo content change
     private  AlertDialog pumpReservationFailsAlert(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)

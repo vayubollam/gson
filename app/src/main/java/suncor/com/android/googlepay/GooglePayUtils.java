@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.pap.fuelup.googlepay;
+package suncor.com.android.googlepay;
 
 import org.json.JSONObject;
 
@@ -22,7 +22,7 @@ import org.json.JSONException;
  * existence. Please consult the documentation to learn more and feel free to remove ones not
  * relevant to your implementation.
  */
-public class GooglePaymentUtils {
+public class GooglePayUtils {
 
     public static final BigDecimal CENTS_IN_A_UNIT = new BigDecimal(100d);
 
@@ -38,13 +38,13 @@ public class GooglePaymentUtils {
 
     /**
      * Creates an instance of {@link PaymentsClient} for use in an {@link Activity} using the
-     * environment and theme set in {@link GooglePaymentConstants}.
+     * environment and theme set in {@link GooglePayConstants}.
      *
      * @param activity is the caller's activity.
      */
     public static PaymentsClient createPaymentsClient(Context context) {
         Wallet.WalletOptions walletOptions =
-                new Wallet.WalletOptions.Builder().setEnvironment(GooglePaymentConstants.PAYMENTS_ENVIRONMENT).build();
+                new Wallet.WalletOptions.Builder().setEnvironment(GooglePayConstants.PAYMENTS_ENVIRONMENT).build();
         return Wallet.getPaymentsClient(context, walletOptions);
     }
 
@@ -81,7 +81,7 @@ public class GooglePaymentUtils {
      * href="https://developers.google.com/pay/api/android/reference/object#CardParameters">CardParameters</a>
      */
     private static JSONArray getAllowedCardNetworks() {
-        return new JSONArray(GooglePaymentConstants.SUPPORTED_NETWORKS);
+        return new JSONArray(GooglePayConstants.SUPPORTED_NETWORKS);
     }
 
     /**
@@ -95,13 +95,13 @@ public class GooglePaymentUtils {
      * href="https://developers.google.com/pay/api/android/reference/object#CardParameters">CardParameters</a>
      */
     private static JSONArray getAllowedCardAuthMethodsForIsReadyRequest() {
-        return new JSONArray(GooglePaymentConstants.SUPPORTED_METHODS_CHECK);
+        return new JSONArray(GooglePayConstants.SUPPORTED_METHODS_CHECK);
     }
 
 
     //todo change SUPPORTED_METHODS_CHECK to SUPPORTED_METHODS
     private static JSONArray getAllowedCardAuthMethods() {
-        return new JSONArray(GooglePaymentConstants.SUPPORTED_METHODS);
+        return new JSONArray(GooglePayConstants.SUPPORTED_METHODS);
     }
 
     /**
@@ -202,8 +202,8 @@ public class GooglePaymentUtils {
         JSONObject transactionInfo = new JSONObject();
         transactionInfo.put("totalPrice", price);
         transactionInfo.put("totalPriceStatus", "FINAL");
-        transactionInfo.put("countryCode", GooglePaymentConstants.COUNTRY_CODE);
-        transactionInfo.put("currencyCode", GooglePaymentConstants.CURRENCY_CODE);
+        transactionInfo.put("countryCode", GooglePayConstants.COUNTRY_CODE);
+        transactionInfo.put("currencyCode", GooglePayConstants.CURRENCY_CODE);
         transactionInfo.put("checkoutOption", "COMPLETE_IMMEDIATE_PURCHASE");
 
         return transactionInfo;
@@ -230,18 +230,19 @@ public class GooglePaymentUtils {
      */
     public static Optional<JSONObject> getPaymentDataRequest(double priceCents, String gateway, String merchantId ) {
 
-        final String price = GooglePaymentUtils.centsToString(priceCents);
+        final String price = GooglePayUtils.centsToString(priceCents);
 
         try {
-            JSONObject paymentDataRequest = GooglePaymentUtils.getBaseRequest();
+            JSONObject paymentDataRequest = GooglePayUtils.getBaseRequest();
             paymentDataRequest.put(
-                    "allowedPaymentMethods", new JSONArray().put(GooglePaymentUtils.getCardPaymentMethod(gateway, merchantId)));
-            paymentDataRequest.put("transactionInfo", GooglePaymentUtils.getTransactionInfo(price));
-            paymentDataRequest.put("merchantInfo", GooglePaymentUtils.getMerchantInfo(gateway));
+                    "allowedPaymentMethods", new JSONArray().put(GooglePayUtils.getCardPaymentMethod(gateway, merchantId)));
+            paymentDataRequest.put("transactionInfo", GooglePayUtils.getTransactionInfo(price));
+            paymentDataRequest.put("merchantInfo", GooglePayUtils.getMerchantInfo(gateway));
 
       /* An optional shipping address requirement is a top-level property of the PaymentDataRequest
       JSON object. */
-            paymentDataRequest.put("shippingAddressRequired", false);
+      //todo uncomment only when billing address required
+          /*  paymentDataRequest.put("shippingAddressRequired", false);
 
             JSONObject shippingAddressParameters = new JSONObject();
             shippingAddressParameters.put("phoneNumberRequired", false);
@@ -249,7 +250,7 @@ public class GooglePaymentUtils {
             JSONArray allowedCountryCodes = new JSONArray(GooglePaymentConstants.SHIPPING_SUPPORTED_COUNTRIES);
 
             shippingAddressParameters.put("allowedCountryCodes", allowedCountryCodes);
-            paymentDataRequest.put("shippingAddressParameters", shippingAddressParameters);
+            paymentDataRequest.put("shippingAddressParameters", shippingAddressParameters);*/
             return Optional.of(paymentDataRequest);
 
         } catch (JSONException e) {
@@ -258,7 +259,7 @@ public class GooglePaymentUtils {
     }
 
     /**
-     * Converts cents to a string format accepted by {@link GooglePaymentUtils#getPaymentDataRequest}.
+     * Converts cents to a string format accepted by {@link GooglePayUtils#getPaymentDataRequest}.
      *
      * @param cents value of the price in cents.
      */

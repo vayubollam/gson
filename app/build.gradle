@@ -24,6 +24,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
+        buildConfigField "String", "GOOGLE_PAY_MERCHANT_GATEWAY", GOOGLE_PAY_MERCHANT_GATEWAY
     }
 
     dataBinding {

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
@@ -31,7 +32,7 @@ public class PapApiImpl implements PapApi {
     private Gson gson;
 
     public PapApiImpl(Gson gson) {
-        this.gson = gson;
+        this.gson = new GsonBuilder().disableHtmlEscaping().create();
     }
 
     @Override

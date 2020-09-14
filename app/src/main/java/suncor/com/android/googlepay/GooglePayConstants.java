@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.pap.fuelup.googlepay;
+package suncor.com.android.googlepay;
 
 import com.google.android.gms.wallet.WalletConstants;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * <li> If you're using {@code DIRECT} integration, please edit protocol version and public key as
  *      per the instructions.
  */
-public class GooglePaymentConstants {
+public class GooglePayConstants {
 
     /**
      * Changing this to ENVIRONMENT_PRODUCTION will make the API return chargeable card information.
@@ -61,7 +61,7 @@ public class GooglePaymentConstants {
      * @value #SUPPORTED_METHODS
      */
     public static final List<String> SUPPORTED_METHODS = Arrays.asList(
-            "PAN_ONLY",  "CRYPTOGRAM_3DS");
+              "CRYPTOGRAM_3DS");
 
     /**
      * Required by the API, but not visible to the user.
@@ -76,14 +76,6 @@ public class GooglePaymentConstants {
      * @value #CURRENCY_CODE Your local currency
      */
     public static final String CURRENCY_CODE = "USD";
-
-    /**
-     * Supported countries for shipping (use ISO 3166-1 alpha-2 country codes). Relevant only when
-     * requesting a shipping address.
-     *
-     * @value #SHIPPING_SUPPORTED_COUNTRIES
-     */
-    public static final List<String> SHIPPING_SUPPORTED_COUNTRIES = Arrays.asList("US", "GB");
 
 
 

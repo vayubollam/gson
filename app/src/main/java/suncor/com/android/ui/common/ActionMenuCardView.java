@@ -50,6 +50,11 @@ public class ActionMenuCardView extends CardView {
         buttonText.setText(resid);
     }
 
+    public void setText(String text) {
+        TextView buttonText = findViewById(R.id.button_text);
+        buttonText.setText(text);
+    }
+
     public void setDrawable(int resid) {
         ImageView icon = findViewById(R.id.left_icon);
         icon.setImageResource(resid);
