@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.home;
 
 import android.os.Handler;
 import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableChar;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -64,6 +65,9 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt greetingsMessage = new ObservableInt();
     public ObservableInt headerImage = new ObservableInt();
 
+    public ObservableBoolean activeFuellingSession = new ObservableBoolean();
+    public ObservableInt fuellingStateMessage = new ObservableInt();
+
     @Inject
     public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi, PapRepository papRepository) {
         this.sessionManager = sessionManager;
@@ -123,6 +127,7 @@ public class HomeViewModel extends ViewModel {
         });
 
         initGreetings();
+
     }
 
     private void initGreetings() {
@@ -243,7 +248,13 @@ public class HomeViewModel extends ViewModel {
                 return new MutableLiveData<>(new Resource<>(stationItemResource.status, false, stationItemResource.message));
             }
         });
+    }
 
+    //Call this method when fuelling state change
+    private void updateFuellingSession(boolean isActiveFuelingSession, String stateMessage){
+        activeFuellingSession.set(isActiveFuelingSession);
+        //todo set message according to state
+        fuellingStateMessage.set(R.string.fuelling_about_to_begin);
     }
 
 }

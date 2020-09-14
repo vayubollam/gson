@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.home;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
@@ -156,6 +157,7 @@ public class HomeFragment extends BottomNavigationFragment {
                 mainViewModel.setNearestStation(resource);
             }
         });
+
     }
 
     @Override
@@ -254,6 +256,7 @@ public class HomeFragment extends BottomNavigationFragment {
             binding.headerImage.setTranslationY((float) (scrollY * 0.5));
         });
 
+        binding.fuellingSessionCard.setLoading(true);
         return binding.getRoot();
     }
 

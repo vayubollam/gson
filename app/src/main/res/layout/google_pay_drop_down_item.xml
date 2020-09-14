@@ -36,11 +36,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_80"
                 android:textSize="16sp"
-                android:text="Google Pay"
+                android:text="@string/google_pay"
                 app:autoSizeTextType="uniform"/>
-
-
-
+            
             <ImageView
                 android:id="@+id/google_pay"
                 android:layout_width="75dp"

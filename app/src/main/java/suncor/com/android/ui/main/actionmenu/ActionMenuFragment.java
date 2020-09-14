@@ -83,6 +83,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 }
             }
         }));
+
     }
 
     @Override
@@ -201,5 +202,13 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 homeViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
             }
         });
+    }
+
+
+    //Call this method when fuelling state change
+    private void updateFuellingSession(boolean isActiveFuelingSession, String stateMessage){
+        binding.actionFuelUpButton.setLoading(isActiveFuelingSession);
+        //todo set message according to state
+        binding.actionFuelUpButton.setText(stateMessage);
     }
 }

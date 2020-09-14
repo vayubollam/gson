@@ -631,4 +631,21 @@
     <string name="privacy_policy_url">https://www.petro-canada.ca/fr/avis-juridiques</string>
 
     <string name="add_new_payment">Ajouter nouveau</string>
+
+    <string name="authorizing">Autorisation…</string>
+    <string name="fueling_up">Ravitaillement en cours…</string>
+    <string name="fuelling_about_to_begin">Le ravitaillement est sur le point de commencer..</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>

@@ -649,4 +649,9 @@
     <string name="add_new_payment">Add new</string>
     <string name="mobile_payment_accepted">Mobile payment</string>
     <string name="mobile_payment_not_accepted">No mobile payment</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="try_agian">Retry</string>
+    <string name="authorizing">Authorizing…</string>
+    <string name="fueling_up">Fuelling up…</string>
+    <string name="fuelling_about_to_begin">Fuelling is about to begin…</string>
 </resources>

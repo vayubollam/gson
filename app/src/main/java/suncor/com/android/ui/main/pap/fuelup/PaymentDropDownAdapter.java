@@ -33,6 +33,8 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = PaymentDropDownAdapter.class.getSimpleName();
 
+    protected static final String PAYMENT_TYPE_GOOGLE_PAY = "google_pay";
+
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int ADD_DROP_DOWN_LAYOUT = 2;
     private static final int GOOGLE_PAY_LAYOUT = 3;
@@ -42,6 +44,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     private ChildViewListener listener;
     private PaymentDropDownCallbacks callbacks;
     private final Context mContext;
+    private boolean showGooglePayOption = false;
 
 
     PaymentDropDownAdapter(final Context context, PaymentDropDownCallbacks callbacks) {
@@ -66,7 +69,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(position < payments.size()){
             ((ChildDropDownViewHolder)holder).setDataOnView(payments.get(position));
-        } else if(position == payments.size()){
+        } else if(position == payments.size() && showGooglePayOption){
             ((GooglePayViewHolder)holder).setDataOnView();
         } else {
             ((AddPaymentViewHolder)holder).setDataOnView();
@@ -75,17 +78,20 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
     @Override
     public int getItemCount() {
-        return payments.size() + 2;
+        return payments.size() +  (showGooglePayOption ? 2 : 1);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position < payments.size()  ? DROP_DOWN_LAYOUT : position  == payments.size() ? GOOGLE_PAY_LAYOUT : ADD_DROP_DOWN_LAYOUT;
+        return position < payments.size()  ? DROP_DOWN_LAYOUT : (position  == payments.size() && showGooglePayOption) ? GOOGLE_PAY_LAYOUT : ADD_DROP_DOWN_LAYOUT;
     }
 
     @Override
     public String getSelectedValue(){
         if (selectedPos == -1) return null;
+        if(selectedPos > payments.size() - 1 && showGooglePayOption){
+            return mContext.getString(R.string.google_pay);
+        }
         PaymentListItem payment = payments.get(selectedPos);
         return payment.getCardInfo();
     }
@@ -93,6 +99,9 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     @Override
     public String getSelectedSubValue() {
         if (selectedPos == -1) return null;
+        if(selectedPos > payments.size() - 1 && showGooglePayOption){
+            return null;
+        }
         PaymentListItem payment = payments.get(selectedPos);
         return payment.getExp();
     }
@@ -110,6 +119,12 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     public void addPayments(List<PaymentListItem> paymentListItem) {
         payments.addAll(paymentListItem);
         notifyDataSetChanged();
+    }
+
+    public void addGooglePayOption(String userSelectedSourceId){
+        showGooglePayOption = true;
+        notifyDataSetChanged();
+        setSelectedPos(userSelectedSourceId);
     }
 
     public void setSelectedPos(String userPaymentSourceId) {
@@ -131,6 +146,10 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             }
 
             notifyDataSetChanged();
+        } else if(showGooglePayOption){
+            selectedPos = payments.size();
+            listener.onSelectGooglePay(getSelectedValue());
+            callbacks.onPaymentChanged(PAYMENT_TYPE_GOOGLE_PAY);
         }
     }
 
@@ -197,8 +216,11 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                 notifyItemChanged(selectedPos);
 
                 if(Objects.nonNull(listener)) {
+                    listener.onSelectGooglePay(binding.header.getText().toString());
                     listener.expandCollapse();
                 }
+
+                callbacks.onPaymentChanged(PAYMENT_TYPE_GOOGLE_PAY);
             });
         }
     }
