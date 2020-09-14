@@ -28,6 +28,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayByGooglePayResponse;
+import suncor.com.android.model.pap.PayByWalletRequest;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
@@ -124,7 +125,16 @@ public class FuelUpViewModel extends ViewModel {
     LiveData<Resource<PayByGooglePayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken) {
         DecimalFormat precision = new DecimalFormat("0.00");
         PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber, Double.parseDouble(precision.format(preAuthAmount)), new PayByGooglePayRequest.FundingPayload(paymentToken));
-        return papRepository.authorizedPaymentByGooglePay(request);
+        return papRepository.authorizePaymentByGooglePay(request);
+    }
+
+    /**
+     * Payment initiate with wallet
+     */
+    LiveData<Resource<PayByGooglePayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, String userPaymentSourceId) {
+        DecimalFormat precision = new DecimalFormat("0.00");
+        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, Double.parseDouble(precision.format(preAuthAmount)), userPaymentSourceId);
+        return papRepository.authorizePaymentByWallet(request);
     }
 
 }

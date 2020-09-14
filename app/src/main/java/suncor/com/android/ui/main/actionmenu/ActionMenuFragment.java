@@ -132,7 +132,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         viewModel.getGeoFenceLimit().observe(getViewLifecycleOwner(), result -> this.geoFenceLimit = result );
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                activeSession = result.data.getActiveSession();
+                activeSession = result.data.activeSession;
 
                 binding.actionFuelUpButton.setText(activeSession ? R.string.action_fuelling : R.string.action_fuel_up);
                 binding.actionFuelUpButton.setLoading(activeSession);

@@ -8,9 +8,11 @@ import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayByGooglePayResponse;
+import suncor.com.android.model.pap.PayByWalletRequest;
 
 public interface PapApi {
     LiveData<Resource<ActiveSession>> activeSession();
     LiveData<Resource<P97StoreDetailsResponse>> storeDetails(String storeId);
-    LiveData<Resource<PayByGooglePayResponse>> authorizedPaymentByGooglePay(PayByGooglePayRequest request);
+    LiveData<Resource<PayByGooglePayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest request);
+    LiveData<Resource<PayByGooglePayResponse>> authorizePaymentByWallet(PayByWalletRequest request);
 }

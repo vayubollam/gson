@@ -4,14 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class ActiveSession {
     @SerializedName("activeSession")
-    boolean activeSession;
-    private Double lastFuelUpAmount;
+    public boolean activeSession;
 
-    public boolean getActiveSession() {
-        return activeSession;
-    }
+    public Double lastFuelUpAmount;
 
-    public Double getLastFuelUpAmount() {
-        return lastFuelUpAmount;
-    }
+    @SerializedName("LastStatus")
+    public String lastStatus;
+    public String lastPaymentSourceId;
+    public String lastPaymentProviderName;
+    public String lastStatusUpdated;
+    public String lastTransId;
+
 }

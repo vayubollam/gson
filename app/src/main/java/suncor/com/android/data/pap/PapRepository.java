@@ -13,6 +13,7 @@ import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayByGooglePayResponse;
+import suncor.com.android.model.pap.PayByWalletRequest;
 
 @Singleton
 public class PapRepository {
@@ -54,10 +55,13 @@ public class PapRepository {
     }
 
 
-    public LiveData<Resource<PayByGooglePayResponse>> authorizedPaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest) {
-        return papApi.authorizedPaymentByGooglePay(payByGooglePayRequest);
+    public LiveData<Resource<PayByGooglePayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest) {
+        return papApi.authorizePaymentByGooglePay(payByGooglePayRequest);
     }
 
 
+    public LiveData<Resource<PayByGooglePayResponse>> authorizePaymentByWallet(PayByWalletRequest request) {
+        return papApi.authorizePaymentByWallet(request);
+    }
 
 }
