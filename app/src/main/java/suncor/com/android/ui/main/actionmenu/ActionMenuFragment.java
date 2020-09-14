@@ -134,7 +134,8 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 activeSession = result.data.activeSession;
 
-                binding.actionFuelUpButton.setText(activeSession ? R.string.action_fuelling : R.string.action_fuel_up);
+                binding.actionFuelUpButton.setText(activeSession ?
+                        result.data.status.equals("New") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
                 binding.actionFuelUpButton.setLoading(activeSession);
             } else {
                 activeSession = false;

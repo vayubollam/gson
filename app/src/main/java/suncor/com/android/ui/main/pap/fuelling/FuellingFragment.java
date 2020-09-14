@@ -13,6 +13,8 @@ import android.view.animation.RotateAnimation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
@@ -65,8 +67,10 @@ public class FuellingFragment extends MainActivityFragment {
         binding.cancelButton.setOnClickListener(button -> {
             if (binding.cancelButton.getText().equals(getString(R.string.hide))) {
                 // Navigate to home
+                goBack();
             } else {
                 // TODO: Handle cancel
+                goBack();
             }
         });
 
@@ -106,6 +110,8 @@ public class FuellingFragment extends MainActivityFragment {
                         binding.cancelButton.setText(result.data.status.equals("New") ? R.string.cancel : R.string.hide);
 
                         binding.borderImageView.clearAnimation();
+                    } else {
+                        goBack();
                     }
                 }
             });
@@ -124,5 +130,11 @@ public class FuellingFragment extends MainActivityFragment {
     public void start() {
         started = true;
         handler.postDelayed(runnable, 5000);
+    }
+
+    private void goBack() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.popBackStack();
+        navController.popBackStack();
     }
 }
