@@ -391,6 +391,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 }
             });
             biometricPrompt.authenticate(promptInfo);
+        } else {
+            requestGooglePaymentTransaction();
         }
     }
 
