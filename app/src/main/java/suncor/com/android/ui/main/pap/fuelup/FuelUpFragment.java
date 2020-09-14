@@ -317,7 +317,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             verifyFingerPrints();
         } else {
             int preAuthPrices = Integer.parseInt(preAuth.replace("$", ""));
-            viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, userPaymentId).observe(getViewLifecycleOwner(), result -> {
+            viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.LOADING) {
                     isLoading.set(true);
                 } else if (result.status == Resource.Status.ERROR) {

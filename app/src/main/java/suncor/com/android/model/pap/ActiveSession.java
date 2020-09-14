@@ -15,4 +15,7 @@ public class ActiveSession {
     public String lastStatusUpdated;
     public String lastTransId;
 
+    public String status;
+    public String storeId;
+    public String transId;
 }

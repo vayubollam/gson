@@ -6,11 +6,11 @@ public class PayByWalletRequest {
     private String encryptedStoreId;
     private int pumpNumber;
     private double preAuthLimit;
-    private String userPaymentSourceId;
+    private int userPaymentSourceId;
     private String paymentProviderName;
 
 
-    public PayByWalletRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit, String userPaymentSourceId) {
+    public PayByWalletRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit, int userPaymentSourceId) {
         this.encryptedStoreId = encryptedStoreId;
         this.pumpNumber = pumpNumber;
         this.preAuthLimit = preAuthLimit;

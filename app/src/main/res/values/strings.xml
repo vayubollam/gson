@@ -653,8 +653,10 @@
     <string name="try_agian">Retry</string>
     <string name="authorizing">Authorizing…</string>
     <string name="fueling_up">Fuelling up…</string>
+    <string name="fueling_up_subheader">Please don’t leave pump unattended</string>
     <string name="fuelling_about_to_begin">Fuelling is about to begin…</string>
 
     <string name="pump_authorized">Pump %1$s authorized</string>
     <string name="pump_authorized_subheader">Please lift the nozzle and select a fuel grade</string>
+    <string name="hide">Hide</string>
 </resources>

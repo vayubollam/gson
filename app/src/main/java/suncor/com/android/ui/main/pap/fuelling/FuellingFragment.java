@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +28,7 @@ public class FuellingFragment extends MainActivityFragment {
 
     private FuelUpViewModel viewModel;
     private FragmentFuellingBinding binding;
+    private String pumpNumber;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -48,10 +52,23 @@ public class FuellingFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String pumpNumber = FuellingFragmentArgs.fromBundle(getArguments()).getPumpNumber();
+        pumpNumber = FuellingFragmentArgs.fromBundle(getArguments()).getPumpNumber();
 
         binding.pumpAuthorizedText.setText(getString(R.string.pump_authorized, pumpNumber));
         binding.pumpNumberText.setText(pumpNumber);
+
+        RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(10000);
+        rotate.setInterpolator(new LinearInterpolator());
+        binding.borderImageView.startAnimation(rotate);
+
+        binding.cancelButton.setOnClickListener(button -> {
+            if (binding.cancelButton.getText().equals(getString(R.string.hide))) {
+                // Navigate to home
+            } else {
+                // TODO: Handle cancel
+            }
+        });
 
         start();
     }
@@ -81,6 +98,15 @@ public class FuellingFragment extends MainActivityFragment {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
 
+                    if (result.data.status != null) {
+                        binding.pumpAuthorizedText.setText(result.data.status.equals("New") ? getString(R.string.pump_authorized, pumpNumber) : getString(R.string.fueling_up));
+                        binding.pumpAuthorizedSubheader.setText(result.data.status.equals("New") ? R.string.pump_authorized_subheader : R.string.fueling_up_subheader);
+                        binding.pumpNumberText.setVisibility(result.data.status.equals("New") ? View.VISIBLE : View.GONE);
+
+                        binding.cancelButton.setText(result.data.status.equals("New") ? R.string.cancel : R.string.hide);
+
+                        binding.borderImageView.clearAnimation();
+                    }
                 }
             });
 

@@ -24,6 +24,7 @@
             android:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/pump_authorized_subheader"
             style="@style/Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +33,12 @@
             android:text="@string/pump_authorized_subheader"
             app:autoSizeTextType="uniform"
             android:visibility="visible" />
-        
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
         <androidx.cardview.widget.CardView
             android:layout_width="288dp"
             android:layout_height="288dp"
@@ -42,6 +48,7 @@
             app:cardUseCompatPadding="false">
 
             <ImageView
+                android:id="@+id/border_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
@@ -84,6 +91,21 @@
             </FrameLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <suncor.com.android.ui.common.SuncorButton
+            android:id="@+id/cancel_button"
+            style="@style/LinkButton.Red.L"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gibson_semibold"
+            android:text="@string/cancel"
+            tools:text="@string/cancel" />
 
     </LinearLayout>
 

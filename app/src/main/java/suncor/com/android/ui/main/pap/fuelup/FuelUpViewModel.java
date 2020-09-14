@@ -131,7 +131,7 @@ public class FuelUpViewModel extends ViewModel {
     /**
      * Payment initiate with wallet
      */
-    LiveData<Resource<PayByGooglePayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, String userPaymentSourceId) {
+    LiveData<Resource<PayByGooglePayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
         DecimalFormat precision = new DecimalFormat("0.00");
         PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, Double.parseDouble(precision.format(preAuthAmount)), userPaymentSourceId);
         return papRepository.authorizePaymentByWallet(request);
