@@ -105,8 +105,10 @@ public class FuellingFragment extends MainActivityFragment {
                         binding.pumpNumberText.setVisibility(result.data.status.equals("New") ? View.VISIBLE : View.GONE);
 
                         binding.cancelButton.setText(result.data.status.equals("New") ? R.string.cancel : R.string.hide);
+                        binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equals("New") ? R.drawable.circle_dash_border : R.drawable.circle_border));
 
-                        binding.borderImageView.clearAnimation();
+                        if (!result.data.status.equals("New"))
+                            binding.borderImageView.clearAnimation();
                     } else {
                         goBack();
                     }
