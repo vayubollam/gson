@@ -262,7 +262,7 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         binding.fuellingSessionCard.setOnClickListener((view) -> {
-            FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("1");
+            FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("");
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         });
         binding.fuellingSessionCard.setLoading(true);

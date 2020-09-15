@@ -101,7 +101,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding.actionFuelUpButton.setOnClickListener(view -> {
 
             if (activeSession) {
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("1");
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("");
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }

@@ -102,12 +102,16 @@ public class FuellingFragment extends MainActivityFragment {
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
 
                     if (result.data.status != null) {
-                        binding.pumpAuthorizedText.setText(result.data.status.equals("New") ? getString(R.string.pump_authorized, pumpNumber) : getString(R.string.fueling_up));
-                        binding.pumpAuthorizedSubheader.setText(result.data.status.equals("New") ? R.string.pump_authorized_subheader : R.string.fueling_up_subheader);
+                        binding.pumpAuthorizedText.setText(result.data.status.equals("New") ?
+                                getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));
+                        binding.pumpAuthorizedSubheader.setText(result.data.status.equals("New") ?
+                                R.string.pump_authorized_subheader : R.string.fueling_up_subheader);
+                        binding.pumpNumberText.setText(result.data.pumpNumber);
                         binding.pumpNumberText.setVisibility(result.data.status.equals("New") ? View.VISIBLE : View.GONE);
 
                         binding.cancelButton.setText(result.data.status.equals("New") ? R.string.cancel : R.string.hide);
-                        binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equals("New") ? R.drawable.circle_dash_border : R.drawable.circle_border));
+                        binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equals("New") ?
+                                R.drawable.circle_dash_border : R.drawable.circle_border));
 
                         if (!result.data.status.equals("New"))
                             binding.borderImageView.clearAnimation();

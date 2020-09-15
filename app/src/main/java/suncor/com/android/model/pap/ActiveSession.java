@@ -18,4 +18,5 @@ public class ActiveSession {
     public String status;
     public String storeId;
     public String transId;
+    public String pumpNumber;
 }
