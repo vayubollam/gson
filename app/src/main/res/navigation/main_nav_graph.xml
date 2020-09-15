@@ -574,6 +574,7 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/carWashCardFragment"
             app:popUpToInclusive="true" />
+
         <action
             android:id="@+id/action_carWashBarCodeFragment_to_cards_tab"
             app:destination="@id/cards_tab"
@@ -586,6 +587,16 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/dummy"
         app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_fuel_up_to_fuellingFragment"
+        app:destination="@id/fuellingFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popExitAnim="@anim/fade_out" >
+        <argument
+            android:name="pumpNumber"
+            app:argType="string"/>
+    </action>
     <keep_state_fragment
         android:id="@+id/nearestStationFragment"
         android:name="suncor.com.android.ui.main.stationlocator.NearestStationFragment"

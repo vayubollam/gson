@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -47,10 +48,12 @@ import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.webview.WebDialogFragment;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.MainViewModel;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
@@ -75,6 +78,9 @@ public class HomeFragment extends BottomNavigationFragment {
     @Inject
     PermissionManager permissionManager;
     private HomeNearestCardBinding nearestCard;
+
+    private boolean started = false;
+    private Handler handler = new Handler();
 
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
@@ -256,7 +262,14 @@ public class HomeFragment extends BottomNavigationFragment {
             binding.headerImage.setTranslationY((float) (scrollY * 0.5));
         });
 
+        binding.fuellingSessionCard.setOnClickListener((view) -> {
+            FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("1");
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+        });
         binding.fuellingSessionCard.setLoading(true);
+        binding.fuellingSessionCard.setRadius(8);
+        observerFuellingActiveSession();
+
         return binding.getRoot();
     }
 
@@ -419,6 +432,12 @@ public class HomeFragment extends BottomNavigationFragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopFuellingActiveSessionObserver();
+    }
+
     private void checkAndRequestPermission() {
         permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
@@ -443,6 +462,45 @@ public class HomeFragment extends BottomNavigationFragment {
                 mViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
             }
         });
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            mViewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
+                if (result.status == Resource.Status.LOADING) {
+                } else if (result.status == Resource.Status.ERROR) {
+                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                    if (result.data.activeSession && result.data.status != null) {
+                        if(result.data.status.equals("New")){
+                            mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
+                        } else if(result.data.status.equals("BeginFueling")){
+                            mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
+                        } else{
+                            //todo handle processing and session end state
+                            mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
+                        }
+                        if(started) {
+                            observerFuellingActiveSession();
+                        }
+                    } else {
+                        mViewModel.updateFuellingSession(false, "");
+                    }
+                }
+            });
+
+        }
+    };
+
+    public void stopFuellingActiveSessionObserver() {
+        started = false;
+        handler.removeCallbacks(runnable);
+    }
+
+    public void observerFuellingActiveSession() {
+        started = true;
+        handler.postDelayed(runnable, 5000);
     }
 
 }

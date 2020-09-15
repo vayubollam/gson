@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.home;
 import android.os.Handler;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableChar;
+import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -27,6 +28,7 @@ import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Event;
@@ -40,7 +42,7 @@ public class HomeViewModel extends ViewModel {
 
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(20, -180), new LatLng(90, -50));
     private final static int DISTANCE_API = 25000;
-    private FavouriteRepository favouriteRepository;
+
     private PapRepository papRepository;
     public ObservableBoolean isLoading = new ObservableBoolean(false);
     private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
@@ -66,13 +68,13 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt headerImage = new ObservableInt();
 
     public ObservableBoolean activeFuellingSession = new ObservableBoolean();
-    public ObservableInt fuellingStateMessage = new ObservableInt();
+    public ObservableField<String> fuellingStateMessage = new ObservableField<>();
 
     @Inject
     public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi, PapRepository papRepository) {
         this.sessionManager = sessionManager;
-        this.favouriteRepository = favouriteRepository;
         this.papRepository = papRepository;
+        fuellingStateMessage.set("fuellingStateMessage");
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 LatLngBounds bounds = LocationUtils.calculateSquareBounds(userLocation, DISTANCE_API);
@@ -251,10 +253,13 @@ public class HomeViewModel extends ViewModel {
     }
 
     //Call this method when fuelling state change
-    private void updateFuellingSession(boolean isActiveFuelingSession, String stateMessage){
+    protected void updateFuellingSession(boolean isActiveFuelingSession, String stateMessage){
         activeFuellingSession.set(isActiveFuelingSession);
-        //todo set message according to state
-        fuellingStateMessage.set(R.string.fuelling_about_to_begin);
+        fuellingStateMessage.set(stateMessage);
+    }
+
+    public LiveData<Resource<ActiveSession>> getActiveSession() {
+        return  papRepository.getActiveSession();
     }
 
 }

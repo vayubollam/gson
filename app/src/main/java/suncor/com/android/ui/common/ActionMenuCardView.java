@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.databinding.BindingAdapter;
 
 import suncor.com.android.R;
 
@@ -48,6 +50,13 @@ public class ActionMenuCardView extends CardView {
     public void setText(int resid) {
         TextView buttonText = findViewById(R.id.button_text);
         buttonText.setText(resid);
+    }
+
+    @BindingAdapter({"app:button_text"})
+    public static void setButtonText(View view, String text) {
+        TextView buttonText = view.findViewById(R.id.button_text);
+        buttonText.setTextSize(16);
+        buttonText.setText(text);
     }
 
     public void setText(String text) {

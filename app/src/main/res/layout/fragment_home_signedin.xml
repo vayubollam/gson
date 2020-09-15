@@ -153,14 +153,13 @@
                     android:layout_marginEnd="@dimen/action_menu_card_view_margin_left_right"
                     android:layout_marginRight="@dimen/action_menu_card_view_margin_left_right"
                     android:layout_marginBottom="@dimen/action_menu_margin_32"
-                    app:button_text="@string/fuelling_about_to_begin"
+                    app:button_text="@{vm.fuellingStateMessage.toString()}"
                     app:visibleGone="@{vm.activeFuellingSession}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/enrollment_greetings_card"
-                   app:cardCornerRadius="@dimen/cards_default_radius"
-                   app:cardElevation="2dp"
-                   app:rippleColor="@android:color/transparent"/>
+                    app:cardCornerRadius="@dimen/cards_default_radius"
+                    app:cardElevation="2dp"/>
 
              <!--   -->
 

@@ -417,8 +417,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 handleAuthorizationFail(result.message);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                //todo initiate fuelling process
-                Toast.makeText(getContext(), "Payment success", Toast.LENGTH_LONG).show();
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
+                Navigation.findNavController(getView()).popBackStack();
+                Navigation.findNavController(getView()).navigate(action);
             }
         });
     }
