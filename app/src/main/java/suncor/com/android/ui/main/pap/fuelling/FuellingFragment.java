@@ -62,7 +62,7 @@ public class FuellingFragment extends MainActivityFragment {
         binding.pumpNumberText.setText(pumpNumber);
 
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(10000);
+        rotate.setDuration(100000);
         rotate.setInterpolator(new LinearInterpolator());
         binding.borderImageView.startAnimation(rotate);
 
