@@ -225,6 +225,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         liveData.observe(getActivity(), paymentDetail -> {
             // Do something with the result.
             paymentDropDownAdapter.addPayment(new PaymentListItem(getContext(), paymentDetail), true);
+            this.userPaymentId = paymentDetail.getId();
         });
 
         // We use a String here, but any type that can be put in a Bundle is supported
