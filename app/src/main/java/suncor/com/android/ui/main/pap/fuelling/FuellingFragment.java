@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.pap.fuelling;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +63,9 @@ public class FuellingFragment extends MainActivityFragment {
         binding.pumpNumberText.setText(pumpNumber);
 
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotate.setDuration(100000);
+        rotate.setDuration(6000);
         rotate.setInterpolator(new LinearInterpolator());
+        rotate.setRepeatCount(Animation.INFINITE);
         binding.borderImageView.startAnimation(rotate);
 
         binding.cancelButton.setOnClickListener(button -> {
