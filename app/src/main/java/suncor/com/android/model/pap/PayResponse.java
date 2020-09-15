@@ -2,7 +2,7 @@ package suncor.com.android.model.pap;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PayByGooglePayResponse {
+public class PayResponse {
 
     @SerializedName("transId")
     private String transactionId;

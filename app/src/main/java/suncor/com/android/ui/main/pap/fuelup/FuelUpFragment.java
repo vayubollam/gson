@@ -326,7 +326,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     isLoading.set(false);
                     FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
-                    //Navigation.findNavController(getView()).popBackStack();
+                    Navigation.findNavController(getView()).popBackStack();
                     Navigation.findNavController(getView()).navigate(action);
                 }
             });
