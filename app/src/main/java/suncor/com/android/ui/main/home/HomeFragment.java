@@ -267,7 +267,7 @@ public class HomeFragment extends BottomNavigationFragment {
         });
         binding.fuellingSessionCard.setLoading(true);
         binding.fuellingSessionCard.setRadius(8);
-        observerFuellingActiveSession();
+        startFuellingActiveSession();
 
         return binding.getRoot();
     }
@@ -495,6 +495,11 @@ public class HomeFragment extends BottomNavigationFragment {
     public void stopFuellingActiveSessionObserver() {
         pingActiveSessionStarted = false;
         handler.removeCallbacks(runnable);
+    }
+
+    public void startFuellingActiveSession() {
+        pingActiveSessionStarted = true;
+        handler.postDelayed(runnable, 0);
     }
 
     public void observerFuellingActiveSession() {

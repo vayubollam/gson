@@ -88,7 +88,7 @@ public class FuellingFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        observerFuellingActiveSession();
+        startFuellingActiveSession();
     }
 
     private Runnable runnable = new Runnable() {
@@ -135,6 +135,11 @@ public class FuellingFragment extends MainActivityFragment {
     public void observerFuellingActiveSession() {
         pingActiveSessionStarted = true;
         handler.postDelayed(runnable, 5000);
+    }
+
+    public void startFuellingActiveSession() {
+        pingActiveSessionStarted = true;
+        handler.postDelayed(runnable, 0);
     }
 
     private void goBack() {
