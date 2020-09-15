@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -31,6 +30,9 @@ public class FuellingFragment extends MainActivityFragment {
     private FuelUpViewModel viewModel;
     private FragmentFuellingBinding binding;
     private String pumpNumber;
+
+    private boolean pingActiveSessionStarted = false;
+    private Handler handler = new Handler();
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -73,24 +75,19 @@ public class FuellingFragment extends MainActivityFragment {
                 goBack();
             }
         });
-
-        start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        stop();
+        stopFuellingActiveSessionObserver();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        start();
+        observerFuellingActiveSession();
     }
-
-    private boolean started = false;
-    private Handler handler = new Handler();
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -116,19 +113,19 @@ public class FuellingFragment extends MainActivityFragment {
                 }
             });
 
-            if(started) {
-                start();
+            if(pingActiveSessionStarted) {
+                observerFuellingActiveSession();
             }
         }
     };
 
-    public void stop() {
-        started = false;
+    public void stopFuellingActiveSessionObserver() {
+        pingActiveSessionStarted = false;
         handler.removeCallbacks(runnable);
     }
 
-    public void start() {
-        started = true;
+    public void observerFuellingActiveSession() {
+        pingActiveSessionStarted = true;
         handler.postDelayed(runnable, 5000);
     }
 

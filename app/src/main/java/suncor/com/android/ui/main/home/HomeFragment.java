@@ -3,7 +3,6 @@ package suncor.com.android.ui.main.home;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -79,7 +78,7 @@ public class HomeFragment extends BottomNavigationFragment {
     PermissionManager permissionManager;
     private HomeNearestCardBinding nearestCard;
 
-    private boolean started = false;
+    private boolean pingActiveSessionStarted = false;
     private Handler handler = new Handler();
 
     private OnClickListener tryAgainLister = v -> {
@@ -481,7 +480,7 @@ public class HomeFragment extends BottomNavigationFragment {
                             //todo handle processing and session end state
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                         }
-                        if(started) {
+                        if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
                         }
                     } else {
@@ -494,12 +493,12 @@ public class HomeFragment extends BottomNavigationFragment {
     };
 
     public void stopFuellingActiveSessionObserver() {
-        started = false;
+        pingActiveSessionStarted = false;
         handler.removeCallbacks(runnable);
     }
 
     public void observerFuellingActiveSession() {
-        started = true;
+        pingActiveSessionStarted = true;
         handler.postDelayed(runnable, 5000);
     }
 
