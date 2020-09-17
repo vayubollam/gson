@@ -123,8 +123,7 @@ public class FuelUpViewModel extends ViewModel {
      * Payment initiate with google pay
      */
     LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken) {
-        DecimalFormat precision = new DecimalFormat("0.00");
-        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber, Double.parseDouble(precision.format(preAuthAmount)), new PayByGooglePayRequest.FundingPayload(paymentToken));
+        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount, new PayByGooglePayRequest.FundingPayload(paymentToken));
         return papRepository.authorizePaymentByGooglePay(request);
     }
 

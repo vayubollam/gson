@@ -33,8 +33,11 @@ import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -60,12 +63,14 @@ import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.Timber;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
         FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
@@ -254,7 +259,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
            );
 
            if (preAuth != null) {
-               adapter.setSelectedPosfromValue(preAuth.replace("$", "").replace(",", ".").replaceAll("\\s",""));
+               try {
+                   adapter.setSelectedPosfromValue(formatter.parse(preAuth).doubleValue());
+               }catch (ParseException ex){
+                   Timber.e(ex.getMessage());
+               }
            }
 
            adapter.findLastFuelUpTransaction(lastTransactionFuelUpLimit);
@@ -336,10 +345,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
 
     public void requestGooglePaymentTransaction() {
-        Double preAuthPrices = Double.parseDouble(preAuth.replace("$", ""));
-        //todo gateway fetch from api
-        PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
-                BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, mPapData.getP97TenantID() );
+        try {
+            double preAuthPrices = formatter.parse(preAuth).doubleValue();
+            // Double preAuthPrices = Double.parseDouble(preAuth.replace(getString(R.string.dollar), ""));
+            //todo gateway fetch from api
+            PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
+                    BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, mPapData.getP97TenantID());
 
             // Since loadPaymentData may show the UI asking the user to select a payment method, we use
             // AutoResolveHelper to wait for the user interacting with it. Once completed,
@@ -348,6 +359,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 AutoResolveHelper.resolveTask(
                         paymentsClient.loadPaymentData(request),
                         requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+            }
+        }catch (ParseException ex){
+                Timber.e(ex.getMessage());
             }
 
     }
@@ -363,7 +377,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     case Activity.RESULT_OK:
                         PaymentData paymentData = PaymentData.getFromIntent(data);
                         String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
-                        requestPayByGooglePay(paymentToken);
+                        try {
+                            requestPayByGooglePay(paymentToken);
+                        }catch (ParseException ex){
+                            Timber.e(ex.getMessage());
+                        }
+
                         break;
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
@@ -408,8 +427,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
     }
 
-    private void requestPayByGooglePay(String paymentToken){
-        int preAuthPrices = Integer.parseInt(preAuth.replace("$", ""));
+    private void requestPayByGooglePay(String paymentToken) throws ParseException {
+        double preAuthPrices = formatter.parse(preAuth).doubleValue();
         viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
@@ -419,8 +438,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
-                Navigation.findNavController(getView()).popBackStack();
-                Navigation.findNavController(getView()).navigate(action);
+                Navigation.findNavController(requireView()).popBackStack();
+                Navigation.findNavController(requireView()).navigate(action);
             }
         });
     }
