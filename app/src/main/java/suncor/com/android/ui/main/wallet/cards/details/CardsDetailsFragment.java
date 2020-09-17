@@ -283,9 +283,11 @@ public class CardsDetailsFragment extends MainActivityFragment {
             Station station = mainViewModel.getNearestStation().getValue();
             if (station != null) {
                 LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
-                LatLng origin = new LatLng(currentLocation.latitude, currentLocation.longitude);
-                if (station.isStationIndependentDealer() && LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD) {
-                    return true;
+                if (currentLocation != null) {
+                    LatLng origin = new LatLng(currentLocation.latitude, currentLocation.longitude);
+                    if (station.isStationIndependentDealer() && LocationUtils.calculateDistance(dest, origin) < DirectionsResult.ONSITE_THRESHOLD) {
+                        return true;
+                    }
                 }
             }
         }

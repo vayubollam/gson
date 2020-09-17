@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import javax.inject.Inject;
 
 import suncor.com.android.BR;
+import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.SigninResponse;
@@ -86,18 +87,18 @@ public class LoginViewModel extends ViewModel {
                         break;
                     case OTHER_FAILURE:
                         LoginFailResponse failResponse = new LoginFailResponse(
-                                R.string.login_invalid_credentials_dialog_title,
-                                new ErrorMessage(R.string.login_invalid_credentials_dialog_1st_message)
-
+                                R.string.clear_cache_dialog_title,
+                                new ErrorMessage(R.string.clear_cache_dialog_message),
+                                R.string.settings_failure_dialog_button
                         );
-                        failResponse.positiveButtonCallback = () -> navigateToHomeEvent.postValue(Event.newEvent(true));
+                        failResponse.positiveButtonCallback = () ->deleteAppData();
                         loginFailedEvent.postValue(Event.newEvent(failResponse));
+
                         break;
                     case PASSWORD_RESET:
                         createPasswordEvent.postValue(Event.newEvent(response.getAdditionalData()));
                         break;
                 }
-
 
             } else if (result.status == Resource.Status.ERROR) {
                 loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
@@ -108,6 +109,15 @@ public class LoginViewModel extends ViewModel {
         });
     }
 
+    public void deleteAppData() {
+        try {
+            String packageName = BuildConfig.APPLICATION_ID;
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec("pm clear " + packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void setLoginFromEnrollment(boolean loginFromEnrollment) {
         isLoginFromEnrollment = loginFromEnrollment;
     }
@@ -196,12 +206,17 @@ public class LoginViewModel extends ViewModel {
             this.message = message;
             this.negativeButtonCallBack = negativeButtonCallBack;
             this.negativeButtonTitle = negativeButtonTitle;
-
         }
 
         public LoginFailResponse(int title, ErrorMessage message) {
             this.title = title;
             this.message = message;
+        }
+
+        public LoginFailResponse(int title, ErrorMessage message, int customActionTitle) {
+            this.title = title;
+            this.message = message;
+            positiveButtonTitle= customActionTitle;
         }
     }
 

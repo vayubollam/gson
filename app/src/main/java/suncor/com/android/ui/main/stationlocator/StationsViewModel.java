@@ -61,7 +61,7 @@ public class StationsViewModel extends ViewModel {
         filters.observeForever((l) -> {
 
 
-            if (stationsAround == null && stationsAround.getValue() == null && stationsAround.getValue().status == null) {
+            if (stationsAround == null || stationsAround.getValue() == null || stationsAround.getValue().status == null) {
                 return;
             }
 

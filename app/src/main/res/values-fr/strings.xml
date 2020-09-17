@@ -49,6 +49,8 @@
         <item quantity="other">%d heures</item>
     </plurals>
 
+    <string name="clear_cache_dialog_title"></string>
+    <string name="clear_cache_dialog_message">L\'application doit être redémarrée! Nous fermerons l\'application, vous pouvez la rouvrir.</string>
     <string name="favourites_no_result_text">Vous pouvez utiliser vos Favoris pour trouver rapidement le lave-auto que vous aimez ou le dépanneur offrant votre saveur préférée de barbotine.</string>
     <string name="home_nearest_card_title">À proximité</string>
     <string name="suggestions_fragment_nearby_title">À proximité</string>
@@ -212,7 +214,7 @@
     <string name="cards_wag_label">Lavez Partez</string>
     <string name="cards_wag_expanded_label">Carte Lavez Partez</string>
 
-    <string name="customer_support_email">custsvs@suncor.com</string>
+    <string name="customer_support_email">servicealaclientele@petro-canada.ca</string>
     <string name="profile_get_help_call">Appel</string>
     <string name="profile_get_help_email">Courriel</string>
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
