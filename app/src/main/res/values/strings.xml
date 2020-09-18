@@ -4,7 +4,7 @@
     <string name="navigation_stations_tab">Locations</string>
     <string name="navigation_profile_tab">Account</string>
     <string name="enable_location_dialog_title">Enable Location Services</string>
-    <string name="enable_location_dialog_message">Petro-Canada uses locations services to show stations around you.</string>
+    <string name="enable_location_dialog_message">We use your location to show your nearest station, give directions and so you can start the pump and pay for fuel through the app. </string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canada on the go!</string>
@@ -650,4 +650,16 @@
     <string name="privacy_policy_url">https://www.petro-canada.ca/en/legal-privacy</string>
 
     <string name="add_new_payment">Add new</string>
+    <string name="mobile_payment_accepted">Mobile payment</string>
+    <string name="mobile_payment_not_accepted">No mobile payment</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="try_agian">Retry</string>
+    <string name="authorizing">Authorizing…</string>
+    <string name="fueling_up">Fuelling up…</string>
+    <string name="fueling_up_subheader">Please don’t leave pump unattended</string>
+    <string name="fuelling_about_to_begin">Fuelling is about to begin…</string>
+
+    <string name="pump_authorized">Pump %1$s authorized</string>
+    <string name="pump_authorized_subheader">Please lift the nozzle and select a fuel grade</string>
+    <string name="hide">Hide</string>
 </resources>

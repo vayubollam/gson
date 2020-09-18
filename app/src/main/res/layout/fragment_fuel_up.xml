@@ -223,6 +223,48 @@
 
 
         </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            app:visibleGone="@{isLoading}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:text="@string/authorizing"
+                app:autoSizeTextType="uniform"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/authorized_pprogressbar"
+                android:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/authorized_pprogressbar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateTint="@color/red" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_card"
+                android:tint="@color/red" />
+        </RelativeLayout>
+
+
+
+
+
+
     </RelativeLayout>
 
 

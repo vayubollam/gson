@@ -99,6 +99,7 @@ public class SettingsResponse {
         private int otherAmountLowLimit;
         private int geofenceDistanceMeters;
         private HashMap<String,String> preAuthLimits;
+        private String p97TenantID;
 
         public int getGeofenceDistanceMeters() {
             return geofenceDistanceMeters;
@@ -116,6 +117,9 @@ public class SettingsResponse {
             return preAuthLimits;
         }
 
+        public String getP97TenantID() {
+            return p97TenantID;
+        }
     }
 }
 

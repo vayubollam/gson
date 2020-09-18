@@ -20,6 +20,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.HomeNavigationDirections;
@@ -28,6 +30,7 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
@@ -83,6 +86,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 }
             }
         }));
+
     }
 
     @Override
@@ -97,16 +101,18 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding.actionFuelUpButton.setOnClickListener(view -> {
 
             if (activeSession) {
-                // Handle Active session
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("");
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                dismiss();
             }
             else if (!inProximity) {
                 // Handle Offsite navigation
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_nearestStationFragment);
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_nearestStationFragment);
                 dismiss();
             } else {
                 // Handle onsite transaction PAP
                 HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(storeId);
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }
         });
@@ -131,9 +137,10 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         viewModel.getGeoFenceLimit().observe(getViewLifecycleOwner(), result -> this.geoFenceLimit = result );
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                activeSession = result.data.getActiveSession();
+                activeSession = result.data.activeSession;
 
-                binding.actionFuelUpButton.setText(activeSession ? R.string.action_fuelling : R.string.action_fuel_up);
+                binding.actionFuelUpButton.setText(activeSession ?
+                        result.data.status.equals("New") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
                 binding.actionFuelUpButton.setLoading(activeSession);
             } else {
                 activeSession = false;
@@ -154,6 +161,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 inProximity = false;
             }
         });
+      //  ObserverActiveSession();
     }
 
     //This is for fixing bottom sheet dialog not fully extended issue.
@@ -202,4 +210,33 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             }
         });
     }
+
+    private void ObserverActiveSession(){
+        homeViewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(getContext()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                if (result.data.activeSession && result.data.status != null) {
+                    if (result.data.status.equals("New")) {
+                        updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
+                    } else if (result.data.status.equals("BeginFueling")) {
+                        updateFuellingSession(true, getString(R.string.fueling_up));
+                    } else {
+                        //todo handle processing and session end state
+                        updateFuellingSession(true, getString(R.string.fueling_up));
+                    }
+                } else {
+                    updateFuellingSession(false, getString(R.string.action_fuel_up));
+                }
+            }
+        });
+    }
+
+    //Call this method when fuelling state change
+    private void updateFuellingSession(boolean isActiveFuellingSession, String stateMessage){
+        binding.actionFuelUpButton.setLoading(isActiveFuellingSession);
+        binding.actionFuelUpButton.setText(stateMessage);
+    }
+
 }

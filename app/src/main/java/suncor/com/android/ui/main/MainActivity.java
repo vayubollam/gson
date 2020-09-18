@@ -7,8 +7,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -291,4 +289,13 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //todo check
+        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+        if(fragment != null){
+            fragment.onActivityResult(requestCode,resultCode, data );
+        }
+    }
 }

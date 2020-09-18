@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
@@ -11,25 +12,22 @@ import com.worklight.wlclient.api.WLResponseListener;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import suncor.com.android.SuncorApplication;
-import suncor.com.android.data.payments.PaymentsApi;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
-import suncor.com.android.model.payments.AddPayment;
-import suncor.com.android.model.payments.PaymentDetail;
-import suncor.com.android.model.payments.PaymentResponse;
+import suncor.com.android.model.pap.PayByGooglePayRequest;
+import suncor.com.android.model.pap.PayResponse;
+import suncor.com.android.model.pap.PayByWalletRequest;
 import suncor.com.android.utilities.Timber;
 
 public class PapApiImpl implements PapApi {
     private Gson gson;
 
     public PapApiImpl(Gson gson) {
-        this.gson = gson;
+        this.gson = new GsonBuilder().disableHtmlEscaping().create();
     }
 
     @Override
@@ -89,6 +87,74 @@ public class PapApiImpl implements PapApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.d("PAP store details API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest) {
+        Timber.d("request initiate for authorized google pay payment ");
+        MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/PreAuth/PayByGooglePay");
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+
+            request.send(gson.toJson(payByGooglePayRequest),  new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Google Pay authorized payment success, response:\n" + jsonText);
+
+                    PayResponse payResponse = gson.fromJson(jsonText, PayResponse.class);
+                    result.postValue(Resource.success(payResponse));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Google Pay authorized payment API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest payByWalletRequest) {
+        Timber.d("request initiate for authorized wallet payment ");
+        MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/PreAuth/PayByWallet");
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+
+            request.send(gson.toJson(payByWalletRequest),  new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Wallet authorized payment success, response:\n" + jsonText);
+
+                    PayResponse payResponse = gson.fromJson(jsonText, PayResponse.class);
+                    result.postValue(Resource.success(payResponse));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Google Pay authorized payment API failed, " + wlFailResponse.toString());
                     Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }

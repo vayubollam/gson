@@ -80,6 +80,11 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <!-- Enabling this flag is required in order to use the PaymentsClient -->
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
 
     </application>
 

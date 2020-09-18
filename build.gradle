@@ -48,6 +48,7 @@ ext {
     junitVersion = "4.12"
     espressoVersion = "3.1.1"
     runnerVersion = '1.1.1'
+    googleWalletVersion = '18.0.0'
     firebaseAnalyticsVersion = '17.4.4'
 }
 

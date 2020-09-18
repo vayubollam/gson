@@ -32,15 +32,30 @@
             android:layout_marginStart="6dp"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/selected_value"
-                android:textColor="@color/black_80"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:gravity="center"
-                app:autoSizeTextType="uniform"
-                android:visibility="visible" />
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/selected_value"
+                    android:textColor="@color/black_80"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/google_pay"
+                    android:layout_width="75dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:src="@drawable/googlepay_mark"/>
+
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/selected_subheader_value"
@@ -50,6 +65,7 @@
                 android:textSize="14sp"
                 app:autoSizeTextType="uniform"
                 android:visibility="gone"/>
+
         </LinearLayout>
 
             <ImageButton

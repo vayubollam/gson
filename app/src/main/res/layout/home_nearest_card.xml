@@ -15,7 +15,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/station_card"
         android:layout_width="match_parent"
-        android:layout_height="186dp"
+        android:layout_height="wrap_content"
         android:clipChildren="false"
         app:cardCornerRadius="@dimen/cards_default_radius"
         app:cardElevation="2dp"
@@ -26,9 +26,9 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:padding="16dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:visibleGone="@{vm.nearestStation.status == Resource.Status.SUCCESS &amp;&amp; vm.nearestStation.data!=null }"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/station_title_text"
@@ -37,16 +37,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gibson_semibold"
                 android:text="@string/home_nearest_card_title" />
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_below="@id/station_title_text"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="33dp"
-                android:layout_toRightOf="@id/img_car_station"
-                app:visibleGone="@{vm.nearestStation.data.distanceDuration==null}" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_address_station"
@@ -82,6 +72,16 @@
                 android:layout_below="@+id/img_address_station"
                 android:layout_marginTop="10dp"
                 app:srcCompat="@drawable/ic_car" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_below="@id/station_title_text"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="33dp"
+                android:layout_toRightOf="@id/img_car_station"
+                app:visibleGone="@{vm.nearestStation.data.distanceDuration==null}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/distance_text"
@@ -124,12 +124,45 @@
                 android:text="@{vm.nearestStation.data.isOpen24Hrs()?@string/station_open_24hrs:vm.nearestStation.data.isOpen()?@string/station_open_generic(vm.nearestStation.data.getCloseHour()) : @string/station_closed}"
                 tools:text="Open, closes at 12:00 AM" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_mobile_payment"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_below="@+id/open_hours_text"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/ic_check" />
+
+            <ProgressBar
+                android:id="@+id/mobile_payment_progress_bar"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_below="@id/txt_station_open"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/img_mobile_payment" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mobile_payment_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_station_open"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/img_mobile_payment"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textAppearance="@style/Caption1"
+                android:text="@string/mobile_payment_accepted"
+                android:visibility="gone"
+                tools:text="Mobile Payment" />
+
             <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/directions_button"
                 style="@style/LinkButton.Red.M"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/open_hours_text"
+                android:layout_below="@+id/mobile_payment_Text"
                 android:layout_marginLeft="-8dp"
                 android:layout_marginTop="10dp"
                 android:onClick="@{v -> vm.openNavigationApps()}"
@@ -142,12 +175,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:background="@color/white"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="16dp"
             app:visibleGone="@{!vm.locationServiceEnabled}"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -178,14 +212,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:background="@color/white"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="16dp"
             android:visibility="gone"
             app:visibleGone="@{(vm.nearestStation.status == Resource.Status.SUCCESS &amp;&amp; vm.nearestStation.data==null) || (vm.nearestStation.status == Resource.Status.ERROR &amp;&amp; vm.locationServiceEnabled) }"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -220,17 +255,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:background="@color/white"
             android:orientation="vertical"
             android:visibility="gone"
-            app:visibleGone="@{vm.isLoading &amp;&amp; vm.locationServiceEnabled}">
+            app:visibleGone="@{vm.isLoading &amp;&amp; vm.locationServiceEnabled}"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
                 android:fontFamily="@font/gibson_semibold"
                 android:text="@string/home_nearest_loading_title"
                 android:textAppearance="@style/Body" />
@@ -239,7 +277,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

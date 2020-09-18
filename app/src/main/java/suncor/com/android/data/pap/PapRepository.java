@@ -11,6 +11,9 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
+import suncor.com.android.model.pap.PayByGooglePayRequest;
+import suncor.com.android.model.pap.PayResponse;
+import suncor.com.android.model.pap.PayByWalletRequest;
 
 @Singleton
 public class PapRepository {
@@ -50,4 +53,15 @@ public class PapRepository {
     public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
         return papApi.storeDetails(storeId);
     }
+
+
+    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest) {
+        return papApi.authorizePaymentByGooglePay(payByGooglePayRequest);
+    }
+
+
+    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request) {
+        return papApi.authorizePaymentByWallet(request);
+    }
+
 }

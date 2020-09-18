@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
@@ -24,13 +25,13 @@ import suncor.com.android.uicomponents.R;
 import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
+import suncor.com.android.utilities.Timber;
 
 
 public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = FuelLimitDropDownAdapter.class.getSimpleName();
     private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
-
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
@@ -92,9 +93,9 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
                     selectedPos =  Integer.parseInt(position) - 1;
                     if(listener != null) {
-                        listener.onSelectValue(formatter.format(value), null);
+                        listener.onSelectValue(formatter.format(Double.valueOf(value)), null);
                     }
-                    callbackListener.onPreAuthChanged(formatter.format(value));
+                    callbackListener.onPreAuthChanged(formatter.format(Double.valueOf(value)));
                 }
             });
             if(selectedPos == 0){
@@ -132,11 +133,11 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         this.listener = listener;
     }
 
-    public void setSelectedPosfromValue(String value) {
+    public void setSelectedPosfromValue(double value) {
         int index = 0;
 
         for (String price : childList.values()) {
-            if (price.equals(value)) {
+            if (Double.parseDouble(price) == value) {
                 selectedPos = index;
                 break;
             }
@@ -145,7 +146,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
         if (index >= childList.size() - 1) {
             selectedPos = childList.size() - 1;
-            manualValue = Double.parseDouble(value);
+            manualValue = value;
+
         }
 
         notifyDataSetChanged();
@@ -243,7 +245,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                             callbackListener.onPreAuthChanged(formatter.format(manualValue));
                         }
                     } catch (NumberFormatException ex){
-                        Log.e(TAG, "enter invalid number");
+                        Timber.e(TAG, "enter invalid number");
                     }
                 }
             });
