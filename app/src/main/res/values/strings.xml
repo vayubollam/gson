@@ -4,7 +4,7 @@
     <string name="navigation_stations_tab">Locations</string>
     <string name="navigation_profile_tab">Account</string>
     <string name="enable_location_dialog_title">Enable Location Services</string>
-    <string name="enable_location_dialog_message">Petro-Canada uses locations services to show stations around you.</string>
+    <string name="enable_location_dialog_message">We use your location to show your nearest station, give directions and so you can start the pump and pay for fuel through the app. </string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canada on the go!</string>
