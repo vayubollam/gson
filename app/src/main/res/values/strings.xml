@@ -192,7 +192,7 @@
     <string name="profile_faq_get_help_title">Get Help</string>
     <string name="profile_top_questions">Top Questions</string>
     <string name="profile_get_help_footer">Need help? Get in touch with us.</string>
-    <string name="customer_support_email">custsvs@suncor.com</string>
+    <string name="customer_support_email">customerservice@petro-canada.ca</string>
     <string name="profile_get_help_call">Call</string>
     <string name="profile_get_help_email">Email</string>
     <string name="navigation_cards_tab">Wallet</string>
@@ -263,6 +263,7 @@
     <string name="cards_ppts_label">Petro-Points</string>
     <string name="cards_fsr_balance_conversion">Save %d¢ per litre</string>
     <string name="cards_ppc_balance_conversion">Save %d¢ per litre</string>
+    <string name="cards_ppts_description">Trouble scanning? Swipe up or down to try a different version of the code.</string>
     <string name="cards_fsr_description">Our Fuel Savings Rewards card helps you save %d¢ per litre on 200 litres of fuel.\n\u2014\nReload your card at petro-points.com.</string>
     <string name="cards_wag_description">Use at participating GlideWash and SuperWash locations.</string>
     <string name="cards_zero_balance_description">\u2014\nReload on <a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">petro-canada.ca</a>.</string>
@@ -432,6 +433,8 @@
     <string name="settings_failure_dialog_title">We can\'t load the app</string>
     <string name="settings_failure_dialog_message" translatable="false">Try again in a few minutes.</string>
     <string name="settings_failure_dialog_button">Close app</string>
+    <string name="clear_cache_dialog_title"></string>
+    <string name="clear_cache_dialog_message">Hey, the app needs to be restarted! We\'ll shut down, you can start it up again.</string>
     <string name="sign_enable_fp_title">Enable fingerprint?</string>
     <string name="sign_enable_fb_message">Sign in faster next time by using your fingerprint.</string>
     <string name="sign_enable_fb_possitive_button">Enable</string>
