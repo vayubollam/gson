@@ -450,28 +450,27 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
         switch (errorCode.toUpperCase()){
             case ErrorCodes.ERR_TRANSACTION_FAILS:
-                 transactionFailsAlert(getContext()).show();
+                transactionFailsAlert(getContext()).show();
                 break;
             case ErrorCodes.ERR_PUMP_RESERVATION_FAILS:
                 pumpReservationFailsAlert(getContext()).show();
                 break;
             default:
-                Alerts.prepareGeneralErrorDialog(getContext()).show();
+                Alerts.prepareCustomDialog("Backend error", "A backend error has occurred.", getContext(), (dialogInterface, i) -> {
+                    dialogInterface.dismiss();}).show();
                 break;
         }
     }
-
 
     //todo update content
     private  AlertDialog transactionFailsAlert(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(R.string.msg_e001_title )
-                .setMessage( R.string.msg_e001_message)
+                .setTitle("Transaction failed")
+                .setMessage("Payment failed")
                 .setNegativeButton(R.string.cancel, ((dialog, i) -> {
                     dialog.dismiss();
                 }))
-
                 .setPositiveButton(R.string.msg_001_dialog_try_again, (dialog, which) -> {
                     verifyFingerPrints();
                     dialog.dismiss();
@@ -483,8 +482,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private  AlertDialog pumpReservationFailsAlert(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(R.string.msg_e001_title )
-                .setMessage(  R.string.msg_e001_message)
+                .setTitle("Reservation failed")
+                .setMessage("Unable to reserve pump. Select a different pump.")
                 .setPositiveButton(R.string.ok, ((dialog, i) -> {
                     dialog.dismiss();
                     binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
