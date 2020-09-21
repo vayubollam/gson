@@ -21,15 +21,17 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
     private int basePoints;
     private int bonusPoints;
     private int totalPoints;
+    private int redeemPoints;
     private float purchaseAmount;
 
-    public Transaction(TransactionType transactionType, String date, String rewardDescription, String locationAddress, int basePoints, int bonusPoints, int totalPoints, float purchaseAmount) {
+    public Transaction(TransactionType transactionType, String date, String rewardDescription, String locationAddress, int basePoints, int bonusPoints, int redeemPoints,int totalPoints, float purchaseAmount) {
         this.transactionType = transactionType;
         this.date = date;
         this.rewardDescription = rewardDescription;
         this.locationAddress = locationAddress;
         this.basePoints = basePoints;
         this.bonusPoints = bonusPoints;
+        this.redeemPoints = redeemPoints;
         this.totalPoints = totalPoints;
         this.purchaseAmount = purchaseAmount;
     }
@@ -92,6 +94,14 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
 
     public void setBonusPoints(int bonusPoints) {
         this.bonusPoints = bonusPoints;
+    }
+
+    public int getRedeemPoints() {
+        return redeemPoints;
+    }
+
+    public void setRedeemPoints(int redeemPoints) {
+        this.redeemPoints = redeemPoints;
     }
 
     public int getTotalPoints() {
@@ -179,7 +189,9 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
         @SerializedName("transfer")
         PARTNER_POINTS_TRANSFER,
         @SerializedName("points")
-        PETRO_POINTS
+        PETRO_POINTS,
+        @SerializedName("void")
+            VOID
     }
 
     protected Transaction(Parcel in) {
