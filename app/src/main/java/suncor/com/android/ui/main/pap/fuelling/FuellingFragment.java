@@ -24,6 +24,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 
 public class FuellingFragment extends MainActivityFragment {
@@ -100,8 +101,9 @@ public class FuellingFragment extends MainActivityFragment {
                 } else if (result.status == Resource.Status.ERROR) {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-
-                    if (result.data.status != null) {
+                    if(!result.data.activeSession){
+                        observeTransactionData(result.data.lastTransId);
+                    } else if (result.data.status != null) {
                         binding.pumpAuthorizedText.setText(result.data.status.equals("New") ?
                                 getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));
                         binding.pumpAuthorizedSubheader.setText(result.data.status.equals("New") ?
@@ -126,6 +128,12 @@ public class FuellingFragment extends MainActivityFragment {
             }
         }
     };
+
+    private void observeTransactionData(String transactionId){
+        FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId);
+        Navigation.findNavController(requireView()).popBackStack();
+        Navigation.findNavController(requireView()).navigate(action);
+    }
 
     public void stopFuellingActiveSessionObserver() {
         pingActiveSessionStarted = false;

@@ -14,6 +14,7 @@ import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.PayByWalletRequest;
+import suncor.com.android.model.pap.transaction.Transaction;
 
 @Singleton
 public class PapRepository {
@@ -52,6 +53,11 @@ public class PapRepository {
 
     public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
         return papApi.storeDetails(storeId);
+    }
+
+
+    public LiveData<Resource<Transaction>> getTransactionDetails(String trasnsactionid) {
+       return papApi.getTransactionDetails(trasnsactionid);
     }
 
 

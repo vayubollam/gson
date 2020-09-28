@@ -659,4 +659,18 @@
     <string name="pump_authorized">Pump %1$s authorized</string>
     <string name="pump_authorized_subheader">Please lift the nozzle and select a fuel grade</string>
     <string name="hide">Hide</string>
+
+    <string name="transaction_ppt_lbl">PETRO-POINTS</string>
+    <string name="transaction_copy_receipt_send_mail">A copy of your receipt has been sent to your email.</string>
+    <string name="transaction_saved">You saved %1$s</string>
+    <string name="transaction_summary">Your Transaction Summary</string>
+
+    <string name="transaction">Transaction</string>
+    <string name="transaction_details">DETAILS</string>
+    <string name="traansaction_date">Date</string>
+    <string name="transaction_payment_type">Payment type</string>
+    <string name="transaction_tax_inclusive">Tax incl.</string>
+    <string name="transaction_your_rbc_savings">Your RBC savings</string>
+
+
 </resources>

@@ -597,6 +597,17 @@
             android:name="pumpNumber"
             app:argType="string"/>
     </action>
+
+    <action
+        android:id="@+id/action_fuelling_to_ReceiptFragment"
+        app:destination="@id/receiptFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popExitAnim="@anim/fade_out" >
+        <argument
+            android:name="transactionId"
+            app:argType="string"/>
+    </action>
     <keep_state_fragment
         android:id="@+id/nearestStationFragment"
         android:name="suncor.com.android.ui.main.stationlocator.NearestStationFragment"
@@ -644,6 +655,18 @@
             android:defaultValue="null"
             app:argType="string"
             app:nullable="true"/>
+
+        <action
+            android:id="@+id/action_fuelling_to_ReceiptFragment"
+            app:destination="@id/receiptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" >
+            <argument
+                android:name="transactionId"
+                app:argType="string"/>
+        </action>
+
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -683,5 +706,29 @@
                 android:name="pumpNumber"
                 app:argType="string"/>
         </action>
+
+        <action
+            android:id="@+id/action_fuelling_to_ReceiptFragment"
+            app:destination="@id/receiptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" >
+            <argument
+                android:name="transactionId"
+                app:argType="string"/>
+        </action>
     </keep_state_fragment>
+
+
+    <keep_state_fragment
+        android:id="@+id/receiptFragment"
+        android:name="suncor.com.android.ui.main.pap.receipt.ReceiptFragment"
+        android:label="ReceiptFragment">
+        <argument
+            android:name="transactionId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="false"/>
+    </keep_state_fragment>
+
 </navigation>
