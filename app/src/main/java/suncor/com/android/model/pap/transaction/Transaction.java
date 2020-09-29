@@ -1,4 +1,139 @@
 package suncor.com.android.model.pap.transaction;
 
-class Transaction {
+
+import java.util.List;
+
+public class Transaction {
+
+    private String transactionId;
+    private Address address;
+    private String storeName;
+    private String merchantId;
+    private String authCode;
+    private String cardType;
+    private String lastFour;
+    private String posDatetimeUtc;
+    private String posDatetimeLocal;
+    private String formattedPosDatetimeLocal;
+    private String timeZone;
+    private long utcOffsetSeconds;
+    private double totalAmount;
+    private double totalDiscount;
+    private String currency;
+    private double subtotal;
+
+    private double taxAmount;
+    private String formattedTotalDiscounts;
+    private String formattedSubtotal;
+    private String formattedTax;
+    private String formattedTotal;
+    private List<LineItem> lineItems;
+
+    private List<String> receiptData;
+    private String terminalType;
+    private String fuelBrand;
+    private String appChannel;
+    private String appDisplayName;
+    private String basketPaymentState;
+    private String storeTenantId;
+    private String storeTenantName;
+    private String storeNumber;
+    private String posTransactionId;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public String getLastFour() {
+        return lastFour;
+    }
+
+    public String getFormattedPosDatetimeLocal() {
+        return formattedPosDatetimeLocal;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getFormattedTotalDiscounts() {
+        return formattedTotalDiscounts;
+    }
+
+    public String getFormattedSubtotal() {
+        return formattedSubtotal;
+    }
+
+    public String getFormattedTax() {
+        return formattedTax;
+    }
+
+    public String getFormattedTotal() {
+        return formattedTotal;
+    }
+
+    public List<LineItem> getLineItems() {
+        return lineItems;
+    }
+
+    public String getFuelBrand() {
+        return fuelBrand;
+    }
+
+    public String getAppChannel() {
+        return appChannel;
+    }
+
+    public String getAppDisplayName() {
+        return appDisplayName;
+    }
+
+    public String getBasketPaymentState() {
+        return basketPaymentState;
+    }
+
+    public String getReceipt() {
+        StringBuilder sb = new StringBuilder();
+        receiptData.forEach(data-> sb.append(data).append("<br>") );
+        return sb.toString();
+    }
+
+    public static class Address {
+        private String streetAddress;
+        private String city;
+        private String stateCode;
+        private String postalCode;
+        private String countryIsoCode;
+
+        public String getStreetAddress() {
+            return streetAddress;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public String getStateCode() {
+            return stateCode;
+        }
+
+        public String getPostalCode() {
+            return postalCode;
+        }
+
+        public String getCountryIsoCode() {
+            return countryIsoCode;
+        }
+    }
+
+
+
 }
