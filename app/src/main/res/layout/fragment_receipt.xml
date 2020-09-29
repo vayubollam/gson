@@ -95,7 +95,7 @@
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="@color/red"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -110,30 +110,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="16dp"
             app:cardElevation="12dp"
-            app:contentPadding="16dp"
+            app:contentPadding="20dp"
             app:cardUseCompatPadding="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="15dp"
+                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:text="@string/transaction_summary"
-                    android:textColor="@color/black_80"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:visibility="visible" />
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/transaction_summary"
+                        style="@style/Title2" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/share_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_share"/>
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"

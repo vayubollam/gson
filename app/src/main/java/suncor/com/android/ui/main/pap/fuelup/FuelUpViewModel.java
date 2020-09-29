@@ -137,8 +137,4 @@ public class FuelUpViewModel extends ViewModel {
         return papRepository.authorizePaymentByWallet(request);
     }
 
-    public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId) {
-       return papRepository.getTransactionDetails(transactionId);
-    }
-
 }

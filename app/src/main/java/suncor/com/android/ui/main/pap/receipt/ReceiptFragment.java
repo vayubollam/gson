@@ -1,18 +1,21 @@
 package suncor.com.android.ui.main.pap.receipt;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -22,11 +25,11 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
+import suncor.com.android.utilities.PdfUtil;
 
 public class ReceiptFragment extends MainActivityFragment {
 
-    private FuelUpViewModel viewModel;
+    private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
     private String transactionId;
 
@@ -39,7 +42,7 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ReceiptViewModel.class);
     }
 
     @Nullable
@@ -78,8 +81,29 @@ public class ReceiptFragment extends MainActivityFragment {
 
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                binding.receiptDetails.setText(fromHtml(result.data.getReceipt()));
+                binding.receiptDetails.setText(result.data.getReceipt());
                 binding.setTransaction(result.data);
+
+                binding.shareButton.setOnClickListener(v -> {
+                    File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
+
+                    // TODO: Create error handling
+                    if (pdfFile == null) return;
+
+                    Uri pdfUri;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        pdfUri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName() + ".provider", pdfFile);
+                    } else {
+                        pdfUri = Uri.fromFile(pdfFile);
+                    }
+
+                    Intent share = new Intent();
+                    share.setAction(Intent.ACTION_SEND);
+                    share.setType("application/pdf");
+                    share.putExtra(Intent.EXTRA_STREAM, pdfUri);
+                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(Intent.createChooser(share, "Share"));
+                });
             }
         });
     }
@@ -87,17 +111,5 @@ public class ReceiptFragment extends MainActivityFragment {
     private void goBack() {
         NavController navController = Navigation.findNavController(getView());
         navController.popBackStack();
-    }
-
-
-    @SuppressWarnings("deprecation")
-    public static Spanned fromHtml(String html){
-        Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            result = Html.fromHtml(html);
-        }
-        return result;
     }
 }

@@ -5,64 +5,66 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+
+import static android.os.Environment.DIRECTORY_DOCUMENTS;
 
 public class PdfUtil {
-    static public void createPdf(Context context, String sometext){
+    static public File createPdf(Context context, List<String> data, String fileName){
         // create a new document
         PdfDocument document = new PdfDocument();
 
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+
+        float height = paint.descent() - paint.ascent();
+        float width = 0;
+        for (String line: data) {
+            float tempWidth = paint.measureText(line);
+
+            if (tempWidth > width)
+                width = tempWidth;
+        }
+
         // crate a page description
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(300, 600, 1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
+                Math.round(width) + 20,
+                Math.round(data.size() * height) + 100,
+                1
+        ).create();
 
         // start a page
         PdfDocument.Page page = document.startPage(pageInfo);
         Canvas canvas = page.getCanvas();
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        canvas.drawCircle(50, 50, 30, paint);
-        paint.setColor(Color.BLACK);
-        canvas.drawText(sometext, 80, 50, paint);
+
+        int x = 10, y = 50;
+        for (String line: data) {
+            canvas.drawText(line, x, y, paint);
+            y += height;
+        }
 
         // finish the page
         document.finishPage(page);
 
-        // draw text on the graphics object of the page
-
-        // Create Page 2
-        pageInfo = new PdfDocument.PageInfo.Builder(300, 600, 2).create();
-        page = document.startPage(pageInfo);
-        canvas = page.getCanvas();
-        paint = new Paint();
-        paint.setColor(Color.BLUE);
-        canvas.drawCircle(100, 100, 100, paint);
-        document.finishPage(page);
-
         // write the document content
-        String directory_path = Environment.getExternalStorageDirectory().getPath() + "/mypdf/";
-        File file = new File(directory_path);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-
-        String targetPdf = directory_path+"test-2.pdf";
+        String targetPdf = context.getExternalFilesDir(DIRECTORY_DOCUMENTS).getPath() + "/" + fileName + ".pdf";
         File filePath = new File(targetPdf);
 
         try {
             document.writeTo(new FileOutputStream(filePath));
-            Toast.makeText(context, "Done", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.e("main", "error "+e.toString());
-            Toast.makeText(context, "Something wrong: " + e.toString(),  Toast.LENGTH_LONG).show();
+            return null;
         }
 
         // close the document
         document.close();
+
+        return filePath;
     }
 }

@@ -29,7 +29,7 @@ public class Transaction {
     private String formattedTotal;
     private List<LineItem> lineItems;
 
-    private List<String> receiptData;
+    public List<String> receiptData;
     private String terminalType;
     private String fuelBrand;
     private String appChannel;
@@ -102,7 +102,7 @@ public class Transaction {
 
     public String getReceipt() {
         StringBuilder sb = new StringBuilder();
-        receiptData.forEach(data-> sb.append(data).append("<br>") );
+        receiptData.forEach(data-> sb.append(data).append("\n") );
         return sb.toString();
     }
 
