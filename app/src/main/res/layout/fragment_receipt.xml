@@ -71,7 +71,8 @@
                                 android:layout_marginTop="10dp"
                                 android:text="@string/transaction_copy_receipt_send_mail"
                                 android:textAlignment="center"
-                                style="@style/Body2"/>
+                                style="@style/Body2"
+                                android:lineSpacingMultiplier="1.25"/>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
