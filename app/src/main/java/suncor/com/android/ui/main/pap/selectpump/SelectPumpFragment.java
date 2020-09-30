@@ -26,6 +26,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.fuelling.FuellingFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -116,7 +117,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     @Override
     public void selectPumpNumber(String pumpNumber) {
         new Handler().postDelayed(() -> {
-            HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
+           HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
         }, 200);

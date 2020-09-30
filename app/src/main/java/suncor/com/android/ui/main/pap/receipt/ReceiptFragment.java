@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -32,6 +33,7 @@ public class ReceiptFragment extends MainActivityFragment {
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
     private String transactionId;
+    private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
     SessionManager sessionManager;
@@ -52,7 +54,7 @@ public class ReceiptFragment extends MainActivityFragment {
         binding.setLifecycleOwner(this);
         binding.setContext(getContext());
         binding.setTransaction(null);
-
+        binding.setIsLoading(isLoading);
         return binding.getRoot();
     }
 
@@ -61,6 +63,12 @@ public class ReceiptFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
         transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
         observeTransactionData(transactionId);
+        binding.viewReceiptBtn.setOnClickListener((v) -> {
+            binding.receiptLayout.setVisibility(View.VISIBLE);
+            v.setVisibility(View.GONE);
+        });
+        binding.buttonDone.setOnClickListener(view1 -> goBack());
+        binding.failsDone.setOnClickListener(view1 -> goBack());
     }
 
     @Override
@@ -76,10 +84,12 @@ public class ReceiptFragment extends MainActivityFragment {
     private void observeTransactionData(String transactionId){
         viewModel.getTransactionDetails(transactionId).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
-
+                isLoading.set(true);
             } else if (result.status == Resource.Status.ERROR) {
-
+                isLoading.set(false);
+                binding.errorView.setVisibility(View.VISIBLE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                isLoading.set(false);
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 binding.receiptDetails.setText(result.data.getReceipt());
                 binding.setTransaction(result.data);
