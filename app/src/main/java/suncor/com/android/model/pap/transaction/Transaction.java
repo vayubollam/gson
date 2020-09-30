@@ -1,7 +1,14 @@
 package suncor.com.android.model.pap.transaction;
 
+import android.content.Context;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import suncor.com.android.R;
 
 public class Transaction {
 
@@ -103,6 +110,24 @@ public class Transaction {
     public String getReceipt() {
         StringBuilder sb = new StringBuilder();
         receiptData.forEach(data-> sb.append(data).append("<br>") );
+        return sb.toString();
+    }
+
+    public String getFormattedDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = null;
+        try {
+            date = dateFormat.parse(posDatetimeUtc);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return DateFormat.getDateInstance(DateFormat.LONG).format(date);
+    }
+
+    public String getPaymentType(Context context){
+        StringBuilder sb = new StringBuilder(cardType);
+        sb.append(" ");
+        sb.append(context.getString(R.string.payment_card_number, lastFour.replaceAll("[^\\d]", "")));
         return sb.toString();
     }
 
