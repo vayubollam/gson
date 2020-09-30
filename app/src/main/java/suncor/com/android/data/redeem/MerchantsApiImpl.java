@@ -22,7 +22,7 @@ import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.utilities.Timber;
 
 public class MerchantsApiImpl implements MerchantsApi {
-    private final static String ADAPTER_PATH = "/adapters/suncorreloadredeem/v1/merchants";
+    private final static String ADAPTER_PATH = "/adapters/suncorreloadredeem/v2/rfmp-secure/merchants";
     private Gson gson;
 
     public MerchantsApiImpl(Gson gson) {

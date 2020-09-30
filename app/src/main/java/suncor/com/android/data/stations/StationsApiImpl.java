@@ -26,7 +26,7 @@ import suncor.com.android.utilities.Timber;
 @Singleton
 public class StationsApiImpl implements StationsApi {
 
-    private static final String BASE_PATH = "/adapters/suncor/v2/locations";
+    private static final String BASE_PATH = "/adapters/suncor/v3/rfmp-secure/locations";
     private Gson gson;
 
     public StationsApiImpl(Gson gson) {

@@ -25,7 +25,7 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Timber;
 
 public class CardsApiImpl implements CardsApi {
-    private final static String ADAPTER_PATH3 = "/adapters/suncor/v3/cards";
+    private final static String ADAPTER_PATH3 = "/adapters/suncor/v4/rfmp-secure/cards";
     private Gson gson;
 
     public CardsApiImpl(Gson gson) {

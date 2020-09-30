@@ -191,7 +191,7 @@ public class SessionManager implements SessionChangeListener {
     private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
         try {
             //We use 30s as the timeout for this request, as it times out a lot, and causes logout
-            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v4/profiles"), WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v5/rfmp-secure/profiles"), WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
