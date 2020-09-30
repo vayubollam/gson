@@ -650,7 +650,7 @@
     <string name="mobile_payment_accepted">Mobile payment</string>
     <string name="mobile_payment_not_accepted">No mobile payment</string>
     <string name="google_pay">Google Pay</string>
-    <string name="try_agian">Retry</string>
+    <string name="try_agian">Try again</string>
     <string name="authorizing">Authorizing…</string>
     <string name="fueling_up">Fuelling up…</string>
     <string name="fueling_up_subheader">Please don’t leave pump unattended</string>
@@ -677,6 +677,12 @@
 
     <string name="receipt_fetch_fail">Receipt Fetching Fails!!</string>
 
+    <!-- Payment  -->
+    <string name="pump_unavailable_title">Pump is unavailable</string>
+    <string name="pump_unavailable_message">Select another pump to fuel your vehicle.</string>
 
+    <string name="payment_failed_title">Payment failed</string>
+    <string name="payment_failed_message">We had trouble processing your payment.</string>
+    <string name="payment_failed_cancel">Cancel</string>
 
 </resources>
