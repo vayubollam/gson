@@ -21,16 +21,18 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
     private int basePoints;
     private int bonusPoints;
     private int totalPoints;
-    private int redeemPoints;
+    private String redeemPoints;
+    private int redeemPointsInt;
     private float purchaseAmount;
 
-    public Transaction(TransactionType transactionType, String date, String rewardDescription, String locationAddress, int basePoints, int bonusPoints, int redeemPoints,int totalPoints, float purchaseAmount) {
+    public Transaction(TransactionType transactionType, String date, String rewardDescription, String locationAddress, int basePoints, int redeemPointsInt, int bonusPoints, String redeemPoints, int totalPoints, float purchaseAmount) {
         this.transactionType = transactionType;
         this.date = date;
         this.rewardDescription = rewardDescription;
         this.locationAddress = locationAddress;
         this.basePoints = basePoints;
         this.bonusPoints = bonusPoints;
+        this.redeemPointsInt = redeemPointsInt;
         this.redeemPoints = redeemPoints;
         this.totalPoints = totalPoints;
         this.purchaseAmount = purchaseAmount;
@@ -96,13 +98,19 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
         this.bonusPoints = bonusPoints;
     }
 
-    public int getRedeemPoints() {
-        return redeemPoints;
+    public int getRedeemPointsInt() {
+        if (redeemPoints != null) {
+            return Integer.parseInt(redeemPoints);
+        } else
+            return 0;
     }
 
-    public void setRedeemPoints(int redeemPoints) {
-        this.redeemPoints = redeemPoints;
+    public String getRedeemPoints() {
+        return redeemPoints;
     }
+//    public void setRedeemPointsInt(int redeemPoints) {
+//        this.redeemPoints = ;
+//    }
 
     public int getTotalPoints() {
         return totalPoints;
@@ -175,8 +183,6 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
         dest.writeInt(totalPoints);
         dest.writeFloat(purchaseAmount);
     }
-
-
     public enum TransactionType {
         @SerializedName("redemption")
         REDEMPTION,

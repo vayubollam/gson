@@ -81,18 +81,14 @@ public class TransactionDetail {
 
 
     public String getFormattedRedeemPoints() {
-        String redeemPoint = NumberFormat.getNumberInstance(Locale.getDefault()).format(transaction.getRedeemPoints());
+        String redeemPoint = NumberFormat.getNumberInstance(Locale.getDefault()).format(transaction.getRedeemPointsInt());
+
         switch (transaction.getTransactionType()) {
-            case PURCHASE:
-            case CUSTOMER_SERVICE_ADJ:
-            case BONUS:
-            case VOID:
-            case PETRO_POINTS:
-            case PARTNER_POINTS_TRANSFER:
+
             case REDEMPTION:
                 return redeemPoint;
             default:
-                return redeemPoint;
+                return "";
         }
     }
 
