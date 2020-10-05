@@ -12,6 +12,7 @@ import android.view.animation.RotateAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -34,6 +35,7 @@ public class FuellingFragment extends MainActivityFragment {
     private String pumpNumber;
 
     private boolean pingActiveSessionStarted = false;
+    private ObservableBoolean isLoading = new ObservableBoolean(false);
     private Handler handler = new Handler();
 
     @Inject
@@ -50,7 +52,7 @@ public class FuellingFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFuellingBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-
+        binding.setIsLoading(isLoading);
         return binding.getRoot();
     }
 

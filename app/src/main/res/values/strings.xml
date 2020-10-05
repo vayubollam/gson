@@ -661,7 +661,7 @@
     <string name="hide">Hide</string>
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
-    <string name="transaction_copy_receipt_send_mail">A copy of your receipt has been sent to your email.</string>
+    <string name="transaction_copy_receipt_send_mail">Share your receipt or access your details in your account.</string>
     <string name="transaction_saved">You saved %1$s</string>
     <string name="transaction_summary">Your Transaction Summary</string>
 
@@ -674,8 +674,7 @@
     <string name="transaction_base_points_eaarned">Base Points Earned</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">View Receipt</string>
-
-    <string name="receipt_fetch_fail">Receipt Fetching Fails!!</string>
+    <string name="your_transaction_availble_in_your_account">Your transaction details are available in your account. </string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Pump is unavailable</string>
@@ -684,5 +683,6 @@
     <string name="payment_failed_title">Payment failed</string>
     <string name="payment_failed_message">We had trouble processing your payment.</string>
     <string name="payment_failed_cancel">Cancel</string>
+
 
 </resources>
