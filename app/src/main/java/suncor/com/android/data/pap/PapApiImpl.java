@@ -169,12 +169,12 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<Transaction>> getTransactionDetails(String  transactionID) {
+    public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId) {
         Timber.d("request initiate for fetch transaction details ");
         MutableLiveData<Resource<Transaction>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/transactionInfo/" + transactionID);
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/transactionInfo/" + transactionId);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {
@@ -189,6 +189,38 @@ public class PapApiImpl implements PapApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.d("Transaction details fetch API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<Transaction>> cancelTransaction(String transactionId) {
+        Timber.d("request initiate for cancel transaction");
+        MutableLiveData<Resource<Transaction>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/transaction/cancel/" + transactionId);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+
+            request.send( new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Cancel transaction success, response:\n" + jsonText);
+                    Transaction transaction = gson.fromJson(jsonText, Transaction.class);
+                    result.postValue(Resource.success(transaction));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Cancel transaction API failed, " + wlFailResponse.toString());
                     Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }

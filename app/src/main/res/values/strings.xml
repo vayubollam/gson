@@ -653,6 +653,7 @@
     <string name="try_agian">Retry</string>
     <string name="authorizing">Authorizing…</string>
     <string name="fueling_up">Fuelling up…</string>
+    <string name="cancelling">Cancelling…</string>
     <string name="fueling_up_subheader">Please don’t leave pump unattended</string>
     <string name="fuelling_about_to_begin">Fuelling is about to begin…</string>
 
