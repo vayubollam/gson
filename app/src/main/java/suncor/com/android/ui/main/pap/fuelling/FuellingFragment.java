@@ -12,6 +12,7 @@ import android.view.animation.RotateAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,6 +36,7 @@ public class FuellingFragment extends MainActivityFragment {
     private String transactionId;
 
     private boolean pingActiveSessionStarted = false;
+    private ObservableBoolean isLoading = new ObservableBoolean(true);
     private Handler handler = new Handler();
 
     @Inject
@@ -51,7 +53,7 @@ public class FuellingFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFuellingBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-
+        binding.setIsLoading(isLoading);
         return binding.getRoot();
     }
 
@@ -82,7 +84,7 @@ public class FuellingFragment extends MainActivityFragment {
                         binding.cancelLayout.setVisibility(View.GONE);
                         Alerts.prepareGeneralErrorDialog(getContext()).show();
                     } else if (result.status == Resource.Status.SUCCESS) {
-                        goBack();
+                        //goBack();
                     }
                 });
             }
@@ -109,7 +111,18 @@ public class FuellingFragment extends MainActivityFragment {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
-                        observeTransactionData(result.data.lastTransId);
+                        if (result.data.lastStatus.equals("Cancelled")) {
+                            Alerts.prepareCustomDialog(
+                                    getString(R.string.cancellation_alert_title),
+                                    getString(R.string.cancellation_alert_body),
+                                    getContext(),
+                                    (dialogInterface, i) -> {
+                                        dialogInterface.dismiss();
+                                        goBack();
+                                    }).show();
+                        } else {
+                            observeTransactionData(result.data.lastTransId);
+                        }
                     } else if (result.data.status != null) {
                         transactionId = result.data.transId;
                         binding.cancelButton.setVisibility(View.VISIBLE);
@@ -124,6 +137,8 @@ public class FuellingFragment extends MainActivityFragment {
                         binding.cancelButton.setText(result.data.status.equals("New") ? R.string.cancel : R.string.hide);
                         binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equals("New") ?
                                 R.drawable.circle_dash_border : R.drawable.circle_border));
+
+                        isLoading.set(false);
 
                         if (!result.data.status.equals("New"))
                             binding.borderImageView.clearAnimation();

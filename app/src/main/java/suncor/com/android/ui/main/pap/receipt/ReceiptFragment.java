@@ -68,7 +68,6 @@ public class ReceiptFragment extends MainActivityFragment {
             v.setVisibility(View.GONE);
         });
         binding.buttonDone.setOnClickListener(view1 -> goBack());
-        binding.failsDone.setOnClickListener(view1 -> goBack());
     }
 
     @Override
@@ -87,7 +86,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 isLoading.set(true);
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
-                binding.errorView.setVisibility(View.VISIBLE);
+                binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
+                binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));

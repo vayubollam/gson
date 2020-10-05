@@ -650,10 +650,9 @@
     <string name="mobile_payment_accepted">Mobile payment</string>
     <string name="mobile_payment_not_accepted">No mobile payment</string>
     <string name="google_pay">Google Pay</string>
-    <string name="try_agian">Retry</string>
+    <string name="try_agian">Try again</string>
     <string name="authorizing">Authorizing…</string>
     <string name="fueling_up">Fuelling up…</string>
-    <string name="cancelling">Cancelling…</string>
     <string name="fueling_up_subheader">Please don’t leave pump unattended</string>
     <string name="fuelling_about_to_begin">Fuelling is about to begin…</string>
 
@@ -662,7 +661,7 @@
     <string name="hide">Hide</string>
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
-    <string name="transaction_copy_receipt_send_mail">A copy of your receipt has been sent to your email.</string>
+    <string name="transaction_copy_receipt_send_mail">Share your receipt or access your details in your account.</string>
     <string name="transaction_saved">You saved %1$s</string>
     <string name="transaction_summary">Your Transaction Summary</string>
 
@@ -675,9 +674,19 @@
     <string name="transaction_base_points_eaarned">Base Points Earned</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">View Receipt</string>
+    <string name="your_transaction_availble_in_your_account">Your transaction details are available in your account. </string>
 
-    <string name="receipt_fetch_fail">Receipt Fetching Fails!!</string>
+    <!-- Payment  -->
+    <string name="pump_unavailable_title">Pump is unavailable</string>
+    <string name="pump_unavailable_message">Select another pump to fuel your vehicle.</string>
 
+    <string name="payment_failed_title">Payment failed</string>
+    <string name="payment_failed_message">We had trouble processing your payment.</string>
+    <string name="payment_failed_cancel">Cancel</string>
 
+    <!-- Cancel -->
+    <string name="cancelling">Cancelling…</string>
+    <string name="cancellation_alert_title">Transaction cancelled</string>
+    <string name="cancellation_alert_body">Your transaction was cancelled. You have not been charged.</string>
 
 </resources>

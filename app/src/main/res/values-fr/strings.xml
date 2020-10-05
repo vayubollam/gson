@@ -633,6 +633,7 @@
     <string name="add_new_payment">Ajouter nouveau</string>
 
     <string name="authorizing">Autorisation…</string>
+    <string name="try_agian">Réessayer</string>
     <string name="fueling_up">Ravitaillement en cours…</string>
     <string name="fuelling_about_to_begin">Le ravitaillement est sur le point de commencer..</string>
     <string name="fueling_up_subheader">Veuillez ne pas laisser le distributeur sans</string>
@@ -640,6 +641,19 @@
     <string name="pump_authorized">Distributeur %1$s autorisé</string>
     <string name="pump_authorized_subheader">Soulevez le pistolet et sélectionnez le type de carburant</string>
     <string name="hide">Hide</string>
+
+    <!-- Payment  -->
+    <string name="pump_unavailable_title">Distributeur non disponible</string>
+    <string name="pump_unavailable_message">Utilisez un autre distributeur pour faire le plein.</string>
+
+    <string name="payment_failed_title">Échec de paiement</string>
+    <string name="payment_failed_message">Nous n’avons pas pu traiter votre paiement.</string>
+    <string name="payment_failed_cancel">Annuler</string>
+
+    <!-- Cancel -->
+    <string name="cancelling">Annulation…</string>
+    <string name="cancellation_alert_title">Transaction annulée</string>
+    <string name="cancellation_alert_body">Votre transaction a été annulée. Aucuns frais ne vous ont été facturés.</string>
 
 
 </resources>

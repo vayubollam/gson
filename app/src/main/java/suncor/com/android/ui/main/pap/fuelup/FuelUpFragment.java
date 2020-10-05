@@ -320,7 +320,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void handleConfirmAndAuthorizedClick(){
         if(userPaymentId == null) {
-            //todo show select payment type error
+            // select payment type error
             return;
         }
         if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
@@ -347,8 +347,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void requestGooglePaymentTransaction() {
         try {
             double preAuthPrices = formatter.parse(preAuth).doubleValue();
-            // Double preAuthPrices = Double.parseDouble(preAuth.replace(getString(R.string.dollar), ""));
-            //todo gateway fetch from api
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, mPapData.getP97TenantID());
 
@@ -461,30 +459,28 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
     }
 
-
-    //todo update content
     private  AlertDialog transactionFailsAlert(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(R.string.msg_e001_title )
-                .setMessage( R.string.msg_e001_message)
-                .setNegativeButton(R.string.cancel, ((dialog, i) -> {
+                .setTitle(R.string.payment_failed_title )
+                .setMessage( R.string.payment_failed_message)
+                .setNegativeButton(R.string.payment_failed_cancel, ((dialog, i) -> {
                     dialog.dismiss();
                 }))
 
-                .setPositiveButton(R.string.msg_001_dialog_try_again, (dialog, which) -> {
+                .setPositiveButton(R.string.try_agian, (dialog, which) -> {
                     verifyFingerPrints();
                     dialog.dismiss();
                 });
         return builder.create();
     }
 
-    //todo content change
+
     private  AlertDialog pumpReservationFailsAlert(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(R.string.msg_e001_title )
-                .setMessage(  R.string.msg_e001_message)
+                .setTitle(R.string.pump_unavailable_title )
+                .setMessage(  R.string.pump_unavailable_message)
                 .setPositiveButton(R.string.ok, ((dialog, i) -> {
                     dialog.dismiss();
                     binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
