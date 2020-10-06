@@ -85,10 +85,16 @@ public class TransactionDetail {
 
         switch (transaction.getTransactionType()) {
 
+            case PURCHASE:
+            case CUSTOMER_SERVICE_ADJ:
+            case BONUS:
+            case VOID:
+            case PETRO_POINTS:
+            case PARTNER_POINTS_TRANSFER:
             case REDEMPTION:
                 return redeemPoint;
             default:
-                return "";
+                return redeemPoint;
         }
     }
 
