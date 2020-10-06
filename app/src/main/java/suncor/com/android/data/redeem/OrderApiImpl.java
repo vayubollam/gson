@@ -23,7 +23,7 @@ import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.utilities.Timber;
 
 public class OrderApiImpl implements OrderApi {
-    private final static String ORDER_ADAPTER_PATH = "/adapters/suncorreloadredeem/v1/orders";
+    private final static String ORDER_ADAPTER_PATH = "/adapters/suncorreloadredeem/v2/rfmp-secure/orders";
     private Gson gson;
 
     public OrderApiImpl(Gson gson) {
