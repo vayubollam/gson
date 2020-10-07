@@ -49,7 +49,10 @@ public class MerchantsApiImpl implements MerchantsApi {
                     Timber.d("Merchants API success, response:\n" + jsonText);
 
                     Merchant[] merchants = gson.fromJson(jsonText, Merchant[].class);
-                    result.postValue(Resource.success(new ArrayList<>(Arrays.asList(merchants))));
+                    if (merchants != null)
+                    {
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(merchants))));
+                    }
                 }
 
                 @Override
