@@ -436,7 +436,7 @@
     <string name="settings_failure_dialog_message" translatable="false">Try again in a few minutes.</string>
     <string name="settings_failure_dialog_button">Close app</string>
     <string name="clear_cache_dialog_title"></string>
-    <string name="clear_cache_dialog_message">Hey, the app needs to be restarted! We\'ll shut down, you can start it up again.</string>
+    <string name="clear_cache_dialog_message">Hey, the app needs to be restarted! We\'ll shut down, you can start it up again. S003</string>
     <string name="sign_enable_fp_title">Enable fingerprint?</string>
     <string name="sign_enable_fb_message">Sign in faster next time by using your fingerprint.</string>
     <string name="sign_enable_fb_possitive_button">Enable</string>

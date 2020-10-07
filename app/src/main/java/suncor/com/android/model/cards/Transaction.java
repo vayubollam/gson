@@ -197,7 +197,7 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
         @SerializedName("points")
         PETRO_POINTS,
         @SerializedName("void")
-            VOID
+        VOID
     }
 
     protected Transaction(Parcel in) {

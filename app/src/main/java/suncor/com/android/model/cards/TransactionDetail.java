@@ -27,7 +27,7 @@ public class TransactionDetail {
                 title = context.getResources().getString(R.string.transaction_title_redemption);
                 break;
             case VOID:
-                title = context.getResources().getString(R.string.transaction_title_redemption);
+                title = context.getResources().getString(R.string.transaction_title_pp);
                 break;
             case CUSTOMER_SERVICE_ADJ:
             case PETRO_POINTS:
