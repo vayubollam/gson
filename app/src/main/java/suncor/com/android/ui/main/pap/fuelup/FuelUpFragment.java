@@ -326,20 +326,24 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
             verifyFingerPrints();
         } else {
-            int preAuthPrices = Integer.parseInt(preAuth.replace("$", ""));
-            viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
-                if (result.status == Resource.Status.LOADING) {
-                    isLoading.set(true);
-                } else if (result.status == Resource.Status.ERROR) {
-                    isLoading.set(false);
-                    handleAuthorizationFail(result.message);
-                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                    isLoading.set(false);
-                    FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
-                    Navigation.findNavController(getView()).popBackStack();
-                    Navigation.findNavController(getView()).navigate(action);
-                }
-            });
+            try {
+                double preAuthPrices = formatter.parse(preAuth).doubleValue();
+                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
+                    if (result.status == Resource.Status.LOADING) {
+                        isLoading.set(true);
+                    } else if (result.status == Resource.Status.ERROR) {
+                        isLoading.set(false);
+                        handleAuthorizationFail(result.message);
+                    } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                        isLoading.set(false);
+                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
+                        Navigation.findNavController(getView()).popBackStack();
+                        Navigation.findNavController(getView()).navigate(action);
+                    }
+                });
+            } catch (ParseException ex){
+                Timber.e(ex.getMessage());
+            }
         }
     }
 

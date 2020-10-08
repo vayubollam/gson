@@ -21,6 +21,7 @@ import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.PayByWalletRequest;
+import suncor.com.android.model.pap.transaction.CancelTransaction;
 import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.utilities.Timber;
 
@@ -201,9 +202,9 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<Transaction>> cancelTransaction(String transactionId) {
+    public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {
         Timber.d("request initiate for cancel transaction");
-        MutableLiveData<Resource<Transaction>> result = new MutableLiveData<>();
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/transaction/cancel/" + transactionId);
@@ -214,7 +215,7 @@ public class PapApiImpl implements PapApi {
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();
                     Timber.d("Cancel transaction success, response:\n" + jsonText);
-                    Transaction transaction = gson.fromJson(jsonText, Transaction.class);
+                    Boolean transaction = gson.fromJson(jsonText, CancelTransaction.class).result.equals("success");
                     result.postValue(Resource.success(transaction));
                 }
 

@@ -120,7 +120,7 @@ public class FuellingFragment extends MainActivityFragment {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
-                        if (result.data.lastStatus.equals("Cancelled")) {
+                        if (result.data.lastStatus.equals("CANCELED")) {
                             Alerts.prepareCustomDialog(
                                     getString(R.string.cancellation_alert_title),
                                     getString(R.string.cancellation_alert_body),

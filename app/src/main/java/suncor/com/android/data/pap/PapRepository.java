@@ -59,7 +59,7 @@ public class PapRepository {
        return papApi.getTransactionDetails(trasnsactionId);
     }
 
-    public LiveData<Resource<Transaction>> cancelTransaction(String trasnsactionId) {
+    public LiveData<Resource<Boolean>> cancelTransaction(String trasnsactionId) {
        return papApi.cancelTransaction(trasnsactionId);
     }
 
