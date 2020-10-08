@@ -137,4 +137,8 @@ public class FuelUpViewModel extends ViewModel {
         return papRepository.authorizePaymentByWallet(request);
     }
 
+    public LiveData<Resource<Transaction>> cancelTransaction(String transactionId) {
+        return papRepository.cancelTransaction(transactionId);
+    }
+
 }

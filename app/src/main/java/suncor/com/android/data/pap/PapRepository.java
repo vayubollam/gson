@@ -55,16 +55,17 @@ public class PapRepository {
         return papApi.storeDetails(storeId);
     }
 
-
-    public LiveData<Resource<Transaction>> getTransactionDetails(String trasnsactionid) {
-       return papApi.getTransactionDetails(trasnsactionid);
+    public LiveData<Resource<Transaction>> getTransactionDetails(String trasnsactionId) {
+       return papApi.getTransactionDetails(trasnsactionId);
     }
 
+    public LiveData<Resource<Transaction>> cancelTransaction(String trasnsactionId) {
+       return papApi.cancelTransaction(trasnsactionId);
+    }
 
     public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest) {
         return papApi.authorizePaymentByGooglePay(payByGooglePayRequest);
     }
-
 
     public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request) {
         return papApi.authorizePaymentByWallet(request);

@@ -8,151 +8,186 @@
             type="androidx.databinding.ObservableBoolean" />
     </data>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/pump_authorized_text"
-            style="@style/Title1"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/pump_authorized"
-            android:layout_marginTop="48dp"
-            app:autoSizeTextType="uniform"
-            android:visibility="visible" />
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/pump_authorized_subheader"
-            style="@style/Body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/pump_authorized_subheader"
-            app:autoSizeTextType="uniform"
-            android:visibility="visible" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="288dp"
-            android:layout_height="288dp"
-            android:layout_gravity="center"
-            app:cardCornerRadius="144dp"
-            app:cardElevation="12dp"
-            app:cardUseCompatPadding="false">
-
-            <ImageView
-                android:id="@+id/border_image_view"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pump_authorized_text"
+                style="@style/Title1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="2dp"
-                android:src="@drawable/circle_dash_border"/>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_gravity="center">
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/pump_authorized"
+                android:layout_marginTop="48dp"
+                app:autoSizeTextType="uniform"
+                android:visibility="visible" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_fuel_up"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pump_authorized_subheader"
+                style="@style/Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/pump_authorized_subheader"
+                app:autoSizeTextType="uniform"
+                android:visibility="visible" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="288dp"
+                android:layout_height="288dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="144dp"
+                app:cardElevation="12dp"
+                app:cardUseCompatPadding="false">
 
                 <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginStart="25dp"
-                    android:src="@drawable/ic_leaf"/>
+                    android:id="@+id/border_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/circle_dash_border"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/pump_number_text"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="16dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginTop="10dp"
-                    tools:text="5"
-                    android:textStyle="bold"
-                    android:textSize="32sp"
-                    android:textColor="@color/white"
-                    android:visibility="visible" />
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center">
 
-            </FrameLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_fuel_up"/>
 
-        </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="25dp"
+                        android:src="@drawable/ic_leaf"/>
 
-        <Space
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/pump_number_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="16dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginTop="10dp"
+                        tools:text="5"
+                        android:textStyle="bold"
+                        android:textSize="32sp"
+                        android:textColor="@color/white"
+                        android:visibility="visible" />
+
+                </FrameLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <suncor.com.android.ui.common.SuncorButton
+                android:id="@+id/cancel_button"
+                style="@style/LinkButton.Red.L"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gibson_semibold"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                android:text="@string/cancel"
+                tools:text="@string/cancel" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/cancel_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            tools:visibility="gone">
 
-        <suncor.com.android.ui.common.SuncorButton
-            android:id="@+id/cancel_button"
-            style="@style/LinkButton.Red.L"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gibson_semibold"
-            android:layout_marginBottom="16dp"
-            android:text="@string/cancel"
-            tools:text="@string/cancel" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:text="@string/cancelling"
+                app:autoSizeTextType="uniform"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/authorized_progressbar"
+                android:visibility="visible" />
 
-    </LinearLayout>
+            <ProgressBar
+                android:id="@+id/authorized_progressbar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateTint="@color/red" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:clickable="true"
-        app:visibleGone="@{isLoading}"
-        tools:visibility="gone">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_fuel_up"
+                android:tint="@color/red" />
+        </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Headline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:padding="16dp"
-            android:text="@string/authorizing"
-            app:autoSizeTextType="uniform"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/authorized_pprogressbar"
-            android:visibility="visible" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:visibleGone="@{isLoading}"
+            tools:visibility="gone">
 
-        <ProgressBar
-            android:id="@+id/authorized_pprogressbar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:indeterminateTint="@color/red" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:text="@string/action_fuelling"
+                app:autoSizeTextType="uniform"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/progressbar"
+                android:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_fuel_up"
-            android:tint="@color/red" />
-    </RelativeLayout>
-    </RelativeLayout>
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateTint="@color/red" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_fuel_up"
+                android:tint="@color/red" />
+        </RelativeLayout>
+
+    </FrameLayout>
 
 </layout>

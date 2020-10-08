@@ -1,12 +1,15 @@
 package suncor.com.android.model.pap;
 
 
+import java.util.Locale;
+
 public class PayByGooglePayRequest {
 
     private String encryptedStoreId;
     private int pumpNumber;
     private double preAuthLimit;
     private FundingPayload fundingPayload;
+    private String preferredCulture;
 
 
     public PayByGooglePayRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit, FundingPayload fundingPayload) {
@@ -14,6 +17,7 @@ public class PayByGooglePayRequest {
         this.pumpNumber = pumpNumber;
         this.preAuthLimit = preAuthLimit;
         this.fundingPayload = fundingPayload;
+        this.preferredCulture = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr-CA" : "en-CA";
     }
 
     public void setEncryptedStoreId(String encryptedStoreId) {

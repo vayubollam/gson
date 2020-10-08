@@ -33,9 +33,10 @@ public class FuellingFragment extends MainActivityFragment {
     private FuelUpViewModel viewModel;
     private FragmentFuellingBinding binding;
     private String pumpNumber;
+    private String transactionId;
 
     private boolean pingActiveSessionStarted = false;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
+    private ObservableBoolean isLoading = new ObservableBoolean(true);
     private Handler handler = new Handler();
 
     @Inject
@@ -76,8 +77,25 @@ public class FuellingFragment extends MainActivityFragment {
                 // Navigate to home
                 goBack();
             } else {
-                // TODO: Handle cancel
-                goBack();
+                Alerts.prepareCustomDialog(
+                        getContext(),
+                        getString(R.string.cancel_alert_title),
+                        getString(R.string.cancel_alert_body),
+                        getString(R.string.cancel_alert_button),
+                        getString(R.string.cards_details_close),
+                        (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
+                                if (result.status == Resource.Status.LOADING) {
+                                    binding.cancelLayout.setVisibility(View.VISIBLE);
+                                } else if (result.status == Resource.Status.ERROR) {
+                                    binding.cancelLayout.setVisibility(View.GONE);
+                                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                                } else if (result.status == Resource.Status.SUCCESS) {
+                                    //goBack();
+                                }
+                            });
+                        }).show();
             }
         });
     }
@@ -98,14 +116,26 @@ public class FuellingFragment extends MainActivityFragment {
         @Override
         public void run() {
             viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
-                if (result.status == Resource.Status.LOADING) {
-
-                } else if (result.status == Resource.Status.ERROR) {
+                if (result.status == Resource.Status.ERROR) {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
-                        observeTransactionData(result.data.lastTransId);
+                        if (result.data.lastStatus.equals("Cancelled")) {
+                            Alerts.prepareCustomDialog(
+                                    getString(R.string.cancellation_alert_title),
+                                    getString(R.string.cancellation_alert_body),
+                                    getContext(),
+                                    (dialogInterface, i) -> {
+                                        dialogInterface.dismiss();
+                                        goBack();
+                                    }).show();
+                        } else {
+                            observeTransactionData(result.data.lastTransId);
+                        }
                     } else if (result.data.status != null) {
+                        transactionId = result.data.transId;
+                        binding.cancelButton.setVisibility(View.VISIBLE);
+
                         binding.pumpAuthorizedText.setText(result.data.status.equals("New") ?
                                 getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));
                         binding.pumpAuthorizedSubheader.setText(result.data.status.equals("New") ?
@@ -116,6 +146,8 @@ public class FuellingFragment extends MainActivityFragment {
                         binding.cancelButton.setText(result.data.status.equals("New") ? R.string.cancel : R.string.hide);
                         binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equals("New") ?
                                 R.drawable.circle_dash_border : R.drawable.circle_border));
+
+                        isLoading.set(false);
 
                         if (!result.data.status.equals("New"))
                             binding.borderImageView.clearAnimation();
