@@ -111,7 +111,20 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                         listener.onTokenInvalid();
                     }
                 }
-                listener.onLoginFailed(SigninResponse.generalFailure());
+                
+                if (jsonObject.has("errorCode")) {
+                    String errorCode = jsonObject.get("errorCode").toString();
+                    String messageCode = jsonObject.get("messageId").toString();
+                    if (errorCode.equals("SUNCOR013")  && messageCode.isEmpty()) {
+                        listener.onLoginFailed(SigninResponse.unexpectedFailure());
+                    }
+                    else
+                    {
+                        listener.onLoginFailed(SigninResponse.generalFailure());
+                    }
+                } else {
+                    listener.onLoginFailed(SigninResponse.generalFailure());
+                }
             }
         } catch (JSONException e) {
             Timber.e(e, "parsing challenge response failed");

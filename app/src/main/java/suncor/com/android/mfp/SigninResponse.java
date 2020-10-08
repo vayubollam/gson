@@ -51,6 +51,10 @@ public class SigninResponse {
         return response;
     }
 
+    public static SigninResponse unexpectedFailure() {
+        return new SigninResponse(Status.UNEXPECTED_FAILURE, -1);
+    }
+
     public static SigninResponse generalFailure() {
         return new SigninResponse(Status.OTHER_FAILURE, -1);
     }
@@ -72,6 +76,6 @@ public class SigninResponse {
     }
 
     public enum Status {
-        SUCCESS, WRONG_CREDENTIALS, SOFT_LOCKED, HARD_LOCKED, PASSWORD_RESET, OTHER_FAILURE
+        SUCCESS, WRONG_CREDENTIALS, SOFT_LOCKED, HARD_LOCKED, PASSWORD_RESET, OTHER_FAILURE, UNEXPECTED_FAILURE
     }
 }
