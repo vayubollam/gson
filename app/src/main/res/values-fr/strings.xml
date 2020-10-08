@@ -642,6 +642,22 @@
     <string name="pump_authorized_subheader">Soulevez le pistolet et sélectionnez le type de carburant</string>
     <string name="hide">Hide</string>
 
+    <string name="transaction_ppt_lbl">PETRO-POINTS</string>
+    <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte.</string>
+    <string name="transaction_summary">Résumé de votre transaction</string>
+
+    <string name="transaction">Transactions</string>
+    <string name="transaction_details">Détails</string>
+    <string name="traansaction_date">Date</string>
+    <string name="transaction_payment_type">Mode de paiement</string>
+    <string name="transaction_tax_inclusive">Comprend les taxes</string>
+    <string name="transaction_your_rbc_savings">Vos économies RBC</string>
+    <string name="transaction_base_points_eaarned">Points de base</string>
+    <string name="transaction_total">Total</string>
+    <string name="view_receipt">Voir le reçu</string>
+    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. </string>
+
+
     <!-- Payment  -->
     <string name="pump_unavailable_title">Distributeur non disponible</string>
     <string name="pump_unavailable_message">Utilisez un autre distributeur pour faire le plein.</string>
