@@ -77,16 +77,25 @@ public class FuellingFragment extends MainActivityFragment {
                 // Navigate to home
                 goBack();
             } else {
-                viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
-                    if (result.status == Resource.Status.LOADING) {
-                        binding.cancelLayout.setVisibility(View.VISIBLE);
-                    } else if (result.status == Resource.Status.ERROR) {
-                        binding.cancelLayout.setVisibility(View.GONE);
-                        Alerts.prepareGeneralErrorDialog(getContext()).show();
-                    } else if (result.status == Resource.Status.SUCCESS) {
-                        //goBack();
-                    }
-                });
+                Alerts.prepareCustomDialog(
+                        getContext(),
+                        getString(R.string.cancel_alert_title),
+                        getString(R.string.cancel_alert_body),
+                        getString(R.string.cancel_alert_button),
+                        getString(R.string.cards_details_close),
+                        (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
+                                if (result.status == Resource.Status.LOADING) {
+                                    binding.cancelLayout.setVisibility(View.VISIBLE);
+                                } else if (result.status == Resource.Status.ERROR) {
+                                    binding.cancelLayout.setVisibility(View.GONE);
+                                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                                } else if (result.status == Resource.Status.SUCCESS) {
+                                    //goBack();
+                                }
+                            });
+                        }).show();
             }
         });
     }

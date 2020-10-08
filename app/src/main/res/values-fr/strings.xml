@@ -651,9 +651,30 @@
     <string name="payment_failed_cancel">Annuler</string>
 
     <!-- Cancel -->
+    <string name="cancel_alert_title">Arrêter la séance?</string>
+    <string name="cancel_alert_body">Vous pouvez commencer un autre plein sur l\'application ou au distributeur.</string>
+    <string name="cancel_alert_button">Arrêter la séance</string>
     <string name="cancelling">Annulation…</string>
     <string name="cancellation_alert_title">Transaction annulée</string>
     <string name="cancellation_alert_body">Votre transaction a été annulée. Aucuns frais ne vous ont été facturés.</string>
+
+    <!-- Receipt -->
+    <string name="transaction_ppt_lbl">PETRO-POINTS</string>
+    <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte.</string>
+    <string name="transaction_saved">You saved %1$s</string>
+    <string name="transaction_summary">Your Transaction Summary</string>
+
+    <string name="transaction">Transaction</string>
+    <string name="transaction_details">Détails</string>
+    <string name="traansaction_date">Date</string>
+    <string name="transaction_payment_type">Mode de paiement</string>
+    <string name="transaction_payment_type_value">Achat</string>
+    <string name="transaction_tax_inclusive">Comprend les taxes</string>
+    <string name="transaction_your_rbc_savings">Vos économies RBC</string>
+    <string name="transaction_base_points_eaarned">Points de base</string>
+    <string name="transaction_total">Total</string>
+    <string name="view_receipt">Voir le reçu</string>
+    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte.</string>
 
 
 </resources>

@@ -312,6 +312,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:text="@string/transaction_details"
+                        android:textAllCaps="true"
                         style="@style/Caption1"
                         android:letterSpacing="0.1"
                         android:textColor="@color/black_9"/>
@@ -403,7 +404,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{transaction.getPaymentType(context)}"
+                            android:text="@string/transaction_payment_type_value"
                             style="@style/Body"
                             android:textColor="@color/black_C" />
 
