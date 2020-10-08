@@ -676,7 +676,7 @@
     <string name="transaction_base_points_eaarned">Base Points</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">View Receipt</string>
-    <string name="your_transaction_availble_in_your_account">Your purchase info will be available from your account. </string>
+    <string name="your_transaction_availble_in_your_account">Your purchase info will be available from your account.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Pump is unavailable</string>
