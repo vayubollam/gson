@@ -155,18 +155,25 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         if (ConnectionUtil.haveNetworkConnection(this)) {
             settingsApi.retrieveSettings().observe(this, resource -> {
                 if (resource.status == Resource.Status.ERROR) {
+
+                    String responseMessage = resource.message;
+                    String unverifiedConnectionCode = "";
+                    if ((responseMessage.contains("SSLPeerUnverifiedException")) || (responseMessage.contains("SSLHandshakeException")) ||  (responseMessage.contains("java.security.cert"))) {
+                        unverifiedConnectionCode = "\nS000";
+                    }
+
                     binding.profilePd.setVisibility(View.GONE);
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.settings_failure_dialog_title)));
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.settings_failure_dialog_title)));
                     AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
-                            new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title)+"("+getString(R.string.settings_failure_dialog_message)+")")
+                            new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")")
                     );
                     new AlertDialog.Builder(this)
                             .setTitle(R.string.settings_failure_dialog_title)
-                            .setMessage(R.string.settings_failure_dialog_message)
+                            .setMessage(getString(R.string.settings_failure_dialog_message) + unverifiedConnectionCode)
                             .setPositiveButton(R.string.settings_failure_dialog_button, (dialog, which) -> {
                                 AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
-                                    new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title)+"("+getString(R.string.settings_failure_dialog_message)+")"),
-                                    new Pair<>("alertSelection",getString(R.string.settings_failure_dialog_button))
+                                        new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
+                                        new Pair<>("alertSelection", getString(R.string.settings_failure_dialog_button))
                                 );
                                 finish();
                             })
