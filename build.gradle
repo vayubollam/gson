@@ -44,7 +44,7 @@ ext {
     mfpVersion = "8.0.+"
     workManagerVersion = "1.0.0"
     daggerVersion = "2.17"
-    firebaseVersion = "16.0.9"
+    firebaseVersion = "17.6.0"
     crashlyticsVersion = "2.10.1"
     mockitoVersion = "2.25.1"
     junitVersion = "4.12"

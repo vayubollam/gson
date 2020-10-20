@@ -123,7 +123,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else {
                     screenName = "sign-up-success";
                 }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
 
                 String optionsChecked = "";
                 if (binding.emailOffersCheckbox.isChecked()) {

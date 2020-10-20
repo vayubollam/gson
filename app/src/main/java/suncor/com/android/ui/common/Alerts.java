@@ -96,7 +96,13 @@ public class Alerts {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(positiveButton, positiveListener)
-                .setNegativeButton(negativeButton, (dialogInterface, i) -> {dialogInterface.dismiss();})
+                .setNegativeButton(negativeButton, (dialogInterface, i) -> {
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, negativeButton));
+                    {dialogInterface.dismiss();
+                    }
+                })
                 .setOnDismissListener(DialogInterface::dismiss);
         return builder.create();
     }

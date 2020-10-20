@@ -3,12 +3,14 @@ package suncor.com.android.ui.main.pap.fuelling;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class FuellingFragment extends MainActivityFragment {
 
@@ -46,6 +49,7 @@ public class FuellingFragment extends MainActivityFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
     }
 
     @Nullable
@@ -73,6 +77,7 @@ public class FuellingFragment extends MainActivityFragment {
         binding.borderImageView.startAnimation(rotate);
 
         binding.cancelButton.setOnClickListener(button -> {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.cancel)));
             if (binding.cancelButton.getText().equals(getString(R.string.hide))) {
                 // Navigate to home
                 goBack();
@@ -85,6 +90,9 @@ public class FuellingFragment extends MainActivityFragment {
                         getString(R.string.cards_details_close),
                         (dialogInterface, i) -> {
                             dialogInterface.dismiss();
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                    new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancel_alert_title)+"("+getString(R.string.cancel_alert_body)+")"),
+                                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel_alert_button)));
                             viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
                                 if (result.status == Resource.Status.LOADING) {
                                     binding.cancelLayout.setVisibility(View.VISIBLE);
@@ -109,6 +117,7 @@ public class FuellingFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-has-begun");
         startFuellingActiveSession();
     }
 
@@ -117,24 +126,37 @@ public class FuellingFragment extends MainActivityFragment {
         public void run() {
             viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.ERROR) {
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ));
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
                         if (result.data.lastStatus.equals("Cancelled")) {
                             Alerts.prepareCustomDialog(
-                                    getString(R.string.cancellation_alert_title),
+                                     getString(R.string.cancellation_alert_title),
                                     getString(R.string.cancellation_alert_body),
                                     getContext(),
                                     (dialogInterface, i) -> {
+                                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
+                                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                                new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
+                                                new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)));
                                         dialogInterface.dismiss();
                                         goBack();
                                     }).show();
                         } else {
                             observeTransactionData(result.data.lastTransId);
+                            AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-almost-complete" );
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"));
                         }
                     } else if (result.data.status != null) {
                         transactionId = result.data.transId;
                         binding.cancelButton.setVisibility(View.VISIBLE);
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
+                                new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)));
+
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-will-begin" );
 
                         binding.pumpAuthorizedText.setText(result.data.status.equals("New") ?
                                 getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));

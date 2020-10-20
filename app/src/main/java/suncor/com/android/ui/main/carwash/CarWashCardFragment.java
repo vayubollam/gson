@@ -252,7 +252,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-card-list", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "car-wash-card-list");
     }
 
     @Override

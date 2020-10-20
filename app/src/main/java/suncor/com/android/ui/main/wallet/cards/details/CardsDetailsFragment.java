@@ -110,7 +110,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
                 }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
         });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);

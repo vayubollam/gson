@@ -7,10 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,6 +64,7 @@ import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
@@ -102,7 +105,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
-      //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
     }
 
     @Nullable
@@ -120,8 +123,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding.selectPumpLayout.layout.setVisibility(View.GONE);
 
         binding.pumpLayout.setOnClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTab,
+                    new Pair<>(AnalyticsUtils.Param.infoText, getString(R.string.pump)));
             binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
         });
+
+
 
         paymentDropDownAdapter = new PaymentDropDownAdapter(
                 getContext(),
@@ -216,6 +223,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         });
 
         binding.termsAgreement.setOnClickListener((v) -> {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.intersite,
+                    new Pair<>(AnalyticsUtils.Param.intersiteURL, getString(R.string.privacy_policy_url)));
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)));
             startActivity(browserIntent);
 
@@ -277,14 +286,16 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void selectPumpNumber(String pumpNumber) {
         this.pumpNumber = pumpNumber;
         binding.pumpNumberText.setText(pumpNumber);
-
+      //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump Number : " + pumpNumber));
         new Handler().postDelayed(() -> binding.pumpLayout.callOnClick(), 400);
     }
 
     @Override
-    public void onExpandCollapseListener(boolean isExpand) {
-        
+    public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTab,
+                new Pair<>(AnalyticsUtils.Param.infoText, cardTitle));
     }
+
     private void goBack() {
         Navigation.findNavController(getView()).popBackStack();
     }
@@ -298,6 +309,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onPaymentChanged(String userPaymentId) {
         this.userPaymentId = userPaymentId;
+     //   AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Payment Method Select : " + userPaymentId));
     }
 
 
@@ -319,6 +331,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     private void handleConfirmAndAuthorizedClick(){
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
         if(userPaymentId == null) {
             // select payment type error
             return;
@@ -335,6 +348,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     handleAuthorizationFail(result.message);
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     isLoading.set(false);
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                            new Pair<>(AnalyticsUtils.Param.paymentMethod, userPaymentId),
+                            new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
                     FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
                     Navigation.findNavController(getView()).popBackStack();
                     Navigation.findNavController(getView()).navigate(action);
@@ -384,10 +400,14 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         break;
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google pay transaction cancel by user"));
                         break;
 
                     case AutoResolveHelper.RESULT_ERROR:
                         Status status = AutoResolveHelper.getStatusFromIntent(data);
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google Pay error , message" + status.getStatusMessage()));
                         Alerts.prepareGeneralErrorDialog(getContext()).show();
                         break;
                 }
@@ -406,6 +426,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Biometrics fails"));
                 }
 
                 @Override
@@ -425,6 +447,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize");
+    }
+
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
         double preAuthPrices = formatter.parse(preAuth).doubleValue();
         viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken).observe(getViewLifecycleOwner(), result -> {
@@ -435,6 +463,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 handleAuthorizationFail(result.message);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY),
+                        new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
                 FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
                 Navigation.findNavController(requireView()).popBackStack();
                 Navigation.findNavController(requireView()).navigate(action);
@@ -448,12 +479,18 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
         switch (errorCode.toUpperCase()){
             case ErrorCodes.ERR_TRANSACTION_FAILS:
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Transaction fails, errorCode : " + errorCode));
                  transactionFailsAlert(getContext()).show();
                 break;
             case ErrorCodes.ERR_PUMP_RESERVATION_FAILS:
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Pump Registration fails, errorCode : " + errorCode));
                 pumpReservationFailsAlert(getContext()).show();
                 break;
             default:
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong, errorCode : " + errorCode));
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
                 break;
         }
@@ -461,15 +498,28 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private  AlertDialog transactionFailsAlert(Context context) {
 
+        String analyticsName = context.getString( R.string.payment_failed_title)
+                + "(" + context.getString(R.string.payment_failed_message) + ")";
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
+        );
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(R.string.payment_failed_title )
                 .setMessage( R.string.payment_failed_message)
                 .setNegativeButton(R.string.payment_failed_cancel, ((dialog, i) -> {
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.payment_failed_cancel))
+                    );
                     dialog.dismiss();
                 }))
 
                 .setPositiveButton(R.string.try_agian, (dialog, which) -> {
                     verifyFingerPrints();
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.try_agian)));
                     dialog.dismiss();
                 });
         return builder.create();
@@ -477,6 +527,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
 
     private  AlertDialog pumpReservationFailsAlert(Context context) {
+        String analyticsName = context.getString( R.string.pump_unavailable_title)
+                + "(" + context.getString(R.string.pump_unavailable_message) + ")";
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
+        );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(R.string.pump_unavailable_title )
@@ -484,6 +539,10 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 .setPositiveButton(R.string.ok, ((dialog, i) -> {
                     dialog.dismiss();
                     binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.ok)));
+
                 }));
         return builder.create();
     }

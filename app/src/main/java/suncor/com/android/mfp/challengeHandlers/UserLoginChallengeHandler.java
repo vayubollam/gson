@@ -144,6 +144,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             String profileStr = identity.getJSONObject("user").getString("attributes");
             Profile profile = gson.fromJson(profileStr, Profile.class);
             AnalyticsUtils.userID = profile.getRetailId();
+            AnalyticsUtils.setUserProperty(application.getApplicationContext(),  profile.getRetailId() );
             if (callOnceOnCredentialValidation) {
                 callOnceOnCredentialValidation = false;
                 listener.onLoginSuccess(profile);

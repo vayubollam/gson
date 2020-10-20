@@ -11,6 +11,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.Map;
 
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.cards.CardType;
 
 public class AnalyticsUtils {
@@ -29,8 +30,12 @@ public class AnalyticsUtils {
         navigation("navigation"),
         buttonTap("button_tap"),
         alert("alert"),
-        alertInteraction("alert_interaction")
-        ;
+        alertInteraction("alert_interaction"),
+        error("error_log"),
+        paymentComplete("payment_complete"),
+        intersite("intersite"),
+        infoTab("info_tab");
+
 
         private final String name;
 
@@ -59,8 +64,12 @@ public class AnalyticsUtils {
         buttonText("buttonText"),
         alertTitle("alertTitle"),
         alertSelection("alertSelection"),
-        cardType("cardType")
-        ;
+        cardType("cardType"),
+        errorMessage("errorMessage"),
+        paymentMethod("paymentMethod"),
+        fuelAmountSelection("fuelAmountSelection"),
+        intersiteURL("intersiteURL"),
+        infoText("infoText");
 
         private final String name;
 
@@ -92,6 +101,14 @@ public class AnalyticsUtils {
         }
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
     }
+
+    public static void setUserProperty(Context context, String userID ){
+        FirebaseAnalytics.getInstance(SuncorApplication.).setUserId(userID);
+        FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
+    }
+
+
+
 
     @SafeVarargs
     public static void logEvent(Context context, Event event, Pair<Param,String>... parameters) {
@@ -154,6 +171,13 @@ public class AnalyticsUtils {
     }
 
     public static void setCurrentScreenName(Activity activity, String screenName) {
-        FirebaseAnalytics.getInstance(activity).setCurrentScreen(activity, screenName, activity.getClass().getSimpleName());
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getComponentName().getClassName());
+       // bundle.putString(MyAppAnalyticsConstants.Param.TOPIC, topic);
+        FirebaseAnalytics.getInstance(activity).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
+
+
 }

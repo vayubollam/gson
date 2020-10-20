@@ -31,6 +31,7 @@ import suncor.com.android.databinding.FragmentCarwashBarcodeBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CarWashBarCodeFragment extends MainActivityFragment implements OnBackPressedListener {
     private Boolean loadFromCarWash;
@@ -103,8 +104,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     public void onResume() {
         super.onResume();
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-barcode", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "car-wash-barcode");
     }
 
     private void goBack(boolean reEnter) {

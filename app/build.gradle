@@ -175,7 +175,7 @@ dependencies {
 
     implementation 'com.google.zxing:core:3.3.3'
 
-    implementation "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
+    implementation "com.google.firebase:firebase-analytics:$rootProject.firebaseVersion"
     implementation "com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion"
     implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagManagerVersion"
     implementation "androidx.biometric:biometric:1.0.0-alpha04"

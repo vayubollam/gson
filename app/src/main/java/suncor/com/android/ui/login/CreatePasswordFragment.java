@@ -98,7 +98,7 @@ public class CreatePasswordFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login-force-new-password", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "login-force-new-password");
     }
 
     private void hideKeyboard() {

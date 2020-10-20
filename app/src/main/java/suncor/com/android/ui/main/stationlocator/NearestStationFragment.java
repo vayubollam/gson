@@ -331,7 +331,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "offsite-nearest-station", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "offsite-nearest-station");
     }
 
     @Override

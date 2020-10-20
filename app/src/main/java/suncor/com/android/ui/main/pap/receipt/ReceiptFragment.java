@@ -26,6 +26,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
 
 public class ReceiptFragment extends MainActivityFragment {
@@ -78,6 +79,8 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+
     }
 
     private void observeTransactionData(String transactionId){

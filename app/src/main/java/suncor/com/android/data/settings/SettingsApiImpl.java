@@ -18,7 +18,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.utilities.Timber;
 
 public class SettingsApiImpl implements SettingsApi {
-    private static final String BASE_PATH = "/adapters/suncor/v3/settings";
+    private static final String BASE_PATH = "/adapters/suncor/v4/settings";
     private Gson gson;
 
     public SettingsApiImpl(Gson gson) {

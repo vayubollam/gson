@@ -198,7 +198,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     public void onResume() {
         super.onResume();
 
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-security-code", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "car-wash-security-code");
     }
 
     class mInputTextWatcher implements TextWatcher {

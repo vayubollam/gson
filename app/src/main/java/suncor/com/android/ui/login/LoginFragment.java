@@ -110,7 +110,7 @@ public class LoginFragment extends BaseFragment {
                         }
                         fingerPrintManager.activateAutoLogin();
                         AnalyticsUtils.logEvent(getContext(), "login");
-                        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login", getActivity().getClass().getSimpleName());
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), "login");
                     }
                 }
         );

@@ -33,6 +33,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CardQuestionFragment extends BaseFragment {
 
@@ -114,7 +115,7 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "petro-points-sign-up-activate", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "petro-points-sign-up-activate");
     }
 
     private void animateCard() {
