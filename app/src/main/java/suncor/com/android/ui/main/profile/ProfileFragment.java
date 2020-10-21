@@ -197,6 +197,8 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
                 AnalyticsUtils.logEvent(getContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
+                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)));
                 binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity()).show();
             }

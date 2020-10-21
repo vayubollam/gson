@@ -343,6 +343,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         mViewModel.queryText.observe(getViewLifecycleOwner(), (text) ->
         {
             binding.addressSearchText.setText(text);
+            AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-gas-station-locations-filter");
             AnalyticsUtils.logEvent(getContext(), "Location_search", new Pair<>("location", text), new Pair<>("filtersApplied", listString));
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });

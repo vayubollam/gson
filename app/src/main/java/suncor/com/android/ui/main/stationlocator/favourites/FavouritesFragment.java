@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationItem;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.UserLocalSettings;
 
@@ -116,6 +118,9 @@ public class FavouritesFragment extends MainActivityFragment {
                     });
                     userLocalSettings.setBool(SHOW_FAVS_HINT, false);
                 }
+            } else if(stations.status == Resource.Status.ERROR) {
+                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, stations.message));
             }
         });
         if (LocationUtils.isLocationEnabled(getContext())

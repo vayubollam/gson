@@ -85,7 +85,7 @@ public class AddPaymentFragment extends MainActivityFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "add-payment");
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-wallet-add-credit-card");
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.clearCache(true);
         isWebViewLoading.set(true);

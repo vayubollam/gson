@@ -180,6 +180,9 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
                 } else {
                     isLoading.set(false);
                 }
+            }  else if (result.status == Resource.Status.ERROR){
+                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, AnalyticsUtils.ErrorMessages.backendError.name()));
             }
         });
 

@@ -27,6 +27,7 @@ public class AnalyticsUtils {
         formStart("form_start"),
         formStep("form_step"),
         formComplete("form_complete"),
+        formError("form_error"),
         navigation("navigation"),
         buttonTap("button_tap"),
         alert("alert"),
@@ -103,7 +104,7 @@ public class AnalyticsUtils {
     }
 
     public static void setUserProperty(Context context, String userID ){
-        FirebaseAnalytics.getInstance(SuncorApplication.).setUserId(userID);
+        FirebaseAnalytics.getInstance(context).setUserId(userID);
         FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
     }
 
@@ -177,6 +178,23 @@ public class AnalyticsUtils {
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getComponentName().getClassName());
        // bundle.putString(MyAppAnalyticsConstants.Param.TOPIC, topic);
         FirebaseAnalytics.getInstance(activity).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
+    }
+
+    public enum ErrorMessages {
+
+        backendError("backendError");
+
+        private final String name;
+
+        ErrorMessages(final String name){
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
     }
 
 

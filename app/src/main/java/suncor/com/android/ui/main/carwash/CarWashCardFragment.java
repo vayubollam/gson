@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -171,7 +172,11 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.ok,
-                () -> viewModel.loadData(CarWashCardViewModel.ViewState.LOADING)));
+                () -> {
+                    viewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
+                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong View"));
+                }));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (!isFirstTime) {

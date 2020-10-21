@@ -119,6 +119,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                                 .create()
                                 .show();
                     } else {
+                        AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
+                                new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)));
                         Alerts.prepareGeneralErrorDialog(getActivity()).show();
                     }
                     break;

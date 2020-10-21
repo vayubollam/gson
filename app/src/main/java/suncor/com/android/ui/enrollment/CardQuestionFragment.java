@@ -3,6 +3,7 @@ package suncor.com.android.ui.enrollment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,8 @@ public class CardQuestionFragment extends BaseFragment {
                     animateCard();
                     break;
                 case ERROR:
+                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong Alert"));
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> getActivity().finish());
