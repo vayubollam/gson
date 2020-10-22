@@ -68,7 +68,10 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
             binding.setIsSingleTicket(false);
             binding.setLifecycleOwner(this);
             binding.reEnterButton.setOnClickListener(v -> goBack(true));
-            binding.barCodeImage.setImageBitmap(generateBarcode(size.x, carWashSharedViewModel.getEncryptedCarWashCode().getValue(), BarcodeFormat.EAN_13));
+            if (carWashSharedViewModel.getEncryptedCarWashCode().getValue() != null)
+            {
+                binding.barCodeImage.setImageBitmap(generateBarcode(size.x, carWashSharedViewModel.getEncryptedCarWashCode().getValue(), BarcodeFormat.EAN_13));
+            }
         }
 
         return binding.getRoot();
@@ -76,7 +79,7 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
 
     private View.OnClickListener closeListener = view -> {
         if (loadFromCarWash) {
-            Navigation.findNavController(getView()).navigate(R.id.action_carWashBarCodeFragment_to_carWashCardFragment);
+                Navigation.findNavController(getView()).navigate(R.id.action_carWashBarCodeFragment_to_carWashCardFragment);
         } else {
             Navigation.findNavController(getView()).navigate(R.id.action_carWashBarCodeFragment_to_cards_tab);
         }

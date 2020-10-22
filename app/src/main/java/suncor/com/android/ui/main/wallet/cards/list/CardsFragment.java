@@ -116,6 +116,8 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getView()).navigate(action);
         } else {
+            if(cardDetail == null)
+                return;
             if (viewModel.getIsBalanceZero().getValue() != null &&
                     viewModel.getIsBalanceZero().getValue() && (cardDetail.getCardType() == CardType.SP || cardDetail.getCardType() == CardType.WAG)) {
                 CardsUtil.showZeroBalanceAlert(getContext(),

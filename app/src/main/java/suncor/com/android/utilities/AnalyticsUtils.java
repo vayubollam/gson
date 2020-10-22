@@ -108,9 +108,6 @@ public class AnalyticsUtils {
         FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
     }
 
-
-
-
     @SafeVarargs
     public static void logEvent(Context context, Event event, Pair<Param,String>... parameters) {
         ArrayList<Pair<String, String>> params = new ArrayList();

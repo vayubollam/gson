@@ -71,7 +71,10 @@ public class RewardsSignedInViewModel extends ViewModel {
     }
 
     public int getPetroPointsValue() {
-        return sessionManager.getProfile().getPointsBalance() / 1000;
+        if (sessionManager.getProfile() != null) {
+            return sessionManager.getProfile().getPointsBalance() / 1000;
+        }
+        return 0;
     }
 
     public void navigateToDiscovery() {
