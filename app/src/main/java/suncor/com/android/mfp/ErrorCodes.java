@@ -36,4 +36,27 @@ public class ErrorCodes {
     public static final String ERR_INVALID_SECURITY_ANSWER = "SUNCOR027";
     public static final String ERR_PASSWORD_CHANGE_REQUIRES_RE_LOGIN = "SUNCOR028";
     public static final String ERR_CARD_LOCK = "SUNCOR030";
+
+    //google pay
+    public static final String ERR_TRANSACTION_FAILS = "SUNCOR118";
+    public static final String ERR_PUMP_RESERVATION_FAILS = "SUNCOR119";
+    public static final String ERR_BACKEND_ERROR = "SUNCOR120";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

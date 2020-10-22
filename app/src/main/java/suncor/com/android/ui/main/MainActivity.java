@@ -7,8 +7,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -64,6 +62,9 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
     private ArrayList<Province> provinces = new ArrayList<>();
     private MainViewModel mainViewModel;
     private boolean autoLoginFailed = false;
+
+    @Inject
+    ActionMenuFragment actionMenuFragment;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -148,7 +149,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, "Action Menu"));
 
-            ActionMenuFragment actionMenuFragment = new ActionMenuFragment();
             actionMenuFragment.show(getSupportFragmentManager(), null);
         });
 
@@ -289,4 +289,13 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //todo check
+        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+        if(fragment != null){
+            fragment.onActivityResult(requestCode,resultCode, data );
+        }
+    }
 }

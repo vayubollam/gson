@@ -13,15 +13,17 @@ import androidx.lifecycle.Transformations;
 
 import suncor.com.android.BR;
 import suncor.com.android.data.favourite.FavouriteRepository;
+import suncor.com.android.data.pap.PapRepository;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.station.Hour;
 import suncor.com.android.model.station.Station;
 
 public class StationItem extends BaseObservable {
 
     public FavouriteRepository favouriteRepository;
-    
+
     private Station station;
     private DirectionsResult distanceDuration;
     public boolean isFavourite;

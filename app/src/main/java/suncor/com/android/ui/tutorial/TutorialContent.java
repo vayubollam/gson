@@ -6,7 +6,7 @@ public class TutorialContent {
     private String header;
     private String videoPath;
 
-    TutorialContent(String header, String videoPath) {
+    public TutorialContent(String header, String videoPath) {
         this.header = header;
         this.videoPath = videoPath;
     }

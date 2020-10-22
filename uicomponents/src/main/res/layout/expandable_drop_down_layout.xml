@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black_80"
+            android:textSize="14sp"
+            app:autoSizeTextType="uniform"
+            android:visibility="visible"
+            tools:text="FUEL UP TO"/>
+
+        <LinearLayout
+            android:id="@+id/selected_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginStart="6dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/selected_value"
+                    android:textColor="@color/black_80"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    android:visibility="visible"
+                    tools:text="$100.00"/>
+
+                <ImageView
+                    android:id="@+id/google_pay"
+                    android:layout_width="75dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:src="@drawable/googlepay_mark"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/selected_subheader_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_60"
+                android:textSize="14sp"
+                app:autoSizeTextType="uniform"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/image_button_expand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:clickable="true"
+                android:src="@drawable/ic_keyboard_arrow_down" />
+
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/header_layout"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+
+
+</RelativeLayout>
+

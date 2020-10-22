@@ -14,9 +14,13 @@ import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.login.CreatePasswordViewModel;
 import suncor.com.android.ui.login.LoginViewModel;
 import suncor.com.android.ui.main.MainViewModel;
-import suncor.com.android.ui.main.cards.add.AddCardViewModel;
-import suncor.com.android.ui.main.cards.details.CardDetailsViewModel;
-import suncor.com.android.ui.main.cards.list.CardsViewModel;
+import suncor.com.android.ui.main.actionmenu.ActionMenuViewModel;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
+import suncor.com.android.ui.main.pap.receipt.ReceiptViewModel;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
+import suncor.com.android.ui.main.wallet.cards.add.AddCardViewModel;
+import suncor.com.android.ui.main.wallet.cards.details.CardDetailsViewModel;
+import suncor.com.android.ui.main.wallet.cards.list.CardsViewModel;
 import suncor.com.android.ui.main.carwash.CarWashCardViewModel;
 import suncor.com.android.ui.main.carwash.CarWashSharedViewModel;
 import suncor.com.android.ui.main.carwash.singleticket.SingleTicketViewModel;
@@ -32,6 +36,9 @@ import suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationViewMo
 import suncor.com.android.ui.main.stationlocator.StationsViewModel;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesViewModel;
 import suncor.com.android.ui.main.stationlocator.search.SearchViewModel;
+import suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel;
+import suncor.com.android.ui.main.wallet.payments.details.PaymentDetailsViewModel;
+import suncor.com.android.ui.main.wallet.payments.list.PaymentsViewModel;
 import suncor.com.android.ui.resetpassword.ForgotPasswordViewModel;
 import suncor.com.android.ui.resetpassword.ResetPasswordSecurityQuestionValidationViewModel;
 import suncor.com.android.ui.resetpassword.ResetPasswordViewModel;
@@ -65,6 +72,11 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(ActionMenuViewModel.class)
+    protected abstract ViewModel actionMenuViewModel(ActionMenuViewModel actionMenuViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(SearchViewModel.class)
     protected abstract ViewModel searchViewModel(SearchViewModel searchViewModel);
 
@@ -82,6 +94,26 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AddCardViewModel.class)
     protected abstract ViewModel addCardViewModel(AddCardViewModel addCardViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PaymentsViewModel.class)
+    protected abstract ViewModel paymentsViewModel(PaymentsViewModel paymentsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PaymentDetailsViewModel.class)
+    protected abstract ViewModel paymentDetailsViewModel(PaymentDetailsViewModel paymentDetailsViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddPaymentViewModel.class)
+    protected abstract ViewModel addPaymentViewModel(AddPaymentViewModel addPaymentViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectPumpViewModel.class)
+    protected abstract ViewModel selectPumpViewModel(SelectPumpViewModel selectPumpViewModel);
 
     @Binds
     @IntoMap
@@ -189,5 +221,15 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SingleTicketViewModel.class)
     protected abstract ViewModel SingleTicketViewModel(SingleTicketViewModel singleTicketViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FuelUpViewModel.class)
+    protected abstract ViewModel fuelUpViewModel(FuelUpViewModel fuelUpViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReceiptViewModel.class)
+    protected abstract ViewModel receiptViewModel(ReceiptViewModel receiptViewModel);
 
 }

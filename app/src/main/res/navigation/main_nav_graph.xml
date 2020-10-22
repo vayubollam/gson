@@ -97,9 +97,40 @@
 
     <keep_state_fragment
         android:id="@+id/cards_tab"
-        android:name="suncor.com.android.ui.main.cards.list.CardsFragment"
+        android:name="suncor.com.android.ui.main.wallet.cards.list.CardsFragment"
         android:label="CardsFragment"
-        tools:layout="@layout/fragment_stations">
+        tools:layout="@layout/fragment_cards">
+        <action
+            android:id="@+id/action_cards_tab_to_cardsDetailsFragment"
+            app:destination="@id/cardsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_cards_tab_to_addCardFragment"
+            app:destination="@id/addCardFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_cards_tab_to_carWashPurchaseFragment"
+            app:destination="@id/carWashPurchaseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+            <argument
+                android:name="isFromCardsTab"
+                android:defaultValue="true"
+                app:argType="boolean"/>
+        </action>
+
+    </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/wallet_tab"
+        android:name="suncor.com.android.ui.main.wallet.WalletFragment"
+        android:label="WalletFragment"
+        tools:layout="@layout/fragment_wallet">
         <argument
             android:name="root"
             android:defaultValue="true"
@@ -127,6 +158,18 @@
                 android:defaultValue="true"
                 app:argType="boolean"/>
         </action>
+        <action
+            android:id="@+id/action_payments_tab_to_paymentsDetailsFragment"
+            app:destination="@id/paymentsDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_payments_tab_to_addPaymentFragment"
+            app:destination="@id/addPaymentFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down" />
 
     </keep_state_fragment>
 
@@ -210,7 +253,7 @@
         android:label="FAQResponse" />
     <keep_state_fragment
         android:id="@+id/cardsDetailsFragment"
-        android:name="suncor.com.android.ui.main.cards.details.CardsDetailsFragment"
+        android:name="suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragment"
         android:label="CardsDetailsFragment">
         <argument
             android:name="cardIndex"
@@ -218,7 +261,7 @@
             app:argType="integer" />
         <argument
             android:name="loadType"
-            app:argType="suncor.com.android.ui.main.cards.CardsLoadType"
+            app:argType="suncor.com.android.ui.main.wallet.cards.CardsLoadType"
             android:defaultValue="ALL"/>
         <action
             android:id="@+id/action_cardsDetailsFragment_to_carWashActivationSecurityFragment"
@@ -245,7 +288,7 @@
 
     <keep_state_fragment
         android:id="@+id/addCardFragment"
-        android:name="suncor.com.android.ui.main.cards.add.AddCardFragment"
+        android:name="suncor.com.android.ui.main.wallet.cards.add.AddCardFragment"
         android:label="AddCardFragment"
         tools:layout="@layout/fragment_add_card" />
     <keep_state_fragment
@@ -265,6 +308,34 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/transactionsFragment" />
     </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/paymentsDetailsFragment"
+        android:name="suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragment"
+        android:label="PaymentsDetailsFragment">
+        <argument
+            android:name="cardIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_details_to_WalletFragment"
+            app:destination="@id/wallet_tab"
+            app:popUpTo="@+id/wallet_tab"
+            app:popUpToInclusive="false"/>
+    </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/addPaymentFragment"
+        android:name="suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragment"
+        android:label="AddPaymentFragment"
+        tools:layout="@layout/fragment_add_payment">
+        <argument
+            android:name="inTransaction"
+            android:defaultValue="false"
+            app:argType="boolean"/>
+
+    </keep_state_fragment>
+
     <keep_state_fragment
         android:id="@+id/preferencesFragment"
         android:name="suncor.com.android.ui.main.profile.preferences.PreferencesFragment"
@@ -405,6 +476,7 @@
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/dummy"
         app:popExitAnim="@anim/slide_out_right" />
+
     <keep_state_fragment
         android:id="@+id/carWashCardFragment"
         android:name="suncor.com.android.ui.main.carwash.CarWashCardFragment"
@@ -502,11 +574,161 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/carWashCardFragment"
             app:popUpToInclusive="true" />
+
         <action
             android:id="@+id/action_carWashBarCodeFragment_to_cards_tab"
             app:destination="@id/cards_tab"
             app:popUpTo="@+id/cards_tab"
             app:popUpToInclusive="true"/>
+    </keep_state_fragment>
+    <action
+        android:id="@+id/action_to_nearestStationFragment"
+        app:destination="@id/nearestStationFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_fuel_up_to_fuellingFragment"
+        app:destination="@id/fuellingFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popExitAnim="@anim/fade_out" >
+        <argument
+            android:name="pumpNumber"
+            app:argType="string"/>
+    </action>
+
+    <action
+        android:id="@+id/action_fuelling_to_ReceiptFragment"
+        app:destination="@id/receiptFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popExitAnim="@anim/fade_out" >
+        <argument
+            android:name="transactionId"
+            app:argType="string"/>
+    </action>
+    <keep_state_fragment
+        android:id="@+id/nearestStationFragment"
+        android:name="suncor.com.android.ui.main.stationlocator.NearestStationFragment"
+        android:label="NearestStationFragment"/>
+    <action
+        android:id="@+id/action_to_selectPumpFragment"
+        app:destination="@id/selectPumpFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" >
+        <argument
+            android:name="storeId"
+            app:argType="string"/>
+    </action>
+    <keep_state_fragment
+        android:id="@+id/selectPumpFragment"
+        android:name="suncor.com.android.ui.main.pap.selectpump.SelectPumpFragment"
+        android:label="SelectPumpFragment">
+        <argument
+            android:name="storeId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+    </keep_state_fragment>
+    <action
+        android:id="@+id/action_to_fuelUpFragment"
+        app:destination="@id/fuelUpFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_out_right" >
+        <argument
+            android:name="storeId"
+            app:argType="string"/>
+        <argument
+            android:name="pumpNumber"
+            app:argType="string"/>
+    </action>
+
+    <keep_state_fragment
+        android:id="@+id/fuellingFragment"
+        android:name="suncor.com.android.ui.main.pap.fuelling.FuellingFragment"
+        android:label="FuellingFragment">
+        <argument
+            android:name="pumpNumber"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+
+        <action
+            android:id="@+id/action_fuelling_to_ReceiptFragment"
+            app:destination="@id/receiptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" >
+            <argument
+                android:name="transactionId"
+                app:argType="string"/>
+        </action>
+
+    </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/fuelUpFragment"
+        android:name="suncor.com.android.ui.main.pap.fuelup.FuelUpFragment"
+        android:label="FuelUpFragment">
+        <argument
+            android:name="pumpNumber"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="storeId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="false"/>
+
+        <action
+            android:id="@+id/action_fuel_up_to_addPaymentFragment"
+            app:destination="@id/addPaymentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+            <argument
+                android:name="inTransaction"
+                app:argType="boolean"
+                android:defaultValue="true"/>
+        </action>
+
+        <action
+            android:id="@+id/action_fuel_up_to_fuellingFragment"
+            app:destination="@id/fuellingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" >
+            <argument
+                android:name="pumpNumber"
+                app:argType="string"/>
+        </action>
+
+        <action
+            android:id="@+id/action_fuelling_to_ReceiptFragment"
+            app:destination="@id/receiptFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" >
+            <argument
+                android:name="transactionId"
+                app:argType="string"/>
+        </action>
+    </keep_state_fragment>
+
+
+    <keep_state_fragment
+        android:id="@+id/receiptFragment"
+        android:name="suncor.com.android.ui.main.pap.receipt.ReceiptFragment"
+        android:label="ReceiptFragment">
+        <argument
+            android:name="transactionId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="false"/>
     </keep_state_fragment>
 
 </navigation>

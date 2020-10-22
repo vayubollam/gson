@@ -2,9 +2,16 @@ package suncor.com.android.di.modules.home;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import suncor.com.android.ui.main.cards.add.AddCardFragment;
-import suncor.com.android.ui.main.cards.details.CardsDetailsFragment;
-import suncor.com.android.ui.main.cards.list.CardsFragment;
+import suncor.com.android.ui.main.actionmenu.ActionMenuFragment;
+import suncor.com.android.ui.main.pap.fuelling.FuellingFragment;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragment;
+import suncor.com.android.ui.main.pap.receipt.ReceiptFragment;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragment;
+import suncor.com.android.ui.main.stationlocator.NearestStationFragment;
+import suncor.com.android.ui.main.wallet.WalletFragment;
+import suncor.com.android.ui.main.wallet.cards.add.AddCardFragment;
+import suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragment;
+import suncor.com.android.ui.main.wallet.cards.list.CardsFragment;
 import suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragment;
 import suncor.com.android.ui.main.carwash.CarWashBarCodeFragment;
 import suncor.com.android.ui.main.carwash.CarWashCardFragment;
@@ -33,6 +40,9 @@ import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationsFragment;
 import suncor.com.android.ui.main.stationlocator.favourites.FavouritesFragment;
 import suncor.com.android.ui.main.stationlocator.search.SearchFragment;
+import suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragment;
+import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragment;
+import suncor.com.android.ui.main.wallet.payments.list.PaymentsFragment;
 
 @Module
 abstract class MainActivityFragmentsModule {
@@ -49,6 +59,9 @@ abstract class MainActivityFragmentsModule {
     abstract HomeFragment contributeHomeFragment();
 
     @ContributesAndroidInjector
+    abstract ActionMenuFragment contributeActionMenuFragment();
+
+    @ContributesAndroidInjector
     abstract FiltersFragment contributesFiltersFragment();
 
     @ContributesAndroidInjector
@@ -58,6 +71,9 @@ abstract class MainActivityFragmentsModule {
     abstract FavouritesFragment contributesFavouritesFragment();
 
     @ContributesAndroidInjector
+    abstract WalletFragment contributesWalletFragment();
+
+    @ContributesAndroidInjector
     abstract CardsFragment contributesCardsFragment();
 
     @ContributesAndroidInjector
@@ -65,6 +81,15 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract AddCardFragment contributesAddCardFragment();
+
+    @ContributesAndroidInjector
+    abstract PaymentsFragment contributesPaymentsFragment();
+
+    @ContributesAndroidInjector
+    abstract PaymentsDetailsFragment contributesPaymentsDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract AddPaymentFragment contributesAddPaymentFragment();
 
     @ContributesAndroidInjector
     abstract FAQFragment contributesFAQFragment();
@@ -128,4 +153,19 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract CarWashBarCodeFragment contributeCarWashBarCodeFragment();
+
+    @ContributesAndroidInjector
+    abstract NearestStationFragment contributeNearestStationFragment();
+
+    @ContributesAndroidInjector
+    abstract SelectPumpFragment contributesSelectPumpFragment();
+
+    @ContributesAndroidInjector
+    abstract FuelUpFragment contributeFuelUpFragment();
+
+    @ContributesAndroidInjector
+    abstract FuellingFragment contributeFuellingFragment();
+
+    @ContributesAndroidInjector
+    abstract ReceiptFragment contributeReceiptFragment();
 }

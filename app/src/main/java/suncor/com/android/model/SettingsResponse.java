@@ -1,5 +1,9 @@
 package suncor.com.android.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+
 public class SettingsResponse {
     private Settings settings;
     private BuildInfo buildInfo;
@@ -21,6 +25,8 @@ public class SettingsResponse {
         private String descriptionEN;
         private String descriptionFR;
         private Carwash carwash;
+        @SerializedName("payatpump")
+        private Pap pap;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -44,6 +50,10 @@ public class SettingsResponse {
 
         public Carwash getCarwash() {
             return carwash;
+        }
+
+        public Pap getPap() {
+            return pap;
         }
     }
 
@@ -81,6 +91,34 @@ public class SettingsResponse {
 
         public String getKey() {
             return key;
+        }
+    }
+
+    public static class Pap {
+        private int otherAmountHighLimit;
+        private int otherAmountLowLimit;
+        private int geofenceDistanceMeters;
+        private HashMap<String,String> preAuthLimits;
+        private String p97TenantID;
+
+        public int getGeofenceDistanceMeters() {
+            return geofenceDistanceMeters;
+        }
+
+        public int getOtherAmountHighLimit() {
+            return otherAmountHighLimit;
+        }
+
+        public int getOtherAmountLowLimit() {
+            return otherAmountLowLimit;
+        }
+
+        public HashMap<String, String> getPreAuthLimits() {
+            return preAuthLimits;
+        }
+
+        public String getP97TenantID() {
+            return p97TenantID;
         }
     }
 }

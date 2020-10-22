@@ -71,4 +71,33 @@ public class Alerts {
                 });
         return builder.create();
     }
+
+    public static AlertDialog prepareCustomDialog(String title, String message, Context context, DialogInterface.OnClickListener listener) {
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")")
+        );
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.cancel, listener)
+                .setOnDismissListener(dialogInterface -> {
+                    listener.onClick(dialogInterface, 0);
+                });
+        return builder.create();
+    }
+
+    public static AlertDialog prepareCustomDialog(Context context, String title, String message,
+                                                  String positiveButton, String negativeButton,
+                                                  DialogInterface.OnClickListener positiveListener) {
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")")
+        );
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveButton, positiveListener)
+                .setNegativeButton(negativeButton, (dialogInterface, i) -> {dialogInterface.dismiss();})
+                .setOnDismissListener(DialogInterface::dismiss);
+        return builder.create();
+    }
 }

@@ -4,7 +4,7 @@
     <string name="navigation_stations_tab">Locations</string>
     <string name="navigation_profile_tab">Account</string>
     <string name="enable_location_dialog_title">Enable Location Services</string>
-    <string name="enable_location_dialog_message">Petro-Canada uses locations services to show stations around you.</string>
+    <string name="enable_location_dialog_message">We use your location to show your nearest station, give directions and so you can start the pump and pay for fuel through the app. </string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="welcome_to_petro_canda_on_the_go">Welcome to Petro-Canada on the go!</string>
@@ -593,5 +593,110 @@
     <string name="tutorial_silde_page1_header">Brand new menu</string>
     <string name="tutorial_silde_page2_header">Quickly access features</string>
     <string name="tutorial_silde_page3_header">Activate car wash</string>
+
+    <!-- View Wallet Screen -->
+    <string name="wallet_card_tab">Petro-Canada cards</string>
+    <string name="wallet_payment_tab">Credit cards</string>
+
+    <!-- View Credit Card Screen -->
+    <string name="payments_fragment_add_card_header">No credit cards</string>
+    <string name="payments_fragment_add_card_description">Add a credit card to your account for a faster experience.</string>
+    <string name="payments_fragment_add_card_button">Add a card</string>
+    <string name="payment_details_description">Pay at the pump through the app with this credit card.</string>
+    <string name="payment_card_number">\u2022\u2022\u2022\u2022%s</string>
+
+    <!-- Add Credit Card Screen -->
+    <string name="payment_add_fragment_header">Credit card details</string>
+    <string name="payment_added">Card saved</string>
+
+    <!-- Remove Credit Card Screen -->
+    <string name="payments_remove_card_alert_title">Remove payment card?</string>
+    <string name="payments_remove_card_alert_message">Are you sure you want to remove this card from your account?</string>
+    <string name="payments_remove_card_alert_remove">Remove</string>
+    <string name="payments_remove_card_alert_cancel">Cancel</string>
+    <string name="payment_remove_bottom_sheet_title">Remove</string>
+    <string name="payment_remove_bottom_sheet_message">Removes the card from your account.</string>
+    <string name="payment_remove_bottom_sheet_cancel">Cancel</string>
+    <string name="payment_remove_toast">Credit card removed</string>
+
+    <!-- PAP Offsite Screen -->
+    <string name="nearest_station_offsite_header">Fuelling your vehicle is fast and easy.</string>
+
+    <!-- PAP Action Menu -->
+    <string name="action_fuel_up">Fuel up</string>
+    <string name="action_fuelling">Fuelling up…</string>
+    <string name="action_location">You\'re at %s station</string>
+
+    <!-- PAP Select Pump -->
+    <string name="select_pump_header">Fuel up</string>
+    <string name="pap_not_available_header">In-app payment unavailable</string>
+    <string name="pap_not_available_description">You can\’t use your app to pay at this station.</string>
+    <string name="select_pump_select">Select your pump</string>
+    <string name="select_pump_selected">Selected</string>
+    <string name="select_pump_help_header">Pump number</string>
+    <string name="select_pump_help_subheader">Your pump number is on the top or the side of the pump.</string>
+
+    <!-- Fuel Up limit -->
+    <string name="from">From</string>
+    <string name="fuel_manual_price_limit">%1$s to %2$s</string>
+    <string name="other_amount">Other amount</string>
+    <string name="fuel_upto">Fuel up to</string>
+    <string name="edit">Edit</string>
+
+    <string name="pump">PUMP</string>
+    <string name="payment">PAYMENT</string>
+    <string name="pre_authorized">Pre-authorize</string>
+    <string name="tax_inclusion">Tax incl.</string>
+    <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>
+    <string name="confirm_and_authorized">CONFIRM AND AUTHORIZE</string>
+    <string name="privacy_policy_url">https://www.petro-canada.ca/en/legal-privacy</string>
+
+    <string name="add_new_payment">Add new</string>
+    <string name="mobile_payment_accepted">Mobile payment</string>
+    <string name="mobile_payment_not_accepted">No mobile payment</string>
+    <string name="google_pay">Google Pay</string>
+    <string name="try_agian">Try again</string>
+    <string name="authorizing">Authorizing…</string>
+    <string name="fueling_up">Fuelling up…</string>
+    <string name="fueling_up_subheader">Please don’t leave pump unattended</string>
+    <string name="fuelling_about_to_begin">Fuelling is about to begin…</string>
+
+    <string name="pump_authorized">Pump %1$s authorized</string>
+    <string name="pump_authorized_subheader">Please lift the nozzle and select a fuel grade</string>
+    <string name="hide">Hide</string>
+
+    <string name="transaction_ppt_lbl">PETRO-POINTS</string>
+    <string name="transaction_copy_receipt_send_mail">Share your receipt below and access your purchase info from your account.</string>
+    <string name="transaction_saved">You saved %1$s</string>
+    <string name="transaction_summary">Your Transaction Summary</string>
+
+    <string name="transaction">Transactions</string>
+    <string name="transaction_details">DETAILS</string>
+    <string name="traansaction_date">Date</string>
+    <string name="transaction_payment_type">Payment type</string>
+
+    <string name="transaction_payment_type_value">Purchase</string>
+    <string name="transaction_tax_inclusive">Includes tax</string>
+    <string name="transaction_your_rbc_savings">Your RBC savings</string>
+    <string name="transaction_base_points_eaarned">Base Points</string>
+    <string name="transaction_total">Total</string>
+    <string name="view_receipt">View Receipt</string>
+    <string name="your_transaction_availble_in_your_account">Your purchase info will be available from your account.</string>
+
+    <!-- Payment  -->
+    <string name="pump_unavailable_title">Pump is unavailable</string>
+    <string name="pump_unavailable_message">Select another pump to fuel your vehicle.</string>
+
+    <string name="payment_failed_title">Payment failed</string>
+    <string name="payment_failed_message">We had trouble processing your payment.</string>
+    <string name="payment_failed_cancel">Cancel</string>
+
+    <!-- Cancel -->
+    <string name="cancel_alert_title">Stop this session?</string>
+    <string name="cancel_alert_body">You can start another fill through the app or at the pump.</string>
+    <string name="cancel_alert_button">Stop session</string>
+    <string name="cancelling">Cancelling…</string>
+    <string name="cancellation_alert_title">Transaction cancelled</string>
+    <string name="cancellation_alert_body">Your transaction was cancelled. You have not been charged.</string>
 
 </resources>
