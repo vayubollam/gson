@@ -320,26 +320,30 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void handleConfirmAndAuthorizedClick(){
         if(userPaymentId == null) {
-            //todo show select payment type error
+            // select payment type error
             return;
         }
         if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
             verifyFingerPrints();
         } else {
-            int preAuthPrices = Integer.parseInt(preAuth.replace("$", ""));
-            viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
-                if (result.status == Resource.Status.LOADING) {
-                    isLoading.set(true);
-                } else if (result.status == Resource.Status.ERROR) {
-                    isLoading.set(false);
-                    handleAuthorizationFail(result.message);
-                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                    isLoading.set(false);
-                    FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
-                    Navigation.findNavController(getView()).popBackStack();
-                    Navigation.findNavController(getView()).navigate(action);
-                }
-            });
+            try {
+                double preAuthPrices = formatter.parse(preAuth).doubleValue();
+                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
+                    if (result.status == Resource.Status.LOADING) {
+                        isLoading.set(true);
+                    } else if (result.status == Resource.Status.ERROR) {
+                        isLoading.set(false);
+                        handleAuthorizationFail(result.message);
+                    } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                        isLoading.set(false);
+                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
+                        Navigation.findNavController(getView()).popBackStack();
+                        Navigation.findNavController(getView()).navigate(action);
+                    }
+                });
+            } catch (ParseException ex){
+                Timber.e(ex.getMessage());
+            }
         }
     }
 
@@ -347,8 +351,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void requestGooglePaymentTransaction() {
         try {
             double preAuthPrices = formatter.parse(preAuth).doubleValue();
-            // Double preAuthPrices = Double.parseDouble(preAuth.replace(getString(R.string.dollar), ""));
-            //todo gateway fetch from api
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, mPapData.getP97TenantID());
 
@@ -450,40 +452,39 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
         switch (errorCode.toUpperCase()){
             case ErrorCodes.ERR_TRANSACTION_FAILS:
-                transactionFailsAlert(getContext()).show();
+                 transactionFailsAlert(getContext()).show();
                 break;
             case ErrorCodes.ERR_PUMP_RESERVATION_FAILS:
                 pumpReservationFailsAlert(getContext()).show();
                 break;
             default:
-                Alerts.prepareCustomDialog("Backend error", "A backend error has occurred.", getContext(), (dialogInterface, i) -> {
-                    dialogInterface.dismiss();}).show();
+                Alerts.prepareGeneralErrorDialog(getContext()).show();
                 break;
         }
     }
 
-    //todo update content
     private  AlertDialog transactionFailsAlert(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle("Transaction failed")
-                .setMessage("Payment failed")
-                .setNegativeButton(R.string.cancel, ((dialog, i) -> {
+                .setTitle(R.string.payment_failed_title )
+                .setMessage( R.string.payment_failed_message)
+                .setNegativeButton(R.string.payment_failed_cancel, ((dialog, i) -> {
                     dialog.dismiss();
                 }))
-                .setPositiveButton(R.string.msg_001_dialog_try_again, (dialog, which) -> {
+
+                .setPositiveButton(R.string.try_agian, (dialog, which) -> {
                     verifyFingerPrints();
                     dialog.dismiss();
                 });
         return builder.create();
     }
 
-    //todo content change
+
     private  AlertDialog pumpReservationFailsAlert(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle("Reservation failed")
-                .setMessage("Unable to reserve pump. Select a different pump.")
+                .setTitle(R.string.pump_unavailable_title )
+                .setMessage(  R.string.pump_unavailable_message)
                 .setPositiveButton(R.string.ok, ((dialog, i) -> {
                     dialog.dismiss();
                     binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);

@@ -240,7 +240,7 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<Resource<Boolean>> isPAPAvailable() {
         return Transformations.switchMap(nearestStation, stationItemResource -> {
-            if (stationItemResource.status == Resource.Status.SUCCESS && stationItemResource.data.getStation() != null) {
+            if (stationItemResource.status == Resource.Status.SUCCESS && stationItemResource.data != null &&  stationItemResource.data.getStation() != null) {
                 return Transformations.map(getStoreDetails(stationItemResource.data.getStation().getId()), result ->
                         new Resource<>(result.status,
                                 result.data != null && result.data.mobilePaymentStatus.getPapAvailable(),

@@ -11,6 +11,7 @@ import android.view.animation.RotateAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,6 +24,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 
 public class FuellingFragment extends MainActivityFragment {
@@ -30,8 +32,10 @@ public class FuellingFragment extends MainActivityFragment {
     private FuelUpViewModel viewModel;
     private FragmentFuellingBinding binding;
     private String pumpNumber;
+    private String transactionId;
 
     private boolean pingActiveSessionStarted = false;
+    private ObservableBoolean isLoading = new ObservableBoolean(true);
     private Handler handler = new Handler();
 
     @Inject
@@ -48,7 +52,7 @@ public class FuellingFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFuellingBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-
+        binding.setIsLoading(isLoading);
         return binding.getRoot();
     }
 
@@ -72,8 +76,25 @@ public class FuellingFragment extends MainActivityFragment {
                 // Navigate to home
                 goBack();
             } else {
-                // TODO: Handle cancel
-                goBack();
+                Alerts.prepareCustomDialog(
+                        getContext(),
+                        getString(R.string.cancel_alert_title),
+                        getString(R.string.cancel_alert_body),
+                        getString(R.string.cancel_alert_button),
+                        getString(R.string.cards_details_close),
+                        (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
+                                if (result.status == Resource.Status.LOADING) {
+                                    binding.cancelLayout.setVisibility(View.VISIBLE);
+                                } else if (result.status == Resource.Status.ERROR) {
+                                    binding.cancelLayout.setVisibility(View.GONE);
+                                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                                } else if (result.status == Resource.Status.SUCCESS) {
+                                    //goBack();
+                                }
+                            });
+                        }).show();
             }
         });
     }
@@ -94,13 +115,27 @@ public class FuellingFragment extends MainActivityFragment {
         @Override
         public void run() {
             viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
-                if (result.status == Resource.Status.LOADING) {
-
-                } else if (result.status == Resource.Status.ERROR) {
+                if (result.status == Resource.Status.ERROR) {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                    if(!result.data.activeSession){
+                        if (result.data.lastStatus.equalsIgnoreCase("Cancelled") ||
+                                result.data.lastStatus.equalsIgnoreCase("CANCELED")) {
+                            Alerts.prepareCustomDialog(
+                                    getString(R.string.cancellation_alert_title),
+                                    getString(R.string.cancellation_alert_body),
+                                    getContext(),
+                                    (dialogInterface, i) -> {
+                                        dialogInterface.dismiss();
+                                        goBack();
+                                    }).show();
+                        } else {
+                            observeTransactionData(result.data.lastTransId);
+                        }
+                    } else if (result.data.status != null) {
+                        transactionId = result.data.transId;
+                        binding.cancelButton.setVisibility(View.VISIBLE);
 
-                    if (result.data.status != null) {
                         binding.pumpAuthorizedText.setText(result.data.status.equals("New") ?
                                 getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));
                         binding.pumpAuthorizedSubheader.setText(result.data.status.equals("New") ?
@@ -112,19 +147,27 @@ public class FuellingFragment extends MainActivityFragment {
                         binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equals("New") ?
                                 R.drawable.circle_dash_border : R.drawable.circle_border));
 
+                        isLoading.set(false);
+
                         if (!result.data.status.equals("New"))
                             binding.borderImageView.clearAnimation();
+
+                        if(pingActiveSessionStarted) {
+                            observerFuellingActiveSession();
+                        }
                     } else {
                         goBack();
                     }
                 }
             });
-
-            if(pingActiveSessionStarted) {
-                observerFuellingActiveSession();
-            }
         }
     };
+
+    private void observeTransactionData(String transactionId){
+        FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId);
+        Navigation.findNavController(requireView()).popBackStack();
+        Navigation.findNavController(requireView()).navigate(action);
+    }
 
     public void stopFuellingActiveSessionObserver() {
         pingActiveSessionStarted = false;

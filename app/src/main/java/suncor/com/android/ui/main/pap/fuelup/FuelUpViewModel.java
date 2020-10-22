@@ -29,6 +29,7 @@ import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.PayByWalletRequest;
+import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
@@ -41,7 +42,7 @@ public class FuelUpViewModel extends ViewModel {
 
 
     @Inject
-    FuelUpViewModel(SettingsApi settingsApi, PapRepository papRepository, PaymentsRepository paymentsRepository) {
+    public FuelUpViewModel(SettingsApi settingsApi, PapRepository papRepository, PaymentsRepository paymentsRepository) {
         this.settingsApi = settingsApi;
         this.papRepository = papRepository;
         this.paymentsRepository = paymentsRepository;
@@ -131,9 +132,12 @@ public class FuelUpViewModel extends ViewModel {
      * Payment initiate with wallet
      */
     LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
-        DecimalFormat precision = new DecimalFormat("0.00");
-        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, Double.parseDouble(precision.format(preAuthAmount)), userPaymentSourceId);
+        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount, userPaymentSourceId);
         return papRepository.authorizePaymentByWallet(request);
+    }
+
+    public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {
+        return papRepository.cancelTransaction(transactionId);
     }
 
 }
