@@ -13,6 +13,10 @@ import suncor.com.android.utilities.ConnectionUtil;
 public class Alerts {
     public static AlertDialog prepareGeneralErrorDialog(Context context) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
+        if(!hasInternetConnection){
+            AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, "General Inline No Internet"));
+        }
 
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";

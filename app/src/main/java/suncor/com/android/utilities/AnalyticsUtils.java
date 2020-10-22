@@ -2,16 +2,12 @@ package suncor.com.android.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.util.Pair;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.cards.CardType;
 
 public class AnalyticsUtils {
@@ -169,7 +165,6 @@ public class AnalyticsUtils {
     }
 
     public static void setCurrentScreenName(Activity activity, String screenName) {
-
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getComponentName().getClassName());
