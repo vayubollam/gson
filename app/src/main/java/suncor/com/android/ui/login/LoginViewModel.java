@@ -86,15 +86,21 @@ public class LoginViewModel extends ViewModel {
                         )));
                         break;
                     case OTHER_FAILURE:
+                        loginFailedEvent.postValue(Event.newEvent(new LoginFailResponse(
+                                R.string.msg_e001_title,
+                                new ErrorMessage(R.string.msg_e001_message)
+                        )));
+                        break;
+                    case UNEXPECTED_FAILURE:
                         LoginFailResponse failResponse = new LoginFailResponse(
                                 R.string.clear_cache_dialog_title,
                                 new ErrorMessage(R.string.clear_cache_dialog_message),
                                 R.string.settings_failure_dialog_button
                         );
-                        failResponse.positiveButtonCallback = () ->deleteAppData();
+                        failResponse.positiveButtonCallback = () -> deleteAppData();
                         loginFailedEvent.postValue(Event.newEvent(failResponse));
-
                         break;
+
                     case PASSWORD_RESET:
                         createPasswordEvent.postValue(Event.newEvent(response.getAdditionalData()));
                         break;

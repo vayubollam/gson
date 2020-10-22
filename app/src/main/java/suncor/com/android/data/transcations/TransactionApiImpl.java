@@ -22,7 +22,7 @@ import suncor.com.android.model.cards.Transaction;
 import suncor.com.android.utilities.Timber;
 
 public class TransactionApiImpl implements TransactionApi {
-    private final static String BASE_PATH = "/adapters/suncor/v1/transactions";
+    private final static String BASE_PATH = "/adapters/suncor/v2/rfmp-secure/transactions";
     private Gson gson;
 
     public TransactionApiImpl(Gson gson) {

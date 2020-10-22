@@ -67,7 +67,12 @@ public class RewardsSignedInViewModel extends ViewModel {
     }
 
     public String getPetroPoints() {
-        return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+
+        if (sessionManager.getProfile() != null)
+        {
+            return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+        }
+        return " ";
     }
 
     public int getPetroPointsValue() {
