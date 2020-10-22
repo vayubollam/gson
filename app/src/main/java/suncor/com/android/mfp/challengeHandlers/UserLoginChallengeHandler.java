@@ -38,12 +38,11 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     private static final String PUBWEB = "pubWeb";
     private static final String RETRY_TIMEOUT = "retryTimeout";
     private static final String CREDENTIALS_KEY = "credentials";
-    private boolean callOnceOnCredentialValidation = false;
 
     private boolean isChallenged = false;
     private SessionChangeListener listener;
     private JSONObject credentials;
-
+    private Profile profile;
     @Inject
     SuncorApplication application;
 
@@ -142,13 +141,9 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 keyStoreStorage.store(CREDENTIALS_KEY, credentials.toString());
             }
             String profileStr = identity.getJSONObject("user").getString("attributes");
-            Profile profile = gson.fromJson(profileStr, Profile.class);
+             profile = gson.fromJson(profileStr, Profile.class);
             AnalyticsUtils.userID = profile.getRetailId();
             AnalyticsUtils.setUserProperty(application.getApplicationContext(),  profile.getRetailId() );
-            if (callOnceOnCredentialValidation) {
-                callOnceOnCredentialValidation = false;
-                listener.onLoginSuccess(profile);
-            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -156,13 +151,13 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
     public void login(JSONObject credentials) {
         this.credentials = credentials;
-        callOnceOnCredentialValidation = true;
         if (isChallenged) {
             submitChallengeAnswer(credentials);
         } else {
             WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
                 @Override
                 public void onSuccess() {
+                    listener.onLoginSuccess(profile);
                     Timber.d("Login Preemptive Success");
                 }
 

@@ -2,7 +2,6 @@ package suncor.com.android.ui.main.pap.fuelling;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,7 +130,8 @@ public class FuellingFragment extends MainActivityFragment {
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
-                        if (result.data.lastStatus.equals("Cancelled")) {
+                        if (result.data.lastStatus.equalsIgnoreCase("Cancelled") ||
+                                result.data.lastStatus.equalsIgnoreCase("CANCELED")) {
                             Alerts.prepareCustomDialog(
                                      getString(R.string.cancellation_alert_title),
                                     getString(R.string.cancellation_alert_body),
@@ -173,15 +173,15 @@ public class FuellingFragment extends MainActivityFragment {
 
                         if (!result.data.status.equals("New"))
                             binding.borderImageView.clearAnimation();
+
+                        if(pingActiveSessionStarted) {
+                            observerFuellingActiveSession();
+                        }
                     } else {
                         goBack();
                     }
                 }
             });
-
-            if(pingActiveSessionStarted) {
-                observerFuellingActiveSession();
-            }
         }
     };
 

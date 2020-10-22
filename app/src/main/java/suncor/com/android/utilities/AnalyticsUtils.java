@@ -103,12 +103,9 @@ public class AnalyticsUtils {
     }
 
     public static void setUserProperty(Context context, String userID ){
-        FirebaseAnalytics.getInstance(SuncorApplication.).setUserId(userID);
+        FirebaseAnalytics.getInstance(context).setUserId(userID);
         FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
     }
-
-
-
 
     @SafeVarargs
     public static void logEvent(Context context, Event event, Pair<Param,String>... parameters) {

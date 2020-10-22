@@ -3,10 +3,12 @@ package suncor.com.android.model.pap.transaction;
 import android.content.Context;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import suncor.com.android.R;
 
@@ -47,6 +49,9 @@ public class Transaction {
     private String storeNumber;
     private String posTransactionId;
 
+
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+
     public Address getAddress() {
         return address;
     }
@@ -84,7 +89,7 @@ public class Transaction {
     }
 
     public String getFormattedTotal() {
-        return formattedTotal;
+        return formatter.format(totalAmount);
     }
 
     public List<LineItem> getLineItems() {

@@ -132,12 +132,11 @@ public class FuelUpViewModel extends ViewModel {
      * Payment initiate with wallet
      */
     LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
-        DecimalFormat precision = new DecimalFormat("0.00");
-        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, Double.parseDouble(precision.format(preAuthAmount)), userPaymentSourceId);
+        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount, userPaymentSourceId);
         return papRepository.authorizePaymentByWallet(request);
     }
 
-    public LiveData<Resource<Transaction>> cancelTransaction(String transactionId) {
+    public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {
         return papRepository.cancelTransaction(transactionId);
     }
 

@@ -49,3 +49,4 @@
 #OkHttp
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
+-ignorewarnings

@@ -248,16 +248,26 @@
                             android:textAppearance="@style/Caption1"
                             app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"/>
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/barcode_image"
-                            android:layout_width="193dp"
-                            android:layout_height="44dp"
-                            android:src="@{card.barCode}"
+                        <FrameLayout
+                            android:id="@+id/fl_barcode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="20dp"
+                            android:paddingTop="60dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="30dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/divider_2"
+                            app:layout_constraintTop_toBottomOf="@id/divider_2">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/barcode_image"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:src="@{card.barCode}"
                             app:visibleGone="@{card.cardType==CardType.PPTS}" />
+                        </FrameLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
