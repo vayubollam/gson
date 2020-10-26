@@ -22,11 +22,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -105,7 +103,7 @@ public class CardQuestionFragment extends BaseFragment {
                     break;
                 case ERROR:
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong Alert"));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong"));
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> getActivity().finish());

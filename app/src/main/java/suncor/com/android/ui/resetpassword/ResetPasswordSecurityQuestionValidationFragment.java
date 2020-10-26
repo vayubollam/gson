@@ -119,4 +119,9 @@ public class ResetPasswordSecurityQuestionValidationFragment extends BaseFragmen
         sessionManager.logout();
 
     }
+
+    @Override
+    protected String getScreenName() {
+        return "reset-password-security-question-validation";
+    }
 }

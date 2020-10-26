@@ -68,4 +68,8 @@ public class ProvinceProfileFragment extends MainActivityFragment {
         sharedViewModel.setSelectedProvince(((MainActivity) getActivity()).getProvinces().get(selectedProvince));
     }
 
+    @Override
+    protected String getScreenName() {
+        return "province-list";
+    }
 }

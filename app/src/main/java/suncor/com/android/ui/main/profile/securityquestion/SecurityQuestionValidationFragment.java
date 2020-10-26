@@ -140,4 +140,8 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
         }, 400);
     }
 
+    @Override
+    protected String getScreenName() {
+        return "security-question-validation";
+    }
 }

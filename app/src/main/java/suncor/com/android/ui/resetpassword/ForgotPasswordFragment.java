@@ -90,4 +90,8 @@ public class ForgotPasswordFragment extends MainActivityFragment {
         }, 400);
     }
 
+    @Override
+    protected String getScreenName() {
+        return "forgot-password";
+    }
 }

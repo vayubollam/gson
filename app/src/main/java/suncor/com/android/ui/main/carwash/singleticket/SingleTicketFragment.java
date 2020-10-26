@@ -306,6 +306,11 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         binding.valueRecyclerViewDownDivider.animate().setDuration(ANIM_DURATION).alpha(1).start();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "carwash-ticket");
+    }
 
     @Override
     public void onBackPressed() {

@@ -469,22 +469,32 @@ public class HomeFragment extends BottomNavigationFragment {
             mViewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.LOADING) {
                 } else if (result.status == Resource.Status.ERROR) {
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ));
                     Alerts.prepareGeneralErrorDialog(getContext()).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
                         if(result.data.status.equals("New")){
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                         } else if(result.data.status.equals("BeginFueling")){
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)));
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                         } else{
                             //todo handle processing and session end state
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)));
                         }
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
                         }
                     } else {
                         mViewModel.updateFuellingSession(false, "");
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
+                                new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"));
                     }
                 }
             });

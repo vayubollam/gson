@@ -13,12 +13,10 @@ import suncor.com.android.utilities.ConnectionUtil;
 public class Alerts {
     public static AlertDialog prepareGeneralErrorDialog(Context context) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
-        if(!hasInternetConnection){
             AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
-                    new Pair<>(AnalyticsUtils.Param.errorMessage, "General Inline No Internet"));
-        }
+                    new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title)));
 
-        String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+            String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
@@ -39,6 +37,9 @@ public class Alerts {
 
     public static AlertDialog prepareGeneralErrorDialogWithTryAgain(Context context, DialogInterface.OnClickListener listener) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+                new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title)));
+
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
@@ -59,6 +60,9 @@ public class Alerts {
     }
 
     public static AlertDialog prepareCustomDialogWithTryAgain(String title, String message, Context context, DialogInterface.OnClickListener listener) {
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+                new Pair<>(AnalyticsUtils.Param.errorMessage, title+"("+message+")"));
+
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")")
         );

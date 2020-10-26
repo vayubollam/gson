@@ -101,4 +101,9 @@ public class ResetPasswordFragment extends BaseFragment {
             binding.scrollView.smoothScrollTo(0, scrollPosition);
         }, 400);
     }
+
+    @Override
+    protected String getScreenName() {
+        return "reset-password";
+    }
 }

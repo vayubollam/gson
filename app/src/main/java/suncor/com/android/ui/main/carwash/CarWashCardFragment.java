@@ -26,7 +26,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -175,7 +174,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                 () -> {
                     viewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong View"));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong"));
                 }));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {

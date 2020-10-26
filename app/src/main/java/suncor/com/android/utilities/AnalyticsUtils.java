@@ -31,7 +31,8 @@ public class AnalyticsUtils {
         error("error_log"),
         paymentComplete("payment_complete"),
         intersite("intersite"),
-        infoTab("info_tab");
+        infoTab("info_tab"),
+        menuTap("menu_tap");
 
 
         private final String name;
@@ -66,7 +67,8 @@ public class AnalyticsUtils {
         paymentMethod("paymentMethod"),
         fuelAmountSelection("fuelAmountSelection"),
         intersiteURL("intersiteURL"),
-        infoText("infoText");
+        infoText("infoText"),
+        menuSelection("menuSelection");
 
         private final String name;
 
@@ -174,7 +176,7 @@ public class AnalyticsUtils {
 
     public enum ErrorMessages {
 
-        backendError("backendError");
+        backendError("SUNCORXXXX");
 
         private final String name;
 
