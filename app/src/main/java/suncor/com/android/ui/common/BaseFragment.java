@@ -24,7 +24,7 @@ public class BaseFragment extends DaggerFragment {
         };
         timer = new Timer();
         timer.schedule(timerTask, 30000);
-        AnalyticsUtils.logEvent(getContext(), "screen_view");
+        //AnalyticsUtils.logEvent(getContext(), "screen_view");
     }
 
     @Override

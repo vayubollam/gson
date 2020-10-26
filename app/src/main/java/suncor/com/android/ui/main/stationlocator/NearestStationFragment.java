@@ -256,11 +256,6 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     }
 
     @Override
-    protected String getScreenName() {
-        return "NearestStationFragment";
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PERMISSION_GRANTED) {

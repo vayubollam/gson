@@ -44,6 +44,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:ddc1ebf954c1f8508ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationDev.Carwash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1013213340484:android:559b61a3854faa9a8ded11",
         "android_client_info": {
           "package_name": "com.suncor.android.SuncorApplicationOpsQA"
@@ -102,6 +138,42 @@
             "certificate_hash": "b047b5916f86ca175fd17b240786352a36347fa1"
           }
         },
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:4ca5bae5c30715f98ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationQA.Carwash"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
           "client_type": 3
