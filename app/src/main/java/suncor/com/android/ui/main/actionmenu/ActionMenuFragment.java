@@ -148,6 +148,10 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
 
                 binding.actionFuelUpButton.setText(activeSession ?
                         result.data.status.equals("New") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
+
+                AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, activeSession ?
+                        result.data.status.equals("New") ? getString(R.string.fuelling_about_to_begin) : getString(R.string.action_fuelling) : getString(R.string.action_fuel_up)));
+
                 binding.actionFuelUpButton.setLoading(activeSession);
             } else {
                 activeSession = false;
