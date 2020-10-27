@@ -19,7 +19,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.utilities.Timber;
 
 public class UsersApiImpl implements UsersApi {
-    private final static String ADAPTER_PATH = "/adapters/suncor/v1/users";
+    private final static String ADAPTER_PATH = "/adapters/suncor/v2/rfmp-secure/users";
 
 
     @Override

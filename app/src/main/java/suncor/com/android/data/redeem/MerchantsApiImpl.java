@@ -22,7 +22,7 @@ import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.utilities.Timber;
 
 public class MerchantsApiImpl implements MerchantsApi {
-    private final static String ADAPTER_PATH = "/adapters/suncorreloadredeem/v1/merchants";
+    private final static String ADAPTER_PATH = "/adapters/suncorreloadredeem/v2/rfmp-secure/merchants";
     private Gson gson;
 
     public MerchantsApiImpl(Gson gson) {
@@ -49,7 +49,10 @@ public class MerchantsApiImpl implements MerchantsApi {
                     Timber.d("Merchants API success, response:\n" + jsonText);
 
                     Merchant[] merchants = gson.fromJson(jsonText, Merchant[].class);
-                    result.postValue(Resource.success(new ArrayList<>(Arrays.asList(merchants))));
+                    if (merchants != null)
+                    {
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(merchants))));
+                    }
                 }
 
                 @Override
