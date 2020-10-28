@@ -170,6 +170,4 @@ abstract class MainActivityFragmentsModule {
     @ContributesAndroidInjector
     abstract ReceiptFragment contributeReceiptFragment();
 
-    @ContributesAndroidInjector
-    abstract TutorialFragment contributeTutorialFragment();
 }

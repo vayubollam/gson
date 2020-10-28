@@ -23,8 +23,9 @@ import suncor.com.android.databinding.FragmentTutorialBinding;
 import suncor.com.android.databinding.TutorialScreenListitemBinding;
 import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.BaseFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
-public class TutorialFragment extends BaseFragment {
+public class TutorialFragment extends Fragment {
 
     @Nullable
     @Override
@@ -100,7 +101,8 @@ public class TutorialFragment extends BaseFragment {
     }
 
     @Override
-    protected String getScreenName() {
-        return "onboarding-tutorial-carousel";
+    public void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(),"onboarding-tutorial-carousel" );
     }
 }
