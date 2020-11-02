@@ -17,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import java.io.File;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -94,7 +95,12 @@ public class ReceiptFragment extends MainActivityFragment {
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                binding.receiptDetails.setText(result.data.getReceipt());
+                if(Objects.isNull(result.data.getReceipt())){
+                    binding.shareButton.setVisibility(getView().GONE);
+                    binding.viewReceiptBtn.setVisibility(getView().GONE);
+                } else {
+                    binding.receiptDetails.setText(result.data.getReceipt());
+                }
                 binding.setTransaction(result.data);
 
                 binding.shareButton.setOnClickListener(v -> {
