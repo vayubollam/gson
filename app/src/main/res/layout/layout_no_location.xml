@@ -1,64 +1,62 @@
+<!--
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <data>
-        <variable
-            name="vm"
-            type="suncor.com.android.ui.main.home.HomeViewModel" />
-    </data>
-</layout>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/station_card"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipChildren="false"
-        app:cardCornerRadius="@dimen/cards_default_radius"
-        app:cardElevation="2dp"
-        app:rippleColor="@android:color/transparent">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/station_card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="@color/white"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:padding="16dp"
-            app:visibleGone="@{!vm.locationServiceEnabled}"
-            tools:visibility="gone">
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            app:cardCornerRadius="@dimen/cards_default_radius"
+            app:cardElevation="2dp"
+            app:rippleColor="@android:color/transparent">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/gibson_semibold"
-                android:text="@string/home_nearest_enable_gps_title"
-                android:textAppearance="@style/Body" />
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:padding="16dp"
+                >
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="20dp"
-                android:lineSpacingMultiplier="1.71"
-                android:text="@string/home_nearest_enable_gps_message"
-                android:textAppearance="@style/Caption1"
-                android:textColor="@color/black_80" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/card_enable_gps_title"
+                    android:textAppearance="@style/Body" />
 
-            <suncor.com.android.ui.common.SuncorButton
-                android:id="@+id/settings_button"
-                style="@style/LinkButton.Red.M"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-10dp"
-                android:fontFamily="@font/gibson_semibold"
-                android:text="@string/station_location_alert_settings" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="20dp"
+                    android:lineSpacingMultiplier="1.71"
+                    android:text="@string/card_enable_gps_message"
+                    android:textAppearance="@style/Caption1"
+                    android:textColor="@color/black_80" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/settings_button"
+                    style="@style/LinkButton.Red.M"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-10dp"
+                    android:fontFamily="@font/gibson_semibold"
+                    android:text="@string/card_enable_gps_settings" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
+-->
