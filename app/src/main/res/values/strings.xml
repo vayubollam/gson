@@ -699,4 +699,7 @@
     <string name="cancellation_alert_title">Transaction cancelled</string>
     <string name="cancellation_alert_body">Your transaction was cancelled. You have not been charged.</string>
 
+    <string name="card_enable_gps_title">Location Services not enabled</string>
+    <string name="card_enable_gps_message">You\'ll need to enable location services to pay at the pump.</string>
+    <string name="card_enable_gps_settings">Settings</string>
 </resources>
