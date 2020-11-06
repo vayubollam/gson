@@ -87,6 +87,7 @@ public class ReceiptFragment extends MainActivityFragment {
         viewModel.getTransactionDetails(transactionId).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);

@@ -183,7 +183,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
-
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -348,6 +348,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
                     } else if (result.status == Resource.Status.ERROR) {
                         isLoading.set(false);
                         handleAuthorizationFail(result.message);
@@ -466,6 +467,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 handleAuthorizationFail(result.message);

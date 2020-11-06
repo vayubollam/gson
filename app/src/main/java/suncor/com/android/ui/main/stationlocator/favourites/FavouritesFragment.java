@@ -108,6 +108,9 @@ public class FavouritesFragment extends MainActivityFragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel.stations.observe(this, stations -> {
             isLoading.set(stations.status == Resource.Status.LOADING);
+            if(stations.status == Resource.Status.LOADING){
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-gas-station-locations-favourites-loading");
+            }
             if (stations.status == Resource.Status.SUCCESS && !stations.data.isEmpty()) {
                 favouritesAdapter.setStationItems(stations.data);
 

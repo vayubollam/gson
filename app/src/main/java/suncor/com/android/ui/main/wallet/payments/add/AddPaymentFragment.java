@@ -75,6 +75,7 @@ public class AddPaymentFragment extends MainActivityFragment {
         viewModel.getAddPaymentEndpoint(inTransaction).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
+                AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-wallet-add-credit-card-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 Alerts.prepareGeneralErrorDialog(getContext()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -85,7 +86,7 @@ public class AddPaymentFragment extends MainActivityFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-wallet-add-credit-card");
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-wallet-add-credit-card");
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.clearCache(true);
         isWebViewLoading.set(true);
@@ -108,6 +109,7 @@ public class AddPaymentFragment extends MainActivityFragment {
                         String cardName = uri.getQueryParameter("cardName");
                         String lastFour = uri.getQueryParameter("lastFour");
                         String exp = uri.getQueryParameter("expMonth") + "/" + uri.getQueryParameter("expYear");
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-wallet-" + cardName + "-save-success");
 
                         PaymentDetail paymentDetail = new PaymentDetail();
                         paymentDetail.setId(userPaymentSourceId);

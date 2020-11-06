@@ -82,13 +82,13 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                 binding.executePendingBindings();
 
                 //track screen name
-                String screenName;
+              /*  String screenName;
                 if (clickedCardIndex == 0) {
                     screenName = "my-petro-points-wallet-view-card";
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.payments.getValue().get(clickedCardIndex).getPaymentType().name();
                 }
-                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);*/
             }
         });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
