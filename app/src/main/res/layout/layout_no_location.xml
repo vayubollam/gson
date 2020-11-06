@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data >
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel" />
+    </data>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gibson_semibold"
-                android:text="@string/card_enable_gps_title"
+                android:text="@{vm.locationServiceEnableTitle.toString()}"
                 android:textAppearance="@style/Body" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -37,7 +45,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
                 android:lineSpacingMultiplier="1.71"
-                android:text="@string/card_enable_gps_message"
+                android:text="@{vm.locationServiceEnableMessage.toString()}"
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_80" />
 
@@ -53,6 +61,5 @@
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+</layout>
 

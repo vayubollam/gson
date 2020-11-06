@@ -674,4 +674,14 @@
     <string name="payment_failed_cancel">Annuler</string>
 
 
+
+    <string name="card_enable_gps_title">Services de localisation non activés</string>
+    <string name="card_enable_gps_message">Vous devrez activer les services de localisation pour payer à la pompe.</string>
+    <string name="card_enable_gps_settings">Paramètres</string>
+
+    <string name="card_enable_location_title">Emplacement non disponible</string>
+    <string name="card_enable_location_message">Vous devrez activer votre emplacement pour payer à la pompe.</string>
+    <string name="card_enable_location_settings">Paramètres</string>
+
+
 </resources>

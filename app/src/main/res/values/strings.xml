@@ -702,4 +702,8 @@
     <string name="card_enable_gps_title">Location Services not enabled</string>
     <string name="card_enable_gps_message">You\'ll need to enable location services to pay at the pump.</string>
     <string name="card_enable_gps_settings">Settings</string>
+
+    <string name="card_enable_location_title">Location unavailable</string>
+    <string name="card_enable_location_message">You\'ll need to turn on your location to pay at the pump.</string>
+    <string name="card_enable_location_settings">Settings</string>
 </resources>

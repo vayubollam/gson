@@ -1,6 +1,9 @@
 package suncor.com.android.ui.main.wallet.payments.add;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,10 +16,11 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,23 +28,38 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentAddPaymentBinding;
+import suncor.com.android.databinding.HomeNearestCardBinding;
+import suncor.com.android.databinding.LayoutNoLocationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.LocationUtils;
+import suncor.com.android.utilities.PermissionManager;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class AddPaymentFragment extends MainActivityFragment {
+
+    private static final int REQUEST_CHECK_SETTINGS = 100;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
     private FragmentAddPaymentBinding binding;
     private AddPaymentViewModel viewModel;
+    private LayoutNoLocationBinding layoutNoLocationBinding;
 
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();
     private ObservableBoolean isAdding = new ObservableBoolean(false);
 
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    PermissionManager permissionManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +100,37 @@ public class AddPaymentFragment extends MainActivityFragment {
                 binding.webView.loadUrl(result.data.toString());
             }
         });
+
+        layoutNoLocationBinding.settingsButton.setOnClickListener(v -> {
+            permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+                @Override
+                public void onNeedPermission() {
+                    showRequestLocationDialog(false);
+                }
+
+                @Override
+                public void onPermissionPreviouslyDenied() {
+                    //in case in the future we would show any rational
+                    showRequestLocationDialog(false);
+                }
+
+                @Override
+                public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                    showRequestLocationDialog(true);
+                }
+
+                @Override
+                public void onPermissionGranted() {
+                    showRequestLocationDialog(false);
+                }
+            });
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        checkAndRequestPermission();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -140,4 +190,82 @@ public class AddPaymentFragment extends MainActivityFragment {
         Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", true);
         Navigation.findNavController(getView()).popBackStack();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
+            viewModel.setLocationServiceEnabled(true);
+        }
+    }
+
+    private void checkAndRequestPermission() {
+        permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
+            @Override
+            public void onNeedPermission() {
+                if (!permissionManager.isAlertShown()) {
+                    permissionManager.setAlertShown(true);
+                    //showRequestLocationDialog(false);
+                }
+                viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getActivity()));
+                viewModel.setLocationServiceTitle(getString(R.string.card_enable_gps_title));
+                viewModel.setLocationServiceMessage(getString(R.string.card_enable_gps_message));
+            }
+
+            @Override
+            public void onPermissionPreviouslyDenied() {
+                //in case in the future we would show any rational
+            }
+
+            @Override
+            public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+            }
+
+            @Override
+            public void onPermissionGranted() {
+                viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getActivity()));
+                viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getActivity()));
+                viewModel.setLocationServiceTitle(getString(R.string.card_enable_location_title));
+                viewModel.setLocationServiceMessage(getString(R.string.card_enable_location_message));
+            }
+        });
+    }
+
+
+    private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
+        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
+                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")")
+        );
+        adb.setTitle(R.string.enable_location_dialog_title);
+        adb.setMessage(R.string.enable_location_dialog_message);
+        adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                    new Pair<>("alertSelection", getString(R.string.cancel))
+            );
+        });
+        adb.setPositiveButton(R.string.ok, (dialog, which) -> {
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                    new Pair<>("alertSelection", getString(R.string.ok))
+            );
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
+                LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
+                return;
+            }
+
+            permissionManager.setFirstTimeAsking(Manifest.permission.ACCESS_FINE_LOCATION, false);
+            if (previouselyDeniedWithNeverASk) {
+                PermissionManager.openAppSettings(getActivity());
+            } else {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+            }
+            dialog.dismiss();
+        });
+        AlertDialog alertDialog = adb.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+
 }
