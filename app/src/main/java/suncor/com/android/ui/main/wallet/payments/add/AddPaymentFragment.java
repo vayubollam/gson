@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,9 +75,10 @@ public class AddPaymentFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentAddPaymentBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
         binding.setIsAdding(isAdding);
         binding.setIsWebviewLoading(isWebViewLoading);
-        binding.setLifecycleOwner(this);
+        layoutNoLocationBinding = binding.noLocationCard;
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
 
@@ -89,17 +91,14 @@ public class AddPaymentFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
-
-        viewModel.getAddPaymentEndpoint(inTransaction).observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-                //hideKeyBoard();
-            } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext()).show();
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                binding.webView.loadUrl(result.data.toString());
-            }
-        });
+        if (permissionManager.shouldAskPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            viewModel.setLocationServiceTitle(getString(R.string.card_enable_gps_title));
+            viewModel.setLocationServiceMessage(getString(R.string.card_enable_gps_message));
+        } else {
+            viewModel.setLocationServiceTitle(getString(R.string.card_enable_location_title));
+            viewModel.setLocationServiceMessage(getString(R.string.card_enable_location_message));
+        }
+        fetchAddPaymentEndpoint();
 
         layoutNoLocationBinding.settingsButton.setOnClickListener(v -> {
             permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
@@ -131,6 +130,20 @@ public class AddPaymentFragment extends MainActivityFragment {
     public void onStart() {
         super.onStart();
         checkAndRequestPermission();
+    }
+
+    private void fetchAddPaymentEndpoint()
+        boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
+
+        viewModel.getAddPaymentEndpoint(inTransaction).observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+                //hideKeyBoard();
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(getContext()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                binding.webView.loadUrl(result.data.toString());
+            }
+        });
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -198,17 +211,28 @@ public class AddPaymentFragment extends MainActivityFragment {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] == PERMISSION_GRANTED) {
+                if (LocationUtils.isLocationEnabled(getContext())) {
+                    viewModel.setLocationServiceEnabled(true);
+                } else {
+                    LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
+                }
+
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     private void checkAndRequestPermission() {
         permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
             public void onNeedPermission() {
                 if (!permissionManager.isAlertShown()) {
                     permissionManager.setAlertShown(true);
-                    //showRequestLocationDialog(false);
                 }
-                viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getActivity()));
-                viewModel.setLocationServiceTitle(getString(R.string.card_enable_gps_title));
-                viewModel.setLocationServiceMessage(getString(R.string.card_enable_gps_message));
             }
 
             @Override
@@ -223,9 +247,6 @@ public class AddPaymentFragment extends MainActivityFragment {
             @Override
             public void onPermissionGranted() {
                 viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getActivity()));
-                viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getActivity()));
-                viewModel.setLocationServiceTitle(getString(R.string.card_enable_location_title));
-                viewModel.setLocationServiceMessage(getString(R.string.card_enable_location_message));
             }
         });
     }

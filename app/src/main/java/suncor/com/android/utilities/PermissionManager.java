@@ -70,7 +70,7 @@ public class PermissionManager {
     }
 
 
-    private boolean shouldAskPermission(Context context, String permission) {
+    public boolean shouldAskPermission(Context context, String permission) {
         if (shouldAskPermission()) {
             int permissionResult = ActivityCompat.checkSelfPermission(context, permission);
             if (permissionResult != PackageManager.PERMISSION_GRANTED) {
