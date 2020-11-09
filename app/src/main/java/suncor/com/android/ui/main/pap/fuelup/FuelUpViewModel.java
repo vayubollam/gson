@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import suncor.com.android.LocationLiveData;
 import suncor.com.android.data.pap.PapRepository;
 import suncor.com.android.data.payments.PaymentsRepository;
 import suncor.com.android.data.settings.SettingsApi;
@@ -39,6 +41,7 @@ public class FuelUpViewModel extends ViewModel {
     private final SettingsApi settingsApi;
     private final PapRepository papRepository;
     private final PaymentsRepository paymentsRepository;
+    private LatLng userLocation;
 
 
     @Inject
@@ -70,6 +73,10 @@ public class FuelUpViewModel extends ViewModel {
 
             return new Resource(result.status, payments, result.message);
         });
+    }
+
+    public void setUserLocation(LatLng userLocation) {
+        this.userLocation = userLocation;
     }
 
     /**
@@ -125,7 +132,7 @@ public class FuelUpViewModel extends ViewModel {
      */
     LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken) {
         PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount, new PayByGooglePayRequest.FundingPayload(paymentToken));
-        return papRepository.authorizePaymentByGooglePay(request);
+        return papRepository.authorizePaymentByGooglePay(request, userLocation);
     }
 
     /**
@@ -133,7 +140,7 @@ public class FuelUpViewModel extends ViewModel {
      */
     LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
         PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount, userPaymentSourceId);
-        return papRepository.authorizePaymentByWallet(request);
+        return papRepository.authorizePaymentByWallet(request, userLocation);
     }
 
     public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {

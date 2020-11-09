@@ -20,9 +20,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.android.gms.maps.model.LatLng;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -30,6 +33,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.LocationLiveData;
 import suncor.com.android.databinding.FragmentAddPaymentBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.databinding.LayoutNoLocationBinding;
@@ -38,6 +42,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
@@ -52,15 +57,18 @@ public class AddPaymentFragment extends MainActivityFragment {
     private FragmentAddPaymentBinding binding;
     private AddPaymentViewModel viewModel;
     private LayoutNoLocationBinding layoutNoLocationBinding;
+    private HomeViewModel homeViewModel;
+
+    private LocationLiveData locationLiveData;
 
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();
     private ObservableBoolean isAdding = new ObservableBoolean(false);
 
     @Inject
-    ViewModelFactory viewModelFactory;
+    PermissionManager permissionManager;
 
     @Inject
-    PermissionManager permissionManager;
+    ViewModelFactory viewModelFactory;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +76,8 @@ public class AddPaymentFragment extends MainActivityFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddPaymentViewModel.class);
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Add Payment"));
 
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
     }
 
     @Nullable
@@ -135,15 +145,26 @@ public class AddPaymentFragment extends MainActivityFragment {
     private void fetchAddPaymentEndpoint(){
         boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
 
-        viewModel.getAddPaymentEndpoint(inTransaction).observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-                //hideKeyBoard();
-            } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext()).show();
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                binding.webView.loadUrl(result.data.toString());
+        homeViewModel.locationServiceEnabled.observe(getViewLifecycleOwner(), (enabled -> {
+            if (enabled) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+                    homeViewModel.isLoading.set(homeViewModel.getUserLocation() == null);
+
+                    Transformations.switchMap(locationLiveData, result -> {
+                        viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
+                        return viewModel.getAddPaymentEndpoint(inTransaction);
+                    }).observe(getViewLifecycleOwner(), result -> {
+                        if (result.status == Resource.Status.LOADING) {
+                            //hideKeyBoard();
+                        } else if (result.status == Resource.Status.ERROR) {
+                            Alerts.prepareGeneralErrorDialog(getContext()).show();
+                        } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                            binding.webView.loadUrl(result.data.toString());
+                        }
+                    });
+                }
             }
-        });
+        }));
     }
 
     @SuppressLint("SetJavaScriptEnabled")

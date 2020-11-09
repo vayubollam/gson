@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,8 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,6 +31,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
@@ -48,6 +52,7 @@ import javax.inject.Inject;
 
 import suncor.com.android.BuildConfig;
 import suncor.com.android.HomeNavigationDirections;
+import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -59,6 +64,7 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
+import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
@@ -67,6 +73,8 @@ import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
         FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
@@ -82,6 +90,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private Double lastTransactionFuelUpLimit;
     SettingsResponse.Pap mPapData;
     PaymentDropDownAdapter paymentDropDownAdapter;
+    private HomeViewModel homeViewModel;
+
+    private LocationLiveData locationLiveData;
 
     private SelectPumpAdapter adapter;
 
@@ -106,6 +117,20 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
+
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
+        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
+        homeViewModel.locationServiceEnabled.observe(getViewLifecycleOwner(), (enabled -> {
+            if (enabled) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+                    homeViewModel.isLoading.set(homeViewModel.getUserLocation() == null);
+
+                    locationLiveData.observe(getViewLifecycleOwner(), result -> {
+                        viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
+                    });
+                }
+            }
+        }));
     }
 
     @Nullable
@@ -127,8 +152,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     new Pair<>(AnalyticsUtils.Param.infoText, getString(R.string.pump)));
             binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
         });
-
-
 
         paymentDropDownAdapter = new PaymentDropDownAdapter(
                 getContext(),

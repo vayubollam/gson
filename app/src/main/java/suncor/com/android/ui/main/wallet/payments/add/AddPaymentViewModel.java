@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import javax.inject.Inject;
 
 import suncor.com.android.data.payments.PaymentsRepository;
@@ -24,6 +26,7 @@ public class AddPaymentViewModel extends ViewModel {
     public ObservableBoolean locationServiceEnabled = new ObservableBoolean();
     public ObservableField<String> locationServiceEnableTitle = new ObservableField<>();
     public ObservableField<String> locationServiceEnableMessage = new ObservableField<>();
+    private LatLng userLocation;
 
     String redirectUrl;
 
@@ -33,6 +36,10 @@ public class AddPaymentViewModel extends ViewModel {
     AddPaymentViewModel(PaymentsRepository repository, SessionManager sessionManager) {
         this.repository = repository;
         this.profile = sessionManager.getProfile();
+    }
+
+    public void setUserLocation(LatLng userLocation) {
+        this.userLocation = userLocation;
     }
 
     LiveData<Resource<Uri>> getAddPaymentEndpoint(boolean inTransaction) {
@@ -45,6 +52,8 @@ public class AddPaymentViewModel extends ViewModel {
             data.setValue(new Resource<>(result.status, result.data != null ?
                     result.data.getP97Url()
                             .buildUpon()
+                            .appendQueryParameter("lat", Double.toString(userLocation.latitude))
+                            .appendQueryParameter("lon", Double.toString(userLocation.longitude))
                             .appendQueryParameter("isWallet", inTransaction ? "N" : "Y")
                             .appendQueryParameter("streetAddress", profile.getStreetAddress())
                             .appendQueryParameter("city", profile.getCity())
