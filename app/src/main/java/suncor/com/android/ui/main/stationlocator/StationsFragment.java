@@ -417,6 +417,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         binding.bottomSheet.requestLayout();
         if (result.status == Resource.Status.LOADING) {
             isLoading.set(true);
+            AnalyticsUtils.setCurrentScreenName(getActivity(), "gas-station-locations-loading");
             isErrorCardVisible.set(false);
         } else {
             isLoading.set(false);

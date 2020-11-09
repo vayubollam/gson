@@ -70,6 +70,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onViewCreated(view, savedInstanceState);
 
         isLoading.set(true);
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump-loading");
         storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
 
         viewModel.isPAPAvailable(storeId).observe(getViewLifecycleOwner(), result -> {

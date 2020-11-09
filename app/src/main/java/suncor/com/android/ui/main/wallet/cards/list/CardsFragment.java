@@ -194,6 +194,6 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "my-credit-card-wallet-list");
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-credit-card-wallet-list");
     }
 }

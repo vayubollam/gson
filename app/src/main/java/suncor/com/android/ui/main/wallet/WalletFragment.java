@@ -26,6 +26,7 @@ import suncor.com.android.databinding.FragmentWalletBinding;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragmentArgs;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class WalletFragment extends BottomNavigationFragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -107,5 +108,11 @@ public class WalletFragment extends BottomNavigationFragment implements SwipeRef
 
     public void stopRefresh() {
         binding.refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-wallet-list");
     }
 }

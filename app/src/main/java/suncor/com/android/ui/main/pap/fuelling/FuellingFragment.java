@@ -57,6 +57,7 @@ public class FuellingFragment extends MainActivityFragment {
         binding = FragmentFuellingBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.setIsLoading(isLoading);
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-authorizing-loading");
         return binding.getRoot();
     }
 
@@ -65,7 +66,7 @@ public class FuellingFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
 
         pumpNumber = FuellingFragmentArgs.fromBundle(getArguments()).getPumpNumber();
-
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-authorizing");
         binding.pumpAuthorizedText.setText(getString(R.string.pump_authorized, pumpNumber));
         binding.pumpNumberText.setText(pumpNumber);
 
@@ -116,7 +117,7 @@ public class FuellingFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-has-begun");
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-will-begin");
         startFuellingActiveSession();
     }
 

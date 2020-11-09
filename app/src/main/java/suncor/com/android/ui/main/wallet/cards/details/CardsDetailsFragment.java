@@ -106,6 +106,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 //track screen name
                 String screenName;
                 if (clickedCardIndex == 0) {
+                    //todo need to check
                     screenName = "my-petro-points-wallet-view-card";
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
@@ -244,6 +245,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", cardDetailResource.data.getCardName()));
                         } else if (cardDetailResource.status == Resource.Status.LOADING) {
                             isRemoving.set(true);
+                            AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-wallet-view-card-loading");
                         }
                     });
                 }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {

@@ -44,6 +44,7 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-" + language + ".html");
         isWebViewLoading.set(true);
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "discover-petro-points-loading");
         binding.webview.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback(){
             public void onScroll(int l, int t, int oldl, int oldt){
                 float contentHeight = binding.webview.getContentHeight() * binding.webview.getScaleY();

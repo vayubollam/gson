@@ -109,6 +109,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
         isLoading.set(true);
         binding.setIsLoading(isLoading);
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "offsite-nearest-station-loading");
 
         //Setup nearest card click listeners
         nearestCard.getRoot().setOnClickListener(showCardDetail);
