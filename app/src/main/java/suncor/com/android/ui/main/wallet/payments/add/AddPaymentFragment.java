@@ -132,7 +132,7 @@ public class AddPaymentFragment extends MainActivityFragment {
         checkAndRequestPermission();
     }
 
-    private void fetchAddPaymentEndpoint()
+    private void fetchAddPaymentEndpoint(){
         boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
 
         viewModel.getAddPaymentEndpoint(inTransaction).observe(getViewLifecycleOwner(), result -> {
