@@ -23,6 +23,7 @@ public class AddPaymentViewModel extends ViewModel {
 
     private final PaymentsRepository repository;
     private Profile profile;
+    public MutableLiveData<Boolean> locationServiceLiveData = new MutableLiveData<>();
     public ObservableBoolean locationServiceEnabled = new ObservableBoolean();
     public ObservableField<String> locationServiceEnableTitle = new ObservableField<>();
     public ObservableField<String> locationServiceEnableMessage = new ObservableField<>();
@@ -67,6 +68,7 @@ public class AddPaymentViewModel extends ViewModel {
 
     public void setLocationServiceEnabled(boolean enabled) {
         locationServiceEnabled.set(enabled);
+        locationServiceLiveData.setValue(enabled);
     }
 
     public void setLocationServiceTitle(String title) {

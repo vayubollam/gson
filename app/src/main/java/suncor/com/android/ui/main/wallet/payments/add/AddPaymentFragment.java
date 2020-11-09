@@ -57,7 +57,6 @@ public class AddPaymentFragment extends MainActivityFragment {
     private FragmentAddPaymentBinding binding;
     private AddPaymentViewModel viewModel;
     private LayoutNoLocationBinding layoutNoLocationBinding;
-    private HomeViewModel homeViewModel;
 
     private LocationLiveData locationLiveData;
 
@@ -76,7 +75,6 @@ public class AddPaymentFragment extends MainActivityFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddPaymentViewModel.class);
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Add Payment"));
 
-        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
     }
 
@@ -145,11 +143,9 @@ public class AddPaymentFragment extends MainActivityFragment {
     private void fetchAddPaymentEndpoint(){
         boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
 
-        homeViewModel.locationServiceEnabled.observe(getViewLifecycleOwner(), (enabled -> {
+        viewModel.locationServiceLiveData.observe(getViewLifecycleOwner(), (enabled -> {
             if (enabled) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
-                    homeViewModel.isLoading.set(homeViewModel.getUserLocation() == null);
-
                     Transformations.switchMap(locationLiveData, result -> {
                         viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
                         return viewModel.getAddPaymentEndpoint(inTransaction);
@@ -196,7 +192,7 @@ public class AddPaymentFragment extends MainActivityFragment {
                         PaymentDetail paymentDetail = new PaymentDetail();
                         paymentDetail.setId(userPaymentSourceId);
                         paymentDetail.setCardNumber(lastFour);
-                        paymentDetail.setPaymentType(PaymentDetail.PaymentType.valueOf(cardName));
+                        paymentDetail.setPaymentType(PaymentDetail.PaymentType.valueOf(cardName.toUpperCase()));
 
                         SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.CANADA);
                         SimpleDateFormat toFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
@@ -273,7 +269,7 @@ public class AddPaymentFragment extends MainActivityFragment {
     }
 
 
-    private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
+    private void    showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
                 new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")")

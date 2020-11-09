@@ -90,9 +90,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private Double lastTransactionFuelUpLimit;
     SettingsResponse.Pap mPapData;
     PaymentDropDownAdapter paymentDropDownAdapter;
-    private HomeViewModel homeViewModel;
-
-    private LocationLiveData locationLiveData;
 
     private SelectPumpAdapter adapter;
 
@@ -118,19 +115,12 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
 
-        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
-        homeViewModel.locationServiceEnabled.observe(getViewLifecycleOwner(), (enabled -> {
-            if (enabled) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
-                    homeViewModel.isLoading.set(homeViewModel.getUserLocation() == null);
-
-                    locationLiveData.observe(getViewLifecycleOwner(), result -> {
-                        viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
-                    });
-                }
-            }
-        }));
+        LocationLiveData locationLiveData = new LocationLiveData(getContext().getApplicationContext());
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+            locationLiveData.observe(this, result -> {
+                viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
+            });
+        }
     }
 
     @Nullable
