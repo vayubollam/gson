@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,8 +75,8 @@ public class AddPaymentFragment extends MainActivityFragment {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddPaymentViewModel.class);
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Add Payment"));
-
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
+
     }
 
     @Nullable
@@ -84,8 +85,6 @@ public class AddPaymentFragment extends MainActivityFragment {
         binding = FragmentAddPaymentBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        binding.setIsAdding(isAdding);
-        binding.setIsWebviewLoading(isWebViewLoading);
         layoutNoLocationBinding = binding.noLocationCard;
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
@@ -106,8 +105,8 @@ public class AddPaymentFragment extends MainActivityFragment {
             viewModel.setLocationServiceTitle(getString(R.string.card_enable_location_title));
             viewModel.setLocationServiceMessage(getString(R.string.card_enable_location_message));
         }
-        fetchAddPaymentEndpoint();
 
+        fetchAddPaymentEndpoint();
         layoutNoLocationBinding.settingsButton.setOnClickListener(v -> {
             permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
                 @Override
@@ -142,15 +141,20 @@ public class AddPaymentFragment extends MainActivityFragment {
 
     private void fetchAddPaymentEndpoint(){
         boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
-
         viewModel.locationServiceLiveData.observe(getViewLifecycleOwner(), (enabled -> {
             if (enabled) {
+                locationLiveData.observe(getViewLifecycleOwner(),result ->{
+                    Log.i(AddPaymentFragment.class.getSimpleName(), "location changes");
+                });
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+
                     Transformations.switchMap(locationLiveData, result -> {
                         viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
                         return viewModel.getAddPaymentEndpoint(inTransaction);
                     }).observe(getViewLifecycleOwner(), result -> {
                         if (result.status == Resource.Status.LOADING) {
+                            binding.setIsAdding(isAdding);
+                            binding.setIsWebviewLoading(isWebViewLoading);
                             //hideKeyBoard();
                         } else if (result.status == Resource.Status.ERROR) {
                             Alerts.prepareGeneralErrorDialog(getContext()).show();
