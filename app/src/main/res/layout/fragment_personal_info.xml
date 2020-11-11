@@ -62,7 +62,8 @@
                     app:layout_constraintBottom_toTopOf="@id/postalcode_input"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
-                    app:text="@{vm.firstNameField.text}" />
+                    app:text="@{vm.firstNameField.text}"
+                    tools:ignore="NotSibling" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/lastname_input"
@@ -120,7 +121,8 @@
                     android:layout_marginTop="4dp"
                     app:field="@{vm.passwordField}"
                     app:layout_constraintBottom_toTopOf="@id/create_button"
-                    app:layout_constraintTop_toBottomOf="@id/password_input" />
+                    app:layout_constraintTop_toBottomOf="@id/password_input"
+                    tools:ignore="NotSibling" />
 
 
                 <androidx.appcompat.widget.AppCompatImageView
