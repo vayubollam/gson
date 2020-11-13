@@ -196,7 +196,7 @@ public class AddPaymentFragment extends MainActivityFragment {
                         PaymentDetail paymentDetail = new PaymentDetail();
                         paymentDetail.setId(userPaymentSourceId);
                         paymentDetail.setCardNumber(lastFour);
-                        paymentDetail.setPaymentType(PaymentDetail.PaymentType.valueOf(cardName.toUpperCase()));
+                        paymentDetail.setPaymentType(cardName);
 
                         SimpleDateFormat format = new SimpleDateFormat("MM/yy", Locale.CANADA);
                         SimpleDateFormat toFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);

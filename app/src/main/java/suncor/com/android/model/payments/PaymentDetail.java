@@ -27,7 +27,7 @@ public class PaymentDetail implements Serializable {
 
     @Expose
     @SerializedName("cardIssuerId")
-    private PaymentType paymentType;
+    private String paymentType;
 
     @Expose
     @SerializedName("lastFour")
@@ -49,10 +49,21 @@ public class PaymentDetail implements Serializable {
     }
 
     public PaymentType getPaymentType() {
-        return paymentType;
+        PaymentType paymentEnum;
+
+        if (paymentType.toLowerCase().contains("visa")) {
+            paymentEnum = PaymentType.VISA;
+        } else if (paymentType.toLowerCase().contains("master")) {
+            paymentEnum = PaymentType.MASTERCARD;
+        } else if (paymentType.toLowerCase().contains("american") || paymentType.toLowerCase().contains("amex") ) {
+            paymentEnum = PaymentType.AMEX;
+        } else {
+            paymentEnum = PaymentType.OTHER;
+        }
+        return  paymentEnum;
     }
 
-    public void setPaymentType(PaymentType paymentType) {
+    public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
     }
 
@@ -84,7 +95,7 @@ public class PaymentDetail implements Serializable {
     public int getCardImage() {
 
         if (cardImage == 0) {
-            switch (paymentType) {
+            switch (getPaymentType()) {
                 case VISA:
                     cardImage = R.drawable.visa;
                     break;
@@ -93,6 +104,9 @@ public class PaymentDetail implements Serializable {
                     break;
                 case AMEX:
                     cardImage = R.drawable.amex;
+                    break;
+                default:
+                    cardImage = R.drawable.ic_card;
                     break;
             }
         }
@@ -119,7 +133,8 @@ public class PaymentDetail implements Serializable {
         VISA,
         @SerializedName("Mastercard")
         MASTERCARD,
-        @SerializedName("Amex")
-        AMEX
+        @SerializedName("AmericanExpress")
+        AMEX,
+        OTHER
     }
 }
