@@ -161,20 +161,25 @@ public class FuellingFragment extends MainActivityFragment {
 
                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-will-begin" );
 
-                        binding.pumpAuthorizedText.setText(result.data.status.equals("New") ?
+                        binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized")?
                                 getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));
-                        binding.pumpAuthorizedSubheader.setText(result.data.status.equals("New") ?
+                        binding.pumpAuthorizedSubheader.setText(result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized")?
                                 R.string.pump_authorized_subheader : R.string.fueling_up_subheader);
                         binding.pumpNumberText.setText(result.data.pumpNumber);
-                        binding.pumpNumberText.setVisibility(result.data.status.equals("New") ? View.VISIBLE : View.GONE);
+                        binding.pumpNumberText.setVisibility(result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized")? View.VISIBLE : View.GONE);
 
-                        binding.cancelButton.setText(result.data.status.equals("New") ? R.string.cancel : R.string.hide);
-                        binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equals("New") ?
+                        binding.cancelButton.setText(result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized")? R.string.cancel : R.string.hide);
+                        binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized")?
                                 R.drawable.circle_dash_border : R.drawable.circle_border));
 
                         isLoading.set(false);
 
-                        if (!result.data.status.equals("New"))
+                        if (!result.data.status.equalsIgnoreCase("New") && !result.data.status.equalsIgnoreCase("Authorized"))
                             binding.borderImageView.clearAnimation();
 
                         if(pingActiveSessionStarted) {
