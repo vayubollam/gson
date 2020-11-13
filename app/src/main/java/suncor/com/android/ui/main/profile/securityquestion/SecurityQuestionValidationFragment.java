@@ -87,12 +87,12 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                             dialog.dismiss();
-                        })).show();
+                        }), "Security Question Validation").show();
                     } else {
                         Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
                             mViewModel.validateAndContinue();
                             dialog.dismiss();
-                        }).show();
+                        }, "Security Question Validation").show();
                     }
                     break;
                 case LOADING:

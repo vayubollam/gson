@@ -107,7 +107,7 @@ public class CardFormFragment extends BaseFragment {
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
                 } else {
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
 
                     dialog.show();
                 }

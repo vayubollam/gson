@@ -121,7 +121,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     } else {
                         AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                                 new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)));
-                        Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                        Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card").show();
                     }
                     break;
             }

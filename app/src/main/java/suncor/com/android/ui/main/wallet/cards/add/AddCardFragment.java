@@ -67,7 +67,7 @@ public class AddCardFragment extends MainActivityFragment {
                             })
                             .show();
                 } else {
-                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Add Card").show();
                 }
             }
         });

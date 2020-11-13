@@ -171,7 +171,7 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                         );
                         if (paymentDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
-                            Alerts.prepareGeneralErrorDialog(getContext()).show();
+                            Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                         } else if (paymentDetailResource.status == Resource.Status.SUCCESS) {
                             isRemoving.set(false);
                             new Handler().postDelayed(() -> {

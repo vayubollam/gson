@@ -92,18 +92,19 @@ public class FuellingFragment extends MainActivityFragment {
                             dialogInterface.dismiss();
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                     new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancel_alert_title)+"("+getString(R.string.cancel_alert_body)+")"),
-                                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel_alert_button)));
+                                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel_alert_button)),
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
                             viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
                                 if (result.status == Resource.Status.LOADING) {
                                     binding.cancelLayout.setVisibility(View.VISIBLE);
                                 } else if (result.status == Resource.Status.ERROR) {
                                     binding.cancelLayout.setVisibility(View.GONE);
-                                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump Fuelling").show();
                                 } else if (result.status == Resource.Status.SUCCESS) {
                                     //goBack();
                                 }
                             });
-                        }).show();
+                        },  "Pump Fuelling").show();
             }
         });
     }
@@ -128,7 +129,7 @@ public class FuellingFragment extends MainActivityFragment {
                 if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ));
-                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump Fuelling").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
                         if (result.data.lastStatus.equalsIgnoreCase("Cancelled") ||
@@ -141,10 +142,11 @@ public class FuellingFragment extends MainActivityFragment {
                                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
                                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
-                                                new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)));
+                                                new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
+                                                new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
                                         dialogInterface.dismiss();
                                         goBack();
-                                    }).show();
+                                    }, "Pump Fuelling").show();
                         } else {
                             observeTransactionData(result.data.lastTransId);
                             AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-almost-complete" );

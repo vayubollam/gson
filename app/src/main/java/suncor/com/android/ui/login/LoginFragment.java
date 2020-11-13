@@ -219,14 +219,16 @@ public class LoginFragment extends BaseFragment {
         }
         String analyticName = getString(response.title) + "("+message+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
+                new Pair<>(AnalyticsUtils.Param.formName, "login")
         );
         builder.setMessage(message)
                 .setTitle(response.title);
         builder.setPositiveButton(response.positiveButtonTitle, ((dialog, which) -> {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(response.positiveButtonTitle))
+                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(response.positiveButtonTitle)),
+                    new Pair<>(AnalyticsUtils.Param.formName, "login")
             );
             if (response.positiveButtonCallback != null) {
                 response.positiveButtonCallback.call();

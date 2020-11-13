@@ -588,7 +588,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")")
+                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                new Pair<>("fromName","Gas Station Locations")
         );
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         //AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enable_location_dialog_title)));
@@ -597,13 +598,15 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection",getString(R.string.cancel))
+                    new Pair<>("alertSelection",getString(R.string.cancel)),
+                    new Pair<>("fromName","Gas Station Locations")
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection",getString(R.string.ok))
+                    new Pair<>("alertSelection",getString(R.string.ok)),
+                    new Pair<>("fromName","Gas Station Locations")
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);

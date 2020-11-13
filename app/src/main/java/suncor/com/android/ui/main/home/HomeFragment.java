@@ -333,20 +333,24 @@ public class HomeFragment extends BottomNavigationFragment {
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")")
+                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                new Pair<>("formName","home")
         );
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection", getString(R.string.cancel))
+                    new Pair<>("alertSelection", getString(R.string.cancel)),
+                    new Pair<>("alertTitle","home"),
+                    new Pair<>("formName","home")
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection", getString(R.string.ok))
+                    new Pair<>("alertSelection", getString(R.string.ok)),
+                    new Pair<>("formName","home")
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
@@ -471,7 +475,7 @@ public class HomeFragment extends BottomNavigationFragment {
                 } else if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ));
-                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                    Alerts.prepareGeneralErrorDialog(getContext(), "home").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
                         if(result.data.status.equals("New")){

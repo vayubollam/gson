@@ -157,7 +157,7 @@ public class AddPaymentFragment extends MainActivityFragment {
                             binding.setIsWebviewLoading(isWebViewLoading);
                             //hideKeyBoard();
                         } else if (result.status == Resource.Status.ERROR) {
-                            Alerts.prepareGeneralErrorDialog(getContext()).show();
+                            Alerts.prepareGeneralErrorDialog(getContext(),  "Add Payment").show();
                         } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                             binding.webView.loadUrl(result.data.toString());
                         }
