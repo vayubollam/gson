@@ -22,6 +22,10 @@
 
 
 -dontobfuscate
+-keepclassmembers class suncor.com.android.** {
+    public *;
+    protected *;
+}
 
 ####################################################################################################
 ##############################  IBM MobileFirst Platform configuration  ############################
