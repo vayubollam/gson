@@ -3,6 +3,7 @@ package suncor.com.android.data.pap;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.worklight.wlclient.api.WLFailResponse;
@@ -13,6 +14,7 @@ import com.worklight.wlclient.api.WLResponseListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -102,13 +104,19 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest) {
+    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest, LatLng userLocation) {
         Timber.d("request initiate for authorized google pay payment ");
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/PreAuth/PayByGooglePay");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            request.addHeader("latitude", Double.toString(userLocation.latitude));
+            request.addHeader("longitude", Double.toString(userLocation.longitude));
+            request.addHeader("deviceOS", "Android");
+            request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
+            request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
+
 
             request.send(gson.toJson(payByGooglePayRequest),  new WLResponseListener() {
                 @Override
@@ -136,13 +144,18 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest payByWalletRequest) {
+    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest payByWalletRequest, LatLng userLocation) {
         Timber.d("request initiate for authorized wallet payment ");
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/PreAuth/PayByWallet");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            request.addHeader("latitude", Double.toString(userLocation.latitude));
+            request.addHeader("longitude", Double.toString(userLocation.longitude));
+            request.addHeader("deviceOS", "Android");
+            request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
+            request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
 
             request.send(gson.toJson(payByWalletRequest),  new WLResponseListener() {
                 @Override

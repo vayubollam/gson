@@ -109,6 +109,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
         isLoading.set(true);
         binding.setIsLoading(isLoading);
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "offsite-nearest-station-loading");
 
         //Setup nearest card click listeners
         nearestCard.getRoot().setOnClickListener(showCardDetail);
@@ -180,6 +181,9 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
                 } else {
                     isLoading.set(false);
                 }
+            }  else if (result.status == Resource.Status.ERROR){
+                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, result.message != null ?  result.message : AnalyticsUtils.ErrorMessages.backendError.name()));
             }
         });
 
@@ -250,11 +254,6 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         }
         getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
-    }
-
-    @Override
-    protected String getScreenName() {
-        return "NearestStationFragment";
     }
 
     @Override
@@ -331,7 +330,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "offsite-nearest-station", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "offsite-nearest-station");
     }
 
     @Override

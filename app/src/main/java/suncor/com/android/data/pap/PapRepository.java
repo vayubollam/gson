@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -63,12 +65,12 @@ public class PapRepository {
        return papApi.cancelTransaction(trasnsactionId);
     }
 
-    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest) {
-        return papApi.authorizePaymentByGooglePay(payByGooglePayRequest);
+    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest, LatLng userLocation) {
+        return papApi.authorizePaymentByGooglePay(payByGooglePayRequest, userLocation);
     }
 
-    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request) {
-        return papApi.authorizePaymentByWallet(request);
+    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation) {
+        return papApi.authorizePaymentByWallet(request, userLocation);
     }
 
 }

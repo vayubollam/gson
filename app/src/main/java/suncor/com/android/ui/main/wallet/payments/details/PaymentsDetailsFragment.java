@@ -82,13 +82,13 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                 binding.executePendingBindings();
 
                 //track screen name
-                String screenName;
+              /*  String screenName;
                 if (clickedCardIndex == 0) {
                     screenName = "my-petro-points-wallet-view-card";
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.payments.getValue().get(clickedCardIndex).getPaymentType().name();
                 }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);*/
             }
         });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
@@ -171,7 +171,7 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                         );
                         if (paymentDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
-                            Alerts.prepareGeneralErrorDialog(getContext()).show();
+                            Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                         } else if (paymentDetailResource.status == Resource.Status.SUCCESS) {
                             isRemoving.set(false);
                             new Handler().postDelayed(() -> {

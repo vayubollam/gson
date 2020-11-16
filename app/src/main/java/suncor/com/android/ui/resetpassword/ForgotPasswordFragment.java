@@ -2,6 +2,7 @@ package suncor.com.android.ui.resetpassword;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class ForgotPasswordFragment extends MainActivityFragment {
 
@@ -48,7 +50,9 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                     SuncorToast.makeText(getActivity(), R.string.forgot_password_toast_msg, Toast.LENGTH_LONG).show();
                     break;
                 case ERROR:
-                    Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)));
+                    Alerts.prepareGeneralErrorDialog(getActivity(), "Forgot Password").show();
                     getFragmentManager().popBackStack();
                     break;
             }
@@ -86,4 +90,8 @@ public class ForgotPasswordFragment extends MainActivityFragment {
         }, 400);
     }
 
+    @Override
+    protected String getScreenName() {
+        return "AnalyticsUtils.getCardFormName()";
+    }
 }

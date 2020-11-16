@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -171,7 +171,11 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.ok,
-                () -> viewModel.loadData(CarWashCardViewModel.ViewState.LOADING)));
+                () -> {
+                    viewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
+                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong"));
+                }));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (!isFirstTime) {
@@ -252,7 +256,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-card-list", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "car-wash-card-list");
     }
 
     @Override

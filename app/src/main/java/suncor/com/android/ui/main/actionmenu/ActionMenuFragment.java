@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
 
@@ -95,11 +97,12 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding = FragmentActionButtonMenuBinding.inflate(inflater, container, false);
 
         binding.actionAccountButton.setOnClickListener(view -> {
+            AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_menu_account)));
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_profile_tab);
             dismiss();
         });
         binding.actionFuelUpButton.setOnClickListener(view -> {
-
+            AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_fuel_up)));
             if (activeSession) {
                 FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("");
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
@@ -117,12 +120,16 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             }
         });
         binding.actionScanCardButton.setOnClickListener(view -> {
+            AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_menu_scan_card)));
+
             HomeNavigationDirections.ActionToCardsDetailsFragment action = HomeNavigationDirections.actionToCardsDetailsFragment();
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
             dismiss();
         });
         binding.actionWashCarButton.setOnClickListener(view -> {
+            AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_menu_wash_car)));
+
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_carWashFragment);
             dismiss();
         });
@@ -140,7 +147,13 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 activeSession = result.data.activeSession;
 
                 binding.actionFuelUpButton.setText(activeSession ?
-                        result.data.status.equals("New") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
+                        result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
+
+                AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, activeSession ?
+                        result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized")? getString(R.string.fuelling_about_to_begin) : getString(R.string.action_fuelling) : getString(R.string.action_fuel_up)));
+
                 binding.actionFuelUpButton.setLoading(activeSession);
             } else {
                 activeSession = false;
@@ -215,10 +228,10 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         homeViewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext()).show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "Active Session" ).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (result.data.activeSession && result.data.status != null) {
-                    if (result.data.status.equals("New")) {
+                    if (result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")) {
                         updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                     } else if (result.data.status.equals("BeginFueling")) {
                         updateFuellingSession(true, getString(R.string.fueling_up));

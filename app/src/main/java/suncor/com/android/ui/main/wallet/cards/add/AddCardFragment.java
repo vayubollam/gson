@@ -47,6 +47,7 @@ public class AddCardFragment extends MainActivityFragment {
         viewModel.addCardApiResult.observe(this, result -> {
             if (result.status == Resource.Status.LOADING) {
                 hideKeyBoard();
+                AnalyticsUtils.setCurrentScreenName(getActivity() , "my-petro-points-wallet-saving-perto-card");
             } else if (result.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_LIKING_CARD_FAILED.equals(result.message)) {
                     String analyticsName = getContext().getString(R.string.cards_add_fragment_invalid_card_title)
@@ -66,7 +67,7 @@ public class AddCardFragment extends MainActivityFragment {
                             })
                             .show();
                 } else {
-                    Alerts.prepareGeneralErrorDialog(getContext()).show();
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Add Card").show();
                 }
             }
         });
@@ -74,7 +75,7 @@ public class AddCardFragment extends MainActivityFragment {
         viewModel.card.observe(this, cardDetail -> {
             mainViewModel.setNewCardAdded(true);
             mainViewModel.setNewAddedCard(cardDetail);
-            String screenName = "my-petro-points-wallet-add-" + cardDetail.getCardName() + "-success";
+            String screenName = "my-petro-points-wallet-save-" + cardDetail.getCardName() + "-success";
             String optionsChecked = "";
             AnalyticsUtils.logEvent(
                     getContext(),

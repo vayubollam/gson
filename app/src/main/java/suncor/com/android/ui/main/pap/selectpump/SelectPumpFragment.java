@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -69,13 +70,14 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onViewCreated(view, savedInstanceState);
 
         isLoading.set(true);
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump-loading");
         storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
 
         viewModel.isPAPAvailable(storeId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext()).show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (!result.data) {
                     Alerts.prepareCustomDialog(
@@ -84,8 +86,12 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                             getContext(),
                             (dialogInterface, i) -> {
                                 dialogInterface.dismiss();
+                                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                                        new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.pap_not_available_header)+"("+getString(R.string.pap_not_available_description)+")"),
+                                        new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
+                                        new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
                                 goBack();
-                            }).show();
+                            }, "Select Pump").show();
 
                     binding.selectPumpLayout.setVisibility(View.GONE);
                 } else {
@@ -116,6 +122,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
 
     @Override
     public void selectPumpNumber(String pumpNumber) {
+
         new Handler().postDelayed(() -> {
            HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
@@ -132,5 +139,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
        Navigation.findNavController(getView()).popBackStack();
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump");
+    }
 }

@@ -66,12 +66,12 @@ public class ResetPasswordSecurityQuestionValidationFragment extends BaseFragmen
                             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                             dialog.dismiss();
-                        })).show();
+                        }), "Reset Password Security Question Validation").show();
                     } else {
                         Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
                             viewModel.validateAndContinue();
                             dialog.dismiss();
-                        }).show();
+                        }, "Reset Password Security Question Validation").show();
                     }
                     break;
                 case LOADING:
@@ -118,5 +118,10 @@ public class ResetPasswordSecurityQuestionValidationFragment extends BaseFragmen
     private void signUserOut() {
         sessionManager.logout();
 
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "reset-password-security-question-validation";
     }
 }

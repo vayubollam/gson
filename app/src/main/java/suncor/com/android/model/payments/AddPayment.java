@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
 
+import suncor.com.android.BuildConfig;
+
 public class AddPayment {
     @SerializedName("Authorization")
     String token;
@@ -41,6 +43,9 @@ public class AddPayment {
                 .appendQueryParameter("token", token)
                 .appendQueryParameter("redirectUrl", redirectUrl)
                 .appendQueryParameter("deviceId", deviceId)
+                .appendQueryParameter("appVersion", BuildConfig.VERSION_NAME)
+                .appendQueryParameter("appBundleId", BuildConfig.APPLICATION_ID)
+                .appendQueryParameter("os", "Android")
                 .appendQueryParameter("language", Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr" : "en")
                 .build();
     }

@@ -106,11 +106,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 //track screen name
                 String screenName;
                 if (clickedCardIndex == 0) {
+                    //todo need to check
                     screenName = "my-petro-points-wallet-view-card";
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
                 }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
         });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
@@ -232,7 +233,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         );
                         if (cardDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
-                            Alerts.prepareGeneralErrorDialog(getContext()).show();
+                            Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                         } else if (cardDetailResource.status == Resource.Status.SUCCESS) {
                             isRemoving.set(false);
                             new Handler().postDelayed(() -> {
@@ -244,6 +245,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", cardDetailResource.data.getCardName()));
                         } else if (cardDetailResource.status == Resource.Status.LOADING) {
                             isRemoving.set(true);
+                            AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-wallet-view-card-loading");
                         }
                     });
                 }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {

@@ -8,10 +8,10 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0-alpha02"
-        classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1"
+        classpath 'com.google.gms:google-services:4.3.4'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.3.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -34,7 +34,7 @@ ext {
     navigationVersion = "2.3.0"
     archLifecycleVersion = "2.0.0"
     playServicesVersion = "16.0.0"
-    tagManagerVersion = "16.0.8"
+    tagManagerVersion = "17.0.0"
     legacyLibraryVersion = "1.0.0"
     materialLibraryVersion = "1.1.0-alpha07"
     googlePlacesVersion = "1.0.0"
@@ -42,14 +42,14 @@ ext {
     mfpVersion = "8.0.2020090912"
     workManagerVersion = "1.0.0"
     daggerVersion = "2.17"
-    firebaseVersion = "16.0.9"
-    crashlyticsVersion = "17.1.1"
+    firebaseVersion = "17.5.1"
+    crashlyticsVersion = "17.2.2"
     mockitoVersion = "2.25.1"
     junitVersion = "4.12"
     espressoVersion = "3.1.1"
     runnerVersion = '1.1.1'
     googleWalletVersion = '18.0.0'
-    firebaseAnalyticsVersion = '17.4.4'
+    firebaseAnalyticsVersion = '17.6.0'
 }
 
 

@@ -3,6 +3,7 @@ package suncor.com.android.ui.enrollment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -33,6 +32,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CardQuestionFragment extends BaseFragment {
 
@@ -102,7 +102,9 @@ public class CardQuestionFragment extends BaseFragment {
                     animateCard();
                     break;
                 case ERROR:
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext());
+                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong"));
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> getActivity().finish());
                     dialog.show();
@@ -114,7 +116,7 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "petro-points-sign-up-activate", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "petro-points-sign-up-activate");
     }
 
     private void animateCard() {

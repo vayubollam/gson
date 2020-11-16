@@ -43,6 +43,7 @@ import suncor.com.android.ui.main.stationlocator.search.SearchFragment;
 import suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragment;
 import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragment;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentsFragment;
+import suncor.com.android.ui.tutorial.TutorialFragment;
 
 @Module
 abstract class MainActivityFragmentsModule {
@@ -168,4 +169,5 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract ReceiptFragment contributeReceiptFragment();
+
 }

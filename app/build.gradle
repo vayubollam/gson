@@ -1,10 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
 apply from: "./versionCode.gradle"
-
-if (!(getGradle().getStartParameter().getTaskRequests().toString().contains("Dev"))) {
-        apply plugin: 'com.google.firebase.crashlytics'
-}
+apply plugin: 'com.google.firebase.crashlytics'
 
 repositories {
     jcenter()
@@ -174,10 +171,9 @@ dependencies {
     implementation "android.arch.work:work-runtime:$rootProject.workManagerVersion"
 
     implementation 'com.google.zxing:core:3.3.3'
-
+    implementation "com.google.firebase:firebase-analytics:$rootProject.firebaseAnalyticsVersion"
     implementation "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
     implementation "com.google.firebase:firebase-crashlytics:$rootProject.crashlyticsVersion"
-    implementation "com.google.firebase:firebase-analytics: $rootProject.firebaseAnalyticsVersion"
     implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagManagerVersion"
     implementation "androidx.biometric:biometric:1.0.0-alpha04"
     testImplementation "androidx.arch.core:core-testing:$rootProject.archLifecycleVersion"
@@ -187,7 +183,4 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 
 }
-
-if (!(getGradle().getStartParameter().getTaskRequests().toString().contains("Dev"))) {
-    apply plugin: 'com.google.gms.google-services'
-}
+apply plugin: 'com.google.gms.google-services'

@@ -26,7 +26,7 @@ public class SessionAwareActivity extends DaggerAppCompatActivity {
     private BroadcastReceiver retrieveProfileReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Alerts.prepareGeneralErrorDialog(SessionAwareActivity.this).show();
+            Alerts.prepareGeneralErrorDialog(SessionAwareActivity.this, "Session").show();
         }
     };
 

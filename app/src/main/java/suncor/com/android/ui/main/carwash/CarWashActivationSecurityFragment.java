@@ -17,11 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
-
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Inject;
 
@@ -142,7 +139,8 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             confirmButton.setEnabled(false);
             String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title) + "(" + getContext().getString(R.string.carwash_activation_pin_error_message) + ")";
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
-                    new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle)
+                    new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle),
+                    new Pair<>(AnalyticsUtils.Param.formName,"Activate Wash by Wash & Go card")
             );
             AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
@@ -150,7 +148,8 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
-                                new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok))
+                                new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
+                                new Pair<>(AnalyticsUtils.Param.formName,"Activate Wash by Wash & Go card")
                         );
                         dialog.dismiss();
                         confirmButton.setEnabled(true);
@@ -198,7 +197,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
     public void onResume() {
         super.onResume();
 
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "car-wash-security-code", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "car-wash-security-code");
     }
 
     class mInputTextWatcher implements TextWatcher {

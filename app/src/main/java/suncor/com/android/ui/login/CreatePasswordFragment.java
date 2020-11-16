@@ -17,9 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCreatePasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -70,7 +67,8 @@ public class CreatePasswordFragment extends BaseFragment {
             } else if (r.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_PASSWORD_DUPLICATED.equals(r.message)) {
                     AnalyticsUtils.logEvent(getContext(), "error_log",
-                            new Pair<>("errorMessage",getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")")
+                            new Pair<>("errorMessage",getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
+                            new Pair<>("formName","Login Force New Password")
                     );
 
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
@@ -80,14 +78,15 @@ public class CreatePasswordFragment extends BaseFragment {
                     alertBuilder.setPositiveButton(R.string.ok, ((dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
-                                new Pair<>("alertSelection",getString(R.string.ok))
+                                new Pair<>("alertSelection",getString(R.string.ok)),
+                                new Pair<>("formName","Login Force New Password")
                         );
                         binding.passwordInput.setText("");
                         dialog.dismiss();
                     }));
                     alertBuilder.show();
                 } else {
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity());
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity(), "Login Force New Password");
                     dialog.setOnDismissListener(dialogInterface -> getActivity().finish());
                     dialog.show();
                 }
@@ -98,7 +97,7 @@ public class CreatePasswordFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), "login-force-new-password", getActivity().getClass().getSimpleName());
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "login-force-new-password");
     }
 
     private void hideKeyboard() {

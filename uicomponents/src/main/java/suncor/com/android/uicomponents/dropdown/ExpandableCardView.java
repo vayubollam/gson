@@ -102,7 +102,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
 
         if (mExpandCollapseListener != null)
-            mExpandCollapseListener.onExpandCollapseListener(!isExpand);
+            mExpandCollapseListener.onExpandCollapseListener(!isExpand, textViewTitle.getText().toString());
 
         findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
         findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : GONE);

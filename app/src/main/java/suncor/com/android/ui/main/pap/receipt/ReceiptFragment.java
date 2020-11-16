@@ -17,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import java.io.File;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
 
 public class ReceiptFragment extends MainActivityFragment {
@@ -78,12 +80,15 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+
     }
 
     private void observeTransactionData(String transactionId){
         viewModel.getTransactionDetails(transactionId).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
@@ -91,7 +96,12 @@ public class ReceiptFragment extends MainActivityFragment {
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                binding.receiptDetails.setText(result.data.getReceipt());
+                if(Objects.isNull(result.data.getReceipt())){
+                    binding.shareButton.setVisibility(getView().GONE);
+                    binding.viewReceiptBtn.setVisibility(getView().GONE);
+                } else {
+                    binding.receiptDetails.setText(result.data.getReceipt());
+                }
                 binding.setTransaction(result.data);
 
                 binding.shareButton.setOnClickListener(v -> {

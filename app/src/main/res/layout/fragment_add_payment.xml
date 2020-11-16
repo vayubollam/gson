@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="vm"
             type="suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel" />
-
 
         <variable
             name="isWebviewLoading"
@@ -25,7 +25,7 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/black_4"
             android:orientation="vertical">
 
             <suncor.com.android.uicomponents.SuncorAppBarLayout
@@ -33,6 +33,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/payment_add_fragment_header" />
+
+            <include
+                android:id="@+id/no_location_card"
+                layout="@layout/layout_no_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                app:visibleGone="@{!vm.locationServiceEnabled}"
+                tools:visibility="gone"
+                app:vm="@{vm}"
+                />
 
             <suncor.com.android.ui.common.webview.ObservableWebView
                 android:id="@+id/web_view"
@@ -42,6 +53,7 @@
                 app:visibleInvisible="@{!isWebviewLoading}"/>
 
         </LinearLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"

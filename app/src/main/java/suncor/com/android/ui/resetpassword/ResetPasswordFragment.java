@@ -3,6 +3,7 @@ package suncor.com.android.ui.resetpassword;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class ResetPasswordFragment extends BaseFragment {
 
@@ -53,7 +55,9 @@ public class ResetPasswordFragment extends BaseFragment {
                     break;
                 case ERROR:
                     hideKeyboard();
-                    Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)));
+                    Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
                     break;
 
             }
@@ -96,5 +100,10 @@ public class ResetPasswordFragment extends BaseFragment {
             int scrollPosition = view.getTop();
             binding.scrollView.smoothScrollTo(0, scrollPosition);
         }, 400);
+    }
+
+    @Override
+    protected String getScreenName() {
+        return "reset-password";
     }
 }

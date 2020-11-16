@@ -57,6 +57,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-guest-" + language + ".html");
         isWebViewLoading.set(true);
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "discover-petro-points-loading");
         binding.webview.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback(){
             public void onScroll(int l, int t, int oldl, int oldt){
                 if(t> oldt){

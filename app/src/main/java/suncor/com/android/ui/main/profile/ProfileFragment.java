@@ -134,21 +134,24 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
         binding.signoutButton.setOnClickListener((v) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()")
+                    new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
+                    new Pair<>("formName","My petro points Accoun Navigation List")
             );
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
                     .setPositiveButton(getString(R.string.profil_sign_out_dialog_positive_button), (dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
-                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_positive_button))
+                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_positive_button)),
+                                new Pair<>("formName","My petro points Accoun Navigation List")
                         );
                         signUserOut();
                     })
                     .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
-                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_negative_button))
+                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_negative_button)),
+                                new Pair<>("formName","My petro points Accoun Navigation List")
                         );
                         dialog.dismiss();
                     }));
@@ -197,8 +200,10 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
                 AnalyticsUtils.logEvent(getContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
+                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)));
                 binding.signOutPB.setVisibility(View.GONE);
-                Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                Alerts.prepareGeneralErrorDialog(getActivity(), "My petro points Accoun Navigation List").show();
             }
         });
 

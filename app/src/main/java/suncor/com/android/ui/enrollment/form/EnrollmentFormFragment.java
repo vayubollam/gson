@@ -26,8 +26,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -123,7 +121,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else {
                     screenName = "sign-up-success";
                 }
-                FirebaseAnalytics.getInstance(getActivity()).setCurrentScreen(getActivity(), screenName, getActivity().getClass().getSimpleName());
+                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
 
                 String optionsChecked = "";
                 if (binding.emailOffersCheckbox.isChecked()) {
@@ -153,12 +151,14 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
                     AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
+                            new Pair<>("formName",  "Activate Petro-Points Card"));
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
-                                new Pair<>("alertSelection", getString(R.string.ok))
+                                new Pair<>("alertSelection", getString(R.string.ok)),
+                                new Pair<>("formName",  "Activate Petro-Points Card")
                         );
                         binding.emailInput.setText("");
                         d.dismiss();
@@ -166,7 +166,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
                     dialog.show();
                 } else {
-                    Alerts.prepareGeneralErrorDialog(getActivity()).show();
+                    Alerts.prepareGeneralErrorDialog(getActivity(), "Activate Petro-Points Card").show();
                 }
             }
         });
@@ -226,7 +226,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         });
         viewModel.showBiometricAlert.observe(this, booleanEvent -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")")
+                    new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
+                    new Pair<>("formName",  "Activate Petro-Points Card")
             );
             new AlertDialog.Builder(getContext())
                     .setTitle(R.string.sign_enable_fp_title)
@@ -234,14 +235,16 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
-                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_possitive_button))
+                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_possitive_button)),
+                                new Pair<>("formName",  "Activate Petro-Points Card")
                         );
                         viewModel.proccedToJoin(true);
                     })
                     .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
-                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_negative_button))
+                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_negative_button)),
+                                new Pair<>("formName",  "Activate Petro-Points Card")
                         );
                         viewModel.proccedToJoin(false);
                     })
@@ -384,21 +387,24 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         } else if (viewModel.isOneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")")
+                    new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
+                    new Pair<>("formName",  "Activate Petro-Points Card")
             );
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
             alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
                 AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                         new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
-                        new Pair<>("alertSelection", getString(R.string.ok))
+                        new Pair<>("alertSelection", getString(R.string.ok)),
+                        new Pair<>("formName",  "Activate Petro-Points Card")
                 );
                 getActivity().finish();
             });
             alertDialog.setNegativeButton(R.string.cancel, (d, w) -> {
                 AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                         new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
-                        new Pair<>("alertSelection", getString(R.string.cancel))
+                        new Pair<>("alertSelection", getString(R.string.cancel)),
+                        new Pair<>("formName",  "Activate Petro-Points Card")
                 );
             });
             alertDialog.show();

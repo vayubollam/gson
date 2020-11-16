@@ -2,15 +2,12 @@ package suncor.com.android.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.util.Pair;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
-import java.util.Map;
-
 import suncor.com.android.model.cards.CardType;
 
 public class AnalyticsUtils {
@@ -26,11 +23,17 @@ public class AnalyticsUtils {
         formStart("form_start"),
         formStep("form_step"),
         formComplete("form_complete"),
+        formError("form_error"),
         navigation("navigation"),
         buttonTap("button_tap"),
         alert("alert"),
-        alertInteraction("alert_interaction")
-        ;
+        alertInteraction("alert_interaction"),
+        error("error_log"),
+        paymentComplete("payment_complete"),
+        intersite("intersite"),
+        infoTab("info_tab"),
+        menuTap("menu_tap");
+
 
         private final String name;
 
@@ -59,8 +62,13 @@ public class AnalyticsUtils {
         buttonText("buttonText"),
         alertTitle("alertTitle"),
         alertSelection("alertSelection"),
-        cardType("cardType")
-        ;
+        cardType("cardType"),
+        errorMessage("errorMessage"),
+        paymentMethod("paymentMethod"),
+        fuelAmountSelection("fuelAmountSelection"),
+        intersiteURL("intersiteURL"),
+        infoText("infoText"),
+        menuSelection("menuSelection");
 
         private final String name;
 
@@ -91,6 +99,11 @@ public class AnalyticsUtils {
             bundle.putString("BuildNumber", String.valueOf(buildNumber));
         }
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
+    }
+
+    public static void setUserProperty(Context context, String userID ){
+        FirebaseAnalytics.getInstance(context).setUserId(userID);
+        FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
     }
 
     @SafeVarargs
@@ -154,6 +167,29 @@ public class AnalyticsUtils {
     }
 
     public static void setCurrentScreenName(Activity activity, String screenName) {
-        FirebaseAnalytics.getInstance(activity).setCurrentScreen(activity, screenName, activity.getClass().getSimpleName());
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getComponentName().getClassName());
+       // bundle.putString(MyAppAnalyticsConstants.Param.TOPIC, topic);
+        FirebaseAnalytics.getInstance(activity).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
+
+    public enum ErrorMessages {
+
+        backendError("SUNCORXXXX");
+
+        private final String name;
+
+        ErrorMessages(final String name){
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+    }
+
+
 }

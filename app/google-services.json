@@ -32,10 +32,46 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-6s27bu2a4vc1o330k4117m53pjjet1mn.apps.googleusercontent.com",
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.petro-canada.mobile"
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:ddc1ebf954c1f8508ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationDev.Carwash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -51,6 +87,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1013213340484-17fbn5bgc5t8mn0c2ie5rcgju7lc701f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suncor.android.SuncorApplicationOpsQA",
+            "certificate_hash": "b047b5916f86ca175fd17b240786352a36347fa1"
+          }
+        },
+        {
           "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -68,10 +112,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-6s27bu2a4vc1o330k4117m53pjjet1mn.apps.googleusercontent.com",
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.petro-canada.mobile"
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -82,12 +126,20 @@
       "client_info": {
         "mobilesdk_app_id": "1:1013213340484:android:8f3cf2c8348b6e29",
         "android_client_info": {
-          "package_name": "com.suncor.android.SuncorApplicationQA.Carwash"
+          "package_name": "com.suncor.android.SuncorApplicationQA"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1013213340484-nd4mel25pu7srf54vs37m8epclek1s70.apps.googleusercontent.com",
+          "client_id": "1013213340484-522b6b3g4fm9c6n2do273kh87vi4np26.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suncor.android.SuncorApplicationQA",
+            "certificate_hash": "b047b5916f86ca175fd17b240786352a36347fa1"
+          }
+        },
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -100,14 +152,50 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1013213340484-nd4mel25pu7srf54vs37m8epclek1s70.apps.googleusercontent.com",
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-nd4mel25pu7srf54vs37m8epclek1s70.apps.googleusercontent.com",
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.suncor.qa.iossuncoreapplication"
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:4ca5bae5c30715f98ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationQA.Carwash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -123,6 +211,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1013213340484-2tigf8pkfjlvfmoh452pbk62bci5evk1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suncor.android.SuncorApplicationUAT",
+            "certificate_hash": "b047b5916f86ca175fd17b240786352a36347fa1"
+          }
+        },
+        {
           "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -140,10 +236,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-6s27bu2a4vc1o330k4117m53pjjet1mn.apps.googleusercontent.com",
+              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.petro-canada.mobile"
+                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
               }
             }
           ]
