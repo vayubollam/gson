@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.pap.fuelling;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -17,6 +18,9 @@ import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import javax.inject.Inject;
 
@@ -179,8 +183,15 @@ public class FuellingFragment extends MainActivityFragment {
 
                         isLoading.set(false);
 
-                        if (!result.data.status.equalsIgnoreCase("New") && !result.data.status.equalsIgnoreCase("Authorized"))
+                        if (!result.data.status.equalsIgnoreCase("New") && !result.data.status.equalsIgnoreCase("Authorized")) {
                             binding.borderImageView.clearAnimation();
+                            binding.fuelImageContainer.setVisibility(View.GONE);
+                            RequestOptions options = new RequestOptions();
+                            options = options.fitCenter();
+
+                            binding.fuelAnimationGif.setVisibility(View.VISIBLE);
+                            Glide.with(getContext()).load(Uri.parse("file:///android_asset/fuelling_animation.gif")).apply(options).into(binding.fuelAnimationGif);
+                        }
 
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();

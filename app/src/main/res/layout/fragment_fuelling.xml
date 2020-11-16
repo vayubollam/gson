@@ -53,14 +53,8 @@
                 app:cardElevation="12dp"
                 app:cardUseCompatPadding="false">
 
-                <ImageView
-                    android:id="@+id/border_image_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="2dp"
-                    android:src="@drawable/circle_dash_border"/>
-
                 <FrameLayout
+                    android:id="@+id/fuel_image_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -72,7 +66,7 @@
                         android:scaleType="fitCenter"
                         app:srcCompat="@drawable/ic_fuel_up"/>
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="70dp"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom"
@@ -95,6 +89,20 @@
                         android:visibility="visible" />
 
                 </FrameLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/fuel_animation_gif"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/border_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/circle_dash_border"/>
 
             </androidx.cardview.widget.CardView>
 
