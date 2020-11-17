@@ -861,37 +861,14 @@ public final class Timber {
          */
         @Override
         protected void log(int priority, String tag, @NonNull String message, Throwable t) {
-            if (priority < 4) return;
-            if (message.length() < MAX_LOG_LENGTH) {
-                LogDna.INSTANCE.log(
-                        new Line.Builder()
-                                .setLine(message)
-                                .setLevel(getLevel(priority))
-                                .addCustomField(new Line.CustomField("TAG", tag))
-                                .setTime(System.currentTimeMillis())
-                                .build()
-                );
-                return;
-            }
-
-            // Split by line, then ensure each line can fit into Log's maximum length.
-            for (int i = 0, length = message.length(); i < length; i++) {
-                int newline = message.indexOf('\n', i);
-                newline = newline != -1 ? newline : length;
-                do {
-                    int end = Math.min(newline, i + MAX_LOG_LENGTH);
-                    String part = message.substring(i, end);
-                    LogDna.INSTANCE.log(
-                            new Line.Builder()
-                                    .setLine(part)
-                                    .setLevel(getLevel(priority))
-                                    .addCustomField(new Line.CustomField("TAG", tag))
-                                    .setTime(System.currentTimeMillis())
-                                    .build()
-                    );
-                    i = end;
-                } while (i < newline);
-            }
+            LogDna.INSTANCE.log(
+                    new Line.Builder()
+                            .setLine(message)
+                            .setLevel(getLevel(priority))
+                            .addCustomField(new Line.CustomField("TAG", tag))
+                            .setTime(System.currentTimeMillis())
+                            .build()
+            );
         }
     }
 }
