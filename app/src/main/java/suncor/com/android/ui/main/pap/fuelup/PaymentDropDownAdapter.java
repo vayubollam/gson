@@ -29,6 +29,7 @@ import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Timber;
 
 
 public class PaymentDropDownAdapter extends DropDownAdapter {
@@ -174,7 +175,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                     binding.header.setText(value.getCardInfo());
                     binding.subheader.setText(value.getExp());
                 }catch (NullPointerException ex){
-                    Log.e(TAG,  "Error on inflating data , " + ex.getMessage());
+                    Timber.e(TAG,  "Error on inflating data , " + ex.getMessage());
                 }
                 binding.container.setSelected(selectedPos == getAdapterPosition());
 

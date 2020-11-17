@@ -117,8 +117,10 @@ public class PapApiImpl implements PapApi {
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
 
+            String body = gson.toJson(payByGooglePayRequest);
+            Timber.d("Send Pay By Wallet, body:\n" + body);
 
-            request.send(gson.toJson(payByGooglePayRequest),  new WLResponseListener() {
+            request.send(body,  new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();
@@ -157,7 +159,11 @@ public class PapApiImpl implements PapApi {
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
 
-            request.send(gson.toJson(payByWalletRequest),  new WLResponseListener() {
+            String body = gson.toJson(payByWalletRequest);
+
+            Timber.d("Send Pay By Wallet, body:\n" + body);
+
+            request.send(body,  new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
                     String jsonText = wlResponse.getResponseText();

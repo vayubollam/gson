@@ -167,7 +167,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 try {
                     binding.title.setText(formatter.format(value));
                 }catch (NullPointerException ex){
-                    Log.e(TAG,  "Error on inflating data , " + ex.getMessage());
+                    Timber.e(TAG,  "Error on inflating data , " + ex.getMessage());
                 }
                 binding.container.setSelected(selectedPos== getAdapterPosition());
 

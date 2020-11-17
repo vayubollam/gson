@@ -182,5 +182,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 
+    implementation 'com.github.mazenrashed:LogDNA-Android-Client:1.1.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

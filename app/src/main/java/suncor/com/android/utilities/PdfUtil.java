@@ -58,7 +58,7 @@ public class PdfUtil {
         try {
             document.writeTo(new FileOutputStream(filePath));
         } catch (IOException e) {
-            Log.e("main", "error "+e.toString());
+            Timber.e("main", "error "+e.toString());
             return null;
         }
 

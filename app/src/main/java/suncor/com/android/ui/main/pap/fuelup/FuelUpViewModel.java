@@ -35,6 +35,7 @@ import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
+import suncor.com.android.utilities.Timber;
 
 public class FuelUpViewModel extends ViewModel {
 
@@ -122,7 +123,7 @@ public class FuelUpViewModel extends ViewModel {
             return tokenizationData.getString("token");
 
         } catch (JSONException e) {
-            Log.e(FuelUpViewModel.class.getSimpleName(), "Payment data cannot be parsed");
+            Timber.e(FuelUpViewModel.class.getSimpleName(), "Payment data cannot be parsed");
         }
         return null;
     }

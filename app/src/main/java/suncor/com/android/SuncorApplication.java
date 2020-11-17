@@ -1,5 +1,6 @@
 package suncor.com.android;
 
+import com.mazenrashed.logdnaandroidclient.LogDna;
 import com.worklight.common.Logger;
 import com.worklight.wlclient.HttpClientManager;
 import com.worklight.wlclient.api.WLAuthorizationManager;
@@ -41,8 +42,8 @@ public class SuncorApplication extends DaggerApplication {
 
     public void onCreate() {
         super.onCreate();
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+        if (BuildConfig.DEBUG || !BuildConfig.FLAVOR.equalsIgnoreCase("Prod")) {
+            Timber.plant(new Timber.DebugTree(), new Timber.LogDNATree());
         }
 
         initMFP();

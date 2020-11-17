@@ -19,6 +19,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.stationlocator.search.PlaceSuggestion;
+import suncor.com.android.utilities.Timber;
 
 public class GooglePlaceSuggestionsProvider implements PlaceSuggestionsProvider {
 
@@ -54,7 +55,7 @@ public class GooglePlaceSuggestionsProvider implements PlaceSuggestionsProvider 
             predictions.postValue(Resource.error(exception.getMessage()));
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
-                Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+                Timber.e(TAG, "Place not found: " + apiException.getStatusCode());
             }
         });
         return predictions;
