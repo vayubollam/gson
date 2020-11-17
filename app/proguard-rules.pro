@@ -26,6 +26,10 @@
     public *;
     protected *;
 }
+-keepclassmembers class com.mazenrashed.logdnaandroidclient.** {
+    public *;
+    protected *;
+}
 
 ####################################################################################################
 ##############################  IBM MobileFirst Platform configuration  ############################
