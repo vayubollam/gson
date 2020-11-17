@@ -117,8 +117,9 @@ public class PapApiImpl implements PapApi {
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
 
+
             String body = gson.toJson(payByGooglePayRequest);
-            Timber.d("Send Pay By Wallet, body:\n" + body);
+            Timber.i("Send Pay By Google Pay, string: " + payByGooglePayRequest.toString() +  "\nbody: " + body);
 
             request.send(body,  new WLResponseListener() {
                 @Override
@@ -160,8 +161,7 @@ public class PapApiImpl implements PapApi {
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
 
             String body = gson.toJson(payByWalletRequest);
-
-            Timber.d("Send Pay By Wallet, body:\n" + body);
+            Timber.i("Send Pay By Wallet, string: " + payByWalletRequest.toString() +  "\nbody: " + body);
 
             request.send(body,  new WLResponseListener() {
                 @Override

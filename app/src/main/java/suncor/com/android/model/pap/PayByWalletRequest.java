@@ -22,4 +22,15 @@ public class PayByWalletRequest {
         this.preferredCulture = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr-CA" : "en-CA";
     }
 
+    @Override
+    public String toString() {
+        return "PayByWalletRequest{" +
+                "encryptedStoreId='" + encryptedStoreId + '\'' +
+                ", pumpNumber=" + pumpNumber +
+                ", preAuthLimit=" + preAuthLimit +
+                ", userPaymentSourceId=" + userPaymentSourceId +
+                ", paymentProviderName='" + paymentProviderName + '\'' +
+                ", preferredCulture='" + preferredCulture + '\'' +
+                '}';
+    }
 }

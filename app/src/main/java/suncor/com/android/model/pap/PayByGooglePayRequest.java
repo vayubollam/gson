@@ -46,6 +46,23 @@ public class PayByGooglePayRequest {
         public void setToken(String token) {
             this.token = token;
         }
+
+        @Override
+        public String toString() {
+            return "FundingPayload{" +
+                    "token='" + token + '\'' +
+                    '}';
+        }
     }
 
+    @Override
+    public String toString() {
+        return "PayByGooglePayRequest{" +
+                "encryptedStoreId='" + encryptedStoreId + '\'' +
+                ", pumpNumber=" + pumpNumber +
+                ", preAuthLimit=" + preAuthLimit +
+                ", fundingPayload=" + fundingPayload.toString() +
+                ", preferredCulture='" + preferredCulture + '\'' +
+                '}';
+    }
 }

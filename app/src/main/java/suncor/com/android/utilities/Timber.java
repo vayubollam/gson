@@ -861,6 +861,7 @@ public final class Timber {
          */
         @Override
         protected void log(int priority, String tag, @NonNull String message, Throwable t) {
+            if (priority < 4) return;
             if (message.length() < MAX_LOG_LENGTH) {
                 LogDna.INSTANCE.log(
                         new Line.Builder()
