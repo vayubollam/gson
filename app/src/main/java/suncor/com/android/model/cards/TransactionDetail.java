@@ -106,6 +106,7 @@ public class TransactionDetail {
             case BONUS://
                 return context.getResources().getString(R.string.transaction_type_bonus);
             case PETRO_POINTS://
+                return context.getResources().getString(R.string.transaction_type_points);
             case CUSTOMER_SERVICE_ADJ://
                 return context.getResources().getString(R.string.transaction_type_csa);
             case PURCHASE:
