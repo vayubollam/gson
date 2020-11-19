@@ -5,6 +5,8 @@ import com.google.android.gms.wallet.WalletConstants;
 import java.util.Arrays;
 import java.util.List;
 
+import suncor.com.android.BuildConfig;
+
 /**
  * This file contains several constants you must edit before proceeding.
  * Please take a look at PaymentsUtil.java to see where the constants are used and to potentially
@@ -32,7 +34,7 @@ public class GooglePayConstants {
      *
      * @value #PAYMENTS_ENVIRONMENT
      */
-    public static final int PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST;
+    public static final int PAYMENTS_ENVIRONMENT =  BuildConfig.DEBUG ? WalletConstants.ENVIRONMENT_TEST : WalletConstants.ENVIRONMENT_PRODUCTION;
 
     /**
      * The allowed networks to be requested from the API. If the user has cards from networks not
