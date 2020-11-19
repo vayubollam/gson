@@ -96,11 +96,11 @@ public class ReceiptFragment extends MainActivityFragment {
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                if(Objects.isNull(result.data.getReceipt())){
-                    binding.shareButton.setVisibility(getView().GONE);
-                    binding.viewReceiptBtn.setVisibility(getView().GONE);
+                if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
+                    binding.shareButton.setVisibility(View.GONE);
+                    binding.viewReceiptBtn.setVisibility(View.GONE);
                 } else {
-                    binding.receiptDetails.setText(result.data.getReceipt());
+                    binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
                 binding.setTransaction(result.data);
 

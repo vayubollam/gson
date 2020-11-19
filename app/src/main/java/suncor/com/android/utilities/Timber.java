@@ -866,6 +866,7 @@ public final class Timber {
                             .setLine(message)
                             .setLevel(getLevel(priority))
                             .addCustomField(new Line.CustomField("TAG", tag))
+                            .addCustomField(new Line.CustomField("User", AnalyticsUtils.userID != null ? AnalyticsUtils.userID : ""))
                             .setTime(System.currentTimeMillis())
                             .build()
             );

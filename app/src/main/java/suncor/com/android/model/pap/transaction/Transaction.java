@@ -112,7 +112,7 @@ public class Transaction {
         return basketPaymentState;
     }
 
-    public String getReceipt() {
+    public String getReceiptFormatted() {
         StringBuilder sb = new StringBuilder();
         receiptData.forEach(data-> sb.append(data).append("\n") );
         return sb.toString();
