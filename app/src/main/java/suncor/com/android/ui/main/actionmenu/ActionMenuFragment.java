@@ -147,10 +147,12 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 activeSession = result.data.activeSession;
 
                 binding.actionFuelUpButton.setText(activeSession ?
-                        result.data.status.equals("New") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
+                        result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
 
                 AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, activeSession ?
-                        result.data.status.equals("New") ? getString(R.string.fuelling_about_to_begin) : getString(R.string.action_fuelling) : getString(R.string.action_fuel_up)));
+                        result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized")? getString(R.string.fuelling_about_to_begin) : getString(R.string.action_fuelling) : getString(R.string.action_fuel_up)));
 
                 binding.actionFuelUpButton.setLoading(activeSession);
             } else {
@@ -229,7 +231,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 Alerts.prepareGeneralErrorDialog(getContext(), "Active Session" ).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (result.data.activeSession && result.data.status != null) {
-                    if (result.data.status.equals("New")) {
+                    if (result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")) {
                         updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                     } else if (result.data.status.equals("BeginFueling")) {
                         updateFuellingSession(true, getString(R.string.fueling_up));

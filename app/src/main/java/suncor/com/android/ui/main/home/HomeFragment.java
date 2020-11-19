@@ -478,7 +478,7 @@ public class HomeFragment extends BottomNavigationFragment {
                     Alerts.prepareGeneralErrorDialog(getContext(), "home").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
-                        if(result.data.status.equals("New")){
+                        if(result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
