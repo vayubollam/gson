@@ -108,7 +108,7 @@ public class PapApiImpl implements PapApi {
         Timber.d("request initiate for authorized google pay payment ");
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
-        try {
+       /* try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/PreAuth/PayByGooglePay");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("latitude", Double.toString(userLocation.latitude));
@@ -138,7 +138,7 @@ public class PapApiImpl implements PapApi {
         } catch (URISyntaxException e) {
             Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-        }
+        }*/
 
         return result;
     }
