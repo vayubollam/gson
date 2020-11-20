@@ -74,6 +74,10 @@ public class FuellingFragment extends MainActivityFragment {
         binding.pumpAuthorizedText.setText(getString(R.string.pump_authorized, pumpNumber));
         binding.pumpNumberText.setText(pumpNumber);
 
+        RequestOptions options = new RequestOptions();
+        options = options.fitCenter();
+        Glide.with(this).load(Uri.parse("file:///android_asset/fuelling_animation.gif")).apply(options).into(binding.fuelAnimationGif);
+
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(6000);
         rotate.setInterpolator(new LinearInterpolator());
@@ -186,11 +190,8 @@ public class FuellingFragment extends MainActivityFragment {
                         if (!result.data.status.equalsIgnoreCase("New") && !result.data.status.equalsIgnoreCase("Authorized")) {
                             binding.borderImageView.clearAnimation();
                             binding.fuelImageContainer.setVisibility(View.GONE);
-                            RequestOptions options = new RequestOptions();
-                            options = options.fitCenter();
 
                             binding.fuelAnimationGif.setVisibility(View.VISIBLE);
-                            Glide.with(getContext()).load(Uri.parse("file:///android_asset/fuelling_animation.gif")).apply(options).into(binding.fuelAnimationGif);
                         }
 
                         if(pingActiveSessionStarted) {

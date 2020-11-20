@@ -10,13 +10,18 @@ public class PayByGooglePayRequest {
     private double preAuthLimit;
     private FundingPayload fundingPayload;
     private String preferredCulture;
+    private String petroPointsNumber;
+    private boolean rbcLinked;
 
 
-    public PayByGooglePayRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit, FundingPayload fundingPayload) {
+    public PayByGooglePayRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit,
+                                 FundingPayload fundingPayload, String petroPointsNumber, boolean rbcLinked) {
         this.encryptedStoreId = encryptedStoreId;
         this.pumpNumber = pumpNumber;
         this.preAuthLimit = preAuthLimit;
         this.fundingPayload = fundingPayload;
+        this.petroPointsNumber = petroPointsNumber;
+        this.rbcLinked = rbcLinked;
         this.preferredCulture = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr-CA" : "en-CA";
     }
 
@@ -63,6 +68,8 @@ public class PayByGooglePayRequest {
                 ", preAuthLimit=" + preAuthLimit +
                 ", fundingPayload=" + fundingPayload.toString() +
                 ", preferredCulture='" + preferredCulture + '\'' +
+                ", petroPointsNumber='" + petroPointsNumber + '\'' +
+                ", rbcLinked=" + rbcLinked +
                 '}';
     }
 }

@@ -11,13 +11,18 @@ public class PayByWalletRequest {
     private int userPaymentSourceId;
     private String paymentProviderName;
     private String preferredCulture;
+    private String petroPointsNumber;
+    private boolean rbcLinked;
 
 
-    public PayByWalletRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit, int userPaymentSourceId) {
+    public PayByWalletRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit,
+                              int userPaymentSourceId, String petroPointsNumber, boolean rbcLinked) {
         this.encryptedStoreId = encryptedStoreId;
         this.pumpNumber = pumpNumber;
         this.preAuthLimit = preAuthLimit;
         this.userPaymentSourceId = userPaymentSourceId;
+        this.petroPointsNumber = petroPointsNumber;
+        this.rbcLinked = rbcLinked;
         this.paymentProviderName = "moneris";
         this.preferredCulture = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr-CA" : "en-CA";
     }
@@ -31,6 +36,8 @@ public class PayByWalletRequest {
                 ", userPaymentSourceId=" + userPaymentSourceId +
                 ", paymentProviderName='" + paymentProviderName + '\'' +
                 ", preferredCulture='" + preferredCulture + '\'' +
+                ", petroPointsNumber='" + petroPointsNumber + '\'' +
+                ", rbcLinked=" + rbcLinked +
                 '}';
     }
 }

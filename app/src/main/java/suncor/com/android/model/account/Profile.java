@@ -17,6 +17,7 @@ public class Profile {
     private boolean doNotEmail;
     private boolean textOffers;
     private String retailId;
+    private boolean rbcLinked;
 
     public String getRetailId() {
         return retailId;
@@ -124,6 +125,14 @@ public class Profile {
 
     public void setDoNotEmail(boolean doNotEmail) {
         this.doNotEmail = doNotEmail;
+    }
+
+    public boolean isRbcLinked() {
+        return rbcLinked;
+    }
+
+    public void setRbcLinked(boolean rbcLinked) {
+        this.rbcLinked = rbcLinked;
     }
 
     @Override

@@ -119,12 +119,13 @@ public class Transaction {
     }
 
     public String getFormattedDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = null;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.CANADA);
+        Date date;
         try {
             date = dateFormat.parse(posDatetimeUtc);
         } catch (ParseException e) {
             e.printStackTrace();
+            return null;
         }
         return DateFormat.getDateInstance(DateFormat.LONG).format(date);
     }

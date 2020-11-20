@@ -25,8 +25,10 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.data.pap.PapRepository;
 import suncor.com.android.data.payments.PaymentsRepository;
 import suncor.com.android.data.settings.SettingsApi;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
+import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
@@ -43,13 +45,16 @@ public class FuelUpViewModel extends ViewModel {
     private final PapRepository papRepository;
     private final PaymentsRepository paymentsRepository;
     private LatLng userLocation;
+    private Profile profile;
 
 
     @Inject
-    public FuelUpViewModel(SettingsApi settingsApi, PapRepository papRepository, PaymentsRepository paymentsRepository) {
+    public FuelUpViewModel(SettingsApi settingsApi, PapRepository papRepository,
+                           PaymentsRepository paymentsRepository, SessionManager sessionManager) {
         this.settingsApi = settingsApi;
         this.papRepository = papRepository;
         this.paymentsRepository = paymentsRepository;
+        this.profile = sessionManager.getProfile();
     }
 
 
@@ -132,7 +137,9 @@ public class FuelUpViewModel extends ViewModel {
      * Payment initiate with google pay
      */
     LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken) {
-        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount, new PayByGooglePayRequest.FundingPayload(paymentToken));
+        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount,
+                new PayByGooglePayRequest.FundingPayload(paymentToken), profile.getPetroPointsNumber(),
+                profile.isRbcLinked());
         return papRepository.authorizePaymentByGooglePay(request, userLocation);
     }
 
@@ -140,7 +147,8 @@ public class FuelUpViewModel extends ViewModel {
      * Payment initiate with wallet
      */
     LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
-        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount, userPaymentSourceId);
+        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount,
+                userPaymentSourceId, profile.getPetroPointsNumber(), profile.isRbcLinked());
         return papRepository.authorizePaymentByWallet(request, userLocation);
     }
 
