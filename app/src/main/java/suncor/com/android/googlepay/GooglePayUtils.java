@@ -99,7 +99,6 @@ public class GooglePayUtils {
     }
 
 
-    //todo change SUPPORTED_METHODS_CHECK to SUPPORTED_METHODS
     private static JSONArray getAllowedCardAuthMethods() {
         return new JSONArray(GooglePayConstants.SUPPORTED_METHODS);
     }

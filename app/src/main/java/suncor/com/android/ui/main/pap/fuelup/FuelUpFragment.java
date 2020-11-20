@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
@@ -66,6 +67,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
@@ -169,6 +171,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.fuelUpLimit.initListener(this);
         binding.paymentExpandable.initListener(this);
+
+        binding.selectPumpLayout.helpButton.setOnClickListener(v -> showHelp());
 
         selectPumpViewModel.getStoreDetails(storeId).observe(getViewLifecycleOwner(), storeDetailsResponseResource -> {
             if (storeDetailsResponseResource.status == Resource.Status.SUCCESS && storeDetailsResponseResource.data != null) {
@@ -293,6 +297,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
            binding.fuelUpLimit.setDropDownData(adapter);
 
        }
+    }
+
+    private void showHelp() {
+        DialogFragment fragment = new SelectPumpHelpDialogFragment();
+        fragment.show(getFragmentManager(), "dialog");
     }
 
     @Override
