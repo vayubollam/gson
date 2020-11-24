@@ -27,8 +27,10 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.fuelling.FuellingFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
+import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class SelectPumpFragment extends MainActivityFragment implements SelectPumpListener {
@@ -38,6 +40,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     private SelectPumpAdapter adapter;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private String storeId;
+    private HomeViewModel homeViewModel;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -46,6 +49,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
     }
 
@@ -72,6 +76,16 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         isLoading.set(true);
         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump-loading");
         storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
+        String location = SelectPumpFragmentArgs.fromBundle(getArguments()).getLocation();
+        if(Objects.nonNull(location)) {
+           binding.actionLocation.setText(location);
+        } else {
+            homeViewModel.nearestStation.observe(getViewLifecycleOwner(), result -> {
+                if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                    binding.actionLocation.setText(getString(R.string.action_location, result.data.getStation().getAddress().getAddressLine()));
+                }
+            });
+        }
 
         viewModel.isPAPAvailable(storeId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {

@@ -95,6 +95,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
+                binding.paymentType.setText(result.data.getPaymentType(getContext()));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);

@@ -621,6 +621,9 @@
         <argument
             android:name="storeId"
             app:argType="string"/>
+        <argument
+            android:name="location"
+            app:argType="string"/>
     </action>
     <keep_state_fragment
         android:id="@+id/selectPumpFragment"
@@ -628,6 +631,11 @@
         android:label="SelectPumpFragment">
         <argument
             android:name="storeId"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="location"
             android:defaultValue="null"
             app:argType="string"
             app:nullable="true"/>
