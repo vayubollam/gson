@@ -54,13 +54,13 @@
                 app:cardUseCompatPadding="false">
 
                 <FrameLayout
-                    android:id="@+id/fuel_image_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="center">
 
                     <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/fuel_image_container"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:scaleType="fitCenter"
@@ -73,6 +73,14 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginStart="25dp"
                         android:src="@drawable/ic_leaf"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/fuel_animation_gif"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/pump_number_text"
@@ -89,14 +97,6 @@
                         android:visibility="visible" />
 
                 </FrameLayout>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/fuel_animation_gif"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/border_image_view"

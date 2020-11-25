@@ -175,7 +175,7 @@ public class PapApiImpl implements PapApi {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    Timber.d("Google Pay authorized payment API failed, " + wlFailResponse.toString());
+                    Timber.d("Wallet authorized payment API failed, " + wlFailResponse.toString());
                     Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }

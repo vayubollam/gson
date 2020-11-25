@@ -598,16 +598,6 @@
             app:argType="string"/>
     </action>
 
-    <action
-        android:id="@+id/action_fuelling_to_ReceiptFragment"
-        app:destination="@id/receiptFragment"
-        app:enterAnim="@anim/fade_in"
-        app:exitAnim="@anim/fade_out"
-        app:popExitAnim="@anim/fade_out" >
-        <argument
-            android:name="transactionId"
-            app:argType="string"/>
-    </action>
     <keep_state_fragment
         android:id="@+id/nearestStationFragment"
         android:name="suncor.com.android.ui.main.stationlocator.NearestStationFragment"
@@ -654,6 +644,21 @@
             app:argType="string"/>
     </action>
 
+    <action
+        android:id="@+id/action_fuelling_to_ReceiptFragment"
+        app:destination="@id/receiptFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popExitAnim="@anim/fade_out" >
+        <argument
+            android:name="transactionId"
+            app:argType="string"/>
+        <argument
+            android:name="isGooglePay"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </action>
+
     <keep_state_fragment
         android:id="@+id/fuellingFragment"
         android:name="suncor.com.android.ui.main.pap.fuelling.FuellingFragment"
@@ -673,6 +678,10 @@
             <argument
                 android:name="transactionId"
                 app:argType="string"/>
+            <argument
+                android:name="isGooglePay"
+                app:argType="boolean"
+                android:defaultValue="false"/>
         </action>
 
     </keep_state_fragment>
@@ -714,17 +723,6 @@
                 android:name="pumpNumber"
                 app:argType="string"/>
         </action>
-
-        <action
-            android:id="@+id/action_fuelling_to_ReceiptFragment"
-            app:destination="@id/receiptFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popExitAnim="@anim/fade_out" >
-            <argument
-                android:name="transactionId"
-                app:argType="string"/>
-        </action>
     </keep_state_fragment>
 
 
@@ -736,6 +734,11 @@
             android:name="transactionId"
             android:defaultValue="null"
             app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="isGooglePay"
+            android:defaultValue="false"
+            app:argType="boolean"
             app:nullable="false"/>
     </keep_state_fragment>
 

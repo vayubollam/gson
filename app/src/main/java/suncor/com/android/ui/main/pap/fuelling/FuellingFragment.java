@@ -156,7 +156,7 @@ public class FuellingFragment extends MainActivityFragment {
                                         goBack();
                                     }, "Pump Fuelling").show();
                         } else {
-                            observeTransactionData(result.data.lastTransId);
+                            observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
                             AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-almost-complete" );
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"));
@@ -205,8 +205,9 @@ public class FuellingFragment extends MainActivityFragment {
         }
     };
 
-    private void observeTransactionData(String transactionId){
+    private void observeTransactionData(String transactionId, String lastPaymentProvider){
         FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId);
+        action.setIsGooglePay(lastPaymentProvider.toLowerCase().contains("google"));
         Navigation.findNavController(requireView()).popBackStack();
         Navigation.findNavController(requireView()).navigate(action);
     }

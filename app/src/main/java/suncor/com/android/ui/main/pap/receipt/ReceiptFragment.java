@@ -35,6 +35,7 @@ public class ReceiptFragment extends MainActivityFragment {
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
     private String transactionId;
+    private boolean isGooglePay;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
@@ -64,6 +65,7 @@ public class ReceiptFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
+        isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
         observeTransactionData(transactionId);
         binding.viewReceiptBtn.setOnClickListener((v) -> {
             binding.receiptLayout.setVisibility(View.VISIBLE);
@@ -95,7 +97,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                binding.paymentType.setText(result.data.getPaymentType(getContext()));
+                binding.paymentType.setText(result.data.getPaymentType(getContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);

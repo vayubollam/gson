@@ -130,10 +130,13 @@ public class Transaction {
         return DateFormat.getDateInstance(DateFormat.LONG).format(date);
     }
 
-    public String getPaymentType(Context context){
+    public String getPaymentType(Context context, boolean isGooglePay){
         StringBuilder sb = new StringBuilder(cardType);
         sb.append(" ");
         sb.append(context.getString(R.string.payment_card_number, lastFour.replaceAll("[^\\d]", "")));
+        if (isGooglePay) {
+            sb.append(" (Google Pay)");
+        }
         return sb.toString();
     }
 
