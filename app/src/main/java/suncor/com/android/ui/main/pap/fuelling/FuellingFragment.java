@@ -176,8 +176,6 @@ public class FuellingFragment extends MainActivityFragment {
                                 || result.data.status.equalsIgnoreCase("Authorized")?
                                 R.string.pump_authorized_subheader : R.string.fueling_up_subheader);
                         binding.pumpNumberText.setText(result.data.pumpNumber);
-                        binding.pumpNumberText.setVisibility(result.data.status.equalsIgnoreCase("New")
-                                || result.data.status.equalsIgnoreCase("Authorized")? View.VISIBLE : View.GONE);
 
                         binding.cancelButton.setText(result.data.status.equalsIgnoreCase("New")
                                 || result.data.status.equalsIgnoreCase("Authorized")? R.string.cancel : R.string.hide);

@@ -41,7 +41,7 @@ public class PaymentsApiImpl implements PaymentsApi {
         MutableLiveData<Resource<ArrayList<PaymentDetail>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/wallet/funding");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/wallet/funding");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send(new WLResponseListener() {
@@ -81,7 +81,7 @@ public class PaymentsApiImpl implements PaymentsApi {
         MutableLiveData<Resource<AddPayment>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/wallet/iframeurl");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/wallet/iframeurl");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send(new WLResponseListener() {
@@ -115,7 +115,7 @@ public class PaymentsApiImpl implements PaymentsApi {
         MutableLiveData<Resource<ArrayList<PaymentDetail>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/wallet/funding/" + paymentDetail.getId());
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/wallet/funding/" + paymentDetail.getId());
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send(new WLResponseListener() {

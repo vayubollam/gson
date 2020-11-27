@@ -40,7 +40,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<ActiveSession>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/session");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/session");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send(new WLResponseListener() {
@@ -74,7 +74,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<P97StoreDetailsResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/stores");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/stores");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("x-store-id", storeId);
 
@@ -109,7 +109,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/PreAuth/PayByGooglePay");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/PreAuth/PayByGooglePay");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("latitude", Double.toString(userLocation.latitude));
             request.addHeader("longitude", Double.toString(userLocation.longitude));
@@ -152,7 +152,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/PreAuth/PayByWallet");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/PreAuth/PayByWallet");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("latitude", Double.toString(userLocation.latitude));
             request.addHeader("longitude", Double.toString(userLocation.longitude));
@@ -194,7 +194,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<Transaction>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/transactionInfo/" + transactionId);
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/transactionInfo/" + transactionId);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {
@@ -226,7 +226,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/payatpump/fuelup/transaction/cancel/" + transactionId);
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/transaction/cancel/" + transactionId);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {
