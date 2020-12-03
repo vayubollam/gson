@@ -53,7 +53,8 @@ public class AddCardFragment extends MainActivityFragment {
                     String analyticsName = getContext().getString(R.string.cards_add_fragment_invalid_card_title)
                             + "(" + getContext().getString(R.string.cards_add_fragment_invalid_card_message) +")";
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
-                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName)
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
                     );
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.cards_add_fragment_invalid_card_title)
@@ -61,7 +62,8 @@ public class AddCardFragment extends MainActivityFragment {
                             .setPositiveButton(R.string.ok, (dialog, which) -> {
                                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                         new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                                        new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok))
+                                        new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
+                                        new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
                                 );
                                 dialog.dismiss();
                             })
@@ -81,7 +83,8 @@ public class AddCardFragment extends MainActivityFragment {
                     getContext(),
                     AnalyticsUtils.Event.formComplete,
                     new Pair<>(AnalyticsUtils.Param.formName, cardDetail.getLongName()+ " Added"),
-                    new Pair<>(AnalyticsUtils.Param.formSelection, optionsChecked)
+                    new Pair<>(AnalyticsUtils.Param.formSelection, optionsChecked),
+                    new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
             );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             goBack();
@@ -135,16 +138,18 @@ public class AddCardFragment extends MainActivityFragment {
 
     private void showCvvHelp() {
         AnalyticsUtils.setCurrentScreenName(getActivity(), "card-security-code-info");
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                new Pair<>("alertTitle", getString(R.string.cards_add_fragment_help_dialog_title)+"("+")")
+        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cards_add_fragment_help_dialog_title)+"("+")"),
+                new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
         );
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.cards_add_fragment_help_dialog_title)
                 .setView(getLayoutInflater().inflate(R.layout.cvv_help_layout, null))
                 .setPositiveButton(R.string.ok, (dialog, which)-> {
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                            new Pair<>("alertTitle", getString(R.string.cards_add_fragment_help_dialog_title)+"("+")"),
-                            new Pair<>("alertSelection",getString(R.string.ok))
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(),  AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cards_add_fragment_help_dialog_title)+"("+")"),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection,getString(R.string.ok)),
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
                     );
                 })
                 .show();

@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
@@ -188,9 +186,10 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                     });
 
                 }).setNegativeButton(getResources().getString(R.string.payments_remove_card_alert_cancel), (dialog, which) -> {
-                    AnalyticsUtils.logEvent(getContext(), "alert_interaction",
-                            new Pair<>("alertTitle", getString(R.string.payments_remove_card_alert_title)),
-                            new Pair<>("alertSelection",getString(R.string.payments_remove_card_alert_cancel))
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.payments_remove_card_alert_title)),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection,getString(R.string.payments_remove_card_alert_cancel)),
+                            new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
                     );
                 });
         builder.show();

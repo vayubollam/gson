@@ -56,7 +56,8 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage, getString(alert.title)),
+                            new Pair<>(AnalyticsUtils.Param.formName, "My petro points Account Navigation List"));
 
                 }
                 if (alert.message != -1) {
@@ -135,7 +136,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         binding.signoutButton.setOnClickListener((v) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
                     new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
-                    new Pair<>("formName","My petro points Accoun Navigation List")
+                    new Pair<>("formName","My petro points Account Navigation List")
             );
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
@@ -143,7 +144,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
                                 new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_positive_button)),
-                                new Pair<>("formName","My petro points Accoun Navigation List")
+                                new Pair<>("formName","My petro points Account Navigation List")
                         );
                         signUserOut();
                     })
@@ -151,7 +152,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
                                 new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_negative_button)),
-                                new Pair<>("formName","My petro points Accoun Navigation List")
+                                new Pair<>("formName","My petro points Account Navigation List")
                         );
                         dialog.dismiss();
                     }));
@@ -161,7 +162,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update personal information"));
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update Personal Information"));
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
             } else {
@@ -170,12 +171,12 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             }
         });
         binding.preferencesButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Change preferences"));
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Change Preferences"));
             Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
         });
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
         binding.addressButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update address"));
+            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update Address"));
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment);
             } else {
@@ -201,9 +202,10 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                 AnalyticsUtils.logEvent(getContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
                 AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)));
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)),
+                        new Pair<>(AnalyticsUtils.Param.formName, "My petro points Account Navigation List"));
                 binding.signOutPB.setVisibility(View.GONE);
-                Alerts.prepareGeneralErrorDialog(getActivity(), "My petro points Accoun Navigation List").show();
+                Alerts.prepareGeneralErrorDialog(getActivity(), "My petro points Account Navigation List").show();
             }
         });
 

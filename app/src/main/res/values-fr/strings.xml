@@ -649,7 +649,7 @@
 
     <string name="pump_authorized">Distributeur %1$s autorisé</string>
     <string name="pump_authorized_subheader">Soulevez le pistolet et sélectionnez le type de carburant</string>
-    <string name="hide">Cacher</string>
+    <string name="hide">Masquer</string>
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
     <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte.</string>

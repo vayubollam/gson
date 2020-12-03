@@ -56,7 +56,8 @@ public class ResetPasswordFragment extends BaseFragment {
                 case ERROR:
                     hideKeyboard();
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Reset Password"));
                     Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
                     break;
 

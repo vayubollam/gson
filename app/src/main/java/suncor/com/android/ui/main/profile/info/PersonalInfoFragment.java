@@ -70,7 +70,8 @@ public class PersonalInfoFragment extends MainActivityFragment {
             if (alert != null) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
-                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
+                AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)),
+                        new Pair<>("formName","Update Personal Information"));
 
                 dialog.setTitle(getString(alert.title))
                         .setMessage(getString(alert.message))
@@ -92,7 +93,8 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)));
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)),
+                            new Pair<>("formName","Update Personal Information"));
 
                 }
                 if (alert.message != -1) {

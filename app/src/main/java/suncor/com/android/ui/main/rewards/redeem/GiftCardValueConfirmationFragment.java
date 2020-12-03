@@ -104,7 +104,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                             new Pair<>("errorMessage",orderResponseResource.message));
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                                new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")")
+                                new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")"),
+                                new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card")
                         );
                         new AlertDialog.Builder(getContext())
                                 .setTitle(R.string.msg_e030_title)
@@ -112,7 +113,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                                     AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                             new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")"),
-                                            new Pair<>("alertSelection",getString(R.string.ok))
+                                            new Pair<>("alertSelection",getString(R.string.ok)),
+                                            new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card")
                                     );
                                     dialog.dismiss();
                                 })
@@ -120,7 +122,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                                 .show();
                     } else {
                         AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-                                new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)));
+                                new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
+                                new Pair<>(AnalyticsUtils.Param.formName, "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"));
                         Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card").show();
                     }
                     break;

@@ -136,7 +136,8 @@ public class FuellingFragment extends MainActivityFragment {
             viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
                     Alerts.prepareGeneralErrorDialog(getContext(), "Pump Fuelling").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
@@ -159,13 +160,15 @@ public class FuellingFragment extends MainActivityFragment {
                             observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
                             AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-almost-complete" );
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
-                                    new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"));
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
                         }
                     } else if (result.data.status != null) {
                         transactionId = result.data.transId;
                         binding.cancelButton.setVisibility(View.VISIBLE);
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
-                                new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)));
+                                new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
+                                new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
 
                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-will-begin" );
 

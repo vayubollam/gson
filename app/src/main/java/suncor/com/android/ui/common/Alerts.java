@@ -14,7 +14,8 @@ public class Alerts {
     public static AlertDialog prepareGeneralErrorDialog(Context context, String formName ) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
             AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
-                    new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title)));
+                    new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title))
+                ,new Pair<>(AnalyticsUtils.Param.formName, formName));
 
             String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
@@ -40,7 +41,8 @@ public class Alerts {
     public static AlertDialog prepareGeneralErrorDialogWithTryAgain(Context context, DialogInterface.OnClickListener listener, String formName) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
-                new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title)));
+                new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title)),
+                new Pair<>(AnalyticsUtils.Param.formName, formName));
 
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
@@ -65,7 +67,8 @@ public class Alerts {
 
     public static AlertDialog prepareCustomDialogWithTryAgain(String title, String message, Context context, DialogInterface.OnClickListener listener, String formName) {
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
-                new Pair<>(AnalyticsUtils.Param.errorMessage, title+"("+message+")"));
+                new Pair<>(AnalyticsUtils.Param.errorMessage, title+"("+message+")")
+                ,new Pair<>(AnalyticsUtils.Param.formName, formName));
 
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
