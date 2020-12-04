@@ -42,6 +42,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -50,7 +51,7 @@ import suncor.com.android.utilities.PermissionManager;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
-public class AddPaymentFragment extends MainActivityFragment {
+public class AddPaymentFragment extends MainActivityFragment implements OnBackPressedListener {
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -87,7 +88,7 @@ public class AddPaymentFragment extends MainActivityFragment {
         binding.setLifecycleOwner(this);
         layoutNoLocationBinding = binding.noLocationCard;
 
-        binding.appBar.setNavigationOnClickListener(v -> goBack());
+        binding.appBar.setNavigationOnClickListener(v -> onBackPressed());
 
         initWebView();
 
@@ -309,5 +310,11 @@ public class AddPaymentFragment extends MainActivityFragment {
         alertDialog.show();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (binding.webView.canGoBack())
+            binding.webView.canGoBack();
+        else
+            goBack();
+    }
 }
