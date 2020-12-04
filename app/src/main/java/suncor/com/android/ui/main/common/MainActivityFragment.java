@@ -9,10 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
 import suncor.com.android.ui.common.BaseFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class MainActivityFragment extends BaseFragment {
 

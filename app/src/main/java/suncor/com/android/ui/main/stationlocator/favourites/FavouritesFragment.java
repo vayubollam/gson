@@ -123,7 +123,8 @@ public class FavouritesFragment extends MainActivityFragment {
                 }
             } else if(stations.status == Resource.Status.ERROR) {
                 AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, stations.message));
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, stations.message),
+                        new Pair<>(AnalyticsUtils.Param.formName, "Favorite Gas Stations"));
             }
         });
         if (LocationUtils.isLocationEnabled(getContext())

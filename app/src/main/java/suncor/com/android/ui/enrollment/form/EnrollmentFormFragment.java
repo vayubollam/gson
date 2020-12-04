@@ -149,16 +149,16 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)));
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>("formName",  formName));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
-                            new Pair<>("formName",  "Activate Petro-Points Card"));
+                            new Pair<>("formName",  formName));
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
                                 new Pair<>("alertSelection", getString(R.string.ok)),
-                                new Pair<>("formName",  "Activate Petro-Points Card")
+                                new Pair<>("formName",  formName)
                         );
                         binding.emailInput.setText("");
                         d.dismiss();
@@ -256,7 +256,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
-        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_invalid_email_title)));
+        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_invalid_email_title)),
+                new Pair<>("formName",  "Activate Petro-Points Card"));
 
         dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
                 .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))

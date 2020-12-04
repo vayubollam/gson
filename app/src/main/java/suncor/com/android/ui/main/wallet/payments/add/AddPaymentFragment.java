@@ -75,7 +75,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddPaymentViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Add Payment"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Credit Card Added"));
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
 
     }
@@ -158,7 +158,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
                             binding.setIsWebviewLoading(isWebViewLoading);
                             //hideKeyBoard();
                         } else if (result.status == Resource.Status.ERROR) {
-                            Alerts.prepareGeneralErrorDialog(getContext(),  "Add Payment").show();
+                            Alerts.prepareGeneralErrorDialog(getContext(),  "Credit Card Added").show();
                         } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                             binding.webView.loadUrl(result.data.toString());
                         }
@@ -276,21 +276,24 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
 
     private void    showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")")
+        AnalyticsUtils.logEvent(getActivity().getApplicationContext(),AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                new Pair<>(AnalyticsUtils.Param.formName, "Credit Card Added")
         );
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection", getString(R.string.cancel))
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
+                    new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
+                    new Pair<>(AnalyticsUtils.Param.formName, "Credit Card Added")
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection", getString(R.string.ok))
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
+                    new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.ok)),
+                    new Pair<>(AnalyticsUtils.Param.formName, "Credit Card Added")
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);

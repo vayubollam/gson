@@ -308,7 +308,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void selectPumpNumber(String pumpNumber) {
         this.pumpNumber = pumpNumber;
         binding.pumpNumberText.setText(pumpNumber);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump Number"),
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
                 new Pair<>(AnalyticsUtils.Param.formSelection, pumpNumber));
         new Handler().postDelayed(() -> binding.pumpLayout.callOnClick(), 400);
     }
@@ -327,14 +327,15 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void onPreAuthChanged(String value) {
         this.preAuth = value;
         binding.totalAmount.setText(value);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Select Fuel Up amount"),
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
                 new Pair<>(AnalyticsUtils.Param.formSelection, value));
     }
 
     @Override
     public void onPaymentChanged(String userPaymentId) {
         this.userPaymentId = userPaymentId;
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Select Payment Method"),
+
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
                 new Pair<>(AnalyticsUtils.Param.formSelection,userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY) ? PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY : "credit_card"));
     }
 
@@ -377,7 +378,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                         isLoading.set(false);
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                                new Pair<>(AnalyticsUtils.Param.paymentMethod, userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY) ? PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY : "credit_card"),
+                                new Pair<>(AnalyticsUtils.Param.paymentMethod, "Credit Card"),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
                         FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
                         Navigation.findNavController(getView()).popBackStack();
@@ -432,13 +433,15 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google pay transaction cancel by user"));
+                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google pay transaction cancel by user"),
+                                new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
                         break;
 
                     case AutoResolveHelper.RESULT_ERROR:
                         Status status = AutoResolveHelper.getStatusFromIntent(data);
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google Pay error , message" + status.getStatusMessage()));
+                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google Pay error , message" + status.getStatusMessage()),
+                                new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
                         Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
                         break;
                 }
@@ -458,7 +461,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Biometrics fails"));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Biometrics fails"),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
                 }
 
                 @Override
@@ -496,7 +500,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                        new Pair<>(AnalyticsUtils.Param.paymentMethod, PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY),
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, "Google Pay"),
                         new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
                 FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
                 Navigation.findNavController(requireView()).popBackStack();
@@ -512,17 +516,20 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         switch (errorCode.toUpperCase()){
             case ErrorCodes.ERR_TRANSACTION_FAILS:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Transaction fails, errorCode : " + errorCode));
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Transaction fails, errorCode : " + errorCode),
+                        new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
                  transactionFailsAlert(getContext()).show();
                 break;
             case ErrorCodes.ERR_PUMP_RESERVATION_FAILS:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Pump Registration fails, errorCode : " + errorCode));
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Pump Registration fails, errorCode : " + errorCode),
+                        new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
                 pumpReservationFailsAlert(getContext()).show();
                 break;
             default:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong, errorCode : " + errorCode));
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong, errorCode : " + errorCode),
+                        new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
                 Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
                 break;
         }

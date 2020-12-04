@@ -103,7 +103,8 @@ public class CardQuestionFragment extends BaseFragment {
                     break;
                 case ERROR:
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong"));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong"),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Petro Points Sign Up Activate"));
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> getActivity().finish());

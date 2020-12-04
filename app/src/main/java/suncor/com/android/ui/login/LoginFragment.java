@@ -18,8 +18,6 @@ import androidx.biometric.BiometricPrompt;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -211,7 +209,8 @@ public class LoginFragment extends BaseFragment {
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
-        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(response.title)));
+        AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage, getString(response.title)),
+                new Pair<>(AnalyticsUtils.Param.formName, "Login"));
         if (response.message.args != null) {
             message = getString(response.message.content, response.message.args);
         } else {
@@ -220,7 +219,7 @@ public class LoginFragment extends BaseFragment {
         String analyticName = getString(response.title) + "("+message+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                new Pair<>(AnalyticsUtils.Param.formName, "login")
+                new Pair<>(AnalyticsUtils.Param.formName, "Login")
         );
         builder.setMessage(message)
                 .setTitle(response.title);
@@ -228,7 +227,7 @@ public class LoginFragment extends BaseFragment {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(response.positiveButtonTitle)),
-                    new Pair<>(AnalyticsUtils.Param.formName, "login")
+                    new Pair<>(AnalyticsUtils.Param.formName, "Login")
             );
             if (response.positiveButtonCallback != null) {
                 response.positiveButtonCallback.call();

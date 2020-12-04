@@ -51,7 +51,8 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                     break;
                 case ERROR:
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Forgot Password"));
                     Alerts.prepareGeneralErrorDialog(getActivity(), "Forgot Password").show();
                     getFragmentManager().popBackStack();
                     break;
@@ -92,6 +93,6 @@ public class ForgotPasswordFragment extends MainActivityFragment {
 
     @Override
     protected String getScreenName() {
-        return "AnalyticsUtils.getCardFormName()";
+        return "forgot-password";
     }
 }
