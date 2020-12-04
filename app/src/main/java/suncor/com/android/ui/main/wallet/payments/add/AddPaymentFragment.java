@@ -316,7 +316,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
     @Override
     public void onBackPressed() {
         if (binding.webView.canGoBack())
-            binding.webView.canGoBack();
+            binding.webView.goBack();
         else
             goBack();
     }

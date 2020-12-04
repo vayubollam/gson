@@ -677,7 +677,13 @@
     <string name="payment_failed_message">Nous n’avons pas pu traiter votre paiement.</string>
     <string name="payment_failed_cancel">Annuler</string>
 
-
+    <!-- Cancel -->
+    <string name="cancel_alert_title">Arrêter la séance?</string>
+    <string name="cancel_alert_body">Vous pouvez commencer un autre plein sur l\'application ou au distributeur.</string>
+    <string name="cancel_alert_button">Arrêter la séance</string>
+    <string name="cancelling">Cancelling…</string>
+    <string name="cancellation_alert_title">Transaction annulée</string>
+    <string name="cancellation_alert_body">Votre transaction a été annulée. Aucuns frais ne vous ont été facturés.</string>
 
     <string name="card_enable_gps_title">Services de localisation non activés</string>
     <string name="card_enable_gps_message">Vous devrez activer les services de localisation pour payer à la pompe.</string>
