@@ -34,7 +34,7 @@
             android:fontFamily="@font/gibson_regular"
             android:textColor="@color/black_60"
             android:textSize="@dimen/action_menu_icon_font_size"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/action_location" />
