@@ -212,7 +212,8 @@
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/postalcode_input"
                     app:text="@={vm.phoneField.text}"
-                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}" />
+                    app:visibleGone="@{vm.cardStatus.cardType != EnrollmentType.EXISTING}"
+                    tools:visibility="visible"/>
 
 
                 <androidx.appcompat.widget.AppCompatTextView

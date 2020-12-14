@@ -215,7 +215,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
 
                     new Handler().postDelayed(() -> {
                         goBack();
-                    }, 200);
+                    }, 50);
                 }
             }
         });

@@ -137,10 +137,12 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         int index = 0;
 
         for (String price : childList.values()) {
-            if (Double.parseDouble(price) == value) {
-                selectedPos = index;
-                break;
-            }
+            try {
+                if (Double.parseDouble(price) == value) {
+                    selectedPos = index;
+                    break;
+                }
+            } catch (NumberFormatException ignored){}
             index++;
         }
 
