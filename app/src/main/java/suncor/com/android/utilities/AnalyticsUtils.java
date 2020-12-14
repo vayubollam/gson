@@ -146,12 +146,12 @@ public class AnalyticsUtils {
     public static void logCarwashActivationEvent(Context context, Event event, String stepName) {
         if (currentCardType == CardType.WAG) {
             logEvent(context, event,
-                    new Pair<>(Param.formName, "Activate Wash by Wash & Go card"),
+                    new Pair<>(Param.formName, "activate wash by wash & go card"),
                     new Pair<>(Param.stepName, stepName)
             );
         } else if (currentCardType == CardType.SP) {
             logEvent(context, event,
-                    new Pair<>(Param.formName, "Activate Wash by Season Pass card"),
+                    new Pair<>(Param.formName, "activate wash by season pass card"),
                     new Pair<>(Param.stepName, stepName)
             );
         }
@@ -159,9 +159,9 @@ public class AnalyticsUtils {
 
     public static String getCardFormName() {
         if (currentCardType == CardType.WAG) {
-            return "Activate Wash by Wash & Go card";
+            return "activate wash by wash & go card";
         } else if (currentCardType == CardType.SP) {
-            return "Activate Wash by Season Pass card";
+            return "activate wash by season pass card";
         }
         return "None";
     }

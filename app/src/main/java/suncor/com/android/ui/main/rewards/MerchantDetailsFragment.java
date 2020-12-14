@@ -42,7 +42,7 @@ public class MerchantDetailsFragment extends MainActivityFragment {
         AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+merchantItem.getMerchantScreenName());
         binding.buyButton.setOnClickListener(v -> {
             MerchantDetailsFragmentDirections.ActionMerchantDetailsFragmentToGiftCardValueConfirmation action = MerchantDetailsFragmentDirections.actionMerchantDetailsFragmentToGiftCardValueConfirmation(merchantItem);
-            AnalyticsUtils.logEvent(this.getContext(),"form_start",new Pair<>("formName", "Redeem for "+merchantItem.getMerchantShortName()+" eGift card"));
+            AnalyticsUtils.logEvent(this.getContext(),"form_start",new Pair<>("formName", "redeem for "+merchantItem.getMerchantShortName()+" egift card"));
             Navigation.findNavController(getView()).navigate(action);
         });
         return binding.getRoot();

@@ -71,7 +71,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
                 AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)),
-                        new Pair<>("formName","Update Personal Information"));
+                        new Pair<>("formName","update personal information"));
 
                 dialog.setTitle(getString(alert.title))
                         .setMessage(getString(alert.message))
@@ -94,7 +94,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
                     AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)),
-                            new Pair<>("formName","Update Personal Information"));
+                            new Pair<>("formName","update personal information"));
 
                 }
                 if (alert.message != -1) {
@@ -167,10 +167,10 @@ public class PersonalInfoFragment extends MainActivityFragment {
         binding.emailInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.emailInput, f));
         binding.passwordInput.getEditText().setOnFocusChangeListener((v, f) -> onFocusChange(binding.passwordInput, f));
         binding.emailInput.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
-        AnalyticsUtils.logEvent(this.getContext(),"form_start", new Pair<>("formName","Update personal information"));
+        AnalyticsUtils.logEvent(this.getContext(),"form_start", new Pair<>("formName","update personal information"));
         binding.emailInput.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                AnalyticsUtils.logEvent(this.getContext(), "form_complete", new Pair<>("formName","Update personal information"));
+                AnalyticsUtils.logEvent(this.getContext(), "form_complete", new Pair<>("formName","update personal information"));
                 viewModel.save(ConnectionUtil.haveNetworkConnection(getContext()));
                 return true;
             }

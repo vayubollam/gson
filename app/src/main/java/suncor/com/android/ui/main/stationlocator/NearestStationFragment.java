@@ -184,7 +184,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
             }  else if (result.status == Resource.Status.ERROR){
                 AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
                         new Pair<>(AnalyticsUtils.Param.errorMessage, result.message != null ?  result.message : AnalyticsUtils.ErrorMessages.backendError.name()),
-                        new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station"));
+                        new Pair<>(AnalyticsUtils.Param.formName, "nearest station"));
             }
         });
 
@@ -199,21 +199,21 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station"));
+                new Pair<>(AnalyticsUtils.Param.formName, "nearest station"));
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                    new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station")
+                    new Pair<>(AnalyticsUtils.Param.formName, "nearest station")
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.ok)),
-                    new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station")
+                    new Pair<>(AnalyticsUtils.Param.formName, "nearest station")
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);

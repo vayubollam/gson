@@ -50,7 +50,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "select pump"));
     }
 
     @Nullable
@@ -91,7 +91,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "select pump").show();
+                selectPumpNumber("1");
+
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (!result.data) {
                     Alerts.prepareCustomDialog(
@@ -103,9 +105,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                         new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.pap_not_available_header)+"("+getString(R.string.pap_not_available_description)+")"),
                                         new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                                        new Pair<>(AnalyticsUtils.Param.formName, "Select Pump"));
+                                        new Pair<>(AnalyticsUtils.Param.formName, "select pump"));
                                 goBack();
-                            }, "Select Pump").show();
+                            }, "select pump").show();
 
                     binding.selectPumpLayout.setVisibility(View.GONE);
                 } else {

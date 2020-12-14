@@ -54,7 +54,7 @@ public class PreferencesFragment extends MainActivityFragment {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        AnalyticsUtils.logEvent(this.getContext(), "form_start", new Pair<>("formName","Change Preferences"));
+        AnalyticsUtils.logEvent(this.getContext(), "form_start", new Pair<>("formName","change preferences"));
         return binding.getRoot();
     }
 

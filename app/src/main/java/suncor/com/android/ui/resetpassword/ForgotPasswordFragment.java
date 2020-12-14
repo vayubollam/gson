@@ -52,8 +52,8 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                 case ERROR:
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Forgot Password"));
-                    Alerts.prepareGeneralErrorDialog(getActivity(), "Forgot Password").show();
+                            new Pair<>(AnalyticsUtils.Param.formName, "forgot password"));
+                    Alerts.prepareGeneralErrorDialog(getActivity(), "forgot password").show();
                     getFragmentManager().popBackStack();
                     break;
             }
