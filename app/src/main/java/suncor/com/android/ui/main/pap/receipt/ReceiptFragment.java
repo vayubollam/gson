@@ -69,6 +69,7 @@ public class ReceiptFragment extends MainActivityFragment {
         isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
         observeTransactionData(transactionId);
         binding.viewReceiptBtn.setOnClickListener((v) -> {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });

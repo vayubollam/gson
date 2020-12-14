@@ -68,13 +68,13 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                     sharedViewModel.setEcryptedSecurityAnswer(stringResource.data);
                     if (PersonalInfoFragment.PERSONAL_INFO_FRAGMENT.equalsIgnoreCase(destination)) {
                         AnalyticsUtils.logEvent(getContext(),"form_step",
-                            new Pair<>("formName","Update personal information"),
+                            new Pair<>("formName","update personal information"),
                             new Pair<>("stepName","Answer security question ")
                         );
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
                     } else if (AddressFragment.ADDRESS_FRAGMENT.equalsIgnoreCase(destination)) {
                         AnalyticsUtils.logEvent(getContext(),"form_step",
-                                new Pair<>("formName","Update address"),
+                                new Pair<>("formName","update address"),
                                 new Pair<>("stepName","Answer security question ")
                         );
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
@@ -87,12 +87,12 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                             dialog.dismiss();
-                        }), "Security Question Validation").show();
+                        }), "security question validation").show();
                     } else {
                         Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
                             mViewModel.validateAndContinue();
                             dialog.dismiss();
-                        }, "Security Question Validation").show();
+                        }, "security question validation").show();
                     }
                     break;
                 case LOADING:

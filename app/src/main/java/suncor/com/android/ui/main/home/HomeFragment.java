@@ -334,7 +334,7 @@ public class HomeFragment extends BottomNavigationFragment {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
                 new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                new Pair<>("formName","Home")
+                new Pair<>("formName","home")
         );
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
@@ -343,14 +343,14 @@ public class HomeFragment extends BottomNavigationFragment {
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
                     new Pair<>("alertSelection", getString(R.string.cancel)),
                     new Pair<>("alertTitle","home"),
-                    new Pair<>("formName","Home")
+                    new Pair<>("formName","home")
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                     new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
                     new Pair<>("alertSelection", getString(R.string.ok)),
-                    new Pair<>("formName","Home")
+                    new Pair<>("formName","home")
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
@@ -475,26 +475,26 @@ public class HomeFragment extends BottomNavigationFragment {
                 } else if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                            new Pair<>(AnalyticsUtils.Param.formName, "home"));
                     Alerts.prepareGeneralErrorDialog(getContext(), "home").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
                         if(result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "home"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                         } else if(result.data.status.equals("BeginFueling")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "home"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                         } else{
                             //todo handle processing and session end state
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "home"));
                         }
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
@@ -503,7 +503,7 @@ public class HomeFragment extends BottomNavigationFragment {
                         mViewModel.updateFuellingSession(false, "");
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
                                 new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                new Pair<>(AnalyticsUtils.Param.formName, "home"));
                     }
                 }
             });

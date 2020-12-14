@@ -178,8 +178,8 @@ public class PaymentsDetailsFragment extends MainActivityFragment {
                                     goBack();
                                 }
                             }, 200);
-
-                            AnalyticsUtils.logEvent(getContext(), "payment_remove", new Pair<>("cardNumber", paymentDetailResource.data.getCardNumber()));
+                            AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", "Credit Card"));
+                           // AnalyticsUtils.logEvent(getContext(), "payment_remove", new Pair<>("cardNumber", paymentDetailResource.data.getCardNumber()));
                         } else if (paymentDetailResource.status == Resource.Status.LOADING) {
                             isRemoving.set(true);
                         }

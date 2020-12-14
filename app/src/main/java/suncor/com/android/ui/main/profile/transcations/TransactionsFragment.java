@@ -91,7 +91,7 @@ public class TransactionsFragment extends MainActivityFragment {
         });
         mViewModel.transactionsLiveData.observe(this, arrayListResource -> {
             if (arrayListResource.status == Resource.Status.ERROR && mViewModel.transactions.getValue() != null) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "My Petro Points Account Transaction List").show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "my petro points account transaction list").show();
             }
         });
         binding.transactionToolBar.post(() -> {
