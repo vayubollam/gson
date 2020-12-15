@@ -100,12 +100,12 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     break;
                 case ERROR:
                     AnalyticsUtils.logEvent(this.getContext(), "form_error",
-                            new Pair<>("formName","redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" egift card"),
+                            new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"),
                             new Pair<>("errorMessage",orderResponseResource.message));
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
                                 new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")"),
-                                new Pair<>("formName","redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" egift card")
+                                new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card")
                         );
                         new AlertDialog.Builder(getContext())
                                 .setTitle(R.string.msg_e030_title)
@@ -114,7 +114,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                                     AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
                                             new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")"),
                                             new Pair<>("alertSelection",getString(R.string.ok)),
-                                            new Pair<>("formName","redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" egift card")
+                                            new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card")
                                     );
                                     dialog.dismiss();
                                 })
@@ -123,8 +123,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     } else {
                         AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                                 new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
-                                new Pair<>(AnalyticsUtils.Param.formName, "redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" egift card"));
-                        Alerts.prepareGeneralErrorDialog(getActivity(), "redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" egift card").show();
+                                new Pair<>(AnalyticsUtils.Param.formName, "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"));
+                        Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card").show();
                     }
                     break;
             }
@@ -301,7 +301,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
 
     public void redeemConfirmButtonClicked() {
         AnalyticsUtils.logEvent(this.getContext(), "form_step",
-                new Pair<>("formName", "redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" egift card"),
+                new Pair<>("formName", "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"),
                 new Pair<>("stepName", "Click to redeem"));
         AnalyticsUtils.setCurrentScreenName(this.getActivity(),"my-petro-points-redeem-info-"+viewModel.getMerchantItem().getMerchantScreenName()+"-redeeming");
         viewModel.sendRedeemData();

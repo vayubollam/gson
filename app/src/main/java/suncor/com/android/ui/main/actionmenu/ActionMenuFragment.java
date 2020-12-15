@@ -228,7 +228,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         homeViewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "active session" ).show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "Active Session" ).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (result.data.activeSession && result.data.status != null) {
                     if (result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")) {
