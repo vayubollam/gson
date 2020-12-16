@@ -166,7 +166,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                     AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.settings_failure_dialog_title)));
                     AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
                             new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
-                            new Pair<>("formName", "splash")
+                            new Pair<>("formName", "Splash")
                     );
                     new AlertDialog.Builder(this)
                             .setTitle(R.string.settings_failure_dialog_title)
@@ -175,7 +175,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                                 AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
                                         new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
                                         new Pair<>("alertSelection", getString(R.string.settings_failure_dialog_button)),
-                                        new Pair<>("formName", "splash")
+                                        new Pair<>("formName", "Splash")
                                 );
                                 finish();
                             })
@@ -202,7 +202,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
             AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage",getString(R.string.update_required_dialog_title)));
             AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
                     new Pair<>("alertTitle", getString(R.string.update_required_dialog_title)+"("+getString(R.string.update_required_dialog_message)+")"),
-                    new Pair<>("formName", "splash")
+                    new Pair<>("formName", "Splash")
             );
             new AlertDialog.Builder(this)
                     .setTitle(R.string.update_required_dialog_title)
@@ -211,7 +211,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                         AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.update_required_dialog_title)+"("+getString(R.string.update_required_dialog_message)+")"),
                                 new Pair<>("alertSelection",getString(R.string.update_required_dialog_button)),
-                                new Pair<>("formName", "splash")
+                                new Pair<>("formName", "Splash")
                         );
                         final String appPackageName = "com.petrocanada.my_petro_canada";
                         try {

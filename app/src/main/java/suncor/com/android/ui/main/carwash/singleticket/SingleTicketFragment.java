@@ -117,7 +117,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                         String analyticName = getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")";
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                                        new Pair<>(AnalyticsUtils.Param.formName, "carwash ticket" )
+                                        new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
                         );
                         new AlertDialog.Builder(getContext())
                                 .setTitle(R.string.msg_e030_title)
@@ -126,14 +126,14 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                                             new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.msg_e030_message)),
-                                            new Pair<>(AnalyticsUtils.Param.formName, "carwash ticket" )
+                                            new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
                                     );
                                     dialog.dismiss();
                                 })
                                 .create()
                                 .show();
                     } else {
-                        Alerts.prepareGeneralErrorDialog(getActivity(), "carwash ticket").show();
+                        Alerts.prepareGeneralErrorDialog(getActivity(), "Carwash Ticket").show();
                     }
                     break;
             }
@@ -203,7 +203,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         String analyticName = getString(R.string.single_ticket_add_to_account_help_title)+"("+getString(R.string.single_ticket_add_to_account_help_message)+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                new Pair<>(AnalyticsUtils.Param.formName, "carwash ticket" )
+                new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
         );
         Dialog dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.single_ticket_add_to_account_help_title)
@@ -213,7 +213,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.ok)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "carwash ticket" )
+                            new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
                     );
                 })
                 .create();

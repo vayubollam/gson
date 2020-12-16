@@ -91,7 +91,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "select pump").show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
                 selectPumpNumber("1");
 
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -107,7 +107,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                                         new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
                                         new Pair<>(AnalyticsUtils.Param.formName, "select pump"));
                                 goBack();
-                            }, "select pump").show();
+                            }, "Select Pump").show();
 
                     binding.selectPumpLayout.setVisibility(View.GONE);
                 } else {

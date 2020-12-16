@@ -95,7 +95,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
         }
         AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
         AnalyticsUtils.logEvent(this.getContext(),"form_complete",
-                new Pair<>("formName", "redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" egift card"),
+                new Pair<>("formName", "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card"),
                 new Pair<>("formSelection","$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card")
         );
         binding.setImage(getContext().getDrawable(imageId));

@@ -140,7 +140,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
             String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title) + "(" + getContext().getString(R.string.carwash_activation_pin_error_message) + ")";
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                     new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle),
-                    new Pair<>(AnalyticsUtils.Param.formName,"activate wash by wash & go card")
+                    new Pair<>(AnalyticsUtils.Param.formName,"Activate Wash by Wash & Go card")
             );
             AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
@@ -149,7 +149,7 @@ public class CarWashActivationSecurityFragment extends MainActivityFragment impl
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
-                                new Pair<>(AnalyticsUtils.Param.formName,"activate wash by wash & go card")
+                                new Pair<>(AnalyticsUtils.Param.formName,"Activate Wash by Wash & Go card")
                         );
                         dialog.dismiss();
                         confirmButton.setEnabled(true);

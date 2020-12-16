@@ -84,10 +84,10 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         boolean joinWithCard = viewModel.getCardStatus() != null;
         if (joinWithCard) {
             screenName = "activate-i-have-a-card";
-            formName = "activate petro-points card";
+            formName = "Activate Petro-Points Card";
         } else {
             screenName = "sign-up-i-dont-have-a-card";
-            formName = "join petro-points";
+            formName = "Join Petro-Points";
         }
 
         isLoadedFirstTime = true;
@@ -100,7 +100,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         if (viewModel.getCardStatus() == null) {
             AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", formName));
         } else {
-            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", formName), new Pair<>("stepName", "personal information"));
+            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", formName), new Pair<>("stepName", "Personal Information"));
         }
         
         //enrollments api call result
@@ -166,7 +166,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
                     dialog.show();
                 } else {
-                    Alerts.prepareGeneralErrorDialog(getActivity(), "activate petro-points card").show();
+                    Alerts.prepareGeneralErrorDialog(getActivity(), "Activate Petro-Points Card").show();
                 }
             }
         });

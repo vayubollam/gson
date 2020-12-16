@@ -175,7 +175,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
                     viewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong"),
-                            new Pair<>(AnalyticsUtils.Param.formName, "carwash cards"));
+                            new Pair<>(AnalyticsUtils.Param.formName, "Carwash Cards"));
                 }));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
