@@ -594,6 +594,7 @@
     <string name="tutorial_silde_page1_header">Brand new menu</string>
     <string name="tutorial_silde_page2_header">Quickly access features</string>
     <string name="tutorial_silde_page3_header">Activate car wash</string>
+    <string name="tutorial_silde_page4_header">Contactless payment and fuelling with your app</string>
 
     <!-- View Wallet Screen -->
     <string name="wallet_card_tab">Petro-Canada cards</string>

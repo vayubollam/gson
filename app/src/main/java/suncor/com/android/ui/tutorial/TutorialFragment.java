@@ -55,6 +55,7 @@ public class TutorialFragment extends Fragment {
 
     private List<TutorialContent> setUpTutorialSlides(String uriPrefix) {
         List<TutorialContent> tutorialContents = new ArrayList<>();
+        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page4_header), uriPrefix + R.raw.tutorial_4));
         tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page1_header), uriPrefix + R.raw.tutorial_1));
         tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page2_header), uriPrefix + R.raw.tutorial_2));
         tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page3_header), uriPrefix + R.raw.tutorial_3));
