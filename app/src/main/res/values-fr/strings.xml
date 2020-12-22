@@ -666,8 +666,7 @@
     <string name="transaction_base_points_eaarned">Points de base</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">Voir le reçu</string>
-    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. </string>
-
+    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. Vous pouvez également obtenir votre reçu au distributeur ou au dépanneur.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Distributeur non disponible</string>
