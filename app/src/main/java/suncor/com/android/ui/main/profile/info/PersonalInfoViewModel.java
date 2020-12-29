@@ -175,7 +175,13 @@ public class PersonalInfoViewModel extends ViewModel {
                                 emailInputField.notifyPropertyChanged(BR.text);
                             }
                         };
-                    } else {
+                    }
+                    else if (Objects.requireNonNull(result.message).equalsIgnoreCase(ErrorCodes.ERR_PASSWORD_USED_EARLIER)) {
+                        alert.title = R.string.msg_used_password_title;
+                        alert.message = R.string.msg_used_password_message;
+                        alert.positiveButton = R.string.ok;
+                    }
+                    else {
                         alert.title = R.string.msg_am001_title;
                         alert.message = R.string.msg_am001_message;
                         alert.positiveButton = R.string.ok;

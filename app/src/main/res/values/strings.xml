@@ -319,8 +319,10 @@
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
     <string name="msg_am001_title">Changes were not saved.</string>
+    <string name="msg_used_password_title">Unable to Process your request.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Please use a different email account or undo.</string>
     <string name="msg_am001_message">Please try again later.</string>
+    <string name="msg_used_password_message">"This Password was used earlier"</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Use different email</string>
     <string name="profile_update_toast">New changes saved</string>
