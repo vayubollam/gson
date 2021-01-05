@@ -12,11 +12,13 @@ public class PetroPointsCard {
     private String monetaryBalance;
 
     public PetroPointsCard(Context context, CardDetail cardDetail) {
-        if (cardDetail.getCardType() != CardType.PPTS) {
-            throw new IllegalArgumentException("this constructor is only PPTS for cards");
+        if (cardDetail != null && cardDetail.getCardType() != null) {
+            if (cardDetail.getCardType() != CardType.PPTS) {
+                throw new IllegalArgumentException("this constructor is only PPTS for cards");
+            }
+            balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(cardDetail.getBalance()));
+            monetaryBalance = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(cardDetail.getBalance() / 1000));
         }
-        balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(cardDetail.getBalance()));
-        monetaryBalance = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(cardDetail.getBalance() / 1000));
     }
 
     public String getMonetaryBalance() {
