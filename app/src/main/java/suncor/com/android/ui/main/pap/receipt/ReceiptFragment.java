@@ -127,6 +127,8 @@ public class ReceiptFragment extends MainActivityFragment {
                     share.setAction(Intent.ACTION_SEND);
                     share.setType("application/pdf");
                     share.putExtra(Intent.EXTRA_STREAM, pdfUri);
+                    share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_receipt_subject, result.data.getFormattedDate()));
+                    share.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_receipt_body, result.data.getFormattedDate()));
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(share, "Share"));
                 });

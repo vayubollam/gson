@@ -48,7 +48,13 @@ public class TutorialFragment extends Fragment {
             });
             binding.pageIndicator.attachToRecyclerView(binding.tutorialRecycler, pagerSnapHelper);
             adapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
-            binding.buttonClose.setOnClickListener(v -> ((SplashActivity) getActivity()).openMainActivity(false));
+            binding.buttonClose.setOnClickListener(v -> {
+                if (getActivity() instanceof SplashActivity) {
+                    ((SplashActivity) getActivity()).openMainActivity(false);
+                } else {
+                    getActivity().onBackPressed();
+                }
+            });
         }
         return binding.getRoot();
     }

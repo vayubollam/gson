@@ -361,14 +361,15 @@
 
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
-    <string name="offers_banner_2_text">Petro\u2011Points™ = Free gas.</string>
-    <string name="offers_banner_2_button">Learn more</string>
-    <string name="offers_banner_3_text">Élaine Roy, a member of your community.</string>
-    <string name="offers_banner_3_button">Meet Élaine</string>
-    <string name="offers_banner_3_link">JO8O3x8HJF0</string>
-    <string name="offers_banner_4_text">See our EV Fast Charge come to life.</string>
-    <string name="offers_banner_4_button">Watch</string>
-    <string name="offers_banner_5_text">Save 3¢/litre on every fill-up.</string>
+    <string name="offers_banner_2_text">Contactless payment now in-app</string>
+    <string name="offers_banner_2_button">Launch feature tour</string>
+    <string name="offers_banner_3a_text">Petro\u2011Points™ = Free gas.</string>
+    <string name="offers_banner_3a_button">Explore Petro-Points</string>
+    <string name="offers_banner_3b_text">Redeem for free gas, eGift cards and more.</string>
+    <string name="offers_banner_3b_button">Launch my card</string>
+    <string name="offers_banner_4_text">Activate our car wash directly from your app.</string>
+    <string name="offers_banner_4_button">Find a car wash</string>
+    <string name="offers_banner_5_text">Save 3¢/litre on every fill-up with an RBC linked card.</string>
     <string name="offers_banner_5_button">Get started</string>
     <string name="offers_leaving_app_alert_title">You are leaving our App.</string>
     <string name="offers_leaving_app_alert_message">We will open your browser.</string>
@@ -683,6 +684,8 @@
     <string name="transaction_base_points_eaarned">Base Points</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">View Receipt</string>
+    <string name="email_receipt_subject">Petro-Canada fuel receipt: %1$s</string>
+    <string name="email_receipt_body">Here\'s your fuel receipt for %1$s:\n</string>
     <string name="your_transaction_availble_in_your_account">Your purchase info will be available from your account. Or, grab your receipt from the pump or in-store.</string>
 
     <!-- Payment  -->
