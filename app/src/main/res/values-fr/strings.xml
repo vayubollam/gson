@@ -578,6 +578,8 @@
     <string name="tutorial_silde_page1_header">Tout nouveau menu</string>
     <string name="tutorial_silde_page2_header">Accès rapide aux fonctions</string>
     <string name="tutorial_silde_page3_header">Activer le lave-auto</string>
+    <string name="tutorial_silde_page4_header">Paiement sans contact et ravitaillement avec votre application</string>
+
 
     <!-- View Wallet Screen -->
     <string name="wallet_card_tab">Cartes Petro-Canada</string>
@@ -666,8 +668,7 @@
     <string name="transaction_base_points_eaarned">Points de base</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">Voir le reçu</string>
-    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. </string>
-
+    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. Vous pouvez également obtenir votre reçu au distributeur ou au dépanneur.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Distributeur non disponible</string>
