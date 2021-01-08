@@ -292,7 +292,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             filters = StationsFragmentArgs.fromBundle(getArguments()).getFilters();
         }
 
-        if (filters != null) {
+        if (filters != null && !filters.isEmpty()) {
             mViewModel.setCurrentFilters(new ArrayList<>(Arrays.asList(filters.split(","))));
         }
 

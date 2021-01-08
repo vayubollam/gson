@@ -49,7 +49,7 @@
         tools:layout="@layout/fragment_stations">
         <argument
             android:name="filters"
-            android:defaultValue="null"
+            android:defaultValue=""
             app:nullable="true"
             app:argType="string" />
         <argument
