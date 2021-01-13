@@ -613,7 +613,7 @@
     <!-- PAP Action Menu -->
     <string name="action_fuel_up">Ravitailler</string>
     <string name="action_fuelling">Ravitaillement en cours…</string>
-    <string name="action_location">You\'re at %s station</string>
+    <string name="action_location">Vous êtes au %s</string>
 
     <!-- PAP Select Pump -->
     <string name="select_pump_header">Ravitaillement</string>
