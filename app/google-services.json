@@ -32,10 +32,46 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:bd205bacad010a9c8ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationDev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -68,10 +104,46 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:cd260b361f8d552b8ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationOpsDev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -112,10 +184,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -156,10 +228,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -192,10 +264,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
               }
             }
           ]
@@ -236,10 +308,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1013213340484-tkfnacv249gfem19cnjlbvg4t5n2piek.apps.googleusercontent.com",
+              "client_id": "1013213340484-08i6up6lknehqo9qcdv4da2lpp9s3dak.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.suncor.opsqa.iossuncoreapplication.mvp"
+                "bundle_id": "com.suncor.uat.iossuncoreapplication.mvp"
               }
             }
           ]
