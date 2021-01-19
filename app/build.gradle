@@ -187,6 +187,6 @@ dependencies {
 
 }
 
-f (!(getGradle().getStartParameter().getTaskRequests().toString().contains("Dev"))) {
+if (!(getGradle().getStartParameter().getTaskRequests().toString().contains("Dev"))) {
     apply plugin: 'com.google.gms.google-services'
 }
