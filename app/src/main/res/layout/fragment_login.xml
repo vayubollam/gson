@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="eventHandler"
+            type="suncor.com.android.ui.login.LoginFragment" />
+
+        <variable
             name="vm"
             type="suncor.com.android.ui.login.LoginViewModel" />
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,9 +32,11 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
@@ -53,6 +56,12 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    SessionManager sessionManager;
+
+    @Inject
+    SuncorApplication application;
     private FragmentEnrollmentFormBinding binding;
     private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
@@ -109,9 +118,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 getView().postDelayed(() -> {
                     if (getActivity() != null) {
                         //Go to main screen to show the welcome message
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+//                        Intent intent = new Intent(getActivity(), MainActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(intent);
                     }
                 }, 1000);
                 //Log success events
@@ -383,6 +392,11 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onBackPressed() {
         hideKeyBoard();
+        if(viewModel.isUserCameToValidationScreen()){
+ //           sessionManager.logout();
+            getActivity().finish();
+            return;
+        }
         if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
             viewModel.hideAutoCompleteLayout();
         } else if (viewModel.isOneItemFilled()) {
@@ -426,6 +440,10 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         if (itemWithError != -1) {
             focusOnItem(requiredFields.get(itemWithError));
         }
+    }
+
+    public void navigateToMainActivity(){
+        onBackPressed();
     }
 
 
