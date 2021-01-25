@@ -95,6 +95,7 @@
     <string name="enrollment_email_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
+    <string name="back_to_home">DE RETOUR À LA MAISON</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
@@ -141,6 +142,7 @@
     <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
     <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
     <string name="enrollment_account_created_message">Compte créé</string>
+    <string name="thanks_to_user">Merci, %s</string>
     <string name="station_location_alert_settings">Réglages</string>
     <string name="enable_location_dialog_message">Nous utilisons la localisation pour vous indiquer la station la plus près, vous fournir les indications pour vous y rendre et vous permettre de démarrer le distributeur et payer votre essence par l\'entremise de l\'application.</string>
     <string name="msg_sl005_title">Quelque chose a mal tourné</string>
@@ -623,6 +625,12 @@
     <string name="select_pump_selected">Sélectionné</string>
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
+
+    <!-- Email Authentication -->
+
+    <string name="validate_your_email">Nous avons envoyé un courriel à :</string>
+    <string name="validate_your_email_to_sign_in">Cliquez sur le lien dans votre courriel pour vérifier, puis ouvrez une session et obtenez vos 2500 points.</string>
+
 
     <!-- Fuel Up limit -->
     <string name="from">De</string>

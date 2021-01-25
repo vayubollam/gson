@@ -66,6 +66,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
+    private boolean isUserCameToValidationScreen = false;
     private ArrayList<Province> provincesList;
     private FingerprintManager fingerPrintManager;
     private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
@@ -109,45 +110,22 @@ public class EnrollmentFormViewModel extends ViewModel {
             return new MutableLiveData<>();
         });
 
-        joinLiveData = Transformations.switchMap(joinApiData, (result) -> {
+        joinLiveData = Transformations.map(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
+                isUserCameToValidationScreen = true;
                 //login the user
                 Timber.d("Success sign up, start user auto login");
-                return Transformations.map(sessionManager.login(emailInputField.getText(), passwordField.getText()), (r) -> {
-                    switch (r.status) {
-                        case SUCCESS:
-                            if (r.data.getStatus() == SigninResponse.Status.SUCCESS) {
-                                fingerPrintManager.activateAutoLogin();
-                                Timber.d("Login succeeded");
-                                sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
-                                sessionManager.setRewardedPoints(result.data);
-                                return Resource.success(true);
-                            } else {
-                                Timber.d("Login failed, status: " + r.data.getStatus());
-                                sessionManager.setRewardedPoints(result.data);
-                                navigateToLogin.postValue(Event.newEvent(true));
-                                return Resource.error(LOGIN_FAILED);
-                            }
-                        case ERROR:
-                            Timber.d("Login failed");
-                            sessionManager.setRewardedPoints(result.data);
-                            navigateToLogin.postValue(Event.newEvent(true));
-                            return Resource.error(LOGIN_FAILED);
-                        default:
-                            return Resource.loading();
-                    }
-                });
+                return Resource.success(true);
             } else {
                 if (result.status == Resource.Status.ERROR && fingerPrintManager.isFingerprintActivated()) {
                     fingerPrintManager.deactivateFingerprint();
                 }
-                MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
                 if (result.status == Resource.Status.LOADING) {
-                    intermediateLivedata.setValue(Resource.loading());
+                    return Resource.loading();
+
                 } else {
-                    intermediateLivedata.setValue(Resource.error(result.message));
+                    return Resource.error(result.message);
                 }
-                return intermediateLivedata;
             }
         });
 
@@ -208,6 +186,10 @@ public class EnrollmentFormViewModel extends ViewModel {
                 showAutocompleteLayout.setValue(false);
             }
         });
+    }
+
+    public boolean isUserCameToValidationScreen(){
+        return isUserCameToValidationScreen;
     }
 
     public boolean isOneItemFilled() {
