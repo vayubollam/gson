@@ -57,11 +57,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Inject
     ViewModelFactory viewModelFactory;
 
-    @Inject
-    SessionManager sessionManager;
-
-    @Inject
-    SuncorApplication application;
     private FragmentEnrollmentFormBinding binding;
     private ArrayList<SuncorTextInputLayout> requiredFields = new ArrayList<>();
     private EnrollmentFormViewModel viewModel;
@@ -115,14 +110,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         //enrollments api call result
         viewModel.joinLiveData.observe(this, (r) -> {
             if (r.status == Resource.Status.SUCCESS) {
-                getView().postDelayed(() -> {
-                    if (getActivity() != null) {
-                        //Go to main screen to show the welcome message
-//                        Intent intent = new Intent(getActivity(), MainActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-                    }
-                }, 1000);
                 //Log success events
                 String screenName;
                 if (viewModel.getCardStatus() != null) {
@@ -393,7 +380,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     public void onBackPressed() {
         hideKeyBoard();
         if(viewModel.isUserCameToValidationScreen()){
- //           sessionManager.logout();
             getActivity().finish();
             return;
         }

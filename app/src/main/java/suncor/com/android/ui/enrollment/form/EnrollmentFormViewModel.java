@@ -66,7 +66,6 @@ public class EnrollmentFormViewModel extends ViewModel {
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
-    private boolean isEmailValidationTextVisible = false;
     private boolean isUserCameToValidationScreen = false;
     private ArrayList<Province> provincesList;
     private FingerprintManager fingerPrintManager;
@@ -113,7 +112,6 @@ public class EnrollmentFormViewModel extends ViewModel {
 
         joinLiveData = Transformations.map(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
-                isEmailValidationTextVisible = true;
                 isUserCameToValidationScreen = true;
                 //login the user
                 Timber.d("Success sign up, start user auto login");
@@ -122,7 +120,6 @@ public class EnrollmentFormViewModel extends ViewModel {
                 if (result.status == Resource.Status.ERROR && fingerPrintManager.isFingerprintActivated()) {
                     fingerPrintManager.deactivateFingerprint();
                 }
- //               MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
                 if (result.status == Resource.Status.LOADING) {
                     return Resource.loading();
 
@@ -189,10 +186,6 @@ public class EnrollmentFormViewModel extends ViewModel {
                 showAutocompleteLayout.setValue(false);
             }
         });
-    }
-
-    public boolean isValidationEmailTextVisible(){
-        return isEmailValidationTextVisible;
     }
 
     public boolean isUserCameToValidationScreen(){
