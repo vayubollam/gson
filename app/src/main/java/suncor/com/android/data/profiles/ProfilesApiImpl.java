@@ -29,6 +29,7 @@ import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
     private static final String ADAPTER_PATH_V4 = "/adapters/suncor/v5/rfmp-secure/profiles";
+    private static final String ADAPTER_PATH_PROFILE_PUT_V6 = "/adapters/suncor/v6/rfmp-secure/profiles";
     private Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
@@ -47,7 +48,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH_V4);
+            URI adapterPath = new URI(ADAPTER_PATH_PROFILE_PUT_V6);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
