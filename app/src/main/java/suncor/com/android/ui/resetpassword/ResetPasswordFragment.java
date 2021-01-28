@@ -60,7 +60,14 @@ public class ResetPasswordFragment extends BaseFragment {
                 case ERROR:
                     hideKeyboard();
                     if (Objects.requireNonNull(resource.message).equalsIgnoreCase(ErrorCodes.ERR_PASSWORD_USED_EARLIER)) {
-                        Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
+                        Alerts.prepareCustomDialogOk(
+                                getString(R.string.msg_used_password_title),
+                                getString(R.string.msg_used_password_message),
+                                getActivity(),
+                                (dialogInterface, i) -> {
+                                    dialogInterface.dismiss();
+//                                    goBack();
+                                }, "Reset Password").show();
                     } else {
                         Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
                     }
