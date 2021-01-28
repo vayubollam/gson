@@ -137,7 +137,7 @@ public class Alerts {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(R.string.cancel, listener)
+                .setPositiveButton(R.string.ok, listener)
                 .setOnDismissListener(dialogInterface -> {
                     listener.onClick(dialogInterface, 0);
                 });
