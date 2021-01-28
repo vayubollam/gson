@@ -95,7 +95,7 @@
     <string name="enrollment_email_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
-    <string name="back_to_home">DE RETOUR À LA MAISON</string>
+    <string name="back_to_home">RETOUR À L\'ACCUIEL</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
