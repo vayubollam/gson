@@ -570,7 +570,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.try_agian)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "pump preauthorized"));
+                            new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
                     dialog.dismiss();
                 });
         return builder.create();
