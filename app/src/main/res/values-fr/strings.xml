@@ -252,7 +252,7 @@
     <string name="profile_personnal_informations_subcopy2">Pour protéger votre compte, si vous modifiez votre adresse courriel, vous ne pourrez pas échanger de points en ligne ou au dépanneur pendant une période de 24 heures.</string>
     <string name="profile_personnal_informations_subcopy1">Pour modifier vos renseignements personnels, communiquez avec notre <a href="tel:18006680222">Service à la clientèle</a>.</string>
 
-    <string name="profile_personnal_informations_subcopyEmail">Pour modifier votre courriel, vous devrez ouvrir une autre session.</string>
+    <string name="profile_personnal_informations_subcopyEmail">La modification de votre courriel entraînera la fermeture automatique de votre session; vous devrez alors vérifier votre nouvelle adresse et vous ne serez pas en mesure d\'effectuer un échange de carte-cadeau électronique pendant 24 heures.</string>
     <string name="profile_personnal_informations_email">Adresse courriel</string>
     <string name="profile_personnal_informations_phone">Numéro de téléphone (facultatif)</string>
     <string name="profile_personnal_informations_lastName">Nom</string>
@@ -314,7 +314,7 @@
     <string name="profile_personnal_informations_email_empty_alert_message">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_invalid_alert_message">Veuillez utiliser un autre adresse courriel.</string>
     <string name="profile_personnal_informations_email_alert_title">Enregistrer les changements</string>
-    <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez fermer votre session et l\'ouvrir de nouveau.</string>
+    <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez ouvrir une autre session. Si vous avez modifié votre courriel, consultez votre boîte de réception pour vérifier votre adresse de courriel.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Fermer la session</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="msg_am001_title">Les modifications n\'ont pas été sauvegardées.</string>

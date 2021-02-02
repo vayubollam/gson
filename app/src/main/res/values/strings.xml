@@ -306,7 +306,7 @@
     <string name="profile_personnal_informations_email">Email</string>
     <string name="profile_personnal_informations_subcopy1">To make changes to your personal information please contact our <a href="tel:18006680220">Customer Service</a>.</string>
     <string name="profile_personnal_informations_subcopy2">Please note, in order to protect your account, if you change your email address you will not be able to redeem points online or in-store for 24 hours.</string>
-    <string name="profile_personnal_informations_subcopyEmail">Changing your email will require you to sign in again.</string>
+    <string name="profile_personnal_informations_subcopyEmail">Changing your email will automatically log you out, require you to verify your new address and you will be unable to receive an eGift card redemption for 24 hours.</string>
     <string name="profile_personnal_informations_button1">Save</string>
     <string name="msg_cm004">Balance unavailable.</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Please enter an email.</string>
@@ -317,7 +317,7 @@
     <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
     <string name="profile_personnal_informations_email_invalid_alert_message">Please use a different email account.</string>
     <string name="profile_personnal_informations_email_alert_title">Save changes</string>
-    <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign out and in again.</string>
+    <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign in again. If you\'ve changed your email, check your inbox to verify your email address.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
     <string name="msg_am001_title">Changes were not saved.</string>
