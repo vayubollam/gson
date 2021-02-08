@@ -19,6 +19,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
+import suncor.com.android.model.account.EnrollmentPointsAndHours;
 import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.model.account.SecurityQuestion;
@@ -66,6 +67,8 @@ public class EnrollmentFormViewModel extends ViewModel {
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
+    private MutableLiveData<String> validationHourObserver = new MutableLiveData<>();
+    private MutableLiveData<Integer> enrollmentPointsObserver = new MutableLiveData<>();
     private boolean isUserCameToValidationScreen = false;
     private ArrayList<Province> provincesList;
     private FingerprintManager fingerPrintManager;
@@ -84,7 +87,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(postalCodeField);
         this.fingerPrintManager = fingerPrintManager;
 
-        LiveData<Resource<Integer>> joinApiData = Transformations.switchMap(join, (event) -> {
+        LiveData<Resource<EnrollmentPointsAndHours>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 Timber.d("Start sign up process");
                 NewEnrollment account = new NewEnrollment(
@@ -113,6 +116,8 @@ public class EnrollmentFormViewModel extends ViewModel {
         joinLiveData = Transformations.map(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 isUserCameToValidationScreen = true;
+                enrollmentPointsObserver.postValue( result.data.getEnrollmentsPoints());
+                validationHourObserver.postValue( result.data.getValidationHours());
                 //login the user
                 Timber.d("Success sign up, start user auto login");
                 return Resource.success(true);
@@ -190,6 +195,14 @@ public class EnrollmentFormViewModel extends ViewModel {
 
     public boolean isUserCameToValidationScreen(){
         return isUserCameToValidationScreen;
+    }
+
+    public MutableLiveData<Integer> getEnrollmentPoints(){
+        return enrollmentPointsObserver;
+    }
+
+    public MutableLiveData<String> getValidationHours(){
+        return validationHourObserver;
     }
 
     public boolean isOneItemFilled() {
