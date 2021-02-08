@@ -21,27 +21,27 @@
       {
         "id": "what-types-of-payment-are-accepted-through-the-app",
         "question": "Quels modes de paiement sont acceptés dans l'application?",
-        "response": "Vous pouvez utiliser Google Pay et des cartes de crédit Visa, MasterCard ou AMEX. Nous ne pouvons accepter de carte de débit pour le moment.\n\nSi vous avez des problèmes avec votre mode de paiement, communiquer avec votre institution financière pour obtenir de l'aide."
+        "response": "Vous pouvez utiliser Google Pay et des cartes de crédit Visa, MasterCard ou AMEX. Nous ne pouvons accepter de carte de débit pour le moment.<br/><br/>Si vous avez des problèmes avec votre mode de paiement, communiquer avec votre institution financière pour obtenir de l'aide."
       },
       {
         "id": "can-i-redeem-my-points-using-the-app",
         "question": "Puis-je échanger mes points au moyen de l'application?",
-        "response": " Oui. Vous pouvez échanger vos points contre certaines de nos cartes-cadeaux électroniques directement dans l'application. Pour nos autres primes, vous devez vous rendre au dépanneur ou <a href=\"https://www.petro-canada.ca/en/personal\">sur notre site Web </a> pour échanger vos points. Restez à l'affût de nos prochaines annonces – vous pourrez profiter d’un plus vaste choix parmi vos primes préférées dans l'application."
+        "response": "Oui. Vous pouvez échanger vos points contre certaines de nos cartes-cadeaux électroniques directement dans l'application. Pour nos autres primes, vous devez vous rendre au dépanneur ou <a href=\"https://www.petro-canada.ca/en/personal\">sur notre site Web </a> pour échanger vos points. Restez à l'affût de nos prochaines annonces – vous pourrez profiter d’un plus vaste choix parmi vos primes préférées dans l'application."
       },
       {
         "id" : "how-do-i-add-my-partner-card-to-my-petro-points-account",
-        "question" : "Comment ajouter ma carte de partenaire à mon compte Petro-Points (CAA, Primes La Baie d’Hudson)?",
+        "question" : "Comment ajouter ma carte de partenaire à mon compte Petro-Points (Primes La Baie d’Hudson)?",
         "response" : "Bientôt, vous pourrez ajouter vos cartes de partenaire dans l'application, mais pour le moment, veuillez visiter le site <a href=\"https://www.petro-canada.ca/en/personal\">petro-points.com</a>."
       },
       {
         "id" : "how-do-i-scan-my-petro-points-barcode-in-the-app?",
         "question" : "Comment scanner le code à barres de ma carte Petro-Points dans l’application?",
-        "response" : "Vous pouvez toujours accéder à votre carte Petro-Points depuis l'écran ACCUEIL de notre application.\n\nIl suffit d'appuyer sur le bouton SCANNER MA PETRO-POINTS et notre préposé scannera votre carte au dépanneur.\n\nSi le code à barres ne fonctionne pas, essayez de faire glisser l’écran vers le haut afin d’accéder à une autre version du code à barres."
+        "response" : "Vous pouvez toujours accéder à votre carte Petro-Points depuis l'écran ACCUEIL de notre application.<br/><br/>Il suffit d'appuyer sur le bouton SCANNER MA PETRO-POINTS et notre préposé scannera votre carte au dépanneur.<br/><br/>Si le code à barres ne fonctionne pas, essayez de faire glisser l’écran vers le haut afin d’accéder à une autre version du code à barres."
       },
       {
         "id" : "how-do-i-reload-my-fuel-savings-reward-wash-&-go-or-season-pass-card?",
         "question" : "Comment recharger ma carte Économie sur l’essence en prime, ma carte Lavez-Partez ou ma carte accès lave-auto?",
-        "response" : "SBientôt, vous pourrez recharger votre carte avec l'application, mais pour le moment, veuillez visiter le site <a href=\"https://www.petro-canada.ca/en/personal\">petro-points.com</a>"
+        "response" : "Bientôt, vous pourrez recharger votre carte avec l'application, mais pour le moment, veuillez visiter le site <a href=\"https://www.petro-canada.ca/en/personal\">petro-points.com</a>."
       }
     ]
   }
