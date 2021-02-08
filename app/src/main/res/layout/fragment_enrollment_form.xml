@@ -462,12 +462,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:lineSpacingMultiplier="1.29"
-                android:text="@string/validate_your_email_to_sign_in"
+                android:text="@{@string/validate_your_email_to_sign_in(vm.getValidationHours(), vm.getEnrollmentPoints())}"
                 android:textAppearance="@style/BodyBold"
                 app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
                 app:layout_constraintTop_toBottomOf="@id/email_address"
-
-                tools:text="Cliquez sur le lien dans votre e-mail pour vérifier, puis connectez-vous et collectez vos 2500 points" />
+                tools:text="Finish your enrollment by clicking the link in your email" />
 
             <suncor.com.android.ui.common.SuncorButton
                 android:id="@+id/back_to_home_button"

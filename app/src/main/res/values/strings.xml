@@ -361,8 +361,9 @@
     <string name="home_signedin_greetings_afternoon">Good afternoon,\n%s.</string>
     <string name="home_signedin_greetings_evening">Good evening,\n%s.</string>
     <string name="validate_your_email">We have sent an email to:</string>
-    <string name="validate_your_email_to_sign_in">Click the link in your email to verify, then sign in and collect your 2500 points.</string>
+    <string name="validate_your_email_to_sign_in">Finish your enrollment by clicking the link in your email within %s hours. Then, sign in for your %d points!</string>
 
+    <string name="sign_in_to_collect_points">Then, signin for your %d points!</string>
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
     <string name="offers_banner_2_text">Contactless payment now in-app</string>

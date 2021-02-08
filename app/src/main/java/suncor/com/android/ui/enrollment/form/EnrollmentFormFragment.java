@@ -129,7 +129,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                 AnalyticsUtils.logEvent(
                         getContext(),
-                        "form_complete",
+                        "form_step",
                         new Pair<>("formName", formName),
                         new Pair<>("formSelection", optionsChecked)
                 );
@@ -281,6 +281,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             onBackPressed();
         });
         requiredFields.add(binding.firstNameInput);
+
         requiredFields.add(binding.lastNameInput);
         requiredFields.add(binding.emailInput);
         requiredFields.add(binding.passwordInput);
@@ -458,6 +459,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         }
         if (view == binding.streetAddressInput) {
             viewModel.getStreetAddressField().setHasFocus(hasFocus);
+
         }
         if (view == binding.cityInput) {
             viewModel.getCityField().setHasFocus(hasFocus);

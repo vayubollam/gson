@@ -23,6 +23,7 @@ import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
+import suncor.com.android.model.account.EnrollmentPointsAndHours;
 import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
@@ -36,9 +37,9 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
     }
 
     @Override
-    public LiveData<Resource<Integer>> registerAccount(NewEnrollment account) {
+    public LiveData<Resource<EnrollmentPointsAndHours>> registerAccount(NewEnrollment account) {
         Timber.d("Call enrollments API, account: " + account.getEmail());
-        MutableLiveData<Resource<Integer>> result = new MutableLiveData<>();
+        MutableLiveData<Resource<EnrollmentPointsAndHours>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADAPTER_PATH_V3);
@@ -49,8 +50,11 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                 public void onSuccess(WLResponse wlResponse) {
                     Timber.d("Enrollments API success");
                     try {
-                        int rewardedPoints = wlResponse.getResponseJSON().getInt("enrollmentPoints");
-                        result.postValue(Resource.success(rewardedPoints));
+                        EnrollmentPointsAndHours pointsAndHours = new EnrollmentPointsAndHours();
+    //                    int rewardedPoints = wlResponse.getResponseJSON().getInt("enrollmentPoints");
+                        pointsAndHours.setEnrollmentsPoints( wlResponse.getResponseJSON().getInt("enrollmentPoints"));
+                        pointsAndHours.setValidationHours("48 hours");
+                        result.postValue(Resource.success(pointsAndHours));
                     } catch (JSONException e) {
                         Timber.e(e.toString());
                         result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
