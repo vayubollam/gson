@@ -92,8 +92,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
                 Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
-                selectPumpNumber("1");
-
+                goBack();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (!result.data) {
                     Alerts.prepareCustomDialog(
@@ -112,7 +111,8 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                     binding.selectPumpLayout.setVisibility(View.GONE);
                 } else {
                     viewModel.getStoreDetails(storeId).observe(getViewLifecycleOwner(), storeDetailsResponseResource -> {
-                        if (storeDetailsResponseResource.status == Resource.Status.SUCCESS && storeDetailsResponseResource.data != null) {
+                        if (storeDetailsResponseResource.status == Resource.Status.SUCCESS && storeDetailsResponseResource.data != null
+                                && storeDetailsResponseResource.data.fuelService.pumpStatuses != null) {
                             P97StoreDetailsResponse storeDetailsResponse = storeDetailsResponseResource.data;
 
                             ArrayList<String> pumpNumbers = new ArrayList<String>();
@@ -127,6 +127,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                             adapter.setPumpNumbers(pumpNumbers);
 
                             isLoading.set(false);
+                        } else {
+                            Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
+                            goBack();
                         }
                     });
 
