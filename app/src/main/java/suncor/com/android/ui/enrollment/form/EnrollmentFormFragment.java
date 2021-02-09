@@ -129,14 +129,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                 AnalyticsUtils.logEvent(
                         getContext(),
-                        "form_complete",
+                        "form_step",
                         new Pair<>("formName", formName),
-                        new Pair<>("formSelection", optionsChecked)
-                );
-                AnalyticsUtils.logEvent(
-                        getContext(),
-                        "form_sign_up_success",
-                        new Pair<>("formName", formName),
+                        new Pair<>("stepName", "Complete Signup"),
                         new Pair<>("formSelection", optionsChecked)
                 );
                 AnalyticsUtils.logEvent(getContext(), "sign_up");
