@@ -168,6 +168,7 @@
     <string name="enrollment_cardform_verifying_card">Vérification de la carte</string>
     <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
     <string name="customer_support_number">18006680222</string>
+    <string name="complete_signup">Inscription complète</string>
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
     <string name="home_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
     <string name="home_nearest_no_stations_found">Aucun emplacement trouvé</string>
