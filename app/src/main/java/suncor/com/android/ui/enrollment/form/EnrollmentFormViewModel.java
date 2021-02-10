@@ -67,7 +67,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
-    private MutableLiveData<String> validationHourObserver = new MutableLiveData<>();
+    private MutableLiveData<Integer> validationHourObserver = new MutableLiveData<>();
     private MutableLiveData<Integer> enrollmentPointsObserver = new MutableLiveData<>();
     private boolean isUserCameToValidationScreen = false;
     private ArrayList<Province> provincesList;
@@ -201,7 +201,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         return enrollmentPointsObserver;
     }
 
-    public MutableLiveData<String> getValidationHours(){
+    public MutableLiveData<Integer> getValidationHours(){
         return validationHourObserver;
     }
 

@@ -29,7 +29,7 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
-    private final static String ADAPTER_PATH_V3 = "/adapters/suncor/v4/rfmp-secure/enrollments";
+    private final static String ADAPTER_PATH_V3 = "/adapters/suncor/v5/rfmp-secure/enrollments";
     private Gson gson;
 
     public EnrollmentsApiImpl(Gson gson) {
@@ -44,6 +44,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         try {
             URI adapterPath = new URI(ADAPTER_PATH_V3);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
+            request.addHeader("X-Mock-Variant", "/v5/rfmp-secure/enrollments:fail");
             JSONObject body = new JSONObject(gson.toJson(account));
             request.send(body, new WLResponseListener() {
                 @Override
@@ -53,7 +54,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                         EnrollmentPointsAndHours pointsAndHours = new EnrollmentPointsAndHours();
     //                    int rewardedPoints = wlResponse.getResponseJSON().getInt("enrollmentPoints");
                         pointsAndHours.setEnrollmentsPoints( wlResponse.getResponseJSON().getInt("enrollmentPoints"));
-                        pointsAndHours.setValidationHours("48 hours");
+                        pointsAndHours.setValidationHours(wlResponse.getResponseJSON().getInt("hoursToValidate"));
                         result.postValue(Resource.success(pointsAndHours));
                     } catch (JSONException e) {
                         Timber.e(e.toString());

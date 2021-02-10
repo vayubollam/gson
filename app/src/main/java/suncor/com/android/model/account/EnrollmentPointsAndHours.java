@@ -4,7 +4,7 @@ public class EnrollmentPointsAndHours {
 
     private int enrollmentsPoints;
 
-    private String validationHours;
+    private int validationHours;
 
     public int getEnrollmentsPoints() {
         return enrollmentsPoints;
@@ -14,11 +14,11 @@ public class EnrollmentPointsAndHours {
         this.enrollmentsPoints = enrollmentsPoints;
     }
 
-    public String getValidationHours() {
+    public int getValidationHours() {
         return validationHours;
     }
 
-    public void setValidationHours(String validationHours) {
+    public void setValidationHours(int validationHours) {
         this.validationHours = validationHours;
     }
 }
