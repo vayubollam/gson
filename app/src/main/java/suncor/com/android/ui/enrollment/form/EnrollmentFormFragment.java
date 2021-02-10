@@ -158,7 +158,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                                 new Pair<>("formName",  formName)
                         );
                         binding.emailInput.setText("");
-                        viewModel.getEmailInputField().setText("");
                         d.dismiss();
                         focusOnItem(binding.emailInput);
                     });
