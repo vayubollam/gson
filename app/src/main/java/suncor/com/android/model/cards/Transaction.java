@@ -24,6 +24,7 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
     private String redeemPoints;
     private int redeemPointsInt;
     private float purchaseAmount;
+    private String partnerTransactionId;
 
     public Transaction(TransactionType transactionType, String date, String rewardDescription, String locationAddress, int basePoints, int redeemPointsInt, int bonusPoints, String redeemPoints, int totalPoints, float purchaseAmount) {
         this.transactionType = transactionType;
@@ -45,6 +46,14 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
 
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getPartnerTransactionId() {
+        return partnerTransactionId;
+    }
+
+    public void setPartnerTransactionId(String partnerTransactionId) {
+        this.partnerTransactionId = partnerTransactionId;
     }
 
     public String getDate() {
