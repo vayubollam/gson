@@ -143,6 +143,7 @@
                     android:textColor="@color/black_60"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingBottom="128dp"
                     app:layout_constraintStart_toEndOf="@id/email_subcopy_icon"
                     app:layout_constraintTop_toTopOf="@id/email_subcopy_icon" />
 
