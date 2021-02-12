@@ -127,6 +127,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     optionsChecked += binding.smsOffersCheckbox.getText().toString();
                 }
 
+                binding.emailAddress.setText(viewModel.getEmailInputField().getText());
                 AnalyticsUtils.logEvent(
                         getContext(),
                         "form_step",
@@ -281,7 +282,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             onBackPressed();
         });
         requiredFields.add(binding.firstNameInput);
-
         requiredFields.add(binding.lastNameInput);
         requiredFields.add(binding.emailInput);
         requiredFields.add(binding.passwordInput);
@@ -459,7 +459,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         }
         if (view == binding.streetAddressInput) {
             viewModel.getStreetAddressField().setHasFocus(hasFocus);
-
         }
         if (view == binding.cityInput) {
             viewModel.getCityField().setHasFocus(hasFocus);
