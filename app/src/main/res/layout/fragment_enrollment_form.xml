@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.text.Html"/>
+
         <import type="suncor.com.android.model.account.NewEnrollment.EnrollmentType" />
 
         <import type="android.text.InputType" />
@@ -432,7 +434,7 @@
                 android:gravity="center"
                 android:layout_marginStart="12dp"
                 android:lineSpacingMultiplier="1.29"
-                android:textAppearance="@style/BodyBold"
+                android:textAppearance="@style/Body1"
                 android:text="@string/validate_your_email"
                 app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
                 app:layout_constraintTop_toBottomOf="@id/progress_layout"
@@ -447,7 +449,10 @@
                 android:layout_marginStart="12dp"
                 android:lineSpacingMultiplier="1.29"
                 android:text="@{vm.emailInputField.text}"
-                android:textAppearance="@style/BodyBold"
+                android:textSize="17sp"
+                android:fontFamily="@font/gibson_regular"
+                android:textColor="#000"
+                android:textStyle="bold"
                 app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
                 app:layout_constraintTop_toBottomOf="@id/email_validation_confirmation"
                 tools:text="Test123@gmail.com" />
@@ -462,8 +467,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:lineSpacingMultiplier="1.29"
-                android:text="@{@string/validate_your_email_to_sign_in(vm.getValidationHours(), vm.getEnrollmentPoints())}"
-                android:textAppearance="@style/BodyBold"
+                android:text="@{Html.fromHtml(@string/validate_your_email_to_sign_in(vm.getValidationHours(), vm.getEnrollmentPoints()))}"
+                android:textAppearance="@style/Body1"
                 app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
                 app:layout_constraintTop_toBottomOf="@id/email_address"
                 tools:text="Finish your enrollment by clicking the link in your email" />

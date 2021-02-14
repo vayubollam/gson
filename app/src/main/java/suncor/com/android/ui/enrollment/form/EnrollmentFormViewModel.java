@@ -67,7 +67,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
-    private MutableLiveData<Integer> validationHourObserver = new MutableLiveData<>();
+    private MutableLiveData<String> validationHourObserver = new MutableLiveData<>();
     private MutableLiveData<Integer> enrollmentPointsObserver = new MutableLiveData<>();
     private boolean isUserCameToValidationScreen = false;
     private ArrayList<Province> provincesList;
@@ -117,7 +117,7 @@ public class EnrollmentFormViewModel extends ViewModel {
             if (result.status == Resource.Status.SUCCESS) {
                 isUserCameToValidationScreen = true;
                 enrollmentPointsObserver.postValue( result.data.getEnrollmentsPoints());
-                validationHourObserver.postValue( result.data.getValidationHours());
+                validationHourObserver.postValue( "within" + " " + result.data.getValidationHours()+ " " + "hours");
                 //login the user
                 Timber.d("Success sign up, start user auto login");
                 return Resource.success(true);
@@ -201,7 +201,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         return enrollmentPointsObserver;
     }
 
-    public MutableLiveData<Integer> getValidationHours(){
+    public MutableLiveData<String> getValidationHours(){
         return validationHourObserver;
     }
 
