@@ -118,7 +118,7 @@ public class EnrollmentFormViewModel extends ViewModel {
             if (result.status == Resource.Status.SUCCESS) {
                 isUserCameToValidationScreen = true;
                 enrollmentPointsObserver.postValue( result.data.getEnrollmentsPoints());
-                if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+                if (Locale.getDefault().getLanguage().equalsIgnoreCase("en")){
                     validationHourObserver.postValue("within" + " " + result.data.getValidationHours() + " " + "hours");
                 }else {
                     validationHourObserver.postValue("dans un délai de" + " " + result.data.getValidationHours() + " " + "heures");
