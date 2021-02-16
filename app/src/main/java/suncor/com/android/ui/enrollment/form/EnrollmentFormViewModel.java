@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -117,7 +118,11 @@ public class EnrollmentFormViewModel extends ViewModel {
             if (result.status == Resource.Status.SUCCESS) {
                 isUserCameToValidationScreen = true;
                 enrollmentPointsObserver.postValue( result.data.getEnrollmentsPoints());
-                validationHourObserver.postValue( "within" + " " + result.data.getValidationHours()+ " " + "hours");
+                if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+                    validationHourObserver.postValue("within" + " " + result.data.getValidationHours() + " " + "hours");
+                }else {
+                    validationHourObserver.postValue("dans un délai de" + " " + result.data.getValidationHours() + " " + "heures");
+                }
                 //login the user
                 Timber.d("Success sign up, start user auto login");
                 return Resource.success(true);
