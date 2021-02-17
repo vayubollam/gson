@@ -629,7 +629,7 @@
     <!-- Email Authentication -->
 
     <string name="validate_your_email">Nous avons envoyé un courriel à :</string>
-    <string name="validate_your_email_to_sign_in">Terminez votre inscription en cliquant sur le lien dans votre courriel  <![CDATA[<b>%s</b>]]>. Puis, ouvrez une session pour obtenir vos %d points!</string>
+    <string name="validate_your_email_to_sign_in">Terminez votre inscription en cliquant sur le lien dans votre courriel  <![CDATA[<b>%s</b>]]>. Puis, ouvrez une session pour obtenir vos %s points!</string>
 
 
     <!-- Fuel Up limit -->
