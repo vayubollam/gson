@@ -142,7 +142,7 @@
     <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
     <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
     <string name="enrollment_account_created_message">Compte créé</string>
-    <string name="thanks_to_user">Merci, %s</string>
+    <string name="thanks_to_user">Merci, %s!</string>
     <string name="station_location_alert_settings">Réglages</string>
     <string name="enable_location_dialog_message">Nous utilisons la localisation pour vous indiquer la station la plus près, vous fournir les indications pour vous y rendre et vous permettre de démarrer le distributeur et payer votre essence par l\'entremise de l\'application.</string>
     <string name="msg_sl005_title">Quelque chose a mal tourné</string>
@@ -629,7 +629,7 @@
     <!-- Email Authentication -->
 
     <string name="validate_your_email">Nous avons envoyé un courriel à :</string>
-    <string name="validate_your_email_to_sign_in">Terminez votre inscription en cliquant sur le lien dans votre courriel  <![CDATA[<b>%s</b>]]>. Puis, ouvrez une session pour obtenir vos %d points!</string>
+    <string name="validate_your_email_to_sign_in">Terminez votre inscription en cliquant sur le lien dans votre courriel  <![CDATA[<b>%s</b>]]>. Puis, ouvrez une session pour obtenir vos %s points!</string>
 
 
     <!-- Fuel Up limit -->

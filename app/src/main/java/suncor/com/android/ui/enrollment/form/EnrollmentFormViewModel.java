@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -69,7 +70,7 @@ public class EnrollmentFormViewModel extends ViewModel {
     private Province selectedProvince;
     private CardStatus cardStatus;
     private MutableLiveData<String> validationHourObserver = new MutableLiveData<>();
-    private MutableLiveData<Integer> enrollmentPointsObserver = new MutableLiveData<>();
+    private MutableLiveData<String> enrollmentPointsObserver = new MutableLiveData<>();
     private boolean isUserCameToValidationScreen = false;
     private ArrayList<Province> provincesList;
     private FingerprintManager fingerPrintManager;
@@ -117,7 +118,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         joinLiveData = Transformations.map(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 isUserCameToValidationScreen = true;
-                enrollmentPointsObserver.postValue( result.data.getEnrollmentsPoints());
+                enrollmentPointsObserver.postValue(getFormattedPoints(result.data.getEnrollmentsPoints()));
                 if (Locale.getDefault().getLanguage().equalsIgnoreCase("en")){
                     validationHourObserver.postValue("within" + " " + result.data.getValidationHours() + " " + "hours");
                 }else {
@@ -140,6 +141,11 @@ public class EnrollmentFormViewModel extends ViewModel {
         });
 
         initAutoComplete(canadaPostAutocompleteProvider);
+    }
+
+    private String getFormattedPoints(int enrollmentsPoints){
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        return formatter.format(enrollmentsPoints);
     }
 
     private void initAutoComplete(CanadaPostAutocompleteProvider provider) {
@@ -202,7 +208,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         return isUserCameToValidationScreen;
     }
 
-    public MutableLiveData<Integer> getEnrollmentPoints(){
+    public MutableLiveData<String> getEnrollmentPoints(){
         return enrollmentPointsObserver;
     }
 
