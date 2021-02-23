@@ -251,8 +251,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_invalid_email_title)),
                 new Pair<>("formName",  "Activate Petro-Points Card"));
 
-        dialog.setTitle(getString(R.string.enrollment_invalid_email_title))
-                .setMessage(getString(R.string.enrollment_invalid_email_dialog_message))
+        dialog.setTitle(getString(R.string.enrollment_email_already_exists_title))
+                .setMessage(getString(R.string.enrollment_email_already_exists_description))
                 .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);

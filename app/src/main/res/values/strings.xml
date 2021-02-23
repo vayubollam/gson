@@ -127,7 +127,7 @@
     <string name="enrollment_invalid_email_title">This email already has an account.</string>
     <string name="enrollment_invalid_email_dialog_message">If you don\'t remember your password, submit a password reset.</string>
     <string name="enrollment_invalid_email_dialog_sign_in">Sign in</string>
-    <string name="enrollment_invalid_email_dialog_diff_email">Use different email</string>
+    <string name="enrollment_invalid_email_dialog_diff_email">Use a different email</string>
     <string name="enrollment_province_title">Province</string>
     <string name="enrollment_security_question_title">Security Question</string>
     <string name="profil_sign_out_alert_title">Sign out of Petro-Canada</string>
@@ -320,6 +320,8 @@
     <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign in again. If you\'ve changed your email, check your inbox to verify your email address.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
+    <string name="enrollment_email_already_exists_title">Email already exists</string>
+    <string name="enrollment_email_already_exists_description">This email is already in use. If you recently created an account, check your inbox for your verification link.</string>
     <string name="msg_am001_title">Changes were not saved.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Please use a different email account or undo.</string>
     <string name="msg_am001_message">Please try again later.</string>
