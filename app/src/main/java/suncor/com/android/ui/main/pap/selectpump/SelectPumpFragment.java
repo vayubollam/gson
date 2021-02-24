@@ -127,7 +127,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                             adapter.setPumpNumbers(pumpNumbers);
 
                             isLoading.set(false);
-                        } else {
+                        } else if (storeDetailsResponseResource.status != Resource.Status.LOADING){
                             Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
                             goBack();
                         }
