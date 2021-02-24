@@ -155,6 +155,14 @@ public class NewEnrollment {
         this.securityAnswer = securityAnswer;
     }
 
+    public String getPetroPointsId() {
+        return petroPointsId;
+    }
+
+    public void setPetroPointsId(String petroPointsId) {
+        this.petroPointsId = petroPointsId;
+    }
+
     public enum EnrollmentType {
         @SerializedName("new") NEW,
         @SerializedName("ghost") GHOST,
