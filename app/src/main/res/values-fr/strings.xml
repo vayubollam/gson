@@ -38,6 +38,8 @@
     <string name="station_hours_list_title">Heures</string>
     <string name="safety_message">N’oubliez pas d’agir de façon responsable. N\'utilisez pas votre téléphone en conduisant.</string>
     <string name="login_forgot_password_button">Mot de passe oublié</string>
+    <string name="forgot_password_alert_title">Échec de la réinitialisation du mot de passe</string>
+    <string name="forgot_password_alert_message">Veuillez réessayer plus tard. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="login_email_field_error">Veuillez entrer une adresse de courriel</string>
     <string name="login_password_field_error">Le mot de passe est requis</string>
     <string name="station_fav_button_add">Ajouter à vos établissements favoris</string>

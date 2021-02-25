@@ -142,9 +142,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
                     AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>("formName",  formName));
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
                             new Pair<>("formName",  formName));
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
