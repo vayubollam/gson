@@ -3,8 +3,11 @@ package suncor.com.android.model.cards;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.util.StringUtil;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -13,7 +16,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import suncor.com.android.utilities.Timber;
+
 public class Transaction implements Comparable<Transaction>, Parcelable {
+
+
     private TransactionType transactionType;
     private String date;
     private String rewardDescription;
@@ -143,12 +150,14 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
     }
 
     public String getFormattedPurchaseAmount() {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
         String amount = NumberFormat.getNumberInstance(Locale.getDefault()).format(getPurchaseAmount());
+
         switch (getTransactionType()) {
             case PURCHASE:
-                return getPurchaseAmount() == 0 ? "" : "$" + amount;
+                return formatter.format(getPurchaseAmount() == 0 ? "" : getPurchaseAmount());
             case REDEMPTION:
-                return getBonusPoints() == 0 || getPurchaseAmount() == 0 ? "" : "$" + amount;
+                return formatter.format(getBonusPoints() == 0 || getPurchaseAmount() == 0 ? "" : getPurchaseAmount());
             default:
                 return "";
         }
