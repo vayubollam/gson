@@ -70,7 +70,7 @@
     <string name="drive_safely">CONDUISEZ DE FAÇON SÉCURITAIRE</string>
     <string name="login_soft_lock_alert_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
     <string name="favourites_add_station_button">Ajouter un établissement</string>
-    <string name="login_invalid_credentials_dialog_1st_message">L\'adresse courriel ou le mot de passe que vous avez entré n\'est pas correct. Veuillez réessayer.</string>
+    <string name="login_invalid_credentials_dialog_1st_message">Veuillez réessayer. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="profile_sign_out_button">Déconnexion</string>
     <string name="profile_about_button">À propos</string>

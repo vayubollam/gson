@@ -49,7 +49,7 @@
     <string name="login_password_field_error">Password is required.</string>
     <string name="login_in_progress">Signing in</string>
     <string name="login_invalid_credentials_dialog_title">Invalid Email or Password</string>
-    <string name="login_invalid_credentials_dialog_1st_message">The email or password you entered is not correct. Please try again.</string>
+    <string name="login_invalid_credentials_dialog_1st_message">Please try again. If you recently created an account, check your inbox for your verification link.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="login_invalid_credentials_reset_password">Reset password</string>
     <string name="login_soft_lock_alert_title">Account locked</string>
