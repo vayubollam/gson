@@ -248,8 +248,6 @@
     <string name="profile_address_button">Adresse</string>
     <string name="profile_preferences_button">Préférences</string>
     <string name="profile_personnal_informations_subcopy2">Pour protéger votre compte, si vous modifiez votre adresse courriel, vous ne pourrez pas échanger de points en ligne ou au dépanneur pendant une période de 24 heures.</string>
-    <string name="profile_personnal_informations_subcopy1">Pour modifier vos renseignements personnels, communiquez avec notre <a href="tel:18006680222">Service à la clientèle</a>.</string>
-
     <string name="profile_personnal_informations_subcopyEmail">Pour modifier votre courriel, vous devrez ouvrir une autre session.</string>
     <string name="profile_personnal_informations_email">Adresse courriel</string>
     <string name="profile_personnal_informations_phone">Numéro de téléphone (facultatif)</string>
@@ -345,7 +343,7 @@
     <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668-0222  .  TTY : 1 (888) 290-7377\t</string>
     <string name="profile_preferences_header">Changer mes préférences.</string>
     <string name="cards_add_fragment_done_button">Fini</string>
-    <string name="transaction_title_pe">points gagnés</string>
+    <string name="transaction_title_pe">points accumulés</string>
     <string name="transaction_title_pp">" points ajustés"</string>
     <string name="transaction_title_redemption">points échangés</string>
     <string name="transaction_type_bonus">Prime</string>
@@ -354,16 +352,16 @@
     <string name="transaction_type_ppt">Transfert</string>
     <string name="transaction_type_purchase">Achat</string>
     <string name="transaction_type_redemption">Achat/Échange</string>
-    <string name="transaction_detail_redeem_points">Échanger de points</string>
+    <string name="transaction_detail_redeem_points">Points échangés</string>
     <string name="transaction_type_void">Annulé</string>
     <string name="transaction_detail_amount">Montant</string>
     <string name="transaction_detail_location_title">Établissement</string>
     <string name="transaction_detail_description_title">La description</string>
-    <string name="transaction_detail_base_points">Points ordinaires</string>
-    <string name="transaction_detail_bonus_points">Points supplémentaires</string>
+    <string name="transaction_detail_base_points">Points de base</string>
+    <string name="transaction_detail_bonus_points">Points en prime</string>
     <string name="transaction_detail_date">Date</string>
     <string name="transaction_detail_total_points">Points totaux</string>
-    <string name="transaction_detail_transaction_type">Transaction</string>
+    <string name="transaction_detail_transaction_type">Détails de la transaction</string>
     <string name="transaction_details_header">Détails</string>
     <string name="transactions_point_summary_header">Résumé de points</string>
     <string name="profile_about_app_version">Version de l\'application</string>

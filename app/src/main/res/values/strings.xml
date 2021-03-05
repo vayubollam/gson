@@ -302,7 +302,6 @@
     <string name="profile_personnal_informations_lastName">Last name</string>
     <string name="profile_personnal_informations_phone">Phone (optional)</string>
     <string name="profile_personnal_informations_email">Email</string>
-    <string name="profile_personnal_informations_subcopy1">To make changes to your personal information please contact our <a href="tel:18006680220">Customer Service</a>.</string>
     <string name="profile_personnal_informations_subcopy2">Please note, in order to protect your account, if you change your email address you will not be able to redeem points online or in-store for 24 hours.</string>
     <string name="profile_personnal_informations_subcopyEmail">Changing your email will require you to sign in again.</string>
     <string name="profile_personnal_informations_button1">Save</string>
