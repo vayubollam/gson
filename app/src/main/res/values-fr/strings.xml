@@ -62,7 +62,7 @@
     <string name="station_distance_unavailable">Distance non disponible</string>
     <string name="login_in_progress">Ouverture de session</string>
     <string name="login_prompt_title">Connectez-vous ou ajoutez à vos favoris.</string>
-    <string name="login_invalid_credentials_dialog_title">Courriel et mot de passe non valide.</string>
+    <string name="login_invalid_credentials_dialog_title">Courriel et mot de passe non valide</string>
     <string name="navigation_home_tab">Accueil</string>
     <string name="ok">OK</string>
     <string name="error">Erreur</string>
@@ -118,7 +118,7 @@
     <string name="password_validation_lowercase">Au moins une lettre minuscule</string>
     <string name="password_validation_uppercase">Doit contenir au moins une majuscule</string>
     <string name="password_validation_special_char">Au moins un caractère spécial (parmi @$!%&amp;?#)</string>
-    <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte.</string>
+    <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="enrollment_invalid_email_dialog_message">Si vous ne vous souvenez pas de votre mot de passe, veuillez soumettre une demande de réinitialisation de mot de passe.</string>
     <string name="enrollment_invalid_email_dialog_diff_email">Entrez autre courriel</string>
     <string name="enrollment_invalid_email_dialog_sign_in">Démarrez</string>
@@ -158,7 +158,7 @@
     <string name="enrollment_cardform_existing_card_dialog_title">Carte Petro-Points est déjà jumelé</string>
     <string name="enrollment_cardform_existing_card_dialog_message">Ce numéro de carte est déjà jumelé à un compte Petro-Points. Ouvrez une session ou utilisez une carte différente.</string>
     <string name="enrollment_cardform_existing_card_use_different_card">UTILISEZ UNE CARTE DIFFÉRENTE</string>
-    <string name="enrollment_cardform_existing_card_dialog_sign_in">DÉMMAREZ</string>
+    <string name="enrollment_cardform_existing_card_dialog_sign_in">Démarrez</string>
     <string name="enrollment_loading_question_title">Un moment</string>
     <string name="alert_signed_out_inactivity">Votre session a été fermée à la suite d\'un changement dans votre compte.</string>
     <string name="alert_signed_out_conflicting_login">Votre adresse de connexion a été utilisée sur un autre appareil. Veuillez ouvrir une nouvelle session.</string>
@@ -323,7 +323,7 @@
     <string name="profile_personnal_informations_email_duplicate_alert_message">Veuillez utiliser un autre adresse courriel ou annuler.</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Veuillez utiliser un autre adresse courriel.</string>
     <string name="msg_am001_message">Veuillez réessayer plus tard.</string>
-    <string name="enrollment_email_already_exists_title">Cette adresse courriel est déjà liée à un compte.</string>
+    <string name="enrollment_email_already_exists_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="enrollment_email_already_exists_description">Cette adresse courriel est déjà utilisée. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
