@@ -85,6 +85,11 @@ android {
             applicationId "com.suncor.android.SuncorApplicationQA.Carwash"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
+        QAScrum {
+            dimension "version"
+            applicationId "com.suncor.android.SuncorApplicationQA.Scrum"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
+        }
         QASus {
             dimension "version"
             applicationId "com.suncor.android.SuncorApplicationOpsQA"
