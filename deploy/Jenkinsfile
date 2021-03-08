@@ -64,7 +64,7 @@ pipeline {
 		stage('upload to perfecto public cloud') {
 			steps {
 				script {
-					if (env.BUILD_ENV == "QA" || env.BUILD_ENV == "QASus" || env.BUILD_ENV == "UAT" || env.BUILD_ENV == "Dev"){sh "curl -X POST -T app/build/outputs/apk/${env.BUILD_ENV}${env.FEATURE}/release/app-${env.BUILD_ENV}${env.FEATURE}-release.apk 'https://ibmgbs.perfectomobile.com/services/repositories/media/app-${env.BUILD_ENV}${env.FEATURE}-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN' --http1.1"}
+					if (env.BUILD_ENV == "QAScrum" || env.BUILD_ENV == "QA" || env.BUILD_ENV == "QASus" || env.BUILD_ENV == "UAT" || env.BUILD_ENV == "Dev"){sh "curl -X POST -T app/build/outputs/apk/${env.BUILD_ENV}${env.FEATURE}/release/app-${env.BUILD_ENV}${env.FEATURE}-release.apk 'https://ibmgbs.perfectomobile.com/services/repositories/media/app-${env.BUILD_ENV}${env.FEATURE}-release.apk?operation=upload&overwrite=true&securityToken=$PERFECTO_TOKEN' --http1.1"}
 				}
 			}
 		}
@@ -118,7 +118,7 @@ pipeline {
 
                             break;
 
-                        case 'QA':
+                        case ['QA','QAScrum']:
                             def commitMessagesSinceLastTag = sh(
                                 script: 'git log --oneline $(git describe --tags --abbrev=0 @^)..@',
                                 returnStdout: true
