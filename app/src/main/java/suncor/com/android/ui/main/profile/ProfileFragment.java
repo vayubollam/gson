@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
@@ -31,6 +32,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorToast;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
@@ -162,12 +164,22 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update Personal Information"));
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
-            } else {
-                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
-                Navigation.findNavController(getView()).navigate(action);
+            if(((MainActivity) getActivity()).getCurrentAndroidVersion().equals(BuildConfig.VERSION_NAME)){
+                AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
+                if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                    Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
+                } else {
+                    ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
+                    Navigation.findNavController(getView()).navigate(action);
+                }
+            }else {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                dialog.setTitle(R.string.app_outdated_title_message);
+                dialog.setMessage(R.string.app_outdated_dialog_message);
+                dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                    d.dismiss();
+                });
+                dialog.show();
             }
         });
         binding.preferencesButton.setOnClickListener(v -> {

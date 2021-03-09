@@ -65,6 +65,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
     @Inject
     ActionMenuFragment actionMenuFragment;
+    private String currentAndroidVersion;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -207,6 +208,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             String[] nameCode = provinceCodeName.split(";");
             provinces.add(new Province(nameCode[1], nameCode[0], nameCode[2]));
         }
+        currentAndroidVersion = getIntent().getStringExtra(SplashActivity.CURRENT_ANDROID_VERSION);
     }
 
     @Override
@@ -302,5 +304,9 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         if(fragment != null){
             fragment.onActivityResult(requestCode,resultCode, data );
         }
+    }
+
+    public String getCurrentAndroidVersion() {
+        return currentAndroidVersion;
     }
 }
