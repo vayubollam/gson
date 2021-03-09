@@ -52,6 +52,11 @@ public class ProfilesApiImpl implements ProfilesApi {
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                request.addHeader("Accept-Language", "fr-CA");
+            } else {
+                request.addHeader("Accept-Language", "en-CA");
+            }
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
