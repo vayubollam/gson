@@ -175,7 +175,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             }else {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 dialog.setTitle(R.string.app_outdated_title_message);
-                dialog.setMessage(R.string.app_outdated_dialog_message);
+                dialog.setMessage(R.string.app_outdated_dialog_message_profile);
                 dialog.setPositiveButton(R.string.ok, (d, w) -> {
                     d.dismiss();
                 });

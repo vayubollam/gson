@@ -79,6 +79,7 @@
     <string name="enrollment_no_i_don_t_have_a_card_button">Non, je n\'ai pas encore de carte.</string>
     <string name="enrollment_personal_information_category">Informations personnelles</string>
     <string name="app_outdated_dialog_message">Votre application est désuète. Pour vous joindre au programme, veuillez télécharger la plus récente version.</string>
+    <string name="app_outdated_dialog_message_profile">Votre application est désuète. Pour mettre à jour vos renseignements, veuillez télécharger la plus récente version.</string>
     <string name="app_outdated_title_message">Téléchargez notre plus récente application</string>
     <string name="enrollment_address_category">Adresse</string>
     <string name="enrollment_first_name_label">Prénom</string>
