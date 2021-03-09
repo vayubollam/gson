@@ -3,18 +3,17 @@ package suncor.com.android.ui.main.home;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import suncor.com.android.BuildConfig;
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
@@ -33,7 +32,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
     YoutubePlayerActivity youtubePlayerActivity ;
 
-    public OffersAdapter(MainActivity activity, boolean isSignedIn) {
+    public OffersAdapter(MainActivity activity, boolean isSignedIn, String currentAndroidVersion) {
         offerCards = new ArrayList<>();
         if (!isSignedIn) {
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
@@ -45,7 +44,17 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
                         );
-                        activity.startActivity(new Intent(activity, EnrollmentActivity.class));
+                        if(currentAndroidVersion.equals(BuildConfig.VERSION_NAME)){
+                            activity.startActivity(new Intent(activity, EnrollmentActivity.class));
+                        }else {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+                            dialog.setTitle(R.string.app_outdated_title_message);
+                            dialog.setMessage(R.string.app_outdated_dialog_message);
+                            dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                                d.dismiss();
+                            });
+                            dialog.show();
+                        }
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,

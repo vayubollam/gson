@@ -80,6 +80,9 @@
     <string name="enrollment_yes_i_have_a_card_button">Yes, I have a card.</string>
     <string name="enrollment_no_i_don_t_have_a_card_button">No, I don\'t have a card.</string>
     <string name="enrollment_personal_information_category">Personal information</string>
+    <string name="app_outdated_dialog_message">Your app is outdated. To join the program, please download the newest version.</string>
+    <string name="app_outdated_dialog_message_profile">Your app is outdated. To update your info, please download the newest version.</string>
+    <string name="app_outdated_title_message">Download our newest app</string>
     <string name="enrollment_first_name_label">First name</string>
     <string name="enrollment_last_name_label">Last name</string>
     <string name="enrollment_email_label">Email</string>
