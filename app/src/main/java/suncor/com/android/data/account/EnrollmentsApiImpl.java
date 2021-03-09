@@ -44,7 +44,11 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         try {
             URI adapterPath = new URI(ADAPTER_PATH_V3);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
- //           request.addHeader("X-Mock-Variant", "/v5/rfmp-secure/enrollments:success");
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                request.addHeader("Accept-Language", "fr-CA");
+            } else {
+                request.addHeader("Accept-Language", "en-CA");
+            }
             JSONObject body = new JSONObject(gson.toJson(account));
             request.send(body, new WLResponseListener() {
                 @Override
