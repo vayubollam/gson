@@ -671,7 +671,7 @@
     <string name="hide">Hide</string>
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
-    <string name="transaction_copy_receipt_send_mail">Share your receipt below and access your purchase info from your account.</string>
+    <string name="transaction_copy_receipt_send_mail">Share your receipt below and access your purchase info from your account. Your Petro-Points may take up to 24 hours to appear.</string>
     <string name="transaction_saved">You saved %1$s</string>
     <string name="transaction_summary">Your transaction summary</string>
 
