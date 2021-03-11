@@ -49,7 +49,6 @@ import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
-import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
 
@@ -117,7 +116,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         startActivity(intent);
                     }
                 }, 1000);
-                //Log success events
+                //Log success eventsØ
                 String screenName;
                 if (viewModel.getCardStatus() != null) {
                     screenName = "activate-success";
