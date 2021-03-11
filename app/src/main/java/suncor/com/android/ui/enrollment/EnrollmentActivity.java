@@ -11,7 +11,6 @@ import dagger.android.support.DaggerAppCompatActivity;
 import suncor.com.android.R;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.common.OnBackPressedListener;
-import suncor.com.android.utilities.Timber;
 
 public class EnrollmentActivity extends DaggerAppCompatActivity {
     private Fragment mNavHostFragment;
