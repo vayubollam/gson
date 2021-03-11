@@ -35,6 +35,7 @@ import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
@@ -48,6 +49,7 @@ import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
+import suncor.com.android.utilities.Timber;
 
 public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
 
@@ -110,6 +112,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     if (getActivity() != null) {
                         //Go to main screen to show the welcome message
                         Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION,MainActivity.getCurrentAndroidVersion());
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }

@@ -65,7 +65,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
     @Inject
     ActionMenuFragment actionMenuFragment;
-    private String currentAndroidVersion;
+    private static String currentAndroidVersion;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -307,7 +307,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         }
     }
 
-    public String getCurrentAndroidVersion() {
+    public static String getCurrentAndroidVersion() {
         return currentAndroidVersion;
     }
 }

@@ -164,7 +164,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> {
-            if(((MainActivity) getActivity()).getCurrentAndroidVersion().equals(BuildConfig.VERSION_NAME)){
+            if(MainActivity.getCurrentAndroidVersion().equals(BuildConfig.VERSION_NAME)){
                 AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
                 if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                     Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
