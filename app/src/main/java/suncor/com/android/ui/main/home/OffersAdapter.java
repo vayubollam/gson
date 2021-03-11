@@ -44,7 +44,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
                         );
-                        if(currentAndroidVersion.equals(BuildConfig.VERSION_NAME)){
+                        if(currentAndroidVersion!=null && currentAndroidVersion.equals(BuildConfig.VERSION_NAME)){
                             activity.startActivity(new Intent(activity, EnrollmentActivity.class));
                         }else {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(activity);

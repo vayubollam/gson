@@ -88,6 +88,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                     );
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
                     homeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    homeActivityIntent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION,currentAndroidVersion);
                     application.startActivity(homeActivityIntent);
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
