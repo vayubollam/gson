@@ -116,7 +116,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         startActivity(intent);
                     }
                 }, 1000);
-                //Log success eventsØ
+                //Log success events
                 String screenName;
                 if (viewModel.getCardStatus() != null) {
                     screenName = "activate-success";
