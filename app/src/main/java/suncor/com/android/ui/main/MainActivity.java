@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -65,7 +67,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
     @Inject
     ActionMenuFragment actionMenuFragment;
-    private static String currentAndroidVersion;
+    private String currentAndroidVersion;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -305,9 +307,5 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         if(fragment != null){
             fragment.onActivityResult(requestCode,resultCode, data );
         }
-    }
-
-    public static String getCurrentAndroidVersion() {
-        return currentAndroidVersion;
     }
 }

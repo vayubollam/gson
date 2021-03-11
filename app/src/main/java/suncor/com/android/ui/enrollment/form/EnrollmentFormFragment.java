@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -111,7 +112,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     if (getActivity() != null) {
                         //Go to main screen to show the welcome message
                         Intent intent = new Intent(getActivity(), MainActivity.class);
-                        intent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION,MainActivity.getCurrentAndroidVersion());
+                        intent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION, PreferenceManager.getDefaultSharedPreferences(getActivity())
+                                .getString(SplashActivity.CURRENT_ANDROID_VERSION, null));
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
