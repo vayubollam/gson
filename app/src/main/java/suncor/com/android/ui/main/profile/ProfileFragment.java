@@ -167,7 +167,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> {
             if(PreferenceManager.getDefaultSharedPreferences(getActivity())
-                    .getString(SplashActivity.CURRENT_ANDROID_VERSION, null).equals(BuildConfig.VERSION_NAME)){
+                    .getString(SplashActivity.CURRENT_ANDROID_VERSION, "").equals(BuildConfig.VERSION_NAME)){
                 AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
                 if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                     Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);

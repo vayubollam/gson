@@ -47,7 +47,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 "1"
                         );
                         if(PreferenceManager.getDefaultSharedPreferences(activity)
-                                .getString(SplashActivity.CURRENT_ANDROID_VERSION, null).equals(BuildConfig.VERSION_NAME)){
+                                .getString(SplashActivity.CURRENT_ANDROID_VERSION, "").equals(BuildConfig.VERSION_NAME)){
                             activity.startActivity(new Intent(activity, EnrollmentActivity.class));
                         }else {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(activity);

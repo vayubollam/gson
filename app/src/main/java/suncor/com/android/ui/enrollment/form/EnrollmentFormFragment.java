@@ -113,7 +113,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         //Go to main screen to show the welcome message
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION, PreferenceManager.getDefaultSharedPreferences(getActivity())
-                                .getString(SplashActivity.CURRENT_ANDROID_VERSION, null));
+                                .getString(SplashActivity.CURRENT_ANDROID_VERSION, ""));
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
