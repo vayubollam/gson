@@ -233,7 +233,7 @@ public class HomeFragment extends BottomNavigationFragment {
             }
         });
 
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true, (((MainActivity) getActivity()).getCurrentAndroidVersion()));
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -294,7 +294,7 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         nearestCard = binding.nearestCard;
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false, (((MainActivity) getActivity()).getCurrentAndroidVersion()));
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);

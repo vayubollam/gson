@@ -199,6 +199,8 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     private void handleSettingsResponse(SettingsResponse settingsResponse) {
         currentAndroidVersion = settingsResponse.getSettings().getCurrentAndroidVersion();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.edit().putString(CURRENT_ANDROID_VERSION,currentAndroidVersion).apply();
         String minVersion = settingsResponse.getSettings().getMinAndroidVersion();
         String currentVersion = BuildConfig.VERSION_NAME;
         if (currentVersion.compareTo(minVersion) < 0) {
