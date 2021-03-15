@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -35,6 +36,7 @@ import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
@@ -110,6 +112,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     if (getActivity() != null) {
                         //Go to main screen to show the welcome message
                         Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION, PreferenceManager.getDefaultSharedPreferences(getActivity())
+                                .getString(SplashActivity.CURRENT_ANDROID_VERSION, ""));
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }

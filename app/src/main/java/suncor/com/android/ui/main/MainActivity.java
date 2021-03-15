@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -65,6 +67,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
     @Inject
     ActionMenuFragment actionMenuFragment;
+    private String currentAndroidVersion;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -87,6 +90,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                     );
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
                     homeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    homeActivityIntent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION,currentAndroidVersion);
                     application.startActivity(homeActivityIntent);
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
@@ -207,6 +211,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             String[] nameCode = provinceCodeName.split(";");
             provinces.add(new Province(nameCode[1], nameCode[0], nameCode[2]));
         }
+        currentAndroidVersion = getIntent().getStringExtra(SplashActivity.CURRENT_ANDROID_VERSION);
     }
 
     @Override
