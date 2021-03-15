@@ -17,6 +17,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.review.model.ReviewErrorCode;
+import com.google.android.play.core.tasks.Task;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -67,13 +73,37 @@ public class ReceiptFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
         transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
         isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
+
         observeTransactionData(transactionId);
+
         binding.viewReceiptBtn.setOnClickListener((v) -> {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });
+
         binding.buttonDone.setOnClickListener(view1 -> goBack());
+
+        //Check for review
+        ReviewManager manager = ReviewManagerFactory.create(getContext());
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // We can get the ReviewInfo object
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+
+                flow.addOnCompleteListener(reviewed -> {
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                    // matter the result, we continue our app flow.
+                });
+            } else {
+                // There was some problem, log or handle the error code.
+                // TODO: Handle error when launching in app review
+                // @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
+            }
+        });
     }
 
     @Override
