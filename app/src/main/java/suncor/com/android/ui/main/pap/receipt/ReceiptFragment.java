@@ -21,10 +21,13 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.review.model.ReviewErrorCode;
+import com.google.android.play.core.review.testing.FakeReviewManager;
+import com.google.android.play.core.tasks.RuntimeExecutionException;
 import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -36,6 +39,8 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
+
+import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
 
 public class ReceiptFragment extends MainActivityFragment {
 
@@ -101,7 +106,11 @@ public class ReceiptFragment extends MainActivityFragment {
             } else {
                 // There was some problem, log or handle the error code.
                 // TODO: Handle error when launching in app review
-                // @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
+                @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
+
+                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
+
+                }
             }
         });
     }
