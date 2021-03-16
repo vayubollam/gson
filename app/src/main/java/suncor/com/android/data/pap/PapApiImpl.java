@@ -189,12 +189,12 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId) {
+    public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId) {
         Timber.d("request initiate for fetch transaction details ");
         MutableLiveData<Resource<Transaction>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/transactionInfo/" + transactionId);
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/transactionInfo/" + transactionId + "?isPartnerTransactionId=" + isPartnerTransactionId );
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {

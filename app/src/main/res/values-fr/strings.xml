@@ -80,6 +80,9 @@
     <string name="enrollment_yes_i_have_a_card_button">Oui, j\'ai une carte Petro\u2011Points.</string>
     <string name="enrollment_no_i_don_t_have_a_card_button">Non, je n\'ai pas encore de carte.</string>
     <string name="enrollment_personal_information_category">Informations personnelles</string>
+    <string name="app_outdated_dialog_message">Votre application est désuète. Pour vous joindre au programme, veuillez télécharger la plus récente version.</string>
+    <string name="app_outdated_dialog_message_profile">Votre application est désuète. Pour mettre à jour vos renseignements, veuillez télécharger la plus récente version.</string>
+    <string name="app_outdated_title_message">Téléchargez notre plus récente application</string>
     <string name="enrollment_address_category">Adresse</string>
     <string name="enrollment_first_name_label">Prénom</string>
     <string name="enrollment_last_name_label">Nom</string>
@@ -351,7 +354,7 @@
     <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668-0222  .  TTY : 1 (888) 290-7377\t</string>
     <string name="profile_preferences_header">Changer mes préférences.</string>
     <string name="cards_add_fragment_done_button">Fini</string>
-    <string name="transaction_title_pe">points gagnés</string>
+    <string name="transaction_title_pe">points accumulés</string>
     <string name="transaction_title_pp">" points ajustés"</string>
     <string name="transaction_title_redemption">points échangés</string>
     <string name="transaction_type_bonus">Prime</string>
@@ -360,16 +363,16 @@
     <string name="transaction_type_ppt">Transfert</string>
     <string name="transaction_type_purchase">Achat</string>
     <string name="transaction_type_redemption">Achat/Échange</string>
-    <string name="transaction_detail_redeem_points">Échanger de points</string>
+    <string name="transaction_detail_redeem_points">Points échangés</string>
     <string name="transaction_type_void">Annulé</string>
     <string name="transaction_detail_amount">Montant</string>
     <string name="transaction_detail_location_title">Établissement</string>
     <string name="transaction_detail_description_title">La description</string>
-    <string name="transaction_detail_base_points">Points ordinaires</string>
-    <string name="transaction_detail_bonus_points">Points supplémentaires</string>
+    <string name="transaction_detail_base_points">Points de base</string>
+    <string name="transaction_detail_bonus_points">Points en prime</string>
     <string name="transaction_detail_date">Date</string>
     <string name="transaction_detail_total_points">Points totaux</string>
-    <string name="transaction_detail_transaction_type">Transaction</string>
+    <string name="transaction_detail_transaction_type">Détails de la transaction</string>
     <string name="transaction_details_header">Détails</string>
     <string name="transactions_point_summary_header">Résumé de points</string>
     <string name="profile_about_app_version">Version de l\'application</string>
@@ -667,7 +670,7 @@
     <string name="hide">Masquer</string>
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
-    <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte.</string>
+    <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte. Veuillez prévoir un délai de 24 heures avant de recevoir vos Petro-Points.</string>
     <string name="transaction_summary">Résumé de votre transaction</string>
 
     <string name="transaction">Transactions</string>

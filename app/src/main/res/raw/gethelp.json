@@ -3,30 +3,45 @@
     "title": "Top Questions",
     "questions": [
       {
-        "id": "how-do-i-scan-my-petro-points-barcode-in-the-app",
-        "question": "How do I scan my Petro-Points barcode in the App?",
-        "response": "Please go in-store to scan the barcode in the App."
+        "id": "i-accidentally-authorized-the-wrong-pump-what-happens",
+        "question": "I accidentally authorized the wrong pump. What happens?",
+        "response": "The authorization times out if you don't start fuelling at the authorized pump within 30 seconds. You will not be charged."
       },
       {
-        "id": "how-do-i-reload-my-fuel-savings-reward-card",
-        "question": "How do I reload my Fuel Savings Reward card?",
-        "response": "Soon you’ll be able to reload your card in the App, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal/my-petro-points\">petro-points.com</a>."
+        "id": "can-i-get-a-car-wash-while-fuelling-with-the-app?",
+        "question": "Can I get a car wash while fuelling with the app?",
+        "response": "Not at this time, but we're always working toward adding new features to the app. You can buy a car wash online, using the pump to fuel, or in-store. "
       },
       {
-        "id": "how-do-i-reload-my-wash-and-go-card-or-season-pass",
-        "question": "How do I reload my Wash & Go card or Season Pass?",
-        "response": "Soon you’ll be able to reload your cards in the App, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal\">petro-points.com</a>."
+        "id": "can-i-use-my-fuel-savings-card-or-fsr-preferred-price-card-ppc-with-mobile-payment?",
+        "question": "Can I use my Fuel Savings Card (FSR) or Preferred Price Card (PPC) with mobile payment?",
+        "response": "Not at this time, but we're always working toward adding new features to the app. You can still use your FSR or PPC using the pump directly, or in-store."
 
       },
       {
-        "id": "how-do-i-add-my-partner-card-to-my-petro-points-account",
-        "question": "How do I add my partner card to my Petro-Points account (i.e. CAA, Hudson Bay Rewards)?",
-        "response": "Soon you’ll be able to add your partner cards in the App, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal/my-petro-points\">petro-points.com</a>."
+        "id": "what-types-of-payment-are-accepted-through-the-app",
+        "question": "What types of payment are accepted through the app?",
+        "response": "You can use Google Pay and Visa, MasterCard or AMEX credit cards. We can’t accept debit at this time. <br/><br/> If you’re having trouble with your payment type, contact your financial institution for assistance."
       },
       {
         "id": "can-i-redeem-my-points-using-the-app",
-        "question": "Can I redeem my points using the App?",
+        "question": "Can I redeem my points using the app?",
         "response": "Yes, you can redeem for some of our eGift cards directly in the app. For our other rewards you need to go in store or <a href=\"https://www.petro-canada.ca/en/personal\">to our website </a>to redeem your points. Stay tuned to future releases for more of your favourite rewards in the app."
+      },
+      {
+        "id" : "how-do-i-add-my-partner-card-to-my-petro-points-account",
+        "question" : "How do I add my partner card to my Petro-Points account (i.e. Hudsons Bay Rewards)?",
+        "response" : "Soon you’ll be able to add your partner cards in the app, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal\">petro-points.com</a>."
+      },
+      {
+        "id" : "how-do-i-scan-my-petro-points-barcode-in-the-app?",
+        "question" : "How do I scan my Petro-Points barcode in the app?",
+        "response" : "You can always access your Petro-Points card from the HOME screen of our app. <br/><br/> Simply tap the SCAN CARD button and our attendants will scan your card in-store. <br/><br/> If the barcode doesn’t work, try swiping up to access an alternate version of the barcode."
+      },
+      {
+        "id" : "how-do-i-reload-my-fuel-savings-reward-wash-&-go-or-season-pass-card?",
+        "question" : "How do I reload my Fuel Savings Reward, Wash & Go or Season Pass card?",
+        "response" : "Soon you’ll be able to reload your card in the app, but for now please visit <a href=\"https://www.petro-canada.ca/en/personal\">petro-points.com</a>."
       }
     ]
   }

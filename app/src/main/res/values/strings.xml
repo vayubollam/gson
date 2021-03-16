@@ -82,6 +82,9 @@
     <string name="enrollment_yes_i_have_a_card_button">Yes, I have a card.</string>
     <string name="enrollment_no_i_don_t_have_a_card_button">No, I don\'t have a card.</string>
     <string name="enrollment_personal_information_category">Personal information</string>
+    <string name="app_outdated_dialog_message">Your app is outdated. To join the program, please download the newest version.</string>
+    <string name="app_outdated_dialog_message_profile">Your app is outdated. To update your info, please download the newest version.</string>
+    <string name="app_outdated_title_message">Download our newest app</string>
     <string name="enrollment_first_name_label">First name</string>
     <string name="enrollment_last_name_label">Last name</string>
     <string name="enrollment_email_label">Email</string>
@@ -306,7 +309,6 @@
     <string name="profile_personnal_informations_lastName">Last name</string>
     <string name="profile_personnal_informations_phone">Phone (optional)</string>
     <string name="profile_personnal_informations_email">Email</string>
-    <string name="profile_personnal_informations_subcopy1">To make changes to your personal information please contact our <a href="tel:18006680220">Customer Service</a>.</string>
     <string name="profile_personnal_informations_subcopy2">Please note, in order to protect your account, if you change your email address you will not be able to redeem points online or in-store for 24 hours.</string>
     <string name="profile_personnal_informations_subcopyEmail">Changing your email will automatically log you out, require you to verify your new address and you will be unable to receive an eGift card redemption for 24 hours.</string>
     <string name="profile_personnal_informations_button1">Save</string>
@@ -676,7 +678,7 @@
     <string name="hide">Hide</string>
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
-    <string name="transaction_copy_receipt_send_mail">Share your receipt below and access your purchase info from your account.</string>
+    <string name="transaction_copy_receipt_send_mail">Share your receipt below and access your purchase info from your account. Your Petro-Points may take up to 24 hours to appear.</string>
     <string name="transaction_saved">You saved %1$s</string>
     <string name="transaction_summary">Your transaction summary</string>
 

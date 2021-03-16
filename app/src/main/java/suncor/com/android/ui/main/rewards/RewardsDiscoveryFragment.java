@@ -27,6 +27,7 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
     private FragmentRewardsDiscoveryBinding binding;
     private ObservableBoolean isWebViewLoading = new ObservableBoolean();
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
+    private float total;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,7 +49,9 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
         binding.webview.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback(){
             public void onScroll(int l, int t, int oldl, int oldt){
                 float contentHeight = binding.webview.getContentHeight() * binding.webview.getScaleY();
-                float total = contentHeight * getResources().getDisplayMetrics().density - getView().getHeight();
+                if (getView()!= null) {
+                     total = contentHeight * getResources().getDisplayMetrics().density - getView().getHeight();
+                }
 
                 double scrollPosition = (t / (total - getResources().getDisplayMetrics().density))  * 100d;
                 int percentage = (int) scrollPosition;
