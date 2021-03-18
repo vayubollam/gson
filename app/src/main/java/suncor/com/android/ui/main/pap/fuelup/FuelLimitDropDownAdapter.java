@@ -9,6 +9,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -202,31 +204,49 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         public void setDataOnView(String value){
             binding.container.setSelected(selectedPos == getAdapterPosition());
             binding.manualLimit.setText(String.format(mContext.getString(R.string.fuel_manual_price_limit), formatter.format(otherLimitMinLimit), formatter.format(otherLimitMaxLimit)));
-            binding.inputField.setVisibility((selectedPos == getAdapterPosition()) ? View.VISIBLE : View.GONE);
-            binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ?  View.VISIBLE : View.GONE);
             binding.prefixCurrency.setText((selectedPos == getAdapterPosition()) ? mContext.getString(R.string.currency_dollar) : value);
-            binding.inputField.setText(manualValue > 0 ? Double.valueOf(manualValue).toString() : "");
+            binding.inputField.setText(manualValue > 0 ? formatter.format(manualValue).replace("$", "") : "");
+            binding.inputField.setVisibility(selectedPos == getAdapterPosition() ? View.VISIBLE : View.GONE);
+            binding.manualLimit.setVisibility((manualValue == -1) ?  View.VISIBLE : View.GONE);
             binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
             binding.inputField.setEnabled(!(manualValue > 0));
-
-            binding.edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setVisibility(View.GONE);
-                binding.manualLimit.setVisibility(View.VISIBLE);
-                binding.inputField.setEnabled(true);
-                binding.inputField.requestFocus();
-                binding.inputField.setSelection(binding.inputField.getText().length());
-            }
-            });
-
             binding.container.setOnClickListener(v -> {
-                notifyItemChanged(selectedPos);
-                selectedPos = getAdapterPosition();
-                notifyItemChanged(selectedPos);
-                binding.inputField.setVisibility(View.VISIBLE);
-                binding.manualLimit.setVisibility(View.VISIBLE);
+
+                if(selectedPos != getAdapterPosition()){
+                    notifyItemChanged(selectedPos);
+                    selectedPos = getAdapterPosition();
+                    notifyItemChanged(selectedPos);
+                    binding.inputField.setText(manualValue > 0 ? formatter.format(manualValue).replace("$","") : "");
+                    binding.inputField.setVisibility(selectedPos == getAdapterPosition() ? View.VISIBLE : View.GONE);
+                    binding.manualLimit.setVisibility((manualValue == -1) ?  View.VISIBLE : View.GONE);
+                    binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
+                    binding.inputField.setEnabled(!(manualValue > 0));
+                } else if(binding.edit.getVisibility() == View.VISIBLE){
+                   binding.edit.setVisibility(View.GONE);
+                   binding.manualLimit.setVisibility(View.VISIBLE);
+                   binding.inputField.setEnabled(true);
+                   binding.inputField.requestFocus();
+                   binding.inputField.setSelection(binding.inputField.getText().length());
+                   binding.inputField.setFocusableInTouchMode(true);
+                   InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                   imm.showSoftInput(binding.inputField, InputMethodManager.SHOW_FORCED);
+                } else {
+                    binding.edit.setVisibility(View.VISIBLE);
+                    binding.manualLimit.setVisibility(View.GONE);
+                    binding.inputField.setEnabled(false);
+                    binding.inputField.setText(manualValue > 0 ? Double.valueOf(manualValue).toString() : "");
+               }
+
+               /* binding.inputField.setVisibility((selectedPos == getAdapterPosition()) ? View.VISIBLE : View.GONE);
+                binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
+                binding.manualLimit.setVisibility((binding.edit.getVisibility() == View.VISIBLE) ?  View.GONE : View.VISIBLE);
                 binding.prefixCurrency.setText(mContext.getString(R.string.currency_dollar));
+
+               binding.edit.setVisibility(binding.edit.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+               binding.manualLimit.setVisibility(binding.edit.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+               binding.inputField.setEnabled(binding.edit.getVisibility() == View.GONE);
+               binding.inputField.requestFocus();
+               binding.inputField.setSelection(binding.inputField.getText().length());*/
             });
 
             binding.inputField.addTextChangedListener(new TextWatcher() {
@@ -252,10 +272,11 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 }
             });
 
+
             binding.inputField.setOnKeyListener((view,  keyCode, event) -> {
                     if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                         if(manualValue > 0) {
-                            binding.inputField.setText(String.valueOf(manualValue));
+                            binding.inputField.setText(formatter.format(manualValue).replace("$",""));
                             binding.edit.setVisibility(manualValue > 0 ? View.VISIBLE : View.GONE);
                             binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ? View.VISIBLE : View.GONE);
                             binding.inputField.setEnabled(!(manualValue > 0));
