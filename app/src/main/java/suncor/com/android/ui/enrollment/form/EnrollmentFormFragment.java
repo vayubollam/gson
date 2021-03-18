@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,13 +31,13 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.SuncorApplication;
+
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
-import suncor.com.android.mfp.SessionManager;
+
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.SplashActivity;
+
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
@@ -379,6 +377,10 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         hideKeyBoard();
         if(viewModel.isUserCameToValidationScreen()){
             getActivity().finish();
+
+            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             return;
         }
         if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
