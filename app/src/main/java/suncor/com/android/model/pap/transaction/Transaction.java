@@ -140,6 +140,14 @@ public class Transaction {
         return sb.toString();
     }
 
+    public double getTotalDiscount() {
+        return totalDiscount;
+    }
+
+    public void setTotalDiscount(double totalDiscount) {
+        this.totalDiscount = totalDiscount;
+    }
+
     public static class Address {
         private String streetAddress;
         private String city;
