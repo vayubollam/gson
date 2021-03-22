@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +24,18 @@ import androidx.lifecycle.ViewModelProviders;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -182,6 +194,9 @@ public class LoginFragment extends BaseFragment {
                         .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                         .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
                 Executor executor = Executors.newSingleThreadExecutor();
+
+
+
                 BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
                     @Override
                     public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
@@ -200,10 +215,60 @@ public class LoginFragment extends BaseFragment {
                         super.onAuthenticationFailed();
                     }
                 });
-                biometricPrompt.authenticate(promptInfo);
+
+
+
+                BiometricPrompt.CryptoObject cryptoObject = null;
+
+                try {
+                    cryptoObject = new BiometricPrompt.CryptoObject(getEncryptCipher(createKey()));
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                } catch (NoSuchProviderException e) {
+                    e.printStackTrace();
+                } catch (InvalidAlgorithmParameterException e) {
+                    e.printStackTrace();
+                }
+
+                biometricPrompt.authenticate(promptInfo, cryptoObject);
+                Log.d("token","cryptoObject :: " + cryptoObject);
+
             }
         }, 100);
 
+    }
+
+
+    private SecretKey createKey() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+
+        Log.d("token","inside createKey function");
+        String algorithm = KeyProperties.KEY_ALGORITHM_AES;
+        String provider = "AndroidKeyStore";
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm, provider);
+        KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder("MY_KEY", KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                .setUserAuthenticationRequired(true)
+                .build();
+
+        keyGenerator.init(keyGenParameterSpec);
+        return keyGenerator.generateKey();
+    }
+
+    private Cipher getEncryptCipher(Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        Log.d("token","inside getEncryptCipher function");
+
+        String algorithm = KeyProperties.KEY_ALGORITHM_AES;
+        String blockMode = KeyProperties.BLOCK_MODE_CBC;
+        String padding = KeyProperties.ENCRYPTION_PADDING_PKCS7;
+        Cipher cipher = Cipher.getInstance(algorithm+"/"+blockMode+"/"+padding);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        Log.d("token","cipher :: " + cipher);
+        return cipher;
     }
 
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
