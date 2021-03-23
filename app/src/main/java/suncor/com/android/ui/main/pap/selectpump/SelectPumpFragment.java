@@ -127,6 +127,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                             adapter.setPumpNumbers(pumpNumbers);
 
                             isLoading.set(false);
+
+                            // Update the storeId to the P97 store id
+                            storeId = storeDetailsResponseResource.data.storeNumber;
                         } else if (storeDetailsResponseResource.status != Resource.Status.LOADING){
                             Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
                             goBack();
@@ -141,7 +144,6 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
 
     @Override
     public void selectPumpNumber(String pumpNumber) {
-
         new Handler().postDelayed(() -> {
            HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
