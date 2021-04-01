@@ -60,6 +60,8 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     PermissionManager permissionManager;
     private HomeNearestCardBinding nearestCard;
 
+    private int geoFenceLimit;
+
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
             mViewModel.isLoading.set(true);
@@ -140,6 +142,8 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
             });
         });
 
+        mViewModel.getGeoFenceLimit().observe(getViewLifecycleOwner(), result -> this.geoFenceLimit = result );
+
         mViewModel.isPAPAvailable().observe(getViewLifecycleOwner(), value -> {
             nearestCard.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.INVISIBLE : View.VISIBLE);
             nearestCard.mobilePaymentProgressBar.setVisibility(value.status != Resource.Status.LOADING ? View.GONE : View.VISIBLE);
@@ -156,6 +160,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
         binding.setVm(mViewModel);
         binding.setLifecycleOwner(this);
         nearestCard = binding.nearestCard;
+
         nearestCard.getRoot().setOnClickListener((v) -> {
             if (mViewModel.nearestStation.getValue().data != null && !mViewModel.isLoading.get()) {
                 if (binding.scrollView.getScrollY() > binding.nearestCard.getRoot().getTop() - 200) {
@@ -174,7 +179,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
             if (result.status == Resource.Status.SUCCESS && result.data != null
                     && result.data.getDistanceDuration() != null ) {
 
-                if (result.data.getDistanceDuration().getDistance() < 70) {
+                if (result.data.getDistanceDuration().getDistance() < geoFenceLimit) {
                     HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(result.data.getStation().getId(), getString(R.string.action_location, result.data.getStation().getAddress().getAddressLine()));
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);

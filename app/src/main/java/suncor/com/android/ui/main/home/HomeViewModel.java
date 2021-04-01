@@ -24,6 +24,7 @@ import suncor.com.android.R;
 import suncor.com.android.data.DistanceApi;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.pap.PapRepository;
+import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.data.stations.StationsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.DirectionsResult;
@@ -44,6 +45,7 @@ public class HomeViewModel extends ViewModel {
     private final static int DISTANCE_API = 25000;
 
     private PapRepository papRepository;
+    private final SettingsApi settingsApi;
     public ObservableBoolean isLoading = new ObservableBoolean(false);
     private MediatorLiveData<Resource<StationItem>> _nearestStation = new MediatorLiveData<>();
     public LiveData<Resource<StationItem>> nearestStation = _nearestStation;
@@ -71,9 +73,12 @@ public class HomeViewModel extends ViewModel {
     public ObservableField<String> fuellingStateMessage = new ObservableField<>();
 
     @Inject
-    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi, FavouriteRepository favouriteRepository, DistanceApi distanceApi, PapRepository papRepository) {
+    public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi,
+                         FavouriteRepository favouriteRepository, DistanceApi distanceApi,
+                         PapRepository papRepository, SettingsApi settingsApi) {
         this.sessionManager = sessionManager;
         this.papRepository = papRepository;
+        this.settingsApi = settingsApi;
         fuellingStateMessage.set("fuellingStateMessage");
         LiveData<Resource<ArrayList<Station>>> nearestStationLoad = Transformations.switchMap(loadNearest, (event) -> {
             if (event.getContentIfNotHandled() != null) {
@@ -260,6 +265,15 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<Resource<ActiveSession>> getActiveSession() {
         return  papRepository.getActiveSession();
+    }
+
+    public LiveData<Integer> getGeoFenceLimit() {
+        return Transformations.map(settingsApi.retrieveSettings(), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                return result.data.getSettings().getPap().getGeofenceDistanceMeters();
+            }
+            return 0;
+        });
     }
 
 }
