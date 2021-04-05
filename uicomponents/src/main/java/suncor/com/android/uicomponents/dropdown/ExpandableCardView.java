@@ -159,7 +159,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
 
         if(isFromRedeemPoints){
 
-            onSelectValue("$0 off", "0 points", true);
+            onSelectValue("$0 off", "0 points" , true);
         }else{
 
             onSelectValue(null, null, false);

@@ -525,6 +525,9 @@
     <string name="cardetail_balance_update_message">Balance may take up to 24 hours to update</string>
     <string name="carddetail_active_wash">ACTIVATE WASH</string>
 
+    <string name="zero_dollar_off">$0 off</string>
+    <string name="zero_points">0 points</string>
+
     <string name="carwash_header">Let\'s clean your vehicle</string>
     <string name="carwash_getwash_header">Get your wash</string>
     <string name="carwash_getwash_message_card_only">Select your car wash card to get started.</string>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
+import suncor.com.android.R;
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
 import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
@@ -34,12 +36,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     @Override
     public String getSelectedValue() {
-        return "$0 off";
+        return mContext.getString(R.string.zero_dollar_off);
     }
 
     @Override
     public String getSelectedSubValue() {
-        return "0 points";
+        return mContext.getString(R.string.zero_points);
     }
 
     @Override

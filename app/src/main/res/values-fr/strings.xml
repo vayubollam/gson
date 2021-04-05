@@ -648,6 +648,9 @@
     <string name="no_redemption">No Redemption</string>
     <string name="redeem_x_points">Redeem %s points</string>
 
+    <string name="zero_dollar_off">0$ off</string>
+    <string name="zero_points">0 points</string>
+
     <string name="pump">Distributeur</string>
     <string name="payment">PAIEMENT</string>
     <string name="redeem">REDEEM</string>
