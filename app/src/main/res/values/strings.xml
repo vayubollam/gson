@@ -655,8 +655,12 @@
     <string name="fuel_upto">Fuel up to</string>
     <string name="edit">Edit</string>
 
+    <string name="no_redemption">No Redemption</string>
+    <string name="redeem_x_points">Redeem  points</string>
+
     <string name="pump">PUMP</string>
     <string name="payment">PAYMENT</string>
+    <string name="redeem">REDEEM</string>
     <string name="pre_authorized">Pre-authorize</string>
     <string name="tax_inclusion">Tax included</string>
     <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>

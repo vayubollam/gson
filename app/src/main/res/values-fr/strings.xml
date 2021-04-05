@@ -645,8 +645,12 @@
     <string name="fuel_upto">Montant maximal du carburanto</string>
     <string name="edit">Modifier</string>
 
+    <string name="no_redemption">No Redemption</string>
+    <string name="redeem_x_points">Redeem %s points</string>
+
     <string name="pump">Distributeur</string>
     <string name="payment">PAIEMENT</string>
+    <string name="redeem">REDEEM</string>
     <string name="pre_authorized">Préautorisation</string>
     <string name="tax_inclusion">Taxes incluses</string>
     <string name="payment_term_aggrement">En appuyant sur « Confirmer et autoriser », vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>
