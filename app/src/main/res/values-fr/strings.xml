@@ -621,7 +621,7 @@
     <string name="pap_not_available_header">Paiement dans l\'application non disponible</string>
     <string name="pap_not_available_description">Vous ne pouvez pas utiliser votre application pour payer à cette station-service.</string>
     <!--todo change french content -->
-    <string name="scroll_to_select_pump">Sélectionnez votre distributeur</string>
+    <string name="scroll_to_select_pump">Faites défiler pour sélectionner un distributeur</string>
     <string name="select_pump_selected">Sélectionné</string>
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
