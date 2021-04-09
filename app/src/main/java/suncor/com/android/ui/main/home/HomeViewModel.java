@@ -268,6 +268,26 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
+    public LiveData<Resource<FuelUp>> isPAPAvailable(StationItem stationItem) {
+        Resource<StationItem> nearestStation = new Resource<>(Resource.Status.SUCCESS, stationItem, null);
+
+        return Transformations.switchMap(getGeoFenceLiveData(), limit -> {
+            if (limit.status == Resource.Status.SUCCESS && limit.data != null) {
+                return Transformations.switchMap(getActiveSession(), activeSessionResource -> {
+                    if (activeSessionResource.status == Resource.Status.SUCCESS && activeSessionResource.data != null) {
+                        return Transformations.map(getStoreDetails(stationItem.getStation().getId()), result -> {
+                            return new Resource<>(result.status, new FuelUp(nearestStation, limit, activeSessionResource, result), result.message);
+                        });
+                    } else {
+                        return new MutableLiveData<>(new Resource<>(activeSessionResource.status, new FuelUp(), activeSessionResource.message));
+                    }
+                });
+            } else {
+                return new MutableLiveData<>(new Resource<>(limit.status, new FuelUp(), limit.message));
+            }
+        });
+    }
+
     //Call this method when fuelling state change
     protected void updateFuellingSession(boolean isActiveFuelingSession, String stateMessage){
         activeFuellingSession.set(isActiveFuelingSession);

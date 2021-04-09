@@ -114,12 +114,12 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         AnalyticsUtils.setCurrentScreenName(getActivity(), "station-details-home");
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mViewModel.isPAPAvailable().observe(getActivity(), value -> {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mViewModel.isPAPAvailable(stationItem).observe(this, value -> {
             this.fuelUp = value.data;
 
+            binding.mobilePaymentLayout.setVisibility(View.VISIBLE);
             binding.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.INVISIBLE : View.VISIBLE);
             binding.mobilePaymentProgressBar.setVisibility(value.status != Resource.Status.LOADING ? View.GONE : View.VISIBLE);
 
@@ -128,8 +128,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
             binding.directionsButton.setText(value.data != null && value.data.fuelUpAvailable() ? R.string.action_fuel_up : R.string.station_directions_button);
         });
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return super.onCreateDialog(savedInstanceState);
     }
 
     @Override
@@ -176,6 +175,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
                                 getString(R.string.action_location, stationItem.getStation().getAddress().getAddressLine())
                         );
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+                dismissAllowingStateLoss();
             } else {
                 NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.getStation());
             }
