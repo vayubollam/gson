@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import javax.inject.Inject;
 
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentHomeGuestBinding;
@@ -46,6 +47,7 @@ import suncor.com.android.databinding.FragmentHomeSignedinBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.FuelUp;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.webview.WebDialogFragment;
@@ -53,6 +55,7 @@ import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
@@ -80,6 +83,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
     private boolean pingActiveSessionStarted = false;
     private Handler handler = new Handler();
+    private FuelUp fuelUp;
 
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
@@ -128,12 +132,23 @@ public class HomeFragment extends BottomNavigationFragment {
                 }
             }
         }));
+
         mViewModel.openNavigationApps.observe(this, event -> {
             Station station = event.getContentIfNotHandled();
-            if (station != null) {
+
+            if (fuelUp != null && fuelUp.fuelUpAvailable()) {
+                HomeNavigationDirections.ActionToSelectPumpFragment action =
+                        SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                                station.getId(),
+                                getString(R.string.action_location, station.getAddress().getAddressLine())
+                        );
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+            } else if (station != null) {
                 NavigationAppsHelper.openNavigationApps(getActivity(), station);
             }
+
         });
+
         mViewModel.dismissEnrollmentRewardsCardEvent.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 ConstraintLayout mainLayout = getView().findViewById(R.id.main_layout);
@@ -205,11 +220,15 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         mViewModel.isPAPAvailable().observe(getViewLifecycleOwner(), value -> {
+            this.fuelUp = value.data;
+
             nearestCard.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.INVISIBLE : View.VISIBLE);
             nearestCard.mobilePaymentProgressBar.setVisibility(value.status != Resource.Status.LOADING ? View.GONE : View.VISIBLE);
 
-            nearestCard.mobilePaymentText.setText(value.data != null && value.data ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
-            nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data ? R.drawable.ic_check : R.drawable.ic_close);
+            nearestCard.mobilePaymentText.setText(value.data != null && value.data.papAvailable() ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
+            nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data.papAvailable() ? R.drawable.ic_check : R.drawable.ic_close);
+
+            nearestCard.directionsButton.setText(value.data != null && value.data.fuelUpAvailable() ? R.string.action_fuel_up : R.string.station_directions_button);
         });
 
         return view;
