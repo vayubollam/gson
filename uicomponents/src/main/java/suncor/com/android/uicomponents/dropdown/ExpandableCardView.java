@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
 
 import suncor.com.android.uicomponents.R;
 
@@ -33,8 +32,6 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     private View titleBackgroundLayout;
     //Inner view
     private RecyclerView viewStub;
-
-    private boolean showPointsSection;
     // Card view default title size
     private static final float DEFAULT_TITLE_SIZE = 5.0f;
     // Card view default title color
@@ -56,6 +53,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     private Drawable mCollapseIcon;
     //card expand icon
     private Drawable mExpandIcon;
+    private boolean isFromRedeemPoints;
     private ExpandableViewListener mExpandCollapseListener;
     private DropDownAdapter mAdapter;
     private Context mContext;
@@ -176,8 +174,6 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
              selectedValue = mAdapter.getSelectedValue();
              selectedSubValue = mAdapter.getSelectedSubValue();
         }
-
-
 
         ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
         ((TextView)findViewById(R.id.selected_subheader_value)).setText(selectedSubValue);

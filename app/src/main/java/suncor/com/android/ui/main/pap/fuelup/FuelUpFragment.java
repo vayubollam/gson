@@ -134,6 +134,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding.setLifecycleOwner(this);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         binding.setIsLoading(isLoading);
+        binding.setViewModel(viewModel);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> handleConfirmAndAuthorizedClick());
@@ -154,9 +155,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.paymentExpandable.setDropDownData(paymentDropDownAdapter, false);
 
-
         redeemPointsDropDownAdapter = new RedeemPointsDropDownAdapter(
                 getContext()
+
         );
 
         binding.redeemPointsExpandable.setDropDownData(redeemPointsDropDownAdapter, true);
@@ -180,6 +181,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.fuelUpLimit.initListener(this);
         binding.paymentExpandable.initListener(this);
+        binding.redeemPointsExpandable.initListener(this);
 
         binding.selectPumpLayout.helpButton.setOnClickListener(v -> showHelp());
 
