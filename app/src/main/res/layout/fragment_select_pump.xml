@@ -101,6 +101,7 @@
                             tools:listitem="@layout/select_pump_card_item"
                             android:scrollbars="horizontal"
                             android:scrollbarAlwaysDrawHorizontalTrack="true"
+                            android:scrollbarFadeDuration="0"
                             android:scrollbarThumbHorizontal="@color/red"/>
                     </FrameLayout>
 
