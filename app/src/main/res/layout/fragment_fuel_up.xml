@@ -5,6 +5,9 @@
         <variable
             name="isLoading"
             type="androidx.databinding.ObservableBoolean" />
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel" />
     </data>
 
 
@@ -30,6 +33,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/header_petropoints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:text="@{@string/authorization_petropoints_balance(vm.petroPointsBalance)}"
+                android:textColor="@color/black_80"
+                app:autoSizeTextType="uniform"
+                tools:text="You're starting at 2,500 points" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
