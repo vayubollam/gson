@@ -700,6 +700,7 @@
     <string name="card_enable_location_settings">Paramètres</string>
 
     <string name="fuelling_almost_done">Vous y êtes presque…</string>
+    <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
 
 </resources>
