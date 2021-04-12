@@ -91,6 +91,15 @@
                 android:layout_marginTop="1dp" />
 
             <suncor.com.android.uicomponents.dropdown.ExpandableCardView
+                android:id="@+id/redeem_points_expandable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:header_title="@string/redeem"
+                app:title_color="@color/black_80"
+                app:title_size="16sp"
+                android:layout_marginTop="1dp" />
+
+            <suncor.com.android.uicomponents.dropdown.ExpandableCardView
                 android:id="@+id/payment_expandable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
