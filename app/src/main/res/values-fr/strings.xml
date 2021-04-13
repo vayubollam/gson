@@ -38,6 +38,8 @@
     <string name="station_hours_list_title">Heures</string>
     <string name="safety_message">N’oubliez pas d’agir de façon responsable. N\'utilisez pas votre téléphone en conduisant.</string>
     <string name="login_forgot_password_button">Mot de passe oublié</string>
+    <string name="forgot_password_alert_title">Échec de la réinitialisation du mot de passe</string>
+    <string name="forgot_password_alert_message">Veuillez réessayer plus tard. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="login_email_field_error">Veuillez entrer une adresse de courriel</string>
     <string name="login_password_field_error">Le mot de passe est requis</string>
     <string name="station_fav_button_add">Ajouter à vos établissements favoris</string>
@@ -60,7 +62,7 @@
     <string name="station_distance_unavailable">Distance non disponible</string>
     <string name="login_in_progress">Ouverture de session</string>
     <string name="login_prompt_title">Connectez-vous ou ajoutez à vos favoris.</string>
-    <string name="login_invalid_credentials_dialog_title">Courriel et mot de passe non valide.</string>
+    <string name="login_invalid_credentials_dialog_title">Courriel et mot de passe non valide</string>
     <string name="navigation_home_tab">Accueil</string>
     <string name="ok">OK</string>
     <string name="error">Erreur</string>
@@ -68,7 +70,7 @@
     <string name="drive_safely">CONDUISEZ DE FAÇON SÉCURITAIRE</string>
     <string name="login_soft_lock_alert_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
     <string name="favourites_add_station_button">Ajouter un établissement</string>
-    <string name="login_invalid_credentials_dialog_1st_message">L\'adresse courriel ou le mot de passe que vous avez entré n\'est pas correct. Veuillez réessayer.</string>
+    <string name="login_invalid_credentials_dialog_1st_message">Veuillez réessayer. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="profile_sign_out_button">Déconnexion</string>
     <string name="profile_about_button">À propos</string>
@@ -98,6 +100,7 @@
     <string name="enrollment_email_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
+    <string name="back_to_home">RETOUR À L\'ACCUIEL</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
@@ -118,7 +121,7 @@
     <string name="password_validation_lowercase">Au moins une lettre minuscule</string>
     <string name="password_validation_uppercase">Doit contenir au moins une majuscule</string>
     <string name="password_validation_special_char">Au moins un caractère spécial (parmi @$!%&amp;?#)</string>
-    <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte.</string>
+    <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="enrollment_invalid_email_dialog_message">Si vous ne vous souvenez pas de votre mot de passe, veuillez soumettre une demande de réinitialisation de mot de passe.</string>
     <string name="enrollment_invalid_email_dialog_diff_email">Entrez autre courriel</string>
     <string name="enrollment_invalid_email_dialog_sign_in">Démarrez</string>
@@ -144,6 +147,7 @@
     <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
     <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
     <string name="enrollment_account_created_message">Compte créé</string>
+    <string name="thanks_to_user">Merci, %s!</string>
     <string name="station_location_alert_settings">Réglages</string>
     <string name="enable_location_dialog_message">Nous utilisons la localisation pour vous indiquer la station la plus près, vous fournir les indications pour vous y rendre et vous permettre de démarrer le distributeur et payer votre essence par l\'entremise de l\'application.</string>
     <string name="msg_sl005_title">Quelque chose a mal tourné</string>
@@ -157,7 +161,7 @@
     <string name="enrollment_cardform_existing_card_dialog_title">Carte Petro-Points est déjà jumelé</string>
     <string name="enrollment_cardform_existing_card_dialog_message">Ce numéro de carte est déjà jumelé à un compte Petro-Points. Ouvrez une session ou utilisez une carte différente.</string>
     <string name="enrollment_cardform_existing_card_use_different_card">UTILISEZ UNE CARTE DIFFÉRENTE</string>
-    <string name="enrollment_cardform_existing_card_dialog_sign_in">DÉMMAREZ</string>
+    <string name="enrollment_cardform_existing_card_dialog_sign_in">Démarrez</string>
     <string name="enrollment_loading_question_title">Un moment</string>
     <string name="alert_signed_out_inactivity">Votre session a été fermée à la suite d\'un changement dans votre compte.</string>
     <string name="alert_signed_out_conflicting_login">Votre adresse de connexion a été utilisée sur un autre appareil. Veuillez ouvrir une nouvelle session.</string>
@@ -251,7 +255,8 @@
     <string name="profile_address_button">Adresse</string>
     <string name="profile_preferences_button">Préférences</string>
     <string name="profile_personnal_informations_subcopy2">Pour protéger votre compte, si vous modifiez votre adresse courriel, vous ne pourrez pas échanger de points en ligne ou au dépanneur pendant une période de 24 heures.</string>
-    <string name="profile_personnal_informations_subcopyEmail">Pour modifier votre courriel, vous devrez ouvrir une autre session.</string>
+
+    <string name="profile_personnal_informations_subcopyEmail">La modification de votre courriel entraînera la fermeture automatique de votre session; vous devrez alors vérifier votre nouvelle adresse et vous ne serez pas en mesure d\'effectuer un échange de carte-cadeau électronique pendant 24 heures.</string>
     <string name="profile_personnal_informations_email">Adresse courriel</string>
     <string name="profile_personnal_informations_phone">Numéro de téléphone (facultatif)</string>
     <string name="profile_personnal_informations_lastName">Nom</string>
@@ -313,13 +318,15 @@
     <string name="profile_personnal_informations_email_empty_alert_message">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_invalid_alert_message">Veuillez utiliser un autre adresse courriel.</string>
     <string name="profile_personnal_informations_email_alert_title">Enregistrer les changements</string>
-    <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez fermer votre session et l\'ouvrir de nouveau.</string>
+    <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez ouvrir une autre session. Si vous avez modifié votre courriel, consultez votre boîte de réception pour vérifier votre adresse de courriel.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Fermer la session</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="msg_am001_title">Les modifications n\'ont pas été sauvegardées.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Veuillez utiliser un autre adresse courriel ou annuler.</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Veuillez utiliser un autre adresse courriel.</string>
     <string name="msg_am001_message">Veuillez réessayer plus tard.</string>
+    <string name="enrollment_email_already_exists_title">Cette adresse courriel est déjà liée à un compte</string>
+    <string name="enrollment_email_already_exists_description">Cette adresse courriel est déjà utilisée. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
     <string name="profile_personnal_informations_update_toast">Vos renseignements personnels ont été mis à jour.</string>
@@ -625,15 +632,30 @@
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
 
+    <!-- Email Authentication -->
+
+    <string name="validate_your_email">Nous avons envoyé un courriel à :</string>
+    <string name="validate_your_email_to_sign_in">Terminez votre inscription en cliquant sur le lien dans votre courriel  <![CDATA[<b>%s</b>]]>. Puis, ouvrez une session pour obtenir vos %s points!</string>
+
+
     <!-- Fuel Up limit -->
     <string name="from">De</string>
     <string name="fuel_manual_price_limit">%1$s à %2$s</string>
     <string name="other_amount">Autre montant</string>
     <string name="fuel_upto">Montant maximal du carburanto</string>
     <string name="edit">Modifier</string>
+    <string name="you_have_x_points_header">Vous avez %s points</string>
+
+    <string name="no_redemption">Aucun échange</string>
+    <string name="redeem_x_points">Échangez points</string>
+    <string name="redeem_petro_points">Échangez vos Petro-Points</string>
+
+    <string name="zero_dollar_off">0 $ de rabais</string>
+    <string name="zero_points">0 points</string>
 
     <string name="pump">Distributeur</string>
     <string name="payment">PAIEMENT</string>
+    <string name="redeem">Échangez</string>
     <string name="pre_authorized">Préautorisation</string>
     <string name="tax_inclusion">Taxes incluses</string>
     <string name="payment_term_aggrement">En appuyant sur « Confirmer et autoriser », vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>

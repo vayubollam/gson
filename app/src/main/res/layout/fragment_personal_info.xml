@@ -16,11 +16,6 @@
             name="isEditing"
             type="Boolean" />
 
-
-        <variable
-            name="showEmailSubcopy"
-            type="Boolean" />
-
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -133,8 +128,7 @@
                     android:src="@drawable/ic_info_outline"
                     android:tint="@color/black_60"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/password_validation"
-                    app:visibleGone="@{showEmailSubcopy}" />
+                    app:layout_constraintTop_toBottomOf="@id/password_validation" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/email_subcopy_text"
@@ -149,36 +143,9 @@
                     android:textColor="@color/black_60"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingBottom="128dp"
                     app:layout_constraintStart_toEndOf="@id/email_subcopy_icon"
-                    app:layout_constraintTop_toTopOf="@id/email_subcopy_icon"
-                    app:visibleGone="@{showEmailSubcopy}" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/subcopy2_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/ic_info_outline"
-                    android:tint="@color/black_60"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/email_subcopy_text" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/subcopy2_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:gravity="top"
-                    android:lineSpacingMultiplier="1.57"
-                    android:minHeight="20dp"
-                    android:text="@string/profile_personnal_informations_subcopy2"
-                    android:textAppearance="@style/Caption1"
-                    android:textColor="@color/black_60"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/subcopy2_icon"
-                    app:layout_constraintTop_toTopOf="@id/subcopy2_icon"
-                    app:layout_constraintVertical_chainStyle="spread_inside" />
-
+                    app:layout_constraintTop_toTopOf="@id/email_subcopy_icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
@@ -197,7 +164,7 @@
             android:text="@string/profile_personnal_informations_button1"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subcopy2_text"
+            app:layout_constraintTop_toBottomOf="@id/email_subcopy_text"
             app:visibleInvisible="@{isEditing}"
             tools:visibility="visible" />
 

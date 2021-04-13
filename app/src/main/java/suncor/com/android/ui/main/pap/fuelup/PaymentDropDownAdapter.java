@@ -145,7 +145,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             selectedPos = i;
 
             if(Objects.nonNull(listener)) {
-                listener.onSelectValue(getSelectedValue(), getSelectedSubValue());
+                listener.onSelectValue(getSelectedValue(), getSelectedSubValue(), false);
             }
 
             notifyDataSetChanged();
@@ -181,7 +181,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
                 if (selectedPos == getAdapterPosition()) {
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(value.getCardInfo(), value.getExp());
+                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false);
                     }
                 }
 
@@ -191,7 +191,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
 
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(value.getCardInfo(), value.getExp());
+                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false);
                         listener.expandCollapse();
                     }
 

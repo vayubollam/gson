@@ -95,7 +95,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
                     selectedPos =  Integer.parseInt(position) - 1;
                     if(listener != null) {
-                        listener.onSelectValue(formatter.format(Double.valueOf(value)), null);
+                        listener.onSelectValue(formatter.format(Double.valueOf(value)), null, false);
                     }
                     callbackListener.onPreAuthChanged(formatter.format(Double.valueOf(value)));
                 }
@@ -104,7 +104,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 manualValue = lastFuelupTransaction.intValue();
                 selectedPos = childList.size() -1 ;
                 if(listener != null) {
-                    listener.onSelectValue(formatter.format(manualValue), null);
+                    listener.onSelectValue(formatter.format(manualValue), null, false);
                 }
                 callbackListener.onPreAuthChanged(formatter.format(manualValue));
             }
@@ -181,7 +181,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     manualValue = -1;
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(formatter.format(value), null);
+                        listener.onSelectValue(formatter.format(value), null, false);
                         callbackListener.onPreAuthChanged(formatter.format(value));
 
                         listener.expandCollapse();
@@ -263,7 +263,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     try {
                         manualValue = editable.toString().trim().length() > 0 ? Double.valueOf(editable.toString()) : 0;
                         if (Objects.nonNull(listener) && selectedPos == childList.size() - 1 && manualValue >= 0) {
-                            listener.onSelectValue(formatter.format(manualValue), null);
+                            listener.onSelectValue(formatter.format(manualValue), null, false);
                             callbackListener.onPreAuthChanged(formatter.format(manualValue));
                         }
                     } catch (NumberFormatException ex){

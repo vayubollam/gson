@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
 
 import suncor.com.android.uicomponents.R;
 
@@ -53,6 +53,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     private Drawable mCollapseIcon;
     //card expand icon
     private Drawable mExpandIcon;
+    private boolean isFromRedeemPoints;
     private ExpandableViewListener mExpandCollapseListener;
     private DropDownAdapter mAdapter;
     private Context mContext;
@@ -144,28 +145,44 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
 
-    public void setDropDownData(DropDownAdapter adapter){
+
+    public void setDropDownData(DropDownAdapter adapter, boolean isFromRedeemPoints){
         mAdapter = adapter;
         mAdapter.setListener(this);
 
         ((RecyclerView)findViewById(R.id.recycler_view)).setLayoutManager(new LinearLayoutManager(mContext));
         ((RecyclerView)findViewById(R.id.recycler_view)).setAdapter(mAdapter);
+
         mAdapter.notifyDataSetChanged();
 
-        onSelectValue(null, null);
+        if(isFromRedeemPoints){
+
+            onSelectValue("$0 off", "0 points" , true);
+        }else{
+
+            onSelectValue(null, null, false);
+
+        }
+
     }
 
     @Override
-    public void onSelectValue(String header, String subheader) {
+    public void onSelectValue(String header, String subheader, boolean isFromRedeemSection) {
         String selectedValue = header;
         String selectedSubValue = subheader;
         if(mAdapter != null) {
              selectedValue = mAdapter.getSelectedValue();
              selectedSubValue = mAdapter.getSelectedSubValue();
         }
+
         ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
         ((TextView)findViewById(R.id.selected_subheader_value)).setText(selectedSubValue);
 
+        if(isFromRedeemSection){
+            ((TextView)findViewById(R.id.selected_value)).setTextColor(ContextCompat.getColor(mContext, R.color.black_60));
+        }else{
+            ((TextView)findViewById(R.id.selected_value)).setTextColor(ContextCompat.getColor(mContext, R.color.black_80));
+        }
         ((TextView)findViewById(R.id.selected_subheader_value)).setVisibility(selectedSubValue == null || selectedSubValue.isEmpty() ? GONE : VISIBLE);
         findViewById(R.id.google_pay).setVisibility(GONE);
     }

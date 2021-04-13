@@ -166,23 +166,12 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
         binding.personalInformationsButton.setOnClickListener(v -> {
-            if(PreferenceManager.getDefaultSharedPreferences(getActivity())
-                    .getString(SplashActivity.CURRENT_ANDROID_VERSION, "").equals(BuildConfig.VERSION_NAME)){
-                AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
-                if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                    Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
-                } else {
-                    ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
-                    Navigation.findNavController(getView()).navigate(action);
-                }
-            }else {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                dialog.setTitle(R.string.app_outdated_title_message);
-                dialog.setMessage(R.string.app_outdated_dialog_message_profile);
-                dialog.setPositiveButton(R.string.ok, (d, w) -> {
-                    d.dismiss();
-                });
-                dialog.show();
+            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
+            } else {
+                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
+                Navigation.findNavController(getView()).navigate(action);
             }
         });
         binding.preferencesButton.setOnClickListener(v -> {

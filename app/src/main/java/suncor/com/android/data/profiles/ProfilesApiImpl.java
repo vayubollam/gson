@@ -28,8 +28,9 @@ import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
-    private static final String ADAPTER_PATH_V4 = "/adapters/suncor/v5/rfmp-secure/profiles";
-    private Gson gson;
+    private static final String ADAPTER_PATH_V7 = "/adapters/suncor/v7/rfmp-secure/profiles";
+    private static final String ADAPTER_PATH_V5 = "/adapters/suncor/v5/rfmp-secure/profiles";
+    private final Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
         this.gson = gson;
@@ -47,10 +48,15 @@ public class ProfilesApiImpl implements ProfilesApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH_V4);
+            URI adapterPath = new URI(ADAPTER_PATH_V7);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
+                request.addHeader("Accept-Language", "fr-CA");
+            } else {
+                request.addHeader("Accept-Language", "en-CA");
+            }
             request.send(body, new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
@@ -65,10 +71,7 @@ public class ProfilesApiImpl implements ProfilesApi {
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }
             });
-        } catch (URISyntaxException e) {
-            Timber.e(e.toString());
-            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
-        } catch (JSONException e) {
+        } catch (URISyntaxException | JSONException e) {
             Timber.e(e.toString());
             result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }
@@ -83,7 +86,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH_V4.concat("/security-question"));
+            adapterPath = new URI(ADAPTER_PATH_V5.concat("/security-question"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -126,7 +129,7 @@ public class ProfilesApiImpl implements ProfilesApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH_V4.concat("/security-answer-verification"));
+            adapterPath = new URI(ADAPTER_PATH_V5.concat("/security-answer-verification"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             String base64Answer = BaseEncoding.base64().encode(answer.getBytes());
             request.addHeader("x-security-answer", base64Answer);

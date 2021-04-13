@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
@@ -36,6 +37,7 @@ import suncor.com.android.model.pap.PayByWalletRequest;
 import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.googlepay.GooglePayUtils;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.utilities.Timber;
 
@@ -44,6 +46,7 @@ public class FuelUpViewModel extends ViewModel {
     private final SettingsApi settingsApi;
     private final PapRepository papRepository;
     private final PaymentsRepository paymentsRepository;
+    private MutableLiveData<String> headerPetroPoints = new MutableLiveData<>();
     private LatLng userLocation;
     private Profile profile;
 
@@ -55,6 +58,7 @@ public class FuelUpViewModel extends ViewModel {
         this.papRepository = papRepository;
         this.paymentsRepository = paymentsRepository;
         this.profile = sessionManager.getProfile();
+        headerPetroPoints.postValue(CardFormatUtils.formatBalance(profile.getPointsBalance()));
     }
 
 
@@ -65,6 +69,10 @@ public class FuelUpViewModel extends ViewModel {
 
     public LiveData<Resource<ActiveSession>> getActiveSession() {
         return papRepository.getActiveSession();
+    }
+
+    public MutableLiveData<String> getHeaderPoints(){
+         return headerPetroPoints;
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
