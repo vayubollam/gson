@@ -28,6 +28,7 @@ import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.utilities.Timber;
 
 public class PapApiImpl implements PapApi {
+    public final int PAYMENT_TIMEOUT = 45_000;
     private Gson gson;
 
     public PapApiImpl(Gson gson) {
@@ -110,7 +111,7 @@ public class PapApiImpl implements PapApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/PreAuth/PayByGooglePay");
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, PAYMENT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("latitude", Double.toString(userLocation.latitude));
             request.addHeader("longitude", Double.toString(userLocation.longitude));
             request.addHeader("deviceOS", "Android");
@@ -153,7 +154,7 @@ public class PapApiImpl implements PapApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/PreAuth/PayByWallet");
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, PAYMENT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("latitude", Double.toString(userLocation.latitude));
             request.addHeader("longitude", Double.toString(userLocation.longitude));
             request.addHeader("deviceOS", "Android");

@@ -496,7 +496,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 @Override
                 public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
-                     requestGooglePaymentTransaction();
+                    requestGooglePaymentTransaction();
                 }
 
                 @Override
