@@ -550,6 +550,7 @@
     <string name="carwash_barcode_subtitle">Placez votre code à barres devant le scanneur.</string>
     <string name="carwash_barcode_trouble_hint">Avez-vous le bon numéro?</string>
     <string name="carwash_barcode_reenter">Mettez à jour votre numéro</string>
+    <string name="pre_auth_info_tip">Vous verrez vos $ de rabais à la fin de la transaction</string>
 
     <string name="carwash_independent_alert_title">Il s\'agit d\'un lave-auto indépendant</string>
     <string name="carwash_independent_alert_message">Les cartes et billets de lavage Petro-Canada ne peuvent être utilisés à cet établissement. Achetez un billet à l\'intérieur pour laver votre voiture.</string>
@@ -652,10 +653,13 @@
 
     <string name="zero_dollar_off">0 $ de rabais</string>
     <string name="zero_points">0 points</string>
+    <string name="off">de rabais</string>
 
     <string name="pump">Distributeur</string>
     <string name="payment">PAIEMENT</string>
     <string name="redeem">Échangez</string>
+    <string name="redeem_caps">Échangez</string>
+    <string name="points">points</string>
     <string name="pre_authorized">Préautorisation</string>
     <string name="tax_inclusion">Taxes incluses</string>
     <string name="payment_term_aggrement">En appuyant sur « Confirmer et autoriser », vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>

@@ -155,8 +155,17 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.paymentExpandable.setDropDownData(paymentDropDownAdapter, false);
 
+
+        HashMap<String, String> redeemPointsData = new HashMap<>();
+        redeemPointsData.put("1", getString(R.string.no_redemption));
+        redeemPointsData.put("2", getString(R.string.redeem_x_points));
+        redeemPointsData.put("3", getString(R.string.other_amount));
+
+
         redeemPointsDropDownAdapter = new RedeemPointsDropDownAdapter(
-                getContext()
+                getContext(),
+                redeemPointsData,
+                viewModel.getPetroPoints()
 
         );
 
