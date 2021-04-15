@@ -42,7 +42,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingBottom="8dp"
-                android:layout_marginBottom="6dp"
                 android:textColor="@color/black_80"
                 android:textAlignment="center"
                 android:text="@{@string/you_have_x_points_header(viewModel.getHeaderPoints)}"/>
@@ -109,6 +108,7 @@
             </androidx.cardview.widget.CardView>
 
             <include
+                android:visibility="gone"
                 android:id="@+id/select_pump_layout"
                 layout="@layout/fragment_select_pump"/>
 
@@ -271,6 +271,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:clickable="true"
+            android:visibility="gone"
             app:visibleGone="@{isLoading}">
 
             <androidx.appcompat.widget.AppCompatTextView

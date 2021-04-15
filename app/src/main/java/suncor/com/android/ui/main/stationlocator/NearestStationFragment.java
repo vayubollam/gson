@@ -5,11 +5,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +24,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -196,8 +203,52 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.refreshLayout.setColorSchemeResources(R.color.red);
         binding.refreshLayout.setOnRefreshListener(this);
+        EditText otherAmountEditText = binding.otherAmountEditText;
+        otherAmountEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().isEmpty()) {
+                    otherAmountEditText.removeTextChangedListener(this);
+                    String amount = s.toString().replaceAll("\\s+", "");
+                    amount = amount.replaceAll(",", "");
+                    otherAmountEditText.setText(getFormattedPoints(Double.parseDouble(amount)));
+                    otherAmountEditText.addTextChangedListener(this);
+                    otherAmountEditText.setSelection(otherAmountEditText.getText().length());
+                    binding.dollarOffText.setText(getDollarOffValue(amount));
+                }
+            }
+        });
 
         return binding.getRoot();
+    }
+
+    private String getFormattedPoints(double amount) {
+        return NumberFormat.getNumberInstance(Locale.getDefault()).format(amount);
+    }
+
+    private String getDollarOffValue(String amount){
+        double amt = Double.parseDouble(amount);
+        if(amt < 10){
+            return "$0 off";
+        }else if(amt%10 > 0){
+            amt = amt - amt%10;
+        }
+        amt = amt/1000;
+        if(amt >= 1){
+            DecimalFormat df = new DecimalFormat("#.00");
+            return "$"+df.format(amt)+" off";
+        }
+        return "$"+amt+" off";
     }
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
