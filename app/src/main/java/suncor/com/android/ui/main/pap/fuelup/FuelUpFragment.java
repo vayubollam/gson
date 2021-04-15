@@ -164,7 +164,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         redeemPointsDropDownAdapter = new RedeemPointsDropDownAdapter(
                 getContext(),
-                redeemPointsData
+                redeemPointsData,
+                viewModel.getPetroPoints()
 
         );
 

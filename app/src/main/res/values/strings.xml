@@ -551,6 +551,8 @@
     <string name="carwash_barcode_subtitle">Hold your barcode up to the scanner.</string>
     <string name="carwash_barcode_trouble_hint">Is your number correct?</string>
     <string name="carwash_barcode_reenter">Update your number</string>
+    <string name="pre_auth_info_tip">You’ll see your final $ off at end of transaction</string>
+    <string name="off">off</string>
 
     <string name="carwash_independent_alert_title">This is an independently owned car wash</string>
     <string name="carwash_independent_alert_message">Petro-Canada car wash cards and tickets can\'t be used at this location. Purchase a ticket in-store to wash your car.</string>
@@ -661,12 +663,14 @@
     <string name="you_have_x_points_header">You have %s points</string>
 
     <string name="no_redemption">No Redemption</string>
-    <string name="redeem_x_points">Redeem points</string>
+    <string name="redeem_x_points">Redeem %s points</string>
     <string name="redeem_petro_points">Redeem Petro-Points</string>
 
     <string name="pump">PUMP</string>
     <string name="payment">PAYMENT</string>
     <string name="redeem">REDEEM</string>
+    <string name="redeem_caps">Redeem</string>
+    <string name="points">points</string>
     <string name="pre_authorized">Pre-authorize</string>
     <string name="tax_inclusion">Tax included</string>
     <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>

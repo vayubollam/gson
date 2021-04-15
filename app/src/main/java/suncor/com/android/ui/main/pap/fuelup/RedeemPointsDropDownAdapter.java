@@ -21,26 +21,36 @@ import java.util.Objects;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
 import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
+import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.Timber;
 
 public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     private ChildViewListener listener;
     private Context mContext;
+    private String redeemCaps;
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
     public static final String TAG = "RedeemPointsAdapter";
     public HashMap<String, String> redeemPoints = new HashMap<>();
     private int selectedPos;
+    private int selectedPosition;
+    private String points;
+    private String off;
+    private int petroPoints;
+
     private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
-    RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints) {
+    RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints) {
 
         this.mContext = context;
         this.redeemPoints = redeemPoints;
+        this.petroPoints = petroPoints;
+
     }
 
     @Override
@@ -62,6 +72,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        redeemCaps = parent.getResources().getString(R.string.redeem_caps);
+        points = parent.getResources().getString(R.string.points);
+        off = parent.getResources().getString(R.string.off);
+
+
+
         if (viewType == MANUAL_DROP_DOWN_LAYOUT) {
             return new ManualLimitViewHolder(ManualLimitDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else {
@@ -71,6 +87,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        selectedPosition = position;
         if (position != redeemPoints.size() - 1) {
             ((ChildDropDownViewHolder) holder).setDataOnView(redeemPoints.get(String.valueOf(position + 1)));
         } else {
@@ -98,11 +115,29 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
 
         public void setDataOnView(String price) {
-
             try {
+
+                int dividedValue = petroPoints/1000;
+                String resultantValue = CardFormatUtils.formatBalance(petroPoints);
+
+
+                if(selectedPosition == 1){
+                    binding.dollarOff.setVisibility(View.VISIBLE);
+                    if(Locale.getDefault().getLanguage().equalsIgnoreCase("en")){
+                        binding.dollarOff.setText("$"+dividedValue +  " " + off);
+                    }else{
+                        binding.dollarOff.setText(dividedValue+ " " + "$"+ " " + off);
+                    }
+                    binding.title.setText(redeemCaps + " " + resultantValue+ " " + points);
+
+                }else{
                 binding.title.setText(price);
-            } catch (NullPointerException ex) {
+                binding.dollarOff.setVisibility(View.GONE);
+                }
+            }  catch (NullPointerException ex) {
                 Timber.e(TAG, "Error on inflating data , " + ex.getMessage());
+            }catch (Exception e){
+                Timber.e(TAG, "Error, " + e.getMessage());
             }
             binding.container.setSelected(selectedPos == getAdapterPosition());
 
@@ -112,7 +147,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 notifyItemChanged(selectedPos);
 
                 if (Objects.nonNull(listener)) {
-//                   listener.onSelectValue(formatter.format(value), null, false);
+                    if(selectedPosition == 1){
+
+//                   listener.onSelectValue(res, null, false);
+                    }
                     listener.expandCollapse();
                 }
             });
@@ -133,6 +171,11 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 //           binding.container.setSelected(selectedPos == getAdapterPosition());
 
             binding.separator.setVisibility(View.GONE);
+            binding.separatorFade.setVisibility(View.VISIBLE);
+            binding.separatorFade1.setVisibility(View.VISIBLE);
+            binding.preAuthTip.setVisibility(View.VISIBLE);
+
+            binding.prefixCurrency.setText( value);
 
             binding.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
