@@ -8,11 +8,21 @@
         android:orientation="vertical">
 
         <View
+            android:id="@+id/separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/transaparent_black"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"/>
+
+        <View
+            android:id="@+id/separator_fade"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_4"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,5 +84,25 @@
                 app:autoSizeTextType="uniform"/>
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/separator_fade_1"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="1dp"
+            android:background="@color/black_4"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/pre_auth_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:padding="16dp"
+            android:drawablePadding="12dp"
+            android:visibility="gone"
+            android:drawableLeft="@drawable/ic_baseline_error_24"
+            android:text="@string/pre_auth_info_tip"/>
     </LinearLayout>
 </layout>

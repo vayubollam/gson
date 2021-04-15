@@ -75,6 +75,10 @@ public class FuelUpViewModel extends ViewModel {
          return headerPetroPoints;
     }
 
+    public int getPetroPoints(){
+        return profile.getPointsBalance();
+    }
+
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
         return Transformations.map(paymentsRepository.getPayments(true), result -> {
             ArrayList<PaymentListItem> payments = new ArrayList<>();
