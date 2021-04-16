@@ -175,6 +175,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:visibility="gone">
 
@@ -182,22 +183,19 @@
                         android:id="@+id/img_mobile_payment"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_marginTop="10dp"
                         app:srcCompat="@drawable/ic_check" />
 
                     <ProgressBar
                         android:id="@+id/mobile_payment_progress_bar"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginStart="8dp"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/mobile_payment_Text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:maxLines="1"
