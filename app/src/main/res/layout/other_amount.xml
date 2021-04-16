@@ -41,6 +41,7 @@
             android:inputType="numberDecimal"
             android:textColor="@color/black_80"
             android:textColorHint="@color/black_80"
+            android:imeOptions="actionDone"
             android:textSize="16sp"
             app:autoSizeTextType="uniform" />
 
@@ -73,7 +74,7 @@
             android:padding="16dp"
             android:drawablePadding="12dp"
             android:visibility="gone"
-            android:drawableLeft="@drawable/ic_baseline_error_24"
+            android:drawableLeft="@drawable/ic_error_outline_24px"
             android:text="@string/pre_auth_info_tip"/>
 
 

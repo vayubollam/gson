@@ -3,11 +3,15 @@ package suncor.com.android.ui.main.pap.fuelup;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -188,12 +192,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             if(binding.radioBtn.isSelected()){
                 otherAmountEditText.requestFocus();
                 otherAmountEditText.setHint("");
-//                showKeyboard();
             }else{
-//                hideKeyBoard();
                 otherAmountEditText.setHint(mContext.getString(R.string.other_amount));
-                binding.dollarOffText.setText(R.string.zero_dollar_off);
             }
+            binding.dollarOffText.setText(R.string.zero_dollar_off);
             binding.radioBtn.setOnClickListener(v -> {
                 if(selectedPos != getAdapterPosition()) {
                     notifyItemChanged(selectedPos);
@@ -202,7 +204,16 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 }
             });
 
-            binding.inputField.addTextChangedListener(new TextWatcher() {
+            otherAmountEditText.setOnEditorActionListener((v, actionId, event) -> {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    if (Objects.nonNull(listener)) {
+                        listener.expandCollapse();
+                    }
+                }
+                return false;
+            });
+
+            otherAmountEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
