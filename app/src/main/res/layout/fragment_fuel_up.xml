@@ -108,7 +108,6 @@
             </androidx.cardview.widget.CardView>
 
             <include
-                android:visibility="gone"
                 android:id="@+id/select_pump_layout"
                 layout="@layout/fragment_select_pump"/>
 
@@ -271,7 +270,6 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:clickable="true"
-            android:visibility="gone"
             app:visibleGone="@{isLoading}">
 
             <androidx.appcompat.widget.AppCompatTextView
