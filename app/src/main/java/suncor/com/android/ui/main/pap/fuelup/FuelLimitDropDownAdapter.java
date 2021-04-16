@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,14 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
-import suncor.com.android.uicomponents.R;
 import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
+import suncor.com.android.uicomponents.R;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 import suncor.com.android.utilities.Timber;

@@ -3,16 +3,17 @@ package suncor.com.android.ui.main.pap.fuelup;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -20,11 +21,10 @@ import java.util.Objects;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
-import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
+import suncor.com.android.databinding.OtherAmountBinding;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
-import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.Timber;
 
 public class RedeemPointsDropDownAdapter extends DropDownAdapter {
@@ -36,21 +36,17 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
     public static final String TAG = "RedeemPointsAdapter";
-    public HashMap<String, String> redeemPoints = new HashMap<>();
+    public HashMap<String, String> redeemPoints;
     private int selectedPos;
     private int selectedPosition;
     private String points;
-    private String off;
-    private int petroPoints;
-
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private final int petroPoints;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints) {
 
         this.mContext = context;
         this.redeemPoints = redeemPoints;
         this.petroPoints = petroPoints;
-
     }
 
     @Override
@@ -69,17 +65,29 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     }
 
+    private String getDollarOffValue(int amount){
+        if(amount < 10){
+            return "$0 off";
+        }else if(amount%10 > 0){
+            amount = amount - amount%10;
+        }
+        amount = amount/1000;
+        if(amount >= 1){
+            DecimalFormat df = new DecimalFormat("#.00");
+            return "$"+df.format(amount)+" off";
+        }
+        return "$"+amount+" off";
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         redeemCaps = parent.getResources().getString(R.string.redeem_caps);
         points = parent.getResources().getString(R.string.points);
-        off = parent.getResources().getString(R.string.off);
-
 
 
         if (viewType == MANUAL_DROP_DOWN_LAYOUT) {
-            return new ManualLimitViewHolder(ManualLimitDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            return new OtherAmountViewHolder(OtherAmountBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         } else {
             return new ChildDropDownViewHolder(FuelUpLimitDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
@@ -91,7 +99,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         if (position != redeemPoints.size() - 1) {
             ((ChildDropDownViewHolder) holder).setDataOnView(redeemPoints.get(String.valueOf(position + 1)));
         } else {
-            ((ManualLimitViewHolder) holder).setDataOnView(redeemPoints.get(String.valueOf(position + 1)));
+            ((OtherAmountViewHolder) holder).setDataOnView();
         }
 
     }
@@ -105,6 +113,15 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public int getItemViewType(int position) {
         return position == 2 ? MANUAL_DROP_DOWN_LAYOUT : DROP_DOWN_LAYOUT;
     }
+    public void showKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private void hideKeyBoard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
 
     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         FuelUpLimitDropDownItemBinding binding;
@@ -116,23 +133,18 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
         public void setDataOnView(String price) {
             try {
-
-                int dividedValue = petroPoints/1000;
+                String dollarOffValue = getDollarOffValue(petroPoints);
                 String resultantValue = CardFormatUtils.formatBalance(petroPoints);
 
 
                 if(selectedPosition == 1){
                     binding.dollarOff.setVisibility(View.VISIBLE);
-                    if(Locale.getDefault().getLanguage().equalsIgnoreCase("en")){
-                        binding.dollarOff.setText("$"+dividedValue +  " " + off);
-                    }else{
-                        binding.dollarOff.setText(dividedValue+ " " + "$"+ " " + off);
-                    }
-                    binding.title.setText(redeemCaps + " " + resultantValue+ " " + points);
-
+                    binding.dollarOff.setText(dollarOffValue);
+                    binding.title.setText(String.format("%s %s %s", redeemCaps, resultantValue, points));
+                    hideKeyBoard();
                 }else{
-                binding.title.setText(price);
-                binding.dollarOff.setVisibility(View.GONE);
+                    binding.title.setText(price);
+                    binding.dollarOff.setVisibility(View.GONE);
                 }
             }  catch (NullPointerException ex) {
                 Timber.e(TAG, "Error on inflating data , " + ex.getMessage());
@@ -142,6 +154,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             binding.container.setSelected(selectedPos == getAdapterPosition());
 
             binding.container.setOnClickListener(v -> {
+                hideKeyBoard();
                 notifyItemChanged(selectedPos);
                 selectedPos = getAdapterPosition();
                 notifyItemChanged(selectedPos);
@@ -158,69 +171,79 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
     }
 
-    class ManualLimitViewHolder extends RecyclerView.ViewHolder {
-        ManualLimitDropDownItemBinding binding;
+    class OtherAmountViewHolder extends RecyclerView.ViewHolder {
+        OtherAmountBinding binding;
 
-        ManualLimitViewHolder(@NonNull ManualLimitDropDownItemBinding binding) {
+        OtherAmountViewHolder(@NonNull OtherAmountBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
         }
 
-        public void setDataOnView(String value) {
-//           binding.container.setSelected(selectedPos == getAdapterPosition());
-
-            binding.separator.setVisibility(View.GONE);
-            binding.separatorFade.setVisibility(View.VISIBLE);
-            binding.separatorFade1.setVisibility(View.VISIBLE);
-            binding.preAuthTip.setVisibility(View.VISIBLE);
-
-            binding.prefixCurrency.setText( value);
-
-            binding.edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    view.setVisibility(View.GONE);
-                    binding.manualLimit.setVisibility(View.VISIBLE);
-                    binding.inputField.setEnabled(true);
-                    binding.inputField.requestFocus();
-                    binding.inputField.setSelection(binding.inputField.getText().length());
+        public void setDataOnView() {
+            EditText otherAmountEditText = binding.inputField;
+            otherAmountEditText.setText("");
+            binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
+            if(binding.radioBtn.isSelected()){
+                otherAmountEditText.requestFocus();
+                otherAmountEditText.setHint("");
+//                showKeyboard();
+            }else{
+//                hideKeyBoard();
+                otherAmountEditText.setHint(mContext.getString(R.string.other_amount));
+                binding.dollarOffText.setText(R.string.zero_dollar_off);
+            }
+            binding.radioBtn.setOnClickListener(v -> {
+                if(selectedPos != getAdapterPosition()) {
+                    notifyItemChanged(selectedPos);
+                    selectedPos = getAdapterPosition();
+                    notifyItemChanged(selectedPos);
                 }
-            });
-
-            binding.container.setOnClickListener(v -> {
-                notifyItemChanged(selectedPos);
-                selectedPos = getAdapterPosition();
-                notifyItemChanged(selectedPos);
-                binding.inputField.setVisibility(View.VISIBLE);
-                binding.manualLimit.setVisibility(View.VISIBLE);
-                binding.prefixCurrency.setText(mContext.getString(suncor.com.android.uicomponents.R.string.currency_dollar));
             });
 
             binding.inputField.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
                 }
 
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 }
 
                 @Override
-                public void afterTextChanged(Editable editable) {
-                    try {
-                    } catch (Exception e) {
-
+                public void afterTextChanged(Editable s) {
+                    if(!s.toString().isEmpty()) {
+                        otherAmountEditText.removeTextChangedListener(this);
+                        String amount = s.toString().replaceAll("\\s+", "");
+                        amount = amount.replaceAll(",", "");
+                        otherAmountEditText.setText(getFormattedPoints(Double.parseDouble(amount)));
+                        otherAmountEditText.addTextChangedListener(this);
+                        otherAmountEditText.setSelection(otherAmountEditText.getText().length());
+                        binding.dollarOffText.setText(getDollarOffValue(amount));
                     }
                 }
             });
+        }
 
-            binding.inputField.setOnKeyListener((view, keyCode, event) -> {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+        private String getFormattedPoints(double amount) {
+            return NumberFormat.getNumberInstance(Locale.getDefault()).format(amount);
+        }
 
-                }
-                return false;
-            });
+        private String getDollarOffValue(String amount){
+            double amt = Double.parseDouble(amount);
+            if(amt < 10){
+                return "$0 off";
+            }else if(amt%10 > 0){
+                amt = amt - amt%10;
+            }
+            amt = amt/1000;
+            if(amt >= 1){
+                DecimalFormat df = new DecimalFormat("#.00");
+                return "$"+df.format(amt)+" off";
+            }
+            return "$"+amt+" off";
         }
     }
 }
