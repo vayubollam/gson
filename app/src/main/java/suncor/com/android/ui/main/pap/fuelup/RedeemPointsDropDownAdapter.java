@@ -182,6 +182,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
         public void setDataOnView() {
             EditText otherAmountEditText = binding.inputField;
+            binding.preAuthTip.setVisibility(View.VISIBLE);
             otherAmountEditText.setText("");
             binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
             if(binding.radioBtn.isSelected()){
