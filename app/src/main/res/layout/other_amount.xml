@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+                    android:id="@+id/separator_fade"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black_4"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"/>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/radio_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/radio_button_selector" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/input_field"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".9"
+            android:background="@null"
+            android:hint="@string/other_amount"
+            android:inputType="numberDecimal"
+            android:textColor="@color/black_80"
+            android:textColorHint="@color/black_80"
+            android:imeOptions="actionDone"
+            android:textSize="16sp"
+            app:autoSizeTextType="uniform" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dollar_off_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="$0 Off"
+            android:paddingStart="8dp"
+            android:textColor="@color/black_60"
+            android:textSize="16sp"
+            app:autoSizeTextType="uniform" />
+
+    </LinearLayout>
+
+        <View
+                    android:id="@+id/separator_fade_1"
+                    android:layout_width="match_parent"
+                    android:visibility="visible"
+                    android:layout_height="1dp"
+                    android:background="@color/black_4"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"/>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/pre_auth_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:drawablePadding="12dp"
+            android:visibility="gone"
+            android:drawableLeft="@drawable/ic_error_outline_24px"
+            android:text="@string/pre_auth_info_tip"/>
+
+
+    </LinearLayout>
+</layout>

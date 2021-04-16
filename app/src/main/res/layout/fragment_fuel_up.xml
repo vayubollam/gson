@@ -42,7 +42,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingBottom="8dp"
-                android:layout_marginBottom="6dp"
                 android:textColor="@color/black_80"
                 android:textAlignment="center"
                 android:text="@{@string/you_have_x_points_header(viewModel.getHeaderPoints)}"/>
