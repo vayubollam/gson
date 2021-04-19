@@ -41,23 +41,49 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private int selectedPos;
     private int selectedPosition;
     private String points;
+    private String off;
     private final int petroPoints;
+    private String preAuthValue  = null;
+    private String dollarOffValue;
+    private String resultantValue;
+    private long roundOffValue;
+    private long amount = 0;
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints) {
 
         this.mContext = context;
         this.redeemPoints = redeemPoints;
         this.petroPoints = petroPoints;
+        formatter.setMinimumFractionDigits(0);
     }
 
     @Override
     public String getSelectedValue() {
-        return mContext.getString(R.string.zero_dollar_off);
+        String dollarsToReturn;
+         if(selectedPos == 1) {
+             dollarsToReturn = dollarOffValue;
+             return dollarsToReturn;
+        }else{
+             if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+                 return String.format("%s %s %s", "0", "$", "de rabais");
+             }else{
+                 return String.format("%s %s %s", "$", "0", "off");
+             }
+         }
     }
 
     @Override
     public String getSelectedSubValue() {
-        return mContext.getString(R.string.zero_points);
+        long resultantValueToReturn;
+        if(selectedPos == 1) {
+            resultantValueToReturn = roundOffValue;
+        }else{
+            resultantValueToReturn  = 0;
+        }
+
+        return CardFormatUtils.formatBalance((int)resultantValueToReturn) + " " + "points";
+
     }
 
     @Override
@@ -66,18 +92,38 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     }
 
+    public void setPreAuthValue(String preAuthValue){
+        this.preAuthValue = preAuthValue;
+    }
+
+
+
     private String getDollarOffValue(int amount){
         if(amount < 10){
-            return "$0 off";
+            if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+                return String.format("%s %s %s", "0", "$", off);
+            }else{
+                return String.format("%s %s %s", "$", "0", off);
+            }
         }else if(amount%10 > 0){
             amount = amount - amount%10;
         }
         amount = amount/1000;
         if(amount >= 1){
             DecimalFormat df = new DecimalFormat("#.00");
-            return "$"+df.format(amount)+" off";
+            if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+                return String.format("%s %s %s",  df.format(amount), "$", off);
+            }else{
+                return String.format("%s %s %s", "$", df.format(amount), off);
+            }
+
         }
-        return "$"+amount+" off";
+
+        if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+            return String.format("%s %s %s", amount,"$", off);
+        }else{
+            return String.format("%s %s %s", "$", amount, off);
+        }
     }
 
     @NonNull
@@ -85,6 +131,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         redeemCaps = parent.getResources().getString(R.string.redeem_caps);
         points = parent.getResources().getString(R.string.points);
+        off = parent.getResources().getString(R.string.off);
 
 
         if (viewType == MANUAL_DROP_DOWN_LAYOUT) {
@@ -124,6 +171,11 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
+    private long roundingThePetroPointsToNearestTen(int points){
+        long pointsToReturn = Math.round(points/10.0) * 10;
+        return pointsToReturn;
+    }
+
     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         FuelUpLimitDropDownItemBinding binding;
 
@@ -133,20 +185,31 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
 
         public void setDataOnView(String price) {
+
             try {
-                String dollarOffValue = getDollarOffValue(petroPoints);
-                String resultantValue = CardFormatUtils.formatBalance(petroPoints);
 
+                if (((Integer.parseInt(preAuthValue.replaceAll("[\\D]" , ""))) * 1000) < petroPoints) {
+                    resultantValue = CardFormatUtils.formatBalance(Integer.parseInt(preAuthValue));
 
-                if(selectedPosition == 1){
+                }else {
+                    resultantValue = CardFormatUtils.formatBalance(petroPoints);
+                }
+
+                if (selectedPosition == 1) {
                     binding.dollarOff.setVisibility(View.VISIBLE);
+
+                     roundOffValue = roundingThePetroPointsToNearestTen(Integer.parseInt(resultantValue.replaceAll("[\\D]", "")));
+                     dollarOffValue = getDollarOffValue((int) roundOffValue);
                     binding.dollarOff.setText(dollarOffValue);
-                    binding.title.setText(String.format("%s %s %s", redeemCaps, resultantValue, points));
+
+
+                    binding.title.setText(String.format("%s %s %s", redeemCaps, CardFormatUtils.formatBalance((int)roundOffValue), points));
                     hideKeyBoard();
-                }else{
+                } else {
                     binding.title.setText(price);
                     binding.dollarOff.setVisibility(View.GONE);
                 }
+
             }  catch (NullPointerException ex) {
                 Timber.e(TAG, "Error on inflating data , " + ex.getMessage());
             }catch (Exception e){
@@ -161,9 +224,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 notifyItemChanged(selectedPos);
 
                 if (Objects.nonNull(listener)) {
-                    if(selectedPosition == 1){
+                    if(selectedPos == 1){
+                        long roundOffValue = roundingThePetroPointsToNearestTen(Integer.parseInt(resultantValue.replaceAll("[\\D]", "")));
 
-//                   listener.onSelectValue(res, null, false);
+                   listener.onSelectValue(dollarOffValue, roundOffValue+ points, false);
+                    }else{
+                       listener.onSelectValue(formatter.format(0), formatter.format(0)+ points, true);
                     }
                     listener.expandCollapse();
                 }
