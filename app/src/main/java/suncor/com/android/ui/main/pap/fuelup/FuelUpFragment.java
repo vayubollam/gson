@@ -385,7 +385,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
         if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
             verifyFingerPrints();
-        } else {
+        } else if (preAuth != null) {
             try {
                 double preAuthPrices = formatter.parse(preAuth).doubleValue();
                 viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
