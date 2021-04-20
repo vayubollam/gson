@@ -47,7 +47,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private String dollarOffValue;
     private String resultantValue;
     private long roundOffValue;
-    private long amount = 0;
     private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints) {
@@ -66,9 +65,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
              return dollarsToReturn;
         }else{
              if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
-                 return String.format("%s %s %s", "0", "$", "de rabais");
+                 return String.format("%s %s ", formatter.format(0), "de rabais");
              }else{
-                 return String.format("%s %s %s", "$", "0", "off");
+                 return String.format("%s %s ",formatter.format(0), "off");
              }
          }
     }
@@ -101,28 +100,29 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private String getDollarOffValue(int amount){
         if(amount < 10){
             if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
-                return String.format("%s %s %s", "0", "$", off);
+                return String.format("%s %s ",formatter.format(0), off);
             }else{
-                return String.format("%s %s %s", "$", "0", off);
+                return String.format("%s %s ", formatter.format(0), off);
             }
         }else if(amount%10 > 0){
             amount = amount - amount%10;
         }
         amount = amount/1000;
         if(amount >= 1){
-            DecimalFormat df = new DecimalFormat("#.00");
+
+            DecimalFormat df = new DecimalFormat("#,###.00");
             if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
                 return String.format("%s %s %s",  df.format(amount), "$", off);
             }else{
-                return String.format("%s %s %s", "$", df.format(amount), off);
+                return String.format("%s %s ", "$"+ df.format(amount), off);
             }
 
         }
 
         if(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
-            return String.format("%s %s %s", amount,"$", off);
+            return String.format("%s %s", formatter.format(amount), off);
         }else{
-            return String.format("%s %s %s", "$", amount, off);
+            return String.format("%s %s ", formatter.format(amount), off);
         }
     }
 
@@ -189,7 +189,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             try {
 
                 if (((Integer.parseInt(preAuthValue.replaceAll("[\\D]" , ""))) * 1000) < petroPoints) {
-                    resultantValue = CardFormatUtils.formatBalance(Integer.parseInt(preAuthValue));
+                    resultantValue = CardFormatUtils.formatBalance((Integer.parseInt(preAuthValue.replaceAll("[\\D]", "")))*1000);
 
                 }else {
                     resultantValue = CardFormatUtils.formatBalance(petroPoints);
@@ -255,10 +255,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             if(binding.radioBtn.isSelected()){
                 otherAmountEditText.requestFocus();
                 otherAmountEditText.setHint("");
+                binding.dollarOffText.setVisibility(View.VISIBLE);
+            binding.dollarOffText.setText(R.string.zero_dollar_off);
             }else{
                 otherAmountEditText.setHint(mContext.getString(R.string.other_amount));
+                binding.dollarOffText.setVisibility(View.GONE);
             }
-            binding.dollarOffText.setText(R.string.zero_dollar_off);
             binding.radioBtn.setOnClickListener(v -> {
                 if(selectedPos != getAdapterPosition()) {
                     notifyItemChanged(selectedPos);
@@ -296,7 +298,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                         otherAmountEditText.setText(getFormattedPoints(Double.parseDouble(amount)));
                         otherAmountEditText.addTextChangedListener(this);
                         otherAmountEditText.setSelection(otherAmountEditText.getText().length());
+                        binding.dollarOffText.setVisibility(View.VISIBLE);
                         binding.dollarOffText.setText(getDollarOffValue(amount));
+                    }else{
+                        binding.dollarOffText.setVisibility(View.GONE);
                     }
                 }
             });
