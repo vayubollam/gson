@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -288,11 +289,17 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     }
 
     private void navigateToCardDetail(CardDetail cardDetail) {
+        if (getView() == null) return;
+
         AnalyticsUtils.setCurrentScreenName(getActivity(), cardDetail.getFirebaseCarwashScreenName());
         CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
         action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
         action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
-        Navigation.findNavController(getView()).navigate(action);
+        NavController controller = Navigation.findNavController(getView());
+        if (controller.getCurrentDestination() != null
+                && controller.getCurrentDestination().getAction(action.getActionId()) != null ) {
+            controller.navigate(action);
+        }
     }
 
     //TODO: UNCOMMENT THIS WHEN REDDEM/BUY SINGLE TICKET IS IN THE SCOPR
