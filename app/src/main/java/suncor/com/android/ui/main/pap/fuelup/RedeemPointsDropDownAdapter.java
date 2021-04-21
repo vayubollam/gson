@@ -189,7 +189,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     roundOffValue = Integer.parseInt(resultantValue.replaceAll("[\\D]", ""));
                     dollarOffValue = getDollarOffValue((double) roundOffValue);
                     binding.dollarOff.setText(dollarOffValue);
-                    binding.title.setText(String.format("%s %s %s", redeemCaps, (int)getAmount((double) roundOffValue),   points));
+                    binding.title.setText(String.format("%s %s %s", redeemCaps, CardFormatUtils.formatBalance((int)getAmount((double) roundOffValue)),   points));
                 } else {
                     binding.title.setText(price);
                     binding.dollarOff.setVisibility(View.GONE);
