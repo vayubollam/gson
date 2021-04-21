@@ -355,6 +355,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void onPreAuthChanged(String value) {
         this.preAuth = value;
         binding.totalAmount.setText(value);
+        redeemPointsDropDownAdapter.setPreAuthValue(preAuth);
+        redeemPointsDropDownAdapter.notifyDataSetChanged();
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
                 new Pair<>(AnalyticsUtils.Param.formSelection, value));
     }
