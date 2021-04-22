@@ -158,8 +158,8 @@ public class FuelUpViewModel extends ViewModel {
     /**
      * Payment initiate with wallet
      */
-    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
-        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount,
+    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int preAuthRedeemPoints, int userPaymentSourceId) {
+        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount,preAuthRedeemPoints,
                 userPaymentSourceId, profile.getPetroPointsNumber(), profile.isRbcLinked());
         return papRepository.authorizePaymentByWallet(request, userLocation);
     }

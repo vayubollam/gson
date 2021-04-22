@@ -13,13 +13,15 @@ public class PayByWalletRequest {
     private String preferredCulture;
     private String petroPointsNumber;
     private boolean rbcLinked;
+    private int preAuthRedeemPoints;
 
 
-    public PayByWalletRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit,
+    public PayByWalletRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit,int preAuthRedeemPoints,
                               int userPaymentSourceId, String petroPointsNumber, boolean rbcLinked) {
         this.encryptedStoreId = encryptedStoreId;
         this.pumpNumber = pumpNumber;
         this.preAuthLimit = preAuthLimit;
+        this.preAuthRedeemPoints = preAuthRedeemPoints;
         this.userPaymentSourceId = userPaymentSourceId;
         this.petroPointsNumber = petroPointsNumber;
         this.rbcLinked = rbcLinked;
@@ -33,6 +35,7 @@ public class PayByWalletRequest {
                 "encryptedStoreId='" + encryptedStoreId + '\'' +
                 ", pumpNumber=" + pumpNumber +
                 ", preAuthLimit=" + preAuthLimit +
+                ", preAuthRedeemPoints=" + preAuthRedeemPoints +
                 ", userPaymentSourceId=" + userPaymentSourceId +
                 ", paymentProviderName='" + paymentProviderName + '\'' +
                 ", preferredCulture='" + preferredCulture + '\'' +
