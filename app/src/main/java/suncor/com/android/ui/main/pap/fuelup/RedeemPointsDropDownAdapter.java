@@ -48,7 +48,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private String preAuthValue = null;
     private String dollarOffValue;
     private String resultantValue;
-    private long roundOffValue;
+    private double roundOffValue;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints) {
 
@@ -75,7 +75,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     @Override
     public String getSelectedSubValue() {
-        long resultantValueToReturn;
+        double resultantValueToReturn;
         if (selectedPos == 1) {
             resultantValueToReturn = roundOffValue;
         } else {
@@ -177,19 +177,21 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         public void setDataOnView(String price) {
 
             try {
-
-                if (((Integer.parseInt(preAuthValue.replaceAll("[\\D]", ""))) * 1000) < petroPoints) {
-                    resultantValue = CardFormatUtils.formatBalance((Integer.parseInt(preAuthValue.replaceAll("[\\D]", ""))) * 1000);
+                preAuthValue = replaceChars(preAuthValue);
+                if (((Double.parseDouble(preAuthValue)) * 1000) < petroPoints) {
+                    DecimalFormat df = new DecimalFormat("###.#");
+                    resultantValue = df.format(1000*(Double.parseDouble(preAuthValue.replace("$", ""))));
                 } else {
                     resultantValue = CardFormatUtils.formatBalance(petroPoints);
                 }
 
                 if (selectedPosition == 1) {
+                    resultantValue = replaceChars(resultantValue);
                     binding.dollarOff.setVisibility(View.VISIBLE);
-                    roundOffValue = Integer.parseInt(resultantValue.replaceAll("[\\D]", ""));
-                    dollarOffValue = getDollarOffValue((double) roundOffValue);
+                    roundOffValue = Double.parseDouble(resultantValue);
+                    dollarOffValue = getDollarOffValue(roundOffValue);
                     binding.dollarOff.setText(dollarOffValue);
-                    binding.title.setText(String.format("%s %s %s", redeemCaps, CardFormatUtils.formatBalance((int)getAmount((double) roundOffValue)),   points));
+                    binding.title.setText(String.format("%s %s %s", redeemCaps, CardFormatUtils.formatBalance((int)getAmount(roundOffValue)),   points));
                 } else {
                     binding.title.setText(price);
                     binding.dollarOff.setVisibility(View.GONE);
@@ -220,6 +222,13 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             });
 
         }
+    }
+
+    private String replaceChars(String str) {
+        str = str.replace("$","");
+        str = str.replace(",","");
+        str = str.replace(" ","");
+        return str;
     }
 
     class OtherAmountViewHolder extends RecyclerView.ViewHolder {
