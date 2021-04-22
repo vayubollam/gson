@@ -43,6 +43,7 @@
             android:textColorHint="@color/black_80"
             android:imeOptions="actionDone"
             android:textSize="16sp"
+            android:enabled="false"
             app:autoSizeTextType="uniform" />
 
         <androidx.appcompat.widget.AppCompatTextView
