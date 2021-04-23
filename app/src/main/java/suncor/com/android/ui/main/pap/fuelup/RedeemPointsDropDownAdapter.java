@@ -50,8 +50,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private String dollarOffValue;
     private String resultantValue;
     private double roundOffValue;
-    private String preAuthRedeemPoints = "0";
-    private RedeemPointsCallback redeemPointsCallback;
+    private final RedeemPointsCallback redeemPointsCallback;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints, RedeemPointsCallback redeemPointsCallback) {
 

@@ -110,7 +110,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/PreAuth/PayByGooglePay");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v2/rfmp-secure/payatpump/fuelup/PreAuth/PayByGooglePay");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, PAYMENT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("latitude", Double.toString(userLocation.latitude));
             request.addHeader("longitude", Double.toString(userLocation.longitude));
