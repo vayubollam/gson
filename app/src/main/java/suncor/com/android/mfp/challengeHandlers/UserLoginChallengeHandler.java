@@ -154,9 +154,10 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 keyStoreStorage.store(CREDENTIALS_KEY, credentials.toString());
             }
             String profileStr = identity.getJSONObject("user").getString("attributes");
-             profile = gson.fromJson(profileStr, Profile.class);
+            profile = gson.fromJson(profileStr, Profile.class);
+
             AnalyticsUtils.userID = profile.getRetailId();
-            AnalyticsUtils.setUserProperty(application.getApplicationContext(),  profile.getRetailId() );
+            AnalyticsUtils.setUserProperty(application.getApplicationContext(), profile.getRetailId(), profile.isRbcLinked());
         } catch (JSONException e) {
             e.printStackTrace();
         }
