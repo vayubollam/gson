@@ -627,7 +627,8 @@
     <string name="select_pump_header">Ravitaillement</string>
     <string name="pap_not_available_header">Paiement dans l\'application non disponible</string>
     <string name="pap_not_available_description">Vous ne pouvez pas utiliser votre application pour payer à cette station-service.</string>
-    <string name="select_pump_select">Sélectionnez votre distributeur</string>
+    <!--todo change french content -->
+    <string name="scroll_to_select_pump">Faites défiler pour sélectionner un distributeur</string>
     <string name="select_pump_selected">Sélectionné</string>
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
@@ -712,6 +713,7 @@
     <string name="card_enable_location_settings">Paramètres</string>
 
     <string name="fuelling_almost_done">Vous y êtes presque…</string>
+    <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
 
 </resources>

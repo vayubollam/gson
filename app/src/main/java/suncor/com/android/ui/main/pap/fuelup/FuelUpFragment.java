@@ -131,6 +131,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding.setLifecycleOwner(this);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         binding.setIsLoading(isLoading);
+        binding.setVm(viewModel);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> handleConfirmAndAuthorizedClick());
