@@ -82,7 +82,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public String getSelectedSubValue() {
         double resultantValueToReturn;
         if (selectedPos == 1) {
-            resultantValueToReturn = getAmount(roundOffValue)   ;
+            resultantValueToReturn = getAmount(roundOffValue);
         } else if (selectedPos == 2) {
             resultantValueToReturn = getAmount(amountInDouble);
         } else {
@@ -192,16 +192,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         public void setDataOnView(String price) {
 
             try {
-                preAuthValue = replaceChars(preAuthValue);
-                double selectedFuelValue = numberInstance.parse(preAuthValue).doubleValue();
-                if ((selectedFuelValue * 1000) < petroPoints) {
-                    DecimalFormat df = new DecimalFormat("###.#");
-                    resultantValue = df.format(1000 * selectedFuelValue);
-                } else {
-                    resultantValue = CardFormatUtils.formatBalance(petroPoints);
-                }
-                roundOffValue = numberInstance.parse(resultantValue).doubleValue();
-
+                getRoundOffValue();
                 if (selectedPosition == 1) {
                     binding.dollarOff.setVisibility(View.VISIBLE);
                     dollarOffValue = getDollarOffValue(roundOffValue);
@@ -263,7 +254,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             otherAmountEditText.setText("");
             binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
             if (binding.radioBtn.isSelected()) {
-                otherAmountEditText.requestFocus();
                 otherAmountEditText.setHint("");
                 otherAmountEditText.setEnabled(true);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
@@ -284,8 +274,16 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             otherAmountEditText.setOnEditorActionListener((v, actionId, event) -> {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     if (Objects.nonNull(listener)) {
-                        listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
-                        listener.expandCollapse();
+                        try {
+                            getRoundOffValue();
+                            if (amountInDouble > roundOffValue) {
+                                amountInDouble = roundOffValue;
+                            }
+                            listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
+                            listener.expandCollapse();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 return false;
@@ -329,5 +327,17 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 }
             });
         }
+    }
+
+    private void getRoundOffValue() throws ParseException {
+        preAuthValue = replaceChars(preAuthValue);
+        double selectedFuelValue = numberInstance.parse(preAuthValue).doubleValue();
+        if ((selectedFuelValue * 1000) < petroPoints) {
+            DecimalFormat df = new DecimalFormat("###.#");
+            resultantValue = df.format(1000 * selectedFuelValue);
+        } else {
+            resultantValue = CardFormatUtils.formatBalance(petroPoints);
+        }
+        roundOffValue = numberInstance.parse(resultantValue).doubleValue();
     }
 }
