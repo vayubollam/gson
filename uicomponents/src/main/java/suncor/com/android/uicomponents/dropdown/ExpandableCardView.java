@@ -183,7 +183,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         }else{
             ((TextView)findViewById(R.id.selected_value)).setTextColor(ContextCompat.getColor(mContext, R.color.black_80));
         }
-        ((TextView)findViewById(R.id.selected_subheader_value)).setVisibility(selectedSubValue == null || selectedSubValue.isEmpty() ? GONE : VISIBLE);
+        findViewById(R.id.selected_subheader_value).setVisibility(selectedSubValue == null || selectedSubValue.isEmpty() ? GONE : VISIBLE);
         findViewById(R.id.google_pay).setVisibility(GONE);
     }
 
