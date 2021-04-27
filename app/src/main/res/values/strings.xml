@@ -326,6 +326,8 @@
     <string name="enrollment_email_already_exists_title">Email already exists</string>
     <string name="enrollment_email_already_exists_description">This email is already in use. If you recently created an account, check your inbox for your verification link.</string>
     <string name="msg_am001_title">Changes were not saved.</string>
+    <string name="msg_used_password_title"></string>
+    <string name="msg_used_password_message">You can’t reuse a password you’ve used in the past year. Choose a different password.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Please use a different email account or undo.</string>
     <string name="msg_am001_message">Please try again later.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>

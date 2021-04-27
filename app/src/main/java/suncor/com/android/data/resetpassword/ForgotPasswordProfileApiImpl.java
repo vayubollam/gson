@@ -28,6 +28,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
 
 
     private final static String FORGOT_PASSWORD_ADAPTER_PATH = "adapters/suncor/v4/rfmp-secure/profiles/forgot-password";
+    private final static String FORGOT_PASSWORD_ADAPTER_PATH_V5 = "adapters/suncor/v5/rfmp-secure/profiles/forgot-password";
     private Gson gson;
 
     public ForgotPasswordProfileApiImpl(Gson gson) {
@@ -161,7 +162,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = createURI(FORGOT_PASSWORD_ADAPTER_PATH);
+            URI adapterPath = createURI(FORGOT_PASSWORD_ADAPTER_PATH_V5);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.addHeader("X-Profile-Id-Encrypted",profileIdEncrypted);
             request.addHeader("X-GUID",GUID);
