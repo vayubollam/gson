@@ -10,6 +10,7 @@ repositories {
 static def getDate() {
     return new Date().format('yyMMddHHmm').toInteger()
 }
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
@@ -17,7 +18,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.2.0"
+        versionName "3.3.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
@@ -83,6 +84,11 @@ android {
         QACarwash {
             dimension "version"
             applicationId "com.suncor.android.SuncorApplicationQA.Carwash"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
+        }
+        QAScrum {
+            dimension "version"
+            applicationId "com.suncor.android.SuncorApplicationQA.Scrum"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
         QASus {

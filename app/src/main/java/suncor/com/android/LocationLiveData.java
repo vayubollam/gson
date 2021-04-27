@@ -3,6 +3,9 @@ package suncor.com.android;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -16,11 +19,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+
 import suncor.com.android.utilities.Timber;
 
 public class LocationLiveData extends LiveData<Location> {
     private final AtomicBoolean mPending = new AtomicBoolean(false);
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationManager locationManager;
     private Observer<? super Location> mCurrentObserver;
     private final Observer<Location> internalObserver = new Observer<Location>() {
         @Override
@@ -30,7 +35,7 @@ public class LocationLiveData extends LiveData<Location> {
             }
         }
     };
-    private boolean useLastKnownLocation = true;
+    private boolean useLastKnownLocation = true, liveUpdates = false;
     private LocationCallback locationCallback = new LocationCallback() {
 
         @Override
@@ -47,14 +52,36 @@ public class LocationLiveData extends LiveData<Location> {
         }
     };
 
+    private final LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            if (location != null) {
+                postValue(location);
+            }
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) { }
+        @Override
+        public void onProviderEnabled(String provider) { }
+        @Override
+        public void onProviderDisabled(String provider) { }
+    };
+
     public LocationLiveData(Context context, boolean useLastKnownLocation) {
         this(context);
         this.useLastKnownLocation = useLastKnownLocation;
     }
 
+    public LocationLiveData(Context context, boolean useLastKnownLocation, boolean liveUpdates) {
+        this(context);
+        this.useLastKnownLocation = useLastKnownLocation;
+        this.liveUpdates = liveUpdates;
+    }
+
 
     public LocationLiveData(Context context) {
         fusedLocationProviderClient = new FusedLocationProviderClient(context);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
 
     @Override
@@ -75,6 +102,7 @@ public class LocationLiveData extends LiveData<Location> {
     @Override
     public void removeObserver(@NonNull Observer<? super Location> observer) {
         super.removeObserver(internalObserver);
+        locationManager.removeUpdates(locationListener);
     }
 
     @SuppressLint("MissingPermission")
@@ -92,6 +120,10 @@ public class LocationLiveData extends LiveData<Location> {
             } else {
                 requestLocationUpdate();
             }
+
+            if (liveUpdates) {
+                requestLiveLocationUpdate();
+            }
         }
     }
 
@@ -101,4 +133,15 @@ public class LocationLiveData extends LiveData<Location> {
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         fusedLocationProviderClient.requestLocationUpdates(request, locationCallback, null);
     }
+
+    @SuppressLint("MissingPermission")
+    private void requestLiveLocationUpdate() {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
+            // Threshold set at every 120 seconds and 250 meters in accordance to RMP-3198
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120 * 1000, 250, locationListener);
+        } else if (locationManager.isProviderEnabled("fused") ) {
+            locationManager.requestLocationUpdates("fused", 120 * 1000, 250, locationListener);
+        }
+    }
+
 }

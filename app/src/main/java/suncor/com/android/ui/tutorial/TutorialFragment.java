@@ -48,16 +48,23 @@ public class TutorialFragment extends Fragment {
             });
             binding.pageIndicator.attachToRecyclerView(binding.tutorialRecycler, pagerSnapHelper);
             adapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
-            binding.buttonClose.setOnClickListener(v -> ((SplashActivity) getActivity()).openMainActivity(false));
+            binding.buttonClose.setOnClickListener(v -> {
+                if (getActivity() instanceof SplashActivity) {
+                    ((SplashActivity) getActivity()).openMainActivity(false);
+                } else {
+                    getActivity().onBackPressed();
+                }
+            });
         }
         return binding.getRoot();
     }
 
     private List<TutorialContent> setUpTutorialSlides(String uriPrefix) {
         List<TutorialContent> tutorialContents = new ArrayList<>();
-        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page1_header), uriPrefix + R.raw.tutorial_1));
-        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page2_header), uriPrefix + R.raw.tutorial_2));
-        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page3_header), uriPrefix + R.raw.tutorial_3));
+        tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page4_header), uriPrefix + R.raw.tutorial_4));
+      //  tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page1_header), uriPrefix + R.raw.tutorial_1));
+      //  tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page2_header), uriPrefix + R.raw.tutorial_2));
+       // tutorialContents.add(new TutorialContent(getString(R.string.tutorial_silde_page3_header), uriPrefix + R.raw.tutorial_3));
         return tutorialContents;
     }
 

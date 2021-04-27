@@ -18,6 +18,6 @@ public interface PapApi {
     LiveData<Resource<P97StoreDetailsResponse>> storeDetails(String storeId);
     LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest request, LatLng userLocation);
     LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation);
-    LiveData<Resource<Transaction>> getTransactionDetails(String transactionId);
+    LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId);
     LiveData<Resource<Boolean>> cancelTransaction(String transactionId);
 }

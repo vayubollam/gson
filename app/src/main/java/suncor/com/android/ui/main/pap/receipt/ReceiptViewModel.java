@@ -17,7 +17,7 @@ public class ReceiptViewModel extends ViewModel {
         this.papRepository = papRepository;
     }
 
-    public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId) {
-        return papRepository.getTransactionDetails(transactionId);
+    public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId) {
+        return papRepository.getTransactionDetails(transactionId, isPartnerTransactionId);
     }
 }

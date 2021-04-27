@@ -12,12 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
         android:clickable="true"
         android:focusable="true"
         app:cardCornerRadius="24dp"
-        android:elevation="12dp"
-        app:cardElevation="12dp"
+        app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="false"
         app:cardBackgroundColor="@color/select_pump_background"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
@@ -27,7 +29,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingHorizontal="24dp"
+            android:paddingHorizontal="4dp"
             android:paddingVertical="96dp">
 
             <androidx.appcompat.widget.AppCompatTextView

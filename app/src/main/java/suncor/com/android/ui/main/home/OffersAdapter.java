@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.home;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -13,12 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import suncor.com.android.BuildConfig;
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
+import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.YoutubePlayerActivity;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.ui.main.stationlocator.FiltersFragment;
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
@@ -54,35 +60,34 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             offerCards.add(banner1);
         }
 
-        OfferCard banner2 = new OfferCard(activity.getString(R.string.offers_banner_3_text),
-                activity.getDrawable(R.drawable.banner_3_brand),
+        OfferCard banner2 = new OfferCard(activity.getString(R.string.offers_banner_2_text),
+                activity.getDrawable(R.drawable.banner_6_fuelup),
                 new OfferCard.OfferButton(
-                        activity.getString(R.string.offers_banner_3_button),
-                        activity.getDrawable(R.drawable.ic_play_video),
+                        activity.getString(R.string.offers_banner_2_button),
                         () -> {
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
-                                    (isSignedIn? "2":"3") +"|"+activity.getString(R.string.offers_banner_3_text),
-                                    activity.getString(R.string.offers_banner_3_text),
-                                    activity.getString(R.string.offers_banner_3_text),
-                                    (isSignedIn? "2":"3")
-                            );
-                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, activity.getString(R.string.offers_banner_3_link));
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_3_text));
 
-                            activity.startActivity(intent);
+                            activity.getNavController().navigate(R.id.action_to_TutorialFragment);
+
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                                    (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
+                                    activity.getString(R.string.offers_banner_2_text),
+                                    activity.getString(R.string.offers_banner_2_text),
+                                    (isSignedIn? "1":"2")
+                            );
                         }
                 ));
         offerCards.add(banner2);
 
-        OfferCard banner3 = new OfferCard(activity.getString(R.string.offers_banner_2_text),
+        OfferCard banner3 = new OfferCard(activity.getString(!isSignedIn ? R.string.offers_banner_3a_text : R.string.offers_banner_3b_text),
                 activity.getDrawable(R.drawable.banner_2_ppts),
                 new OfferCard.OfferButton(
-                        activity.getString(R.string.offers_banner_2_button),
+                        activity.getString(!isSignedIn ? R.string.offers_banner_3a_button : R.string.offers_banner_3b_button),
                         () -> {
                             if (isSignedIn)
                             {
-                                activity.getNavController().navigate(R.id.action_home_tab_to_rewardsDiscoveryFragment);
+                                HomeNavigationDirections.ActionToCardsDetailsFragment action = HomeNavigationDirections.actionToCardsDetailsFragment();
+                                action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
+                                activity.getNavController().navigate(action);
                             }
                             else
                             {
@@ -100,10 +105,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
 
         OfferCard banner4 = new OfferCard(activity.getString(R.string.offers_banner_4_text),
-                activity.getDrawable(R.drawable.banner_4_ev),
+                activity.getDrawable(R.drawable.banner_7_carwash),
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_4_button),
-                        activity.getDrawable(R.drawable.ic_play_video),
                         () -> {
                             AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
                                     (isSignedIn? "3":"4") +"|"+activity.getString(R.string.offers_banner_4_text),
@@ -111,12 +115,11 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     activity.getString(R.string.offers_banner_4_text),
                                     (isSignedIn? "3":"4")
                             );
-                            Intent intent = new Intent(activity, YoutubePlayerActivity.class);
-                            AnalyticsUtils.logEvent(activity, "video_start", new Pair<>("videoTitle", activity.getString(R.string.offers_banner_4_text)));
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_ID_EXTRA, "xsa9QjRgy5w");
-                            intent.putExtra(YoutubePlayerActivity.VIDEO_TITLE, activity.getString(R.string.offers_banner_4_text));
 
-                            activity.startActivity(intent);
+                            HomeNavigationDirections.ActionToStationsFragment action = HomeNavigationDirections.actionToStationsFragment();
+                            action.setFilters(FiltersFragment.CARWASH_ALL_WASHES_KEY);
+                            action.setRoot(false);
+                            activity.getNavController().navigate(action);
                         }
                 ));
         offerCards.add(banner4);

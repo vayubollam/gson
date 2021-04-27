@@ -170,7 +170,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-wallet-add-credit-card");
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-wallet-add-credit-card");
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.clearCache(true);
         isWebViewLoading.set(true);

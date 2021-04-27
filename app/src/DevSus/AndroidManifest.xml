@@ -4,8 +4,8 @@
 
 
     <application
-        android:icon="@mipmap/ic_launcher_debug"
-        android:roundIcon="@mipmap/ic_launcher_round_debug"
+        android:icon="@mipmap/ic_launcher_susdev"
+        android:roundIcon="@mipmap/ic_launcher_round_susdev"
         tools:replace="android:icon,android:roundIcon">
 
     </application>

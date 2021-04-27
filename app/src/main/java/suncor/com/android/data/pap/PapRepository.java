@@ -57,12 +57,12 @@ public class PapRepository {
         return papApi.storeDetails(storeId);
     }
 
-    public LiveData<Resource<Transaction>> getTransactionDetails(String trasnsactionId) {
-       return papApi.getTransactionDetails(trasnsactionId);
+    public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId) {
+       return papApi.getTransactionDetails(transactionId, isPartnerTransactionId);
     }
 
-    public LiveData<Resource<Boolean>> cancelTransaction(String trasnsactionId) {
-       return papApi.cancelTransaction(trasnsactionId);
+    public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {
+       return papApi.cancelTransaction(transactionId);
     }
 
     public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest, LatLng userLocation) {

@@ -51,6 +51,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -65,6 +67,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
+import suncor.com.android.ui.enrollment.form.EnrollmentFormFragmentArgs;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -223,7 +226,6 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         return binding.getRoot();
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -284,6 +286,16 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
         mViewModel.stationsAround.observe(getViewLifecycleOwner(), this::updateCards);
         mViewModel.filters.observe(getViewLifecycleOwner(), this::filtersChanged);
+
+        String filters = null;
+        if (getArguments() != null) {
+            filters = StationsFragmentArgs.fromBundle(getArguments()).getFilters();
+        }
+
+        if (filters != null && !filters.isEmpty()) {
+            mViewModel.setCurrentFilters(new ArrayList<>(Arrays.asList(filters.split(","))));
+        }
+
         mViewModel.selectedStation.observe(getViewLifecycleOwner(), station -> {
             if (mViewModel.stationsAround.getValue() == null || mViewModel.stationsAround.getValue().data == null || mViewModel.stationsAround.getValue().data.isEmpty()) {
                 return;

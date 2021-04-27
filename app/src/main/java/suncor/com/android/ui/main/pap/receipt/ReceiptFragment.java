@@ -85,11 +85,10 @@ public class ReceiptFragment extends MainActivityFragment {
     public void onResume() {
         super.onResume();
         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
-
     }
 
     private void observeTransactionData(String transactionId){
-        viewModel.getTransactionDetails(transactionId).observe(getViewLifecycleOwner(), result->{
+        viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt-loading");
@@ -99,6 +98,11 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
+
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+
                 binding.paymentType.setText(result.data.getPaymentType(getContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
@@ -127,6 +131,8 @@ public class ReceiptFragment extends MainActivityFragment {
                     share.setAction(Intent.ACTION_SEND);
                     share.setType("application/pdf");
                     share.putExtra(Intent.EXTRA_STREAM, pdfUri);
+                    share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_receipt_subject, result.data.getFormattedDate()));
+                    share.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_receipt_body, result.data.getFormattedDate()));
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(share, "Share"));
                 });

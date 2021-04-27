@@ -3,8 +3,11 @@ package suncor.com.android.model.cards;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.util.StringUtil;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -13,7 +16,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import suncor.com.android.utilities.Timber;
+
 public class Transaction implements Comparable<Transaction>, Parcelable {
+
+
     private TransactionType transactionType;
     private String date;
     private String rewardDescription;
@@ -24,6 +31,7 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
     private String redeemPoints;
     private int redeemPointsInt;
     private float purchaseAmount;
+    private String partnerTransactionId;
 
     public Transaction(TransactionType transactionType, String date, String rewardDescription, String locationAddress, int basePoints, int redeemPointsInt, int bonusPoints, String redeemPoints, int totalPoints, float purchaseAmount) {
         this.transactionType = transactionType;
@@ -45,6 +53,14 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
 
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getPartnerTransactionId() {
+        return partnerTransactionId;
+    }
+
+    public void setPartnerTransactionId(String partnerTransactionId) {
+        this.partnerTransactionId = partnerTransactionId;
     }
 
     public String getDate() {
@@ -134,19 +150,20 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
     }
 
     public String getFormattedPurchaseAmount() {
-        String amount = NumberFormat.getNumberInstance(Locale.getDefault()).format(getPurchaseAmount());
+        String amount = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(getPurchaseAmount());
+
         switch (getTransactionType()) {
             case PURCHASE:
-                return getPurchaseAmount() == 0 ? "" : "$" + amount;
+                return getPurchaseAmount() == 0 ? "" : amount;
             case REDEMPTION:
-                return getBonusPoints() == 0 || getPurchaseAmount() == 0 ? "" : "$" + amount;
+                return getBonusPoints() == 0 || getPurchaseAmount() == 0 ? "" : amount;
             default:
                 return "";
         }
     }
 
     public int getMonth() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         Date date = null;
         try {
             date = dateFormat.parse(getDate());
