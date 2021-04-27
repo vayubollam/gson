@@ -156,7 +156,7 @@ public class AddCardFragment extends MainActivityFragment {
 
     @Override
     protected String getScreenName() {
-        return "my-petro-points-wallet-add-card";
+        return "my-petro-points-wallet-add-petro-card";
     }
 
     private void hideKeyBoard() {
@@ -171,6 +171,7 @@ public class AddCardFragment extends MainActivityFragment {
 
     private void goBack() {
         hideKeyBoard();
+        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", false);
         Navigation.findNavController(getView()).popBackStack();
     }
 }

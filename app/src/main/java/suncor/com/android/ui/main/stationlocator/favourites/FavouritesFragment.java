@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,7 +124,7 @@ public class FavouritesFragment extends MainActivityFragment {
                 }
             } else if(stations.status == Resource.Status.ERROR) {
                 AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, stations.message),
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, stations.message  + ", Error on fetch favorite Gas Station"),
                         new Pair<>(AnalyticsUtils.Param.formName, "Favorite Gas Stations"));
             }
         });
@@ -152,7 +153,7 @@ public class FavouritesFragment extends MainActivityFragment {
     }
 
     public void goBack() {
-        getFragmentManager().popBackStack();
+        Navigation.findNavController(getView()).popBackStack();
     }
 
 

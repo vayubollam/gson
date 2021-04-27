@@ -64,8 +64,10 @@ public class KeepStateNavigator extends FragmentNavigator {
         if (fragment == null) {
             String className = destination.getClassName();
             fragment = instantiateFragment(context, manager, className, args);
+            fragment.setArguments(args);
             transaction.add(containerId, fragment, tag);
         } else {
+            fragment.setArguments(args);
             transaction.attach(fragment);
         }
 

@@ -117,7 +117,7 @@ public class HomeFragment extends BottomNavigationFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
+        locationLiveData = new LocationLiveData(getContext().getApplicationContext(), false, true);
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         mViewModel.locationServiceEnabled.observe(this, (enabled -> {
@@ -474,27 +474,27 @@ public class HomeFragment extends BottomNavigationFragment {
                 if (result.status == Resource.Status.LOADING) {
                 } else if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Home"));
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Home").show();
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side" ),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
                         if(result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                         } else if(result.data.status.equals("BeginFueling")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                         } else{
                             //todo handle processing and session end state
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                         }
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
@@ -503,7 +503,7 @@ public class HomeFragment extends BottomNavigationFragment {
                         mViewModel.updateFuellingSession(false, "");
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
                                 new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                     }
                 }
             });

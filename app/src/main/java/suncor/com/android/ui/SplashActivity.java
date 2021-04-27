@@ -55,6 +55,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     private boolean newVersionUpdated = false;
     public static final String LOGINFAILED = "loginFailed";
 
+
     @Inject
     SessionManager sessionManager;
 

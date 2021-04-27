@@ -38,10 +38,13 @@ public class TransactionsViewModel extends ViewModel {
         transactionsLiveData = Transformations.switchMap(loadTransactions, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 updateStartEndMonths();
-                return transactionApi.getTransactions(sessionManager.getProfile().getPetroPointsNumber(), startMonth, monthsBack);
-            } else {
-                return new MutableLiveData<>();
+                if (sessionManager!= null && sessionManager.getProfile()!= null && sessionManager.getProfile().getPetroPointsNumber()!= null)
+                {
+                    return transactionApi.getTransactions(sessionManager.getProfile().getPetroPointsNumber(), startMonth, monthsBack);
+                }
             }
+                return new MutableLiveData<>();
+
         });
         transactionsLiveData.observeForever(arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {

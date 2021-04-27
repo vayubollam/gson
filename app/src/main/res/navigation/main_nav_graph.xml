@@ -38,11 +38,20 @@
             app:argType="boolean" />
     </keep_state_fragment>
 
+    <action
+        android:id="@+id/action_to_stationsFragment"
+        app:destination="@id/stations_tab" />
+
     <keep_state_fragment
         android:id="@+id/stations_tab"
         android:name="suncor.com.android.ui.main.stationlocator.StationsFragment"
         android:label="StationsFragment"
         tools:layout="@layout/fragment_stations">
+        <argument
+            android:name="filters"
+            android:defaultValue=""
+            app:nullable="true"
+            app:argType="string" />
         <argument
             android:name="root"
             android:defaultValue="true"
@@ -741,5 +750,22 @@
             app:argType="boolean"
             app:nullable="false"/>
     </keep_state_fragment>
+
+
+    <action
+        android:id="@+id/action_to_TutorialFragment"
+        app:destination="@id/tutorialFragment"
+        app:enterAnim="@anim/slide_up"
+        app:exitAnim="@anim/dummy"
+        app:popExitAnim="@anim/slide_down"  >
+    </action>
+
+
+    <keep_state_fragment
+        android:id="@+id/tutorialFragment"
+        android:name="suncor.com.android.ui.tutorial.TutorialFragment"
+        android:label="TutorialFragment">
+    </keep_state_fragment>
+
 
 </navigation>

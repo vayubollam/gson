@@ -72,13 +72,13 @@ window.onload = function () {
     document.getElementById("rewards-link-hbc-title").innerHTML = data.rewardsLink.hbc.title
     document.getElementById("rewards-link-hbc-description").innerHTML = data.rewardsLink.hbc.description;
 
-    document.getElementById("rewards-link-caa-image").src="images/panel-6/card-caa.png";
-    document.getElementById("rewards-link-caa-title").innerHTML = data.rewardsLink.caa.title
-    document.getElementById("rewards-link-caa-description").innerHTML = data.rewardsLink.caa.description;
-
-    document.getElementById("rewards-link-bcaa-image").src="images/panel-6/card-bcaa.png";
-    document.getElementById("rewards-link-bcaa-title").innerHTML = data.rewardsLink.bcaa.title
-    document.getElementById("rewards-link-bcaa-description").innerHTML = data.rewardsLink.bcaa.description;
+//    document.getElementById("rewards-link-caa-image").src="images/panel-6/card-caa.png";
+//    document.getElementById("rewards-link-caa-title").innerHTML = data.rewardsLink.caa.title
+//    document.getElementById("rewards-link-caa-description").innerHTML = data.rewardsLink.caa.description;
+//
+//    document.getElementById("rewards-link-bcaa-image").src="images/panel-6/card-bcaa.png";
+//    document.getElementById("rewards-link-bcaa-title").innerHTML = data.rewardsLink.bcaa.title
+//    document.getElementById("rewards-link-bcaa-description").innerHTML = data.rewardsLink.bcaa.description;
 
 //    document.getElementById("rewards-link-more-image").src="images/panel-6/card-morerewards.png";
 //    document.getElementById("rewards-link-more-title").innerHTML = data.rewardsLink.more.title
@@ -96,8 +96,7 @@ window.onload = function () {
     document.getElementById("rewards-partners-partner-3-image").src="images/panel-7/card-itravel2000.png";
 
     // (Panel-8) Article Rewards-Exchange
-    document.getElementById("rewards-exchange-title").innerHTML = data.rewardsExchange.title
-    document.getElementById("rewards-exchange-description").innerHTML = data.rewardsExchange.description;
-
-    document.getElementById("rewards-exchange-image").src="images/panel-8/exchange-fr.gif";
+//    document.getElementById("rewards-exchange-title").innerHTML = data.rewardsExchange.title
+//    document.getElementById("rewards-exchange-description").innerHTML = data.rewardsExchange.description;
+//    document.getElementById("rewards-exchange-image").src="images/panel-8/exchange-fr.gif";
  }

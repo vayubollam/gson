@@ -38,6 +38,8 @@
     <string name="station_hours_list_title">Heures</string>
     <string name="safety_message">N’oubliez pas d’agir de façon responsable. N\'utilisez pas votre téléphone en conduisant.</string>
     <string name="login_forgot_password_button">Mot de passe oublié</string>
+    <string name="forgot_password_alert_title">Échec de la réinitialisation du mot de passe</string>
+    <string name="forgot_password_alert_message">Veuillez réessayer plus tard. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="login_email_field_error">Veuillez entrer une adresse de courriel</string>
     <string name="login_password_field_error">Le mot de passe est requis</string>
     <string name="station_fav_button_add">Ajouter à vos établissements favoris</string>
@@ -60,7 +62,7 @@
     <string name="station_distance_unavailable">Distance non disponible</string>
     <string name="login_in_progress">Ouverture de session</string>
     <string name="login_prompt_title">Connectez-vous ou ajoutez à vos favoris.</string>
-    <string name="login_invalid_credentials_dialog_title">Courriel et mot de passe non valide.</string>
+    <string name="login_invalid_credentials_dialog_title">Courriel et mot de passe non valide</string>
     <string name="navigation_home_tab">Accueil</string>
     <string name="ok">OK</string>
     <string name="error">Erreur</string>
@@ -68,7 +70,7 @@
     <string name="drive_safely">CONDUISEZ DE FAÇON SÉCURITAIRE</string>
     <string name="login_soft_lock_alert_message">L\'ouverture de session est verrouillée à la suite de %1d tentatives infructueuses. Recommencez dans %2d minutes.</string>
     <string name="favourites_add_station_button">Ajouter un établissement</string>
-    <string name="login_invalid_credentials_dialog_1st_message">L\'adresse courriel ou le mot de passe que vous avez entré n\'est pas correct. Veuillez réessayer.</string>
+    <string name="login_invalid_credentials_dialog_1st_message">Veuillez réessayer. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="profile_sign_out_button">Déconnexion</string>
     <string name="profile_about_button">À propos</string>
@@ -78,6 +80,9 @@
     <string name="enrollment_yes_i_have_a_card_button">Oui, j\'ai une carte Petro\u2011Points.</string>
     <string name="enrollment_no_i_don_t_have_a_card_button">Non, je n\'ai pas encore de carte.</string>
     <string name="enrollment_personal_information_category">Informations personnelles</string>
+    <string name="app_outdated_dialog_message">Votre application est désuète. Pour vous joindre au programme, veuillez télécharger la plus récente version.</string>
+    <string name="app_outdated_dialog_message_profile">Votre application est désuète. Pour mettre à jour vos renseignements, veuillez télécharger la plus récente version.</string>
+    <string name="app_outdated_title_message">Téléchargez notre plus récente application</string>
     <string name="enrollment_address_category">Adresse</string>
     <string name="enrollment_first_name_label">Prénom</string>
     <string name="enrollment_last_name_label">Nom</string>
@@ -95,6 +100,7 @@
     <string name="enrollment_email_offers_hint">Vous pouvez vous désinscrire en tout temps.</string>
     <string name="enrollment_terms_agreement">En ouvrant un compte, j\'accepte les <a href="https://www.petro-canada.ca/fr/personnel/conditions#petropoints">Conditions du programme Petro‑Points</a>.</string>
     <string name="enrollment_join_button">Joindre</string>
+    <string name="back_to_home">RETOUR À L\'ACCUIEL</string>
     <string name="enrollment_form_header">Commençons votre inscription et obtenez 2 500 Petro-Points.</string>
     <string name="enrollment_first_name_error">Veuillez entrer un prénom.</string>
     <string name="enrollment_last_name_error">Veuillez entrer un nom.</string>
@@ -115,7 +121,7 @@
     <string name="password_validation_lowercase">Au moins une lettre minuscule</string>
     <string name="password_validation_uppercase">Doit contenir au moins une majuscule</string>
     <string name="password_validation_special_char">Au moins un caractère spécial (parmi @$!%&amp;?#)</string>
-    <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte.</string>
+    <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="enrollment_invalid_email_dialog_message">Si vous ne vous souvenez pas de votre mot de passe, veuillez soumettre une demande de réinitialisation de mot de passe.</string>
     <string name="enrollment_invalid_email_dialog_diff_email">Entrez autre courriel</string>
     <string name="enrollment_invalid_email_dialog_sign_in">Démarrez</string>
@@ -141,6 +147,7 @@
     <string name="msg_e002_message">Accédez en ligne et essayez a nouveau.</string>
     <string name="enrollment_create_account_message">Créez votre compte Petro-Points</string>
     <string name="enrollment_account_created_message">Compte créé</string>
+    <string name="thanks_to_user">Merci, %s!</string>
     <string name="station_location_alert_settings">Réglages</string>
     <string name="enable_location_dialog_message">Nous utilisons la localisation pour vous indiquer la station la plus près, vous fournir les indications pour vous y rendre et vous permettre de démarrer le distributeur et payer votre essence par l\'entremise de l\'application.</string>
     <string name="msg_sl005_title">Quelque chose a mal tourné</string>
@@ -154,7 +161,7 @@
     <string name="enrollment_cardform_existing_card_dialog_title">Carte Petro-Points est déjà jumelé</string>
     <string name="enrollment_cardform_existing_card_dialog_message">Ce numéro de carte est déjà jumelé à un compte Petro-Points. Ouvrez une session ou utilisez une carte différente.</string>
     <string name="enrollment_cardform_existing_card_use_different_card">UTILISEZ UNE CARTE DIFFÉRENTE</string>
-    <string name="enrollment_cardform_existing_card_dialog_sign_in">DÉMMAREZ</string>
+    <string name="enrollment_cardform_existing_card_dialog_sign_in">Démarrez</string>
     <string name="enrollment_loading_question_title">Un moment</string>
     <string name="alert_signed_out_inactivity">Votre session a été fermée à la suite d\'un changement dans votre compte.</string>
     <string name="alert_signed_out_conflicting_login">Votre adresse de connexion a été utilisée sur un autre appareil. Veuillez ouvrir une nouvelle session.</string>
@@ -218,7 +225,6 @@
     <string name="profile_get_help_call">Appel</string>
     <string name="profile_get_help_email">Courriel</string>
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
-    <string name="cards_ppts_description">Problème de lecture? Glissez la carte vers le haut ou vers le bas pour essayer une version différente du code.</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
@@ -248,9 +254,8 @@
     <string name="profile_address_button">Adresse</string>
     <string name="profile_preferences_button">Préférences</string>
     <string name="profile_personnal_informations_subcopy2">Pour protéger votre compte, si vous modifiez votre adresse courriel, vous ne pourrez pas échanger de points en ligne ou au dépanneur pendant une période de 24 heures.</string>
-    <string name="profile_personnal_informations_subcopy1">Pour modifier vos renseignements personnels, communiquez avec notre <a href="tel:18006680222">Service à la clientèle</a>.</string>
 
-    <string name="profile_personnal_informations_subcopyEmail">Pour modifier votre courriel, vous devrez ouvrir une autre session.</string>
+    <string name="profile_personnal_informations_subcopyEmail">La modification de votre courriel entraînera la fermeture automatique de votre session; vous devrez alors vérifier votre nouvelle adresse et vous ne serez pas en mesure d\'effectuer un échange de carte-cadeau électronique pendant 24 heures.</string>
     <string name="profile_personnal_informations_email">Adresse courriel</string>
     <string name="profile_personnal_informations_phone">Numéro de téléphone (facultatif)</string>
     <string name="profile_personnal_informations_lastName">Nom</string>
@@ -312,7 +317,7 @@
     <string name="profile_personnal_informations_email_empty_alert_message">Veuillez entrer une adresse courriel.</string>
     <string name="profile_personnal_informations_email_invalid_alert_message">Veuillez utiliser un autre adresse courriel.</string>
     <string name="profile_personnal_informations_email_alert_title">Enregistrer les changements</string>
-    <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez fermer votre session et l\'ouvrir de nouveau.</string>
+    <string name="profile_personnal_informations_email_alert_message">Pour modifier vos renseignements, vous devrez ouvrir une autre session. Si vous avez modifié votre courriel, consultez votre boîte de réception pour vérifier votre adresse de courriel.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Fermer la session</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="msg_am001_title">Les modifications n\'ont pas été sauvegardées.</string>
@@ -321,6 +326,8 @@
     <string name="profile_personnal_informations_email_duplicate_alert_message">Veuillez utiliser un autre adresse courriel ou annuler.</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Veuillez utiliser un autre adresse courriel.</string>
     <string name="msg_am001_message">Veuillez réessayer plus tard.</string>
+    <string name="enrollment_email_already_exists_title">Cette adresse courriel est déjà liée à un compte</string>
+    <string name="enrollment_email_already_exists_description">Cette adresse courriel est déjà utilisée. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Annuler</string>
     <string name="profile_personnal_informations_email_duplicate_different_email_button">Entrez autre courriel</string>
     <string name="profile_personnal_informations_update_toast">Vos renseignements personnels ont été mis à jour.</string>
@@ -347,7 +354,7 @@
     <string name="profile_preferences_address">Petro‑Points – C.P. 59257, Westwood Mall Mississauga (Ontario).  Canada.  L4T 4J1 Téléphone : 1 (800) 668-0222  .  TTY : 1 (888) 290-7377\t</string>
     <string name="profile_preferences_header">Changer mes préférences.</string>
     <string name="cards_add_fragment_done_button">Fini</string>
-    <string name="transaction_title_pe">points gagnés</string>
+    <string name="transaction_title_pe">points accumulés</string>
     <string name="transaction_title_pp">" points ajustés"</string>
     <string name="transaction_title_redemption">points échangés</string>
     <string name="transaction_type_bonus">Prime</string>
@@ -356,16 +363,16 @@
     <string name="transaction_type_ppt">Transfert</string>
     <string name="transaction_type_purchase">Achat</string>
     <string name="transaction_type_redemption">Achat/Échange</string>
-    <string name="transaction_detail_redeem_points">Échanger de points</string>
+    <string name="transaction_detail_redeem_points">Points échangés</string>
     <string name="transaction_type_void">Annulé</string>
     <string name="transaction_detail_amount">Montant</string>
     <string name="transaction_detail_location_title">Établissement</string>
     <string name="transaction_detail_description_title">La description</string>
-    <string name="transaction_detail_base_points">Points ordinaires</string>
-    <string name="transaction_detail_bonus_points">Points supplémentaires</string>
+    <string name="transaction_detail_base_points">Points de base</string>
+    <string name="transaction_detail_bonus_points">Points en prime</string>
     <string name="transaction_detail_date">Date</string>
     <string name="transaction_detail_total_points">Points totaux</string>
-    <string name="transaction_detail_transaction_type">Transaction</string>
+    <string name="transaction_detail_transaction_type">Détails de la transaction</string>
     <string name="transaction_details_header">Détails</string>
     <string name="transactions_point_summary_header">Résumé de points</string>
     <string name="profile_about_app_version">Version de l\'application</string>
@@ -386,14 +393,15 @@
     <string name="home_enrollment_greeting_title">Merci !</string>
     <string name="home_enrollment_greeting_dismiss">Fermer</string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
-    <string name="offers_banner_2_text">Petro\u2011Points🅪 = Essence gratuite.</string>
-    <string name="offers_banner_2_button">En savoir plus</string>
-    <string name="offers_banner_3_text">Élaine Roy, un membre de votre collectivité.</string>
-    <string name="offers_banner_3_button">Voici Élaine</string>
-    <string name="offers_banner_3_link">As0tktgN9Oc</string>
-    <string name="offers_banner_4_text">Voyez notre réseau de recharge rapide prendre forme.</string>
-    <string name="offers_banner_4_button">Voir la vidéo</string>
-    <string name="offers_banner_5_text">Économisez 3 ¢/litre sur gaz.</string>
+    <string name="offers_banner_2_text">Paiement sans contact maintenant disponible dans l\'application</string>
+    <string name="offers_banner_2_button">Lancer la visite des fonctionnalités</string>
+    <string name="offers_banner_3a_text">Petro\u2011Points🅪 = articles gratuits.</string>
+    <string name="offers_banner_3a_button">Découvrez les Petro-Points</string>
+    <string name="offers_banner_3b_text">Échangez des points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
+    <string name="offers_banner_3b_button">Lancer ma carte</string>
+    <string name="offers_banner_4_text">Activez notre lave-auto directement de votre application</string>
+    <string name="offers_banner_4_button">Trouver un lave-auto</string>
+    <string name="offers_banner_5_text">Économisez 3 ¢ le litre à chaque plein avec une carte RBC liée.</string>
     <string name="offers_banner_5_button">Pour commencer</string>
     <string name="offers_leaving_app_alert_title">Vous quittez notre application.</string>
     <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
@@ -580,6 +588,8 @@
     <string name="tutorial_silde_page1_header">Tout nouveau menu</string>
     <string name="tutorial_silde_page2_header">Accès rapide aux fonctions</string>
     <string name="tutorial_silde_page3_header">Activer le lave-auto</string>
+    <string name="tutorial_silde_page4_header">Paiement sans contact et ravitaillement avec votre application</string>
+
 
     <!-- View Wallet Screen -->
     <string name="wallet_card_tab">Cartes Petro-Canada</string>
@@ -612,16 +622,23 @@
     <!-- PAP Action Menu -->
     <string name="action_fuel_up">Ravitailler</string>
     <string name="action_fuelling">Ravitaillement en cours…</string>
-    <string name="action_location">You\'re at %s station</string>
+    <string name="action_location">Vous êtes au %s</string>
 
     <!-- PAP Select Pump -->
     <string name="select_pump_header">Ravitaillement</string>
     <string name="pap_not_available_header">Paiement dans l\'application non disponible</string>
     <string name="pap_not_available_description">Vous ne pouvez pas utiliser votre application pour payer à cette station-service.</string>
-    <string name="select_pump_select">Sélectionnez votre distributeur</string>
+    <!--todo change french content -->
+    <string name="scroll_to_select_pump">Faites défiler pour sélectionner un distributeur</string>
     <string name="select_pump_selected">Sélectionné</string>
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
+
+    <!-- Email Authentication -->
+
+    <string name="validate_your_email">Nous avons envoyé un courriel à :</string>
+    <string name="validate_your_email_to_sign_in">Terminez votre inscription en cliquant sur le lien dans votre courriel  <![CDATA[<b>%s</b>]]>. Puis, ouvrez une session pour obtenir vos %s points!</string>
+
 
     <!-- Fuel Up limit -->
     <string name="from">De</string>
@@ -654,7 +671,7 @@
     <string name="hide">Masquer</string>
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
-    <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte.</string>
+    <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte. Veuillez prévoir un délai de 24 heures avant de recevoir vos Petro-Points.</string>
     <string name="transaction_summary">Résumé de votre transaction</string>
 
     <string name="transaction">Transactions</string>
@@ -668,8 +685,9 @@
     <string name="transaction_base_points_eaarned">Points de base</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">Voir le reçu</string>
-    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. </string>
-
+    <string name="email_receipt_subject">Reçu d\'essence de Petro-Canada: %1$s</string>
+    <string name="email_receipt_body">Voici votre reçu d\'essence pour %1$s:\n</string>
+    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. Vous pouvez également obtenir votre reçu au distributeur ou au dépanneur.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Distributeur non disponible</string>
@@ -696,6 +714,7 @@
     <string name="card_enable_location_settings">Paramètres</string>
 
     <string name="fuelling_almost_done">Vous y êtes presque…</string>
+    <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
 
 </resources>
