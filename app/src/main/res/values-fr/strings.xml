@@ -120,7 +120,7 @@
     <string name="password_validation_number">Au moins un chiffre</string>
     <string name="password_validation_lowercase">Au moins une lettre minuscule</string>
     <string name="password_validation_uppercase">Doit contenir au moins une majuscule</string>
-    <string name="password_validation_special_char">Au moins un caractère spécial (parmi @$!%&amp;?#)</string>
+    <string name="password_validation_special_char">Au moins un caractère spécial</string>
     <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="enrollment_invalid_email_dialog_message">Si vous ne vous souvenez pas de votre mot de passe, veuillez soumettre une demande de réinitialisation de mot de passe.</string>
     <string name="enrollment_invalid_email_dialog_diff_email">Entrez autre courriel</string>
