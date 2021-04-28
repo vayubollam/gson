@@ -148,8 +148,8 @@ public class FuelUpViewModel extends ViewModel {
     /**
      * Payment initiate with google pay
      */
-    LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken) {
-        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount,
+    LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount,int preAuthRedeemPoints, String paymentToken) {
+        PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount,preAuthRedeemPoints,
                 new PayByGooglePayRequest.FundingPayload(paymentToken), profile.getPetroPointsNumber(),
                 profile.isRbcLinked());
         return papRepository.authorizePaymentByGooglePay(request, userLocation);
@@ -158,8 +158,8 @@ public class FuelUpViewModel extends ViewModel {
     /**
      * Payment initiate with wallet
      */
-    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
-        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount,
+    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int preAuthRedeemPoints, int userPaymentSourceId) {
+        PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount,preAuthRedeemPoints,
                 userPaymentSourceId, profile.getPetroPointsNumber(), profile.isRbcLinked());
         return papRepository.authorizePaymentByWallet(request, userLocation);
     }

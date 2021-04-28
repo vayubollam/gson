@@ -80,7 +80,7 @@ import suncor.com.android.utilities.Timber;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
-        FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
+        FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks, RedeemPointsDropDownAdapter.RedeemPointsCallback {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
@@ -101,6 +101,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String storeId;
     private String preAuth;
     private String userPaymentId;
+    private String preAuthRedeemPoints = "0";
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -165,7 +166,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         redeemPointsDropDownAdapter = new RedeemPointsDropDownAdapter(
                 getContext(),
                 redeemPointsData,
-                viewModel.getPetroPoints()
+                viewModel.getPetroPoints(),
+                this
         );
 
         binding.redeemPointsExpandable.setDropDownData(redeemPointsDropDownAdapter, true);
@@ -398,7 +400,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         } else {
             try {
                 double preAuthPrices = formatter.parse(preAuth).doubleValue();
-                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
+                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(preAuthRedeemPoints), Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
@@ -520,7 +522,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
         double preAuthPrices = formatter.parse(preAuth).doubleValue();
-        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken).observe(getViewLifecycleOwner(), result -> {
+        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(preAuthRedeemPoints), paymentToken).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
@@ -619,5 +621,10 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
                 }));
         return builder.create();
+    }
+
+    @Override
+    public void onRedeemPointsChanged(String redeemPoints) {
+        preAuthRedeemPoints = redeemPoints;
     }
 }

@@ -11,14 +11,16 @@ public class PayByGooglePayRequest {
     private FundingPayload fundingPayload;
     private String preferredCulture;
     private String petroPointsNumber;
+    private int preAuthRedeemPoints;
     private boolean rbcLinked;
 
 
-    public PayByGooglePayRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit,
+    public PayByGooglePayRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit,int preAuthRedeemPoints,
                                  FundingPayload fundingPayload, String petroPointsNumber, boolean rbcLinked) {
         this.encryptedStoreId = encryptedStoreId;
         this.pumpNumber = pumpNumber;
         this.preAuthLimit = preAuthLimit;
+        this.preAuthRedeemPoints = preAuthRedeemPoints;
         this.fundingPayload = fundingPayload;
         this.petroPointsNumber = petroPointsNumber;
         this.rbcLinked = rbcLinked;
@@ -66,6 +68,7 @@ public class PayByGooglePayRequest {
                 "encryptedStoreId='" + encryptedStoreId + '\'' +
                 ", pumpNumber=" + pumpNumber +
                 ", preAuthLimit=" + preAuthLimit +
+                ", preAuthRedeemPoints=" + preAuthRedeemPoints +
                 ", fundingPayload=" + fundingPayload.toString() +
                 ", preferredCulture='" + preferredCulture + '\'' +
                 ", petroPointsNumber='" + petroPointsNumber + '\'' +
