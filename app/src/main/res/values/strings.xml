@@ -662,7 +662,7 @@
 
     <string name="you_have_x_points_header">You have %s points</string>
 
-    <string name="no_redemption">No Redemption</string>
+    <string name="no_redemption">No redemption</string>
     <string name="redeem_x_points">Redeem %s points</string>
     <string name="redeem_petro_points">Redeem Petro-Points</string>
 
