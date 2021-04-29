@@ -288,6 +288,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                                 amountInDouble = roundOffValue;
                             }
                             listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
+                            if (redeemPointsCallback != null) {
+                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
+                            }
                             listener.expandCollapse();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -326,9 +329,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             otherAmountEditText.setSelection(otherAmountEditText.getText().length());
                             binding.dollarOffText.setVisibility(View.VISIBLE);
                             binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
-                            if (redeemPointsCallback != null) {
-                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
-                            }
                         } else {
                             binding.dollarOffText.setVisibility(View.GONE);
                         }
