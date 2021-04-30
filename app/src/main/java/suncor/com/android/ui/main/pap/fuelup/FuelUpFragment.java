@@ -94,6 +94,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     SettingsResponse.Pap mPapData;
     PaymentDropDownAdapter paymentDropDownAdapter;
     RedeemPointsDropDownAdapter redeemPointsDropDownAdapter;
+    private int isPreAuthChanges = 0;
 
     private SelectPumpAdapter adapter;
 
@@ -358,7 +359,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         this.preAuth = value;
         binding.totalAmount.setText(value);
         redeemPointsDropDownAdapter.setPreAuthValue(preAuth);
+        if( ++ isPreAuthChanges >1){
+        redeemPointsDropDownAdapter.collapseIfPreAuthChanges(0);
+        preAuthRedeemPoints = "0";
         redeemPointsDropDownAdapter.notifyDataSetChanged();
+        }
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
                 new Pair<>(AnalyticsUtils.Param.formSelection, value));
     }
