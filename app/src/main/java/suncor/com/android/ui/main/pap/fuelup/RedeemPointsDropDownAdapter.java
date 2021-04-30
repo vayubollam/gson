@@ -43,6 +43,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
     public static final String TAG = "RedeemPointsAdapter";
     public final HashMap<String, String> redeemPoints;
+
     private final int petroPoints;
     private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
     private final NumberFormat numberInstance = NumberFormat.getNumberInstance(Locale.getDefault());
