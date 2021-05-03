@@ -206,10 +206,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
     }
 
-     private long roundingThePetroPointsToNearestTen(int points) {
-        return Math.round(points / 10.0) * 10;
-    }
-
     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         final FuelUpLimitDropDownItemBinding binding;
 
