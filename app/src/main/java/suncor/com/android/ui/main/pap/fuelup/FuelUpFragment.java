@@ -94,6 +94,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     SettingsResponse.Pap mPapData;
     PaymentDropDownAdapter paymentDropDownAdapter;
     RedeemPointsDropDownAdapter redeemPointsDropDownAdapter;
+    private FuelLimitDropDownAdapter fuelLimitDropDownAdapter;
     private int isPreAuthChanges = 0;
 
     private SelectPumpAdapter adapter;
@@ -307,7 +308,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
        if (Objects.nonNull(mPapData) && Objects.nonNull(mPapData.getPreAuthLimits())) {
           // binding.totalAmount.setText(String.format("$%s", mPapData.getPreAuthLimits().get("1")));
 
-           FuelLimitDropDownAdapter adapter = new FuelLimitDropDownAdapter(
+            fuelLimitDropDownAdapter = new FuelLimitDropDownAdapter(
                    getContext(),
                    mPapData.getPreAuthLimits(),
                    this,
@@ -317,15 +318,15 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
            if (preAuth != null) {
                try {
-                   adapter.setSelectedPosfromValue(formatter.parse(preAuth).doubleValue());
+                   fuelLimitDropDownAdapter.setSelectedPosfromValue(formatter.parse(preAuth).doubleValue());
                }catch (ParseException ex){
                    Timber.e(ex.getMessage());
                }
            }
 
-           adapter.findLastFuelUpTransaction(lastTransactionFuelUpLimit);
+           fuelLimitDropDownAdapter.findLastFuelUpTransaction(lastTransactionFuelUpLimit);
 
-           binding.fuelUpLimit.setDropDownData(adapter, false);
+           binding.fuelUpLimit.setDropDownData(fuelLimitDropDownAdapter, false);
 
        }
     }
@@ -359,8 +360,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         this.preAuth = value;
         binding.totalAmount.setText(value);
         redeemPointsDropDownAdapter.setPreAuthValue(preAuth);
-        if( ++ isPreAuthChanges >1){
-        redeemPointsDropDownAdapter.collapseIfPreAuthChanges(0);
+        if( ++ isPreAuthChanges >1 && fuelLimitDropDownAdapter.isEditableValueChange()){
+            redeemPointsDropDownAdapter.collapseIfPreAuthChanges(0);
         preAuthRedeemPoints = "0";
         redeemPointsDropDownAdapter.notifyDataSetChanged();
         }
