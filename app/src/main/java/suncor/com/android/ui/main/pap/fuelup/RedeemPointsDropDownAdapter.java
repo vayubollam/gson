@@ -287,7 +287,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         public void setDataOnView() {
              otherAmountEditText = binding.inputField;
             binding.preAuthTip.setVisibility(View.VISIBLE);
- //           otherAmountEditText.setText("");
 
             binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
 
@@ -301,7 +300,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     binding.dollarOffText.setVisibility(View.VISIBLE);
                     otherAmountEditText.setCursorVisible(false);
                     if(!otherAmountEditText.getText().toString().isEmpty()) {
-                        binding.dollarOffText.setText(getDollarOffValue(Double.parseDouble(otherAmountEditText.getText().toString())));
+                        binding.dollarOffText.setText(getDollarOffValue(Double.parseDouble(otherAmountEditText.getText().toString().replaceAll("[\\D]" , ""))));
                     }
                 }
             } else {
