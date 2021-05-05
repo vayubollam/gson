@@ -59,12 +59,13 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private final RedeemPointsCallback redeemPointsCallback;
     private double amountInDouble;
     private boolean isPreAuthChanges;
+    private EditText otherAmountEditText;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints, RedeemPointsCallback redeemPointsCallback) {
 
         this.mContext = context;
         this.redeemPoints = redeemPoints;
-        this.petroPoints = petroPoints;
+        this.petroPoints = 300000;
         this.redeemPointsCallback = redeemPointsCallback;
         formatter.setMinimumFractionDigits(0);
     }
@@ -284,9 +285,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
 
         public void setDataOnView() {
-            EditText otherAmountEditText = binding.inputField;
+             otherAmountEditText = binding.inputField;
             binding.preAuthTip.setVisibility(View.VISIBLE);
-            otherAmountEditText.setText("");
+ //           otherAmountEditText.setText("");
 
             binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
 
@@ -294,9 +295,17 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 otherAmountEditText.setHint("");
                 otherAmountEditText.setEnabled(true);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
+                if(amountInDouble == 0){
+
                 binding.dollarOffText.setText(R.string.zero_dollar_off);
+                }else{
+                    binding.dollarOffText.setVisibility(View.VISIBLE);
+                    otherAmountEditText.setCursorVisible(false);
+                    binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
+                }
             } else {
                 otherAmountEditText.setEnabled(false);
+                otherAmountEditText.setText("");
                 otherAmountEditText.setHint(mContext.getString(R.string.other_amount));
                 binding.dollarOffText.setVisibility(View.GONE);
             }
