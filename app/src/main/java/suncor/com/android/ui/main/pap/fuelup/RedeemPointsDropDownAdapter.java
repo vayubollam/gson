@@ -296,12 +296,13 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 otherAmountEditText.setEnabled(true);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
                 if(amountInDouble == 0){
-
-                binding.dollarOffText.setText(R.string.zero_dollar_off);
+                    binding.dollarOffText.setText(R.string.zero_dollar_off);
                 }else{
                     binding.dollarOffText.setVisibility(View.VISIBLE);
                     otherAmountEditText.setCursorVisible(false);
-                    binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
+                    if(!otherAmountEditText.getText().toString().isEmpty()) {
+                        binding.dollarOffText.setText(getDollarOffValue(Double.parseDouble(otherAmountEditText.getText().toString())));
+                    }
                 }
             } else {
                 otherAmountEditText.setEnabled(false);
