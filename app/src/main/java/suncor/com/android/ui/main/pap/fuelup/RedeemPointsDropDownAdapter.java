@@ -65,7 +65,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
         this.mContext = context;
         this.redeemPoints = redeemPoints;
-        this.petroPoints = 300000;
+        this.petroPoints = petroPoints;
         this.redeemPointsCallback = redeemPointsCallback;
         formatter.setMinimumFractionDigits(0);
     }
