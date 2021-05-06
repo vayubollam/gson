@@ -60,6 +60,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private double amountInDouble;
     private boolean isPreAuthChanges;
     private EditText otherAmountEditText;
+    private String pointsForOtherAmount;
+    private String dollarOffValueForOtherAmount;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints, RedeemPointsCallback redeemPointsCallback) {
 
@@ -300,7 +302,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     binding.dollarOffText.setVisibility(View.VISIBLE);
                     otherAmountEditText.setCursorVisible(false);
                     if(!otherAmountEditText.getText().toString().isEmpty()) {
-                        binding.dollarOffText.setText(getDollarOffValue(Double.parseDouble(otherAmountEditText.getText().toString().replaceAll("[\\D]" , ""))));
+                        otherAmountEditText.setText(pointsForOtherAmount);
+                        binding.dollarOffText.setText(dollarOffValueForOtherAmount);
+         //               binding.dollarOffText.setText(getDollarOffValue(Double.parseDouble(otherAmountEditText.getText().toString().replaceAll("[\\D]" , ""))));
                     }
                 }
             } else {
@@ -328,6 +332,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             }
                             isPreAuthChanges = false;
                             listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
+                            pointsForOtherAmount = String.valueOf(getAmount(amountInDouble));
+                            dollarOffValueForOtherAmount = getDollarOffValue(amountInDouble);
                             if (redeemPointsCallback != null) {
                                 redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
                             }

@@ -42,7 +42,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     private final int otherLimitMinLimit;
     private final Context mContext;
     private double manualValue = -1;
-    private double editableValue;
+    private double editableValue = 0;
 
 
     FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
@@ -265,8 +265,11 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     try {
-                        manualValue = editable.toString().trim().length() > 0 ? Double.valueOf(editable.toString()) : 0;
                         editableValue = manualValue;
+                        if(editable.toString().isEmpty()){
+                            editableValue = 0;
+                        }
+                        manualValue = editable.toString().trim().length() > 0 ? Double.valueOf(editable.toString()) : 0;
                         if (Objects.nonNull(listener) && selectedPos == childList.size() - 1 && manualValue >= 0) {
                             listener.onSelectValue(formatter.format(manualValue), null, false);
                             callbackListener.onPreAuthChanged(formatter.format(manualValue));
