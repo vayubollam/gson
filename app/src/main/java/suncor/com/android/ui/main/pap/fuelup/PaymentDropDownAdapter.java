@@ -2,14 +2,8 @@ package suncor.com.android.ui.main.pap.fuelup;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.AddPaymentDropDownItemBinding;
 import suncor.com.android.databinding.GooglePayDropDownItemBinding;
@@ -145,7 +138,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             selectedPos = i;
 
             if(Objects.nonNull(listener)) {
-                listener.onSelectValue(getSelectedValue(), getSelectedSubValue());
+                listener.onSelectValue(getSelectedValue(), getSelectedSubValue(), false);
             }
 
             notifyDataSetChanged();
@@ -181,7 +174,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
                 if (selectedPos == getAdapterPosition()) {
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(value.getCardInfo(), value.getExp());
+                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false);
                     }
                 }
 
@@ -191,7 +184,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
 
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(value.getCardInfo(), value.getExp());
+                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false);
                         listener.expandCollapse();
                     }
 
