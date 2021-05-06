@@ -106,7 +106,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 String screenName;
                 if (clickedCardIndex == 0) {
                     //todo need to check
-                    screenName = "my-petro-points-wallet-view-card";
+                    screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
                 }
@@ -119,7 +119,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter(getActivity(), this::cardViewMoreHandler, activeCarWashListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -139,7 +139,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
         });
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
         cardsDetailsAdapter.registerAdapterDataObserver(binding.pageIndicator.getAdapterDataObserver());
-        binding.buttonClose.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.buttonClose.setOnClickListener(v -> {
+            Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", false);
+            Navigation.findNavController(getView()).popBackStack();
+        });
         binding.setIsRemoving(isRemoving);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
@@ -244,7 +247,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             AnalyticsUtils.logEvent(getContext(), "card_remove", new Pair<>("cardType", "Credit Card"));
                         } else if (cardDetailResource.status == Resource.Status.LOADING) {
                             isRemoving.set(true);
-                            AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-wallet-view-card-loading");
                         }
                     });
                 }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {
