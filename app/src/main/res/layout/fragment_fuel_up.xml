@@ -8,9 +8,8 @@
             type="androidx.databinding.ObservableBoolean" />
 
         <variable
-            name="viewModel"
-            type="suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel"/>
-
+            name="vm"
+            type="suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel" />
     </data>
 
 
@@ -26,47 +25,35 @@
                 android:layout_height="wrap_content"
                 app:title="@string/select_pump_header" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/points_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            app:visibleGone="@{!isLoading}"
-            android:layout_below="@id/app_bar">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/petroPointsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_gravity="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingBottom="8dp"
-                android:textColor="@color/black_80"
-                android:textAlignment="center"
-                android:text="@{@string/you_have_x_points_header(viewModel.getHeaderPoints)}"/>
-
-        </androidx.cardview.widget.CardView>
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/footer_layout"
-            android:layout_below="@+id/points_header"
-            android:layout_marginTop="8dp">
+            android:layout_below="@+id/app_bar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/header_petropoints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:text="@{@string/authorization_petropoints_balance(vm.petroPointsBalance)}"
+                android:textColor="@color/black_80"
+                app:autoSizeTextType="uniform"
+                tools:text="You're starting at 2,500 points" />
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                app:cardBackgroundColor="@color/white"
-                >
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:id="@+id/pump_layout"

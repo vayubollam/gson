@@ -49,6 +49,7 @@ public class FuelUpViewModel extends ViewModel {
     private MutableLiveData<String> headerPetroPoints = new MutableLiveData<>();
     private LatLng userLocation;
     private Profile profile;
+    private SessionManager sessionManager;
 
 
     @Inject
@@ -59,6 +60,7 @@ public class FuelUpViewModel extends ViewModel {
         this.paymentsRepository = paymentsRepository;
         this.profile = sessionManager.getProfile();
         headerPetroPoints.postValue(CardFormatUtils.formatBalance(profile.getPointsBalance()));
+        this.sessionManager = sessionManager;
     }
 
 
@@ -166,6 +168,10 @@ public class FuelUpViewModel extends ViewModel {
 
     public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {
         return papRepository.cancelTransaction(transactionId);
+    }
+
+    public String getPetroPointsBalance() {
+        return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
     }
 
 }

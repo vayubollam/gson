@@ -2,14 +2,8 @@ package suncor.com.android.ui.main.pap.fuelup;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.AddPaymentDropDownItemBinding;
 import suncor.com.android.databinding.GooglePayDropDownItemBinding;
@@ -243,7 +236,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             binding.container.setOnClickListener(v -> {
                 AnalyticsUtils.logEvent(mContext, AnalyticsUtils.Event.buttonTap,
                         new Pair<>(AnalyticsUtils.Param.buttonText, mContext.getString(R.string.add_new_payment).toLowerCase()));
-                AnalyticsUtils.setCurrentScreenName((Activity) mContext, "“pay-at-pump-add-credit-card");
+                AnalyticsUtils.setCurrentScreenName((Activity) mContext, "pay-at-pump-add-credit-card");
                 Navigation.findNavController((Activity) mContext, R.id.nav_host_fragment).navigate(R.id.action_fuel_up_to_addPaymentFragment);
             });
         }

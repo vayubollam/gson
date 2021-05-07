@@ -125,7 +125,7 @@ public class PaymentDetail implements Serializable {
     }
 
     public String getFirebaseScreenName() {
-        return "my-wallet-view-"+getPaymentType().name();
+        return "my-petro-points-wallet-view-"+getPaymentType().name().toLowerCase();
     }
 
     public enum PaymentType {

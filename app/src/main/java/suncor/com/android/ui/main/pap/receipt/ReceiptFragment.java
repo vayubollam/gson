@@ -85,7 +85,6 @@ public class ReceiptFragment extends MainActivityFragment {
     public void onResume() {
         super.onResume();
         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
-
     }
 
     private void observeTransactionData(String transactionId){
@@ -99,6 +98,11 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
+
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+
                 binding.paymentType.setText(result.data.getPaymentType(getContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){

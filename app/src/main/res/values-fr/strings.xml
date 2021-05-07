@@ -120,7 +120,7 @@
     <string name="password_validation_number">Au moins un chiffre</string>
     <string name="password_validation_lowercase">Au moins une lettre minuscule</string>
     <string name="password_validation_uppercase">Doit contenir au moins une majuscule</string>
-    <string name="password_validation_special_char">Au moins un caractère spécial (parmi @$!%&amp;?#)</string>
+    <string name="password_validation_special_char">Au moins un caractère spécial</string>
     <string name="enrollment_invalid_email_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="enrollment_invalid_email_dialog_message">Si vous ne vous souvenez pas de votre mot de passe, veuillez soumettre une demande de réinitialisation de mot de passe.</string>
     <string name="enrollment_invalid_email_dialog_diff_email">Entrez autre courriel</string>
@@ -225,7 +225,6 @@
     <string name="profile_get_help_call">Appel</string>
     <string name="profile_get_help_email">Courriel</string>
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
-    <string name="cards_ppts_description">Problème de lecture? Glissez la carte vers le haut ou vers le bas pour essayer une version différente du code.</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
@@ -322,6 +321,8 @@
     <string name="profile_personnal_informations_email_alert_signout_button">Fermer la session</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">Cette adresse courriel est déjà liée à un compte</string>
     <string name="msg_am001_title">Les modifications n\'ont pas été sauvegardées.</string>
+    <string name="msg_used_password_title"></string>
+    <string name="msg_used_password_message">Vous ne pouvez pas réutiliser un mot de passe que vous avez utilisé dans la dernière année. Choisissez un autre mot de passe.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Veuillez utiliser un autre adresse courriel ou annuler.</string>
     <string name="profile_personnal_informations_email_restricted_alert_message">Veuillez utiliser un autre adresse courriel.</string>
     <string name="msg_am001_message">Veuillez réessayer plus tard.</string>
@@ -628,7 +629,8 @@
     <string name="select_pump_header">Ravitaillement</string>
     <string name="pap_not_available_header">Paiement dans l\'application non disponible</string>
     <string name="pap_not_available_description">Vous ne pouvez pas utiliser votre application pour payer à cette station-service.</string>
-    <string name="select_pump_select">Sélectionnez votre distributeur</string>
+    <!--todo change french content -->
+    <string name="scroll_to_select_pump">Faites défiler pour sélectionner un distributeur</string>
     <string name="select_pump_selected">Sélectionné</string>
     <string name="select_pump_help_header">Numéro de distributeur</string>
     <string name="select_pump_help_subheader">Votre numéro de distributeur est sur le dessus ou le côté du distributeur.</string>
@@ -725,6 +727,7 @@
     <string name="card_enable_location_settings">Paramètres</string>
 
     <string name="fuelling_almost_done">Vous y êtes presque…</string>
+    <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
 
 </resources>

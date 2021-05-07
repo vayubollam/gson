@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import suncor.com.android.R;
 import suncor.com.android.data.DistanceApi;
@@ -39,6 +40,7 @@ import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 
+@Singleton
 public class HomeViewModel extends ViewModel {
 
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(20, -180), new LatLng(90, -50));

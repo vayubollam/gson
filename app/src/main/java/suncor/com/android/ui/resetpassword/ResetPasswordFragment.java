@@ -16,9 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+
+import java.util.Objects;
+
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentResetPasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.resetpassword.ResetPasswordRequest;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
@@ -55,10 +59,22 @@ public class ResetPasswordFragment extends BaseFragment {
                     break;
                 case ERROR:
                     hideKeyboard();
+                    if (Objects.requireNonNull(resource.message).equalsIgnoreCase(ErrorCodes.ERR_PASSWORD_USED_EARLIER)) {
+                        Alerts.prepareCustomDialogOk(
+                                getString(R.string.msg_used_password_title),
+                                getString(R.string.msg_used_password_message),
+                                getActivity(),
+                                (dialogInterface, i) -> {
+                                    dialogInterface.dismiss();
+                                    moveToLogin();
+//                                    goBack();
+                                }, "Reset Password").show();
+                    } else {
+                        Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
+                    }
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
                             new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
                             new Pair<>(AnalyticsUtils.Param.formName, "Reset Password"));
-                    Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
                     break;
 
             }
