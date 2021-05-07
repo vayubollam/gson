@@ -70,7 +70,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public String getSelectedValue() {
         String dollarsToReturn;
 
-        if(isPreAuthChanges){
+        if (isPreAuthChanges) {
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 return String.format("%s %s ", formatter.format(0), "de rabais");
             } else {
@@ -95,7 +95,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public String getSelectedSubValue() {
         double resultantValueToReturn;
 
-        if(isPreAuthChanges){
+        if (isPreAuthChanges) {
             resultantValueToReturn = 0;
             return CardFormatUtils.formatBalance((int) resultantValueToReturn) + " " + "points";
         }
@@ -167,7 +167,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
     }
 
-    public void collapseIfPreAuthChanges(int selectedPos){
+    public void collapseIfPreAuthChanges(int selectedPos) {
         isPreAuthChanges = true;
         this.selectedPos = selectedPos;
         listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true);
@@ -205,7 +205,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         final FuelUpLimitDropDownItemBinding binding;
-
 
 
         ChildDropDownViewHolder(@NonNull FuelUpLimitDropDownItemBinding binding) {
@@ -281,7 +280,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
 
         public void setDataOnView() {
-             otherAmountEditText = binding.inputField;
+            otherAmountEditText = binding.inputField;
             binding.preAuthTip.setVisibility(View.VISIBLE);
 
             binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
@@ -290,15 +289,14 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 otherAmountEditText.setHint("");
                 otherAmountEditText.setEnabled(true);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
-                if(amountInDouble == 0){
-                    binding.dollarOffText.setText(R.string.zero_dollar_off);
-                }else{
-                    binding.dollarOffText.setVisibility(View.VISIBLE);
+                binding.dollarOffText.setVisibility(View.VISIBLE);
+
+                if (!otherAmountEditText.getText().toString().isEmpty()) {
+                    otherAmountEditText.setText(String.valueOf(getAmount(amountInDouble)));
+                    binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
                     otherAmountEditText.setCursorVisible(false);
-                    if(!otherAmountEditText.getText().toString().isEmpty()) {
-                        binding.dollarOffText.setText(getDollarOffValue(Double.parseDouble(otherAmountEditText.getText().toString().replaceAll("[\\D]" , ""))));
-                    }
                 }
+
             } else {
                 otherAmountEditText.setEnabled(false);
                 otherAmountEditText.setText("");
@@ -346,6 +344,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             otherAmountEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    if (!otherAmountEditText.getText().toString().isEmpty()) {
+                        otherAmountEditText.setCursorVisible(true);
+                    }
 
                 }
 
