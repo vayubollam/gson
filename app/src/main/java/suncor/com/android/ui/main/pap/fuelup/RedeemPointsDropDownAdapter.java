@@ -290,10 +290,11 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 otherAmountEditText.setEnabled(true);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
-                otherAmountEditText.setCursorVisible(false);
+
                 if (!otherAmountEditText.getText().toString().isEmpty()) {
                     otherAmountEditText.setText(String.valueOf(getAmount(amountInDouble)));
                     binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
+                    otherAmountEditText.setCursorVisible(false);
                 }
 
             } else {
@@ -343,6 +344,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             otherAmountEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    if (!otherAmountEditText.getText().toString().isEmpty()) {
+                        otherAmountEditText.setCursorVisible(true);
+                    }
 
                 }
 
