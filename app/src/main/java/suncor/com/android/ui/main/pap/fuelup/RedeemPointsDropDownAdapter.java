@@ -56,8 +56,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private double amountInDouble;
     private boolean isPreAuthChanges;
     private EditText otherAmountEditText;
-    private String pointsForOtherAmount;
-    private String dollarOffValueForOtherAmount;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints, RedeemPointsCallback redeemPointsCallback) {
 
@@ -72,7 +70,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public String getSelectedValue() {
         String dollarsToReturn;
 
-        if(isPreAuthChanges){
+        if (isPreAuthChanges) {
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 return String.format("%s %s ", formatter.format(0), "de rabais");
             } else {
@@ -97,7 +95,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public String getSelectedSubValue() {
         double resultantValueToReturn;
 
-        if(isPreAuthChanges){
+        if (isPreAuthChanges) {
             resultantValueToReturn = 0;
             return CardFormatUtils.formatBalance((int) resultantValueToReturn) + " " + "points";
         }
@@ -169,7 +167,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
     }
 
-    public void collapseIfPreAuthChanges(int selectedPos){
+    public void collapseIfPreAuthChanges(int selectedPos) {
         isPreAuthChanges = true;
         this.selectedPos = selectedPos;
         listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true);
@@ -207,7 +205,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         final FuelUpLimitDropDownItemBinding binding;
-
 
 
         ChildDropDownViewHolder(@NonNull FuelUpLimitDropDownItemBinding binding) {
@@ -283,7 +280,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
 
         public void setDataOnView() {
-             otherAmountEditText = binding.inputField;
+            otherAmountEditText = binding.inputField;
             binding.preAuthTip.setVisibility(View.VISIBLE);
 
             binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
@@ -292,17 +289,13 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 otherAmountEditText.setHint("");
                 otherAmountEditText.setEnabled(true);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
-                if(amountInDouble == 0){
-                    binding.dollarOffText.setText(R.string.zero_dollar_off);
-                }else{
-                    binding.dollarOffText.setVisibility(View.VISIBLE);
-                    otherAmountEditText.setCursorVisible(false);
-                    if(!otherAmountEditText.getText().toString().isEmpty()) {
-                        otherAmountEditText.setText(pointsForOtherAmount);
-                        binding.dollarOffText.setText(dollarOffValueForOtherAmount);
-         //               binding.dollarOffText.setText(getDollarOffValue(Double.parseDouble(otherAmountEditText.getText().toString().replaceAll("[\\D]" , ""))));
-                    }
+                binding.dollarOffText.setVisibility(View.VISIBLE);
+                otherAmountEditText.setCursorVisible(false);
+                if (!otherAmountEditText.getText().toString().isEmpty()) {
+                    otherAmountEditText.setText(String.valueOf(getAmount(amountInDouble)));
+                    binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
                 }
+
             } else {
                 otherAmountEditText.setEnabled(false);
                 otherAmountEditText.setText("");
@@ -328,8 +321,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             }
                             isPreAuthChanges = false;
                             listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
-                            pointsForOtherAmount = String.valueOf(getAmount(amountInDouble));
-                            dollarOffValueForOtherAmount = getDollarOffValue(amountInDouble);
                             if (redeemPointsCallback != null) {
                                 redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
                             }
