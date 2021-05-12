@@ -66,6 +66,7 @@ public class ResetPasswordFragment extends BaseFragment {
                                 getActivity(),
                                 (dialogInterface, i) -> {
                                     dialogInterface.dismiss();
+                                    moveToLogin();
 //                                    goBack();
                                 }, "Reset Password").show();
                     } else {
@@ -74,7 +75,6 @@ public class ResetPasswordFragment extends BaseFragment {
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
                             new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
                             new Pair<>(AnalyticsUtils.Param.formName, "Reset Password"));
-                    Alerts.prepareGeneralErrorDialog(getActivity(), "Reset Password").show();
                     break;
 
             }
