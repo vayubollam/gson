@@ -484,13 +484,15 @@ public class HomeFragment extends BottomNavigationFragment {
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)),
                                     new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
-                        } else if(result.data.status.equals("BeginFueling")){
+                        }
+                        // TODO: handle processing and session end state
+                        /*else if(result.data.status.equals("BeginFueling")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
                                     new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
-                        } else{
-                            //todo handle processing and session end state
+                        } */
+                        else {
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
