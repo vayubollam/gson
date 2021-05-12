@@ -500,10 +500,13 @@ public class HomeFragment extends BottomNavigationFragment {
                             observerFuellingActiveSession();
                         }
                     } else {
+                        if (mViewModel.activeFuellingSession.get()) {
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                        }
+
                         mViewModel.updateFuellingSession(false, "");
-                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
-                                new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                     }
                 }
             });

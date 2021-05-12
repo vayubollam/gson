@@ -71,7 +71,7 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt greetingsMessage = new ObservableInt();
     public ObservableInt headerImage = new ObservableInt();
 
-    public ObservableBoolean activeFuellingSession = new ObservableBoolean();
+    public ObservableBoolean activeFuellingSession = new ObservableBoolean(false);
     public ObservableField<String> fuellingStateMessage = new ObservableField<>();
 
     @Inject
