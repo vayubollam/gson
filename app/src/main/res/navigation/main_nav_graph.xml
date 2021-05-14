@@ -605,6 +605,10 @@
         <argument
             android:name="pumpNumber"
             app:argType="string"/>
+
+        <argument
+            android:name="preAuthRedeemPoints"
+            app:argType="string"/>
     </action>
 
     <keep_state_fragment
@@ -666,6 +670,9 @@
             android:name="isGooglePay"
             app:argType="boolean"
             android:defaultValue="false"/>
+        <argument
+            android:name="preAuthRedeemPoints"
+            app:argType="string"/>
     </action>
 
     <keep_state_fragment
@@ -674,6 +681,12 @@
         android:label="FuellingFragment">
         <argument
             android:name="pumpNumber"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+
+        <argument
+            android:name="preAuthRedeemPoints"
             android:defaultValue="null"
             app:argType="string"
             app:nullable="true"/>
@@ -691,6 +704,10 @@
                 android:name="isGooglePay"
                 app:argType="boolean"
                 android:defaultValue="false"/>
+
+            <argument
+                android:name="preAuthRedeemPoints"
+                app:argType="string"/>
         </action>
 
     </keep_state_fragment>
@@ -730,6 +747,10 @@
             app:popExitAnim="@anim/fade_out" >
             <argument
                 android:name="pumpNumber"
+                app:argType="string"/>
+
+            <argument
+                android:name="preAuthRedeemPoints"
                 app:argType="string"/>
         </action>
     </keep_state_fragment>

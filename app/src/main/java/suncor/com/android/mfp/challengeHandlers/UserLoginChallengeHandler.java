@@ -157,7 +157,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             profile = gson.fromJson(profileStr, Profile.class);
 
             AnalyticsUtils.userID = profile.getRetailId();
-            AnalyticsUtils.setUserProperty(application.getApplicationContext(), profile.getRetailId(), profile.isRbcLinked());
+            AnalyticsUtils.setUserProperty(application.getApplicationContext(), profile.getRetailId(), profile.isRbcLinked(), profile.getPointsBalance());
         } catch (JSONException e) {
             e.printStackTrace();
         }
