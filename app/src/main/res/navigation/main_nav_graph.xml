@@ -770,6 +770,12 @@
             android:defaultValue="false"
             app:argType="boolean"
             app:nullable="false"/>
+
+        <argument
+            android:name="preAuthRedeemPoints"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
     </keep_state_fragment>
 
 

@@ -67,6 +67,8 @@ public class AnalyticsUtils {
         errorMessage("errorMessage"),
         detailMessage("detailErrorMessage"),
         paymentMethod("paymentMethod"),
+        pointsRedeemed("pointsRedeemed"),
+        redeemedPoints("redeemedPoints"),
         fuelAmountSelection("fuelAmountSelection"),
         checkboxInput("checkboxInput"),
         intersiteURL("intersiteURL"),

@@ -37,6 +37,7 @@ public class ReceiptFragment extends MainActivityFragment {
     private FragmentReceiptBinding binding;
     private String transactionId;
     private boolean isGooglePay;
+    private String preAuthRedeemPoints;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
@@ -66,6 +67,7 @@ public class ReceiptFragment extends MainActivityFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
+        preAuthRedeemPoints = ReceiptFragmentArgs.fromBundle(getArguments()).getPreAuthRedeemPoints();
         isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
         observeTransactionData(transactionId);
         binding.viewReceiptBtn.setOnClickListener((v) -> {
@@ -102,6 +104,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, preAuthRedeemPoints);
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, preAuthRedeemPoints);
 
                 binding.paymentType.setText(result.data.getPaymentType(getContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
