@@ -106,10 +106,14 @@ public class AnalyticsUtils {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
     }
 
-    public static void setUserProperty(Context context, String userID, boolean rbcLinked, int pointsBalance ){
+    public static void setUserProperty(Context context, String userID, boolean rbcLinked){
         FirebaseAnalytics.getInstance(context).setUserId(userID);
         FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
         FirebaseAnalytics.getInstance(context).setUserProperty("is_linked_rbc", rbcLinked ? "true" : "false");
+
+    }
+
+    public static void setPetroPointsProperty(Context context,int pointsBalance){
         FirebaseAnalytics.getInstance(context).setUserProperty("petro_points", String.valueOf(pointsBalance));
     }
 

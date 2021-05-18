@@ -413,8 +413,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         isLoading.set(false);
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                                 new Pair<>(AnalyticsUtils.Param.paymentMethod, "Credit Card"),
+                                new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
-                                new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton);
+
                         FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints);
                         Navigation.findNavController(getView()).popBackStack();
                         Navigation.findNavController(getView()).navigate(action);
@@ -539,8 +540,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 isLoading.set(false);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, "Google Pay"),
+                        new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton),
                         new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
-                        new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton);
+
                 FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints);
                 Navigation.findNavController(requireView()).popBackStack();
                 Navigation.findNavController(requireView()).navigate(action);

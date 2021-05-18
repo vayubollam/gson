@@ -32,6 +32,7 @@ import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.ui.main.MainActivity;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
@@ -188,7 +189,7 @@ public class SessionManager implements SessionChangeListener {
         return autoLoginState;
     }
 
-    private void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
+    public void retrieveProfile(Consumer<Profile> onSuccess, Consumer<WLFailResponse> onError) {
         try {
             //We use 30s as the timeout for this request, as it times out a lot, and causes logout
             WLResourceRequest request = new WLResourceRequest(new URI("/adapters/suncor/v6/rfmp-secure/profiles"), WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
@@ -299,6 +300,7 @@ public class SessionManager implements SessionChangeListener {
                 loginOngoing = false;
 
                 setProfile(profile);
+                AnalyticsUtils.setPetroPointsProperty(application.getApplicationContext(), profile.getPointsBalance());
                 loginState.postValue(LoginState.LOGGED_IN);
                 if (loginObservable != null) {
                     loginObservable.postValue(Resource.success(SigninResponse.success()));
