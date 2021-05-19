@@ -9,6 +9,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -155,6 +157,21 @@ public class LoginFragment extends BaseFragment {
         viewModel.getNavigateToHomeEvent().observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 getActivity().finish();
+            }
+        });
+
+        viewModel.retrieveSettings().observe(this, result -> {
+            if(Objects.isNull(result)){
+                return;
+            }
+            if(result.getMaintenanceMsgEN() != null && !result.getMaintenanceMsgEN().isEmpty()){
+                binding.maintenanceMsgLayout.setVisibility(View.VISIBLE);
+                binding.maintenanceMsgText.setText(result.getMaintenanceDisplayMsg());
+            } else {
+                binding.maintenanceMsgLayout.setVisibility(View.GONE);
+             //   binding.emailLayout.setVisibility(View.GONE);
+             //   binding.passwordLayout.setVisibility(View.GONE);
+             //   binding.signingButton.setVisibility(View.GONE);
             }
         });
     }
