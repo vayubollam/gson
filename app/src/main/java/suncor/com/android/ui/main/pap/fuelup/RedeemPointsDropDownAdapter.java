@@ -276,78 +276,13 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         OtherAmountViewHolder(@NonNull OtherAmountBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
+            setTextListener();
         }
 
-        public void setDataOnView() {
-            otherAmountEditText = binding.inputField;
-            binding.preAuthTip.setVisibility(View.VISIBLE);
-
-            binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
-
-            if (binding.radioBtn.isSelected()) {
-                otherAmountEditText.setHint("");
-                otherAmountEditText.setEnabled(true);
-                binding.dollarOffText.setVisibility(View.VISIBLE);
-                binding.dollarOffText.setVisibility(View.VISIBLE);
-
-                if (!otherAmountEditText.getText().toString().isEmpty()) {
-                    otherAmountEditText.setText(String.valueOf(getAmount(amountInDouble)));
-                    binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
-                    otherAmountEditText.setCursorVisible(false);
-                }
-
-            } else {
-                otherAmountEditText.setEnabled(false);
-                otherAmountEditText.setText("");
-                otherAmountEditText.setHint(mContext.getString(R.string.other_amount));
-                binding.dollarOffText.setVisibility(View.GONE);
-            }
-            binding.radioBtn.setOnClickListener(v -> {
-                if (selectedPos != getAdapterPosition()) {
-                    notifyItemChanged(selectedPos);
-                    selectedPos = getAdapterPosition();
-                    notifyItemChanged(selectedPos);
-                    isPreAuthChanges = false;
-                }
-            });
-
-            otherAmountEditText.setOnEditorActionListener((v, actionId, event) -> {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    if (Objects.nonNull(listener)) {
-                        try {
-                            getRoundOffValue();
-                            if (amountInDouble > roundOffValue) {
-                                amountInDouble = roundOffValue;
-                            }
-                            isPreAuthChanges = false;
-                            listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
-                            if (redeemPointsCallback != null) {
-                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
-                            }
-                            listener.expandCollapse();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                return false;
-            });
-
-            otherAmountEditText.setOnFocusChangeListener((v, hasFocus) -> {
-                if (!hasFocus) {
-                    hideKeyBoard();
-                }
-            });
-
-
-            otherAmountEditText.addTextChangedListener(new TextWatcher() {
+        public void setTextListener(){
+            binding.inputField.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    if (!otherAmountEditText.getText().toString().isEmpty()) {
-                        otherAmountEditText.setCursorVisible(true);
-                    }
 
                 }
 
@@ -374,6 +309,61 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                         e.printStackTrace();
                     }
                 }
+            });
+
+            binding.inputField.setOnEditorActionListener((v, actionId, event) -> {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    if (Objects.nonNull(listener)) {
+                        try {
+                            getRoundOffValue();
+                            if (amountInDouble > roundOffValue) {
+                                amountInDouble = roundOffValue;
+                            }
+                            isPreAuthChanges = false;
+                            listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
+                            if (redeemPointsCallback != null) {
+                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
+                            }
+                            listener.expandCollapse();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                return false;
+            });
+        }
+
+        public void setDataOnView() {
+            otherAmountEditText = binding.inputField;
+            binding.preAuthTip.setVisibility(View.VISIBLE);
+
+            binding.radioBtn.setSelected(selectedPos == getAdapterPosition());
+
+            if (binding.radioBtn.isSelected()) {
+                otherAmountEditText.setHint("");
+                otherAmountEditText.setEnabled(true);
+                binding.dollarOffText.setVisibility(View.VISIBLE);
+
+                if (!otherAmountEditText.getText().toString().isEmpty()) {
+                    otherAmountEditText.setText(String.valueOf(getAmount(amountInDouble)));
+                    binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
+                }
+
+            } else {
+                otherAmountEditText.setEnabled(false);
+                otherAmountEditText.setText("");
+                otherAmountEditText.setHint(mContext.getString(R.string.other_amount));
+                binding.dollarOffText.setVisibility(View.GONE);
+            }
+            binding.radioBtn.setOnClickListener(v -> {
+                if (selectedPos != getAdapterPosition()) {
+                    notifyItemChanged(selectedPos);
+                    selectedPos = getAdapterPosition();
+                    notifyItemChanged(selectedPos);
+                    isPreAuthChanges = false;
+                }
+                otherAmountEditText.setEnabled(true);
             });
         }
     }
