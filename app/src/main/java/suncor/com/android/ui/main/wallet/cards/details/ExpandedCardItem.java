@@ -28,11 +28,9 @@ public class ExpandedCardItem {
     private String cardNumber;
     private CardType cardType;
     private Drawable barCode;
-    private Drawable barCodePDF;
     private CardDetail.CardCategory cardCategory;
     private CardDetail cardDetail;
     private boolean isRemovable = true;
-    private boolean isPdfShown = false;
     private int width = 0;
     private int height = 0;
 
@@ -85,11 +83,9 @@ public class ExpandedCardItem {
                     cardImage = context.getDrawable(R.drawable.petro_points_card);
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.PPTS_FORMAT);
                     cardName = context.getString(R.string.cards_ppts_label);
-                    barCode = new BitmapDrawable(context.getResources(), generateBarcode(cardDetail, BarcodeFormat.UPC_A));
-                    barCodePDF = new BitmapDrawable(context.getResources(), generateBarcode(cardDetail, BarcodeFormat.PDF_417));
+                    barCode = new BitmapDrawable(context.getResources(), generateBarcode(cardDetail));
                     balance = context.getString(R.string.cards_ppts_balance_template, CardFormatUtils.formatBalance(balanceValue));
                     balanceDetails = context.getString(R.string.cards_ppts_monetary_balance_template, CardFormatUtils.formatBalance(balanceValue / 1000));
-                    cardDescription = context.getString(R.string.cards_ppts_description);
                     isRemovable = false;
                     break;
                 case FSR:
@@ -188,38 +184,15 @@ public class ExpandedCardItem {
         return barCode;
     }
 
-    public Drawable getBarCodePDF() {
-        return barCodePDF;
-    }
-
-    public boolean isPdfShown() {
-        return isPdfShown;
-    }
-
-    public void setPdfShown(boolean pdfShown) {
-        isPdfShown = pdfShown;
-    }
-
-    private Bitmap generateBarcode(CardDetail cardDetail, BarcodeFormat barcodeFormat) {
+    private Bitmap generateBarcode(CardDetail cardDetail) {
         String petroPointsCardNumber = cardDetail.getCardNumber();
-        String dataForBarCode = "";
-        switch (barcodeFormat) {
-            case UPC_A:
-                dataForBarCode = petroPointsCardNumber.substring(4, petroPointsCardNumber.length() - 1);
-                width = 400;
-                height = 80;
-                break;
-            case PDF_417:
-                dataForBarCode = petroPointsCardNumber;
-                width = 2000;
-                height = 400;
-                break;
-        }
+        String dataForBarCode = petroPointsCardNumber;
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-           
-            BitMatrix bitMatrix = multiFormatWriter.encode(dataForBarCode, barcodeFormat, width, height);
+            int width = 1500;
+          int height = 330;
+            BitMatrix bitMatrix = multiFormatWriter.encode(dataForBarCode, BarcodeFormat.PDF_417, width, height);
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {

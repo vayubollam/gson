@@ -150,21 +150,20 @@ public class Transaction implements Comparable<Transaction>, Parcelable {
     }
 
     public String getFormattedPurchaseAmount() {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
-        String amount = NumberFormat.getNumberInstance(Locale.getDefault()).format(getPurchaseAmount());
+        String amount = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(getPurchaseAmount());
 
         switch (getTransactionType()) {
             case PURCHASE:
-                return formatter.format(getPurchaseAmount() == 0 ? "" : getPurchaseAmount());
+                return getPurchaseAmount() == 0 ? "" : amount;
             case REDEMPTION:
-                return formatter.format(getBonusPoints() == 0 || getPurchaseAmount() == 0 ? "" : getPurchaseAmount());
+                return getBonusPoints() == 0 || getPurchaseAmount() == 0 ? "" : amount;
             default:
                 return "";
         }
     }
 
     public int getMonth() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         Date date = null;
         try {
             date = dateFormat.parse(getDate());

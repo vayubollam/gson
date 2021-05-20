@@ -233,7 +233,7 @@ public class HomeFragment extends BottomNavigationFragment {
             }
         });
 
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true, (((MainActivity) getActivity()).getCurrentAndroidVersion()));
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -294,7 +294,7 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         nearestCard = binding.nearestCard;
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false, (((MainActivity) getActivity()).getCurrentAndroidVersion()));
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -474,36 +474,41 @@ public class HomeFragment extends BottomNavigationFragment {
                 if (result.status == Resource.Status.LOADING) {
                 } else if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Home"));
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Home").show();
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side" ),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
                         if(result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
-                        } else if(result.data.status.equals("BeginFueling")){
+                        }
+                        // TODO: handle processing and session end state
+                        /*else if(result.data.status.equals("BeginFueling")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
-                        } else{
-                            //todo handle processing and session end state
+                        } */
+                        else {
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                         }
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
                         }
                     } else {
+                        if (mViewModel.activeFuellingSession.get()) {
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                        }
+
                         mViewModel.updateFuellingSession(false, "");
-                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
-                                new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Home"));
                     }
                 }
             });
