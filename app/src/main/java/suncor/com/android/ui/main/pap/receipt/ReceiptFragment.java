@@ -105,8 +105,8 @@ public class ReceiptFragment extends MainActivityFragment {
 
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, preAuthRedeemPoints),
-                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, preAuthRedeemPoints),
+                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(result.data.getTotalPointsRedeemed())),
+                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(result.data.getTotalPointsRedeemed())),
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
 
                 sessionManager.retrieveProfile((profile) -> {

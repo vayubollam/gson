@@ -110,7 +110,6 @@ public class AnalyticsUtils {
         FirebaseAnalytics.getInstance(context).setUserId(userID);
         FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
         FirebaseAnalytics.getInstance(context).setUserProperty("is_linked_rbc", rbcLinked ? "true" : "false");
-
     }
 
     public static void setPetroPointsProperty(Context context,int pointsBalance){
