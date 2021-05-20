@@ -284,6 +284,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                    if (!binding.inputField.getText().toString().isEmpty()) {
+                        binding.inputField.setCursorVisible(true);
+                    }
+
                 }
 
                 @Override
@@ -332,6 +336,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 }
                 return false;
             });
+
+
         }
 
         public void setDataOnView() {
@@ -344,10 +350,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 otherAmountEditText.setHint("");
                 otherAmountEditText.setEnabled(true);
                 binding.dollarOffText.setVisibility(View.VISIBLE);
+                binding.dollarOffText.setVisibility(View.VISIBLE);
 
                 if (!otherAmountEditText.getText().toString().isEmpty()) {
                     otherAmountEditText.setText(String.valueOf(getAmount(amountInDouble)));
                     binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
+                    otherAmountEditText.setCursorVisible(false);
                 }
 
             } else {
@@ -364,6 +372,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     isPreAuthChanges = false;
                 }
                 otherAmountEditText.setEnabled(true);
+            });
+
+            otherAmountEditText.setOnFocusChangeListener((v, hasFocus) -> {
+                if (!hasFocus) {
+                    hideKeyBoard();
+                }
             });
         }
     }
