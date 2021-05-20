@@ -276,6 +276,67 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         OtherAmountViewHolder(@NonNull OtherAmountBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            setTextListener();
+        }
+
+        public void setTextListener(){
+            binding.inputField.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    if (!binding.inputField.getText().toString().isEmpty()) {
+                        binding.inputField.setCursorVisible(true);
+                    }
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    try {
+                        if (!s.toString().isEmpty()) {
+                            otherAmountEditText.removeTextChangedListener(this);
+                            amountInDouble = numberInstance.parse(replaceChars(s.toString())).doubleValue();
+                            otherAmountEditText.setText(getFormattedPoints(amountInDouble));
+                            otherAmountEditText.addTextChangedListener(this);
+                            otherAmountEditText.setSelection(otherAmountEditText.getText().length());
+                            binding.dollarOffText.setVisibility(View.VISIBLE);
+                            binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
+                        } else {
+                            binding.dollarOffText.setVisibility(View.GONE);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            binding.inputField.setOnEditorActionListener((v, actionId, event) -> {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    if (Objects.nonNull(listener)) {
+                        try {
+                            getRoundOffValue();
+                            if (amountInDouble > roundOffValue) {
+                                amountInDouble = roundOffValue;
+                            }
+                            isPreAuthChanges = false;
+                            listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
+                            if (redeemPointsCallback != null) {
+                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
+                            }
+                            listener.expandCollapse();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                return false;
+            });
+
 
         }
 
@@ -310,69 +371,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     isPreAuthChanges = false;
                 }
-            });
-
-            otherAmountEditText.setOnEditorActionListener((v, actionId, event) -> {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    if (Objects.nonNull(listener)) {
-                        try {
-                            getRoundOffValue();
-                            if (amountInDouble > roundOffValue) {
-                                amountInDouble = roundOffValue;
-                            }
-                            isPreAuthChanges = false;
-                            listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
-                            if (redeemPointsCallback != null) {
-                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
-                            }
-                            listener.expandCollapse();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                return false;
+                otherAmountEditText.setEnabled(true);
             });
 
             otherAmountEditText.setOnFocusChangeListener((v, hasFocus) -> {
                 if (!hasFocus) {
                     hideKeyBoard();
-                }
-            });
-
-
-            otherAmountEditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    if (!otherAmountEditText.getText().toString().isEmpty()) {
-                        otherAmountEditText.setCursorVisible(true);
-                    }
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    try {
-                        if (!s.toString().isEmpty()) {
-                            otherAmountEditText.removeTextChangedListener(this);
-                            amountInDouble = numberInstance.parse(replaceChars(s.toString())).doubleValue();
-                            otherAmountEditText.setText(getFormattedPoints(amountInDouble));
-                            otherAmountEditText.addTextChangedListener(this);
-                            otherAmountEditText.setSelection(otherAmountEditText.getText().length());
-                            binding.dollarOffText.setVisibility(View.VISIBLE);
-                            binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
-                        } else {
-                            binding.dollarOffText.setVisibility(View.GONE);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
                 }
             });
         }
