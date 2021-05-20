@@ -88,33 +88,6 @@ public class ReceiptFragment extends MainActivityFragment {
         });
 
         binding.buttonDone.setOnClickListener(view1 -> goBack());
-
-        //Check for review
-        if (viewModel.isFirstTransactionOfMonth()) {
-            ReviewManager manager = ReviewManagerFactory.create(getContext());
-            Task<ReviewInfo> request = manager.requestReviewFlow();
-            request.addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    // We can get the ReviewInfo object
-                    ReviewInfo reviewInfo = task.getResult();
-                    Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
-
-                    flow.addOnCompleteListener(reviewed -> {
-                        // The flow has finished. The API does not indicate whether the user
-                        // reviewed or not, or even whether the review dialog was shown. Thus, no
-                        // matter the result, we continue our app flow.
-                    });
-                } else {
-                    // There was some problem, log or handle the error code.
-                    // TODO: Handle error when launching in app review
-                    @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
-
-                    if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
-
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -177,6 +150,8 @@ public class ReceiptFragment extends MainActivityFragment {
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(share, "Share"));
                 });
+
+                checkForReview();
             }
         });
     }
@@ -184,5 +159,34 @@ public class ReceiptFragment extends MainActivityFragment {
     private void goBack() {
         NavController navController = Navigation.findNavController(getView());
         navController.popBackStack();
+    }
+
+    private void checkForReview() {
+        //Check for review
+        if (viewModel.isFirstTransactionOfMonth()) {
+            ReviewManager manager = ReviewManagerFactory.create(getContext());
+            Task<ReviewInfo> request = manager.requestReviewFlow();
+            request.addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    // We can get the ReviewInfo object
+                    ReviewInfo reviewInfo = task.getResult();
+                    Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+
+                    flow.addOnCompleteListener(reviewed -> {
+                        // The flow has finished. The API does not indicate whether the user
+                        // reviewed or not, or even whether the review dialog was shown. Thus, no
+                        // matter the result, we continue our app flow.
+                    });
+                } else {
+                    // There was some problem, log or handle the error code.
+                    // TODO: Handle error when launching in app review
+                    @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
+
+                    if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
+
+                    }
+                }
+            });
+        }
     }
 }
