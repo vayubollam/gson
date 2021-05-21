@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.actionmenu;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Pair;
@@ -21,8 +20,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.Objects;
-
 import javax.inject.Inject;
 
 import suncor.com.android.HomeNavigationDirections;
@@ -37,7 +34,6 @@ import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
-import suncor.com.android.ui.main.wallet.payments.add.AddPaymentViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
@@ -104,7 +100,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding.actionFuelUpButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_fuel_up)));
             if (activeSession) {
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("");
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("", "0");
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }

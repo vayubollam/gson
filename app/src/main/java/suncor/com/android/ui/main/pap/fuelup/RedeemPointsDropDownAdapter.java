@@ -243,14 +243,14 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     if (selectedPos == 1) {
                         isPreAuthChanges = false;
                         if (redeemPointsCallback != null) {
-                            redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(roundOffValue)).intValue()));
+                            redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(roundOffValue)).intValue()), "Maximum Redemption");
                         }
                         listener.onSelectValue(dollarOffValue, getAmount(roundOffValue) + points, false);
                     } else {
 
                         if (redeemPointsCallback != null) {
                             isPreAuthChanges = false;
-                            redeemPointsCallback.onRedeemPointsChanged("0");
+                            redeemPointsCallback.onRedeemPointsChanged("0", "No Redemption");
                         }
 
                         listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true);
@@ -326,7 +326,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             isPreAuthChanges = false;
                             listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
                             if (redeemPointsCallback != null) {
-                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()));
+                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()), "Manual Redemption");
                             }
                             listener.expandCollapse();
                         } catch (Exception e) {
@@ -395,6 +395,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     }
 
     interface RedeemPointsCallback {
-        void onRedeemPointsChanged(String redeemPoints);
+        void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton);
     }
 }

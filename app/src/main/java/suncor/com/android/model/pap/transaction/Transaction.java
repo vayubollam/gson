@@ -30,6 +30,7 @@ public class Transaction {
     private double totalDiscount;
     private String currency;
     private double subtotal;
+    private int totalPointsRedeemed;
 
     private double taxAmount;
     private String formattedTotalDiscounts;
@@ -62,6 +63,10 @@ public class Transaction {
 
     public String getCardType() {
         return cardType;
+    }
+
+    public int getTotalPointsRedeemed() {
+        return totalPointsRedeemed;
     }
 
     public String getLastFour() {

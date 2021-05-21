@@ -39,6 +39,7 @@ public class FuellingFragment extends MainActivityFragment {
     private FuelUpViewModel viewModel;
     private FragmentFuellingBinding binding;
     private String pumpNumber;
+    private String preAuthRedeemPoints;
     private String transactionId;
 
     private boolean pingActiveSessionStarted = false;
@@ -69,6 +70,7 @@ public class FuellingFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
 
         pumpNumber = FuellingFragmentArgs.fromBundle(getArguments()).getPumpNumber();
+        preAuthRedeemPoints = FuellingFragmentArgs.fromBundle(getArguments()).getPreAuthRedeemPoints();
         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-authorizing");
         binding.pumpAuthorizedText.setText(getString(R.string.pump_authorized, pumpNumber));
         binding.pumpNumberText.setText(pumpNumber);
@@ -207,7 +209,7 @@ public class FuellingFragment extends MainActivityFragment {
     };
 
     private void observeTransactionData(String transactionId, String lastPaymentProvider){
-        FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId);
+        FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId, preAuthRedeemPoints);
         action.setIsGooglePay(lastPaymentProvider.toLowerCase().contains("google"));
         Navigation.findNavController(requireView()).popBackStack();
         Navigation.findNavController(requireView()).navigate(action);

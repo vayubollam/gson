@@ -13,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +22,6 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -53,7 +50,6 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import suncor.com.android.BuildConfig;
-import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
@@ -66,7 +62,6 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
-import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
@@ -104,6 +99,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String preAuth;
     private String userPaymentId;
     private String preAuthRedeemPoints = "0";
+    private String selectedRadioButton = "No Redemption";
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -362,6 +358,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         if( ++ isPreAuthChanges >1 && fuelLimitDropDownAdapter.isEditableValueChange()){
             redeemPointsDropDownAdapter.collapseIfPreAuthChanges(0);
         preAuthRedeemPoints = "0";
+        selectedRadioButton = "No Redemption";
         redeemPointsDropDownAdapter.notifyDataSetChanged();
         }
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"),
@@ -416,8 +413,10 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         isLoading.set(false);
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                                 new Pair<>(AnalyticsUtils.Param.paymentMethod, "Credit Card"),
+                                new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
-                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
+
+                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints);
                         Navigation.findNavController(getView()).popBackStack();
                         Navigation.findNavController(getView()).navigate(action);
                     }
@@ -541,8 +540,10 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 isLoading.set(false);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, "Google Pay"),
+                        new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton),
                         new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
+
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints);
                 Navigation.findNavController(requireView()).popBackStack();
                 Navigation.findNavController(requireView()).navigate(action);
             }
@@ -636,7 +637,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     @Override
-    public void onRedeemPointsChanged(String redeemPoints) {
+    public void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton) {
         preAuthRedeemPoints = redeemPoints;
+        this.selectedRadioButton = selectedRadioButton;
     }
 }
