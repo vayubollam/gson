@@ -88,6 +88,8 @@ public class ReceiptFragment extends MainActivityFragment {
         });
 
         binding.buttonDone.setOnClickListener(view1 -> goBack());
+
+        checkForReview();
     }
 
     @Override
@@ -108,6 +110,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
+                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -151,7 +154,6 @@ public class ReceiptFragment extends MainActivityFragment {
                     startActivity(Intent.createChooser(share, "Share"));
                 });
 
-                checkForReview();
             }
         });
     }

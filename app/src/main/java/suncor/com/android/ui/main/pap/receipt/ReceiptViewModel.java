@@ -28,12 +28,14 @@ public class ReceiptViewModel extends ViewModel {
     }
 
     public boolean isFirstTransactionOfMonth() {
+        long lastStatusUpdate = sessionManager.getUserLocalSettings().getLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE);
+
         Calendar c = Calendar.getInstance();
         int currentMonth = c.get(Calendar.MONTH);
 
-        c.setTimeInMillis(sessionManager.getUserLocalSettings().getLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE));
+        c.setTimeInMillis(lastStatusUpdate);
         int lastSuccessMonth = c.get(Calendar.MONTH);
 
-        return currentMonth != lastSuccessMonth;
+        return lastStatusUpdate == 0 || currentMonth != lastSuccessMonth;
     }
 }
