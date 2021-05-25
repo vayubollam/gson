@@ -40,6 +40,7 @@ import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class FuelUpViewModel extends ViewModel {
 
@@ -69,6 +70,16 @@ public class FuelUpViewModel extends ViewModel {
 
     public LiveData<Resource<ActiveSession>> getActiveSession() {
         return papRepository.getActiveSession();
+    }
+
+    public void saveLastStatusUpdate(ActiveSession activeSession) {
+        if (activeSession.lastStatus != null &&
+                activeSession.lastStatus.equals("Finished")
+                && sessionManager.getUserLocalSettings().getLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE)
+                != activeSession.getLastStatusUpdated()) {
+            sessionManager.getUserLocalSettings().setLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE,
+                    activeSession.getLastStatusUpdated());
+        }
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {

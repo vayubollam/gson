@@ -47,14 +47,6 @@ public class PapRepository {
         return Transformations.map(papApi.activeSession(), resource -> {
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                 cachedActiveSession = resource.data;
-                if (cachedActiveSession.lastStatus != null &&
-                        cachedActiveSession.lastStatus.equals("Finished")
-                    && sessionManager.getUserLocalSettings().getLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE)
-                        != cachedActiveSession.getLastStatusUpdated()
-                    && !DateUtils.isToday(cachedActiveSession.getLastStatusUpdated())) {
-                    sessionManager.getUserLocalSettings().setLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE,
-                            cachedActiveSession.getLastStatusUpdated());
-                }
                 return Resource.success(cachedActiveSession);
             } else if (resource.status == Resource.Status.ERROR) {
                 if (cachedActiveSession != null) {
