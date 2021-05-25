@@ -165,7 +165,7 @@ public class ReceiptFragment extends MainActivityFragment {
 
     private void checkForReview() {
         //Check for review
-        //if (viewModel.isFirstTransactionOfMonth()) {
+        if (viewModel.isFirstTransactionOfMonth()) {
             ReviewManager manager = ReviewManagerFactory.create(getContext());
             Task<ReviewInfo> request = manager.requestReviewFlow();
             request.addOnCompleteListener(task -> {
@@ -189,6 +189,6 @@ public class ReceiptFragment extends MainActivityFragment {
                     }
                 }
             });
-       // }
+        }
     }
 }
