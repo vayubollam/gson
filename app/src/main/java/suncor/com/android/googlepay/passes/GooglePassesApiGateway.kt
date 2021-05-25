@@ -27,7 +27,7 @@ class GooglePassesApiGateway {
     fun makeSkinnyJwt(context: Context, verticalType: VerticalType?, classId: String?, objectId: String?, barcodeValue: String?): String? {
         var signedJwt: String? = null
         val resourceDefinitions = GooglePassesResourceDefination
-        val restMethods: GooglePassesRestClient = GooglePassesRestClient.getInstance()
+        val restMethods: GooglePassesRestClient = GooglePassesRestClient.instance!!
         val classResourcePayload: GenericJson? = null
         var objectResourcePayload: GenericJson? = null
         val classResponse: GenericJson? = null

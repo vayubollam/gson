@@ -61,6 +61,7 @@ android {
         pickFirst 'META-INF/ASL2.0'
         pickFirst 'META-INF/LICENSE'
         pickFirst 'META-INF/NOTICE'
+        pickFirst 'META-INF/DEPENDENCIES'
     }
     compileOptions {
         sourceCompatibility = '1.8'

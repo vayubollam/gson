@@ -69,7 +69,7 @@ class GooglePassesConfig {
     }
 
     init {
-        scopes = object : ArrayList<String?>() {
+        scopes = object : ArrayList<String>() {
             val serialVersionUID = 1L
 
             init {

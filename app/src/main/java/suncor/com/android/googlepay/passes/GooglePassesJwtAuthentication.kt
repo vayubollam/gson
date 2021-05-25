@@ -57,7 +57,7 @@ class GooglePassesJwtAuthentication {
         return
     }
 
-    fun generateUnsignedJwt(context: Context?): JsonToken {
+    fun generateUnsignedJwt(context: Context): JsonToken {
         try {
             signer = RsaSHA256Signer(iss,
                     null, GooglePassesConfig().getServiceAccountPrivateKey(context))
@@ -72,7 +72,7 @@ class GooglePassesJwtAuthentication {
         return token
     }
 
-    fun generateSignedJwt(context: Context?): String? {
+    fun generateSignedJwt(context: Context): String? {
         val jwtToSign = generateUnsignedJwt(context)
         val signedJwt: String? = null
         try {
@@ -111,9 +111,9 @@ class GooglePassesJwtAuthentication {
 
     init {
         val config = GooglePassesConfig()
-        audience = config.getAudience()
-        type = config.getJwtType()
-        iss = config.getServiceAccountEmailAddress()
+        audience = config.audience
+        type = config.jwtType
+        iss = config.serviceAccountEmailAddress
         iat = Instant(
                 Calendar.getInstance().timeInMillis - 5000L)
         payload = JsonObject()

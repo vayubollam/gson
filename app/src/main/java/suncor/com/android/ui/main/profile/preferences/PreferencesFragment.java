@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
-import afu.org.checkerframework.checker.nullness.qual.Nullable;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPreferencesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;

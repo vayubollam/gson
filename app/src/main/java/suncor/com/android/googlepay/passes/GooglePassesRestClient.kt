@@ -11,7 +11,6 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.walletobjects.Walletobjects
 import com.google.api.services.walletobjects.model.LoyaltyClass
 import com.google.api.services.walletobjects.model.LoyaltyObject
-import suncor.com.android.googlepay.passes.GooglePassesConfig
 import suncor.com.android.utilities.Timber
 
 class GooglePassesRestClient private constructor() {
@@ -32,8 +31,8 @@ class GooglePassesRestClient private constructor() {
         // the variables are in config file
         try {
             credentials = GoogleCredential
-                    .fromStream(context!!.assets.open(config.getServiceAccountFile()), httpTransport, jsonFactory)
-                    .createScoped(config.getScopes())
+                    .fromStream(context!!.assets.open(config.serviceAccountFile), httpTransport, jsonFactory)
+                    .createScoped(config.scopes)
         } catch (ex: Exception) {
             Timber.e(ex.message!!)
         }

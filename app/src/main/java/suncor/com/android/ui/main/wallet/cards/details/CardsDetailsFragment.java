@@ -3,7 +3,9 @@ package suncor.com.android.ui.main.wallet.cards.details;
 import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -36,6 +38,7 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
@@ -119,7 +122,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, saveCardToWalletListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -218,6 +221,30 @@ public class CardsDetailsFragment extends MainActivityFragment {
         }
 
     };
+
+    private View.OnClickListener saveCardToWalletListener = view -> {
+        showAddCardProgress();
+        Handler handler = new Handler();
+        new Thread(() -> {
+            GooglePassesApiGateway gateway = new GooglePassesApiGateway();
+            String cardAuthToken = gateway.insertLoyalityCard(getContext(),viewModel.cards.getValue().get(clickedCardIndex).getCardNumber() );
+            handler.postDelayed(()-> {
+                hideAddCardProgress();
+                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
+            }, 1000);
+        }).start();
+    };
+
+    private void showAddCardProgress(){
+        binding.progressLayout.setVisibility(View.VISIBLE);
+        binding.progressIcon.setImageResource(R.drawable.ic_add);
+        binding.progressContent.setText("Adding to Wallet");
+    }
+    private void hideAddCardProgress(){
+        binding.progressLayout.setVisibility(View.GONE);
+        binding.progressIcon.setImageResource(R.drawable.ic_bin_red);
+        binding.progressContent.setText(getString(R.string.removing_card));
+    }
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
