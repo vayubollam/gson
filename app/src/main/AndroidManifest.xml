@@ -38,6 +38,15 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="https"
+                    android:host="petrocanada-stcwdevtor004.network.dev"
+                    android:pathPrefix="/en/personal" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
