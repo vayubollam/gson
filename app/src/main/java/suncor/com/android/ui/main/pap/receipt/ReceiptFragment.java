@@ -48,6 +48,7 @@ public class ReceiptFragment extends MainActivityFragment {
     private FragmentReceiptBinding binding;
     private String transactionId;
     private boolean isGooglePay;
+    private boolean isReceiptValid = false;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
@@ -88,8 +89,6 @@ public class ReceiptFragment extends MainActivityFragment {
         });
 
         binding.buttonDone.setOnClickListener(view1 -> goBack());
-
-        checkForReview();
     }
 
     @Override
@@ -126,6 +125,7 @@ public class ReceiptFragment extends MainActivityFragment {
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
                 } else {
+                    isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
                 binding.setTransaction(result.data);
@@ -154,18 +154,21 @@ public class ReceiptFragment extends MainActivityFragment {
                     startActivity(Intent.createChooser(share, "Share"));
                 });
 
+
             }
         });
     }
 
     private void goBack() {
+        checkForReview();
+
         NavController navController = Navigation.findNavController(getView());
         navController.popBackStack();
     }
 
     private void checkForReview() {
         //Check for review
-        if (viewModel.isFirstTransactionOfMonth()) {
+        if (isReceiptValid && viewModel.isFirstTransactionOfMonth()) {
             ReviewManager manager = ReviewManagerFactory.create(getContext());
             Task<ReviewInfo> request = manager.requestReviewFlow();
             request.addOnCompleteListener(task -> {
