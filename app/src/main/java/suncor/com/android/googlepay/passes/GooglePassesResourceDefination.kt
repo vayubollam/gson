@@ -28,12 +28,19 @@ object GooglePassesResourceDefination {
                 .setId(objectId).setClassId(classId).setState("active")
                 .setAccountId(barcodeValue)
                 .setBarcode(Barcode().setType("pdf417").setValue(barcodeValue))
-                .setLoyaltyPoints(LoyaltyPoints().setBalance(LoyaltyPointsBalance().setString("105,154 points or $105 off")))
+                .setLoyaltyPoints(LoyaltyPoints().setBalance(LoyaltyPointsBalance().setString("105,154 " +
+                        "\n\n DOLLARS OFF  \n  $105 ")))
                 .setInfoModuleData(InfoModuleData().setLabelValueRows(object : ArrayList<LabelValueRow?>() {
                     init {
                         add(LabelValueRow().setColumns(object : ArrayList<LabelValue?>() {
                             init {
+                                add(LabelValue().setLabel("NAME").setValue("Asma"))
                                 add(LabelValue().setLabel("EMAIL").setValue("developer@suncor.com"))
+                                add(LabelValue().setLabel("DETAILS").setValue("Redeem your Petro-Points for free gas, eGift" +
+                                        ", cards and more."))
+                                add(LabelValue().setLabel("VALUE").setValue("Earn: \n 1L = 10 points \n $1 = 10 points \n\n Redeem: \n 1000 = \$1 off\""))
+                                add(LabelValue().setLabel("How to use").setValue("Scan your card in store to earn or redeem points. Or, download our app to earn points directly at the pump."))
+                                add(LabelValue().setLabel("TERMS AND CONDITIONS").setValue("By using this pass, you agree to the Petro Points terms and conditions. Read them on our website."))
                             }
                         }))
                     }
