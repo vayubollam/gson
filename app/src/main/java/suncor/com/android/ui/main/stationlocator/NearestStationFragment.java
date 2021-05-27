@@ -180,7 +180,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
                     && result.data.getDistanceDuration() != null ) {
 
                 if (result.data.getDistanceDuration().getDistance() < geoFenceLimit) {
-                    HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(result.data.getStation().getId(), getString(R.string.action_location, result.data.getStation().getAddress().getAddressLine()));
+                    HomeNavigationDirections.ActionToSelectPumpFragment action = HomeNavigationDirections.actionToSelectPumpFragment(result.data.getStation().getId(), getString(R.string.action_location, result.data.getStation().getAddress().getAddressLine()));
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
                 } else {

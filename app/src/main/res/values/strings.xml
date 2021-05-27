@@ -724,4 +724,7 @@
 
     <string name="fuelling_almost_done">Almost done…</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
+
+    <!-- Carwash POE -->
+    <string name="carwash_activated_copy">Follow the car wash instructions and enjoy your wash.</string>
 </resources>

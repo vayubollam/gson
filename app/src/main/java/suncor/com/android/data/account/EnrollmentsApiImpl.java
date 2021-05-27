@@ -29,7 +29,7 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
-    private final static String ADAPTER_PATH_V3 = "/adapters/suncor/v5/rfmp-secure/enrollments";
+    private final static String ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/enrollments";
     private Gson gson;
 
     public EnrollmentsApiImpl(Gson gson) {
@@ -42,7 +42,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         MutableLiveData<Resource<EnrollmentPointsAndHours>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH_V3);
+            URI adapterPath = new URI(ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -90,7 +90,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH_V3.concat("/security-questions"));
+            adapterPath = new URI(ADAPTER_PATH.concat("/security-questions"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -133,7 +133,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         MutableLiveData<Resource<CardStatus>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH_V3.concat("/card-status"));
+            URI adapterPath = new URI(ADAPTER_PATH.concat("/card-status"));
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.addHeader("x-card-number", cardNumber);
             request.addHeader("x-postal-code", postalCode);
