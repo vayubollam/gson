@@ -56,6 +56,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private double amountInDouble;
     private boolean isPreAuthChanges;
     private EditText otherAmountEditText;
+    private double zeroInDouble = 0.0;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints, RedeemPointsCallback redeemPointsCallback) {
 
@@ -287,12 +288,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     if (!binding.inputField.getText().toString().isEmpty()) {
                         binding.inputField.setCursorVisible(true);
                     }
-
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 }
 
                 @Override
@@ -319,6 +318,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     if (Objects.nonNull(listener)) {
                         try {
+                            if(binding.inputField.getText().toString().isEmpty()){
+                                amountInDouble = 0.0;
+                            }
                             getRoundOffValue();
                             if (amountInDouble > roundOffValue) {
                                 amountInDouble = roundOffValue;
@@ -356,6 +358,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                     otherAmountEditText.setText(String.valueOf(getAmount(amountInDouble)));
                     binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
                     otherAmountEditText.setCursorVisible(false);
+                } else {
+                    binding.dollarOffText.setText(getDollarOffValue(zeroInDouble));
                 }
 
             } else {
