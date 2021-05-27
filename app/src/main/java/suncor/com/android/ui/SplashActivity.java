@@ -336,12 +336,12 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(appLinkData != null && appLinkData.equals("http://petrocanada-stcwdevtor004.network.dev/en/personal"))
+        if(appLinkData != null)
         {
             openRespectiveActivityViaDeeplInk();
             return;
         }
-        }
+    }
 
 
     private void openRespectiveActivityViaDeeplInk(){
