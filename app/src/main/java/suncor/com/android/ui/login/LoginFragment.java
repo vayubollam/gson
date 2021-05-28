@@ -52,6 +52,7 @@ public class LoginFragment extends BaseFragment {
     private String email = "";
     private String password = "";
     private boolean fromResetPassword = false;
+    private boolean isComimgFromDeepLink = false;
 
     @Inject
     KeyStoreStorage keyStoreStorage;
@@ -62,10 +63,11 @@ public class LoginFragment extends BaseFragment {
 
     }
 
-    public static LoginFragment newInstance(boolean fromEnrollment, boolean fromResetPassword, String email) {
+    public static LoginFragment newInstance(boolean fromEnrollment, boolean fromResetPassword,boolean isComingFromDeepLink, String email) {
         Bundle args = new Bundle();
         args.putBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, fromEnrollment);
         args.putBoolean(LoginActivity.LOGIN_FROM_RESET_PASSWORD_EXTRA, fromResetPassword);
+        args.putBoolean(LoginActivity.IS_COMING_FROM_DEEPLINK, isComingFromDeepLink);
         args.putString(PersonalInfoFragment.EMAIL_EXTRA, email);
         LoginFragment fragment = new LoginFragment();
         fragment.setArguments(args);
@@ -78,6 +80,7 @@ public class LoginFragment extends BaseFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         boolean fromEnrollment = getArguments().getBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, false);
         fromResetPassword = getArguments().getBoolean(LoginActivity.LOGIN_FROM_RESET_PASSWORD_EXTRA, false);
+        isComimgFromDeepLink = getArguments().getBoolean(LoginActivity.IS_COMING_FROM_DEEPLINK, false);
 
         viewModel.setLoginFromEnrollment(fromEnrollment);
         viewModel.getLoginFailedEvent().observe(this, (event) -> {
@@ -96,15 +99,28 @@ public class LoginFragment extends BaseFragment {
                                     .setMessage(R.string.sign_enable_fb_message)
                                     .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
                                         fingerPrintManager.activateFingerprint();
+                                        if(isComimgFromDeepLink){
+                                            goToHomeAfterComingFromDeepLink();
+                                        }else{
                                         getActivity().finish();
+                                        }
                                     })
                                     .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
+                                        if(isComimgFromDeepLink){
+                                            goToHomeAfterComingFromDeepLink();
+                                        }else{
                                         getActivity().finish();
+                                        }
                                     })
                                     .create()
                                     .show();
                         } else {
+                            if(isComimgFromDeepLink){
+                                goToHomeAfterComingFromDeepLink();
+                            }else{
+
                             getActivity().finish();
+                            }
                         }
                         fingerPrintManager.activateAutoLogin();
                         AnalyticsUtils.logEvent(getContext(), "login");
@@ -134,6 +150,7 @@ public class LoginFragment extends BaseFragment {
         viewModel.getCallCustomerService().observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 String customerSupportNumber = getString(R.string.customer_support_number);
+
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + customerSupportNumber));
                 startActivity(intent);
@@ -154,7 +171,12 @@ public class LoginFragment extends BaseFragment {
 
         viewModel.getNavigateToHomeEvent().observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
+                if(isComimgFromDeepLink){
+                    goToHomeAfterComingFromDeepLink();
+                }else{
+
                 getActivity().finish();
+                }
             }
         });
     }
@@ -256,8 +278,21 @@ public class LoginFragment extends BaseFragment {
         binding.setLifecycleOwner(this);
         if(fromResetPassword) {
             binding.appBar.setNavigationOnClickListener((v) -> goToHomeScreen());
-        } else
-            binding.appBar.setNavigationOnClickListener((v) -> getActivity().finish());
+        } else{
+            binding.appBar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(isComimgFromDeepLink){
+                        goToHomeAfterComingFromDeepLink();
+                    }else{
+                        getActivity().finish();
+                    }
+                }
+            });
+
+//            binding.appBar.setNavigationOnClickListener((v) ->
+
+        }
         binding.emailLayout.getEditText().requestFocus();
         return binding.getRoot();
     }
@@ -265,6 +300,12 @@ public class LoginFragment extends BaseFragment {
     private void goToHomeScreen() {
         Intent homeActivityIntent = new Intent(getContext(), MainActivity.class);
         startActivity(homeActivityIntent);
+    }
+
+    private void goToHomeAfterComingFromDeepLink(){
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

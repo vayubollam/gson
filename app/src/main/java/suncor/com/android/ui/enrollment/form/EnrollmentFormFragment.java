@@ -157,7 +157,24 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         focusOnItem(binding.emailInput);
                     });
                     dialog.show();
-                } else {
+                } else if(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION.equals(r.message)){
+                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>("formName",  formName));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
+                            new Pair<>("formName",  formName));
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
+                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
+                                new Pair<>("alertSelection", getString(R.string.ok)),
+                                new Pair<>("formName",  formName)
+                        );
+                        binding.emailInput.setText("");
+                        d.dismiss();
+                        focusOnItem(binding.emailInput);
+                    });
+                    dialog.show();
+                }else {
                     Alerts.prepareGeneralErrorDialog(getActivity(), "Activate Petro-Points Card").show();
                 }
             }

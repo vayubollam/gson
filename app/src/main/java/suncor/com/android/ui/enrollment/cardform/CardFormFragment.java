@@ -108,7 +108,26 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                } else {
+                } else if(cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION)){
+                    ModalDialog dialog = new ModalDialog();
+                    dialog.setCancelable(false);
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_existing_card_dialog_title)),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Activate Petro-Points Card"));
+
+                    dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
+                            .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
+                            .setRightButton(getString(R.string.enrollment_cardform_existing_card_dialog_sign_in), (v) -> {
+                                getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
+                                getActivity().finish();
+                                dialog.dismiss();
+                            })
+                            .setCenterButton(getString(R.string.enrollment_cardform_existing_card_use_different_card), (v) -> {
+                                binding.cardInput.getEditText().requestFocus();
+                                showKeyBoard();
+                                dialog.dismiss();
+                            })
+                            .show(getFragmentManager(), ModalDialog.TAG);
+                }else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
 
                     dialog.show();

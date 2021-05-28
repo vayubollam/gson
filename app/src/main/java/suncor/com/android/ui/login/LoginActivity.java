@@ -22,6 +22,7 @@ public class LoginActivity extends DaggerAppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment, LoginFragment.newInstance(getIntent().getBooleanExtra(LOGIN_FROM_ENROLLMENT_EXTRA, false),
                 getIntent().getBooleanExtra(LOGIN_FROM_RESET_PASSWORD_EXTRA, false),
+                getIntent().getBooleanExtra(IS_COMING_FROM_DEEPLINK, false),
                 getIntent().getStringExtra(PersonalInfoFragment.EMAIL_EXTRA)));
         ft.commit();
     }

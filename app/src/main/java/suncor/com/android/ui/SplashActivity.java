@@ -351,6 +351,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                     case LOGGED_IN:
                         Intent homeIntent = new Intent(this, MainActivity.class);
                         homeIntent.putExtra(LOGINFAILED, false);
+                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(homeIntent);
                         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         finish();
@@ -358,6 +359,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                     case LOGGED_OUT:
                         Intent loginActivityIntent = new Intent(SplashActivity.this, LoginActivity.class);
                         loginActivityIntent.putExtra(LoginActivity.IS_COMING_FROM_DEEPLINK, true);
+                        loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         SplashActivity.this.startActivity(loginActivityIntent);
                         break;
                     case ERROR:
