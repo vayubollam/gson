@@ -128,4 +128,9 @@ public class CardDetailsViewModel extends ViewModel {
     public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
         return isCarWashBalanceZero;
     }
+
+
+    protected Profile getUserProfile(){
+        return sessionManager.getProfile();
+    }
 }

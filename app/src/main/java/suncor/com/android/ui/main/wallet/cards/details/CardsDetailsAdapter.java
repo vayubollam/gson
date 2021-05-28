@@ -18,13 +18,10 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     private ArrayList<ExpandedCardItem> cardItems = new ArrayList<>();
     private Consumer<ExpandedCardItem> callBack;
     private View.OnClickListener activeWashListener;
-    private View.OnClickListener saveCardToWalletListener;
 
-    public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
-                                View.OnClickListener saveCardToWalletListener ) {
+    public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener) {
         this.callBack = callBack;
         this.activeWashListener = activeWashListener;
-        this.saveCardToWalletListener = saveCardToWalletListener;
    }
 
     @NonNull
@@ -67,7 +64,6 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
             super(binding.getRoot());
             this.binding = binding;
             binding.activeWashButton.setOnClickListener(activeWashListener);
-            binding.savetowallet.setOnClickListener(saveCardToWalletListener);
         }
     }
 }

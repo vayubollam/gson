@@ -22,7 +22,6 @@
         android:paddingTop="40dp"
         tools:background="@color/black_4">
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/card_image"
             android:layout_width="160dp"
@@ -249,42 +248,17 @@
                             android:textAppearance="@style/Caption1"
                             app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"/>
 
-                        <FrameLayout
-                            android:id="@+id/fl_barcode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="20dp"
-                            android:paddingTop="60dp"
-                            android:paddingEnd="20dp"
-                            android:paddingBottom="30dp"
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/barcode_image"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:src="@{card.barCode}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/divider_2">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/barcode_image"
-                                android:layout_width="250dp"
-                                android:layout_height="50dp"
-                                app:visibleGone="@{card.cardType==CardType.PPTS}" />
-                        </FrameLayout>
-
-
-                        <ImageButton
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/savetowallet"
-                            android:src="@drawable/s2gp"
-                            android:layout_marginTop="10dp"
-                            android:longClickable="false"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitCenter"
-                            android:background="#0000"
-                            android:clickable="true"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/fl_barcode"/>
+                            app:layout_constraintTop_toBottomOf="@id/divider_2"
+                            app:visibleGone="@{card.cardType==CardType.PPTS}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>

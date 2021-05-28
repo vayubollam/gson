@@ -2,10 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="numCards"
             type="Integer" />
+
         <variable
             name="isRemoving"
             type="androidx.databinding.ObservableBoolean" />
@@ -16,6 +18,7 @@
         android:background="@color/black_4"
         android:clickable="true"
         android:gravity="center">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/card_detail_recycler"
             android:layout_width="match_parent"
@@ -29,6 +32,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/petro_canada_expanded_card_item"/>
+
         <suncor.com.android.uicomponents.pagerindicator.CircleIndicator
             android:id="@+id/page_indicator"
             android:layout_width="match_parent"
@@ -39,8 +43,25 @@
             app:ci_width="8dp"
             app:visibleGone="@{numCards!=1}"
             android:layout_marginTop="@dimen/expanded_card_pagination_margin"
-            app:layout_constraintBottom_toTopOf="@+id/button_close"
+            app:layout_constraintBottom_toTopOf="@+id/savetowallet"
             app:layout_constraintTop_toBottomOf="@+id/card_detail_recycler"/>
+
+        <ImageButton
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/savetowallet"
+            android:src="@drawable/s2gp"
+            android:layout_margin="@dimen/expanded_card_bottom_margin"
+            android:longClickable="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="#0000"
+            android:clickable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/button_close"
+            app:layout_constraintTop_toBottomOf="@+id/page_indicator" />
+
         <suncor.com.android.ui.common.SuncorButton
             android:id="@+id/button_close"
             style="@style/LinkButton.Black.ML"
@@ -55,14 +76,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/page_indicator" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/progress_layout"
             android:layout_width="match_parent"
             android:background="@color/white"
             android:clickable="true"
-            tools:visibility="visible"
+            tools:visibility="gone"
             app:visibleGone="@{isRemoving}"
             android:layout_height="match_parent">
+
             <ImageButton
                 android:id="@+id/progress_icon"
                 android:layout_width="24dp"
@@ -73,6 +96,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_bin_red" />
+
             <ProgressBar
                 android:id="@+id/remove_card_pb"
                 android:layout_width="84dp"
@@ -81,8 +105,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/progress_content"
+                android:id="@+id/progressContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/removing_card"
@@ -93,4 +118,5 @@
                 android:layout_marginBottom="32dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

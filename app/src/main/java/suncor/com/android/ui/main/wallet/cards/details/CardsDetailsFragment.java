@@ -39,6 +39,7 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
+import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
@@ -122,7 +123,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, saveCardToWalletListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -148,6 +149,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         });
         binding.setIsRemoving(isRemoving);
         binding.setLifecycleOwner(this);
+        binding.savetowallet.setOnClickListener(saveCardToWalletListener);
         return binding.getRoot();
     }
 
@@ -224,10 +226,27 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener saveCardToWalletListener = view -> {
         showAddCardProgress();
+        LoyalityData loyalityData = new LoyalityData();
+        loyalityData.setBarcode(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+        ExpandedCardItem expandedCardItem = new ExpandedCardItem(getContext(), viewModel.cards.getValue().get(clickedCardIndex));
+        loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
+        loyalityData.setNameLabel(getString(R.string.google_passes_name_label));
+        loyalityData.setNameValue(viewModel.getUserProfile().getFirstName() + " " + viewModel.getUserProfile().getLastName() );
+        loyalityData.setEmailLabel(getString(R.string.google_passes_email_label));
+        loyalityData.setEmailValue(viewModel.getUserProfile().getEmail() );
+        loyalityData.setDetailsLabel(getString(R.string.google_passes_detail_label));
+        loyalityData.setDetailsValue(getString(R.string.google_passes_detail_value));
+        loyalityData.setValuesLabel(getString(R.string.google_passes_value_label));
+        loyalityData.setValuesValue(getString(R.string.google_passes_value_value));
+        loyalityData.setHowToUseLabel(getString(R.string.google_passes_howtouse_label));
+        loyalityData.setHowToUseValue(getString(R.string.google_passes_howtouse_value));
+        loyalityData.setTermConditionLabel(getString(R.string.google_passes_termcondition_label));
+        loyalityData.setTermConditionValue(getString(R.string.google_passes_termcondition_value));
+
         Handler handler = new Handler();
         new Thread(() -> {
             GooglePassesApiGateway gateway = new GooglePassesApiGateway();
-            String cardAuthToken = gateway.insertLoyalityCard(getContext(),viewModel.cards.getValue().get(clickedCardIndex).getCardNumber() );
+            String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData);
             handler.postDelayed(()-> {
                 hideAddCardProgress();
                 getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
