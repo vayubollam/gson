@@ -352,6 +352,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     @Override
     public void onPreAuthChanged(String value) {
+        if(value.equals(this.preAuth)) {
+            return;
+        }
         this.preAuth = value;
         binding.totalAmount.setText(value);
         redeemPointsDropDownAdapter.setPreAuthValue(preAuth);
