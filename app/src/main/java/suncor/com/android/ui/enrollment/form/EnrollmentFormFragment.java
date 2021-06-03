@@ -2,6 +2,7 @@ package suncor.com.android.ui.enrollment.form;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -158,20 +159,18 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
                     dialog.show();
                 } else if(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION.equals(r.message)){
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>("formName",  formName));
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
-                            new Pair<>("formName",  formName));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                    dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
-                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
-                                new Pair<>("alertSelection", getString(R.string.ok)),
-                                new Pair<>("formName",  formName)
-                        );
+                    dialog.setTitle(R.string.verify_your_email_address_title);
+                    dialog.setMessage(R.string.verify_your_email_address_description);
+                    dialog.setPositiveButton(R.string.sign_enable_fb_negative_button, (d, w) -> {
                         binding.emailInput.setText("");
                         d.dismiss();
                         focusOnItem(binding.emailInput);
+                    });
+
+                    dialog.setNegativeButton(R.string.verify_your_email_address_call_us, (d, w) -> {
+                        callCostumerSupport(getString(R.string.customer_support_number));
+                        d.dismiss();
                     });
                     dialog.show();
                 }else {
@@ -528,6 +527,14 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(input.getEditText(), InputMethodManager.SHOW_IMPLICIT);
         }
+    }
+
+    private void callCostumerSupport(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
+
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", phoneNumber));
     }
 
 

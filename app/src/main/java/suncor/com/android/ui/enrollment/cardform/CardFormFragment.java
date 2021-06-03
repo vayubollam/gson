@@ -111,19 +111,14 @@ public class CardFormFragment extends BaseFragment {
                 } else if(cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION)){
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_existing_card_dialog_title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Activate Petro-Points Card"));
 
-                    dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
-                            .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
-                            .setRightButton(getString(R.string.enrollment_cardform_existing_card_dialog_sign_in), (v) -> {
-                                getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
-                                getActivity().finish();
+                    dialog.setTitle(getString(R.string.verify_your_email_address_title))
+                            .setMessage(getString(R.string.verify_your_email_address_description))
+                            .setRightButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
                                 dialog.dismiss();
                             })
-                            .setCenterButton(getString(R.string.enrollment_cardform_existing_card_use_different_card), (v) -> {
-                                binding.cardInput.getEditText().requestFocus();
-                                showKeyBoard();
+                            .setCenterButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
+                                callCostumerSupport(getString(R.string.customer_support_number));
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
