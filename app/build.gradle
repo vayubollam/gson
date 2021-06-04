@@ -176,7 +176,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
     implementation "com.google.firebase:firebase-crashlytics:$rootProject.crashlyticsVersion"
     implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagManagerVersion"
-    implementation "androidx.biometric:biometric:1.0.0-alpha04"
+    implementation "androidx.biometric:biometric:1.0.1"
     testImplementation "androidx.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"

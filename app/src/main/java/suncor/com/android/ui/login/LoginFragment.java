@@ -47,6 +47,7 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.resetpassword.ForgotPasswordFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.BiometricListener;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 
@@ -176,99 +177,38 @@ public class LoginFragment extends BaseFragment {
         super.onResume();
                 new Handler().postDelayed(() -> {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
-                String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
 
-                if (savedCredentials != null) try {
-                    JSONObject credentials = new JSONObject(savedCredentials);
-                    email = credentials.getString("email");
-                    password = credentials.getString("password");
-                } catch (JSONException e) {
-                    return;
-                }
-                if (email.isEmpty() || password.isEmpty()) {
-                    return;
-                }
                 BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                         .setTitle(getResources().getString(R.string.login_fingerprint_alert_title))
                         .setSubtitle(email)
                         .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                         .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
-                Executor executor = Executors.newSingleThreadExecutor();
 
-
-
-                BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
+                keyStoreStorage.retrieveWithBiometric(CREDENTIALS_KEY, getActivity(), promptInfo, new BiometricListener() {
                     @Override
-                    public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                        super.onAuthenticationError(errorCode, errString);
+                    public void onSuccess(String result) {
+                        JSONObject credentials;
+                        try {
+                            credentials = new JSONObject(result);
+                            email = credentials.getString("email");
+                            password = credentials.getString("password");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!email.isEmpty() && !password.isEmpty()) {
+                            viewModel.fingerPrintConfirmed(email, password);
+                        }
                     }
 
                     @Override
-                    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                        super.onAuthenticationSucceeded(result);
-                        viewModel.fingerPrintConfirmed(email, password);
+                    public void onFailed() {
 
-                    }
-
-                    @Override
-                    public void onAuthenticationFailed() {
-                        super.onAuthenticationFailed();
                     }
                 });
 
-
-
-                BiometricPrompt.CryptoObject cryptoObject = null;
-
-                try {
-                    cryptoObject = new BiometricPrompt.CryptoObject(getEncryptCipher(createKey()));
-                } catch (NoSuchPaddingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
-                    e.printStackTrace();
-                } catch (NoSuchProviderException e) {
-                    e.printStackTrace();
-                } catch (InvalidAlgorithmParameterException e) {
-                    e.printStackTrace();
-                }
-
-                biometricPrompt.authenticate(promptInfo, cryptoObject);
-                Log.d("token","cryptoObject :: " + cryptoObject);
-
             }
         }, 100);
-
-    }
-
-
-    private SecretKey createKey() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-
-        Log.d("token","inside createKey function");
-        String algorithm = KeyProperties.KEY_ALGORITHM_AES;
-        String provider = "AndroidKeyStore";
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm, provider);
-        KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec.Builder("MY_KEY", KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                .setUserAuthenticationRequired(true)
-                .build();
-
-        keyGenerator.init(keyGenParameterSpec);
-        return keyGenerator.generateKey();
-    }
-
-    private Cipher getEncryptCipher(Key key) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        Log.d("token","inside getEncryptCipher function");
-
-        String algorithm = KeyProperties.KEY_ALGORITHM_AES;
-        String blockMode = KeyProperties.BLOCK_MODE_CBC;
-        String padding = KeyProperties.ENCRYPTION_PADDING_PKCS7;
-        Cipher cipher = Cipher.getInstance(algorithm+"/"+blockMode+"/"+padding);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        Log.d("token","cipher :: " + cipher);
-        return cipher;
     }
 
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
@@ -344,7 +284,6 @@ public class LoginFragment extends BaseFragment {
             });
 
         }
-
 
     }
 }
