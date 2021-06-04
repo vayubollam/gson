@@ -26,7 +26,7 @@ import suncor.com.android.utilities.Timber;
 @Singleton
 public class StationsApiImpl implements StationsApi {
 
-    private static final String BASE_PATH = "/adapters/suncor/v3/rfmp-secure/locations";
+    private static final String GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations";
     private Gson gson;
 
     public StationsApiImpl(Gson gson) {
@@ -40,7 +40,7 @@ public class StationsApiImpl implements StationsApi {
         MutableLiveData<Resource<ArrayList<Station>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterURI = new URI(BASE_PATH + "?southWestLat=" + bounds.southwest.latitude + "&southWestLong=" + bounds.southwest.longitude + "0&northEastLat=" + bounds.northeast.latitude + "&northEastLong=" + bounds.northeast.longitude + "&tryNearestLocation=" + tryNearest);
+            URI adapterURI = new URI(GET_LOCATIONS_ADAPTER__PATH + "?southWestLat=" + bounds.southwest.latitude + "&southWestLong=" + bounds.southwest.longitude + "0&northEastLat=" + bounds.northeast.latitude + "&northEastLong=" + bounds.northeast.longitude + "&tryNearestLocation=" + tryNearest);
             WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
