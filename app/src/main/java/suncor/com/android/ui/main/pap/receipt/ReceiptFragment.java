@@ -102,11 +102,12 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
+                int burnedPoints = result.data.getLoyaltyPointsMessages().get(0).getBurnedRewardSummary();
 
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(result.data.getTotalPointsRedeemed())),
-                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(result.data.getTotalPointsRedeemed())),
+                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
+                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
 
                 sessionManager.retrieveProfile((profile) -> {
