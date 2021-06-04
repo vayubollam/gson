@@ -162,15 +162,15 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.verify_your_email_address_title);
                     dialog.setMessage(R.string.verify_your_email_address_description);
-                    dialog.setPositiveButton(R.string.sign_enable_fb_negative_button, (d, w) -> {
+                    dialog.setPositiveButton(R.string.verify_your_email_address_call_us, (d, w) -> {
+                        callCostumerSupport(getString(R.string.customer_support_number));
+                        d.dismiss();
+                    });
+
+                    dialog.setNegativeButton(R.string.sign_enable_fb_negative_button, (d, w) -> {
                         binding.emailInput.setText("");
                         d.dismiss();
                         focusOnItem(binding.emailInput);
-                    });
-
-                    dialog.setNegativeButton(R.string.verify_your_email_address_call_us, (d, w) -> {
-                        callCostumerSupport(getString(R.string.customer_support_number));
-                        d.dismiss();
                     });
                     dialog.show();
                 }else {

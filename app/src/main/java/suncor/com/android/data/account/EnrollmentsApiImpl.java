@@ -29,7 +29,7 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
-    private final static String ADAPTER_PATH_V3 = "/adapters/suncor/v5/rfmp-secure/enrollments";
+    private final static String ADAPTER_PATH_V3 = "/adapters/suncor/v6/rfmp-secure/enrollments";
     private final static String ADAPTER_PATH_V3_CARD_STATUS = "/adapters/suncor/v5/rfmp-secure/enrollments";
     private final static String ADAPTER_PATH_V3_SECURITY_QUESTIONS = "/adapters/suncor/v4/rfmp-secure/enrollments";
     private Gson gson;
