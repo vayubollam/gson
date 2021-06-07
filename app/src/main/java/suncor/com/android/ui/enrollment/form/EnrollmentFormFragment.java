@@ -168,9 +168,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
 
                     dialog.setNegativeButton(R.string.sign_enable_fb_negative_button, (d, w) -> {
-                        binding.emailInput.setText("");
                         d.dismiss();
-                        focusOnItem(binding.emailInput);
                     });
                     dialog.show();
                 }else {

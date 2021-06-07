@@ -114,11 +114,11 @@ public class CardFormFragment extends BaseFragment {
 
                     dialog.setTitle(getString(R.string.verify_your_email_address_title))
                             .setMessage(getString(R.string.verify_your_email_address_description))
-                            .setRightButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                            .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
+                                callCostumerSupport(getString(R.string.customer_support_number));
                                 dialog.dismiss();
                             })
-                            .setCenterButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
-                                callCostumerSupport(getString(R.string.customer_support_number));
+                            .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
