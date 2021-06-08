@@ -38,6 +38,7 @@ public class Transaction {
     private String formattedTax;
     private String formattedTotal;
     private List<LineItem> lineItems;
+    private List<LoyaltyPointsMessages> loyaltyPointsMessages;
 
     public List<String> receiptData;
     private String terminalType;
@@ -181,6 +182,34 @@ public class Transaction {
         }
     }
 
+    public List<LoyaltyPointsMessages> getLoyaltyPointsMessages() {
+        return loyaltyPointsMessages;
+    }
 
+    public void setLoyaltyPointsMessages(List<LoyaltyPointsMessages> loyaltyPointsMessages) {
+        this.loyaltyPointsMessages = loyaltyPointsMessages;
+    }
+
+    public static class LoyaltyPointsMessages{
+
+        public String associatedLoyaltyId;
+        public String programId;
+        public String unit;
+        public int earnedRewardSummary;
+        public int burnedRewardSummary;
+        public int finalRewardsBalance;
+        public int finalRewardsLimit;
+        public List<PetroRedeemedRewards> RedeemedRewards;
+
+        public int getBurnedRewardSummary() {
+            return burnedRewardSummary;
+        }
+
+    }
+
+    public static class PetroRedeemedRewards{
+        public int amount;
+        public String description;
+    }
 
 }
