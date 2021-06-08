@@ -1,6 +1,6 @@
 package suncor.com.android.utilities;
 
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+import androidx.biometric.BiometricManager;
 
 import javax.inject.Inject;
 
@@ -13,20 +13,29 @@ public class FingerprintManager {
     public final String USE_FINGERPRINT = "use_fingerprint";
     public final String AUTO_LOGIN = "use_auto_login";
 
+    private BiometricManager biometricManager;
+
     @Inject
     public FingerprintManager(SuncorApplication application, UserLocalSettings userLocalSettings) {
         this.application = application;
         FingerprintManager.userLocalSettings = userLocalSettings;
     }
 
-    public boolean isFingerPrintExistAndEnrolled() {
-        boolean allGood;
-        FingerprintManagerCompat fingerprintManagerCompat = FingerprintManagerCompat.from(application);
-        if (!fingerprintManagerCompat.isHardwareDetected()) {
-            allGood = false;
-        } else allGood = fingerprintManagerCompat.hasEnrolledFingerprints();
+    /**
+     * This method checks if the device can support biometric authentication APIs
+     */
+    public boolean isFingerPrintExistAndEnrolled(){
+        biometricManager = BiometricManager.from(application);
+        switch (biometricManager.canAuthenticate()) {
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                return true;
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                return false;
+        }
 
-        return allGood;
+        return false;
     }
 
     public void activateFingerprint() {
