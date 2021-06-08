@@ -17,7 +17,7 @@ import suncor.com.android.utilities.Timber
 import java.net.URI
 import java.net.URISyntaxException
 
-class CarwashApiImpl(val gson: Gson): CarwashApi {
+class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create()): CarwashApi {
     companion object {
         private const val ADAPTER_PATH = "/adapters/suncorcarwash/v1/rfmp-secure"
     }
@@ -32,7 +32,7 @@ class CarwashApiImpl(val gson: Gson): CarwashApi {
             val request = WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE)
             val body = gson.toJson(activateCarwashRequest)
 
-            Timber.i("Send Activate Carwasg, string: $activateCarwashRequest\nbody: $body")
+            Timber.i("Send Activate Carwash, string: $activateCarwashRequest\nbody: $body")
 
             request.send(body, object : WLResponseListener {
                 override fun onSuccess(wlResponse: WLResponse) {

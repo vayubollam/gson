@@ -162,7 +162,7 @@ public class DataModule {
 
     @Provides
     @Singleton
-    CarwashApi providesCarwashApi(Gson gson) {
-        return new CarwashApiImpl(gson);
+    CarwashApi providesCarwashApi() {
+        return new CarwashApiImpl();
     }
 }
