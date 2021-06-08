@@ -124,12 +124,7 @@ public class KeyStoreStorage {
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE);
 
         if (fingerprintManager.isFingerPrintExistAndEnrolled()) {
-            specBuilder.setUserAuthenticationRequired(true)
-                    // Invalidate the keys if the user has registered a new biometric
-                    // credential, such as a new fingerprint. Can call this method only
-                    // on Android 7.0 (API level 24) or higher. The variable
-                    // "invalidatedByBiometricEnrollment" is true by default.
-                    .setInvalidatedByBiometricEnrollment(true)
+            specBuilder.setInvalidatedByBiometricEnrollment(true)
                     // The other important property is setUserAuthenticationValidityDurationSeconds().
                     // If it is set to -1 then the key can only be unlocked using Fingerprint or Biometrics.
                     // If it is set to any other value, the key can be unlocked using a device screenlock too.
