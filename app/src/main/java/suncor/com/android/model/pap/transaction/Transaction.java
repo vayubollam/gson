@@ -33,7 +33,7 @@ public class Transaction {
     private String currency;
     private double subtotal;
     private int totalPointsRedeemed;
-    private MutableLiveData<String> correspondingDollars;
+    private MutableLiveData<String> correspondingDollars = new MutableLiveData<String>();
 
     private double taxAmount;
     private String formattedTotalDiscounts;
@@ -216,7 +216,7 @@ public class Transaction {
     }
 
     public MutableLiveData<String> getCorrespondingDollarOffForBurnedPoints(){
-          correspondingDollars.postValue(formatter.format(loyaltyPointsMessages.get(0).burnedRewardSummary / 1000));
+          correspondingDollars.postValue(formatter.format(loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
           return correspondingDollars;
     }
 
