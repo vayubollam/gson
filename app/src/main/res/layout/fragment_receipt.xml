@@ -417,6 +417,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
+                        app:visibleGone="@{transaction.totalDiscount > 0.00}"
                         android:background="@color/black_8" />
 
 
@@ -496,6 +497,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        app:visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary > 0}"
                         android:layout_marginTop="16dp"
                         android:paddingEnd="20dp">
 
@@ -512,6 +514,7 @@
                             android:id="@+id/pointsRedemption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@{transaction.getCorrespondingDollarOffForBurnedPoints}"
                             style="@style/Body"
                             android:textColor="@color/black_C" />
 
