@@ -392,6 +392,40 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginTop="16dp"
+                        android:paddingEnd="20dp"
+                        app:visibleGone="@{transaction.totalDiscount > 0.00}">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="@string/transaction_your_rbc_savings"
+                            style="@style/Body"
+                            android:textColor="@color/black_C" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/Body"
+                            android:textColor="@color/black_C"
+                            android:text="@{transaction.formattedTotalDiscounts}" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        app:visibleGone="@{transaction.totalDiscount > 0.00}"
+                        android:background="@color/black_8" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
                         android:paddingEnd="20dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -456,35 +490,48 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
+                        app:visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary > 0}"
                         android:background="@color/black_8" />
 
-
                     <LinearLayout
+                        android:id="@+id/pointsRedemptionLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        app:visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary > 0}"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
-                        android:paddingEnd="20dp"
-                        app:visibleGone="@{transaction.totalDiscount > 0.00}">
+                        android:paddingEnd="20dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:text="@string/transaction_your_rbc_savings"
+                            android:text="@string/transaction_points_redemption"
                             style="@style/Body"
                             android:textColor="@color/black_C" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/pointsRedemption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@{transaction.getCorrespondingDollarOffForBurnedPoints}"
                             style="@style/Body"
-                            android:textColor="@color/black_C"
-                            android:text="@{transaction.formattedTotalDiscounts}" />
+                            android:textColor="@color/black_C" />
 
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        app:visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary > 0}"
+                        android:background="@color/black_8" />
+
+
+
+
                 </LinearLayout>
 
                 <Space

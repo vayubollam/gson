@@ -133,7 +133,6 @@ public class ReceiptFragment extends MainActivityFragment {
 
                     // TODO: Create error handling
                     if (pdfFile == null) return;
-
                     Uri pdfUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         pdfUri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName() + ".provider", pdfFile);
