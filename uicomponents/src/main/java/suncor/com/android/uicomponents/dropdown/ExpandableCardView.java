@@ -13,6 +13,7 @@ import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -53,10 +54,13 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     private Drawable mCollapseIcon;
     //card expand icon
     private Drawable mExpandIcon;
+
+    private String selectedPosition;
     private boolean isFromRedeemPoints;
     private ExpandableViewListener mExpandCollapseListener;
     private DropDownAdapter mAdapter;
     private Context mContext;
+    private boolean isRedeemSelectionChanged;
 
 
     public ExpandableCardView(Context context) {
@@ -92,7 +96,11 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.header_layout || view.getId() == R.id.image_button_expand) {
-            expandCollapse();
+            if(isRedeemSelectionChanged && selectedPosition.equalsIgnoreCase("1")){
+                mAdapter.showUpdatePreAuthPopup();
+            }else{
+                expandCollapse();
+            }
         }
     }
 
@@ -129,6 +137,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         mTitle = typedArray.getString(R.styleable.ExpandableCardView_header_title);
         mTitleSize = typedArray.getDimension(R.styleable.ExpandableCardView_title_size, DEFAULT_TITLE_SIZE);
         mTitleColor = typedArray.getColor(R.styleable.ExpandableCardView_title_color, DEFAULT_TITLE_COLOR);
+        selectedPosition = typedArray.getString(R.styleable.ExpandableCardView_selected_position);
         mTitleBackgroundColor = typedArray.getColor(R.styleable.ExpandableCardView_title_background_color, DEFAULT_TITLE_BACKGROUND_COLOR);
         mCollapseIcon = typedArray.getDrawable(R.styleable.ExpandableCardView_collapse_icon);
         mExpandIcon = typedArray.getDrawable(R.styleable.ExpandableCardView_expand_icon);
@@ -145,6 +154,10 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     }
 
 
+    @Override
+    public void onRedeemSectionChanged(boolean isRedeemChanged) {
+        isRedeemSelectionChanged = isRedeemChanged;
+    }
 
     public void setDropDownData(DropDownAdapter adapter, boolean isFromRedeemPoints){
         mAdapter = adapter;
@@ -157,22 +170,23 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
 
         if(isFromRedeemPoints){
 
-            onSelectValue("$0 off", "0 points" , true);
+            onSelectValue("$0 off", "0 points" , true, false);
         }else{
 
-            onSelectValue(null, null, false);
+            onSelectValue(null, null, false , false);
 
         }
 
     }
 
     @Override
-    public void onSelectValue(String header, String subheader, boolean isFromRedeemSection) {
+    public void onSelectValue(String header, String subheader, boolean isFromRedeemSection, boolean isRedeemSelectionChanged) {
         String selectedValue = header;
         String selectedSubValue = subheader;
+
         if(mAdapter != null) {
-             selectedValue = mAdapter.getSelectedValue();
-             selectedSubValue = mAdapter.getSelectedSubValue();
+            selectedValue = mAdapter.getSelectedValue();
+            selectedSubValue = mAdapter.getSelectedSubValue();
         }
 
         ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
@@ -185,6 +199,10 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         }
         findViewById(R.id.selected_subheader_value).setVisibility(selectedSubValue == null || selectedSubValue.isEmpty() ? GONE : VISIBLE);
         findViewById(R.id.google_pay).setVisibility(GONE);
+    }
+
+    public void setRedemptionChange(boolean isRedeemSelectionChanged){
+        this.isRedeemSelectionChanged = isRedeemSelectionChanged;
     }
 
     @Override

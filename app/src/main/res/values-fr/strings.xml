@@ -711,6 +711,14 @@
     <string name="payment_failed_message">Nous n’avons pas pu traiter votre paiement.</string>
     <string name="payment_failed_cancel">Annuler</string>
 
+    <!-- Fuel up alet prompt -->
+
+    <string name="fuel_up_alert_heading">Mettre à jour le montant?</string>
+    <string name="fuel_up_alert_description">Si vous modifiez le montant de votre essence, vous devez modifier le montant de votre échange.</string>
+    <string name="fuel_up_alert_update_button">Mettre à jour</string>
+
+
+
     <!-- Cancel -->
     <string name="cancel_alert_title">Arrêter la séance?</string>
     <string name="cancel_alert_body">Vous pouvez commencer un autre plein sur l\'application ou au distributeur.</string>

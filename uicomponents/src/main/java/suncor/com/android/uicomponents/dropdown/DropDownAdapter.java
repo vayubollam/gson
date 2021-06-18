@@ -6,4 +6,5 @@ public abstract class DropDownAdapter extends RecyclerView.Adapter<RecyclerView.
     public abstract String getSelectedValue();
     public abstract String getSelectedSubValue();
     public abstract void setListener(ChildViewListener listener);
+    public abstract void showUpdatePreAuthPopup();
 }

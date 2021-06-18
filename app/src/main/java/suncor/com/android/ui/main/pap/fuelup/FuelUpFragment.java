@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,7 +77,7 @@ import suncor.com.android.utilities.Timber;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
-        FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks, RedeemPointsDropDownAdapter.RedeemPointsCallback {
+        FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks, RedeemPointsDropDownAdapter.RedeemPointsCallback,ShowWarningPopupListener{
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
@@ -100,6 +102,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String userPaymentId;
     private String preAuthRedeemPoints = "0";
     private String selectedRadioButton = "No Redemption";
+    private boolean isRedemptionChanges;
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -187,6 +190,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding.fuelUpLimit.initListener(this);
         binding.paymentExpandable.initListener(this);
         binding.redeemPointsExpandable.initListener(this);
+
 
         binding.selectPumpLayout.helpButton.setOnClickListener(v -> {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTap,
@@ -309,7 +313,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                    mPapData.getPreAuthLimits(),
                    this,
                    mPapData.getOtherAmountHighLimit(),
-                   mPapData.getOtherAmountLowLimit()
+                   mPapData.getOtherAmountLowLimit(),
+                    this
            );
 
            if (preAuth != null) {
@@ -583,6 +588,24 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
     }
 
+    public void showUpdatePopup(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.fuel_up_alert_heading )
+                .setMessage( R.string.fuel_up_alert_description)
+                .setNegativeButton(R.string.payment_failed_cancel, ((dialog, i) -> {
+                    dialog.dismiss();
+                }))
+
+                .setPositiveButton(R.string.fuel_up_alert_update_button, (dialog, which) -> {
+                    isRedemptionChanges = false;
+                    fuelLimitDropDownAdapter.onRedeemChanged(false);
+                    binding.fuelUpLimit.expandCollapse();
+                    dialog.dismiss();
+                });
+
+        builder.show();
+    }
+
     private  AlertDialog transactionFailsAlert(Context context) {
 
         String analyticsName = context.getString( R.string.payment_failed_title)
@@ -640,8 +663,15 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     @Override
-    public void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton) {
+    public void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton, boolean isRedemptionChanged) {
         preAuthRedeemPoints = redeemPoints;
         this.selectedRadioButton = selectedRadioButton;
+        this.isRedemptionChanges = isRedemptionChanged;
+        fuelLimitDropDownAdapter.onRedeemChanged(isRedemptionChanges);
+    }
+
+    @Override
+    public void onRedeemSelectionChanged() {
+        showUpdatePopup();
     }
 }
