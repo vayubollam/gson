@@ -705,7 +705,7 @@
     <string name="transaction_payment_type_value">Purchase</string>
     <string name="transaction_tax_inclusive">Includes tax</string>
     <string name="transaction_your_rbc_savings">Your RBC savings</string>
-    <string name="transaction_points_redemption">Points Redemption</string>
+    <string name="transaction_points_redemption">Points redemption</string>
     <string name="transaction_base_points_eaarned">Base Points</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">View Receipt</string>
@@ -720,6 +720,12 @@
     <string name="payment_failed_title">Payment failed</string>
     <string name="payment_failed_message">We had trouble processing your payment.</string>
     <string name="payment_failed_cancel">Cancel</string>
+
+    <!-- Fuel up alet prompt -->
+
+    <string name="fuel_up_alert_heading">Update amount?</string>
+    <string name="fuel_up_alert_description">If you update your fuel amount, you need to update your redemption amount.</string>
+    <string name="fuel_up_alert_update_button">Update</string>
 
     <!-- Cancel -->
     <string name="cancel_alert_title">Stop this session?</string>

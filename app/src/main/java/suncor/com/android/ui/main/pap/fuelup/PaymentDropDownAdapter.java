@@ -138,7 +138,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             selectedPos = i;
 
             if(Objects.nonNull(listener)) {
-                listener.onSelectValue(getSelectedValue(), getSelectedSubValue(), false);
+                listener.onSelectValue(getSelectedValue(), getSelectedSubValue(), false, false);
             }
 
             notifyDataSetChanged();
@@ -174,7 +174,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
                 if (selectedPos == getAdapterPosition()) {
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false);
+                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false, false);
                     }
                 }
 
@@ -184,7 +184,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
 
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false);
+                        listener.onSelectValue(value.getCardInfo(), value.getExp(), false, false);
                         listener.expandCollapse();
                     }
 
@@ -193,6 +193,11 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
             }
         }
+
+    @Override
+    public void showUpdatePreAuthPopup() {
+
+    }
 
 	//Manual limit
      class GooglePayViewHolder extends RecyclerView.ViewHolder {

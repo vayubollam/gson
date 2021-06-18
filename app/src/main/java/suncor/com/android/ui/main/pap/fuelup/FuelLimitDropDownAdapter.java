@@ -38,6 +38,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     private int selectedPos = 0;
     private ChildViewListener listener;
     private FuelUpLimitCallbacks callbackListener;
+    private ShowWarningPopupListener warningPopup;
     private final int otherLimitMaxLimit;
     private final int otherLimitMinLimit;
     private final Context mContext;
@@ -46,11 +47,12 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
 
     FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
-                             final int otherLimitMinLimit) {
+                             final int otherLimitMinLimit, ShowWarningPopupListener warningPopup) {
         this.childList = data;
         this.otherLimitMaxLimit = otherLimitMaxLimit;
         this.otherLimitMinLimit = otherLimitMinLimit;
         this.mContext = context;
+        this.warningPopup = warningPopup;
         this.callbackListener = callbackListener;
 
         formatter.setMinimumFractionDigits(0);
@@ -76,6 +78,12 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         }
     }
 
+    public void onRedeemChanged(boolean isRedeemChanged){
+        if(listener != null){
+            listener.onRedeemSectionChanged(isRedeemChanged);
+        }
+    }
+
     @Override
     public int getItemCount() {
         return childList.size();
@@ -92,7 +100,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
                     selectedPos =  Integer.parseInt(position) - 1;
                     if(listener != null) {
-                        listener.onSelectValue(formatter.format(Double.valueOf(value)), null, false);
+                        listener.onSelectValue(formatter.format(Double.valueOf(value)), null, false, false);
                     }
                     callbackListener.onPreAuthChanged(formatter.format(Double.valueOf(value)));
                 }
@@ -101,7 +109,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                 manualValue = lastFuelupTransaction.intValue();
                 selectedPos = childList.size() -1 ;
                 if(listener != null) {
-                    listener.onSelectValue(formatter.format(manualValue), null, false);
+                    listener.onSelectValue(formatter.format(manualValue), null, false, false);
                 }
                 callbackListener.onPreAuthChanged(formatter.format(manualValue));
             }
@@ -178,7 +186,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     manualValue = -1;
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(formatter.format(value), null, false);
+                        listener.onSelectValue(formatter.format(value), null, false, false);
                         callbackListener.onPreAuthChanged(formatter.format(value));
 
                         listener.expandCollapse();
@@ -195,7 +203,15 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         return false;
     }
 
-	//Manual limit
+    @Override
+    public void showUpdatePreAuthPopup() {
+
+        if(warningPopup != null){
+            warningPopup.onRedeemSelectionChanged();
+        }
+    }
+
+    //Manual limit
      class ManualLimitViewHolder extends RecyclerView.ViewHolder {
         ManualLimitDropDownItemBinding binding;
 
@@ -271,7 +287,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                         }
                         manualValue = editable.toString().trim().length() > 0 ? Double.valueOf(editable.toString()) : 0;
                         if (Objects.nonNull(listener) && selectedPos == childList.size() - 1 && manualValue >= 0) {
-                            listener.onSelectValue(formatter.format(manualValue), null, false);
+                            listener.onSelectValue(formatter.format(manualValue), null, false, false);
                             callbackListener.onPreAuthChanged(formatter.format(manualValue));
                         }
                     } catch (NumberFormatException ex){
@@ -299,4 +315,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
 interface FuelUpLimitCallbacks {
     void onPreAuthChanged(String value);
+}
+
+interface ShowWarningPopupListener{
+    void onRedeemSelectionChanged();
 }

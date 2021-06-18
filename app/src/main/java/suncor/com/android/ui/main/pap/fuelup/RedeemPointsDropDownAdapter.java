@@ -57,6 +57,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private boolean isPreAuthChanges;
     private EditText otherAmountEditText;
     private double zeroInDouble = 0.0;
+    private boolean selectedAmountOtherThanZero;
 
     RedeemPointsDropDownAdapter(final Context context, HashMap<String, String> redeemPoints, int petroPoints, RedeemPointsCallback redeemPointsCallback) {
 
@@ -171,7 +172,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public void collapseIfPreAuthChanges(int selectedPos) {
         isPreAuthChanges = true;
         this.selectedPos = selectedPos;
-        listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true);
+        listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true, false);
     }
 
 
@@ -243,18 +244,23 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 if (Objects.nonNull(listener)) {
                     if (selectedPos == 1) {
                         isPreAuthChanges = false;
-                        if (redeemPointsCallback != null) {
-                            redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(roundOffValue)).intValue()), "Maximum Redemption");
+                        if(roundOffValue == 0){
+                            selectedAmountOtherThanZero = false;
+                        }else{
+                            selectedAmountOtherThanZero = true;
                         }
-                        listener.onSelectValue(dollarOffValue, getAmount(roundOffValue) + points, false);
+                        if (redeemPointsCallback != null) {
+                            redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(roundOffValue)).intValue()), "Maximum Redemption", selectedAmountOtherThanZero);
+                        }
+                        listener.onSelectValue(dollarOffValue, getAmount(roundOffValue) + points, false, true);
                     } else {
 
                         if (redeemPointsCallback != null) {
                             isPreAuthChanges = false;
-                            redeemPointsCallback.onRedeemPointsChanged("0", "No Redemption");
+                            redeemPointsCallback.onRedeemPointsChanged("0", "No Redemption", false);
                         }
 
-                        listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true);
+                        listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true, true);
                     }
                     listener.expandCollapse();
                 }
@@ -271,7 +277,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         return NumberFormat.getNumberInstance(Locale.getDefault()).format(amount);
     }
 
-    class OtherAmountViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void showUpdatePreAuthPopup() {
+
+    }
+
+        class OtherAmountViewHolder extends RecyclerView.ViewHolder {
         final OtherAmountBinding binding;
 
         OtherAmountViewHolder(@NonNull OtherAmountBinding binding) {
@@ -318,17 +329,20 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     if (Objects.nonNull(listener)) {
                         try {
-                            if(binding.inputField.getText().toString().isEmpty()){
+                            if(binding.inputField.getText().toString().isEmpty() || amountInDouble == 0.0){
                                 amountInDouble = 0.0;
+                                selectedAmountOtherThanZero = false;
+                            }else{
+                                selectedAmountOtherThanZero = true;
                             }
                             getRoundOffValue();
                             if (amountInDouble > roundOffValue) {
                                 amountInDouble = roundOffValue;
                             }
                             isPreAuthChanges = false;
-                            listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false);
+                            listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false, true);
                             if (redeemPointsCallback != null) {
-                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()), "Manual Redemption");
+                                redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()), "Manual Redemption", selectedAmountOtherThanZero);
                             }
                             listener.expandCollapse();
                         } catch (Exception e) {
@@ -341,6 +355,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
 
         }
+
+
 
         public void setDataOnView() {
             otherAmountEditText = binding.inputField;
@@ -399,6 +415,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     }
 
     interface RedeemPointsCallback {
-        void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton);
+        void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton, boolean isRedemptionChanged);
     }
 }
