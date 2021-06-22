@@ -553,6 +553,7 @@
     <string name="carwash_barcode_reenter">Mettez à jour votre numéro</string>
     <string name="pre_auth_info_tip">Vous verrez vos $ de rabais à la fin de la transaction</string>
 
+    <string name="pre_auth_warning_tip">Si vous modifiez le montant de votre essence, vous devrez modifier le montant de votre échange</string>
     <string name="carwash_independent_alert_title">Il s\'agit d\'un lave-auto indépendant</string>
     <string name="carwash_independent_alert_message">Les cartes et billets de lavage Petro-Canada ne peuvent être utilisés à cet établissement. Achetez un billet à l\'intérieur pour laver votre voiture.</string>
 

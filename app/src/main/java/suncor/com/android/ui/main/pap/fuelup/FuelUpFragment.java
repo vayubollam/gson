@@ -668,6 +668,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         this.selectedRadioButton = selectedRadioButton;
         this.isRedemptionChanges = isRedemptionChanged;
         fuelLimitDropDownAdapter.onRedeemChanged(isRedemptionChanges);
+        fuelLimitDropDownAdapter.isWarningAlertVisible(isRedemptionChanged);
     }
 
     @Override
