@@ -29,9 +29,9 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
-    private final static String ADAPTER_PATH_V3 = "/adapters/suncor/v6/rfmp-secure/enrollments";
-    private final static String ADAPTER_PATH_V3_CARD_STATUS = "/adapters/suncor/v5/rfmp-secure/enrollments";
-    private final static String ADAPTER_PATH_V3_SECURITY_QUESTIONS = "/adapters/suncor/v4/rfmp-secure/enrollments";
+    private final static String ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/enrollments";
+    private final static String GET_SECURITY_QUESTIONS_FOR_ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/enrollments/security-questions";
+    private final static String GET_CARD_STATUS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/enrollments/card-status";
     private Gson gson;
 
     public EnrollmentsApiImpl(Gson gson) {
@@ -44,7 +44,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         MutableLiveData<Resource<EnrollmentPointsAndHours>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH_V3);
+            URI adapterPath = new URI(ENROLLMENT_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -63,7 +63,6 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                         pointsAndHours.setValidationHours(wlResponse.getResponseJSON().getInt("hoursToValidate"));
                         result.postValue(Resource.success(pointsAndHours));
                     } catch (JSONException e) {
-
                         Timber.e(e.toString());
                         result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
                     }
@@ -93,7 +92,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         URI adapterPath;
         try {
-            adapterPath = new URI(ADAPTER_PATH_V3_SECURITY_QUESTIONS.concat("/security-questions"));
+            adapterPath = new URI(GET_SECURITY_QUESTIONS_FOR_ENROLLMENT_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");
@@ -136,7 +135,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         MutableLiveData<Resource<CardStatus>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH_V3_CARD_STATUS.concat("/card-status"));
+            URI adapterPath = new URI(GET_CARD_STATUS_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.addHeader("x-card-number", cardNumber);
             request.addHeader("x-postal-code", postalCode);
