@@ -38,7 +38,6 @@ import suncor.com.android.databinding.ActivitySplashBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
-import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.tutorial.TutorialFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -54,9 +53,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     private ActivitySplashBinding binding;
     private boolean firstTimeUse = false;
     private boolean newVersionUpdated = false;
-    private Intent appLinkIntent;
-    private Uri appLinkData;
-
     public static final String LOGINFAILED = "loginFailed";
 
 
@@ -91,10 +87,10 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         }
         AppStart appStartMode = checkAppStart();
 
-        appLinkIntent = getIntent();
-        appLinkData = appLinkIntent.getData();
-
-
+        if (application.isSplashShown()) {
+            openMainActivity(false);
+            return;
+        }
 
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().getDecorView()
@@ -103,18 +99,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         AppCompatTextView splashText1 = findViewById(R.id.splash_text_1);
         AppCompatTextView splashText2 = findViewById(R.id.splash_text_2);
-
-        if (application.isSplashShown()) {
-            if(appLinkData != null){
-                openRespectiveActivityViaDeeplInk();
-            }else{
-                openMainActivity(false);
-            }
-            return;
-        }
-
-
-
         switch (appStartMode) {
             case NORMAL:
                 splashText2.setVisibility(View.GONE);
@@ -169,8 +153,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         if (!firstTimeUse) {
             binding.profilePd.setVisibility(View.VISIBLE);
         }
-
-
         if (ConnectionUtil.haveNetworkConnection(this)) {
             settingsApi.retrieveSettings().observe(this, resource -> {
                 if (resource.status == Resource.Status.ERROR) {
@@ -202,12 +184,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                             .show();
                 }
                 if (resource.status == Resource.Status.SUCCESS) {
-                    if(appLinkData != null){
-                        openRespectiveActivityViaDeeplInk();
-                    }else{
-
-                      handleSettingsResponse(resource.data);
-                    }
+                    handleSettingsResponse(resource.data);
                 }
             });
         } else {
@@ -331,43 +308,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         startActivity(homeIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if(appLinkData != null)
-        {
-            openRespectiveActivityViaDeeplInk();
-            return;
-        }
-    }
-
-
-    private void openRespectiveActivityViaDeeplInk(){
-            sessionManager.checkLoginState().observe(this, loginState -> {
-                binding.profilePd.setVisibility(View.GONE);
-                switch (loginState) {
-                    case LOGGED_IN:
-                        Intent homeIntent = new Intent(this, MainActivity.class);
-                        homeIntent.putExtra(LOGINFAILED, false);
-                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(homeIntent);
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                        finish();
-                        break;
-                    case LOGGED_OUT:
-                        Intent loginActivityIntent = new Intent(SplashActivity.this, LoginActivity.class);
-                        loginActivityIntent.putExtra(LoginActivity.IS_COMING_FROM_DEEPLINK, true);
-                        loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        SplashActivity.this.startActivity(loginActivityIntent);
-                        break;
-                    case ERROR:
-                        startExitAnimation(true);
-                        break;
-
-                }
-            });
     }
 
     private void showTutorialFragment() {
