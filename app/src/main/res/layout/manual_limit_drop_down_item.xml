@@ -103,7 +103,7 @@
            android:padding="16dp"
             android:drawablePadding="12dp"
             android:visibility="gone"
-            android:drawableLeft="@drawable/ic_baseline_error_24"
-            android:text="@string/pre_auth_info_tip"/>
+            android:drawableLeft="@drawable/ic_error_outline_24px"
+            android:text="@string/pre_auth_warning_tip"/>
     </LinearLayout>
 </layout>

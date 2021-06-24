@@ -554,6 +554,7 @@
     <string name="carwash_barcode_trouble_hint">Is your number correct?</string>
     <string name="carwash_barcode_reenter">Update your number</string>
     <string name="pre_auth_info_tip">You’ll see your final $ off at end of transaction</string>
+    <string name="pre_auth_warning_tip">If you update your fuel amount you’ll need to update your redemption amount</string>
     <string name="off">off</string>
     <string name="carwash_independent_alert_title">This is an independently owned car wash</string>
     <string name="carwash_independent_alert_message">Petro-Canada car wash cards and tickets can\'t be used at this location. Purchase a ticket in-store to wash your car.</string>

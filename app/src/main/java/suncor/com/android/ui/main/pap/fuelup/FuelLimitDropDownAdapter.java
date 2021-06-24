@@ -44,6 +44,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     private final Context mContext;
     private double manualValue = -1;
     private double editableValue = 0;
+    private boolean isRedeemChanged;
 
 
     FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
@@ -82,6 +83,10 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         if(listener != null){
             listener.onRedeemSectionChanged(isRedeemChanged);
         }
+    }
+
+    public void isWarningAlertVisible(boolean isRedeemChanged){
+        this.isRedeemChanged = isRedeemChanged;
     }
 
     @Override
@@ -230,6 +235,10 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
             binding.manualLimit.setVisibility((manualValue == -1) ?  View.VISIBLE : View.GONE);
             binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
             binding.inputField.setEnabled(!(manualValue > 0));
+            binding.preAuthTip.setVisibility((isRedeemChanged) ? View.VISIBLE : View.GONE);
+            binding.separator.setVisibility((isRedeemChanged) ? View.GONE : View.VISIBLE);
+            binding.separatorFade.setVisibility((isRedeemChanged) ? View.VISIBLE : View.GONE);
+            binding.separatorFade1.setVisibility((isRedeemChanged) ? View.VISIBLE : View.GONE);
             binding.container.setOnClickListener(v -> {
 
                 if(selectedPos != getAdapterPosition()){
