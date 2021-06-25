@@ -176,7 +176,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-                new Handler().postDelayed(() -> {
+        new Handler().postDelayed(() -> {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
 
                 BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
