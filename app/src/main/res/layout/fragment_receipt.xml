@@ -393,7 +393,7 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="16dp"
                         android:paddingEnd="20dp"
-                        app:visibleGone="@{transaction.totalDiscount > 0.00}">
+                        app:visibleGone="@{transaction.otherDiscount > 0.00}">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="0dp"
@@ -409,7 +409,7 @@
                             android:layout_height="wrap_content"
                             style="@style/Body"
                             android:textColor="@color/black_C"
-                            android:text="@{transaction.formattedTotalDiscounts}" />
+                            android:text="@{transaction.formattedOtherDiscounts}" />
 
                     </LinearLayout>
 
@@ -417,7 +417,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
-                        app:visibleGone="@{transaction.totalDiscount > 0.00}"
+                        app:visibleGone="@{transaction.otherDiscount > 0.00}"
                         android:background="@color/black_8" />
 
 
