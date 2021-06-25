@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +24,18 @@ import androidx.lifecycle.ViewModelProviders;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -35,6 +47,7 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.resetpassword.ForgotPasswordFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.BiometricListener;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 
@@ -164,46 +177,38 @@ public class LoginFragment extends BaseFragment {
         super.onResume();
                 new Handler().postDelayed(() -> {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
-                String savedCredentials = keyStoreStorage.retrieve(CREDENTIALS_KEY);
 
-                if (savedCredentials != null) try {
-                    JSONObject credentials = new JSONObject(savedCredentials);
-                    email = credentials.getString("email");
-                    password = credentials.getString("password");
-                } catch (JSONException e) {
-                    return;
-                }
-                if (email.isEmpty() || password.isEmpty()) {
-                    return;
-                }
                 BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                         .setTitle(getResources().getString(R.string.login_fingerprint_alert_title))
                         .setSubtitle(email)
                         .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                         .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
-                Executor executor = Executors.newSingleThreadExecutor();
-                BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
+
+                keyStoreStorage.retrieveWithBiometric(CREDENTIALS_KEY, getActivity(), promptInfo, new BiometricListener() {
                     @Override
-                    public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                        super.onAuthenticationError(errorCode, errString);
+                    public void onSuccess(String result) {
+                        JSONObject credentials;
+                        try {
+                            credentials = new JSONObject(result);
+                            email = credentials.getString("email");
+                            password = credentials.getString("password");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!email.isEmpty() && !password.isEmpty()) {
+                            viewModel.fingerPrintConfirmed(email, password);
+                        }
                     }
 
                     @Override
-                    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                        super.onAuthenticationSucceeded(result);
-                        viewModel.fingerPrintConfirmed(email, password);
+                    public void onFailed() {
 
-                    }
-
-                    @Override
-                    public void onAuthenticationFailed() {
-                        super.onAuthenticationFailed();
                     }
                 });
-                biometricPrompt.authenticate(promptInfo);
+
             }
         }, 100);
-
     }
 
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
@@ -279,7 +284,6 @@ public class LoginFragment extends BaseFragment {
             });
 
         }
-
 
     }
 }
