@@ -12,6 +12,7 @@ static def getDate() {
 }
 
 android {
+
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
         applicationId "com.petrocanada.my_petro_canada"
