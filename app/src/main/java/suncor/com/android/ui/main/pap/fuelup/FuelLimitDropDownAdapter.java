@@ -208,6 +208,11 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         return false;
     }
 
+    public void setIsRedeem(boolean isRedeemChanged){
+        this.isRedeemChanged = isRedeemChanged;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void showUpdatePreAuthPopup() {
 

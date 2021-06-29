@@ -365,6 +365,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         redeemPointsDropDownAdapter.setPreAuthValue(preAuth);
         if( ++ isPreAuthChanges >1 && fuelLimitDropDownAdapter.isEditableValueChange()){
             redeemPointsDropDownAdapter.collapseIfPreAuthChanges(0);
+            fuelLimitDropDownAdapter.setIsRedeem(false);
         preAuthRedeemPoints = "0";
         selectedRadioButton = "No Redemption";
         redeemPointsDropDownAdapter.notifyDataSetChanged();
