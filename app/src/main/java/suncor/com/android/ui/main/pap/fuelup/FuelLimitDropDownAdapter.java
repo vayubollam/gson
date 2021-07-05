@@ -210,7 +210,6 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
     public void setIsRedeem(boolean isRedeemChanged){
         this.isRedeemChanged = isRedeemChanged;
-        notifyDataSetChanged();
     }
 
     @Override
