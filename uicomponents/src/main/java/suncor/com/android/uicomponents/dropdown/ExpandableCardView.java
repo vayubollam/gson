@@ -128,6 +128,28 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         isExpand = !isExpand;
     }
 
+    public void collapseExpanded() {
+        imageButtonExpand.setVisibility(isExpand ? VISIBLE : VISIBLE);
+        textViewTitle.setText(isExpand ? mTitle.toUpperCase() : mExpandedTitle == null || mExpandedTitle.isEmpty() ? mTitle : mExpandedTitle);
+        textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
+
+        if (mExpandCollapseListener != null)
+            mExpandCollapseListener.onExpandCollapseListener(!isExpand, textViewTitle.getText().toString());
+
+        findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
+        findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : GONE);
+
+        if(isExpand){
+            collapse(findViewById(R.id.recycler_view));
+        } else {
+            collapse(findViewById(R.id.recycler_view));
+        }
+
+        if(mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+        isExpand = !isExpand;
+    }
     /**
      *
      * @param attrs

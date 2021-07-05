@@ -349,6 +349,39 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
 
+        if (isExpand) {
+            Log.d("Expand Status", "True");
+            Log.d("Expanded card", cardTitle);
+//            if (cardTitle == "Fuel up to") {
+//                binding.paymentExpandable.expandCollapse();
+//                binding.redeemPointsExpandable.expandCollapse();
+//            } else if (cardTitle == "Redeem Petro-Points") {
+//                binding.paymentExpandable.expandCollapse();
+//                binding.fuelUpLimit.expandCollapse();
+//            } else if (cardTitle == "Select payment method") {
+//                binding.fuelUpLimit.expandCollapse();
+//                binding.redeemPointsExpandable.expandCollapse();
+//            }
+            switch (cardTitle) {
+                case "Fuel up to":
+                    binding.paymentExpandable.collapseExpanded();
+                    binding.redeemPointsExpandable.collapseExpanded();
+                    break;
+                case "Redeem Petro-Points":
+//                    binding.paymentExpandable.expandCollapse();
+//                    binding.fuelUpLimit.expandCollapse();
+                    break;
+                case "Select payment method":
+//                    binding.fuelUpLimit.expandCollapse();
+//                    binding.redeemPointsExpandable.expandCollapse();
+                    break;
+            }
+
+        } else {
+            Log.d("Expand Status", "False");
+            Log.d("Expanded card collapsed", cardTitle);
+        }
+
     }
 
     private void goBack() {
