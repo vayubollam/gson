@@ -573,6 +573,13 @@
         android:id="@+id/carWashActivatedFragment"
         android:name="suncor.com.android.ui.main.carwash.activate.CarwashActivatedFragment"
         android:label="CarWashActivatedFragment" >
+
+        <action
+            android:id="@+id/action_carWashActivatedFragment_to_carWashCardFragment"
+            app:destination="@+id/carWashCardFragment"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/carWashCardFragment"
+            app:popUpToInclusive="true" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashBarCodeFragment"

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import suncor.com.android.data.DistanceApi;
 import suncor.com.android.data.cards.CardsRepository;
@@ -31,6 +32,7 @@ import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 
+@Singleton
 public class CarWashCardViewModel extends ViewModel {
 
     private final CardsRepository repository;

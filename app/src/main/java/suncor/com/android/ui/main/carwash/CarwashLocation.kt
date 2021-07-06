@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
 import suncor.com.android.LocationLiveData
 import suncor.com.android.R
@@ -19,6 +20,7 @@ import suncor.com.android.di.viewmodel.ViewModelFactory
 import suncor.com.android.model.Resource
 import suncor.com.android.ui.main.MainViewModel
 import suncor.com.android.ui.main.common.MainActivityFragment
+import suncor.com.android.ui.main.home.HomeViewModel
 import suncor.com.android.ui.main.stationlocator.StationItem
 import suncor.com.android.utilities.LocationUtils
 import suncor.com.android.utilities.PermissionManager
@@ -48,7 +50,6 @@ abstract class CarwashLocation: MainActivityFragment() {
         // Get the viewModel
         carWashCardViewModel = ViewModelProvider(this, viewModelFactory).get(CarWashCardViewModel::class.java)
         mainViewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -170,6 +170,41 @@
                         tools:text="Open, closes at 12:00 AM" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/mobile_payment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/img_mobile_payment"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        app:srcCompat="@drawable/ic_check" />
+
+                    <ProgressBar
+                        android:id="@+id/mobile_payment_progress_bar"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="8dp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/mobile_payment_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:textAppearance="@style/Caption1"
+                        android:text="@string/mobile_payment_accepted"
+                        android:visibility="gone"
+                        tools:text="Mobile Payment" />
+                </LinearLayout>
+
                 <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/directions_button"
                     style="@style/FilledButton.Red.M"

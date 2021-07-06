@@ -374,4 +374,8 @@ public class SessionManager implements SessionChangeListener {
     public enum AccountState {
         JUST_ENROLLED, REGULAR_LOGIN
     }
+
+    public UserLocalSettings getUserLocalSettings() {
+        return userLocalSettings;
+    }
 }

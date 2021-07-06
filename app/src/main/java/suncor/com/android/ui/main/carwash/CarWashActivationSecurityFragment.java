@@ -143,9 +143,11 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 viewModel.activateCarwash(storeId).observe(getViewLifecycleOwner(), resource -> {
                     if (resource.status == Resource.Status.LOADING) {
                     } else if (resource.status == Resource.Status.ERROR) {
-                        navigateToBarcode();
+                        navigateToCarwashActivated();
+                        //navigateToBarcode();
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                        if (!resource.data.getResultCode().equals("ok")) {
+                        navigateToCarwashActivated();
+                        /*if (!resource.data.getResultCode().equals("ok")) {
                             if (resource.data.getResultSubcode().equals("incorrectPin")) {
                                 confirmButton.setEnabled(false);
                                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
@@ -162,7 +164,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                             }
                         } else {
                             navigateToCarwashActivated();
-                        }
+                        }*/
                     }
                 });
             } else {

@@ -22,6 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -29,16 +31,21 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.CardStationItemBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.FuelUp;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.home.HomeViewModel;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
@@ -60,6 +67,11 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     private int initialAddressLayoutHeight;
     private int initialAddressLayoutBottomMargin;
     private boolean shouldShowCardHandler;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
+    private HomeViewModel mViewModel;
+    private FuelUp fuelUp;
 
     @Inject
     SessionManager sessionManager;
@@ -86,6 +98,8 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.StationDetailsDialogStyle);
         AndroidSupportInjection.inject(this);
+
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
     }
 
     @Override
@@ -98,6 +112,23 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         window.setAttributes(windowParams);
 
         AnalyticsUtils.setCurrentScreenName(getActivity(), "station-details-home");
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mViewModel.isPAPAvailable(stationItem).observe(this, value -> {
+            this.fuelUp = value.data;
+
+            binding.mobilePaymentLayout.setVisibility(View.VISIBLE);
+            binding.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.INVISIBLE : View.VISIBLE);
+            binding.mobilePaymentProgressBar.setVisibility(value.status != Resource.Status.LOADING ? View.GONE : View.VISIBLE);
+
+            binding.mobilePaymentText.setText(value.data != null && value.data.papAvailable() ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
+            binding.imgMobilePayment.setImageResource(value.data != null && value.data.papAvailable() ? R.drawable.ic_check : R.drawable.ic_close);
+
+            binding.directionsButton.setText(value.data != null && value.data.fuelUpAvailable() ? R.string.action_fuel_up : R.string.station_directions_button);
+        });
+        return super.onCreateDialog(savedInstanceState);
     }
 
     @Override
@@ -137,7 +168,17 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         });
 
         binding.directionsButton.setOnClickListener((v) -> {
-            NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.getStation());
+            if (fuelUp != null && fuelUp.fuelUpAvailable()) {
+                HomeNavigationDirections.ActionToSelectPumpFragment action =
+                        SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                                stationItem.getStation().getId(),
+                                getString(R.string.action_location, stationItem.getStation().getAddress().getAddressLine())
+                        );
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+                dismissAllowingStateLoss();
+            } else {
+                NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.getStation());
+            }
         });
 
         binding.favouriteButton.setOnClickListener((v) -> {

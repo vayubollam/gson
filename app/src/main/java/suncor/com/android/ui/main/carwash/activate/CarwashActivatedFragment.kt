@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ObservableBoolean
 import androidx.navigation.Navigation
+import suncor.com.android.R
 import suncor.com.android.databinding.FragmentCarwashActivatedBinding
 import suncor.com.android.mfp.SessionManager
+import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
 import javax.inject.Inject
-import suncor.com.android.R
 
-class CarwashActivatedFragment: MainActivityFragment() {
+class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
     private lateinit var binding: FragmentCarwashActivatedBinding
     private val isLoading = ObservableBoolean(false)
 
@@ -28,10 +29,19 @@ class CarwashActivatedFragment: MainActivityFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.transactionGreetings.text = String.format(getString(R.string.thank_you), sessionManager.profile.firstName)
-        binding.buttonDone.setOnClickListener { goBack() }
+        binding.buttonDone.setOnClickListener {
+            goBack()
+        }
+        binding.buttonClose.setOnClickListener {
+            goBack()
+        }
+    }
+
+    override fun onBackPressed() {
+        goBack()
     }
 
     private fun goBack() {
-        view?.let { Navigation.findNavController(it).popBackStack() }
+        Navigation.findNavController(requireView()).popBackStack(R.id.carWashCardFragment, false)
     }
 }

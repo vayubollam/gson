@@ -108,7 +108,21 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                } else {
+                } else if(cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION)){
+                    ModalDialog dialog = new ModalDialog();
+                    dialog.setCancelable(false);
+
+                    dialog.setTitle(getString(R.string.verify_your_email_address_title))
+                            .setMessage(getString(R.string.verify_your_email_address_description))
+                            .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
+                                callCostumerSupport(getString(R.string.customer_support_number));
+                                dialog.dismiss();
+                            })
+                            .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
+                                dialog.dismiss();
+                            })
+                            .show(getFragmentManager(), ModalDialog.TAG);
+                }else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
 
                     dialog.show();

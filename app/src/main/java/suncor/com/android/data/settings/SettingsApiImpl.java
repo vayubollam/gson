@@ -18,7 +18,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.utilities.Timber;
 
 public class SettingsApiImpl implements SettingsApi {
-    private static final String BASE_PATH = "/adapters/suncor/v4/rfmp-secure/settings";
+    private static final String GET_SETTINGS_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/settings";
     private Gson gson;
 
     public SettingsApiImpl(Gson gson) {
@@ -32,7 +32,7 @@ public class SettingsApiImpl implements SettingsApi {
         MutableLiveData<Resource<SettingsResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterURI = new URI(BASE_PATH);
+            URI adapterURI = new URI(GET_SETTINGS_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterURI, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
