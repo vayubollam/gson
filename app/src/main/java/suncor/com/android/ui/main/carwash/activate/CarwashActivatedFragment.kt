@@ -32,9 +32,6 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
         binding.buttonDone.setOnClickListener {
             goBack()
         }
-        binding.buttonClose.setOnClickListener {
-            goBack()
-        }
     }
 
     override fun onBackPressed() {
