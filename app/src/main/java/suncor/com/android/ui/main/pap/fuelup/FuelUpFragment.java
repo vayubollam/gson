@@ -145,6 +145,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.pumpLayout.setOnClickListener(v -> {
             binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            if(binding.selectPumpLayout.layout.getVisibility() == View.VISIBLE) {
+                binding.paymentExpandable.collapseExpanded();
+                binding.redeemPointsExpandable.collapseExpanded();
+                binding.fuelUpLimit.collapseExpanded();
+            }
         });
 
         paymentDropDownAdapter = new PaymentDropDownAdapter(
@@ -348,40 +353,26 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
-
         if (isExpand) {
-            Log.d("Expand Status", "True");
-            Log.d("Expanded card", cardTitle);
-//            if (cardTitle == "Fuel up to") {
-//                binding.paymentExpandable.expandCollapse();
-//                binding.redeemPointsExpandable.expandCollapse();
-//            } else if (cardTitle == "Redeem Petro-Points") {
-//                binding.paymentExpandable.expandCollapse();
-//                binding.fuelUpLimit.expandCollapse();
-//            } else if (cardTitle == "Select payment method") {
-//                binding.fuelUpLimit.expandCollapse();
-//                binding.redeemPointsExpandable.expandCollapse();
-//            }
             switch (cardTitle) {
                 case "Fuel up to":
                     binding.paymentExpandable.collapseExpanded();
                     binding.redeemPointsExpandable.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
                     break;
                 case "Redeem Petro-Points":
-//                    binding.paymentExpandable.expandCollapse();
-//                    binding.fuelUpLimit.expandCollapse();
+                    binding.paymentExpandable.collapseExpanded();
+                    binding.fuelUpLimit.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
                     break;
                 case "Select payment method":
-//                    binding.fuelUpLimit.expandCollapse();
-//                    binding.redeemPointsExpandable.expandCollapse();
+                    binding.fuelUpLimit.collapseExpanded();
+                    binding.redeemPointsExpandable.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
                     break;
             }
 
-        } else {
-            Log.d("Expand Status", "False");
-            Log.d("Expanded card collapsed", cardTitle);
         }
-
     }
 
     private void goBack() {
