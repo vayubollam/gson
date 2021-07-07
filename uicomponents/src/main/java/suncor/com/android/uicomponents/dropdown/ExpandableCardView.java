@@ -128,7 +128,6 @@ public class ExpandableCardView extends CardView implements View.OnClickListener
             mAdapter.notifyDataSetChanged();
         }
         isExpand = !isExpand;
-        currentPosition = selectedPosition;
     }
 
     public void collapseExpanded() {
