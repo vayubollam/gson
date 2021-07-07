@@ -150,6 +150,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 binding.redeemPointsExpandable.collapseExpanded();
                 binding.fuelUpLimit.collapseExpanded();
             }
+            else {
+                binding.selectPumpLayout.layout.setVisibility(View.GONE);
+            }
         });
 
         paymentDropDownAdapter = new PaymentDropDownAdapter(
@@ -353,6 +356,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
+
+    }
+
+    @Override
+    public void collapseManage(boolean isExpand, String cardTitle) {
         if (isExpand) {
             switch (cardTitle) {
                 case "Fuel up to":
@@ -371,7 +379,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     binding.selectPumpLayout.layout.setVisibility(View.GONE);
                     break;
             }
-
         }
     }
 
