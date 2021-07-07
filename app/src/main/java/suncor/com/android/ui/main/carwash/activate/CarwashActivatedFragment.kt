@@ -9,12 +9,17 @@ import androidx.navigation.Navigation
 import suncor.com.android.R
 import suncor.com.android.databinding.FragmentCarwashActivatedBinding
 import suncor.com.android.mfp.SessionManager
+import suncor.com.android.model.carwash.ActivateCarwashResponse
+import suncor.com.android.model.carwash.CarwashConfigurationType
 import suncor.com.android.ui.common.OnBackPressedListener
+import suncor.com.android.ui.common.cards.CardFormatUtils
+import suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragmentArgs
 import suncor.com.android.ui.main.common.MainActivityFragment
 import javax.inject.Inject
 
 class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
     private lateinit var binding: FragmentCarwashActivatedBinding
+    private var carwashResponse: ActivateCarwashResponse? = null
     private val isLoading = ObservableBoolean(false)
 
     @Inject lateinit var sessionManager: SessionManager
@@ -23,12 +28,45 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
         binding = FragmentCarwashActivatedBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.isLoading = isLoading
+
+        carwashResponse = CarwashActivatedFragmentArgs.fromBundle(requireArguments()).carwashResponse
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.transactionGreetings.text = String.format(getString(R.string.thank_you), sessionManager.profile.firstName)
+
+        binding.remainingTextView.text = when (carwashResponse?.configurationType) {
+            CarwashConfigurationType.TBO -> getString(
+                R.string.carwash_remaining_copy,
+                context?.resources?.getQuantityString(
+                    R.plurals.cards_days_balance,
+                    carwashResponse?.getDaysLeft() ?: 0,
+                    CardFormatUtils.formatBalance(carwashResponse?.getDaysLeft() ?: 0)
+                )
+            )
+
+            CarwashConfigurationType.UBO -> getString(
+                R.string.carwash_remaining_copy,
+                context?.resources?.getQuantityString(
+                    R.plurals.cards_washes_balance,
+                    carwashResponse?.estimatedWashesRemaining ?: 0,
+                    CardFormatUtils.formatBalance(carwashResponse?.estimatedWashesRemaining ?: 0)
+                )
+            )
+
+            else -> getString(
+                R.string.carwash_remaining_copy,
+                context?.resources?.getQuantityString(
+                    R.plurals.cards_washes_balance,
+                    carwashResponse?.estimatedWashesRemaining ?: 0,
+                    CardFormatUtils.formatBalance(carwashResponse?.estimatedWashesRemaining ?: 0)
+                )
+            )
+        }
+
         binding.buttonDone.setOnClickListener {
             goBack()
         }

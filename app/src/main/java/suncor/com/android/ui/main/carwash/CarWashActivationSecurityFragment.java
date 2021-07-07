@@ -31,6 +31,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.ActivateCarwashResponse;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorButton;
@@ -143,12 +144,34 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 viewModel.activateCarwash(storeId).observe(getViewLifecycleOwner(), resource -> {
                     if (resource.status == Resource.Status.LOADING) {
                     } else if (resource.status == Resource.Status.ERROR) {
-                        navigateToCarwashActivated();
-                        //navigateToBarcode();
+                        navigateToBarcode();
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                        navigateToCarwashActivated();
-                        /*if (!resource.data.getResultCode().equals("ok")) {
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                        if (!resource.data.getResultCode().equals("ok")) {
                             if (resource.data.getResultSubcode().equals("incorrectPin")) {
+                                confirmButton.setEnabled(false);
+                                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                                        .setTitle(R.string.carwash_activation_pin_error_title)
+                                        .setMessage(R.string.carwash_activation_pin_error_message)
+                                        .setPositiveButton(R.string.ok, (dialog, which) -> {
+                                            dialog.dismiss();
+                                            confirmButton.setEnabled(true);
+                                        }).create();
+                                alertDialog.setCanceledOnTouchOutside(false);
+                                alertDialog.show();
+                            } else if (resource.data.getResultSubcode().equals("washRejected")) {
+                                confirmButton.setEnabled(false);
+                                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                                        .setTitle(R.string.carwash_activation_pin_error_title)
+                                        .setMessage(R.string.carwash_activation_pin_error_message)
+                                        .setPositiveButton(R.string.ok, (dialog, which) -> {
+                                            dialog.dismiss();
+                                            confirmButton.setEnabled(true);
+                                        }).create();
+                                alertDialog.setCanceledOnTouchOutside(false);
+                                alertDialog.show();
+                            } else if (resource.data.getResultSubcode().equals("poeBusy")) {
                                 confirmButton.setEnabled(false);
                                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                                         .setTitle(R.string.carwash_activation_pin_error_title)
@@ -163,8 +186,8 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                                 navigateToBarcode();
                             }
                         } else {
-                            navigateToCarwashActivated();
-                        }*/
+                            navigateToCarwashActivated(resource.data);
+                        }
                     }
                 });
             } else {
@@ -203,8 +226,10 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         Navigation.findNavController(getView()).navigate((NavDirections) action);
     }
 
-    private void navigateToCarwashActivated() {
-        NavDirections action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashActivatedFragment();
+    private void navigateToCarwashActivated(ActivateCarwashResponse response) {
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        NavDirections action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashActivatedFragment(response);
         AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep, "Activate Carwash");
         Navigation.findNavController(getView()).navigate(action);
     }

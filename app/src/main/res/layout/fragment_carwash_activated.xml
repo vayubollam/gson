@@ -59,11 +59,20 @@
                                 style="@style/Title2" />
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/receipt_tv_description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/carwash_activated_copy"
+                                android:textAlignment="center"
+                                style="@style/Body2"
+                                android:lineSpacingMultiplier="1.25"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/remaining_text_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/carwash_remaining_copy"
                                 android:textAlignment="center"
                                 style="@style/Body2"
                                 android:lineSpacingMultiplier="1.25"/>
