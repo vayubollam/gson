@@ -149,8 +149,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                         if (!resource.data.getResultCode().equals("ok")) {
+                            confirmButton.setEnabled(false);
+
                             if (resource.data.getResultSubcode().equals("incorrectPin")) {
-                                confirmButton.setEnabled(false);
                                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                                         .setTitle(R.string.carwash_activation_pin_error_title)
                                         .setMessage(R.string.carwash_activation_pin_error_message)
@@ -161,27 +162,17 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                                 alertDialog.setCanceledOnTouchOutside(false);
                                 alertDialog.show();
                             } else if (resource.data.getResultSubcode().equals("washRejected")) {
-                                confirmButton.setEnabled(false);
-                                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                                        .setTitle(R.string.carwash_activation_pin_error_title)
-                                        .setMessage(R.string.carwash_activation_pin_error_message)
-                                        .setPositiveButton(R.string.ok, (dialog, which) -> {
-                                            dialog.dismiss();
-                                            confirmButton.setEnabled(true);
-                                        }).create();
-                                alertDialog.setCanceledOnTouchOutside(false);
-                                alertDialog.show();
+                                Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
+                                    dialog.dismiss();
+                                    goBack();
+                                    confirmButton.setEnabled(true);
+                                }, "Activate Wash by Wash & Go card");
+
                             } else if (resource.data.getResultSubcode().equals("poeBusy")) {
-                                confirmButton.setEnabled(false);
-                                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                                        .setTitle(R.string.carwash_activation_pin_error_title)
-                                        .setMessage(R.string.carwash_activation_pin_error_message)
-                                        .setPositiveButton(R.string.ok, (dialog, which) -> {
-                                            dialog.dismiss();
-                                            confirmButton.setEnabled(true);
-                                        }).create();
-                                alertDialog.setCanceledOnTouchOutside(false);
-                                alertDialog.show();
+                                Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
+                                    dialog.dismiss();
+                                    confirmButton.setEnabled(true);
+                                }, "Activate Wash by Wash & Go card");
                             } else {
                                 navigateToBarcode();
                             }

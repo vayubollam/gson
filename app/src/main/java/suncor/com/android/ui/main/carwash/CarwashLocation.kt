@@ -178,10 +178,16 @@ abstract class CarwashLocation: MainActivityFragment() {
 
             override fun onPermissionPreviouslyDenied() {
                 //in case in the future we would show any rational
+                showRequestLocationDialog(false)
             }
 
-            override fun onPermissionPreviouslyDeniedWithNeverAskAgain() {}
+            override fun onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                showRequestLocationDialog(true)
+            }
             override fun onPermissionGranted() {
+                if (!LocationUtils.isLocationEnabled(context))
+                    showRequestLocationDialog(false)
+
                 carWashCardViewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(context))
             }
         })

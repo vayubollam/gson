@@ -731,5 +731,5 @@
     <!-- Carwash POE -->
     <string name="carwash_activated_copy">Follow the car wash instructions and enjoy your wash.</string>
     <string name="carwash_remaining_copy">You have %1$s remaining.</string>
-    <string name="carwash_zero_copy">You're out of washes.</string>
+    <string name="carwash_zero_copy">You\'re out of washes.</string>
 </resources>
