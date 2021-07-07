@@ -39,32 +39,50 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
         binding.transactionGreetings.text = String.format(getString(R.string.thank_you), sessionManager.profile.firstName)
 
         binding.remainingTextView.text = when (carwashResponse?.configurationType) {
-            CarwashConfigurationType.TBO -> getString(
-                R.string.carwash_remaining_copy,
-                context?.resources?.getQuantityString(
-                    R.plurals.cards_days_balance,
-                    carwashResponse?.getDaysLeft() ?: 0,
-                    CardFormatUtils.formatBalance(carwashResponse?.getDaysLeft() ?: 0)
-                )
-            )
+            CarwashConfigurationType.TBO ->  {
+                if (carwashResponse?.getDaysLeft() ?: 0 == 0) {
+                    binding.cardZeroBalanceDescription.visibility = View.VISIBLE
+                    getString(R.string.carwash_zero_copy)
+                } else
+                    getString(
+                        R.string.carwash_remaining_copy,
+                        context?.resources?.getQuantityString(
+                            R.plurals.cards_days_balance,
+                            carwashResponse?.getDaysLeft() ?: 0,
+                            CardFormatUtils.formatBalance(carwashResponse?.getDaysLeft() ?: 0)
+                        )
+                    )
+            }
 
-            CarwashConfigurationType.UBO -> getString(
-                R.string.carwash_remaining_copy,
-                context?.resources?.getQuantityString(
-                    R.plurals.cards_washes_balance,
-                    carwashResponse?.estimatedWashesRemaining ?: 0,
-                    CardFormatUtils.formatBalance(carwashResponse?.estimatedWashesRemaining ?: 0)
-                )
-            )
+            CarwashConfigurationType.UBO ->  {
+                if (carwashResponse?.getDaysLeft() ?: 0 == 0) {
+                    binding.cardZeroBalanceDescription.visibility = View.VISIBLE
+                    getString(R.string.carwash_zero_copy)
+                } else
+                    getString(
+                        R.string.carwash_remaining_copy,
+                        context?.resources?.getQuantityString(
+                            R.plurals.cards_washes_balance,
+                            carwashResponse?.estimatedWashesRemaining ?: 0,
+                            CardFormatUtils.formatBalance(carwashResponse?.estimatedWashesRemaining ?: 0)
+                        )
+                    )
+            }
 
-            else -> getString(
-                R.string.carwash_remaining_copy,
-                context?.resources?.getQuantityString(
-                    R.plurals.cards_washes_balance,
-                    carwashResponse?.estimatedWashesRemaining ?: 0,
-                    CardFormatUtils.formatBalance(carwashResponse?.estimatedWashesRemaining ?: 0)
-                )
-            )
+            else ->  {
+                if (carwashResponse?.getDaysLeft() ?: 0 == 0 || carwashResponse?.getDaysLeft() ?: 0 == 0) {
+                    binding.cardZeroBalanceDescription.visibility = View.VISIBLE
+                    getString(R.string.carwash_zero_copy)
+                } else
+                    getString(
+                        R.string.carwash_remaining_copy,
+                        context?.resources?.getQuantityString(
+                            R.plurals.cards_washes_balance,
+                            carwashResponse?.estimatedWashesRemaining ?: 0,
+                            CardFormatUtils.formatBalance(carwashResponse?.estimatedWashesRemaining ?: 0)
+                        )
+                    )
+            }
         }
 
         binding.buttonDone.setOnClickListener {
@@ -77,6 +95,6 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
     }
 
     private fun goBack() {
-        Navigation.findNavController(requireView()).popBackStack(R.id.carWashCardFragment, false)
+        Navigation.findNavController(requireView()).popBackStack(R.id.cardsDetailsFragment, false)
     }
 }
