@@ -726,4 +726,6 @@
     <string name="carwash_remaining_copy">Il vous reste %1$s.</string>
     <string name="carwash_zero_washes">Vous n\'avez plus de lavages.</string>
     <string name="carwash_zero_days">Vous n\'avez plus de jours.</string>
+    <string name="carwash_error_alert_title">Impossible d\'activer le lavage</string>
+    <string name="carwash_error_alert_copy">Mousse alors! Quelque chose a mal tourné. Essayez de nouveau ou communiquez avec le préposé.</string>
 </resources>

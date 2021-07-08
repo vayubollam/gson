@@ -734,4 +734,6 @@
     <string name="carwash_remaining_copy">You have %1$s remaining.</string>
     <string name="carwash_zero_washes">You\'re out of washes.</string>
     <string name="carwash_zero_days">You\'re out of days.</string>
+    <string name="carwash_error_alert_title">Can\’t activate wash</string>
+    <string name="carwash_error_alert_copy">Suds! Something went wrong. Try again or contact the in-store attendant.</string>
 </resources>

@@ -209,10 +209,15 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 alertWashDialog.show();
                 break;
             case "poeBusy":
-                Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
-                    dialog.dismiss();
-                    confirmButton.setEnabled(true);
-                }, "Activate Wash by Wash & Go card").show();
+                AlertDialog alertErrorDialog = new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.carwash_error_alert_title)
+                        .setMessage(R.string.carwash_error_alert_copy)
+                        .setPositiveButton(R.string.ok, (dialog, which) -> {
+                            dialog.dismiss();
+                            confirmButton.setEnabled(true);
+                        }).create();
+                alertErrorDialog.setCanceledOnTouchOutside(false);
+                alertErrorDialog.show();
                 break;
             default:
                 navigateToBarcode();
