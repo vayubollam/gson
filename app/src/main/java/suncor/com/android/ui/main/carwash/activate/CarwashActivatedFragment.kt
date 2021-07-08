@@ -36,13 +36,13 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.transactionGreetings.text = String.format(getString(R.string.thank_you), sessionManager.profile.firstName)
+        binding.transactionGreetings.text = String.format(getString(R.string.thank_you_carwash), sessionManager.profile.firstName)
 
         binding.remainingTextView.text = when (carwashResponse?.configurationType) {
             CarwashConfigurationType.TBO ->  {
                 if (carwashResponse?.getDaysLeft() ?: 0 == 0) {
                     binding.cardZeroBalanceDescription.visibility = View.VISIBLE
-                    getString(R.string.carwash_zero_copy)
+                    getString(R.string.carwash_zero_days)
                 } else
                     getString(
                         R.string.carwash_remaining_copy,
@@ -57,7 +57,7 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
             CarwashConfigurationType.UBO ->  {
                 if (carwashResponse?.getDaysLeft() ?: 0 == 0) {
                     binding.cardZeroBalanceDescription.visibility = View.VISIBLE
-                    getString(R.string.carwash_zero_copy)
+                    getString(R.string.carwash_zero_washes)
                 } else
                     getString(
                         R.string.carwash_remaining_copy,
@@ -72,7 +72,7 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
             else ->  {
                 if (carwashResponse?.getDaysLeft() ?: 0 == 0 || carwashResponse?.getDaysLeft() ?: 0 == 0) {
                     binding.cardZeroBalanceDescription.visibility = View.VISIBLE
-                    getString(R.string.carwash_zero_copy)
+                    getString(R.string.carwash_zero_washes)
                 } else
                     getString(
                         R.string.carwash_remaining_copy,
