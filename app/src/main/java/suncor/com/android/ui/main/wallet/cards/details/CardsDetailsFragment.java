@@ -119,7 +119,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter(getActivity(), this::cardViewMoreHandler, activeCarWashListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter(getActivity(), this::cardViewMoreHandler, activeCarWashListener, cardReloadListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -215,6 +215,20 @@ public class CardsDetailsFragment extends MainActivityFragment {
         }
 
     };
+
+    private View.OnClickListener cardReloadListener = view -> {
+                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+                if(viewModel.getIsCarWashBalanceZero().getValue() != null &&
+                        viewModel.getIsCarWashBalanceZero().getValue()){
+                    CardsUtil.showSuspendedCardAlert(getContext());
+                } else {
+                    //open Reload Transaction form
+                }
+        };
+
+
+
+
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";

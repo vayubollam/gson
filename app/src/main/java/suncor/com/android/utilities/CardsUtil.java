@@ -3,6 +3,8 @@ package suncor.com.android.utilities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
@@ -87,4 +89,19 @@ public class CardsUtil {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
+    public static void showSuspendedCardAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.reload_card_alet_title)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
+                .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dialog, which) -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_canada_reload_url)));
+                    context.startActivity(browserIntent);
+                }).setNegativeButton(context.getResources().getString(R.string.reload_card_alert_cancel), (dialog, which) -> {
+                    AnalyticsUtils.logEvent(context,AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, context.getString(R.string.reload_card_alet_title)),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection,context.getString(R.string.reload_card_alert_description)),
+                            new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName()));
+                });
+        builder.show();
+    }
+
 }
