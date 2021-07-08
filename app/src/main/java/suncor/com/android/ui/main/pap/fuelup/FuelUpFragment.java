@@ -378,6 +378,26 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     binding.redeemPointsExpandable.collapseExpanded();
                     binding.selectPumpLayout.layout.setVisibility(View.GONE);
                     break;
+                case "Montant maximal du carburanto":
+                    binding.paymentExpandable.collapseExpanded();
+                    binding.redeemPointsExpandable.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
+                    break;
+                case "Échangez vos Petro-Points":
+                    binding.paymentExpandable.collapseExpanded();
+                    binding.fuelUpLimit.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
+                    break;
+                case "PAIEMENT":
+                    binding.fuelUpLimit.collapseExpanded();
+                    binding.redeemPointsExpandable.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
+                    break;
+                case "Sélectionnez le mode de paiement":
+                    binding.fuelUpLimit.collapseExpanded();
+                    binding.redeemPointsExpandable.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
+                    break;
             }
         }
     }
