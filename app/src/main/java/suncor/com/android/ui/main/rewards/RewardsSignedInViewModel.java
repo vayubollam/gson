@@ -49,12 +49,12 @@ public class RewardsSignedInViewModel extends ViewModel {
             Merchant m = merchantIterator.next();
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 if (m.getMerchantId() != MerchantsIds.Cara_FR && m.getMerchantId() != MerchantsIds.Cineplex_FR
-                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_FR && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_FR) {
+                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_FR && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_FR &&  m.getMerchantId() != MerchantsIds.Petro_Canada_FR) {
                     merchantIterator.remove();
                 }
             } else {
                 if (m.getMerchantId() != MerchantsIds.Cara_EN && m.getMerchantId() != MerchantsIds.Cineplex_EN
-                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_EN && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_EN) {
+                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_EN && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_EN && m.getMerchantId() != MerchantsIds.Petro_Canada_EN) {
                     merchantIterator.remove();
                 }
             }
