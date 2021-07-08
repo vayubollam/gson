@@ -293,7 +293,19 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_cardsDetailsFragment_to_carWashReloadTransactionFragment"
+            app:destination="@id/carWashReloadTransactionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"/>
     </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/carWashReloadTransactionFragment"
+        android:name="suncor.com.android.ui.main.carwash.reload.CarwashReloadTransactionFragment"
+        android:label="CarWashReloadTransactionFragment"
+        tools:layout="@layout/fragment_carwash_transaction" />
 
     <keep_state_fragment
         android:id="@+id/addCardFragment"

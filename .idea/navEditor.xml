@@ -113,8 +113,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="3184" />
-                            <option name="y" value="1081" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -257,6 +257,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="carWashReloadTransactionFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="cardsDetailsFragment">
                     <value>
                       <LayoutPositions>
@@ -279,6 +291,11 @@
                               </value>
                             </entry>
                             <entry key="action_cardsDetailsFragment_to_carWashPurchaseFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_cardsDetailsFragment_to_carWashReloadTransactionFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

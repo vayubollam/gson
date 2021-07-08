@@ -36,7 +36,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = PaymentDropDownAdapter.class.getSimpleName();
 
-    protected static final String PAYMENT_TYPE_GOOGLE_PAY = "google_pay";
+    public static final String PAYMENT_TYPE_GOOGLE_PAY = "google_pay";
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int ADD_DROP_DOWN_LAYOUT = 2;
