@@ -62,6 +62,7 @@ public class ExpandableCardView extends CardView implements View.OnClickListener
     private Context mContext;
     private boolean isRedeemSelectionChanged;
     private static String currentPosition;
+    private static boolean isCollapsed = false;
 
     public ExpandableCardView(Context context) {
         super(context);
@@ -106,6 +107,13 @@ public class ExpandableCardView extends CardView implements View.OnClickListener
 
     @Override
     public void expandCollapse() {
+        if(isCollapsed && isExpand) {
+            if(selectedPosition == currentPosition) {
+                isExpand = isExpand;
+            } else {
+                isExpand = !isExpand;
+            }
+        }
         imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
         textViewTitle.setText(isExpand ? mTitle.toUpperCase() : mExpandedTitle == null || mExpandedTitle.isEmpty() ? mTitle : mExpandedTitle);
         textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
@@ -128,6 +136,7 @@ public class ExpandableCardView extends CardView implements View.OnClickListener
             mAdapter.notifyDataSetChanged();
         }
         isExpand = !isExpand;
+        currentPosition = selectedPosition;
     }
 
     public void collapseExpanded() {
@@ -142,6 +151,7 @@ public class ExpandableCardView extends CardView implements View.OnClickListener
         findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : VISIBLE);
 
         collapse(findViewById(R.id.recycler_view));
+        isCollapsed = true;
     }
 
     /**
