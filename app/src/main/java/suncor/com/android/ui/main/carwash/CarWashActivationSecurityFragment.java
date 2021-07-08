@@ -212,7 +212,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
                     dialog.dismiss();
                     confirmButton.setEnabled(true);
-                }, "Activate Wash by Wash & Go card");
+                }, "Activate Wash by Wash & Go card").show();
                 break;
             default:
                 navigateToBarcode();
