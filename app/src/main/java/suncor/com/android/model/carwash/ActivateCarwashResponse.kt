@@ -10,7 +10,6 @@ import java.util.*
 data class ActivateCarwashResponse(
         val resultCode: String,
         val resultSubcode: String,
-        val lastWash: String,
         val goodThru: String,
         val configurationType: CarwashConfigurationType,
         val estimatedWashesRemaining: Int,
@@ -19,11 +18,17 @@ data class ActivateCarwashResponse(
 
         fun getDaysLeft(): Int {
                 val dateFormat: DateFormat =
-                        SimpleDateFormat("yyyy-MM-ddTHH:mm:ss", Locale.CANADA)
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.CANADA)
                 return try {
                         val date = dateFormat.parse(goodThru)
-                        val millionSeconds = date.time - Calendar.getInstance().timeInMillis
-                        return java.util.concurrent.TimeUnit.MILLISECONDS.toDays(millionSeconds).toInt()
+                        val today = Calendar.getInstance()
+                        today.set(Calendar.HOUR_OF_DAY, 0)
+                        today.set(Calendar.MINUTE, 0)
+                        today.set(Calendar.SECOND, 0)
+                        today.set(Calendar.MILLISECOND, 0)
+
+                        val millionSeconds = date.time - today.timeInMillis
+                        return java.util.concurrent.TimeUnit.MILLISECONDS.toDays(millionSeconds).toInt() + 1 // Count the end date
                 } catch (e: ParseException) {
                         e.printStackTrace()
                         0
@@ -31,7 +36,6 @@ data class ActivateCarwashResponse(
         }
 
         constructor(parcel: Parcel) : this(
-                parcel.readString() ?: "",
                 parcel.readString() ?: "",
                 parcel.readString() ?: "",
                 parcel.readString() ?: "",
@@ -44,7 +48,6 @@ data class ActivateCarwashResponse(
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeString(resultCode)
                 parcel.writeString(resultSubcode)
-                parcel.writeString(lastWash)
                 parcel.writeString(goodThru)
                 parcel.writeString(configurationType.toString())
                 parcel.writeInt(estimatedWashesRemaining)

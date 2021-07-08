@@ -45,7 +45,7 @@ class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create
                 override fun onFailure(wlFailResponse: WLFailResponse) {
                     Timber.d("Activate Carwash API failed, $wlFailResponse")
                     Timber.e(wlFailResponse.toString())
-                    result.postValue(Resource.error(wlFailResponse.errorMsg))
+                    result.postValue(Resource.error(if (wlFailResponse.responseJSON.has("resultSubcode")) wlFailResponse.responseJSON.getString("resultSubcode") else ""))
                 }
             })
         } catch (e: URISyntaxException) {
