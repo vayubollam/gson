@@ -364,36 +364,19 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         if (isExpand) {
             switch (cardTitle) {
                 case "Fuel up to":
-                    binding.paymentExpandable.collapseExpanded();
-                    binding.redeemPointsExpandable.collapseExpanded();
-                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
-                    break;
-                case "Redeem Petro-Points":
-                    binding.paymentExpandable.collapseExpanded();
-                    binding.fuelUpLimit.collapseExpanded();
-                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
-                    break;
-                case "Select payment method":
-                    binding.fuelUpLimit.collapseExpanded();
-                    binding.redeemPointsExpandable.collapseExpanded();
-                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
-                    break;
                 case "Montant maximal du carburanto":
                     binding.paymentExpandable.collapseExpanded();
                     binding.redeemPointsExpandable.collapseExpanded();
                     binding.selectPumpLayout.layout.setVisibility(View.GONE);
                     break;
+                case "Redeem Petro-Points":
                 case "Échangez vos Petro-Points":
                     binding.paymentExpandable.collapseExpanded();
                     binding.fuelUpLimit.collapseExpanded();
                     binding.selectPumpLayout.layout.setVisibility(View.GONE);
                     break;
-                case "PAIEMENT":
-                    binding.fuelUpLimit.collapseExpanded();
-                    binding.redeemPointsExpandable.collapseExpanded();
-                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
-                    break;
-                case "Sélectionnez le mode de paiement":
+                case "Select payment method":
+                case "Sélectionnez un mode de paiement":
                     binding.fuelUpLimit.collapseExpanded();
                     binding.redeemPointsExpandable.collapseExpanded();
                     binding.selectPumpLayout.layout.setVisibility(View.GONE);
