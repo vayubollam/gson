@@ -721,7 +721,7 @@
     <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
     <!-- Carwash POE -->
-    <string name="thank_you_carwash">Merci, %1$s!<br>La propreté, droit devant.</string>
+    <string name="thank_you_carwash">Merci, %1$s!<br/>La propreté, droit devant.</string>
     <string name="carwash_activated_copy">Suivez les directives et profitez de votre lavage.</string>
     <string name="carwash_remaining_copy">Il vous reste %1$s.</string>
     <string name="carwash_zero_washes">Vous n\'avez plus de lavages.</string>
