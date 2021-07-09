@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import suncor.com.android.uicomponents.R;
 
-public  class ExpandableCardView extends CardView implements View.OnClickListener, ChildViewListener{
+public class ExpandableCardView extends CardView implements View.OnClickListener, ChildViewListener{
 
     //expandable card view title
     private TextView textViewTitle;
@@ -61,7 +61,8 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     private DropDownAdapter mAdapter;
     private Context mContext;
     private boolean isRedeemSelectionChanged;
-
+    private static String currentPosition;
+    private static boolean isCollapsed = false;
 
     public ExpandableCardView(Context context) {
         super(context);
@@ -106,12 +107,21 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
 
     @Override
     public void expandCollapse() {
+        if(isCollapsed && isExpand) {
+            if(selectedPosition == currentPosition) {
+                isExpand = isExpand;
+            } else {
+                isExpand = !isExpand;
+            }
+        }
         imageButtonExpand.setVisibility(isExpand ? VISIBLE : GONE);
         textViewTitle.setText(isExpand ? mTitle.toUpperCase() : mExpandedTitle == null || mExpandedTitle.isEmpty() ? mTitle : mExpandedTitle);
         textViewTitle.setTypeface(isExpand ? null : textViewTitle.getTypeface(), isExpand ? Typeface.NORMAL  : Typeface.BOLD);
 
-        if (mExpandCollapseListener != null)
+        if (mExpandCollapseListener != null) {
             mExpandCollapseListener.onExpandCollapseListener(!isExpand, textViewTitle.getText().toString());
+            mExpandCollapseListener.collapseManage(!isExpand, textViewTitle.getText().toString());
+        }
 
         findViewById(R.id.recycler_view).setVisibility(isExpand ? GONE : VISIBLE);
         findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : GONE);
@@ -126,6 +136,22 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
             mAdapter.notifyDataSetChanged();
         }
         isExpand = !isExpand;
+        currentPosition = selectedPosition;
+    }
+
+    public void collapseExpanded() {
+        imageButtonExpand.setVisibility(isExpand ? VISIBLE : VISIBLE);
+        textViewTitle.setText(isExpand ? mTitle.toUpperCase() : mTitle.toUpperCase());
+        textViewTitle.setTypeface(isExpand ? null : null, isExpand ? Typeface.NORMAL  : Typeface.NORMAL);
+
+        if (mExpandCollapseListener != null)
+            mExpandCollapseListener.onExpandCollapseListener(!isExpand, textViewTitle.getText().toString());
+
+        findViewById(R.id.recycler_view).setVisibility(isExpand ? VISIBLE : VISIBLE);
+        findViewById(R.id.selected_layout).setVisibility(isExpand ? VISIBLE : VISIBLE);
+
+        collapse(findViewById(R.id.recycler_view));
+        isCollapsed = true;
     }
 
     /**

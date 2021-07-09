@@ -145,6 +145,14 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.pumpLayout.setOnClickListener(v -> {
             binding.selectPumpLayout.layout.setVisibility(binding.selectPumpLayout.layout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            if(binding.selectPumpLayout.layout.getVisibility() == View.VISIBLE) {
+                binding.paymentExpandable.collapseExpanded();
+                binding.redeemPointsExpandable.collapseExpanded();
+                binding.fuelUpLimit.collapseExpanded();
+            }
+            else {
+                binding.selectPumpLayout.layout.setVisibility(View.GONE);
+            }
         });
 
         paymentDropDownAdapter = new PaymentDropDownAdapter(
@@ -349,6 +357,32 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
 
+    }
+
+    @Override
+    public void collapseManage(boolean isExpand, String cardTitle) {
+        if (isExpand) {
+            switch (cardTitle) {
+                case "Fuel up to":
+                case "Montant maximal du carburanto":
+                    binding.paymentExpandable.collapseExpanded();
+                    binding.redeemPointsExpandable.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
+                    break;
+                case "Redeem Petro-Points":
+                case "Échangez vos Petro-Points":
+                    binding.paymentExpandable.collapseExpanded();
+                    binding.fuelUpLimit.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
+                    break;
+                case "Select payment method":
+                case "Sélectionnez un mode de paiement":
+                    binding.fuelUpLimit.collapseExpanded();
+                    binding.redeemPointsExpandable.collapseExpanded();
+                    binding.selectPumpLayout.layout.setVisibility(View.GONE);
+                    break;
+            }
+        }
     }
 
     private void goBack() {
