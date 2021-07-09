@@ -21,6 +21,7 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     private ArrayList<ExpandedCardItem> cardItems = new ArrayList<>();
     private Consumer<ExpandedCardItem> callBack;
     private View.OnClickListener activeWashListener;
+    private View.OnClickListener cardReloadListener;
     private GestureDetector mGestureDetector;
     private MyGestureDetector myGestureDetector;
     private Context context;
@@ -28,9 +29,11 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     private float y1, y2;
     private long t1, t2;
 
-    public CardsDetailsAdapter(Context context, Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener) {
+    public CardsDetailsAdapter(Context context, Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
+                               View.OnClickListener cardReloadListener) {
         this.callBack = callBack;
         this.activeWashListener = activeWashListener;
+        this.cardReloadListener = cardReloadListener;
         this.context = context;
         myGestureDetector = new MyGestureDetector();
         mGestureDetector = new GestureDetector(context, myGestureDetector);
@@ -47,6 +50,7 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public void onBindViewHolder(@NonNull CardsDetailHolder holder, int position) {
         holder.binding.setCard(cardItems.get(position));
         holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
+        holder.binding.cardReloadButton.setOnClickListener(cardReloadListener);
     }
 
     public void removeCard(ExpandedCardItem expandedCardItem) {

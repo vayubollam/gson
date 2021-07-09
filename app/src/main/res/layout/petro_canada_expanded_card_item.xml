@@ -246,7 +246,7 @@
                             android:text="@string/cards_zero_balance_description"
                             app:layout_constraintTop_toBottomOf="@id/card_description"
                             android:textAppearance="@style/Caption1"
-                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"/>
+                            app:visibleGone="@{card.cardType == CardType.WAG}"/>
 
                         <FrameLayout
                             android:id="@+id/fl_barcode"
@@ -267,7 +267,24 @@
                             android:layout_height="50dp"
                             android:src="@{card.barCodePDF}"
                             app:visibleGone="@{card.cardType==CardType.PPTS}" />
+
                         </FrameLayout>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/card_reload_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginBottom="48dp"
+                            android:gravity="center"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="RELOAD"
+                            android:textColor="@color/red"
+                            android:textStyle="bold"
+                            android:textSize="16dp"
+                            app:layout_constraintTop_toBottomOf="@id/fl_barcode"
+                            />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -277,7 +294,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
                     android:layout_marginBottom="21dp"
-                    android:background="@drawable/merchantshadow"
                     app:layout_constraintBottom_toTopOf="@id/active_wash_button" />
 
                 <suncor.com.android.ui.common.SuncorButton
