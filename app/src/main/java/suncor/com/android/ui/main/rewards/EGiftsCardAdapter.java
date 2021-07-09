@@ -35,7 +35,7 @@ public class EGiftsCardAdapter extends RecyclerView.Adapter<EGiftsCardAdapter.Ca
         Context context = holder.binding.getRoot().getContext();
         int imageId = context.getResources().getIdentifier(merchantItems.get(position).getMerchantLargeImage(), "drawable", context.getPackageName());
         holder.binding.setImage(context.getDrawable(imageId));
-        holder.binding.setMerchantItem(merchantItems.get(position));
+ //       holder.binding.setMerchantItem(merchantItems.get(position));
         holder.binding.executePendingBindings();
         holder.itemView.setOnClickListener(v -> callback.accept(merchantItems.get(position)));
     }
