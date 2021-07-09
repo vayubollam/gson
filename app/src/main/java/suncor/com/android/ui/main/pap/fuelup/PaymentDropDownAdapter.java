@@ -50,7 +50,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
     private boolean showGooglePayOption = false;
 
 
-    PaymentDropDownAdapter(final Context context, PaymentDropDownCallbacks callbacks) {
+    public PaymentDropDownAdapter(final Context context, PaymentDropDownCallbacks callbacks) {
         this.mContext = context;
         this.callbacks = callbacks;
     }
@@ -248,9 +248,5 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             });
         }
     }
-}
-
-interface PaymentDropDownCallbacks {
-    void onPaymentChanged(String userPaymentId);
 }
 

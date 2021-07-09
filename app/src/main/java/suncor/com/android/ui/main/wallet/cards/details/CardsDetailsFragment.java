@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -223,6 +224,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     CardsUtil.showSuspendedCardAlert(getContext());
                 } else {
                     //open Reload Transaction form
+                    @NonNull NavDirections action
+                            = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
+                  //  action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+                  //  action.setCardIndex(clickedCardIndex);
+                  //  action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+                    Navigation.findNavController(getView()).navigate(action);
                 }
         };
 

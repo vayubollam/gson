@@ -257,7 +257,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="carWashReloadTransactionFragment">
+                  <entry key="carWashTransactionFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -295,7 +295,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_cardsDetailsFragment_to_carWashReloadTransactionFragment">
+                            <entry key="action_cardsDetailsFragment_to_carWashTransactionFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
