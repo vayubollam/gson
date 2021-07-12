@@ -1,6 +1,8 @@
 package suncor.com.android.ui.main.carwash;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -198,10 +200,19 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 break;
             case "washRejected":
                 AlertDialog alertWashDialog = new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.zero_balance_alert_title)
-                        .setMessage(R.string.zero_balance_alert_message)
-                        .setPositiveButton(R.string.ok, (dialog, which) -> {
+                        .setTitle(R.string.carwash_zero_error_alert_title)
+                        .setMessage(R.string.carwash_zero_error_alert_message)
+                        .setNegativeButton(R.string.carwash_zero_alert_close, (dialog, which) -> {
                             dialog.dismiss();
+                            goBack();
+                            confirmButton.setEnabled(true);
+                        })
+                        .setPositiveButton(R.string.carwash_zero_alert_buy, (dialog, which) -> {
+                            dialog.dismiss();
+                            
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card"));
+                            startActivity(browserIntent);
+
                             goBack();
                             confirmButton.setEnabled(true);
                         }).create();
