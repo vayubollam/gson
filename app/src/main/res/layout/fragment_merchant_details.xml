@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="merchantItem"
-            type="suncor.com.android.ui.main.rewards.MerchantItem" />
+            name="genericGiftCard"
+            type="suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard" />
 
         <variable
             name="image"
@@ -82,7 +82,7 @@
                     android:lineSpacingMultiplier="1.2"
                     android:maxLines="2"
                     android:paddingBottom="4dp"
-                    android:text="@{merchantItem.localizedMerchantName}"
+                    android:text="@{genericGiftCard.title}"
                     android:textAppearance="@style/Title2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -188,7 +188,7 @@
                             android:lineSpacingMultiplier="1.63"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
-                            android:text="@{merchantItem.getRedeemingDescription()}"
+                            android:text="@{genericGiftCard.description}"
                             android:textAppearance="@style/Body"
                             android:textColor="@color/black_60"
                             app:layout_constraintTop_toBottomOf="@id/redeeming_title"

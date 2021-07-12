@@ -19,13 +19,11 @@ import suncor.com.android.model.redeem.request.RedeemTransactionAmount;
 import suncor.com.android.model.redeem.request.ShoppingCart;
 import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.ui.common.Event;
-import suncor.com.android.ui.main.rewards.MerchantItem;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.Timber;
 
 public class GiftCardValueConfirmationViewModel extends ViewModel {
     public static final int REDEEM_TRANSACTION_QUANTITY = 1;
-    private MerchantItem merchantItem;
+    private GenericEGiftCard genericCardItem;
     private SessionManager sessionManager;
     private MutableLiveData<Event<Boolean>> redeem = new MutableLiveData<>();
     private static final String CARD_TYPE = "petropoints";
@@ -62,12 +60,12 @@ public class GiftCardValueConfirmationViewModel extends ViewModel {
         return new RedeemTransaction(RedeemTransaction.TransactionType.REDEMPTION, redeemTransactionAmount, redeemCard);
     }
 
-    public MerchantItem getMerchantItem() {
-        return merchantItem;
+    public GenericEGiftCard getGiftCardItem() {
+        return genericCardItem;
     }
 
-    public void setMerchantItem(MerchantItem merchantItem) {
-        this.merchantItem = merchantItem;
+    public void setGenericCardItem(GenericEGiftCard genericCardItem) {
+        this.genericCardItem = genericCardItem;
     }
 
     public EGift getEGift() {

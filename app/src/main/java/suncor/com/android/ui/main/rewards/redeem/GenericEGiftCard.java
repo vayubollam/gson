@@ -3,6 +3,10 @@ package suncor.com.android.ui.main.rewards.redeem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
+import suncor.com.android.model.merchants.EGift;
+
 public class GenericEGiftCard implements Parcelable {
 
     private String name;
@@ -12,7 +16,38 @@ public class GenericEGiftCard implements Parcelable {
     private String description;
     private String largeImage;
     private String smallImage;
+    private String shortName;
+    private String screenName;
     private boolean isDataDynamic;
+    private List<EGift> eGifts;
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    public List<EGift> geteGifts() {
+        return eGifts;
+    }
+
+    public void seteGifts(List<EGift> eGifts) {
+        this.eGifts = eGifts;
+    }
+
+    public static Creator<GenericEGiftCard> getCREATOR() {
+        return CREATOR;
+    }
 
     public GenericEGiftCard(){
 

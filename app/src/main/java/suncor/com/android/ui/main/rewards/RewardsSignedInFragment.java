@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -70,8 +68,11 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         eGiftCard.setTitle(merchantItem.getLocalizedMerchantName());
                         eGiftCard.setPoints(merchantItem.getPointsMerchantName());
                         eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
-                        eGiftCard.setDescription(String.valueOf(merchantItem.getRedeemingDescription()));
+                        eGiftCard.setDescription(merchantItem.getRedeemingDescription());
                         eGiftCard.setDataDynamic(true);
+                        eGiftCard.seteGifts(m.geteGifts());
+                        eGiftCard.setScreenName(merchantItem.getMerchantScreenName());
+                        eGiftCard.setShortName(merchantItem.getMerchantShortName());
 
                         eGiftCardsList.add(eGiftCard);
                     }else{
@@ -81,14 +82,17 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         eGiftCard.setTitle(merchantItem.getLocalizedMerchantName());
                         eGiftCard.setPoints(merchantItem.getPointsMerchantName());
                         eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
-                        eGiftCard.setDescription(String.valueOf(merchantItem.getRedeemingDescription()));
+                        eGiftCard.setDescription(merchantItem.getRedeemingDescription());
                         eGiftCard.setDataDynamic(true);
+                        eGiftCard.seteGifts(m.geteGifts());
+                        eGiftCard.setScreenName(merchantItem.getMerchantScreenName());
+                        eGiftCard.setShortName(merchantItem.getMerchantShortName());
 
                         eGiftCardsList.add(2, eGiftCard);
                     }
                 }
 
-                binding.rewardsList.setAdapter(new GenericGiftCardsAdapter(eGiftCardsList));
+                binding.rewardsList.setAdapter(new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked));
 
             }
         });
@@ -179,11 +183,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         return binding.getRoot();
     }
 
-    private void rewardClicked(Reward reward) {
-        RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(reward);
-        Navigation.findNavController(requireView()).navigate(action);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -224,9 +223,16 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         getActivity().getWindow().getDecorView().setSystemUiVisibility(flags);
     }
 
-    private void eCardClicked(MerchantItem merchantItem) {
-        RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(merchantItem);
-        Navigation.findNavController(requireView()).navigate(action);
+    private void eCardClicked(GenericEGiftCard genericEGiftCard) {
+        if(genericEGiftCard.isDataDynamic()){
+            RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
+            Navigation.findNavController(requireView()).navigate(action);
+
+        }else{
+            RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
+            Navigation.findNavController(requireView()).navigate(action);
+
+        }
     }
 
     private void mapRewardsListIntoGeneric(ArrayList<Reward> rewardsList){

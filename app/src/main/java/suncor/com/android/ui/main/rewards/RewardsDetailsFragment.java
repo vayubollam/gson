@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 
 import suncor.com.android.databinding.FragmentRewardsDetailsBinding;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard;
 
 public class RewardsDetailsFragment extends MainActivityFragment {
 
@@ -20,10 +21,10 @@ public class RewardsDetailsFragment extends MainActivityFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsDetailsBinding.inflate(inflater, container, false);
-        Reward reward = RewardsDetailsFragmentArgs.fromBundle(getArguments()).getReward();
-        int imageId = getContext().getResources().getIdentifier(reward.getSmallImage(), "drawable", getContext().getPackageName());
+        GenericEGiftCard genericGiftCard = RewardsDetailsFragmentArgs.fromBundle(getArguments()).getGenericGiftCard();
+        int imageId = getContext().getResources().getIdentifier(genericGiftCard.getSmallImage(), "drawable", getContext().getPackageName());
         binding.setImage(getContext().getDrawable(imageId));
-        binding.setReward(reward);
+        binding.setGenericEGiftCard(genericGiftCard);
 
         binding.closeButton.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
 
@@ -32,6 +33,6 @@ public class RewardsDetailsFragment extends MainActivityFragment {
 
     @Override
     protected String getScreenName() {
-        return "my-petro-points-redeem-info-" + binding.getReward().getName();
+        return "my-petro-points-redeem-info-" + binding.getGenericEGiftCard().getName();
     }
 }
