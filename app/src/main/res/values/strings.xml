@@ -729,7 +729,8 @@
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
 
     <!-- Carwash POE -->
-    <string name="thank_you_carwash">Thanks, %1$s!<br/>Squeaky-clean is coming right up.</string>
+    <string name="thank_you_carwash">Thanks, %1$s!
+        Squeaky-clean is coming right up.</string>
     <string name="carwash_activated_copy">Follow the car wash instructions and enjoy your wash.</string>
     <string name="carwash_remaining_copy">You have %1$s remaining.</string>
     <string name="carwash_zero_washes">You\’re out of washes. <a href="https://www.petro-canada.ca/en/personal/my-petro-points/reload/wash-and-go/step-1-card-number">Reload your card on Petro-Canada.ca.</a></string>
