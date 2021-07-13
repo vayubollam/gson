@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.rewards;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -12,19 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.databinding.EgiftCardItemBinding;
 import suncor.com.android.databinding.RewardsListItemBinding;
 import suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard;
+import suncor.com.android.utilities.Consumer;
 
 
 public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder> {
 
-//    private final Consumer<Reward> clickListener;
+    private static Consumer<GenericEGiftCard> clickListener = null;
     private ArrayList<GenericEGiftCard> genericEGiftCards;
 
     public static final int REWARDS_LAYOUT = 3;
     public static final int MERCHANT_LAYOUT= 4;
 
-    public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards) {
+    public GenericGiftCardsAdapter(ArrayList<GenericEGiftCard> genericEGiftCards, Consumer<GenericEGiftCard> clickListener) {
         this.genericEGiftCards = genericEGiftCards;
-//        this.clickListener = clickListener;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -72,6 +74,15 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
             binding.setGiftCard(giftCard);
             binding.setImage(context.getDrawable(imageId));
             binding.executePendingBindings();
+
+            binding.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickListener != null){
+                        clickListener.accept(giftCard);
+                    }
+                }
+            });
         }
     }
 
@@ -89,6 +100,15 @@ public class GenericGiftCardsAdapter extends RecyclerView.Adapter< RecyclerView.
             binding.setImage(context.getDrawable(imageId));
             binding.setGiftCard(giftCard);
             binding.executePendingBindings();
+
+            binding.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickListener != null){
+                        clickListener.accept(giftCard);
+                    }
+                }
+            });
         }
 
     }
