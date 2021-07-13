@@ -46,7 +46,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     private final int otherLimitMinLimit;
     private final Context mContext;
     private double manualValue = -1;
-
+    private String inputFieldText;
 
     FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
                              final int otherLimitMinLimit) {
@@ -206,6 +206,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
             binding.manualLimit.setText(String.format(mContext.getString(R.string.fuel_manual_price_limit), formatter.format(otherLimitMinLimit), formatter.format(otherLimitMaxLimit)));
             binding.prefixCurrency.setText((selectedPos == getAdapterPosition()) ? mContext.getString(R.string.currency_dollar) : value);
             binding.inputField.setText(manualValue > 0 ? formatter.format(manualValue).replace("$", "") : "");
+            inputFieldText = binding.inputField.getText().toString().replaceAll("\\s+", "");
+            binding.inputField.setText(inputFieldText);
             binding.inputField.setVisibility(selectedPos == getAdapterPosition() ? View.VISIBLE : View.GONE);
             binding.manualLimit.setVisibility((manualValue == -1) ?  View.VISIBLE : View.GONE);
             binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
@@ -217,6 +219,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
                     binding.inputField.setText(manualValue > 0 ? formatter.format(manualValue).replace("$","") : "");
+                    inputFieldText = binding.inputField.getText().toString().replaceAll("\\s+", "");
+                    binding.inputField.setText(inputFieldText);
                     binding.inputField.setVisibility(selectedPos == getAdapterPosition() ? View.VISIBLE : View.GONE);
                     binding.manualLimit.setVisibility((manualValue == -1) ?  View.VISIBLE : View.GONE);
                     binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
@@ -277,6 +281,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                         if(manualValue > 0) {
                             binding.inputField.setText(formatter.format(manualValue).replace("$",""));
+                            inputFieldText = binding.inputField.getText().toString().replaceAll("\\s+", "");
+                            binding.inputField.setText(inputFieldText);
                             binding.edit.setVisibility(manualValue > 0 ? View.VISIBLE : View.GONE);
                             binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ? View.VISIBLE : View.GONE);
                             binding.inputField.setEnabled(!(manualValue > 0));
