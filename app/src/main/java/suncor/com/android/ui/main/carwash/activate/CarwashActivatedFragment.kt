@@ -55,7 +55,7 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
             }
 
             CarwashConfigurationType.UBO ->  {
-                if (carwashResponse?.getDaysLeft() ?: 0 == 0) {
+                if (carwashResponse?.estimatedWashesRemaining ?: 0 == 0) {
                     binding.cardZeroBalanceDescription.visibility = View.VISIBLE
                     getString(R.string.carwash_zero_washes)
                 } else
@@ -70,7 +70,7 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
             }
 
             else ->  {
-                if (carwashResponse?.getDaysLeft() ?: 0 == 0 || carwashResponse?.getDaysLeft() ?: 0 == 0) {
+                if (carwashResponse?.estimatedWashesRemaining ?: 0 == 0 || carwashResponse?.getDaysLeft() ?: 0 == 0) {
                     binding.cardZeroBalanceDescription.visibility = View.VISIBLE
                     getString(R.string.carwash_zero_washes)
                 } else
