@@ -23,6 +23,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -210,7 +212,10 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                         .setPositiveButton(R.string.carwash_zero_alert_buy, (dialog, which) -> {
                             dialog.dismiss();
                             
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card"));
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")
+                                            ? "https://www.petro-canada.ca/fr/personnel/lave-auto"
+                                            : "https://www.petro-canada.ca/en/personal/car-wash"));
                             startActivity(browserIntent);
 
                             goBack();
