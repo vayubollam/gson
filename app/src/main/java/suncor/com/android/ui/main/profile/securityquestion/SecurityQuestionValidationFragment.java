@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.profile.securityquestion;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -21,8 +22,10 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentSecurityQuestionValidationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
+import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
+import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
@@ -36,6 +39,8 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
     private SecurityQuestionValidationViewModel mViewModel;
     @Inject
     ViewModelFactory viewModelFactory;
+    @Inject
+    SessionManager sessionManager;
     private FragmentSecurityQuestionValidationBinding binding;
     private ProfileSharedViewModel sharedViewModel;
     private String destination;
@@ -86,6 +91,14 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                             binding.questionAnswerInput.setText("");
                             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
+                            dialog.dismiss();
+                        }), "Security Question Validation").show();
+                    } else if (Objects.requireNonNull(stringResource.message).equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_SOFT_LOCK)) {
+                        Alerts.prepareCustomDialogOk(getResources().getString(R.string.login_soft_lock_alert_title), getResources().getString(R.string.security_answer_soft_lock_alert_message), getContext(), ((dialog, which) -> {
+                            sessionManager.logout();
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
                             dialog.dismiss();
                         }), "Security Question Validation").show();
                     } else {
