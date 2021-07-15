@@ -67,6 +67,10 @@ public class ResetPasswordSecurityQuestionValidationFragment extends BaseFragmen
                             imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                             dialog.dismiss();
                         }), "Reset Password Security Question Validation").show();
+                    } else if (Objects.requireNonNull(stringResource.message).equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_SOFT_LOCK)) {
+                        Alerts.prepareCustomDialogOk(getResources().getString(R.string.login_soft_lock_alert_title), getResources().getString(R.string.security_answer_soft_lock_alert_message), getContext(), ((dialog, which) -> {
+                            dialog.dismiss();
+                        }), "Reset Password Security Question Validation").show();
                     } else {
                         Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
                             viewModel.validateAndContinue();
