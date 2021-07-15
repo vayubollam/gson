@@ -72,6 +72,7 @@ public class ForgotPasswordFragment extends MainActivityFragment {
 
                             Alerts.prepareCustomDialogOk(getResources().getString(R.string.login_soft_lock_alert_title), alertMessage, getActivity(), ((dialog, which) -> {
                                 dialog.dismiss();
+                                getFragmentManager().popBackStack();
                             }), "forgot password").show();
                         } else if (errorMessage.equals(ERR_PROFILE_NOT_FOUND)) {
                             Alerts.prepareCustomDialog(
@@ -93,10 +94,9 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                         } else {
                             Alerts.prepareGeneralErrorDialog(getActivity(), "forgot password").show();
                         }
-                        getFragmentManager().popBackStack();
                         break;
                     } catch (Resources.NotFoundException e) {
-                        e.printStackTrace();
+                        Alerts.prepareGeneralErrorDialog(getActivity(), "forgot password").show();
                     }
             }
         });

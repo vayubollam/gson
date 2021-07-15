@@ -63,7 +63,7 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.d("Profile forgot password API  " + wlFailResponse.toString());
-                    int remainingMinutes=0 ;
+                    int remainingMinutes = 0 ;
                     try {
                         remainingMinutes = wlFailResponse.getResponseJSON().getInt("remainingMinutes");
                         result.postValue(Resource.error(wlFailResponse.getErrorMsg() + ";" + remainingMinutes));
