@@ -23,9 +23,11 @@ import suncor.com.android.databinding.FragmentSecurityQuestionValidationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.mfp.SessionManager;
+import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.login.LoginActivity;
+import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
@@ -95,10 +97,12 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                         }), "Security Question Validation").show();
                     } else if (Objects.requireNonNull(stringResource.message).equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_SOFT_LOCK)) {
                         Alerts.prepareCustomDialogOk(getResources().getString(R.string.login_soft_lock_alert_title), getResources().getString(R.string.security_answer_soft_lock_alert_message), getContext(), ((dialog, which) -> {
-                            sessionManager.logout();
-                            Intent intent = new Intent(getActivity(), LoginActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
+                            sessionManager.logout().observe(this, (result) -> {
+                                if (result.status == Resource.Status.SUCCESS) {
+                                    Navigation.findNavController(getView()).navigate(R.id.home_tab);
+                                } else if (result.status == Resource.Status.ERROR) {
+                                }
+                            });
                             dialog.dismiss();
                         }), "Security Question Validation").show();
                     } else {
