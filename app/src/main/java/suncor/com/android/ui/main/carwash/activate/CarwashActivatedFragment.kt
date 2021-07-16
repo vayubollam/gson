@@ -41,6 +41,8 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
         binding.remainingTextView.text = when (carwashResponse?.configurationType) {
             CarwashConfigurationType.TBO ->  {
                 if (carwashResponse?.getDaysLeft() ?: 0 == 0) {
+                    binding.remainingReloadTextView.visibility = View.VISIBLE
+                    binding.remainingTextView.visibility = View.GONE
                     getString(R.string.carwash_zero_days)
                 } else
                     getString(
@@ -55,6 +57,8 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
 
             CarwashConfigurationType.UBO ->  {
                 if (carwashResponse?.estimatedWashesRemaining ?: 0 == 0) {
+                    binding.remainingReloadDaysTextView.visibility = View.VISIBLE
+                    binding.remainingTextView.visibility = View.GONE
                     getString(R.string.carwash_zero_washes)
                 } else
                     getString(
@@ -69,6 +73,8 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
 
             else ->  {
                 if (carwashResponse?.estimatedWashesRemaining ?: 0 == 0 || carwashResponse?.getDaysLeft() ?: 0 == 0) {
+                    binding.remainingReloadTextView.visibility = View.VISIBLE
+                    binding.remainingTextView.visibility = View.GONE
                     getString(R.string.carwash_zero_washes)
                 } else
                     getString(

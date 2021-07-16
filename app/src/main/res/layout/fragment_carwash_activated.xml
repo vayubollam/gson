@@ -78,6 +78,28 @@
                                 style="@style/Body2"
                                 android:lineSpacingMultiplier="1.25"/>
 
+                            <suncor.com.android.ui.common.LinkableTextView
+                                android:id="@+id/remaining_reload_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textAlignment="center"
+                                style="@style/Body2"
+                                android:lineSpacingMultiplier="1.25"
+                                android:text="@string/carwash_zero_washes"
+                                android:visibility="gone"/>
+
+                            <suncor.com.android.ui.common.LinkableTextView
+                                android:id="@+id/remaining_reload_days_text_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textAlignment="center"
+                                style="@style/Body2"
+                                android:lineSpacingMultiplier="1.25"
+                                android:text="@string/carwash_zero_days"
+                                android:visibility="gone"/>
+
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>

@@ -93,7 +93,7 @@ abstract class CarwashLocation: MainActivityFragment() {
         })
     }
 
-    val tryAgainLister = View.OnClickListener { v: View? ->
+    val tryAgainLister = View.OnClickListener {
         if (carWashCardViewModel.userLocation != null) {
             carWashCardViewModel.isLoading.set(true)
             carWashCardViewModel.userLocation = carWashCardViewModel.userLocation
