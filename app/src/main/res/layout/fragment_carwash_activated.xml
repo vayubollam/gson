@@ -76,6 +76,7 @@
                                 android:text="@string/carwash_remaining_copy"
                                 android:textAlignment="center"
                                 style="@style/Body2"
+                                android:textStyle="bold"
                                 android:lineSpacingMultiplier="1.25"/>
 
                             <suncor.com.android.ui.common.LinkableTextView
@@ -87,6 +88,7 @@
                                 style="@style/Body2"
                                 android:lineSpacingMultiplier="1.25"
                                 android:text="@string/carwash_zero_washes"
+                                android:textStyle="bold"
                                 android:visibility="gone"/>
 
                             <suncor.com.android.ui.common.LinkableTextView
@@ -98,6 +100,7 @@
                                 style="@style/Body2"
                                 android:lineSpacingMultiplier="1.25"
                                 android:text="@string/carwash_zero_days"
+                                android:textStyle="bold"
                                 android:visibility="gone"/>
 
                         </LinearLayout>
