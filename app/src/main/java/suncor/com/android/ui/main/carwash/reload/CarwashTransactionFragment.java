@@ -39,6 +39,7 @@ import com.google.android.gms.wallet.PaymentsClient;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -80,7 +81,7 @@ import suncor.com.android.utilities.Timber;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class CarwashTransactionFragment extends MainActivityFragment implements ExpandableViewListener,
-        PaymentDropDownCallbacks, CardReloadValuesCallbacks {
+        PaymentDropDownCallbacks, CardReloadValuesCallbacks, CardCallbacks {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
@@ -151,6 +152,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         }
 
         binding.paymentExpandable.initListener(this);
+        initializeCards();
+        initializeCardsValues();
 
        /* viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
@@ -163,7 +166,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             }
         });*/
 
-        viewModel.getSettingResponse().observe(getViewLifecycleOwner(), result -> {
+       /* viewModel.getSettingResponse().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
@@ -171,9 +174,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 mPapData = result.data.getSettings().getPap();
                 mPapData.getPreAuthLimits().put(String.valueOf(mPapData.getPreAuthLimits().size() + 1), getString(R.string.other_amount));
-                initializeFuelUpLimit();
+               // initializeFuelUpLimit();
             }
-        });
+        });*/
 
         viewModel.getPayments(getContext()).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -235,29 +238,39 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         });
     }
 
-    private void initializeFuelUpLimit(){
-       if (Objects.nonNull(mPapData) && Objects.nonNull(mPapData.getPreAuthLimits())) {
-          // binding.totalAmount.setText(String.format("$%s", mPapData.getPreAuthLimits().get("1")));
-
-           CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
+    private void initializeCardsValues(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("5 washes", "60");
+        map.put("10 washes", "100");
+        map.put("15 washes", "125");
+        CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
                    getContext(),
-                   mPapData.getPreAuthLimits(),
+                    map,
                    this
            );
-
-           if (preAuth != null) {
-               try {
-                   adapter.setSelectedPosfromValue(formatter.parse(preAuth).doubleValue());
-               }catch (ParseException ex){
-                   Timber.e(ex.getMessage());
-               }
-           }
-
-          //adapter.findLastFuelUpTransaction("87");
+        adapter.setSelectedPosfromValue(100);
 
            binding.valuesLayout.setDropDownData(adapter);
+    }
 
-       }
+    private void initializeCards(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("Wash & Go", "1");
+        map.put("10 washes", "100");
+        map.put("15 washes", "125");
+        CardsDropDownAdapter adapter = new CardsDropDownAdapter(
+                getContext(),
+                map,
+                this
+        );
+        adapter.setSelectedPosfromValue(100);
+
+        binding.valuesLayout.setDropDownData(adapter);
+    }
+
+    @Override
+    public void onSelectCardChanged(String value) {
+
     }
 
     private void showHelp() {
@@ -420,6 +433,5 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize");
     }
 }

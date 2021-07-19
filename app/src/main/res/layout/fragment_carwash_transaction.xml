@@ -5,6 +5,9 @@
         <variable
             name="isLoading"
             type="androidx.databinding.ObservableBoolean" />
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.carwash.reload.CarwashTransactionViewModel" />
     </data>
 
 
@@ -33,12 +36,17 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+                android:id="@+id/header_petropoints"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
                 android:padding="16dp"
-                android:text="@string/carwash_payment_term_aggrement"
-                android:visibility="visible" />
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:text="@{@string/petropoints_balance(vm.petroPointsBalance)}"
+                android:textColor="@color/black_80"
+                app:autoSizeTextType="uniform"
+                tools:text="You're starting at 2,500 points" />
 
             <suncor.com.android.uicomponents.dropdown.ExpandableCardView
                 android:id="@+id/cards_layout"

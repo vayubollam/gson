@@ -32,6 +32,7 @@ import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayByWalletRequest;
 import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.payments.PaymentDetail;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.utilities.Timber;
 
@@ -124,4 +125,7 @@ public class CarwashTransactionViewModel extends ViewModel {
         return null;
     }
 
+    public String getPetroPointsBalance() {
+        return CardFormatUtils.formatBalance(profile.getPointsBalance());
+    }
 }
