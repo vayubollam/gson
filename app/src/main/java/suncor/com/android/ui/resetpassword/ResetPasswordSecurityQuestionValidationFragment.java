@@ -1,6 +1,7 @@
 package suncor.com.android.ui.resetpassword;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import suncor.com.android.model.resetpassword.ResetPasswordRequest;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.GenericErrorView;
+import suncor.com.android.ui.main.MainActivity;
 
 public class ResetPasswordSecurityQuestionValidationFragment extends BaseFragment {
 
@@ -66,6 +68,12 @@ public class ResetPasswordSecurityQuestionValidationFragment extends BaseFragmen
                             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                             dialog.dismiss();
+                        }), "Reset Password Security Question Validation").show();
+                    } else if (Objects.requireNonNull(stringResource.message).equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_SOFT_LOCK)) {
+                        Alerts.prepareCustomDialogOk(getResources().getString(R.string.login_soft_lock_alert_title), getResources().getString(R.string.security_answer_soft_lock_alert_message), getContext(), ((dialog, which) -> {
+                            dialog.dismiss();
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            startActivity(intent);
                         }), "Reset Password Security Question Validation").show();
                     } else {
                         Alerts.prepareGeneralErrorDialogWithTryAgain(getContext(), (dialog, which) -> {
