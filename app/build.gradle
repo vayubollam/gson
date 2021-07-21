@@ -19,7 +19,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.3.4"
+        versionName "3.3.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
@@ -41,6 +41,7 @@ android {
             keyPassword System.getenv("KEY_PASSWORD")
         }
     }
+
 
     buildTypes {
         release {
@@ -183,6 +184,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
     implementation "com.google.firebase:firebase-crashlytics:$rootProject.crashlyticsVersion"
     implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagManagerVersion"
+    implementation "com.google.android.play:core:$rootProject.playCoreVersion"
     implementation "androidx.biometric:biometric:1.0.1"
     testImplementation "androidx.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"

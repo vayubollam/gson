@@ -54,6 +54,7 @@ ext {
     runnerVersion = '1.1.1'
     googleWalletVersion = '18.0.0'
     firebaseAnalyticsVersion = '17.6.0'
+    playCoreVersion = '1.10.0'
 }
 
 

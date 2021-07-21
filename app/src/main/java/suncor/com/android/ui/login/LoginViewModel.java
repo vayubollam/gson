@@ -10,9 +10,11 @@ import javax.inject.Inject;
 import suncor.com.android.BR;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
+import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.InputField;
 
@@ -30,8 +32,12 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<String>> createPasswordEvent = new MutableLiveData<>();
     private MutableLiveData<Event<Boolean>> navigateToHomeEvent = new MutableLiveData<>();
     private boolean isLoginFromEnrollment;
+
+    private SettingsApi settingsApi;
+
     @Inject
-    public LoginViewModel(SessionManager sessionManager) {
+    public LoginViewModel(SessionManager sessionManager, SettingsApi settingsApi) {
+        this.settingsApi = settingsApi;
         this.passwordInputField = new InputField(R.string.login_password_field_error);
         this.emailInputField = new InputField(R.string.login_email_field_error);
         LiveData<Resource<SigninResponse>> loginLiveData = Transformations.switchMap(loginEvent, (event) -> {
@@ -162,6 +168,15 @@ public class LoginViewModel extends ViewModel {
 
     public InputField getEmailInputField() {
         return emailInputField;
+    }
+
+    public LiveData<SettingsResponse.Settings> retrieveSettings() {
+        return Transformations.map(settingsApi.retrieveSettings(), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                return result.data.getSettings();
+            }
+            return null;
+        });
     }
 
     public void onClickSignIn() {

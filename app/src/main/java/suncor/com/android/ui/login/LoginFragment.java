@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.security.keystore.KeyGenParameterSpec;
-import android.security.keystore.KeyProperties;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,18 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
+import java.util.Objects;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -170,12 +156,27 @@ public class LoginFragment extends BaseFragment {
                 getActivity().finish();
             }
         });
+
+        viewModel.retrieveSettings().observe(this, result -> {
+            if(Objects.isNull(result)){
+                return;
+            }
+            if(result.getMaintenanceMsgEN() != null && !result.getMaintenanceMsgEN().isEmpty()){
+                binding.maintenanceMsgLayout.setVisibility(View.VISIBLE);
+                binding.maintenanceMsgText.setText(result.getMaintenanceDisplayMsg());
+            } else {
+                binding.maintenanceMsgLayout.setVisibility(View.GONE);
+             //   binding.emailLayout.setVisibility(View.GONE);
+             //   binding.passwordLayout.setVisibility(View.GONE);
+             //   binding.signingButton.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-                new Handler().postDelayed(() -> {
+        new Handler().postDelayed(() -> {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
 
                 BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()

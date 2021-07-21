@@ -60,8 +60,6 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
     PermissionManager permissionManager;
     private HomeNearestCardBinding nearestCard;
 
-    private int geoFenceLimit;
-
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
             mViewModel.isLoading.set(true);
@@ -142,14 +140,22 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
             });
         });
 
-        mViewModel.getGeoFenceLimit().observe(getViewLifecycleOwner(), result -> this.geoFenceLimit = result );
-
         mViewModel.isPAPAvailable().observe(getViewLifecycleOwner(), value -> {
             nearestCard.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.INVISIBLE : View.VISIBLE);
             nearestCard.mobilePaymentProgressBar.setVisibility(value.status != Resource.Status.LOADING ? View.GONE : View.VISIBLE);
 
-            nearestCard.mobilePaymentText.setText(value.data != null && value.data ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
-            nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data ? R.drawable.ic_check : R.drawable.ic_close);
+            nearestCard.mobilePaymentText.setText(value.data != null && value.data.papAvailable() ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
+            nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data.papAvailable() ? R.drawable.ic_check : R.drawable.ic_close);
+
+            if (value.data != null && value.data.fuelUpAvailable()) {
+                    HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                            value.data.nearestStation.data.getStation().getId(),
+                            getString(R.string.action_location, value.data.nearestStation.data.getStation().getAddress().getAddressLine()));
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
+                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+            } else if (value.status != Resource.Status.LOADING) {
+                isLoading.set(false);
+            }
         });
 
         return view;
@@ -171,25 +177,6 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
                 } else {
                     StationDetailsDialog.showCard(this, mViewModel.nearestStation.getValue().data, nearestCard.getRoot(), false);
                 }
-            }
-        });
-
-        mViewModel.nearestStation.observe(getViewLifecycleOwner(), result -> {
-
-            if (result.status == Resource.Status.SUCCESS && result.data != null
-                    && result.data.getDistanceDuration() != null ) {
-
-                if (result.data.getDistanceDuration().getDistance() < geoFenceLimit) {
-                    HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(result.data.getStation().getId(), getString(R.string.action_location, result.data.getStation().getAddress().getAddressLine()));
-                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
-                    Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
-                } else {
-                    isLoading.set(false);
-                }
-            }  else if (result.status == Resource.Status.ERROR){
-                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, result.message != null ?  result.message : AnalyticsUtils.ErrorMessages.backendError.name()),
-                        new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station"));
             }
         });
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -73,6 +74,7 @@ import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -238,6 +240,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 lastTransactionFuelUpLimit = result.data.lastFuelUpAmount;
                 initializeFuelUpLimit();
+                viewModel.saveLastStatusUpdate(result.data);
             }
         });
 

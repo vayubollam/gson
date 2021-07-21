@@ -149,7 +149,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     @Override
     public void selectPumpNumber(String pumpNumber) {
         new Handler().postDelayed(() -> {
-           HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
+            HomeNavigationDirections.ActionToFuelUpFragment action = HomeNavigationDirections.actionToFuelUpFragment(storeId, pumpNumber);
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
         }, 200);
