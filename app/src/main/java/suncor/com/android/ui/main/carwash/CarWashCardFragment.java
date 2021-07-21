@@ -1,8 +1,5 @@
 package suncor.com.android.ui.main.carwash;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -18,68 +15,43 @@ import android.view.ViewOutlineProvider;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
-
-import javax.inject.Inject;
-
-import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.CarwashNearestCardBinding;
 import suncor.com.android.databinding.FragmentCarWashBinding;
-import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
-import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.wallet.cards.list.CardItemDecorator;
 import suncor.com.android.ui.main.wallet.cards.list.CardListItem;
 import suncor.com.android.ui.main.wallet.cards.list.CardsListAdapter;
-import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.uicomponents.swiperefreshlayout.SwipeRefreshLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
-import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
-import suncor.com.android.utilities.PermissionManager;
 import suncor.com.android.utilities.StationsUtil;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
-public class CarWashCardFragment extends MainActivityFragment implements OnBackPressedListener,
+public class CarWashCardFragment extends CarwashLocation implements OnBackPressedListener,
         SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int REQUEST_CHECK_SETTINGS = 100;
-    private static final int PERMISSION_REQUEST_CODE = 1;
-    public static final String IS_FIRST_TIME_ACCESS_CAR_WASH = "IS_FIRST_TIME_ACCESS_CAR_WASH";
-
-    @Inject
-    ViewModelFactory viewModelFactory;
     private FragmentCarWashBinding binding;
-    private CarWashCardViewModel viewModel;
-    private MainViewModel mainViewModel;
     private CardsListAdapter petroCanadaCardsAdapter;
     private float appBarElevation;
 
-    private LocationLiveData locationLiveData;
     private CarwashNearestCardBinding nearestCardBinding;
-    @Inject
-    PermissionManager permissionManager;
     private boolean isFirstTime = true;
 
 
@@ -87,32 +59,30 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarWashCardViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
 
-        viewModel.getViewState().observe(this, (result) -> {
+        carWashCardViewModel.getViewState().observe(this, (result) -> {
             if (result != CarWashCardViewModel.ViewState.REFRESHING) {
                 binding.refreshLayout.setRefreshing(false);
             }
 
             if (result != CarWashCardViewModel.ViewState.REFRESHING && result != CarWashCardViewModel.ViewState.LOADING
-                    && result != CarWashCardViewModel.ViewState.FAILED && viewModel.getIsCardAvailable().getValue()) {
+                    && result != CarWashCardViewModel.ViewState.FAILED && carWashCardViewModel.getIsCardAvailable().getValue()) {
 
                 if (mainViewModel.isLinkedToAccount()) {
                     AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseCarwashScreenName());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
-                    Navigation.findNavController(getView()).navigate(action);
+                    Navigation.findNavController(getView()).navigate((NavDirections) action);
                 } else if (mainViewModel.isNewCardAdded() && (mainViewModel.getNewAddedCard().getCardType() == CardType.WAG ||mainViewModel.getNewAddedCard().getCardType() == CardType.SP )) {
                     AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseCarwashScreenName());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
-                    Navigation.findNavController(getView()).navigate(action);
+                    Navigation.findNavController(getView()).navigate((NavDirections) action);
                 } else {
                     mainViewModel.setNewCardAdded(false);
                     ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
-                    for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
+                    for (CardDetail cardDetail : carWashCardViewModel.getPetroCanadaCards().getValue()) {
                         petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
                     }
                     petroCanadaCardsAdapter.setCards(petroCanadaCards);
@@ -120,33 +90,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
             }
         });
 
-        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
-        viewModel.getLocationServiceEnabled().observe(this, (enabled -> {
-            if (enabled) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
-                    viewModel.getIsLoading().set(viewModel.getUserLocation() == null);
-                    locationLiveData.observe(getViewLifecycleOwner(), (location -> viewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()))));
-                }
-            }
-        }));
-
-        viewModel.getRefreshLocationCard().observe(this, v -> {
-            checkAndRequestPermission();
-        });
-
-        viewModel.getNearestStation().observeForever(resource -> {
-            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                mainViewModel.setNearestStation(resource.data.getStation());
-            }
-        });
-
-        viewModel.getIsNearestStationIndependent().observe(this, isIndependent -> {
-            if (isIndependent) {
-                StationsUtil.showIndependentStationAlert(getContext());
-            }
-        });
-
-        viewModel.getCardTypeStatus().observe(this, cardTypeStatus -> {
+        carWashCardViewModel.getCardTypeStatus().observe(this, cardTypeStatus -> {
             String content;
             switch (cardTypeStatus) {
                 case CARD_ONLY:
@@ -167,13 +111,14 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        checkAndRequestCarWashPermission();
+        super.onCreateView(inflater, container, savedInstanceState);
+
         binding = FragmentCarWashBinding.inflate(inflater, container, false);
-        binding.setVm(viewModel);
+        binding.setVm(carWashCardViewModel);
         binding.setLifecycleOwner(this);
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.ok,
                 () -> {
-                    viewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
+                    carWashCardViewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong"),
                             new Pair<>(AnalyticsUtils.Param.formName, "Carwash Cards"));
@@ -231,9 +176,9 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
         //Setup nearest card click listeners
         nearestCardBinding = binding.carwashNearestCards;
-        nearestCardBinding.tryAgainButton.setOnClickListener(tryAgainLister);
+        nearestCardBinding.tryAgainButton.setOnClickListener(getTryAgainLister());
         nearestCardBinding.directionsButton.setOnClickListener(openNavigationListener);
-        nearestCardBinding.settingsButton.setOnClickListener(openSettingListener);
+        nearestCardBinding.settingsButton.setOnClickListener(getOpenSettingListener());
         nearestCardBinding.getRoot().setOnClickListener(showCardDetail);
         return binding.getRoot();
 
@@ -242,8 +187,6 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     @Override
     public void onStart() {
         super.onStart();
-        viewModel.onAttached();
-        checkAndRequestPermission();
         isFirstTime = true;
     }
 
@@ -252,7 +195,7 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
      */
     @Override
     public void onRefresh() {
-        viewModel.loadData(CarWashCardViewModel.ViewState.REFRESHING);
+        carWashCardViewModel.loadData(CarWashCardViewModel.ViewState.REFRESHING);
     }
 
     @Override
@@ -272,11 +215,11 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
 
     private void cardClick(CardDetail cardDetail) {
-        if (viewModel.getIsNearestStationIndependent().getValue() != null
-                && viewModel.getIsNearestStationIndependent().getValue()) {
+        if (carWashCardViewModel.getIsNearestStationIndependent().getValue() != null
+                && carWashCardViewModel.getIsNearestStationIndependent().getValue()) {
             StationsUtil.showIndependentStationAlert(getContext());
-        } else if (viewModel.getIsBalanceZero().getValue() != null &&
-                viewModel.getIsBalanceZero().getValue()) {
+        } else if (carWashCardViewModel.getIsBalanceZero().getValue() != null &&
+                carWashCardViewModel.getIsBalanceZero().getValue()) {
             CardsUtil.showZeroBalanceAlert(getActivity(),
                     (dialog, v) -> Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment),
                     (dialog, v) -> navigateToCardDetail(cardDetail));
@@ -293,16 +236,16 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
 
         AnalyticsUtils.setCurrentScreenName(getActivity(), cardDetail.getFirebaseCarwashScreenName());
         CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
-        action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
+        action.setCardIndex(carWashCardViewModel.getIndexofCardDetail(cardDetail));
         action.setLoadType(CardsLoadType.CAR_WASH_PRODUCTS);
         NavController controller = Navigation.findNavController(getView());
         if (controller.getCurrentDestination() != null
                 && controller.getCurrentDestination().getAction(action.getActionId()) != null ) {
-            controller.navigate(action);
+            controller.navigate((NavDirections) action);
         }
     }
 
-    //TODO: UNCOMMENT THIS WHEN REDDEM/BUY SINGLE TICKET IS IN THE SCOPR
+    //TODO: UNCOMMENT THIS WHEN REDDEM/BUY SINGLE TICKET IS IN THE SCOPE
 //    private View.OnClickListener buyTicketListener = v -> {
 //        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
 //    };
@@ -311,18 +254,9 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
         Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_addCardFragment);
     };
 
-    private View.OnClickListener tryAgainLister = v -> {
-        if (viewModel.getUserLocation() != null) {
-            viewModel.isLoading.set(true);
-            viewModel.setUserLocation(viewModel.getUserLocation());
-        } else {
-            viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
-        }
-    };
-
     private View.OnClickListener openNavigationListener = v -> {
-        if (viewModel.getNearestStation().getValue() != null) {
-            Station station = viewModel.getNearestStation().getValue().data.getStation();
+        if (carWashCardViewModel.getNearestStation().getValue() != null) {
+            Station station = carWashCardViewModel.getNearestStation().getValue().data.getStation();
             if (station != null) {
                 NavigationAppsHelper.openNavigationApps(getActivity(), station);
             }
@@ -330,112 +264,10 @@ public class CarWashCardFragment extends MainActivityFragment implements OnBackP
     };
 
     private View.OnClickListener showCardDetail = v -> {
-        Resource<StationItem> resource = viewModel.getNearestStation().getValue();
-        if (resource != null && resource.data != null && !viewModel.getIsLoading().get()) {
+        Resource<StationItem> resource = carWashCardViewModel.getNearestStation().getValue();
+        if (resource != null && resource.data != null && !carWashCardViewModel.getIsLoading().get()) {
             StationDetailsDialog.showCard(this, resource.data, nearestCardBinding.getRoot(), false);
         }
     };
-
-    private View.OnClickListener openSettingListener = v -> permissionManager.checkPermission(getContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
-                @Override
-                public void onNeedPermission() {
-                    showRequestLocationDialog(false);
-                }
-
-                @Override
-                public void onPermissionPreviouslyDenied() {
-                    //in case in the future we would show any rational
-                    showRequestLocationDialog(false);
-                }
-
-                @Override
-                public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
-                    showRequestLocationDialog(true);
-                }
-
-                @Override
-                public void onPermissionGranted() {
-                    showRequestLocationDialog(false);
-                }
-            });
-
-    private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
-        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-        adb.setTitle(R.string.enable_location_dialog_title);
-        adb.setMessage(R.string.enable_location_dialog_message);
-        adb.setNegativeButton(R.string.cancel, null);
-        adb.setPositiveButton(R.string.ok, (dialog, which) -> {
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
-                LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
-                return;
-            }
-
-            permissionManager.setFirstTimeAsking(Manifest.permission.ACCESS_FINE_LOCATION, false);
-            if (previouselyDeniedWithNeverASk) {
-                PermissionManager.openAppSettings(getActivity());
-            } else {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
-            }
-            dialog.dismiss();
-        });
-        AlertDialog alertDialog = adb.create();
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults[0] == PERMISSION_GRANTED) {
-                if (LocationUtils.isLocationEnabled(getContext())) {
-                    viewModel.setLocationServiceEnabled(true);
-                } else {
-                    LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
-                }
-
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
-            viewModel.setLocationServiceEnabled(true);
-
-        }
-    }
-
-    private void checkAndRequestPermission() {
-        permissionManager.checkPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
-            @Override
-            public void onNeedPermission() {
-                if (!permissionManager.isAlertShown()) {
-                    permissionManager.setAlertShown(true);
-                    showRequestLocationDialog(false);
-                }
-            }
-
-            @Override
-            public void onPermissionPreviouslyDenied() {
-                //in case in the future we would show any rational
-            }
-
-            @Override
-            public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
-            }
-
-            @Override
-            public void onPermissionGranted() {
-                viewModel.setLocationServiceEnabled(LocationUtils.isLocationEnabled(getContext()));
-            }
-        });
-    }
-
-    private void checkAndRequestCarWashPermission() {
-        permissionManager.checkCarWashPermission(getContext(), IS_FIRST_TIME_ACCESS_CAR_WASH,
-                () -> showRequestLocationDialog(false));
-    }
 
 }

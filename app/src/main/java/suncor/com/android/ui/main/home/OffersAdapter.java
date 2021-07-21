@@ -38,7 +38,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         offerCards = new ArrayList<>();
         if (!isSignedIn) {
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
-                    activity.getDrawable(R.drawable.banner_1_signin),
+                    activity.getDrawable(R.drawable.banner_8_signin_summer),
                     new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
                                 "1|"+activity.getString(R.string.offers_banner_1_text),
@@ -79,7 +79,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         offerCards.add(banner2);
 
         OfferCard banner3 = new OfferCard(activity.getString(!isSignedIn ? R.string.offers_banner_3a_text : R.string.offers_banner_3b_text),
-                activity.getDrawable(R.drawable.banner_2_ppts),
+                activity.getDrawable(R.drawable.banner_9_ppts_summer),
                 new OfferCard.OfferButton(
                         activity.getString(!isSignedIn ? R.string.offers_banner_3a_button : R.string.offers_banner_3b_button),
                         () -> {

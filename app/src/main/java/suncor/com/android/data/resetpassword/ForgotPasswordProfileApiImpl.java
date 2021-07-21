@@ -27,9 +27,9 @@ import suncor.com.android.utilities.Timber;
 public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
 
 
-    private final static String SEND_EMAIL_ON_FORGOT_PASSWORD_ADAPTER_PATH = "adapters/suncor/v4/rfmp-secure/profiles/forgot-password";
+    private final static String SEND_EMAIL_ON_FORGOT_PASSWORD_ADAPTER_PATH = "adapters/suncor/v5/rfmp-secure/profiles/forgot-password";
     private final static String UPDATE_PASSWORD_ADAPTER_PATH = "adapters/suncor/v5/rfmp-secure/profiles/forgot-password";
-    private final static String GET_SECURITY_ANSWER_VERIFICATION_TO_RESET_PASSWORD_ADAPTER_PATH = "adapters/suncor/v4/rfmp-secure/profiles/forgot-password/security-answer-verification";
+    private final static String GET_SECURITY_ANSWER_VERIFICATION_TO_RESET_PASSWORD_ADAPTER_PATH = "adapters/suncor/v5/rfmp-secure/profiles/forgot-password/security-answer-verification";
     private final static String GET_SECURITY_QUESTION_TO_RESET_PASSWORD_ADAPTER_PATH = "adapters/suncor/v4/rfmp-secure/profiles/forgot-password/security-question";
     private Gson gson;
 
@@ -63,8 +63,14 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.d("Profile forgot password API  " + wlFailResponse.toString());
-                    Timber.e(wlFailResponse.toString());
-                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                    int remainingMinutes = 0 ;
+                    try {
+                        remainingMinutes = wlFailResponse.getResponseJSON().getInt("remainingMinutes");
+                        result.postValue(Resource.error(wlFailResponse.getErrorMsg() + ";" + remainingMinutes));
+                    } catch (JSONException e) {
+                        result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                        e.printStackTrace();
+                    }
                 }
             });
         } catch (URISyntaxException e) {
