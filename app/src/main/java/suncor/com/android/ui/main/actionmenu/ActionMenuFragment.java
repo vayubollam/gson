@@ -114,7 +114,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 // Handle onsite transaction PAP
-                HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(storeId, binding.actionLocation.getText().toString());
+                HomeNavigationDirections.ActionToSelectPumpFragment action = HomeNavigationDirections.actionToSelectPumpFragment(storeId, binding.actionLocation.getText().toString());
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }

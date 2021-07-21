@@ -211,6 +211,14 @@
           }
         },
         {
+          "client_id": "1013213340484-ptnshh1rtcakmm3n8feb27i3h2c3skcc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suncor.android.SuncorApplicationQA",
+            "certificate_hash": "a9e8386add98e4977d9c1be175f73f7713ead084"
+          }
+        },
+        {
           "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -274,10 +282,9 @@
         }
       }
     },
-
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1013213340484:android:4ca5bae5c30715f98ded11",
+        "mobilesdk_app_id": "1:1013213340484:android:ceafc9e8937c6e458ded11",
         "android_client_info": {
           "package_name": "com.suncor.android.SuncorApplicationQA.Scrum"
         }
