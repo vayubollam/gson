@@ -15,6 +15,8 @@ import suncor.com.android.data.account.EnrollmentsApi;
 import suncor.com.android.data.account.EnrollmentsApiImpl;
 import suncor.com.android.data.cards.CardsApi;
 import suncor.com.android.data.cards.CardsApiImpl;
+import suncor.com.android.data.carwash.CarwashApi;
+import suncor.com.android.data.carwash.CarwashApiImpl;
 import suncor.com.android.data.favourite.FavouriteRepository;
 import suncor.com.android.data.favourite.FavouriteRepositoryImpl;
 import suncor.com.android.data.pap.PapApi;
@@ -156,5 +158,11 @@ public class DataModule {
     @Singleton
     ForgotPasswordProfileApi providesForgotPasswordProfileApi(Gson gson) {
         return new ForgotPasswordProfileApiImpl(gson);
+    }
+
+    @Provides
+    @Singleton
+    CarwashApi providesCarwashApi() {
+        return new CarwashApiImpl();
     }
 }

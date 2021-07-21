@@ -77,11 +77,13 @@ public class CarWashBarCodeFragment extends MainActivityFragment implements OnBa
     }
 
     private View.OnClickListener closeListener = view -> {
-        if (loadFromCarWash) {
+        Navigation.findNavController(requireView()).popBackStack(R.id.cardsDetailsFragment, false);
+        /*if (loadFromCarWash) {
                 Navigation.findNavController(getView()).navigate(R.id.action_carWashBarCodeFragment_to_carWashCardFragment);
         } else {
             Navigation.findNavController(getView()).navigate(R.id.action_carWashBarCodeFragment_to_cards_tab);
         }
+         */
 
     };
 
