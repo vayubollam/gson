@@ -663,6 +663,7 @@
 
     <string name="pump">PUMP</string>
     <string name="payment">PAYMENT</string>
+    <string name="select_payment_method">Select payment method</string>
     <string name="pre_authorized">Pre-authorize</string>
     <string name="tax_inclusion">Tax included</string>
     <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>

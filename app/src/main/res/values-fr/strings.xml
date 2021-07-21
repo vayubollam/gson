@@ -654,6 +654,7 @@
 
     <string name="pump">Distributeur</string>
     <string name="payment">PAIEMENT</string>
+    <string name="select_payment_method">Sélectionnez un mode de paiement</string>
     <string name="pre_authorized">Préautorisation</string>
     <string name="tax_inclusion">Taxes incluses</string>
     <string name="payment_term_aggrement">En appuyant sur « Confirmer et autoriser », vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>
