@@ -6,6 +6,7 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 data class ActivateCarwashResponse(
         val resultCode: String,
@@ -13,13 +14,14 @@ data class ActivateCarwashResponse(
         val goodThru: String,
         val configurationType: CarwashConfigurationType,
         val estimatedWashesRemaining: Int,
-        val usedGrace: Boolean
+        val usedGrace: Boolean,
+        val lastWash: String
 ): Parcelable {
 
         fun getDaysLeft(): Int {
                 val dateFormat: DateFormat =
                         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.CANADA)
-                return try {
+               /* return try {
                         val date = dateFormat.parse(goodThru)
                         val today = Calendar.getInstance()
                         today.set(Calendar.HOUR_OF_DAY, 0)
@@ -32,8 +34,35 @@ data class ActivateCarwashResponse(
                 } catch (e: ParseException) {
                         e.printStackTrace()
                         0
+                }*/
+                return try {
+                        val date = dateFormat.parse(goodThru)
+
+                        val today = Calendar.getInstance()
+                        val millionSeconds = date.time - today.timeInMillis
+
+                        val days = Math.ceil(
+                                java.lang.Double.valueOf(
+                                        TimeUnit.MILLISECONDS.toDays(millionSeconds).toDouble()
+                                )
+                        )
+                        var estimatedDaysRemaining = Math.max(0, days.toInt() + 1)
+                        if (lastWash != null && !lastWash.isEmpty()) {
+                                val lastWashDate = dateFormat.parse(lastWash)
+                                val lastDateCalender  =  Calendar.getInstance();
+                                lastDateCalender.timeInMillis = lastWashDate.time;
+                                if (estimatedDaysRemaining > 0 && today.get(Calendar.DATE) == lastDateCalender.get(Calendar.DATE)) {
+                                         estimatedDaysRemaining -= 1
+                                }
+                        }
+                        return estimatedDaysRemaining
+                //  return java.util.concurrent.TimeUnit.MILLISECONDS.toDays(millionSeconds).toInt() + 1 // Count the end date
+                } catch (e: ParseException) {
+                        e.printStackTrace()
+                        0
                 }
         }
+
 
         constructor(parcel: Parcel) : this(
                 parcel.readString() ?: "",
@@ -41,7 +70,8 @@ data class ActivateCarwashResponse(
                 parcel.readString() ?: "",
                 CarwashConfigurationType.valueOf(parcel.readString() ?: ""),
                 parcel.readInt() ?: 0,
-                parcel.readByte() != 0.toByte()
+                parcel.readByte() != 0.toByte(),
+                parcel.readString() ?: "",
         ) {
         }
 
@@ -52,6 +82,7 @@ data class ActivateCarwashResponse(
                 parcel.writeString(configurationType.toString())
                 parcel.writeInt(estimatedWashesRemaining)
                 parcel.writeByte(if (usedGrace) 1 else 0)
+                parcel.writeString(lastWash)
         }
 
         override fun describeContents(): Int {
