@@ -241,6 +241,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         }
     }
 
+
     private void navigateToBarcode() {
         boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
 
