@@ -213,6 +213,9 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     }
 
     private void cardValueChanged(Integer selectedItem) {
+        if(viewModel.getGiftCardItem().getTitle().equals(getString(R.string.merchant_petrocanada_card))){
+            return;
+        }
         int valueSelected = viewModel.getGiftCardItem().geteGifts().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
         viewModel.setEGift(viewModel.getGiftCardItem().geteGifts().get(selectedItem));

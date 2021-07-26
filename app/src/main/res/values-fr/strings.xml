@@ -488,6 +488,7 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Utilisez votre carte-cadeau Petro‑Canada à n’importe quel magasin Petro‑Canada \n</string>
     <string name="redeem_egift_address_disclaimer">Si vous changez votre adresse courriel, puis échangez des points contre une carte-cadeau électronique, vous ne pourrez pas échanger vos points en ligne ou au dépanneur pendant 24 heures.</string>
     <string name="redeem_egift_address_title">La commande sera envoyée à :</string>
+    <string name="redeem_egift_not_enough_points">Vous n\'avez pas assez de points. Continuez à économiser.</string>
     <string name="redeem_egift_card_select_value">Choisir une valeur</string>
     <string name="redeem_egift_current_value">Valeur</string>
     <string name="redeem_egift_change_btn">Mettre à jour</string>
