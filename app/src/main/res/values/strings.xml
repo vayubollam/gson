@@ -507,7 +507,7 @@
     <string name="rewards_signedin_egift_value_in_dollar_generic">$%d</string>
     <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
     <string name="redeem_egift_current_value">Value</string>
-    <string name="redeem_egift_not_enough_points">Looks like you don’t have enough points yet.</string>
+    <string name="redeem_egift_not_enough_points">Not enough points yet. Keep saving.</string>
     <string name="redeem_egift_address_title">Order will be sent to:</string>
     <string name="redeem_egift_change_btn">Update</string>
     <string name="redeem_egift_confirm_and_redeem">Confirm and redeem</string>
