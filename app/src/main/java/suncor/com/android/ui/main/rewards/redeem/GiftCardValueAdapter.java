@@ -38,7 +38,7 @@ public class GiftCardValueAdapter extends RecyclerView.Adapter<GiftCardValueAdap
 
     public GiftCardValueAdapter(List<EGift> eGifts, int petroPoints, Consumer<Integer> callBack) {
         this.eGifts = eGifts;
-        this.petroPoints = petroPoints;
+        this.petroPoints = 60000;
         this.callBack = callBack;
         animInterpolator = new DecelerateInterpolator(3f);
     }

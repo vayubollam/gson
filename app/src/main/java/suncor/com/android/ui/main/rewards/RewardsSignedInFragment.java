@@ -35,7 +35,6 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private RewardsSignedInViewModel viewModel;
     private boolean isHeaderVisible;
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
-    GenericGiftCardsAdapter genericGiftCardsAdapter;
     private ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
 
     @Inject
@@ -48,7 +47,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RewardsSignedInViewModel.class);
         viewModel.navigateToDiscovery.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
-                Navigation.findNavController(getView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
+                Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
             }
         });
 
