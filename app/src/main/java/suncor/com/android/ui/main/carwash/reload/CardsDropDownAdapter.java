@@ -31,7 +31,6 @@ public class CardsDropDownAdapter extends DropDownAdapter {
     private CardCallbacks callbackListener;
 
     private final Context mContext;
-    private double manualValue = -1;
 
 
     CardsDropDownAdapter(final Context context, final HashMap<String,String> data, final CardCallbacks callbackListener) {
@@ -65,36 +64,12 @@ public class CardsDropDownAdapter extends DropDownAdapter {
         return DROP_DOWN_LAYOUT ;
     }
 
-    public void findLastFuelUpTransaction(Double lastFuelupTransaction){
-        if(lastFuelupTransaction != null){
-            childList.forEach((position, value)-> {
-                if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
-                    selectedPos =  Integer.parseInt(position) - 1;
-                    if(listener != null) {
-                        listener.onSelectValue(formatter.format(Double.valueOf(value)), null);
-                    }
-                    callbackListener.onSelectCardChanged(formatter.format(Double.valueOf(value)));
-                }
-            });
-            if(selectedPos == 0){
-                manualValue = lastFuelupTransaction.intValue();
-                selectedPos = childList.size() -1 ;
-                if(listener != null) {
-                    listener.onSelectValue(formatter.format(manualValue), null);
-                }
-                callbackListener.onSelectCardChanged(formatter.format(manualValue));
-            }
-        } else {
-            callbackListener.onSelectCardChanged(getSelectedValue());
-        }
-    }
+
 
     @Override
     public String getSelectedValue(){
-            if(selectedPos < childList.size() - 1){
-                return formatter.format(Double.parseDouble(childList.get(String.valueOf(selectedPos + 1))));
-            }
-     	return formatter.format(manualValue);
+
+     	return "abc";
     }
 
     @Override
@@ -107,27 +82,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
         this.listener = listener;
     }
 
-    public void setSelectedPosfromValue(double value) {
-        int index = 0;
 
-        for (String price : childList.values()) {
-            try {
-                if (Double.parseDouble(price) == value) {
-                    selectedPos = index;
-                    break;
-                }
-            } catch (NumberFormatException ignored){}
-            index++;
-        }
-
-        if (index >= childList.size() - 1) {
-            selectedPos = childList.size() - 1;
-            manualValue = value;
-
-        }
-
-        notifyDataSetChanged();
-    }
 
     //fixed limit listing
      class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
@@ -151,7 +106,6 @@ public class CardsDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
-                    manualValue = -1;
                     if(Objects.nonNull(listener)) {
                         listener.onSelectValue(formatter.format(value), null);
                         callbackListener.onSelectCardChanged(formatter.format(value));

@@ -126,6 +126,7 @@ public class CarwashTransactionViewModel extends ViewModel {
     }
 
     public String getPetroPointsBalance() {
-        return CardFormatUtils.formatBalance(profile.getPointsBalance());
+        return "111,623";
+       // return CardFormatUtils.formatBalance(profile.getPointsBalance());
     }
 }

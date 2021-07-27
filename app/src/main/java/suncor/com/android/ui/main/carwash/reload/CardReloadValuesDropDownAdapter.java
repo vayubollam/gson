@@ -91,10 +91,10 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     @Override
     public String getSelectedValue(){
-            if(selectedPos < childList.size() - 1){
+        /*    if(selectedPos < childList.size() - 1){
                 return formatter.format(Double.parseDouble(childList.get(String.valueOf(selectedPos + 1))));
-            }
-     	return formatter.format(manualValue);
+            }*/
+     	return "";
     }
 
     @Override
@@ -107,27 +107,6 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
         this.listener = listener;
     }
 
-    public void setSelectedPosfromValue(double value) {
-        int index = 0;
-
-        for (String price : childList.values()) {
-            try {
-                if (Double.parseDouble(price) == value) {
-                    selectedPos = index;
-                    break;
-                }
-            } catch (NumberFormatException ignored){}
-            index++;
-        }
-
-        if (index >= childList.size() - 1) {
-            selectedPos = childList.size() - 1;
-            manualValue = value;
-
-        }
-
-        notifyDataSetChanged();
-    }
 
     //fixed limit listing
      class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
@@ -139,7 +118,9 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
             }
 
             public void setDataOnView(String price){
-                double value = Double.parseDouble(price);
+                binding.title.setText("100 days");
+            }
+                /*double value = Double.parseDouble(price);
                 try {
                     binding.title.setText(formatter.format(value));
                 }catch (NullPointerException ex){
@@ -160,7 +141,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
                     }
                 });
 
-            }
+            }*/
         }
 
 }

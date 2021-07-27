@@ -248,7 +248,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     map,
                    null
            );
-        adapter.setSelectedPosfromValue(100);
+       // adapter.setSelectedPosfromValue(100);
 
            binding.valuesLayout.setDropDownData(adapter);
     }
@@ -263,7 +263,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 map,
                 null
         );
-        adapter.setSelectedPosfromValue(100);
+       // adapter.setSelectedPosfromValue(100);
 
         binding.valuesLayout.setDropDownData(adapter);
     }
@@ -344,7 +344,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     public void requestGooglePaymentTransaction() {
         try {
-            double preAuthPrices = formatter.parse(preAuth).doubleValue();
+            double preAuthPrices = formatter.parse("1").doubleValue();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, mPapData.getP97TenantID());
 
@@ -372,7 +372,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
                     case Activity.RESULT_OK:
                         PaymentData paymentData = PaymentData.getFromIntent(data);
-                        String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
+                      //  String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
 
 
                         break;

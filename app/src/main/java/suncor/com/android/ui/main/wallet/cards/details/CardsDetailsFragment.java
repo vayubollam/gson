@@ -230,7 +230,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
                   //  action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                   //  action.setCardIndex(clickedCardIndex);
-                  //  action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+                   // action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                     Navigation.findNavController(getView()).navigate(action);
                 }
         };

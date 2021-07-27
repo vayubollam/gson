@@ -731,11 +731,11 @@
 
 
     <!-- Carswash Card Reoad -->
-    <string name="reload_season_pass">Reload %1$s</string>
+    <string name="reload_season_pass">Reload Season Pass</string>
     <string name="card">CARD</string>
     <string name="taxes">Taxes</string>
     <string name="carwash_payment_term_aggrement">By pressing \"Confirm and pay\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>
-    <string name="confirm_and_pay">CONFIRM AND PAy</string>
+    <string name="confirm_and_pay">CONFIRM AND PAY</string>
 
     <string name="reload">RELOAD</string>
     <string name="reload_card_alet_title">Can\'t reload card</string>
