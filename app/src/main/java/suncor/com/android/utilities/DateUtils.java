@@ -38,7 +38,6 @@ public class DateUtils {
 
     public static long getTodayTimestamp(){
         Calendar calender = Calendar.getInstance();
-        calender.setTimeInMillis(1627309800000L);
         calender.set(Calendar.HOUR, 0);
         calender.set(Calendar.MINUTE, 0);
         calender.set(Calendar.SECOND, 0);
@@ -47,7 +46,6 @@ public class DateUtils {
 
     public static int getTodayDate(){
         Calendar calender = Calendar.getInstance();
-        calender.setTimeInMillis(1627309800000L);
         return calender.get(Calendar.DATE);
     }
 
