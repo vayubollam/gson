@@ -2,6 +2,7 @@ package suncor.com.android.model.carwash
 
 import android.os.Parcel
 import android.os.Parcelable
+import suncor.com.android.utilities.DateUtils
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -21,42 +22,23 @@ data class ActivateCarwashResponse(
         fun getDaysLeft(): Int {
                 val dateFormat: DateFormat =
                         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.CANADA)
-               /* return try {
-                        val date = dateFormat.parse(goodThru)
-                        val today = Calendar.getInstance()
-                        today.set(Calendar.HOUR_OF_DAY, 0)
-                        today.set(Calendar.MINUTE, 0)
-                        today.set(Calendar.SECOND, 0)
-                        today.set(Calendar.MILLISECOND, 0)
-
-                        val millionSeconds = date.time - today.timeInMillis
-                        return java.util.concurrent.TimeUnit.MILLISECONDS.toDays(millionSeconds).toInt() + 1 // Count the end date
-                } catch (e: ParseException) {
-                        e.printStackTrace()
-                        0
-                }*/
                 return try {
                         val date = dateFormat.parse(goodThru)
 
-                        val today = Calendar.getInstance()
-                        val millionSeconds = date.time - today.timeInMillis
+                        val todayTimestamp = DateUtils.getTodayTimestamp();
+                        val millSeconds = date.time - todayTimestamp
+                        val days = Math.ceil((millSeconds.div((1000 * 60f * 60f * 24f)) + 1).toDouble())
 
-                        val days = Math.ceil(
-                                java.lang.Double.valueOf(
-                                        TimeUnit.MILLISECONDS.toDays(millionSeconds).toDouble()
-                                )
-                        )
-                        var estimatedDaysRemaining = Math.max(0, days.toInt() + 1)
+                        var estimatedDaysRemaining = Math.max(0, days.toInt())
                         if (lastWash != null && !lastWash.isEmpty()) {
                                 val lastWashDate = dateFormat.parse(lastWash)
                                 val lastDateCalender  =  Calendar.getInstance();
                                 lastDateCalender.timeInMillis = lastWashDate.time;
-                                if (estimatedDaysRemaining > 0 && today.get(Calendar.DATE) == lastDateCalender.get(Calendar.DATE)) {
+                                if (estimatedDaysRemaining > 0 && DateUtils.getTodayDate() == lastDateCalender.get(Calendar.DATE)) {
                                          estimatedDaysRemaining -= 1
                                 }
                         }
                         return estimatedDaysRemaining
-                //  return java.util.concurrent.TimeUnit.MILLISECONDS.toDays(millionSeconds).toInt() + 1 // Count the end date
                 } catch (e: ParseException) {
                         e.printStackTrace()
                         0
