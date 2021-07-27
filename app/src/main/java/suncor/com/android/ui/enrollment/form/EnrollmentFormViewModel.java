@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -19,6 +21,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.CardStatus;
+import suncor.com.android.model.account.EnrollmentPointsAndHours;
 import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.model.account.SecurityQuestion;
@@ -66,6 +69,9 @@ public class EnrollmentFormViewModel extends ViewModel {
     private SecurityQuestion selectedQuestion;
     private Province selectedProvince;
     private CardStatus cardStatus;
+    private MutableLiveData<String> validationHourObserver = new MutableLiveData<>();
+    private MutableLiveData<String> enrollmentPointsObserver = new MutableLiveData<>();
+    private boolean isUserCameToValidationScreen = false;
     private ArrayList<Province> provincesList;
     private FingerprintManager fingerPrintManager;
     private MutableLiveData<Event<Boolean>> _showBiometricAlert = new MutableLiveData<>();
@@ -83,7 +89,7 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(postalCodeField);
         this.fingerPrintManager = fingerPrintManager;
 
-        LiveData<Resource<Integer>> joinApiData = Transformations.switchMap(join, (event) -> {
+        LiveData<Resource<EnrollmentPointsAndHours>> joinApiData = Transformations.switchMap(join, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 Timber.d("Start sign up process");
                 NewEnrollment account = new NewEnrollment(
@@ -109,49 +115,37 @@ public class EnrollmentFormViewModel extends ViewModel {
             return new MutableLiveData<>();
         });
 
-        joinLiveData = Transformations.switchMap(joinApiData, (result) -> {
+        joinLiveData = Transformations.map(joinApiData, (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
+                isUserCameToValidationScreen = true;
+                enrollmentPointsObserver.postValue(getFormattedPoints(result.data.getEnrollmentsPoints()));
+                if (Locale.getDefault().getLanguage().equalsIgnoreCase("en")){
+                    validationHourObserver.postValue("within" + " " + result.data.getValidationHours() + " " + "hours");
+                }else {
+                    validationHourObserver.postValue("dans un délai de" + " " + result.data.getValidationHours() + " " + "heures");
+                }
                 //login the user
                 Timber.d("Success sign up, start user auto login");
-                return Transformations.map(sessionManager.login(emailInputField.getText(), passwordField.getText()), (r) -> {
-                    switch (r.status) {
-                        case SUCCESS:
-                            if (r.data.getStatus() == SigninResponse.Status.SUCCESS) {
-                                fingerPrintManager.activateAutoLogin();
-                                Timber.d("Login succeeded");
-                                sessionManager.setAccountState(SessionManager.AccountState.JUST_ENROLLED);
-                                sessionManager.setRewardedPoints(result.data);
-                                return Resource.success(true);
-                            } else {
-                                Timber.d("Login failed, status: " + r.data.getStatus());
-                                sessionManager.setRewardedPoints(result.data);
-                                navigateToLogin.postValue(Event.newEvent(true));
-                                return Resource.error(LOGIN_FAILED);
-                            }
-                        case ERROR:
-                            Timber.d("Login failed");
-                            sessionManager.setRewardedPoints(result.data);
-                            navigateToLogin.postValue(Event.newEvent(true));
-                            return Resource.error(LOGIN_FAILED);
-                        default:
-                            return Resource.loading();
-                    }
-                });
+                return Resource.success(true);
             } else {
                 if (result.status == Resource.Status.ERROR && fingerPrintManager.isFingerprintActivated()) {
                     fingerPrintManager.deactivateFingerprint();
                 }
-                MutableLiveData<Resource<Boolean>> intermediateLivedata = new MutableLiveData<>();
                 if (result.status == Resource.Status.LOADING) {
-                    intermediateLivedata.setValue(Resource.loading());
+                    return Resource.loading();
+
                 } else {
-                    intermediateLivedata.setValue(Resource.error(result.message));
+                    return Resource.error(result.message);
                 }
-                return intermediateLivedata;
             }
         });
 
         initAutoComplete(canadaPostAutocompleteProvider);
+    }
+
+    private String getFormattedPoints(int enrollmentsPoints){
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        return formatter.format(enrollmentsPoints);
     }
 
     private void initAutoComplete(CanadaPostAutocompleteProvider provider) {
@@ -208,6 +202,18 @@ public class EnrollmentFormViewModel extends ViewModel {
                 showAutocompleteLayout.setValue(false);
             }
         });
+    }
+
+    public boolean isUserCameToValidationScreen(){
+        return isUserCameToValidationScreen;
+    }
+
+    public MutableLiveData<String> getEnrollmentPoints(){
+        return enrollmentPointsObserver;
+    }
+
+    public MutableLiveData<String> getValidationHours(){
+        return validationHourObserver;
     }
 
     public boolean isOneItemFilled() {

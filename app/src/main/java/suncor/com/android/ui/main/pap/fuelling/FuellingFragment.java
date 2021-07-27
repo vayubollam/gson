@@ -52,7 +52,6 @@ public class FuellingFragment extends MainActivityFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
     }
 
     @Nullable
@@ -101,18 +100,18 @@ public class FuellingFragment extends MainActivityFragment {
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                     new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancel_alert_title)+"("+getString(R.string.cancel_alert_body)+")"),
                                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel_alert_button)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
                                 if (result.status == Resource.Status.LOADING) {
                                     binding.cancelLayout.setVisibility(View.VISIBLE);
                                 } else if (result.status == Resource.Status.ERROR) {
                                     binding.cancelLayout.setVisibility(View.GONE);
-                                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump Fuelling").show();
+                                    Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                                 } else if (result.status == Resource.Status.SUCCESS) {
                                     //goBack();
                                 }
                             });
-                        },  "Pump Fuelling").show();
+                        },  "Pay at Pump").show();
             }
         });
     }
@@ -136,9 +135,9 @@ public class FuellingFragment extends MainActivityFragment {
             viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump Fuelling").show();
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side" ),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
                         if (result.data.lastStatus.equalsIgnoreCase("Cancelled") ||
@@ -152,25 +151,26 @@ public class FuellingFragment extends MainActivityFragment {
                                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
                                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                                                new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
+                                                new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                                         dialogInterface.dismiss();
                                         goBack();
-                                    }, "Pump Fuelling").show();
+                                    }, "Pay at Pump").show();
                         } else {
                             observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
                             AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-almost-complete" );
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                         }
                     } else if (result.data.status != null) {
                         transactionId = result.data.transId;
                         binding.cancelButton.setVisibility(View.VISIBLE);
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                 new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Pump Fuelling"));
+                                new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
 
-                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-will-begin" );
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), result.data.status.equalsIgnoreCase("New")
+                                || result.data.status.equalsIgnoreCase("Authorized") ? "pay-at-pump-fuelling-will-begin" : "pay-at-pump-fuelling-has-begun" );
 
                         binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase("New")
                                 || result.data.status.equalsIgnoreCase("Authorized")?

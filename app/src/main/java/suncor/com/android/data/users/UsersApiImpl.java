@@ -19,7 +19,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.utilities.Timber;
 
 public class UsersApiImpl implements UsersApi {
-    private final static String ADAPTER_PATH = "/adapters/suncor/v2/rfmp-secure/users";
+    private final static String UPDATE_PHRASE_IN_PROFILE_ADAPTER_PATH = "/adapters/suncor/v2/rfmp-secure/users/passwords";
 
 
     @Override
@@ -28,7 +28,7 @@ public class UsersApiImpl implements UsersApi {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH.concat("/passwords"));
+            URI adapterPath = new URI(UPDATE_PHRASE_IN_PROFILE_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             JSONObject body = new JSONObject();
             body.put("email", email);

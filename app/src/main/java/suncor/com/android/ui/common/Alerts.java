@@ -127,4 +127,21 @@ public class Alerts {
                 .setOnDismissListener(DialogInterface::dismiss);
         return builder.create();
     }
+
+    public static AlertDialog prepareCustomDialogOk(String title, String message, Context context, DialogInterface.OnClickListener listener,
+                                                  String formName ) {
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
+                new Pair<>(AnalyticsUtils.Param.formName, formName)
+        );
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.ok, listener)
+                .setOnDismissListener(dialogInterface -> {
+                    listener.onClick(dialogInterface, 0);
+                });
+        return builder.create();
+    }
+
 }

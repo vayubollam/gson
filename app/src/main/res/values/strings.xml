@@ -49,12 +49,16 @@
     <string name="login_password_field_error">Password is required.</string>
     <string name="login_in_progress">Signing in</string>
     <string name="login_invalid_credentials_dialog_title">Invalid Email or Password</string>
-    <string name="login_invalid_credentials_dialog_1st_message">The email or password you entered is not correct. Please try again.</string>
+    <string name="login_invalid_credentials_dialog_1st_message">Please try again. If you recently created an account, check your inbox for your verification link.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="login_invalid_credentials_reset_password">Reset password</string>
     <string name="login_soft_lock_alert_title">Account locked</string>
     <string name="login_soft_lock_alert_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
+    <string name="security_answer_soft_lock_alert_message">You\'ve entered the wrong security answer too many times. Please try again in 30 minutes.</string>
+    <string name="security_answer_soft_lock_retry_alert_message"> You entered the wrong security answer too many times. Please wait X minutes before trying to sign in.</string>
     <string name="login_forgot_password_button">Forgot password</string>
+    <string name="forgot_password_alert_title">Password reset failed</string>
+    <string name="forgot_password_alert_message">Try again later. If you recently created an account, check your inbox for your verification link.</string>
     <string name="login_password_field">Password</string>
     <string name="favourites_remove_station_message">Station removed</string>
     <string name="favourites_fragment_title">Favourites</string>
@@ -102,6 +106,7 @@
     <string name="enrollment_fingerprint_hint">Use Touch ID to sign in, authorize purchases, reload your Petro-Canada cards and more.</string>
     <string name="enrollment_terms_agreement">By creating an account, I agree to the Petro-Points <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
     <string name="enrollment_join_button">Join</string>
+    <string name="back_to_home">BACK TO HOME</string>
     <string name="enrollment_form_header">Let\'s get you signed up. Plus, collect 2,500 Petro-Points.</string>
     <string name="enrollment_form_title">Let\'s get you signed up.</string>
     <string name="enrollment_leave_alert_title">Leave Create Account?</string>
@@ -125,11 +130,11 @@
     <string name="password_validation_uppercase">At least one uppercase letter</string>
     <string name="password_validation_number">At least one number</string>
     <string name="password_validation_title">Password must contain the following:</string>
-    <string name="password_validation_special_char">At least one special character (@$!%*#?&amp;)</string>
+    <string name="password_validation_special_char">At least one special character</string>
     <string name="enrollment_invalid_email_title">This email already has an account.</string>
     <string name="enrollment_invalid_email_dialog_message">If you don\'t remember your password, submit a password reset.</string>
     <string name="enrollment_invalid_email_dialog_sign_in">Sign in</string>
-    <string name="enrollment_invalid_email_dialog_diff_email">Use different email</string>
+    <string name="enrollment_invalid_email_dialog_diff_email">Use a different email</string>
     <string name="enrollment_province_title">Province</string>
     <string name="enrollment_security_question_title">Security Question</string>
     <string name="profil_sign_out_alert_title">Sign out of Petro-Canada</string>
@@ -155,6 +160,7 @@
     <string name="enrollment_create_account_message">Creating your\nPetro-Points account</string>
     <string name="enrollment_account_created_message">Account created</string>
     <string name="station_location_alert_settings">Settings</string>
+    <string name="thanks_to_user">Thanks, %s!</string>
     <string name="msg_sl005_title">Something went wrong</string>
     <string name="msg_sl005_message">We can\'t seem to load your favourites right now.</string>
     <string name="msg_sl005_button">TRY AGAIN</string>
@@ -266,7 +272,6 @@
     <string name="cards_ppts_label">Petro-Points</string>
     <string name="cards_fsr_balance_conversion">Save %d¢ per litre</string>
     <string name="cards_ppc_balance_conversion">Save %d¢ per litre</string>
-    <string name="cards_ppts_description">Trouble scanning? Swipe up or down to try a different version of the code.</string>
     <string name="cards_fsr_description">Our Fuel Savings Rewards card helps you save %d¢ per litre on 200 litres of fuel.\n\u2014\nReload your card at petro-points.com.</string>
     <string name="cards_wag_description">Use at any SuperWash or GlideWash location.</string>
     <string name="cards_zero_balance_description">\u2014\nReload on <a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">petro-canada.ca</a>.</string>
@@ -306,9 +311,12 @@
     <string name="profile_personnal_informations_phone">Phone (optional)</string>
     <string name="profile_personnal_informations_email">Email</string>
     <string name="profile_personnal_informations_subcopy2">Please note, in order to protect your account, if you change your email address you will not be able to redeem points online or in-store for 24 hours.</string>
-    <string name="profile_personnal_informations_subcopyEmail">Changing your email will require you to sign in again.</string>
+    <string name="profile_personnal_informations_subcopyEmail">Changing your email will automatically log you out, require you to verify your new address and you will be unable to receive an eGift card redemption for 24 hours.</string>
     <string name="profile_personnal_informations_button1">Save</string>
     <string name="msg_cm004">Balance unavailable.</string>
+    <string name="verify_your_email_address_title">Verify your email address</string>
+    <string name="verify_your_email_address_call_us">Call us</string>
+    <string name="verify_your_email_address_description">You’ve already started an online account with this card. Check your inbox for your verification link or call customer service.</string>
     <string name="profile_personnal_informations_email_empty_inline_error">Please enter an email.</string>
     <string name="profile_personnal_informations_email_format_inline_error">Please enter a valid email address.</string>
     <string name="profile_personnal_informations_phone_field_invalid_format">Please enter a valid phone number (e.g. 416–123-4567)</string>
@@ -317,10 +325,14 @@
     <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
     <string name="profile_personnal_informations_email_invalid_alert_message">Please use a different email account.</string>
     <string name="profile_personnal_informations_email_alert_title">Save changes</string>
-    <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign out and in again.</string>
+    <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign in again. If you\'ve changed your email, check your inbox to verify your email address.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
     <string name="profile_personnal_informations_email_duplicate_alert_title">This email already has an account</string>
+    <string name="enrollment_email_already_exists_title">Email already exists</string>
+    <string name="enrollment_email_already_exists_description">This email is already in use. If you recently created an account, check your inbox for your verification link.</string>
     <string name="msg_am001_title">Changes were not saved.</string>
+    <string name="msg_used_password_title"></string>
+    <string name="msg_used_password_message">You can’t reuse a password you’ve used in the past year. Choose a different password.</string>
     <string name="profile_personnal_informations_email_duplicate_alert_message">Please use a different email account or undo.</string>
     <string name="msg_am001_message">Please try again later.</string>
     <string name="profile_personnal_informations_email_duplicate_undo_button">Undo</string>
@@ -360,7 +372,8 @@
     <string name="home_signedin_greetings_morning">Good morning,\n%s.</string>
     <string name="home_signedin_greetings_afternoon">Good afternoon,\n%s.</string>
     <string name="home_signedin_greetings_evening">Good evening,\n%s.</string>
-
+    <string name="validate_your_email">We\'ve sent an email to:</string>
+    <string name="validate_your_email_to_sign_in">Finish your enrollment by clicking the link in your email  <![CDATA[<b>%s</b>]]>. Then, sign in for your %s points!</string>
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
     <string name="offers_banner_2_text">Contactless payment now in-app</string>
@@ -636,7 +649,7 @@
     <string name="select_pump_header">Fuel up</string>
     <string name="pap_not_available_header">In-app payment unavailable</string>
     <string name="pap_not_available_description">You can\’t use your app to pay at this station.</string>
-    <string name="select_pump_select">Select your pump</string>
+    <string name="scroll_to_select_pump">Scroll to select pump</string>
     <string name="select_pump_selected">Selected</string>
     <string name="select_pump_help_header">Pump number</string>
     <string name="select_pump_help_subheader">Your pump number is on the top or the side of the pump.</string>
@@ -736,5 +749,20 @@
     <string name="petropoints_balance">You\'re starting at %s points</string>
 
 
+    <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
+
+    <!-- Carwash POE -->
+    <string name="thank_you_carwash">Thanks, %1$s!
+        Squeaky-clean is coming right up.</string>
+    <string name="carwash_activated_copy">Follow the car wash instructions and enjoy your wash.</string>
+    <string name="carwash_remaining_copy">You have %1$s remaining.</string>
+    <string name="carwash_zero_washes">You\’re out of washes. <a href="https://www.petro-canada.ca/en/personal/my-petro-points/reload/wash-and-go/step-1-card-number">Reload your card on Petro-Canada.ca.</a></string>
+    <string name="carwash_zero_days">You\’re out of days. <a href="https://www.petro-canada.ca/en/personal/my-petro-points/reload/wash-and-go/step-1-card-number">Reload your card on Petro-Canada.ca.</a></string>
+    <string name="carwash_error_alert_title">Can\’t activate wash</string>
+    <string name="carwash_error_alert_copy">Suds! Something went wrong. Try again or contact the in-store attendant.</string>
+    <string name="carwash_zero_error_alert_title">Can\’t activate wash</string>
+    <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
+    <string name="carwash_zero_alert_close">Cancel</string>
+    <string name="carwash_zero_alert_buy">Visit web</string>
 
 </resources>

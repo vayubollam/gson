@@ -23,7 +23,7 @@ import suncor.com.android.model.redeem.response.OrderResponse;
 import suncor.com.android.utilities.Timber;
 
 public class OrderApiImpl implements OrderApi {
-    private final static String ORDER_ADAPTER_PATH = "/adapters/suncorreloadredeem/v2/rfmp-secure/orders";
+    private final static String REDEEM_POINTS_ORDER_ADAPTER_PATH = "/adapters/suncorreloadredeem/v2/rfmp-secure/orders";
     private Gson gson;
 
     public OrderApiImpl(Gson gson) {
@@ -36,7 +36,7 @@ public class OrderApiImpl implements OrderApi {
         MutableLiveData<Resource<OrderResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = createURI(ORDER_ADAPTER_PATH);
+            URI adapterPath = createURI(REDEEM_POINTS_ORDER_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(order));
             if(order.getShoppingCart().geteGift() == null) request.addHeader("X-Mock-Variant", "/v1/orders:singleticket:success");

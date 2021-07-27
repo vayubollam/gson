@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import javax.inject.Inject;
 
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentHomeGuestBinding;
@@ -46,6 +47,7 @@ import suncor.com.android.databinding.FragmentHomeSignedinBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.FuelUp;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.webview.WebDialogFragment;
@@ -53,6 +55,7 @@ import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
+import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.stationlocator.StationDetailsDialog;
 import suncor.com.android.ui.main.stationlocator.StationItem;
@@ -80,6 +83,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
     private boolean pingActiveSessionStarted = false;
     private Handler handler = new Handler();
+    private FuelUp fuelUp;
 
     private OnClickListener tryAgainLister = v -> {
         if (mViewModel.getUserLocation() != null) {
@@ -128,12 +132,23 @@ public class HomeFragment extends BottomNavigationFragment {
                 }
             }
         }));
+
         mViewModel.openNavigationApps.observe(this, event -> {
             Station station = event.getContentIfNotHandled();
-            if (station != null) {
+
+            if (fuelUp != null && fuelUp.fuelUpAvailable()) {
+                HomeNavigationDirections.ActionToSelectPumpFragment action =
+                        SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                                station.getId(),
+                                getString(R.string.action_location, station.getAddress().getAddressLine())
+                        );
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+            } else if (station != null) {
                 NavigationAppsHelper.openNavigationApps(getActivity(), station);
             }
+
         });
+
         mViewModel.dismissEnrollmentRewardsCardEvent.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 ConstraintLayout mainLayout = getView().findViewById(R.id.main_layout);
@@ -205,11 +220,15 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         mViewModel.isPAPAvailable().observe(getViewLifecycleOwner(), value -> {
+            this.fuelUp = value.data;
+
             nearestCard.mobilePaymentText.setVisibility(value.status == Resource.Status.LOADING ? View.INVISIBLE : View.VISIBLE);
             nearestCard.mobilePaymentProgressBar.setVisibility(value.status != Resource.Status.LOADING ? View.GONE : View.VISIBLE);
 
-            nearestCard.mobilePaymentText.setText(value.data != null && value.data ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
-            nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data ? R.drawable.ic_check : R.drawable.ic_close);
+            nearestCard.mobilePaymentText.setText(value.data != null && value.data.papAvailable() ? R.string.mobile_payment_accepted : R.string.mobile_payment_not_accepted);
+            nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data.papAvailable() ? R.drawable.ic_check : R.drawable.ic_close);
+
+            nearestCard.directionsButton.setText(value.data != null && value.data.fuelUpAvailable() ? R.string.action_fuel_up : R.string.station_directions_button);
         });
 
         return view;
@@ -474,36 +493,41 @@ public class HomeFragment extends BottomNavigationFragment {
                 if (result.status == Resource.Status.LOADING) {
                 } else if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong" ),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Home"));
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Home").show();
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side" ),
+                            new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
                         if(result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
-                        } else if(result.data.status.equals("BeginFueling")){
+                        }
+                        // TODO: handle processing and session end state
+                        /*else if(result.data.status.equals("BeginFueling")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
-                        } else{
-                            //todo handle processing and session end state
+                        } */
+                        else {
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Home"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                         }
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
                         }
                     } else {
+                        if (mViewModel.activeFuellingSession.get()) {
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
+                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                        }
+
                         mViewModel.updateFuellingSession(false, "");
-                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
-                                new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Home"));
                     }
                 }
             });

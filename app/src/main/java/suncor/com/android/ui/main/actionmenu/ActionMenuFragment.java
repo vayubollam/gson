@@ -114,7 +114,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 // Handle onsite transaction PAP
-                HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(storeId, binding.actionLocation.getText().toString());
+                HomeNavigationDirections.ActionToSelectPumpFragment action = HomeNavigationDirections.actionToSelectPumpFragment(storeId, binding.actionLocation.getText().toString());
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }
@@ -141,6 +141,8 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        activeSession = homeViewModel.activeFuellingSession.get();
+
         viewModel.getGeoFenceLimit().observe(getViewLifecycleOwner(), result -> this.geoFenceLimit = result );
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -155,8 +157,6 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                                 || result.data.status.equalsIgnoreCase("Authorized")? getString(R.string.fuelling_about_to_begin) : getString(R.string.action_fuelling) : getString(R.string.action_fuel_up)));
 
                 binding.actionFuelUpButton.setLoading(activeSession);
-            } else {
-                activeSession = false;
             }
         });
 

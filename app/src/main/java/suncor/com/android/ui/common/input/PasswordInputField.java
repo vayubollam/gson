@@ -10,7 +10,7 @@ public class PasswordInputField extends InputField {
     private static final Pattern LOWER_CASE_PATTERN = Pattern.compile(".*[a-z]+.*");
     private static final Pattern UPPER_CASE_PATTERN = Pattern.compile(".*[A-Z]+.*");
     private static final Pattern NUMBER_PATTERN = Pattern.compile(".*[0-9]+.*");
-    private static final Pattern SPECIAL_CHARS_PATTERN = Pattern.compile(".*[@$!%*#?&]+.*");
+    private static final Pattern SPECIAL_CHARS_PATTERN = Pattern.compile(".*[@$!%*#?&~`^_+={},.:;<>|\"\'\\-\\(\\)\\[\\]\\/\\\\]+.*");
     private boolean hasRightLength;
     private boolean hasLowerCase;
     private boolean hasUpperCase;

@@ -91,6 +91,7 @@ public class TransactionDetailFragment extends MainActivityFragment {
             } else if (result.status == Resource.Status.ERROR) {
                 binding.progressBar.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                binding.setTransaction(result.data);
                 binding.progressBar.setVisibility(View.GONE);
                 binding.paymentTypeValue.setVisibility(View.VISIBLE);
                 binding.paymentTypeDivider.setVisibility(View.VISIBLE);

@@ -22,7 +22,7 @@ import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.utilities.Timber;
 
 public class MerchantsApiImpl implements MerchantsApi {
-    private final static String ADAPTER_PATH = "/adapters/suncorreloadredeem/v2/rfmp-secure/merchants";
+    private final static String GET_MERCHANTS_ADAPTER_PATH = "/adapters/suncorreloadredeem/v2/rfmp-secure/merchants";
     private Gson gson;
 
     public MerchantsApiImpl(Gson gson) {
@@ -35,7 +35,7 @@ public class MerchantsApiImpl implements MerchantsApi {
         MutableLiveData<Resource<ArrayList<Merchant>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH);
+            URI adapterPath = new URI(GET_MERCHANTS_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader("Accept-Language", "fr-CA");

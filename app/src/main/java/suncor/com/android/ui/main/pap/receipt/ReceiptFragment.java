@@ -17,8 +17,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.review.model.ReviewErrorCode;
+import com.google.android.play.core.review.testing.FakeReviewManager;
+import com.google.android.play.core.tasks.RuntimeExecutionException;
+import com.google.android.play.core.tasks.Task;
+
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -31,12 +40,15 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
 
+import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
+
 public class ReceiptFragment extends MainActivityFragment {
 
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
     private String transactionId;
     private boolean isGooglePay;
+    private boolean isReceiptValid = false;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
@@ -67,13 +79,22 @@ public class ReceiptFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
         transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
         isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
+
         observeTransactionData(transactionId);
+
         binding.viewReceiptBtn.setOnClickListener((v) -> {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });
-        binding.buttonDone.setOnClickListener(view1 -> goBack());
+
+        binding.buttonDone.setOnClickListener(view1 -> {
+            if (isReceiptValid && viewModel.isFirstTransactionOfMonth()) {
+                checkForReview();
+            } else {
+                goBack();
+            }
+        });
     }
 
     @Override
@@ -85,7 +106,6 @@ public class ReceiptFragment extends MainActivityFragment {
     public void onResume() {
         super.onResume();
         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
-
     }
 
     private void observeTransactionData(String transactionId){
@@ -95,16 +115,23 @@ public class ReceiptFragment extends MainActivityFragment {
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
+                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
+
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+
                 binding.paymentType.setText(result.data.getPaymentType(getContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
                 } else {
+                    isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
                 binding.setTransaction(result.data);
@@ -132,6 +159,8 @@ public class ReceiptFragment extends MainActivityFragment {
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(share, "Share"));
                 });
+
+
             }
         });
     }
@@ -139,5 +168,33 @@ public class ReceiptFragment extends MainActivityFragment {
     private void goBack() {
         NavController navController = Navigation.findNavController(getView());
         navController.popBackStack();
+    }
+
+    private void checkForReview() {
+        //Check for review
+        ReviewManager manager = ReviewManagerFactory.create(getContext());
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // We can get the ReviewInfo object
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+
+                flow.addOnCompleteListener(reviewed -> {
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                    // matter the result, we continue our app flow.
+                    goBack();
+                });
+            } else {
+                // There was some problem, log or handle the error code.
+                // TODO: Handle error when launching in app review
+                @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
+
+                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
+                
+                goBack();
+            }
+        });
     }
 }

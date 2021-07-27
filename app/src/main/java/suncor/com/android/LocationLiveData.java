@@ -136,8 +136,12 @@ public class LocationLiveData extends LiveData<Location> {
 
     @SuppressLint("MissingPermission")
     private void requestLiveLocationUpdate() {
-        // Threshold set at every 120 seconds and 250 meters in accordance to RMP-3198
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120 * 1000, 250, locationListener);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
+            // Threshold set at every 120 seconds and 250 meters in accordance to RMP-3198
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120 * 1000, 250, locationListener);
+        } else if (locationManager.isProviderEnabled("fused") ) {
+            locationManager.requestLocationUpdates("fused", 120 * 1000, 250, locationListener);
+        }
     }
 
 }

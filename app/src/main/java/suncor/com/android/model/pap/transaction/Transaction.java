@@ -27,12 +27,12 @@ public class Transaction {
     private String timeZone;
     private long utcOffsetSeconds;
     private double totalAmount;
-    private double totalDiscount;
+    private double otherDiscount;
     private String currency;
     private double subtotal;
 
     private double taxAmount;
-    private String formattedTotalDiscounts;
+    private String formattedOtherDiscounts;
     private String formattedSubtotal;
     private String formattedTax;
     private String formattedTotal;
@@ -76,8 +76,8 @@ public class Transaction {
         return currency;
     }
 
-    public String getFormattedTotalDiscounts() {
-        return formattedTotalDiscounts;
+    public String getFormattedOtherDiscounts() {
+        return formatter.format(otherDiscount);
     }
 
     public String getFormattedSubtotal() {
@@ -140,12 +140,12 @@ public class Transaction {
         return sb.toString();
     }
 
-    public double getTotalDiscount() {
-        return totalDiscount;
+    public double getOtherDiscount() {
+        return otherDiscount;
     }
 
-    public void setTotalDiscount(double totalDiscount) {
-        this.totalDiscount = totalDiscount;
+    public void setOtherDiscount(double otherDiscount) {
+        this.otherDiscount = otherDiscount;
     }
 
     public static class Address {

@@ -31,7 +31,7 @@ public class ActionMenuViewModel extends ViewModel {
             if (result.status == Resource.Status.SUCCESS) {
                 return result.data.getSettings().getPap().getGeofenceDistanceMeters();
             }
-            return 0;
+            return 70;
         });
     }
 }

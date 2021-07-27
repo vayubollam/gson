@@ -7,6 +7,10 @@
         <variable
             name="td"
             type="suncor.com.android.model.cards.TransactionDetail" />
+
+        <variable
+            name="transaction"
+            type="suncor.com.android.model.pap.transaction.Transaction" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -388,7 +392,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/transaction_your_rbc_savings"
                     android:textAppearance="@style/Body"
-                    android:visibility="gone"
+                    app:visibleGone="@{transaction.otherDiscount > 0.00}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/txt_base_right"
                     app:layout_constraintTop_toBottomOf="@id/transaction_total_divider" />
@@ -400,7 +404,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:textAlignment="textEnd"
-                    android:visibility="gone"
+                    app:visibleGone="@{transaction.otherDiscount > 0.00}"
+                    android:text="@{transaction.formattedOtherDiscounts}"
                     android:textAppearance="@style/Body1"
                     app:layout_constraintLeft_toRightOf="@id/txt_base_left"
                     app:layout_constraintRight_toRightOf="parent"
@@ -411,7 +416,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="8dp"
-                    android:visibility="gone"
+                    app:visibleGone="@{transaction.otherDiscount > 0.00}"
                     android:src="@drawable/horizontal_divider"
                     app:layout_constraintTop_toBottomOf="@+id/transaction_rbc_saving_value" />
 

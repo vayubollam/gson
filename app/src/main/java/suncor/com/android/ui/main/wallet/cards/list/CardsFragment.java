@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
@@ -133,10 +134,17 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
     }
 
     private void navigateToCardDetail(CardDetail cardDetail) {
+        if (getView() == null) return;
+
         AnalyticsUtils.setCurrentScreenName(getActivity(), cardDetail.getFirebaseScreenName());
         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
         action.setCardIndex(viewModel.getIndexofCardDetail(cardDetail));
-        Navigation.findNavController(getView()).navigate(action);
+
+        NavController controller = Navigation.findNavController(getView());
+        if (controller.getCurrentDestination() != null
+                && controller.getCurrentDestination().getAction(action.getActionId()) != null ) {
+            controller.navigate(action);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -177,7 +185,13 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
 
     @Override
     public void navigateToAddCard() {
-        Navigation.findNavController(getView()).navigate(R.id.action_cards_tab_to_addCardFragment);
+        if (getView() == null) return;
+
+        NavController controller = Navigation.findNavController(getView());
+        if (controller.getCurrentDestination() != null
+                && controller.getCurrentDestination().getAction(R.id.action_cards_tab_to_addCardFragment) != null ) {
+            controller.navigate(R.id.action_cards_tab_to_addCardFragment);
+        }
     }
 
     @Override
@@ -188,7 +202,8 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        viewModel.refreshBalance();
+        if (viewModel != null)
+            viewModel.refreshBalance();
     }
 
     @Override

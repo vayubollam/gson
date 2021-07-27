@@ -46,18 +46,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
                         );
-                        if(PreferenceManager.getDefaultSharedPreferences(activity)
-                                .getString(SplashActivity.CURRENT_ANDROID_VERSION, "").equals(BuildConfig.VERSION_NAME)){
-                            activity.startActivity(new Intent(activity, EnrollmentActivity.class));
-                        }else {
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-                            dialog.setTitle(R.string.app_outdated_title_message);
-                            dialog.setMessage(R.string.app_outdated_dialog_message);
-                            dialog.setPositiveButton(R.string.ok, (d, w) -> {
-                                d.dismiss();
-                            });
-                            dialog.show();
-                        }
+                        activity.startActivity(new Intent(activity, EnrollmentActivity.class));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,

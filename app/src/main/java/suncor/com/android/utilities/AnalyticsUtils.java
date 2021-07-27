@@ -29,9 +29,10 @@ public class AnalyticsUtils {
         alert("alert"),
         alertInteraction("alert_interaction"),
         error("error_log"),
+        paymentPreauthorize("payment_preauthorize"),
         paymentComplete("payment_complete"),
         intersite("intersite"),
-        infoTab("info_tab"),
+        infoTap("info_tap"),
         menuTap("menu_tap");
 
 
@@ -64,6 +65,7 @@ public class AnalyticsUtils {
         alertSelection("alertSelection"),
         cardType("cardType"),
         errorMessage("errorMessage"),
+        detailMessage("detailErrorMessage"),
         paymentMethod("paymentMethod"),
         fuelAmountSelection("fuelAmountSelection"),
         intersiteURL("intersiteURL"),
@@ -101,9 +103,10 @@ public class AnalyticsUtils {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
     }
 
-    public static void setUserProperty(Context context, String userID ){
+    public static void setUserProperty(Context context, String userID, boolean rbcLinked ){
         FirebaseAnalytics.getInstance(context).setUserId(userID);
         FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
+        FirebaseAnalytics.getInstance(context).setUserProperty("is_linked_rbc", rbcLinked ? "true" : "false");
     }
 
     @SafeVarargs

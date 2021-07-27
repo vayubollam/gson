@@ -1,30 +1,26 @@
 package suncor.com.android.utilities;
 
-import android.os.Build;
-import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import java.io.IOException;
-import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.concurrent.Executor;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -32,9 +28,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
-import javax.security.auth.x500.X500Principal;
 
 import suncor.com.android.SuncorApplication;
 
@@ -43,26 +37,25 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class KeyStoreStorage {
 
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private static final String TYPE_RSA = "RSA";
-    private static final String AES_STORAGE_KEY = new String(Base64.encode("aes_key".getBytes(UTF_8), Base64.NO_WRAP));
 
     private static final String AES_MODE_M_OR_GREATER = "AES/GCM/NoPadding";
-    private static final String AES_MODE_LESS_THAN_M = "AES/ECB/PKCS7Padding";
+
+    int VALIDITY_DURATION = -1;
 
     private String alias;
 
     private KeyStore keyStore;
 
-    private SuncorApplication application;
     private UserLocalSettings settings;
+    private FingerprintManager fingerprintManager;
 
 
     @Inject
-    public KeyStoreStorage(SuncorApplication application, UserLocalSettings settings) {
+    public KeyStoreStorage(SuncorApplication application, UserLocalSettings settings, FingerprintManager fingerprintManager) {
         try {
-            this.application = application;
             this.settings = settings;
-            alias = application.getPackageName();
+            this.fingerprintManager = fingerprintManager;
+            this.alias = application.getPackageName();
             initKeystore();
             createKeys();
         } catch (Exception e) {
@@ -91,6 +84,18 @@ public class KeyStoreStorage {
         return null;
     }
 
+    public void retrieveWithBiometric(String key, FragmentActivity fragmentActivity,
+                         BiometricPrompt.PromptInfo promptInfo, BiometricListener biometricListener) {
+        try {
+            String base64Key = new String(Base64.encode(key.getBytes(UTF_8), Base64.NO_WRAP));
+            String encryptedValue = settings.getString(base64Key);
+
+            decryptBiometric(encryptedValue, fragmentActivity, promptInfo, biometricListener);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
+
     public void remove(String key) {
         String base64Key = new String(Base64.encode(key.getBytes(UTF_8), Base64.NO_WRAP));
         settings.removeKey(base64Key);
@@ -100,122 +105,140 @@ public class KeyStoreStorage {
         try {
             keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
             keyStore.load(null);
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
         }
     }
 
     private void createKeys() throws NoSuchProviderException,
-            NoSuchAlgorithmException, InvalidAlgorithmParameterException, KeyStoreException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException {
+            NoSuchAlgorithmException, InvalidAlgorithmParameterException, KeyStoreException {
         if (keyStore.containsAlias(alias)) {
             return;
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance(TYPE_RSA, ANDROID_KEY_STORE);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
+        KeyGenParameterSpec.Builder specBuilder = new KeyGenParameterSpec.Builder(
+                alias,
+                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE);
 
-            Calendar endDate = Calendar.getInstance();
-            endDate.add(Calendar.YEAR, 99);
-
-            // Below Android M, use the KeyPairGeneratorSpec.Builder.
-            AlgorithmParameterSpec spec = new KeyPairGeneratorSpec.Builder(application)
-                    .setAlias(alias)
-                    .setSubject(new X500Principal("CN=" + alias))
-                    .setSerialNumber(BigInteger.valueOf(1337))
-                    .setStartDate(new Date())
-                    .setEndDate(endDate.getTime())
-                    .build();
-
-            kpGenerator.initialize(spec);
-            KeyPair rsaKeyPair = kpGenerator.generateKeyPair();
-
-            byte[] aesKey = new byte[16];
-            SecureRandom secureRandom = new SecureRandom();
-            secureRandom.nextBytes(aesKey);
-            byte[] encryptedKey = rsaEncrypt(rsaKeyPair.getPublic(), aesKey);
-            settings.setString(AES_STORAGE_KEY, new String(Base64.encode(encryptedKey, Base64.DEFAULT)));
-        } else {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
-            AlgorithmParameterSpec spec = new KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                    .build();
-
-            keyGenerator.init(spec);
-            keyGenerator.generateKey();
+        if (fingerprintManager.isFingerPrintExistAndEnrolled()) {
+            specBuilder.setInvalidatedByBiometricEnrollment(true)
+                    // The other important property is setUserAuthenticationValidityDurationSeconds().
+                    // If it is set to -1 then the key can only be unlocked using Fingerprint or Biometrics.
+                    // If it is set to any other value, the key can be unlocked using a device screenlock too.
+                    .setUserAuthenticationValidityDurationSeconds(VALIDITY_DURATION);
         }
+
+        keyGenerator.init(specBuilder.build());
+        keyGenerator.generateKey();
 
     }
 
-    private String encrypt(String plainText) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException {
-        Key key = getAesKey();
+    private String encrypt(String plainText) throws NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, UnrecoverableEntryException, KeyStoreException, InvalidKeyException {
+
         byte[] bytes = plainText.getBytes(UTF_8);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            Cipher cipher = Cipher.getInstance(AES_MODE_LESS_THAN_M);
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] encBytes = cipher.doFinal(bytes);
-            return Base64.encodeToString(encBytes, Base64.DEFAULT);
-        } else {
-            Cipher cipher = Cipher.getInstance(AES_MODE_M_OR_GREATER);
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] encBytes = cipher.doFinal(bytes);
-            byte[] ivBytes = cipher.getIV();
-            return Base64.encodeToString(encBytes, Base64.DEFAULT) + "|" + Base64.encodeToString(ivBytes, Base64.DEFAULT);
-        }
+        Cipher cipher = getCipher();
+        cipher.init(Cipher.ENCRYPT_MODE, getAesKey());
+        byte[] encBytes = cipher.doFinal(bytes);
+        byte[] ivBytes = cipher.getIV();
+        return Base64.encodeToString(encBytes, Base64.DEFAULT) + "|" + Base64.encodeToString(ivBytes, Base64.DEFAULT);
     }
 
 
-    private String decrypt(String cipherText) throws KeyStoreException, UnrecoverableEntryException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchProviderException {
+    private String decrypt(String cipherText) throws KeyStoreException, UnrecoverableEntryException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException, InvalidAlgorithmParameterException {
         byte[] bytes = cipherText.getBytes(UTF_8);
         Key key = getAesKey();
-        Cipher cipher;
         byte[] base64decodedBytes;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            base64decodedBytes = Base64.decode(bytes, Base64.DEFAULT);
-            cipher = Cipher.getInstance(AES_MODE_LESS_THAN_M, "BC");
-            cipher.init(Cipher.DECRYPT_MODE, key);
-        } else {
-            String str = new String(bytes, UTF_8);
-            String[] parts = str.split("\\|");
-            base64decodedBytes = Base64.decode(parts[0], Base64.DEFAULT);
-            byte[] iv = Base64.decode(parts[1], Base64.DEFAULT);
-            cipher = Cipher.getInstance(AES_MODE_M_OR_GREATER);
-            GCMParameterSpec spec = new GCMParameterSpec(128, iv);
-            cipher.init(Cipher.DECRYPT_MODE, key, spec);
-        }
+        String str = new String(bytes, UTF_8);
+        String[] parts = str.split("\\|");
+        base64decodedBytes = Base64.decode(parts[0], Base64.DEFAULT);
+        byte[] iv = Base64.decode(parts[1], Base64.DEFAULT);
+        Cipher cipher = getCipher();
+        GCMParameterSpec spec = new GCMParameterSpec(128, iv);
+        cipher.init(Cipher.DECRYPT_MODE, key, spec);
 
         return new String(cipher.doFinal(base64decodedBytes));
     }
 
-    private Key getAesKey() throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(alias, null);
-            String base64AesEncryptedKey = settings.getString(AES_STORAGE_KEY);
-            byte[] aesEncryptedKey = Base64.decode(base64AesEncryptedKey.getBytes(UTF_8), Base64.DEFAULT);
-            byte[] aesKey = rsaDecrypt(entry.getPrivateKey(), aesEncryptedKey);
-            return new SecretKeySpec(aesKey, "AES");
-        } else {
-            return keyStore.getKey(alias, null);
+
+    private void decryptBiometric(String cipherText, FragmentActivity fragmentActivity,
+                         BiometricPrompt.PromptInfo promptInfo, BiometricListener biometricListener) throws KeyStoreException, UnrecoverableEntryException, NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+        byte[] bytes = cipherText.getBytes(UTF_8);
+        Key key = getAesKey();
+        byte[] base64decodedBytes;
+        String str = new String(bytes, UTF_8);
+        String[] parts = str.split("\\|");
+        base64decodedBytes = Base64.decode(parts[0], Base64.DEFAULT);
+        byte[] iv = Base64.decode(parts[1], Base64.DEFAULT);
+        Cipher cipher = getCipher();
+        GCMParameterSpec spec = new GCMParameterSpec(128, iv);
+        cipher.init(Cipher.DECRYPT_MODE, key, spec);
+
+        BiometricPrompt biometricPrompt = setupBiometricPrompt(fragmentActivity, biometricListener, base64decodedBytes);
+
+        // Prompt appears when user clicks authentication button.
+        biometricPrompt.authenticate(promptInfo, new BiometricPrompt.CryptoObject(cipher));
+    }
+
+    private Key getAesKey() throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException {
+        return keyStore.getKey(alias, null);
+    }
+
+    /**
+     * This method gets a cipher instance
+     */
+    private Cipher getCipher() {
+        try {
+            return Cipher.getInstance(AES_MODE_M_OR_GREATER);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
-    private byte[] rsaEncrypt(PublicKey publicKey, byte[] bytes) throws
-            NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        return cipher.doFinal(bytes);
-    }
 
-    private byte[] rsaDecrypt(PrivateKey privateKey, byte[] bytes) throws
-            NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        return cipher.doFinal(bytes);
+
+    /**
+     * This method setups the biometric authentication dialog
+     */
+    private BiometricPrompt setupBiometricPrompt(FragmentActivity fragmentActivity, BiometricListener listener, byte[] base64decodedBytes){
+        Executor executor = ContextCompat.getMainExecutor(fragmentActivity.getApplicationContext());
+        return new BiometricPrompt(fragmentActivity,
+                executor,
+                new BiometricPrompt.AuthenticationCallback() {
+
+                    @Override
+                    public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        listener.onFailed();
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result){
+                        super.onAuthenticationSucceeded(result);
+
+                        // Decrypt data
+                        byte[] encryptedInfo = null;
+                        try {
+                            encryptedInfo = result.getCryptoObject().getCipher().doFinal(base64decodedBytes);
+                        } catch (BadPaddingException | IllegalBlockSizeException e) {
+                            e.printStackTrace();
+                        }
+                        String decryptedString = null;
+                        if (encryptedInfo != null) {
+                            decryptedString = new String(encryptedInfo, StandardCharsets.UTF_8);
+                        }
+
+                        listener.onSuccess(decryptedString);
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed(){
+                        super.onAuthenticationFailed();
+                        listener.onFailed();
+                    }
+                });
     }
 }

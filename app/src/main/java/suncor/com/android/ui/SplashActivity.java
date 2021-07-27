@@ -54,7 +54,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     private boolean firstTimeUse = false;
     private boolean newVersionUpdated = false;
     public static final String LOGINFAILED = "loginFailed";
-    public static final String CURRENT_ANDROID_VERSION = "currentAndroidVersion";
 
 
     @Inject
@@ -68,7 +67,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     @Inject
     FingerprintManager fingerPrintManager;
-    private String currentAndroidVersion;
 
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -198,9 +196,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
     }
 
     private void handleSettingsResponse(SettingsResponse settingsResponse) {
-        currentAndroidVersion = settingsResponse.getSettings().getCurrentAndroidVersion();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.edit().putString(CURRENT_ANDROID_VERSION,currentAndroidVersion).apply();
         String minVersion = settingsResponse.getSettings().getMinAndroidVersion();
         String currentVersion = BuildConfig.VERSION_NAME;
         if (currentVersion.compareTo(minVersion) < 0) {
@@ -310,7 +305,6 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         delayHandler.removeCallbacksAndMessages(null);
         Intent homeIntent = new Intent(this, MainActivity.class);
         homeIntent.putExtra(LOGINFAILED, loginFailed);
-        homeIntent.putExtra(CURRENT_ANDROID_VERSION,currentAndroidVersion);
         startActivity(homeIntent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();

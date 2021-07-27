@@ -50,7 +50,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "select pump"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
     }
 
     @Nullable
@@ -61,7 +61,11 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         binding.setIsLoading(isLoading);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
-        binding.helpButton.setOnClickListener(v -> showHelp());
+        binding.helpButton.setOnClickListener(v -> {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTap,
+                    new Pair<>(AnalyticsUtils.Param.infoText, "select pump number info"));
+            showHelp();
+        });
 
         adapter = new SelectPumpAdapter(this);
         binding.pumpRecyclerView.setAdapter(adapter);
@@ -91,7 +95,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                 goBack();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (!result.data) {
@@ -104,9 +108,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                         new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.pap_not_available_header)+"("+getString(R.string.pap_not_available_description)+")"),
                                         new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                                        new Pair<>(AnalyticsUtils.Param.formName, "select pump"));
+                                        new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
                                 goBack();
-                            }, "Select Pump").show();
+                            }, "Pay at Pump").show();
 
                     binding.selectPumpLayout.setVisibility(View.GONE);
                 } else {
@@ -131,7 +135,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                             // Update the storeId to the P97 store id
                             storeId = storeDetailsResponseResource.data.storeNumber;
                         } else if (storeDetailsResponseResource.status != Resource.Status.LOADING){
-                            Alerts.prepareGeneralErrorDialog(getContext(), "Select Pump").show();
+                            Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                             goBack();
                         }
                     });
@@ -145,7 +149,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     @Override
     public void selectPumpNumber(String pumpNumber) {
         new Handler().postDelayed(() -> {
-           HomeNavigationDirections.ActionToFuelUpFragment action = FuelUpFragmentDirections.actionToFuelUpFragment(storeId, pumpNumber);
+            HomeNavigationDirections.ActionToFuelUpFragment action = HomeNavigationDirections.actionToFuelUpFragment(storeId, pumpNumber);
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
             Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
         }, 200);

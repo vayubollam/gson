@@ -170,7 +170,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-wallet-add-credit-card");
+        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-wallet-add-credit-card");
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.clearCache(true);
         isWebViewLoading.set(true);
@@ -278,7 +278,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
     }
 
 
-    private void    showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
+    private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         AnalyticsUtils.logEvent(getActivity().getApplicationContext(),AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),

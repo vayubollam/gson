@@ -1,9 +1,6 @@
 package suncor.com.android.ui.main.wallet.cards.details;
 
-import android.content.Context;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,23 +18,17 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     private ArrayList<ExpandedCardItem> cardItems = new ArrayList<>();
     private Consumer<ExpandedCardItem> callBack;
     private View.OnClickListener activeWashListener;
-    private View.OnClickListener cardReloadListener;
-    private GestureDetector mGestureDetector;
-    private MyGestureDetector myGestureDetector;
-    private Context context;
-    private float x1, x2;
-    private float y1, y2;
-    private long t1, t2;
 
-    public CardsDetailsAdapter(Context context, Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
+    private View.OnClickListener cardReloadListener;
+
+
+    public CardsDetailsAdapter( Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
                                View.OnClickListener cardReloadListener) {
         this.callBack = callBack;
         this.activeWashListener = activeWashListener;
         this.cardReloadListener = cardReloadListener;
-        this.context = context;
-        myGestureDetector = new MyGestureDetector();
-        mGestureDetector = new GestureDetector(context, myGestureDetector);
     }
+
 
     @NonNull
     @Override
@@ -80,70 +71,6 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
             super(binding.getRoot());
             this.binding = binding;
             binding.activeWashButton.setOnClickListener(activeWashListener);
-            binding.flBarcode.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        x1 = event.getX();
-                        y1 = event.getY();
-                        t1 = System.currentTimeMillis();
-                        return true;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                        x2 = event.getX();
-                        y2 = event.getY();
-                        t2 = System.currentTimeMillis();
-
-                        float diffTime = Math.abs(t2 - t1);
-                        float diffX = x2 - x1;
-
-                        if (diffTime < 500) {
-                            if (diffX < 200) {
-                                if (cardItems.get(getAdapterPosition()).isPdfShown()) {
-                                    binding.barcodeImage.setImageDrawable(cardItems.get(getAdapterPosition()).getBarCode());
-                                    cardItems.get(getAdapterPosition()).setPdfShown(false);
-                                } else {
-                                    binding.barcodeImage.setImageDrawable(cardItems.get(getAdapterPosition()).getBarCodePDF());
-                                    cardItems.get(getAdapterPosition()).setPdfShown(true);
-                                }
-                            }
-                        }
-                        return true;
-                    }
-                    return true;
-                }
-            });
-        }
-    }
-
-    public class MyGestureDetector implements GestureDetector.OnGestureListener {
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            return true;
         }
     }
 }

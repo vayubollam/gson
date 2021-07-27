@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
 import android.content.Context;
+import android.se.omapi.Session;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -36,8 +37,10 @@ import suncor.com.android.model.pap.PayByWalletRequest;
 import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.googlepay.GooglePayUtils;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 public class FuelUpViewModel extends ViewModel {
 
@@ -46,6 +49,7 @@ public class FuelUpViewModel extends ViewModel {
     private final PaymentsRepository paymentsRepository;
     private LatLng userLocation;
     private Profile profile;
+    private SessionManager sessionManager;
 
 
     @Inject
@@ -55,6 +59,7 @@ public class FuelUpViewModel extends ViewModel {
         this.papRepository = papRepository;
         this.paymentsRepository = paymentsRepository;
         this.profile = sessionManager.getProfile();
+        this.sessionManager = sessionManager;
     }
 
 
@@ -65,6 +70,16 @@ public class FuelUpViewModel extends ViewModel {
 
     public LiveData<Resource<ActiveSession>> getActiveSession() {
         return papRepository.getActiveSession();
+    }
+
+    public void saveLastStatusUpdate(ActiveSession activeSession) {
+        if (activeSession.lastStatus != null &&
+                activeSession.lastStatus.equals("Finished")
+                && sessionManager.getUserLocalSettings().getLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE)
+                != activeSession.getLastStatusUpdated()) {
+            sessionManager.getUserLocalSettings().setLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE,
+                    activeSession.getLastStatusUpdated());
+        }
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
@@ -154,6 +169,10 @@ public class FuelUpViewModel extends ViewModel {
 
     public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {
         return papRepository.cancelTransaction(transactionId);
+    }
+
+    public String getPetroPointsBalance() {
+        return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
     }
 
 }

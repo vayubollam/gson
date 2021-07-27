@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.text.Html"/>
+
         <import type="suncor.com.android.model.account.NewEnrollment.EnrollmentType" />
 
         <import type="android.text.InputType" />
@@ -65,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_first_name_label"
                     android:maxLength="20"
+                    android:inputType="textCapWords"
                     app:error="@{vm.firstNameField.error}"
                     app:focusChanged="@{eventHandler::focusChanged}"
                     app:layout_constraintTop_toBottomOf="@id/personal_category_title"
@@ -126,7 +129,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/enrollment_security_question_label"
                     app:layout_constraintTop_toBottomOf="@id/password_validation"
-                    app:text="@={vm.securityQuestionField.text}" />
+                    app:text="@={vm.securityQuestionField.text}"
+                    tools:layout_editor_absoluteX="96dp" />
 
                 <suncor.com.android.uicomponents.SuncorTextInputLayout
                     android:id="@+id/security_answer_input"
@@ -369,7 +373,7 @@
                 android:layout_marginBottom="24dp"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.31"
-                android:text="@{vm.joinLiveData.status == Resource.Status.SUCCESS?@string/enrollment_account_created_message:@string/enrollment_create_account_message}"
+                android:text="@{vm.joinLiveData.status == Resource.Status.SUCCESS?@string/thanks_to_user(vm.firstNameField.text):@string/enrollment_create_account_message}"
                 android:textAppearance="@style/Title1"
                 app:layout_constraintBottom_toTopOf="@id/progress_layout"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -399,8 +403,8 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_check_thick"
-                    android:tint="@color/red"
-                    app:visibleGone="@{vm.joinLiveData.status == Resource.Status.SUCCESS}" />
+                    app:visibleGone="@{vm.joinLiveData.status == Resource.Status.SUCCESS}"
+                    android:tint="@color/red" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
@@ -418,8 +422,71 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:visibleGone="@{vm.joinLiveData.status == Resource.Status.SUCCESS}" />
+                    app:visibleGone="@{vm.joinLiveData.status == Resource.Status.SUCCESS}"
+                    />
             </FrameLayout>
+
+           <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/email_validation_confirmation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:layout_marginStart="12dp"
+                android:lineSpacingMultiplier="1.29"
+                android:textAppearance="@style/Body1"
+                android:text="@string/validate_your_email"
+                app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
+                app:layout_constraintTop_toBottomOf="@id/progress_layout"
+                tools:text="We have sent email to :" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/email_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:layout_marginStart="12dp"
+                android:lineSpacingMultiplier="1.29"
+                android:text="@{vm.emailInputField.text}"
+                android:textSize="17sp"
+                android:fontFamily="@font/gibson_regular"
+                android:textColor="#000"
+                android:textStyle="bold"
+                app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
+                app:layout_constraintTop_toBottomOf="@id/email_validation_confirmation"
+                tools:text="Test123@gmail.com" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/email_validation_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="22dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:lineSpacingMultiplier="1.29"
+                android:text="@{Html.fromHtml(@string/validate_your_email_to_sign_in(vm.getValidationHours(), vm.getEnrollmentPoints()))}"
+                android:textAppearance="@style/Body1"
+                app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
+                app:layout_constraintTop_toBottomOf="@id/email_address"
+                tools:text="Finish your enrollment by clicking the link in your email" />
+
+            <suncor.com.android.ui.common.SuncorButton
+                android:id="@+id/back_to_home_button"
+                style="@style/FilledButton.Red.L"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="38dp"
+                android:onClick="@{() -> eventHandler.navigateToMainActivity()}"
+                android:text="@string/back_to_home"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:visibleGone="@{vm.joinLiveData.status== Resource.Status.SUCCESS}"
+                app:layout_constraintTop_toBottomOf="@id/email_validation_message" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

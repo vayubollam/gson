@@ -25,7 +25,9 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Timber;
 
 public class CardsApiImpl implements CardsApi {
-    private final static String ADAPTER_PATH3 = "/adapters/suncor/v4/rfmp-secure/cards";
+    private final static String GET_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
+    private final static String ADD_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
+    private final static String DELETE_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
     private Gson gson;
 
     public CardsApiImpl(Gson gson) {
@@ -38,7 +40,7 @@ public class CardsApiImpl implements CardsApi {
         MutableLiveData<Resource<ArrayList<CardDetail>>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH3);
+            URI adapterPath = new URI(GET_CARDS_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.send(new WLResponseListener() {
                 @Override
@@ -71,7 +73,7 @@ public class CardsApiImpl implements CardsApi {
         MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH3);
+            URI adapterPath = new URI(ADD_CARDS_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(cardRequest));
             request.send(body, new WLResponseListener() {
@@ -108,7 +110,7 @@ public class CardsApiImpl implements CardsApi {
         MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI(ADAPTER_PATH3);
+            URI adapterPath = new URI(DELETE_CARDS_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.DELETE, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("x-card-number", cardDetail.getCardNumber());
             request.addHeader("x-service-id", cardDetail.getServiceId());

@@ -81,7 +81,7 @@ import suncor.com.android.utilities.Timber;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class CarwashTransactionFragment extends MainActivityFragment implements ExpandableViewListener,
-        PaymentDropDownCallbacks, CardReloadValuesCallbacks, CardCallbacks {
+        PaymentDropDownCallbacks/*, CardReloadValuesCallbacks, CardCallbacks*/ {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
@@ -246,7 +246,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
                    getContext(),
                     map,
-                   this
+                   null
            );
         adapter.setSelectedPosfromValue(100);
 
@@ -261,35 +261,35 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         CardsDropDownAdapter adapter = new CardsDropDownAdapter(
                 getContext(),
                 map,
-                this
+                null
         );
         adapter.setSelectedPosfromValue(100);
 
         binding.valuesLayout.setDropDownData(adapter);
     }
 
-    @Override
+   /* @Override
     public void onSelectCardChanged(String value) {
 
-    }
+    }*/
 
     private void showHelp() {
         DialogFragment fragment = new SelectPumpHelpDialogFragment();
         fragment.show(getFragmentManager(), "dialog");
     }
 
-    @Override
-    public void onValueChanged(String value) {
-        this.preAuth = value;
-        binding.totalAmount.setText(value);
-     //   AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
-              //  new Pair<>(AnalyticsUtils.Param.formSelection, value));
-    }
+//    @Override
+//    public void onValueChanged(String value) {
+//        this.preAuth = value;
+//        binding.totalAmount.setText(value);
+//     //   AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
+//              //  new Pair<>(AnalyticsUtils.Param.formSelection, value));
+//    }
 
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTab,
-                new Pair<>(AnalyticsUtils.Param.infoText, cardTitle));
+      //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTab,
+          //      new Pair<>(AnalyticsUtils.Param.infoText, cardTitle));
     }
 
     private void goBack() {

@@ -67,7 +67,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
     @Inject
     ActionMenuFragment actionMenuFragment;
-    private String currentAndroidVersion;
 
     public ArrayList<Province> getProvinces() {
         return provinces;
@@ -90,7 +89,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                     );
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
                     homeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    homeActivityIntent.putExtra(SplashActivity.CURRENT_ANDROID_VERSION,currentAndroidVersion);
                     application.startActivity(homeActivityIntent);
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
@@ -158,7 +156,8 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, "Action Menu"));
 
-            actionMenuFragment.show(getSupportFragmentManager(), null);
+            if (getSupportFragmentManager().findFragmentByTag("ActionMenu") == null)
+                actionMenuFragment.show(getSupportFragmentManager(), "ActionMenu");
         });
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -211,7 +210,6 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             String[] nameCode = provinceCodeName.split(";");
             provinces.add(new Province(nameCode[1], nameCode[0], nameCode[2]));
         }
-        currentAndroidVersion = getIntent().getStringExtra(SplashActivity.CURRENT_ANDROID_VERSION);
     }
 
     @Override

@@ -3,6 +3,7 @@ package suncor.com.android.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class SettingsResponse {
     private Settings settings;
@@ -27,6 +28,8 @@ public class SettingsResponse {
         private Carwash carwash;
         @SerializedName("payatpump")
         private Pap pap;
+        private String maintenanceMsgFR;
+        private String maintenanceMsgEN;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -54,6 +57,18 @@ public class SettingsResponse {
 
         public Pap getPap() {
             return pap;
+        }
+
+        public String getMaintenanceMsgFR() {
+            return maintenanceMsgFR;
+        }
+
+        public String getMaintenanceMsgEN() {
+            return maintenanceMsgEN;
+        }
+
+        public String getMaintenanceDisplayMsg() {
+           return Locale.getDefault().getDisplayLanguage().equals("English") ? maintenanceMsgEN : maintenanceMsgFR;
         }
     }
 

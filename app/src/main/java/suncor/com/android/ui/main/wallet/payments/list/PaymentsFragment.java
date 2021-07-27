@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
@@ -94,10 +95,17 @@ public class PaymentsFragment extends MainActivityFragment implements WalletTabI
     }
 
     private void navigateToPaymentDetail(PaymentDetail paymentDetail) {
+        if (getView() == null) return;
+
         AnalyticsUtils.setCurrentScreenName(getActivity(), paymentDetail.getFirebaseScreenName());
         WalletFragmentDirections.ActionPaymentsTabToPaymentsDetailsFragment action = WalletFragmentDirections.actionPaymentsTabToPaymentsDetailsFragment();
         action.setCardIndex(viewModel.getIndexofPaymentDetail(paymentDetail));
-        Navigation.findNavController(getView()).navigate(action);
+
+        NavController controller = Navigation.findNavController(getView());
+        if (controller.getCurrentDestination() != null
+                && controller.getCurrentDestination().getAction(action.getActionId()) != null ) {
+            controller.navigate(action);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -121,7 +129,13 @@ public class PaymentsFragment extends MainActivityFragment implements WalletTabI
 
     @Override
     public void navigateToAddCard() {
-        Navigation.findNavController(getView()).navigate(R.id.action_payments_tab_to_addPaymentFragment);
+        if (getView() == null) return;
+
+        NavController controller = Navigation.findNavController(getView());
+        if (controller.getCurrentDestination() != null
+                && controller.getCurrentDestination().getAction(R.id.action_payments_tab_to_addPaymentFragment) != null ) {
+            controller.navigate(R.id.action_payments_tab_to_addPaymentFragment);
+        }
     }
 
     @Override
@@ -132,6 +146,7 @@ public class PaymentsFragment extends MainActivityFragment implements WalletTabI
 
     @Override
     public void onRefresh() {
-        viewModel.refreshPayments();
+        if (viewModel != null)
+            viewModel.refreshPayments();
     }
 }

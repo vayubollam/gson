@@ -58,11 +58,6 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 binding.setIsEditing(true);
             }
         });
-        viewModel.getEmailInputField().getHasFocusObservable().observe(this, event -> {
-            if (event.getContentIfNotHandled()) {
-                binding.setShowEmailSubcopy(true);
-            }
-        });
 
 
         viewModel.bottomSheetAlertObservable.observe(this, event -> {

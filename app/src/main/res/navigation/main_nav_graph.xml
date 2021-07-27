@@ -573,6 +573,26 @@
             <argument android:defaultValue="false"
                 android:name="isSingleTicket" />
         </action>
+        <action
+            android:id="@+id/action_carWashActivationSecurityFragment_to_carWashActivatedFragment"
+            app:destination="@id/carWashActivatedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="carwashResponse"
+                app:nullable="true"
+                app:argType="suncor.com.android.model.carwash.ActivateCarwashResponse" />
+        </action>
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/carWashActivatedFragment"
+        android:name="suncor.com.android.ui.main.carwash.activate.CarwashActivatedFragment"
+        android:label="CarWashActivatedFragment" >
+        <argument
+            android:name="carwashResponse"
+            app:nullable="true"
+            app:argType="suncor.com.android.model.carwash.ActivateCarwashResponse" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashBarCodeFragment"

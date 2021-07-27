@@ -32,10 +32,12 @@ public class ErrorCodes {
 
     public static final String ERR_RESTRICTED_DOMAIN = "SUNCOR024";
     public static final String ERR_EMAIL_ALREADY_EXISTS = "SUNCOR025";
+    public static final String ERR_PASSWORD_USED_EARLIER = "SUNCOR036";
     public static final String ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED = "SUNCOR026";
     public static final String ERR_INVALID_SECURITY_ANSWER = "SUNCOR027";
     public static final String ERR_PASSWORD_CHANGE_REQUIRES_RE_LOGIN = "SUNCOR028";
     public static final String ERR_CARD_LOCK = "SUNCOR030";
+    public static final String ERR_CARD_PENDING_EMAIL_VALIDATION = "SUNCOR037";
 
     //google pay
     public static final String ERR_TRANSACTION_FAILS = "SUNCOR118";

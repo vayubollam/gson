@@ -15,6 +15,7 @@ public class CardDetail {
     private int litresRemaining = INVALID_BALANCE;
     private int unitsRemaining = INVALID_BALANCE;
     private int daysRemaining = INVALID_BALANCE;
+    private String status;
 
     //Defaulting to 5cent if the balance service is down
     private float cpl = 0.05f;
@@ -161,4 +162,8 @@ public class CardDetail {
     public enum CardCategory {
         PPTS, PETRO_CANADA, PARTNER
     }
+
+   public boolean isSuspendedCard(){
+        return (status != null && status.equals("Suspended"));
+   }
 }

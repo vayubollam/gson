@@ -67,7 +67,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black_80"
                             android:textSize="18sp"
-                            android:text="@string/select_pump_select"
+                            android:text="@string/scroll_to_select_pump"
                             app:autoSizeTextType="uniform"
                             android:visibility="visible" />
 
@@ -100,6 +100,8 @@
                             android:orientation="horizontal"
                             tools:listitem="@layout/select_pump_card_item"
                             android:scrollbars="horizontal"
+                            android:scrollbarAlwaysDrawHorizontalTrack="true"
+                            android:scrollbarFadeDuration="0"
                             android:scrollbarThumbHorizontal="@color/red"/>
                     </FrameLayout>
 
