@@ -737,7 +737,8 @@
     <string name="carwash_activated_copy">Follow the car wash instructions and enjoy your wash.</string>
     <string name="carwash_remaining_copy">You have %1$s remaining.</string>
     <string name="carwash_zero_washes">You\’re out of washes. <a href="https://www.petro-canada.ca/en/personal/my-petro-points/reload/wash-and-go/step-1-card-number">Reload your card on Petro-Canada.ca.</a></string>
-    <string name="carwash_zero_days">You\’re out of days. <a href="https://www.petro-canada.ca/en/personal/my-petro-points/reload/wash-and-go/step-1-card-number">Reload your card on Petro-Canada.ca.</a></string>
+    <string name="carwash_zero_days">You\’re out of days. <a href="https://www.petro-canada.ca/en/personal/my-petro-points/reload/season-pass/step-1-card-number">Reload your card on Petro-Canada.ca.</a></string>
+
     <string name="carwash_error_alert_title">Can\’t activate wash</string>
     <string name="carwash_error_alert_copy">Suds! Something went wrong. Try again or contact the in-store attendant.</string>
     <string name="carwash_zero_error_alert_title">Can\’t activate wash</string>
