@@ -722,6 +722,14 @@
 
     <string name="fuelling_almost_done">Vous y êtes presque…</string>
 
+
+    <!-- Carswash Card Reoad -->
+    <string name="reload_season_pass">Recharger %1$s</string>
+    <string name="card">Carte</string>
+    <string name="taxes">Taxes</string>
+    <string name="carwash_payment_term_aggrement">En appuyant sur « Confirmer et autoriser », vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>
+    <string name="confirm_and_pay">CONFIRMER ET PAYER</string>
+
     <string name="reload">Recharger</string>
     <string name="reload_card_alet_title">Impossible de recharger la carte</string>
     <string name="reload_card_alert_description">Cette carte n\'est plus valide. De nouvelles cartes peuvent être achetées sur notre site Web ou au dépanneur.</string>
@@ -729,7 +737,9 @@
     <string name="reload_card_alert_visit_web">visiter le web</string>
     <string name="petro_canada_reload_url">https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte</string>
 
+    <string name="select_value">Valeur</string>
     <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
+
 
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Merci, %1$s!

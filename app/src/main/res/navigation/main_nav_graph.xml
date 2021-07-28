@@ -305,7 +305,25 @@
         android:id="@+id/carWashTransactionFragment"
         android:name="suncor.com.android.ui.main.carwash.reload.CarwashTransactionFragment"
         android:label="CarWashReloadTransactionFragment"
-        tools:layout="@layout/fragment_carwash_transaction" />
+        tools:layout="@layout/fragment_carwash_transaction" >
+        <argument
+            android:name="cardIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="isCardFromCarWash"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="cardNumber"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="cardName"
+            android:defaultValue="null"
+            app:argType="string" />
+
+    </keep_state_fragment>
 
     <keep_state_fragment
         android:id="@+id/addCardFragment"

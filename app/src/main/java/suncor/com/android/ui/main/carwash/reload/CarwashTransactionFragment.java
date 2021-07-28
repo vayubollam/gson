@@ -61,6 +61,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragmentArgs;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.pap.fuelup.FuelLimitDropDownAdapter;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentArgs;
@@ -129,7 +130,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         binding.setLifecycleOwner(this);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         binding.setIsLoading(isLoading);
-
+        if (getArguments() != null) {
+            String cardName = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardName();
+            String cardNumber = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardNumber();
+            viewModel.setCardNumber(cardNumber);
+            viewModel.setCardName(cardName);
+        }
+        binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> handleConfirmAndAuthorizedClick());
 
@@ -240,9 +247,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     private void initializeCardsValues(){
         HashMap<String, String> map = new HashMap<>();
-        map.put("5 washes", "60");
-        map.put("10 washes", "100");
-        map.put("15 washes", "125");
+      //  map.put("5 washes", "60");
+     //   map.put("10 washes", "100");
+     //   map.put("15 washes", "125");
         CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
                    getContext(),
                     map,

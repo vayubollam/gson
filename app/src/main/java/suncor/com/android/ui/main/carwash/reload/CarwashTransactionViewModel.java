@@ -42,6 +42,8 @@ public class CarwashTransactionViewModel extends ViewModel {
     private final PaymentsRepository paymentsRepository;
     private LatLng userLocation;
     private Profile profile;
+    public String cardNumber;
+    public String cardName;
 
 
     @Inject
@@ -52,12 +54,27 @@ public class CarwashTransactionViewModel extends ViewModel {
         this.profile = sessionManager.getProfile();
     }
 
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
+
 
     LiveData<Resource<SettingsResponse>> getSettingResponse() {
         return settingsApi.retrieveSettings();
     }
-
-
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
         return Transformations.map(paymentsRepository.getPayments(true), result -> {
@@ -126,7 +143,6 @@ public class CarwashTransactionViewModel extends ViewModel {
     }
 
     public String getPetroPointsBalance() {
-        return "111,623";
-       // return CardFormatUtils.formatBalance(profile.getPointsBalance());
+        return CardFormatUtils.formatBalance(profile.getPointsBalance());
     }
 }

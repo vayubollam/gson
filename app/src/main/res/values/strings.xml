@@ -732,10 +732,10 @@
 
 
     <!-- Carswash Card Reoad -->
-    <string name="reload_season_pass">Reload Season Pass</string>
+    <string name="reload_season_pass">Reload %1$s</string>
     <string name="card">CARD</string>
     <string name="taxes">Taxes</string>
-    <string name="carwash_payment_term_aggrement">By pressing \"Confirm and pay\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>
+    <string name="carwash_payment_term_aggrement">By pressing \"Confirm and pay\", you agree to our <b><u>Terms and Conditions.</u></b> </string>
     <string name="confirm_and_pay">CONFIRM AND PAY</string>
 
     <string name="reload">RELOAD</string>
@@ -746,11 +746,9 @@
     <string name="petro_canada_reload_url">https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card</string>
 
 
-    <string name="select_value">Select value</string>
-    <string name="petropoints_balance">You\'re starting at %s points</string>
-
-
+    <string name="select_value">Value</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
+
 
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Thanks, %1$s!
