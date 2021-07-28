@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -34,4 +35,18 @@ public class DateUtils {
             return localDateFormat.format(inputDate);
         }
     }
+
+    public static long getTodayTimestamp(){
+        Calendar calender = Calendar.getInstance();
+        calender.set(Calendar.HOUR, 0);
+        calender.set(Calendar.MINUTE, 0);
+        calender.set(Calendar.SECOND, 0);
+        return calender.getTimeInMillis();
+    }
+
+    public static int getTodayDate(){
+        Calendar calender = Calendar.getInstance();
+        return calender.get(Calendar.DATE);
+    }
+
 }
