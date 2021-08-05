@@ -282,7 +282,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     }
 
-        class OtherAmountViewHolder extends RecyclerView.ViewHolder {
+    class OtherAmountViewHolder extends RecyclerView.ViewHolder {
         final OtherAmountBinding binding;
 
         OtherAmountViewHolder(@NonNull OtherAmountBinding binding) {
@@ -307,6 +307,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+
                     try {
                         if (!s.toString().isEmpty()) {
                             otherAmountEditText.removeTextChangedListener(this);
@@ -316,16 +317,41 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             otherAmountEditText.setSelection(otherAmountEditText.getText().length());
                             binding.dollarOffText.setVisibility(View.VISIBLE);
                             binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
+
+                            try {
+                                if(binding.inputField.getText().toString().isEmpty() || amountInDouble == 0.0){
+                                    amountInDouble = 0.0;
+                                    selectedAmountOtherThanZero = false;
+                                }else{
+                                    selectedAmountOtherThanZero = true;
+                                }
+                                getRoundOffValue();
+                                if (amountInDouble > roundOffValue) {
+                                    amountInDouble = roundOffValue;
+                                }
+                                isPreAuthChanges = false;
+                                listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false, true);
+                                if (redeemPointsCallback != null) {
+                                    redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()), "Manual Redemption", selectedAmountOtherThanZero);
+                                }
+                                //listener.expandCollapse();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
                         } else {
                             binding.dollarOffText.setVisibility(View.GONE);
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+
                 }
             });
 
+            //binding.inputField.setOnKeyListener((view,  keyCode, event) -> {
             binding.inputField.setOnEditorActionListener((v, actionId, event) -> {
+                //if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     if (Objects.nonNull(listener)) {
                         try {
@@ -353,10 +379,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 return false;
             });
 
-
         }
-
-
 
         public void setDataOnView() {
             otherAmountEditText = binding.inputField;
