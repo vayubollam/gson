@@ -33,7 +33,8 @@ public class Transaction {
     private String currency;
     private double subtotal;
     private int totalPointsRedeemed;
-    private MutableLiveData<String> correspondingDollars = new MutableLiveData<String>();
+    private final MutableLiveData<String> correspondingDollars = new MutableLiveData<>();
+    private final MutableLiveData<String> rbcAlongWithRedemption = new MutableLiveData<>();
 
     private double taxAmount;
     private String formattedOtherDiscounts;
@@ -53,6 +54,7 @@ public class Transaction {
     private String storeTenantName;
     private String storeNumber;
     private String posTransactionId;
+    private final double rbcWithRedemptionSavings = otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
 
 
     private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
@@ -218,6 +220,16 @@ public class Transaction {
     public MutableLiveData<String> getCorrespondingDollarOffForBurnedPoints(){
           correspondingDollars.postValue(formatter.format(loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
           return correspondingDollars;
+    }
+
+    public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData(){
+        rbcAlongWithRedemption.postValue(formatter.format(otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
+        return rbcAlongWithRedemption;
+
+    }
+
+    public double getRbcAlongWithRedemptionSavings(){
+        return rbcWithRedemptionSavings;
     }
 
 }

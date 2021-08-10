@@ -21,13 +21,11 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.review.model.ReviewErrorCode;
-import com.google.android.play.core.review.testing.FakeReviewManager;
 import com.google.android.play.core.tasks.RuntimeExecutionException;
 import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -35,7 +33,6 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentReceiptBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
-import suncor.com.android.mfp.SigninResponse;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -109,14 +106,14 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
     }
 
     private void observeTransactionData(String transactionId){
         viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt-loading");
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
@@ -126,7 +123,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 isLoading.set(false);
                 int burnedPoints = result.data.getLoyaltyPointsMessages().get(0).getBurnedRewardSummary();
 
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
                         new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
                         new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
@@ -139,7 +136,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 });
                 AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints );
 
-                binding.paymentType.setText(result.data.getPaymentType(getContext(), isGooglePay));
+
+
+                binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
@@ -158,7 +157,7 @@ public class ReceiptFragment extends MainActivityFragment {
                     if (pdfFile == null) return;
                     Uri pdfUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        pdfUri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName() + ".provider", pdfFile);
+                        pdfUri = FileProvider.getUriForFile(requireContext(), requireActivity().getPackageName() + ".provider", pdfFile);
                     } else {
                         pdfUri = Uri.fromFile(pdfFile);
                     }
@@ -179,19 +178,19 @@ public class ReceiptFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        NavController navController = Navigation.findNavController(getView());
+        NavController navController = Navigation.findNavController(requireView());
         navController.popBackStack();
     }
 
     private void checkForReview() {
         //Check for review
-        ReviewManager manager = ReviewManagerFactory.create(getContext());
+        ReviewManager manager = ReviewManagerFactory.create(requireContext());
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 // We can get the ReviewInfo object
                 ReviewInfo reviewInfo = task.getResult();
-                Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+                Task<Void> flow = manager.launchReviewFlow(requireActivity(), reviewInfo);
 
                 flow.addOnCompleteListener(reviewed -> {
                     // The flow has finished. The API does not indicate whether the user
@@ -202,9 +201,11 @@ public class ReceiptFragment extends MainActivityFragment {
             } else {
                 // There was some problem, log or handle the error code.
                 // TODO: Handle error when launching in app review
-                @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
+                @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) Objects.requireNonNull(task.getException())).getErrorCode();
 
-                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
+                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
+
+                }
 
                 goBack();
             }
