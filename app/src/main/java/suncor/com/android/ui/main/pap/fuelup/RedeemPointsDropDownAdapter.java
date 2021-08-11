@@ -139,7 +139,11 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     private String getLocaleDollarOffText(double amt) {
         if (amt == 0.0) {
-            return String.format("%s %s %s", "$", 0, off);
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+                return String.format("%s %s %s", 0, "$", off);
+            }else{
+                return String.format("%s %s %s", "$", 0, off);
+            }
         }
         DecimalFormat df;
         if (amt < 1000) {
@@ -369,7 +373,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             String selectedValue = getDollarOffValue(amountInDouble);
                             if(selectedValue.equals("$ 0 off")){
                                 selectedAmountOtherThanZero = false;
-                            }else if (selectedValue.equals("0  de rabais")){
+                            }else if (selectedValue.equals("0 $ de rabais")){
                                 selectedAmountOtherThanZero = false;
                             }
                             listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, !selectedAmountOtherThanZero, true);

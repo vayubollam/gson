@@ -54,7 +54,6 @@ public class Transaction {
     private String storeTenantName;
     private String storeNumber;
     private String posTransactionId;
-    private final double rbcWithRedemptionSavings = otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
 
 
     private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
@@ -221,6 +220,8 @@ public class Transaction {
           correspondingDollars.postValue(formatter.format(loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
           return correspondingDollars;
     }
+
+    private final double rbcWithRedemptionSavings = otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
 
     public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData(){
         rbcAlongWithRedemption.postValue(formatter.format(otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
