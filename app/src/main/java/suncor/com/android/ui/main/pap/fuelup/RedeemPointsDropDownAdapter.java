@@ -366,6 +366,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                                 amountInDouble = roundOffValue;
                             }
                             isPreAuthChanges = false;
+                            String selectedValue = getDollarOffValue(amountInDouble);
+                            if(selectedValue.equals("$ 0 off")){
+                                selectedAmountOtherThanZero = false;
+                            }else if (selectedValue.equals("0  de rabais")){
+                                selectedAmountOtherThanZero = false;
+                            }
                             listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, !selectedAmountOtherThanZero, true);
                             if (redeemPointsCallback != null) {
                                 redeemPointsCallback.onRedeemPointsChanged(String.valueOf(Double.valueOf(getAmount(amountInDouble)).intValue()), "Manual Redemption", selectedAmountOtherThanZero);

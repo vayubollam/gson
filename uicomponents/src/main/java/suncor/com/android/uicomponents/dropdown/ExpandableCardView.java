@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -215,10 +216,19 @@ public class ExpandableCardView extends CardView implements View.OnClickListener
             selectedSubValue = mAdapter.getSelectedSubValue();
         }
 
+        boolean selectedRedemptionValue = false;
+        if(!TextUtils.isEmpty(selectedValue)) {
+            if (selectedValue.equals("$ 0 off")) {
+                selectedRedemptionValue = true;
+            } else if (selectedValue.equals("0 $ de rabais")) {
+                selectedRedemptionValue = true;
+            }
+        }
+
         ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
         ((TextView)findViewById(R.id.selected_subheader_value)).setText(selectedSubValue);
 
-        if(isFromRedeemSection){
+        if(isFromRedeemSection || selectedRedemptionValue){
             ((TextView)findViewById(R.id.selected_value)).setTextColor(ContextCompat.getColor(mContext, R.color.black_60));
         }else{
             ((TextView)findViewById(R.id.selected_value)).setTextColor(ContextCompat.getColor(mContext, R.color.black_80));
