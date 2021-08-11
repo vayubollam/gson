@@ -19,7 +19,8 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
-import suncor.com.android.data.pap.PapRepository;
+import suncor.com.android.data.cards.CardsRepository;
+import suncor.com.android.data.carwash.CarwashApi;
 import suncor.com.android.data.payments.PaymentsRepository;
 import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.googlepay.GooglePayUtils;
@@ -27,10 +28,8 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
-import suncor.com.android.model.pap.ActiveSession;
-import suncor.com.android.model.pap.PayByGooglePayRequest;
-import suncor.com.android.model.pap.PayByWalletRequest;
-import suncor.com.android.model.pap.PayResponse;
+import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.reload.TransactionReloadData;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
@@ -38,8 +37,10 @@ import suncor.com.android.utilities.Timber;
 
 public class CarwashTransactionViewModel extends ViewModel {
 
+    private final CarwashApi carwashApi;
     private final SettingsApi settingsApi;
     private final PaymentsRepository paymentsRepository;
+    private final CardsRepository cardsRepository;
     private LatLng userLocation;
     private Profile profile;
     public String cardNumber;
@@ -47,10 +48,13 @@ public class CarwashTransactionViewModel extends ViewModel {
 
 
     @Inject
-    public CarwashTransactionViewModel(SettingsApi settingsApi,
-                                       PaymentsRepository paymentsRepository, SessionManager sessionManager) {
+    public CarwashTransactionViewModel(CarwashApi carwashApi, SettingsApi settingsApi,
+                                       PaymentsRepository paymentsRepository, CardsRepository cardsRepository,
+                                       SessionManager sessionManager) {
+        this.carwashApi = carwashApi;
         this.settingsApi = settingsApi;
         this.paymentsRepository = paymentsRepository;
+        this.cardsRepository = cardsRepository;
         this.profile = sessionManager.getProfile();
     }
 
@@ -70,10 +74,8 @@ public class CarwashTransactionViewModel extends ViewModel {
         this.cardName = cardName;
     }
 
-
-
-    LiveData<Resource<SettingsResponse>> getSettingResponse() {
-        return settingsApi.retrieveSettings();
+    LiveData<Resource<TransactionReloadData>> getTransactionData(String cardType) {
+        return carwashApi.reloadTransactionCarwash(cardType);
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
@@ -144,5 +146,13 @@ public class CarwashTransactionViewModel extends ViewModel {
 
     public String getPetroPointsBalance() {
         return CardFormatUtils.formatBalance(profile.getPointsBalance());
+    }
+
+    public LiveData<Resource<SettingsResponse>> getSettings(){
+        return settingsApi.retrieveSettings();
+    }
+
+    public LiveData<Resource<ArrayList<CardDetail>>> getcards(){
+       return cardsRepository.getCards(false);
     }
 }

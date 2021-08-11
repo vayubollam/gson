@@ -21,6 +21,7 @@ import java.net.URISyntaxException
 class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create()): CarwashApi {
     companion object {
         private const val ADAPTER_PATH = "/adapters/suncorcarwash/v1/rfmp-secure"
+        private const val RELOAD_ADAPTER_PATH = "/adapters/suncorcarwash/v1/rfmp-secure"
     }
 
     override fun activateCarwash(activateCarwashRequest: ActivateCarwashRequest): LiveData<Resource<ActivateCarwashResponse>> {
@@ -59,21 +60,20 @@ class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create
     }
 
     override fun reloadTransactionCarwash(cardType: String): LiveData<Resource<TransactionReloadData>> {
-        T Timber.d("request initiate for activate car wash ")
-        val result = MutableLiveData<Resource<ActivateCarwashResponse>>()
+        Timber.d("request initiate for activate car wash ")
+        val result = MutableLiveData<Resource<TransactionReloadData>>()
         result.postValue(Resource.loading())
 
         try {
-            val adapterPath = URI("$ADAPTER_PATH/reloadTransaction/" + cardType)
+            val adapterPath = URI("$RELOAD_ADAPTER_PATH/ReloadTransactionForm/" + cardType)
             val request = WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE)
-           // val body = gson.toJson(activateCarwashRequest)
 
             request.send( object : WLResponseListener {
                 override fun onSuccess(wlResponse: WLResponse) {
                     val jsonText = wlResponse.responseText
                     Timber.d("Activate Carwash success, response:\n$jsonText")
-                    val activateCarwashResponse = gson.fromJson(jsonText, ActivateCarwashResponse::class.java)
-                    result.postValue(Resource.success(activateCarwashResponse))
+                    val transactionReloadData = gson.fromJson(jsonText, TransactionReloadData::class.java)
+                    result.postValue(Resource.success(transactionReloadData))
                 }
 
                 override fun onFailure(wlFailResponse: WLFailResponse) {

@@ -230,6 +230,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                     action.setCardName(viewModel.cards.getValue().get(clickedCardIndex).getCardName());
+                    action.setCardType(viewModel.cards.getValue().get(clickedCardIndex).getCardType().name());
                     action.setCardIndex(clickedCardIndex);
                     action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                     Navigation.findNavController(getView()).navigate(action);

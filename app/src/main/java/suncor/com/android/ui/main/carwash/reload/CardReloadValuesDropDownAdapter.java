@@ -8,11 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.NumberFormat;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import suncor.com.android.R;
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
+import suncor.com.android.model.carwash.reload.TransactionProduct;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 import suncor.com.android.utilities.Timber;
@@ -25,20 +27,21 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     private static final int DROP_DOWN_LAYOUT = 1;
 
-    private  HashMap<String,String> childList;
+    private  List<TransactionProduct> childList;
     private int selectedPos = 0;
     private ChildViewListener listener;
     private CardReloadValuesCallbacks callbackListener;
 
     private final Context mContext;
-    private double manualValue = -1;
+    private String cardType;
 
 
-    CardReloadValuesDropDownAdapter(final Context context, final HashMap<String,String> data, final CardReloadValuesCallbacks callbackListener) {
+    CardReloadValuesDropDownAdapter(final Context context, final List<TransactionProduct> data, final CardReloadValuesCallbacks callbackListener,
+                                    String cardType) {
         this.childList = data;
         this.mContext = context;
         this.callbackListener = callbackListener;
-
+        this.cardType = cardType;
         formatter.setMinimumFractionDigits(0);
     }
 
@@ -51,7 +54,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            ((ChildDropDownViewHolder)holder).setDataOnView(childList.get(String.valueOf(position + 1)));
+            ((ChildDropDownViewHolder)holder).setDataOnView(childList.get(position));
 
     }
 
@@ -65,46 +68,41 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
         return DROP_DOWN_LAYOUT ;
     }
 
-    public void findLastFuelUpTransaction(Double lastFuelupTransaction){
-        if(lastFuelupTransaction != null){
-            childList.forEach((position, value)-> {
-                if(Integer.parseInt(position) != childList.size() && lastFuelupTransaction.intValue() == Integer.parseInt(value) ){
-                    selectedPos =  Integer.parseInt(position) - 1;
-                    if(listener != null) {
-                        listener.onSelectValue(formatter.format(Double.valueOf(value)), null);
-                    }
-                    callbackListener.onValueChanged(formatter.format(Double.valueOf(value)));
-                }
-            });
-            if(selectedPos == 0){
-                manualValue = lastFuelupTransaction.intValue();
-                selectedPos = childList.size() -1 ;
-                if(listener != null) {
-                    listener.onSelectValue(formatter.format(manualValue), null);
-                }
-                callbackListener.onValueChanged(formatter.format(manualValue));
+    public void  setDefautValue(){
+        int position = 0;
+        for(TransactionProduct product: childList){
+            if(cardType.equals("SP") && product.getUnits().equals("90")){
+              selectedPos = position;
+                listener.onSelectValue( String.format(mContext.getString(R.string.cards_days), product.getUnits()),
+                        formatter.format(Double.valueOf(product.getPrice())));
+                return;
+            } else if(cardType.equals("WAG") && product.getUnits().equals("5")){
+                listener.onSelectValue( String.format(mContext.getString(R.string.cards_washes), product.getUnits()),
+                        formatter.format(Double.valueOf(product.getPrice())));
+                return;
             }
-        } else {
-            callbackListener.onValueChanged(getSelectedValue());
+            position++;
         }
     }
 
+
     @Override
     public String getSelectedValue(){
-        /*    if(selectedPos < childList.size() - 1){
-                return formatter.format(Double.parseDouble(childList.get(String.valueOf(selectedPos + 1))));
-            }*/
-     	return "";
+        return  cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), childList.get(selectedPos).getUnits()): String.format(mContext.getString(R.string.cards_washes), childList.get(selectedPos).getUnits());
     }
 
     @Override
     public String getSelectedSubValue() {
-        return null;
+        if(selectedPos < childList.size()){
+            return formatter.format(Double.parseDouble(childList.get(selectedPos).getPrice()));
+        }
+        return "";
     }
 
     @Override
     public void setListener(ChildViewListener listener) {
         this.listener = listener;
+        setDefautValue();
     }
 
 
@@ -117,31 +115,26 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
                 this.binding = binding;
             }
 
-            public void setDataOnView(String price){
-                binding.title.setText("100 days");
-            }
-                /*double value = Double.parseDouble(price);
+            public void setDataOnView(TransactionProduct product){
+                binding.title.setText(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()));
                 try {
-                    binding.title.setText(formatter.format(value));
+                    binding.subTitle.setText(formatter.format(Double.valueOf(product.getPrice())));
                 }catch (NullPointerException ex){
                     Timber.e(TAG,  "Error on inflating data , " + ex.getMessage());
                 }
-                binding.container.setSelected(selectedPos== getAdapterPosition());
 
+                binding.container.setSelected(selectedPos== getAdapterPosition());
                 binding.container.setOnClickListener(v -> {
                     notifyItemChanged(selectedPos);
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
-                    manualValue = -1;
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(formatter.format(value), null);
-                        callbackListener.onValueChanged(formatter.format(value));
-
+                        listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()),
+                                formatter.format(Double.valueOf(product.getPrice())));
                         listener.expandCollapse();
                     }
                 });
-
-            }*/
+            }
         }
 
 }

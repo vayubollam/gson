@@ -9,10 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import suncor.com.android.R;
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
+import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.reload.TransactionProduct;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 import suncor.com.android.utilities.Timber;
@@ -25,19 +29,20 @@ public class CardsDropDownAdapter extends DropDownAdapter {
 
     private static final int DROP_DOWN_LAYOUT = 1;
 
-    private  HashMap<String,String> childList;
+    private List<CardDetail> childList;
     private int selectedPos = 0;
     private ChildViewListener listener;
     private CardCallbacks callbackListener;
+    private String cardNumber;
 
     private final Context mContext;
 
 
-    CardsDropDownAdapter(final Context context, final HashMap<String,String> data, final CardCallbacks callbackListener) {
-        this.childList = data;
+    CardsDropDownAdapter(final Context context, List<CardDetail> cards, final CardCallbacks callbackListener, String cardNumber) {
+        this.childList = cards;
         this.mContext = context;
         this.callbackListener = callbackListener;
-
+        this.cardNumber = cardNumber;
         formatter.setMinimumFractionDigits(0);
     }
 
@@ -50,7 +55,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            ((ChildDropDownViewHolder)holder).setDataOnView(childList.get(String.valueOf(position + 1)));
+            ((ChildDropDownViewHolder)holder).setDataOnView(childList.get(position));
 
     }
 
@@ -65,21 +70,34 @@ public class CardsDropDownAdapter extends DropDownAdapter {
     }
 
 
+    public void  setDefautValue(){
+        int position = 0;
+        for(CardDetail card: childList){
+            if( card.getCardNumber().equals(cardNumber)){
+                selectedPos = position;
+                listener.onSelectValue(card.getCardName(), card.getCardNumber());
+                return;
+            }
+            position++;
+        }
+    }
+
+
 
     @Override
     public String getSelectedValue(){
-
-     	return "abc";
+     	return childList.get(selectedPos).getCardName();
     }
 
     @Override
     public String getSelectedSubValue() {
-        return null;
+        return childList.get(selectedPos).getCardNumber();
     }
 
     @Override
     public void setListener(ChildViewListener listener) {
         this.listener = listener;
+        setDefautValue();
     }
 
 
@@ -93,23 +111,19 @@ public class CardsDropDownAdapter extends DropDownAdapter {
                 this.binding = binding;
             }
 
-            public void setDataOnView(String price){
-                double value = Double.parseDouble(price);
-                try {
-                    binding.title.setText(formatter.format(value));
-                }catch (NullPointerException ex){
-                    Timber.e(TAG,  "Error on inflating data , " + ex.getMessage());
-                }
-                binding.container.setSelected(selectedPos== getAdapterPosition());
+            public void setDataOnView(CardDetail cardDetail){
+                binding.title.setText(cardDetail.getCardName());
+                binding.subTitle.setText(cardDetail.getCardType().equals("SP") ? String.format(mContext.getString(R.string.cards_days), String.valueOf(cardDetail.getBalance())) :
+                        String.format(mContext.getString(R.string.cards_washes), String.valueOf(cardDetail.getBalance())));
+                binding.subheader.setText(cardDetail.getCardNumber());
 
+                binding.container.setSelected(selectedPos== getAdapterPosition());
                 binding.container.setOnClickListener(v -> {
                     notifyItemChanged(selectedPos);
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(formatter.format(value), null);
-                        callbackListener.onSelectCardChanged(formatter.format(value));
-
+                        listener.onSelectValue(cardDetail.getCardName(), cardDetail.getCardNumber());
                         listener.expandCollapse();
                     }
                 });

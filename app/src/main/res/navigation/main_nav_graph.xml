@@ -322,6 +322,10 @@
             android:name="cardName"
             android:defaultValue="null"
             app:argType="string" />
+        <argument
+            android:name="cardType"
+            android:defaultValue="null"
+            app:argType="string" />
 
     </keep_state_fragment>
 

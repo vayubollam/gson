@@ -765,4 +765,8 @@
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
 
+
+    <string name="cards_days">%1$s days</string>
+    <string name="cards_washes">%1$s washes</string>
+
 </resources>

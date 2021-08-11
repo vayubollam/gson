@@ -58,6 +58,8 @@ import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
+import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.reload.TransactionReloadData;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
@@ -92,13 +94,15 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     private CarwashTransactionViewModel viewModel;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private Double lastTransactionValue;
-    SettingsResponse.Pap mPapData;
+    TransactionReloadData transactionReloadData;
+    SettingsResponse.Pap papData;
     PaymentDropDownAdapter paymentDropDownAdapter;
 
     private String cardNumber;
     private String storeId;
     private String preAuth;
     private String userPaymentId;
+    private String cardType;
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -133,6 +137,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         if (getArguments() != null) {
             String cardName = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardName();
             String cardNumber = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardNumber();
+            cardType = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardType();
             viewModel.setCardNumber(cardNumber);
             viewModel.setCardName(cardName);
         }
@@ -162,28 +167,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         initializeCards();
         initializeCardsValues();
 
-       /* viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
+        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-              //  lastTransactionFuelUpLimit = result.data.lastFuelUpAmount;
-                initializeFuelUpLimit();
+                papData = result.data.getSettings().getPap();
             }
-        });*/
-
-       /* viewModel.getSettingResponse().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-                //hideKeyBoard();
-            } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                mPapData = result.data.getSettings().getPap();
-                mPapData.getPreAuthLimits().put(String.valueOf(mPapData.getPreAuthLimits().size() + 1), getString(R.string.other_amount));
-               // initializeFuelUpLimit();
-            }
-        });*/
+        });
 
         viewModel.getPayments(getContext()).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -246,33 +236,46 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void initializeCardsValues(){
-        HashMap<String, String> map = new HashMap<>();
-      //  map.put("5 washes", "60");
-     //   map.put("10 washes", "100");
-     //   map.put("15 washes", "125");
-        CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
-                   getContext(),
-                    map,
-                   null
-           );
-       // adapter.setSelectedPosfromValue(100);
 
-           binding.valuesLayout.setDropDownData(adapter);
+        viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+                //hideKeyBoard();
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                transactionReloadData = result.data;
+                CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
+                        getContext(),
+                        transactionReloadData.getProducts(),
+                        null, cardType
+                );
+                binding.valuesLayout.setDropDownData(adapter);
+            }
+        });
+
     }
 
     private void initializeCards(){
-        HashMap<String, String> map = new HashMap<>();
-        map.put("Wash & Go", "1");
-        map.put("10 washes", "100");
-        map.put("15 washes", "125");
-        CardsDropDownAdapter adapter = new CardsDropDownAdapter(
-                getContext(),
-                map,
-                null
-        );
-       // adapter.setSelectedPosfromValue(100);
+        viewModel.getcards().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+            } else if (result.status == Resource.Status.ERROR) {
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                List<CardDetail> cards = result.data;
+                /*List<CardDetail> selectCards = new ArrayList<>();
+                cards.forEach(card -> {
+                    if(card.getCardType().equals(cardType)){
+                        selectCards.add(card);
+                    }
+                });*/
+                CardsDropDownAdapter adapter = new CardsDropDownAdapter(
+                        getContext(),
+                        cards,
+                        null, cardNumber
+                );
+                binding.cardsLayout.setDropDownData(adapter);
 
-        binding.valuesLayout.setDropDownData(adapter);
+            }
+        });
     }
 
    /* @Override
@@ -353,7 +356,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         try {
             double preAuthPrices = formatter.parse("1").doubleValue();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
-                    BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, mPapData.getP97TenantID());
+                    BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
 
             // Since loadPaymentData may show the UI asking the user to select a payment method, we use
             // AutoResolveHelper to wait for the user interacting with it. Once completed,
