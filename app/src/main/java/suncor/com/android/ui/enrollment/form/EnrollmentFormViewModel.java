@@ -101,7 +101,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                         passwordField.getText(),
                         streetAddressField.getText(),
                         cityField.getText(),
-                        selectedProvince.getId(),
+                        selectedProvince != null? selectedProvince.getId():"",
                         postalCodeField.getText().replace(" ", ""), //Replace the space characters
                         phoneField.getText(),
                         emailOffersField.get(),
