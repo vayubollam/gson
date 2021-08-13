@@ -225,12 +225,13 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 if(cardDetail.isSuspendedCard()){
                     CardsUtil.showSuspendedCardAlert(getContext());
                 } else {
+                    ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
                     //open Reload Transaction form
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
                             action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
-                    action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
-                    action.setCardName(viewModel.cards.getValue().get(clickedCardIndex).getCardName());
-                    action.setCardType(viewModel.cards.getValue().get(clickedCardIndex).getCardType().name());
+                    action.setCardNumber(cardItem.getCardNumber());
+                    action.setCardName(cardItem.getCardName());
+                    action.setCardType(cardItem.getCardType().name());
                     action.setCardIndex(clickedCardIndex);
                     action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                     Navigation.findNavController(getView()).navigate(action);

@@ -302,6 +302,7 @@
     </keep_state_fragment>
 
     <keep_state_fragment
+
         android:id="@+id/carWashTransactionFragment"
         android:name="suncor.com.android.ui.main.carwash.reload.CarwashTransactionFragment"
         android:label="CarWashReloadTransactionFragment"
@@ -326,6 +327,18 @@
             android:name="cardType"
             android:defaultValue="null"
             app:argType="string" />
+
+        <action
+            android:id="@+id/action_fuel_up_to_addPaymentFragment"
+            app:destination="@id/addPaymentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+            <argument
+                android:name="inTransaction"
+                app:argType="boolean"
+                android:defaultValue="true"/>
+        </action>
 
     </keep_state_fragment>
 

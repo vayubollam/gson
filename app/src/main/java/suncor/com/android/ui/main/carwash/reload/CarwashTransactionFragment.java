@@ -75,6 +75,7 @@ import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
+import suncor.com.android.ui.main.wallet.cards.details.ExpandedCardItem;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -84,7 +85,7 @@ import suncor.com.android.utilities.Timber;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class CarwashTransactionFragment extends MainActivityFragment implements ExpandableViewListener,
-        PaymentDropDownCallbacks/*, CardReloadValuesCallbacks, CardCallbacks*/ {
+        PaymentDropDownCallbacks, CardReloadValuesDropDownAdapter.CardReloadValuesCallbacks, CardsDropDownAdapter.CardCallbacks {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
@@ -136,7 +137,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         binding.setIsLoading(isLoading);
         if (getArguments() != null) {
             String cardName = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardName();
-            String cardNumber = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardNumber();
+            cardNumber = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardNumber();
             cardType = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardType();
             viewModel.setCardNumber(cardNumber);
             viewModel.setCardName(cardName);
@@ -247,7 +248,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
                         getContext(),
                         transactionReloadData.getProducts(),
-                        null, cardType
+                        this, cardType
                 );
                 binding.valuesLayout.setDropDownData(adapter);
             }
@@ -261,16 +262,16 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             } else if (result.status == Resource.Status.ERROR) {
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 List<CardDetail> cards = result.data;
-                /*List<CardDetail> selectCards = new ArrayList<>();
+                List<ExpandedCardItem> selectCards = new ArrayList<>();
                 cards.forEach(card -> {
-                    if(card.getCardType().equals(cardType)){
-                        selectCards.add(card);
+                    if(card.getCardType().name().equals(cardType)){
+                        selectCards.add(new ExpandedCardItem(getContext(), card));
                     }
-                });*/
+                });
                 CardsDropDownAdapter adapter = new CardsDropDownAdapter(
                         getContext(),
-                        cards,
-                        null, cardNumber
+                        selectCards,
+                        this, cardNumber
                 );
                 binding.cardsLayout.setDropDownData(adapter);
 
@@ -278,23 +279,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         });
     }
 
-   /* @Override
-    public void onSelectCardChanged(String value) {
-
-    }*/
 
     private void showHelp() {
         DialogFragment fragment = new SelectPumpHelpDialogFragment();
         fragment.show(getFragmentManager(), "dialog");
     }
 
-//    @Override
-//    public void onValueChanged(String value) {
-//        this.preAuth = value;
-//        binding.totalAmount.setText(value);
-//     //   AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
-//              //  new Pair<>(AnalyticsUtils.Param.formSelection, value));
-//    }
+
 
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
@@ -443,5 +434,15 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onSelectCardChanged(String value) {
+
+    }
+
+    @Override
+    public void onValueChanged(String value) {
+
     }
 }

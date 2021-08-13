@@ -17,6 +17,7 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.carwash.reload.TransactionProduct;
+import suncor.com.android.ui.main.wallet.cards.details.ExpandedCardItem;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 import suncor.com.android.utilities.Timber;
@@ -29,7 +30,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
 
     private static final int DROP_DOWN_LAYOUT = 1;
 
-    private List<CardDetail> childList;
+    private List<ExpandedCardItem> childList;
     private int selectedPos = 0;
     private ChildViewListener listener;
     private CardCallbacks callbackListener;
@@ -38,7 +39,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
     private final Context mContext;
 
 
-    CardsDropDownAdapter(final Context context, List<CardDetail> cards, final CardCallbacks callbackListener, String cardNumber) {
+    CardsDropDownAdapter(final Context context, List<ExpandedCardItem> cards, final CardCallbacks callbackListener, String cardNumber) {
         this.childList = cards;
         this.mContext = context;
         this.callbackListener = callbackListener;
@@ -72,10 +73,11 @@ public class CardsDropDownAdapter extends DropDownAdapter {
 
     public void  setDefautValue(){
         int position = 0;
-        for(CardDetail card: childList){
+        for(ExpandedCardItem card: childList){
             if( card.getCardNumber().equals(cardNumber)){
                 selectedPos = position;
                 listener.onSelectValue(card.getCardName(), card.getCardNumber());
+                notifyDataSetChanged();
                 return;
             }
             position++;
@@ -111,10 +113,10 @@ public class CardsDropDownAdapter extends DropDownAdapter {
                 this.binding = binding;
             }
 
-            public void setDataOnView(CardDetail cardDetail){
+            public void setDataOnView(ExpandedCardItem cardDetail){
                 binding.title.setText(cardDetail.getCardName());
-                binding.subTitle.setText(cardDetail.getCardType().equals("SP") ? String.format(mContext.getString(R.string.cards_days), String.valueOf(cardDetail.getBalance())) :
-                        String.format(mContext.getString(R.string.cards_washes), String.valueOf(cardDetail.getBalance())));
+                binding.subTitle.setText(cardDetail.getCardType().equals("SP") ? String.format(mContext.getString(R.string.cards_days), String.valueOf(cardDetail.getCardDetail().getBalance())) :
+                        String.format(mContext.getString(R.string.cards_washes), String.valueOf(cardDetail.getCardDetail().getBalance())));
                 binding.subheader.setText(cardDetail.getCardNumber());
 
                 binding.container.setSelected(selectedPos== getAdapterPosition());
@@ -131,8 +133,10 @@ public class CardsDropDownAdapter extends DropDownAdapter {
             }
         }
 
+    interface CardCallbacks {
+        void onSelectCardChanged(String value);
+    }
+
+
 }
 
-interface CardCallbacks {
-    void onSelectCardChanged(String value);
-}

@@ -137,8 +137,11 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
             }
         }
 
+
+    interface CardReloadValuesCallbacks {
+        void onValueChanged(String value);
+    }
+
 }
 
-interface CardReloadValuesCallbacks {
-    void onValueChanged(String value);
-}
+
