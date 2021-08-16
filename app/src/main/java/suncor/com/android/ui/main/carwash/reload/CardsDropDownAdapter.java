@@ -102,9 +102,6 @@ public class CardsDropDownAdapter extends DropDownAdapter {
         setDefautValue();
     }
 
-
-
-    //fixed limit listing
      class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         FuelUpLimitDropDownItemBinding binding;
 
@@ -115,7 +112,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
 
             public void setDataOnView(ExpandedCardItem cardDetail){
                 binding.title.setText(cardDetail.getCardName());
-                binding.subTitle.setText(cardDetail.getCardType().equals("SP") ? String.format(mContext.getString(R.string.cards_days), String.valueOf(cardDetail.getCardDetail().getBalance())) :
+                binding.subTitle.setText(cardDetail.getCardType().name().equals("SP") ? String.format(mContext.getString(R.string.cards_days), String.valueOf(cardDetail.getCardDetail().getBalance())) :
                         String.format(mContext.getString(R.string.cards_washes), String.valueOf(cardDetail.getCardDetail().getBalance())));
                 binding.subheader.setText(cardDetail.getCardNumber());
 

@@ -89,7 +89,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private FragmentCarwashTransactionBinding binding;
     private CarwashTransactionViewModel viewModel;
@@ -344,6 +344,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     public void requestGooglePaymentTransaction() {
         try {
+            //todo change value
             double preAuthPrices = formatter.parse("1").doubleValue();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());

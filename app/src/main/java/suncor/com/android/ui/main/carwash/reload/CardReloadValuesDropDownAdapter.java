@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -23,7 +25,8 @@ import suncor.com.android.utilities.Timber;
 public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = CardReloadValuesDropDownAdapter.class.getSimpleName();
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private NumberFormat decimalFormatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private static final int DROP_DOWN_LAYOUT = 1;
 
@@ -44,6 +47,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
         this.callbackListener = callbackListener;
         this.cardType = cardType;
         formatter.setMinimumFractionDigits(0);
+        decimalFormatter.setMinimumFractionDigits(2);
         this.lastSelectedValue = lastSelectedValue;
     }
 
@@ -150,7 +154,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     private void calculateDiscounts(Double discountPrices, Double prices, String unit){
         if(discountPrices != null) {
-            listener.onAddDiscount(String.format(mContext.getString(R.string.discount_prices), formatter.format(discountPrices), formatter.format(prices)));
+            listener.onAddDiscount(String.format(mContext.getString(R.string.discount_prices), decimalFormatter.format(discountPrices), decimalFormatter.format(prices)));
             callbackListener.onValueChanged(discountPrices, unit);
         } else {
             listener.onAddDiscount(null);

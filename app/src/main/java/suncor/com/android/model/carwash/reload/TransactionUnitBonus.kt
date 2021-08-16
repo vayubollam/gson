@@ -18,10 +18,9 @@ data class TransactionUnitBonus(
 
             val todayDateTimestamp = DateUtils.getTodayTimestamp();
 
-         //  if(startFormatedDate.time <= todayDateTimestamp && todayDateTimestamp <= endFormatedDate.time){
+           if(startFormatedDate.time <= todayDateTimestamp && todayDateTimestamp <= endFormatedDate.time){
                return bonusUnits.toInt()
-         //  }
-      //  return 0
-
+           }
+        return 0
     }
 }

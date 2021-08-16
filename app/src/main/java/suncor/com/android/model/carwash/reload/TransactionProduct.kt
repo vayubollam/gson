@@ -22,9 +22,11 @@ data class TransactionProduct(
        }
 
     fun getDiscountPrices(): Double? {
-        if(autoReloadDiscount != null && !autoReloadDiscount.isBlank()){
-            if(autoReloadDiscountType.equals("%")){
-              return  price.toDouble() - ((price.toDouble()/100.0f) * autoReloadDiscount.toDouble())
+        if(onlineReloadDiscount != null && !onlineReloadDiscount.isBlank()){
+            if(onlineReloadDiscountType.equals("%")){
+              return  price.toDouble() - ((price.toDouble()/100.0f) * onlineReloadDiscount.toDouble())
+            } else {
+                return  price.toDouble().minus(onlineReloadDiscount.toDouble())
             }
         }
         return null
