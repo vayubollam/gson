@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.carwash;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -30,6 +32,7 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.databinding.FragmentCarwashSecurityBinding;
+import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
@@ -51,6 +54,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
     private CardDetail cardDetail;
     private SuncorButton confirmButton;
+    private View progressBar;
 
     @Inject
     SettingsApi settingsApi;
@@ -96,11 +100,12 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
             viewModel.setClickedCardIndex(clickedCardIndex);
             viewModel.setCardNumber(cardNumber);
         }
-        FragmentCarwashSecurityBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_carwash_security, container, false);
+        FragmentCarwashSecurityBinding binding = FragmentCarwashSecurityBinding.inflate(inflater, container, false);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         pinText1 = binding.pinNum1;
         pinText2 = binding.pinNum2;
         pinText3 = binding.pinNum3;
+        progressBar = binding.progress;
 
         binding.getRoot().post(() -> {
             pinText1.addTextChangedListener(new mInputTextWatcher(PIN_ID.FIRST));
@@ -131,13 +136,17 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     private View.OnClickListener confirmListener = v -> {
         String pin = isPinEntered();
         if (pin != null && pin.length() == VERIFICATION_PIN_LENGTH) {
-            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+         //   getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+             //       WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
             viewModel.setSecurityPin(pin);
             View view = getActivity().getCurrentFocus();
             if (view != null) {
-                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+               // inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
+            progressBar.setVisibility(View.VISIBLE);
 
             if (carWashCardViewModel.getNearestStation().getValue() != null
                     && carWashCardViewModel.getNearestStation().getValue().data != null
@@ -147,7 +156,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
                 viewModel.activateCarwash(storeId).observe(getViewLifecycleOwner(), resource -> {
                     if (resource.status == Resource.Status.LOADING) {
+                        progressBar.setVisibility(View.VISIBLE);
                     } else if (resource.status == Resource.Status.ERROR) {
+
                         handleActivationErrors(resource.message);
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                         if (!resource.data.getResultCode().equals("ok")) {
@@ -161,6 +172,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 navigateToBarcode();
             }
         } else {
+            progressBar.setVisibility(View.GONE);
             confirmButton.setEnabled(false);
             String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title) + "(" + getContext().getString(R.string.carwash_activation_pin_error_message) + ")";
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
@@ -185,7 +197,8 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     };
 
     private void handleActivationErrors(String resultSubcode) {
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+      //  getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        progressBar.setVisibility(View.GONE);
         confirmButton.setEnabled(false);
 
         switch (resultSubcode) {
@@ -252,8 +265,8 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     }
 
     private void navigateToCarwashActivated(ActivateCarwashResponse response) {
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
+       // getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        progressBar.setVisibility(View.GONE);
         NavDirections action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashActivatedFragment(response);
         AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep, "Activate Carwash");
         Navigation.findNavController(getView()).navigate(action);
