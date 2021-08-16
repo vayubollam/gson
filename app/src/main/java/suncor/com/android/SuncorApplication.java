@@ -1,5 +1,8 @@
 package suncor.com.android;
 
+import android.provider.Settings;
+
+import com.kount.api.analytics.AnalyticsCollector;
 import com.mazenrashed.logdnaandroidclient.LogDna;
 import com.worklight.common.Logger;
 import com.worklight.wlclient.HttpClientManager;
@@ -51,6 +54,10 @@ public class SuncorApplication extends DaggerApplication {
         favouriteRepository.observeSessionChanges();
 
         Station.initiateAmenities(this);
+        AnalyticsCollector.setMerchantId(Integer.valueOf(BuildConfig.KOUNT_MERCHANT_ID));
+        AnalyticsCollector.collectAnalytics(true);
+        AnalyticsCollector.setEnvironment(AnalyticsCollector.ENVIRONMENT_TEST);
+
     }
 
     @Override
