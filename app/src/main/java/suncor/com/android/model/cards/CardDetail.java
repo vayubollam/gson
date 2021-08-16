@@ -164,6 +164,7 @@ public class CardDetail {
     }
 
    public boolean isSuspendedCard(){
-        return (status != null && status.equals("Suspended"));
+      //  return (status != null && status.equals("Suspended"));
+       return false;
    }
 }

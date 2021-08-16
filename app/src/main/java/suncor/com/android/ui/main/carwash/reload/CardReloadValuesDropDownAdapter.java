@@ -23,7 +23,7 @@ import suncor.com.android.utilities.Timber;
 public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = CardReloadValuesDropDownAdapter.class.getSimpleName();
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
 
     private static final int DROP_DOWN_LAYOUT = 1;
 
@@ -34,15 +34,17 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     private final Context mContext;
     private String cardType;
+    private String lastSelectedValue;
 
 
     CardReloadValuesDropDownAdapter(final Context context, final List<TransactionProduct> data, final CardReloadValuesCallbacks callbackListener,
-                                    String cardType) {
+                                    String cardType, String lastSelectedValue) {
         this.childList = data;
         this.mContext = context;
         this.callbackListener = callbackListener;
         this.cardType = cardType;
         formatter.setMinimumFractionDigits(0);
+        this.lastSelectedValue = lastSelectedValue;
     }
 
     @NonNull
@@ -71,15 +73,14 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
     public void  setDefautValue(){
         int position = 0;
         for(TransactionProduct product: childList){
-            if(cardType.equals("SP") && product.getUnits().equals("90")){
-              selectedPos = position;
-                listener.onSelectValue( String.format(mContext.getString(R.string.cards_days), product.getUnits()),
+            if(product.getUnits().equals(lastSelectedValue)){
+                selectedPos = position;
+                listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()) ,
                         formatter.format(Double.valueOf(product.getPrice())));
-                return;
-            } else if(cardType.equals("WAG") && product.getUnits().equals("5")){
-                listener.onSelectValue( String.format(mContext.getString(R.string.cards_washes), product.getUnits()),
-                        formatter.format(Double.valueOf(product.getPrice())));
-                return;
+                int bonusUnits = product.getBonusValues();
+                calculateBonus(bonusUnits);
+                calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
+                break;
             }
             position++;
         }
@@ -129,17 +130,37 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()),
+                        listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()) ,
                                 formatter.format(Double.valueOf(product.getPrice())));
-                        listener.expandCollapse();
+                      calculateBonus(product.getBonusValues());
+                      calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
+                      listener.expandCollapse();
                     }
                 });
             }
         }
 
+       private void calculateBonus(int bonusUnits){
+           if(bonusUnits > 0) {
+               listener.onAddBonus(cardType.equals("SP") ? String.format(mContext.getString(R.string.bonus_days), bonusUnits) : String.format(mContext.getString(R.string.bonus_washes), bonusUnits));
+           } else {
+               listener.onAddBonus(null);
+           }
+       }
+
+    private void calculateDiscounts(Double discountPrices, Double prices, String unit){
+        if(discountPrices != null) {
+            listener.onAddDiscount(String.format(mContext.getString(R.string.discount_prices), formatter.format(discountPrices), formatter.format(prices)));
+            callbackListener.onValueChanged(discountPrices, unit);
+        } else {
+            listener.onAddDiscount(null);
+            callbackListener.onValueChanged(prices, unit);
+        }
+    }
+
 
     interface CardReloadValuesCallbacks {
-        void onValueChanged(String value);
+        void onValueChanged(Double value, String unit);
     }
 
 }

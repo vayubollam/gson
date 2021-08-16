@@ -56,6 +56,8 @@
                 app:header_title="@string/card"
                 app:title_color="@color/black_80"
                 app:title_size="16sp"
+                app:expanded_title="@string/select_cards_to_reload"
+                android:paddingVertical="16dp"
                 android:layout_marginTop="16dp" />
 
 
@@ -66,6 +68,7 @@
                 app:header_title="@string/select_value"
                 app:title_color="@color/black_80"
                 app:title_size="16sp"
+                app:expanded_title="@string/select_value_to_reload"
                 android:layout_marginTop="1dp" />
 
             <suncor.com.android.uicomponents.dropdown.ExpandableCardView
@@ -75,7 +78,7 @@
                 app:header_title="@string/payment"
                 app:title_color="@color/black_80"
                 app:title_size="16sp"
-                app:expanded_title="Select payment method"
+                app:expanded_title="@string/slect_payment_method"
                 android:layout_marginTop="1dp" />
 
             <androidx.cardview.widget.CardView
@@ -127,6 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
 
@@ -264,6 +268,14 @@
                 android:src="@drawable/ic_card"
                 android:tint="@color/red" />
         </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/loading_progress_bar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminateTint="@color/red" />
 
     </RelativeLayout>
 

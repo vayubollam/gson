@@ -769,4 +769,13 @@
     <string name="cards_days">%1$s days</string>
     <string name="cards_washes">%1$s washes</string>
 
+    <string name="bonus_days"> + %1$d bonus days</string>
+    <string name="bonus_washes"> + %1$d bonus washes</string>
+
+    <string name="select_cards_to_reload">Select cards to reload</string>
+    <string name="select_value_to_reload">Select value</string>
+    <string name="slect_payment_method">Select payment method</string>
+
+    <string name="discount_prices">%1$s (was %2$s)</string>
+
 </resources>

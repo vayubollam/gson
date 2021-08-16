@@ -12,4 +12,24 @@ data class TransactionProduct(
                                val rewardId: String, val price: String, val autoReloadDiscountType: String,
                                val unitBonuses: List<TransactionUnitBonus>,
                                val pointsBonuses: List<TransactionPointBonus>,
-                            )
+                            ){
+
+    fun  getBonusValues(): Int {
+         if(!unitBonuses.isEmpty() && unitBonuses.size > 0){
+             return unitBonuses[0].getBonusValue();
+         }
+           return 0
+       }
+
+    fun getDiscountPrices(): Double? {
+        if(autoReloadDiscount != null && !autoReloadDiscount.isBlank()){
+            if(autoReloadDiscountType.equals("%")){
+              return  price.toDouble() - ((price.toDouble()/100.0f) * autoReloadDiscount.toDouble())
+            }
+        }
+        return null
+    }
+
+
+
+}

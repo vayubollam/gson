@@ -45,6 +45,9 @@ public class CarwashTransactionViewModel extends ViewModel {
     private Profile profile;
     public String cardNumber;
     public String cardName;
+    private TransactionReloadData transactionReloadData;
+    private String lastSelectedValue;
+
 
 
     @Inject
@@ -72,6 +75,22 @@ public class CarwashTransactionViewModel extends ViewModel {
 
     public void setCardName(String cardName) {
         this.cardName = cardName;
+    }
+
+    public TransactionReloadData getTransactionReloadData() {
+        return transactionReloadData;
+    }
+
+    public void setTransactionReloadData(TransactionReloadData transactionReloadData) {
+        this.transactionReloadData = transactionReloadData;
+    }
+
+    public String getLastSelectedValue() {
+        return lastSelectedValue;
+    }
+
+    public void setLastSelectedValue(String lastSelectedValue) {
+        this.lastSelectedValue = lastSelectedValue;
     }
 
     LiveData<Resource<TransactionReloadData>> getTransactionData(String cardType) {

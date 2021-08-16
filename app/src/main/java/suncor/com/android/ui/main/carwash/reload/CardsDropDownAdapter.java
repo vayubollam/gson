@@ -127,6 +127,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
                     if(Objects.nonNull(listener)) {
                         listener.onSelectValue(cardDetail.getCardName(), cardDetail.getCardNumber());
                         listener.expandCollapse();
+                        callbackListener.onSelectCardChanged(cardDetail.getCardNumber(), cardDetail.getCardNumber());
                     }
                 });
 
@@ -134,7 +135,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
         }
 
     interface CardCallbacks {
-        void onSelectCardChanged(String value);
+        void onSelectCardChanged(String cardId, String cardNumber);
     }
 
 

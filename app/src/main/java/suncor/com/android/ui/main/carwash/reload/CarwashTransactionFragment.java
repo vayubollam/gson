@@ -89,19 +89,16 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.CANADA);
 
     private FragmentCarwashTransactionBinding binding;
     private CarwashTransactionViewModel viewModel;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private Double lastTransactionValue;
-    TransactionReloadData transactionReloadData;
     SettingsResponse.Pap papData;
     PaymentDropDownAdapter paymentDropDownAdapter;
 
     private String cardNumber;
-    private String storeId;
-    private String preAuth;
     private String userPaymentId;
     private String cardType;
 
@@ -158,8 +155,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        storeId = FuelUpFragmentArgs.fromBundle(getArguments()).getStoreId();
-
         if (cardNumber == null) {
             cardNumber = FuelUpFragmentArgs.fromBundle(getArguments()).getPumpNumber();
         }
@@ -237,23 +232,32 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void initializeCardsValues(){
+        if(viewModel.getTransactionReloadData() != null){
+            setCardReloadAdapter();
+        } else {
+            viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
+                if (result.status == Resource.Status.LOADING) {
+                    //hideKeyBoard();
+                } else if (result.status == Resource.Status.ERROR) {
+                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
+                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                    viewModel.setTransactionReloadData(result.data);
+                    viewModel.setLastSelectedValue(cardType.equals("SP") ? "90" : "5");
+                    setCardReloadAdapter();
+                }
+            });
+        }
 
-        viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-                //hideKeyBoard();
-            } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                transactionReloadData = result.data;
-                CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
-                        getContext(),
-                        transactionReloadData.getProducts(),
-                        this, cardType
-                );
-                binding.valuesLayout.setDropDownData(adapter);
-            }
-        });
+    }
 
+    private void setCardReloadAdapter(){
+        CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
+                getContext(),
+                viewModel.getTransactionReloadData().getProducts(),
+                this, cardType, viewModel.getLastSelectedValue()
+        );
+        binding.valuesLayout.setDropDownData(adapter);
+        binding.loadingProgressBar.setVisibility(View.GONE);
     }
 
     private void initializeCards(){
@@ -271,7 +275,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 CardsDropDownAdapter adapter = new CardsDropDownAdapter(
                         getContext(),
                         selectCards,
-                        this, cardNumber
+                        this, viewModel.cardNumber
                 );
                 binding.cardsLayout.setDropDownData(adapter);
 
@@ -333,12 +337,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
             verifyFingerPrints();
         } else {
-            try {
-                double preAuthPrices = formatter.parse(preAuth).doubleValue();
 
-            } catch (ParseException ex){
-                Timber.e(ex.getMessage());
-            }
         }
     }
 
@@ -437,12 +436,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     @Override
-    public void onSelectCardChanged(String value) {
-
+    public void onSelectCardChanged(String cardId, String cardNumber) {
+      viewModel.setCardNumber(cardNumber);
     }
 
     @Override
-    public void onValueChanged(String value) {
-
+    public void onValueChanged(Double value, String unit) {
+       binding.totalAmount.setText(formatter.format(value));
+       viewModel.setLastSelectedValue(unit);
     }
 }
