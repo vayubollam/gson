@@ -3,7 +3,9 @@ package suncor.com.android.ui.main.wallet.cards.details;
 import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -120,7 +122,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -237,6 +239,11 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     Navigation.findNavController(getView()).navigate(action);
                 }
         };
+
+    private View.OnClickListener gpaySaveToWalletListener = view -> {
+        //todo chnage with real jwt token
+        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://pay.google.com/gp/v/save/")));
+    };
 
 
 
