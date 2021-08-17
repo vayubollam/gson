@@ -121,7 +121,6 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                binding.setTransaction(result.data);
                 int burnedPoints = result.data.getLoyaltyPointsMessages().get(0).getBurnedRewardSummary();
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
@@ -146,15 +145,15 @@ public class ReceiptFragment extends MainActivityFragment {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
+                binding.setTransaction(result.data);
 
-
-              /*  if(result.data.getRbcAlongWithRedemptionSavings() >0.0){
+                if(result.data.getRbcAlongWithRedemptionSavings() >0.0){
 
                     binding.greetingsSaving.setVisibility(View.VISIBLE);
                     binding.greetingsSaving.setText(String.format(getString(R.string.transaction_saved), result.data.getRbcAlongWithRedemptionSavingsMutableData()));
                 }else{
                     binding.greetingsSaving.setVisibility(View.GONE);
-                }*/
+                }
 
                 binding.shareButton.setOnClickListener(v -> {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));

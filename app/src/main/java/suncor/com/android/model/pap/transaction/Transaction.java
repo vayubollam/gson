@@ -221,10 +221,19 @@ public class Transaction {
           return correspondingDollars;
     }
 
-    private final double rbcWithRedemptionSavings = otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
+    private final double rbcWithRedemptionSavings = otherDiscount; //otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
 
     public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData(){
-        rbcAlongWithRedemption.postValue(formatter.format(otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
+
+            if(otherDiscount > 0.0 && loyaltyPointsMessages.get(0).burnedRewardSummary > 0) {
+                rbcAlongWithRedemption.postValue(formatter.format(otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
+            } else if(otherDiscount > 0.0 && loyaltyPointsMessages.get(0).burnedRewardSummary == 0) {
+                rbcAlongWithRedemption.postValue(formatter.format(otherDiscount));
+            } else if(otherDiscount == 0.0 && loyaltyPointsMessages.get(0).burnedRewardSummary > 0) {
+                rbcAlongWithRedemption.postValue(formatter.format(loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
+            } else if(otherDiscount == 0.0 && loyaltyPointsMessages.get(0).burnedRewardSummary == 0) {
+
+            }
         return rbcAlongWithRedemption;
 
     }
