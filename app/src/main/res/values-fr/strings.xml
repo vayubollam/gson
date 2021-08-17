@@ -496,7 +496,7 @@
     <string name="redeem_egift_new_balance">Nouveau solde</string>
     <string name="rewards_signedin_egift_value_in_dollar_generic">%d $</string>
     <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
-    <string name="redeem_terms_agreement">Les transactions sont irréversibles. En choisissant « Confirmer et échanger », vous acceptez <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">les conditions.</a></string>
+    <string name="redeem_terms_agreement">Les transactions sont irréversibles. En choisissant « Confirmer et échanger », vous acceptez <a href="https://www.petro-canada.ca/fr/personnel/conditions">les conditions.</a></string>
     <string name="redeem_egoft_total_points">Total</string>
 
     <string name="redeeming">Échange en cours…</string>
