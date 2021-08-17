@@ -22,7 +22,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -46,16 +44,13 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
-import suncor.com.android.utilities.Timber;
 
 public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
@@ -71,8 +66,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
-
-    private SuncorButton confirmButton;
 
 
     @Override
@@ -214,25 +207,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
-                } else if(cardDetail.getStatus().equals(getString(R.string.card_status))) {
-                    AlertDialog alertWashDialog = new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.carwash_zero_error_alert_title)
-                            .setMessage(R.string.carwash_zero_error_alert_message)
-                            .setNegativeButton(R.string.carwash_zero_alert_close, (dialog, which) -> {
-                                dialog.dismiss();
-                            })
-                            .setPositiveButton(R.string.carwash_zero_alert_buy, (dialog, which) -> {
-                                dialog.dismiss();
-
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")
-                                                ? "https://www.petro-canada.ca/fr/personnel/lave-auto"
-                                                : "https://www.petro-canada.ca/en/personal/car-wash"));
-                                startActivity(browserIntent);
-                                confirmButton.setEnabled(true);
-                            }).create();
-                    alertWashDialog.setCanceledOnTouchOutside(false);
-                    alertWashDialog.show();
+                } else if(cardDetail.isSuspendedCard()) {
+                    CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
                     AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
@@ -266,13 +242,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
         };
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {
-        //todo chnage with real jwt token
+        //todo pass the real jwt token with url
         getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://pay.google.com/gp/v/save/")));
     };
-
-
-
-
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";

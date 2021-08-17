@@ -9,6 +9,8 @@ import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.util.Locale;
+
 import suncor.com.android.R;
 
 public class CardsUtil {
@@ -102,6 +104,24 @@ public class CardsUtil {
                             new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName()));
                 });
         builder.show();
+    }
+
+    public static void ShowSuspendedCardAlertForActivateWash(Context context){
+        AlertDialog alertWashDialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.carwash_zero_error_alert_title)
+                .setMessage(R.string.carwash_zero_error_alert_message)
+                .setNegativeButton(R.string.carwash_zero_alert_close, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setPositiveButton(R.string.carwash_zero_alert_buy, (dialog, which) -> {
+                    dialog.dismiss();
+
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(context.getString(R.string.petro_canada_carwash)));
+                    context.startActivity(browserIntent);
+                }).create();
+        alertWashDialog.setCanceledOnTouchOutside(false);
+        alertWashDialog.show();
     }
 
 }
