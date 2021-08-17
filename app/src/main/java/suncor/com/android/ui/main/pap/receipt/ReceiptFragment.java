@@ -136,8 +136,6 @@ public class ReceiptFragment extends MainActivityFragment {
                 });
                 AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints );
 
-
-
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
@@ -148,6 +146,14 @@ public class ReceiptFragment extends MainActivityFragment {
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
                 binding.setTransaction(result.data);
+
+                if(result.data.getRbcAlongWithRedemptionSavings() >0.0){
+
+                    binding.greetingsSaving.setVisibility(View.VISIBLE);
+                    binding.greetingsSaving.setText(String.format(getString(R.string.transaction_saved), result.data.getRbcAlongWithRedemptionSavingsMutableData()));
+                }else{
+                    binding.greetingsSaving.setVisibility(View.GONE);
+                }
 
                 binding.shareButton.setOnClickListener(v -> {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));

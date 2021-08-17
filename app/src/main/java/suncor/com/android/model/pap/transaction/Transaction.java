@@ -221,8 +221,6 @@ public class Transaction {
           return correspondingDollars;
     }
 
-    private final double rbcWithRedemptionSavings = otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
-
     public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData(){
         rbcAlongWithRedemption.postValue(formatter.format(otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
         return rbcAlongWithRedemption;
@@ -230,6 +228,7 @@ public class Transaction {
     }
 
     public double getRbcAlongWithRedemptionSavings(){
+        double rbcWithRedemptionSavings =  otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
         return rbcWithRedemptionSavings;
     }
 
