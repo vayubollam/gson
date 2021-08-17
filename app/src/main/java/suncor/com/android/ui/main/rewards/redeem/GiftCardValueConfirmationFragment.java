@@ -146,9 +146,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.redeemTotalLayoutFixShadow.setAlpha(0f);
         binding.changeValueBtn.setOnClickListener(v -> {
-            if(viewModel.getGiftCardItem().getTitle().equals(getString(R.string.merchant_petrocanada_card))) {
-                return;
-            }
             binding.cardValueTxt.setText(getString(R.string.redeem_egift_card_select_value));
             binding.changeValueBtn.setEnabled(false);
             binding.changeValueBtn.animate().alpha(0.0f).setDuration(ANIM_DURATION).setListener(new AnimatorListenerAdapter() {
