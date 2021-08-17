@@ -85,8 +85,8 @@
                                 android:text="@{@string/transaction_saved(transaction.getRbcAlongWithRedemptionSavingsMutableData)}"
                                 android:textColor="@color/red"
                                 android:textSize="16sp"
-                                android:textStyle="bold" />
-<!--                                app:visibleGone="@{transaction.getRbcAlongWithRedemptionSavings > 0}" />-->
+                                android:textStyle="bold"
+                                app:visibleGone="@{transaction.getRbcAlongWithRedemptionSavings > 0}" />
 
                         </LinearLayout>
 
