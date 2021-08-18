@@ -206,6 +206,12 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         }
     }
 
+    public void hideExpandDropdownButton(){
+        findViewById(R.id.image_button_expand).setVisibility(View.GONE);
+        findViewById(R.id.header_layout).setOnClickListener(null);
+        findViewById(R.id.image_button_expand).setOnClickListener(null);
+    }
+
     private void setTitle(String title) {
         if (title != null) {
             textViewTitle.setText(title.toUpperCase());

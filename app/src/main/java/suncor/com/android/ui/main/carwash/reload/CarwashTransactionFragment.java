@@ -278,6 +278,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         this, viewModel.cardNumber
                 );
                 binding.cardsLayout.setDropDownData(adapter);
+                if(selectCards.size() == 1){
+                    binding.cardsLayout.hideExpandDropdownButton();
+                }
 
             }
         });
