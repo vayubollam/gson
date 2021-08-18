@@ -11,11 +11,11 @@ public class CardDetail {
     private String cardNumberEncrypted;
     private String serviceId;
     private String ticketNumber;
+    private String status;
     private int pointsBalance = INVALID_BALANCE;
     private int litresRemaining = INVALID_BALANCE;
     private int unitsRemaining = INVALID_BALANCE;
     private int daysRemaining = INVALID_BALANCE;
-    private String status;
 
     //Defaulting to 5cent if the balance service is down
     private float cpl = 0.05f;
@@ -44,6 +44,10 @@ public class CardDetail {
 
     public String getTicketNumber() {
         return ticketNumber;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public int getBalance() {
@@ -164,7 +168,6 @@ public class CardDetail {
     }
 
    public boolean isSuspendedCard(){
-      //  return (status != null && status.equals("Suspended"));
-       return false;
+        return (status != null && status.equals("Suspended"));
    }
 }

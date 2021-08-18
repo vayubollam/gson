@@ -766,4 +766,5 @@
     <string name="slect_payment_method">Sélectionnez un mode de paiement</string>
 
     <string name="discount_prices">%1$s (a été %2$s)</string>
+    <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 </resources>

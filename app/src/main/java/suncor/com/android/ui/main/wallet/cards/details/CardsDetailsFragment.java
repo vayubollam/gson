@@ -3,7 +3,9 @@ package suncor.com.android.ui.main.wallet.cards.details;
 import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -20,7 +22,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -120,7 +121,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -206,6 +207,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
+                } else if(cardDetail.isSuspendedCard()) {
+                    CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
                     AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
@@ -238,9 +241,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
         };
 
-
-
-
+    private View.OnClickListener gpaySaveToWalletListener = view -> {
+        //todo pass the real jwt token with url
+        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://pay.google.com/gp/v/save/")));
+    };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";

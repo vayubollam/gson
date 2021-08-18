@@ -765,7 +765,6 @@
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
 
-
     <string name="cards_days">%1$s days</string>
     <string name="cards_washes">%1$s washes</string>
 
@@ -777,5 +776,6 @@
     <string name="slect_payment_method">Select payment method</string>
 
     <string name="discount_prices">%1$s (was %2$s)</string>
+    <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
 
 </resources>
