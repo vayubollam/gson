@@ -73,12 +73,12 @@ public class PapRepository {
        return papApi.cancelTransaction(transactionId);
     }
 
-    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest, LatLng userLocation) {
-        return papApi.authorizePaymentByGooglePay(payByGooglePayRequest, userLocation);
+    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest, LatLng userLocation, String kSessionId) {
+        return papApi.authorizePaymentByGooglePay(payByGooglePayRequest, userLocation, kSessionId);
     }
 
-    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation) {
-        return papApi.authorizePaymentByWallet(request, userLocation);
+    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation, String kSessionId) {
+        return papApi.authorizePaymentByWallet(request, userLocation, kSessionId);
     }
 
 }

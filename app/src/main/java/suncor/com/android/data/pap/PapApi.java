@@ -16,8 +16,8 @@ import suncor.com.android.model.pap.transaction.Transaction;
 public interface PapApi {
     LiveData<Resource<ActiveSession>> activeSession();
     LiveData<Resource<P97StoreDetailsResponse>> storeDetails(String storeId);
-    LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest request, LatLng userLocation);
-    LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation);
+    LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest request, LatLng userLocation, String kSessionId);
+    LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation, String kSessionId);
     LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId);
     LiveData<Resource<Boolean>> cancelTransaction(String transactionId);
 }

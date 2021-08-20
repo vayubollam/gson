@@ -105,7 +105,7 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest, LatLng userLocation) {
+    public LiveData<Resource<PayResponse>> authorizePaymentByGooglePay(PayByGooglePayRequest payByGooglePayRequest, LatLng userLocation, String kSessionId) {
         Timber.d("request initiate for authorized google pay payment ");
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
@@ -117,7 +117,7 @@ public class PapApiImpl implements PapApi {
             request.addHeader("deviceOS", "Android");
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
-
+            request.addHeader("kountSessionId", kSessionId);
 
             String body = gson.toJson(payByGooglePayRequest);
             Timber.i("Send Pay By Google Pay, string: " + payByGooglePayRequest.toString() +  "\nbody: " + body);
@@ -148,7 +148,7 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest payByWalletRequest, LatLng userLocation) {
+    public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest payByWalletRequest, LatLng userLocation, String kSessionId) {
         Timber.d("request initiate for authorized wallet payment ");
         MutableLiveData<Resource<PayResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
@@ -160,6 +160,7 @@ public class PapApiImpl implements PapApi {
             request.addHeader("deviceOS", "Android");
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
+            request.addHeader("kountSessionId", kSessionId);
 
             String body = gson.toJson(payByWalletRequest);
             Timber.i("Send Pay By Wallet, string: " + payByWalletRequest.toString() +  "\nbody: " + body);

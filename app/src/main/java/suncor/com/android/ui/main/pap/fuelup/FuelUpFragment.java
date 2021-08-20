@@ -40,6 +40,7 @@ import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
+import com.kount.api.analytics.AnalyticsCollector;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -101,6 +102,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String storeId;
     private String preAuth;
     private String userPaymentId;
+    private String kSessionId;
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -117,7 +119,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
-
+        kSessionId = AnalyticsCollector.getSessionId();
         LocationLiveData locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
             locationLiveData.observe(this, result -> {
@@ -379,7 +381,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         } else if (preAuth != null) {
             try {
                 double preAuthPrices = formatter.parse(preAuth).doubleValue();
-                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
+                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId), kSessionId).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
@@ -504,7 +506,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
         double preAuthPrices = formatter.parse(preAuth).doubleValue();
-        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken).observe(getViewLifecycleOwner(), result -> {
+        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken, kSessionId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
