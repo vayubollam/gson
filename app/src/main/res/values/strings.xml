@@ -503,7 +503,9 @@
     <string name="redeem_egift_card_select_value">Select value</string>
     <string name="redeem_egoft_total_points">Total</string>
     <string name="redeem_egift_address_disclaimer">If you changed your email address and then redeem for an eGift card, you will not be able to redeem points online or in-store for 24 hours.</string>
-    <string name="redeem_terms_agreement">Transactions are irreversible. By selecting \"confirm and redeem,\" you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions">terms and conditions</a></string>
+
+    <string name="redeem_terms_agreement">Transactions are irreversible. By selecting \"confirm and redeem,\" you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions">Terms and conditions.</a></string>
+
     <string name="rewards_signedin_egift_value_in_dollar_generic">$%d</string>
     <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
     <string name="redeem_egift_current_value">Value</string>
