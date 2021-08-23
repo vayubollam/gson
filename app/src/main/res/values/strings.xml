@@ -778,4 +778,8 @@
     <string name="discount_prices">%1$s (was %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
 
+    <string name="transacation_back_alert_title">Stop reload?</string>
+    <string name="transacation_back_alert_msg">If you leave this screen you’ll lose your selections.</string>
+    <string name="transacation_back_alert_cancel">Cancel</string>
+    <string name="transacation_back_alert_leave">Leave screen</string>
 </resources>

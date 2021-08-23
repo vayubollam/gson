@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.carwash.reload;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -301,7 +302,15 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+           Alerts.prepareCustomDialog(getActivity(), getString(R.string.transacation_back_alert_title),
+                   getString(R.string.transacation_back_alert_msg), getString(R.string.transacation_back_alert_leave),getString(R.string.transacation_back_alert_cancel),
+                   new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int i) {
+                           Navigation.findNavController(getView()).popBackStack();
+                       }
+                   }, "carwash_transaction_form"
+           ).show();
     }
 
 
@@ -382,19 +391,11 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         break;
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
-                    /*    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google pay transaction cancel by user"),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));*/
-                        break;
+                      break;
 
                     case AutoResolveHelper.RESULT_ERROR:
                         Status status = AutoResolveHelper.getStatusFromIntent(data);
-//                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-//                                new Pair<>(AnalyticsUtils.Param.errorMessage, "Google Pay error , message" + status.getStatusMessage()),
-//                                new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
-//                        Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
-//
-//
+
                     break;
                 }
         }
