@@ -56,8 +56,12 @@ public class SuncorApplication extends DaggerApplication {
         Station.initiateAmenities(this);
         AnalyticsCollector.setMerchantId(Integer.valueOf(BuildConfig.KOUNT_MERCHANT_ID));
         AnalyticsCollector.collectAnalytics(true);
-        AnalyticsCollector.setEnvironment(AnalyticsCollector.ENVIRONMENT_TEST);
 
+        if (BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")) {
+            AnalyticsCollector.setEnvironment(AnalyticsCollector.ENVIRONMENT_PRODUCTION);
+        } else {
+            AnalyticsCollector.setEnvironment(AnalyticsCollector.ENVIRONMENT_TEST);
+        }
     }
 
     @Override
