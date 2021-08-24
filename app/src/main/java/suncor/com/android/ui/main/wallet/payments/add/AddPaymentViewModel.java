@@ -11,6 +11,7 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.kount.api.analytics.AnalyticsCollector;
 
 import javax.inject.Inject;
 
@@ -60,6 +61,7 @@ public class AddPaymentViewModel extends ViewModel {
                             .appendQueryParameter("city", profile.getCity())
                             .appendQueryParameter("province", profile.getProvince())
                             .appendQueryParameter("zipCode", profile.getPostalCode())
+                            .appendQueryParameter("kountSessionId", AnalyticsCollector.getSessionId())
                             .build()
                     : null, result.message));
             return data;
