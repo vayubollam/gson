@@ -326,6 +326,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                                 if(binding.inputField.getText().toString().isEmpty() || amountInDouble == 0.0){
                                     amountInDouble = 0.0;
                                     selectedAmountOtherThanZero = false;
+                                } else if(amountInDouble < 10.0) {
+                                    selectedAmountOtherThanZero = false;
                                 }else{
                                     selectedAmountOtherThanZero = true;
                                 }
