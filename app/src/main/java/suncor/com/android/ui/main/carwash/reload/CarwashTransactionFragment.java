@@ -53,29 +53,19 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCarwashTransactionBinding;
-import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.googlepay.GooglePayUtils;
-import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.cards.CardDetail;
-import suncor.com.android.model.carwash.reload.TransactionReloadData;
-import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.main.carwash.CarWashActivationSecurityFragmentArgs;
+import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.pap.fuelup.FuelLimitDropDownAdapter;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentArgs;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 import suncor.com.android.ui.main.pap.fuelup.PaymentDropDownAdapter;
 import suncor.com.android.ui.main.pap.fuelup.PaymentDropDownCallbacks;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.wallet.cards.details.ExpandedCardItem;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
@@ -86,7 +76,8 @@ import suncor.com.android.utilities.Timber;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class CarwashTransactionFragment extends MainActivityFragment implements ExpandableViewListener,
-        PaymentDropDownCallbacks, CardReloadValuesDropDownAdapter.CardReloadValuesCallbacks, CardsDropDownAdapter.CardCallbacks {
+        PaymentDropDownCallbacks, CardReloadValuesDropDownAdapter.CardReloadValuesCallbacks, CardsDropDownAdapter.CardCallbacks,
+        OnBackPressedListener {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
@@ -131,7 +122,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCarwashTransactionBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         binding.setIsLoading(isLoading);
         if (getArguments() != null) {
             String cardName = CarwashTransactionFragmentArgs.fromBundle(getArguments()).getCardName();
@@ -174,7 +164,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
         viewModel.getPayments(getContext()).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
-                //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
                 List<PaymentListItem> payments = result.data;
                 payments = new ArrayList<>();
@@ -238,7 +227,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         } else {
             viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.LOADING) {
-                    //hideKeyBoard();
                 } else if (result.status == Resource.Status.ERROR) {
                     Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -313,6 +301,10 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
            ).show();
     }
 
+    @Override
+    public void onBackPressed() {
+        goBack();
+    }
 
     @Override
     public void onPaymentChanged(String userPaymentId) {
