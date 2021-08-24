@@ -781,5 +781,5 @@
     <string name="transacation_back_alert_title">Stop reload?</string>
     <string name="transacation_back_alert_msg">If you leave this screen you’ll lose your selections.</string>
     <string name="transacation_back_alert_cancel">Cancel</string>
-    <string name="transacation_back_alert_leave">Leave screen</string>
+    <string name="transacation_back_alert_leave">Exit</string>
 </resources>

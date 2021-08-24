@@ -269,7 +269,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 List<CardDetail> cards = result.data;
                 List<ExpandedCardItem> selectCards = new ArrayList<>();
                 cards.forEach(card -> {
-                    if(card.getCardType().name().equals(cardType)){
+                    if(card.getCardType().name().equals(cardType) && !card.isSuspendedCard()){
                         selectCards.add(new ExpandedCardItem(getContext(), card));
                     }
                 });

@@ -767,4 +767,11 @@
 
     <string name="discount_prices">%1$s (a été %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
+
+    <string name="transacation_back_alert_title">Interrompre la recharge?</string>
+    <string name="transacation_back_alert_msg">Si vous quittez cet écran, vous perdrez vos sélections.</string>
+    <string name="transacation_back_alert_cancel">Annuler</string>
+    <string name="transacation_back_alert_leave">Quitter</string>
+
+
 </resources>
