@@ -2,6 +2,7 @@ package suncor.com.android;
 
 import android.provider.Settings;
 
+import com.google.android.gms.wallet.WalletConstants;
 import com.kount.api.analytics.AnalyticsCollector;
 import com.mazenrashed.logdnaandroidclient.LogDna;
 import com.worklight.common.Logger;
@@ -56,12 +57,8 @@ public class SuncorApplication extends DaggerApplication {
         Station.initiateAmenities(this);
         AnalyticsCollector.setMerchantId(Integer.valueOf(BuildConfig.KOUNT_MERCHANT_ID));
         AnalyticsCollector.collectAnalytics(true);
-
-        if (BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")) {
-            AnalyticsCollector.setEnvironment(AnalyticsCollector.ENVIRONMENT_PRODUCTION);
-        } else {
-            AnalyticsCollector.setEnvironment(AnalyticsCollector.ENVIRONMENT_TEST);
-        }
+        AnalyticsCollector.setEnvironment(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")
+                ? AnalyticsCollector.ENVIRONMENT_PRODUCTION : AnalyticsCollector.ENVIRONMENT_TEST);
     }
 
     @Override
