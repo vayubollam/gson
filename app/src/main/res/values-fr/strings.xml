@@ -398,13 +398,13 @@
     <string name="home_enrollment_greeting_title">Merci !</string>
     <string name="home_enrollment_greeting_dismiss">Fermer</string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
-    <string name="offers_banner_2_text">Paiement sans contact maintenant disponible dans l\'application</string>
+    <string name="offers_banner_2_text">Paiement sans contact maintenant disponible dans l\'application.</string>
     <string name="offers_banner_2_button">Lancer la visite des fonctionnalités</string>
     <string name="offers_banner_3a_text">Petro\u2011Points🅪 = articles gratuits.</string>
     <string name="offers_banner_3a_button">Découvrez les Petro-Points</string>
     <string name="offers_banner_3b_text">Échangez des points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
     <string name="offers_banner_3b_button">Lancer ma carte</string>
-    <string name="offers_banner_4_text">Activez notre lave-auto directement de votre application</string>
+    <string name="offers_banner_4_text">Activez notre lave-auto directement de votre application.</string>
     <string name="offers_banner_4_button">Trouver un lave-auto</string>
     <string name="offers_banner_5_text">Économisez 3 ¢ le litre à chaque plein avec une carte RBC liée.</string>
     <string name="offers_banner_5_button">Pour commencer</string>
@@ -654,6 +654,7 @@
 
     <string name="pump">Distributeur</string>
     <string name="payment">PAIEMENT</string>
+    <string name="select_payment_method">Sélectionnez un mode de paiement</string>
     <string name="pre_authorized">Préautorisation</string>
     <string name="tax_inclusion">Taxes incluses</string>
     <string name="payment_term_aggrement">En appuyant sur « Confirmer et autoriser », vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>
@@ -722,5 +723,17 @@
     <string name="fuelling_almost_done">Vous y êtes presque…</string>
     <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
-
+    <!-- Carwash POE -->
+    <string name="thank_you_carwash">Merci, %1$s!
+        La propreté, droit devant.</string>
+    <string name="carwash_activated_copy">Suivez les directives et profitez de votre lavage.</string>
+    <string name="carwash_remaining_copy">Il vous reste %1$s.</string>
+    <string name="carwash_zero_washes">Vous n\'avez plus de lavages. <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points/recharger/lavez-partez/etape-1-numero-carte ">Rechargez votre carte à Petro-Canada.ca.</a></string>
+    <string name="carwash_zero_days">Vous n\'avez plus de jours. <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points/recharger/carte-acces-lave-auto/etape-1-numero-carte">Rechargez votre carte à Petro-Canada.ca.</a></string>
+    <string name="carwash_error_alert_title">Impossible d\'activer le lavage</string>
+    <string name="carwash_error_alert_copy">Mousse alors! Quelque chose a mal tourné. Essayez de nouveau ou communiquez avec le préposé.</string>
+    <string name="carwash_zero_error_alert_title">Impossible d\'activer le lavage</string>
+    <string name="carwash_zero_error_alert_message">Cette carte n\'est plus valide. De nouvelles cartes peuvent être achetées sur notre site Web ou au dépanneur.</string>
+    <string name="carwash_zero_alert_close">Annuler</string>
+    <string name="carwash_zero_alert_buy">Visiter le site Web</string>
 </resources>

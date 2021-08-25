@@ -106,7 +106,7 @@
                 app:header_title="@string/payment"
                 app:title_color="@color/black_80"
                 app:title_size="16sp"
-                app:expanded_title="Select payment method"
+                app:expanded_title="@string/select_payment_method"
                 android:layout_marginTop="1dp" />
 
             <androidx.cardview.widget.CardView

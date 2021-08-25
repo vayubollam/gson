@@ -5,8 +5,16 @@
 
     <data>
 
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
+
     </data>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+      >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -87,7 +95,7 @@
                         android:background="@drawable/input_field_background"
                         android:fontFamily="@font/gibson_regular"
                         android:gravity="center"
-                        android:inputType="numberDecimal"
+                        android:inputType="number"
                         android:maxLength="1"
                         android:paddingBottom="12dp"
                         android:textCursorDrawable="@drawable/cursor"
@@ -102,7 +110,7 @@
                         android:background="@drawable/input_field_background"
                         android:fontFamily="@font/gibson_regular"
                         android:gravity="center"
-                        android:inputType="numberDecimal"
+                        android:inputType="number"
                         android:maxLength="1"
                         android:paddingBottom="12dp"
                         android:textCursorDrawable="@drawable/cursor"
@@ -116,7 +124,7 @@
                         android:background="@drawable/input_field_background"
                         android:fontFamily="@font/gibson_regular"
                         android:gravity="center"
-                        android:inputType="numberDecimal"
+                        android:inputType="number"
                         android:maxLength="1"
                         android:paddingBottom="12dp"
                         android:textCursorDrawable="@drawable/cursor"
@@ -139,5 +147,26 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center"
+            android:clickable="true" >
+
+            <ProgressBar
+                android:id="@+id/card_pb"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </layout>
