@@ -172,7 +172,10 @@ public class FuelUpViewModel extends ViewModel {
     }
 
     public String getPetroPointsBalance() {
-        return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+        if (sessionManager.getProfile() != null) {
+            return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+        }
+        return "";
     }
 
 }
