@@ -221,7 +221,7 @@
     <string name="cards_rbc_label">RBC</string>
     <string name="cards_sp_label">Carte accès</string>
     <string name="cards_wag_label">Lavez Partez</string>
-    <string name="cards_wag_expanded_label">Carte Lavez Partez</string>
+    <string name="cards_wag_expanded_label">Lavez Partez</string>
 
     <string name="customer_support_email">servicealaclientele@petro-canada.ca</string>
     <string name="profile_get_help_call">Appel</string>
