@@ -32,7 +32,7 @@ public class RewardsAdapter extends RecyclerView.Adapter<RewardsAdapter.RewardsV
     public void onBindViewHolder(@NonNull RewardsViewHolder holder, int position) {
         Context context = holder.binding.getRoot().getContext();
         int imageId = context.getResources().getIdentifier(rewards.get(position).getLargeImage(), "drawable", context.getPackageName());
-        holder.binding.setReward(rewards.get(position));
+//        holder.binding.setGiftCard(rewards.get(position));
         holder.binding.setImage(context.getDrawable(imageId));
         holder.binding.executePendingBindings();
 

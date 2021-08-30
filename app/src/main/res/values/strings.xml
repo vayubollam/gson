@@ -376,7 +376,7 @@
     <string name="validate_your_email_to_sign_in">Finish your enrollment by clicking the link in your email  <![CDATA[<b>%s</b>]]>. Then, sign in for your %s points!</string>
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
-    <string name="offers_banner_2_text">Contactless payment now in-app.</string>
+    <string name="offers_banner_2_text">Contactless payment now in-app</string>
     <string name="offers_banner_2_button">Launch feature tour</string>
     <string name="offers_banner_3a_text">Petro\u2011Points™ = Free gas.</string>
     <string name="offers_banner_3a_button">Explore Petro-Points</string>
@@ -485,8 +485,10 @@
     <string name="rewards_egift_card_subtitle">eGift card</string>
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
     <string name="merchant_dining_card">The Ultimate Dining Card</string>
+    <string name="merchant_petrocanada_card">Petro-Canada</string>
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_Hudson_bay">Hudson\'s Bay</string>
+    <string name="merchant_more_egift_card">More eGift cards</string>
 
     <string name="rewards_signedin_how_to_redeem_merchants_title">How to redeem</string>
     <string name="rewards_signedin_how_to_redeem_merchants_description">Choose a value, confirm redemption and get the eGift card in your email.</string>
@@ -496,16 +498,19 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Use your Petro-Canada eGift card in-store at any Petro-Canada location. \n</string>
 
 
     <string name="redeem_egift_card_select_value">Select value</string>
     <string name="redeem_egoft_total_points">Total</string>
     <string name="redeem_egift_address_disclaimer">If you changed your email address and then redeem for an eGift card, you will not be able to redeem points online or in-store for 24 hours.</string>
-    <string name="redeem_terms_agreement">Transactions are irreversible. By selecting "confirm and redeem," you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
+
+    <string name="redeem_terms_agreement">Transactions are irreversible. By selecting \"confirm and redeem,\" you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions">Terms and conditions.</a></string>
+
     <string name="rewards_signedin_egift_value_in_dollar_generic">$%d</string>
     <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
     <string name="redeem_egift_current_value">Value</string>
-    <string name="redeem_egift_not_enough_points">Looks like you don’t have enough points yet.</string>
+    <string name="redeem_egift_not_enough_points">Not enough points yet. Keep saving.</string>
     <string name="redeem_egift_address_title">Order will be sent to:</string>
     <string name="redeem_egift_change_btn">Update</string>
     <string name="redeem_egift_confirm_and_redeem">Confirm and redeem</string>
@@ -663,7 +668,6 @@
 
     <string name="pump">PUMP</string>
     <string name="payment">PAYMENT</string>
-    <string name="select_payment_method">Select payment method</string>
     <string name="pre_authorized">Pre-authorize</string>
     <string name="tax_inclusion">Tax included</string>
     <string name="payment_term_aggrement">By pressing \"Confirm and authorize\", you agree to our <b><u>Legal and Privacy policies.</u></b> </string>
@@ -720,16 +724,11 @@
     <string name="cancellation_alert_title">Transaction cancelled</string>
     <string name="cancellation_alert_body">Your transaction was cancelled. You have not been charged.</string>
 
+    <string name="select_payment_method">Select payment method</string>
+
     <string name="card_enable_gps_title">Location Services not enabled</string>
     <string name="card_enable_gps_message">You\'ll need to enable location services to pay at the pump.</string>
     <string name="card_enable_gps_settings">Settings</string>
-
-    <string name="card_enable_location_title">Location unavailable</string>
-    <string name="card_enable_location_message">You\'ll need to turn on your location to pay at the pump.</string>
-    <string name="card_enable_location_settings">Settings</string>
-
-    <string name="fuelling_almost_done">Almost done…</string>
-    <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
 
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Thanks, %1$s!
@@ -746,4 +745,10 @@
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
 
+    <string name="card_enable_location_title">Location unavailable</string>
+    <string name="card_enable_location_message">You\'ll need to turn on your location to pay at the pump.</string>
+    <string name="card_enable_location_settings">Settings</string>
+
+    <string name="fuelling_almost_done">Almost done…</string>
+    <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
 </resources>
