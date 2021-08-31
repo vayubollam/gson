@@ -38,6 +38,9 @@ public class MerchantItem implements Parcelable {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
                 return "Cara";
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return "Petro_Canada";
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "Cineplex";
@@ -56,6 +59,9 @@ public class MerchantItem implements Parcelable {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
                 return "ultimate-dining-egift-card";
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return "petro-canada-egift-card";
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex-egift-card";
@@ -74,6 +80,9 @@ public class MerchantItem implements Parcelable {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
                 return "dining_large";
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return "petro_canada_large";
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex_large";
@@ -92,6 +101,9 @@ public class MerchantItem implements Parcelable {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
                 return "dining_small";
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return "petro_canada_small";
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex_small";
@@ -105,11 +117,22 @@ public class MerchantItem implements Parcelable {
         return null;
     }
 
+    public String getSubtitleMerchantName(){
+        return context.getResources().getString(R.string.rewards_egift_card_subtitle);
+    }
+
+    public String getPointsMerchantName(){
+        return context.getResources().getString(R.string.rewards_e_gift_card_starting_points);
+    }
+
     public String getLocalizedMerchantName() {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
                 return context.getResources().getString(R.string.merchant_dining_card);
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return context.getResources().getString(R.string.merchant_petrocanada_card);
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return context.getResources().getString(R.string.merchant_cineplex);
@@ -123,22 +146,25 @@ public class MerchantItem implements Parcelable {
         return null;
     }
 
-    public int getRedeemingDescription() {
+    public String getRedeemingDescription() {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
-                return R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card;
+                return context.getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card);
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return context.getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_petro_canada);
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
-                return R.string.rewards_signedin_redeeming_your_rewards_desc_cineplex;
+                return context.getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_cineplex);
             case MerchantsIds.Hudson_Bay_EN:
             case MerchantsIds.Hudson_Bay_FR:
-                return R.string.rewards_signedin_redeeming_your_rewards_desc_Hudson_bay;
+                return context.getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_Hudson_bay);
             case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
             case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
-                return R.string.rewards_signedin_redeeming_your_rewards_desc_winners;
+                return context.getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_winners);
         }
-        return 0;
+        return "";
     }
 
     public Merchant getMerchant() {

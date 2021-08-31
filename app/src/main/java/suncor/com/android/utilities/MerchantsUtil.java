@@ -16,6 +16,9 @@ public class MerchantsUtil {
             case MerchantsIds.Hudson_Bay_EN:
             case MerchantsIds.Hudson_Bay_FR:
                 return "hbc_small";
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return "petro_canada_small";
             case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
             case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
                 return "winners_small";
@@ -45,6 +48,9 @@ public class MerchantsUtil {
             case MerchantsIds.Hudson_Bay_EN:
             case MerchantsIds.Hudson_Bay_FR:
                 return "HBC";
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return "Petro_Canada";
             case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
             case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
                 return "TJX";
@@ -60,6 +66,9 @@ public class MerchantsUtil {
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex-egift-card";
+            case MerchantsIds.Petro_Canada_EN:
+            case MerchantsIds.Petro_Canada_FR:
+                return "petro-canada-egift-card";
             case MerchantsIds.Hudson_Bay_EN:
             case MerchantsIds.Hudson_Bay_FR:
                 return "hudsons-bay-egift-card";
