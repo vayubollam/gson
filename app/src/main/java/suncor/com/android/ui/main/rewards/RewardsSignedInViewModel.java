@@ -64,6 +64,7 @@ public class RewardsSignedInViewModel extends ViewModel {
 
     public Reward[] getRewards() {
         return rewards;
+
     }
 
     public String getPetroPoints() {
