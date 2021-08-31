@@ -28,7 +28,7 @@ import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
 public class ProfilesApiImpl implements ProfilesApi {
-    private static final String EDIT_PROFILES_ADAPTER_PATH = "/adapters/suncor/v8/rfmp-secure/profiles";
+    private static final String EDIT_PROFILES_ADAPTER_PATH = "/adapters/suncor/v9/rfmp-secure/profiles";
     private static final String GET_SECURITY_QUESTION_ON_PROFILES_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/profiles/security-question";
     private static final String SECURITY_ANSWER_VERIFICATION_ON_PROFILES_ADAPTER_PATH = "/adapters/suncor/v7/rfmp-secure/profiles/security-answer-verification";
     private final Gson gson;
