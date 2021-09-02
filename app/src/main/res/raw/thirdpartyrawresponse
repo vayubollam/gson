@@ -1,0 +1,123 @@
+[
+  {
+    "categoryName": "Featured",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Petro-Canada",
+        "smallIcon": "petro_canada_new_small",
+        "largeIcon": "petro_canada_new_large"
+      }
+    ]
+  },
+  {
+    "categoryName": "Apparel",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Gap",
+        "smallIcon": "gap_small",
+        "largeIcon": "gap_large"
+      },
+      {
+        "SubcategoryName": "Hudson's Bay",
+        "smallIcon": "hudson_bay_small",
+        "largeIcon": "hudson_bay_large"
+      },
+      {
+        "SubcategoryName": "Reitmans",
+        "smallIcon": "reitmans_small",
+        "largeIcon": "reitmans_large"
+      },
+      {
+        "SubcategoryName": "Roots",
+        "smallIcon": "roots_small",
+        "largeIcon": "roots_large"
+      },
+      {
+        "SubcategoryName": "WINNERS , HomeSense and Marshalls",
+        "smallIcon": "tjx_small",
+        "largeIcon": "tjx_large"
+      }
+    ]
+  },
+  {
+    "categoryName": "Dining",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Boston Pizza",
+        "smallIcon": "boston_pizza_small",
+        "largeIcon": "boston_pizza_large"
+      },
+      {
+        "SubcategoryName": "Inspired Dining Card",
+        "smallIcon": "inspired_dining_small",
+        "largeIcon": "inspired_dining_large"
+      },
+      {
+        "SubcategoryName": "Tim Hortans",
+        "smallIcon": "tim_hortans_small",
+        "largeIcon": "tim_hortans_large"
+      },
+      {
+        "SubcategoryName": "The Ultimate Dining Card",
+        "smallIcon": "ultimate_dining_small",
+        "largeIcon": "ultimate_dining_large"
+      }
+
+    ]
+  },
+  {
+    "categoryName": "Entertainment",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "BestBuy",
+        "smallIcon": "best_buy_small",
+        "largeIcon": "best_buy_large"
+      },
+      {
+        "SubcategoryName": "Cineplex",
+        "smallIcon": "new_cineplex_small",
+        "largeIcon": "new_cineplex_large"
+      },
+      {
+        "SubcategoryName": "iTunes",
+        "smallIcon": "itunes_small",
+        "largeIcon": "itunes_large"
+      },
+      {
+        "SubcategoryName": "Uber",
+        "smallIcon": "uber_small",
+        "largeIcon": "uber_large"
+      }
+    ]
+  },
+  {
+    "categoryName": "Home and office",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Home Hardware",
+        "smallIcon": "home_hardware_small",
+        "largeIcon": "home_hardware_large"
+      },
+      {
+        "SubcategoryName": "STAPLES",
+        "smallIcon": "staples_small",
+        "largeIcon": "staples_large"
+      },
+      {
+        "SubcategoryName": "Walmart",
+        "smallIcon": "walmart_small",
+        "largeIcon": "walmart_large"
+      },
+      {
+        "SubcategoryName": "Best Buy",
+        "smallIcon": "best_buy_small",
+        "largeIcon": "best_buy_large"
+      },
+      {
+        "SubcategoryName": "Hudson's Bay",
+        "smallIcon": "hudson_bay_small",
+        "largeIcon": "hudson_bay_large"
+      }
+    ]
+  }
+]

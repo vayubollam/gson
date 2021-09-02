@@ -12,13 +12,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import suncor.com.android.databinding.ItemMoreEGiftCardCategoriesBinding;
+import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
 
 public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGiftCArdCategoriesAdapter.MoreEGiftCArdCategoriesViewHolder> {
 
+    private final List<ThirdPartyGiftCardCategory> categoriesList;
     private Context context;
-    private List<String> categoriesList;
 
-    public MoreEGiftCArdCategoriesAdapter(Context context, List<String> categoriesList) {
+    public MoreEGiftCArdCategoriesAdapter(Context context, List<ThirdPartyGiftCardCategory> categoriesList) {
         this.context = context;
         this.categoriesList = categoriesList;
 
@@ -36,7 +37,7 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
     @Override
     public void onBindViewHolder(@NonNull MoreEGiftCArdCategoriesViewHolder holder, int position) {
 
-        holder.setDataInView(categoriesList.get(position));
+        holder.setDataInView(context, categoriesList.get(position));
 
 
     }
@@ -55,8 +56,13 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
             this.binding = binding;
         }
 
-        public void setDataInView(String category) {
-            binding.titleTextView.setText(category);
+        public void setDataInView(Context context, ThirdPartyGiftCardCategory category) {
+            binding.titleTextView.setText(category.getCategoryName());
+
+
+            MoreEGiftCardSubCategoryAdapter adapter = new MoreEGiftCardSubCategoryAdapter(context, category.getThirdPartyGiftCardSubCategory());
+            binding.childRecycler.setAdapter(adapter);
+
             binding.executePendingBindings();
 
         }

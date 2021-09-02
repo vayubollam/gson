@@ -1,10 +1,17 @@
 package suncor.com.android.model.thirdpartycard;
 
+import java.util.List;
+
 public class ThirdPartyGiftCardCategory {
+
+    public ThirdPartyGiftCardCategory(String categoryName, List<ThirdPartyGiftCardSubCategory> thirdPartyGiftCardSubCategory) {
+        this.categoryName = categoryName;
+        this.thirdPartyGiftCardSubCategory = thirdPartyGiftCardSubCategory;
+    }
 
     private String categoryName;
 
-    private ThirdPartyGiftCardSubCategory thirdPartyGiftCardSubCategory;
+    private List<ThirdPartyGiftCardSubCategory> thirdPartyGiftCardSubCategory;
 
     public String getCategoryName() {
         return categoryName;
@@ -14,24 +21,14 @@ public class ThirdPartyGiftCardCategory {
         this.categoryName = categoryName;
     }
 
-    public ThirdPartyGiftCardSubCategory getThirdPartyGiftCardSubCategory() {
+
+    public List<ThirdPartyGiftCardSubCategory> getThirdPartyGiftCardSubCategory() {
         return thirdPartyGiftCardSubCategory;
     }
 
-    public void setThirdPartyGiftCardSubCategory(ThirdPartyGiftCardSubCategory thirdPartyGiftCardSubCategory) {
+    public void setThirdPartyGiftCardSubCategory(List<ThirdPartyGiftCardSubCategory> thirdPartyGiftCardSubCategory) {
         this.thirdPartyGiftCardSubCategory = thirdPartyGiftCardSubCategory;
     }
-
-    public static class ThirdPartyGiftCardSubCategory{
-
-        private String SubcategoryName;
-
-        public String getSubcategoryName() {
-            return SubcategoryName;
-        }
-
-        public void setSubcategoryName(String subcategoryName) {
-            SubcategoryName = subcategoryName;
-        }
-    }
 }
+
+

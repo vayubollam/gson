@@ -13,12 +13,15 @@ import androidx.navigation.Navigation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import suncor.com.android.databinding.FragmentMoreEGiftCardCategoriesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
+import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
@@ -29,7 +32,8 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     private MoreEGiftCardCategoriesViewModel viewModel;
     private FragmentMoreEGiftCardCategoriesBinding binding;
     private MoreEGiftCArdCategoriesAdapter adapter;
-    private List<String> categoriesList = new ArrayList<>();
+    private List<ThirdPartyGiftCardSubCategory> categoriesList = new ArrayList<>();
+    private List<ThirdPartyGiftCardCategory> newCategoryList = new ArrayList<>();
 
 
     @Override
@@ -43,7 +47,9 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
         binding = FragmentMoreEGiftCardCategoriesBinding.inflate(inflater, container, false);
         binding.setVm(viewModel);
 
- //       binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
+        binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
+
+        newCategoryList = new ArrayList<>(Arrays.asList(viewModel.getRewards()));
         return binding.getRoot();
     }
 
@@ -51,28 +57,8 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        categoriesList.add("Apparels");
-        categoriesList.add("Featured");
-        categoriesList.add("Dining");
-        categoriesList.add("Entertainment");
-        categoriesList.add("Home ");
-        categoriesList.add("Office");
-        categoriesList.add("Apparels");
-        categoriesList.add("Featured");
-        categoriesList.add("Dining");
-        categoriesList.add("Entertainment");
-        categoriesList.add("Apparels");
-        categoriesList.add("Featured");
-        categoriesList.add("Dining");
-        categoriesList.add("Entertainment");
-        categoriesList.add("Apparels");
-        categoriesList.add("Featured");
-        categoriesList.add("Dining");
-        categoriesList.add("Entertainment");
-        categoriesList.add("Home ");
 
-
-        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), categoriesList);
+        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList);
 
         binding.categoriesRecyclerView.setAdapter(adapter);
     }

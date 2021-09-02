@@ -1,5 +1,6 @@
 package suncor.com.android.ui.main.rewards.thirdpartygiftcard;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -8,9 +9,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding;
+import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
 
 public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEGiftCardSubCategoryAdapter.MoreEGiftCardSubCategoryViewHolder> {
+
+    List<ThirdPartyGiftCardSubCategory> subCategoryList;
+    private Context context;
+
+    public MoreEGiftCardSubCategoryAdapter(Context context, List<ThirdPartyGiftCardSubCategory> subCategoryList) {
+        this.subCategoryList = subCategoryList;
+        this.context = context;
+    }
 
 
     @NonNull
@@ -24,11 +36,13 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
     @Override
     public void onBindViewHolder(@NonNull @NotNull MoreEGiftCardSubCategoryViewHolder holder, int position) {
 
+        holder.binding.imageView2.layout(0, 0, 0, 0);
+        holder.setDataInView(context, subCategoryList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return subCategoryList.size();
     }
 
     public static class MoreEGiftCardSubCategoryViewHolder extends RecyclerView.ViewHolder {
@@ -40,8 +54,12 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
             this.binding = binding;
         }
 
-        public void setDataInView() {
+        public void setDataInView(Context cont, ThirdPartyGiftCardSubCategory subcategory) {
 
+            binding.imageView2.layout(0, 0, 0, 0);
+            binding.textView.setText(subcategory.getSubcategoryName());
+            int imageId = cont.getResources().getIdentifier(subcategory.getSmallIcon(), "drawable", cont.getPackageName());
+            binding.setImage(cont.getDrawable(imageId));
         }
     }
 
