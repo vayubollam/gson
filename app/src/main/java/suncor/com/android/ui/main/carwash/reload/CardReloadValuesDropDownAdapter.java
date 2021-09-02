@@ -25,7 +25,6 @@ import suncor.com.android.utilities.Timber;
 public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = CardReloadValuesDropDownAdapter.class.getSimpleName();
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
     private NumberFormat decimalFormatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private static final int DROP_DOWN_LAYOUT = 1;
@@ -46,7 +45,6 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
         this.mContext = context;
         this.callbackListener = callbackListener;
         this.cardType = cardType;
-        formatter.setMinimumFractionDigits(0);
         decimalFormatter.setMinimumFractionDigits(2);
         this.lastSelectedValue = lastSelectedValue;
     }
@@ -80,7 +78,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
             if(product.getUnits().equals(lastSelectedValue)){
                 selectedPos = position;
                 listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()) ,
-                        formatter.format(Double.valueOf(product.getPrice())));
+                        decimalFormatter.format(Double.valueOf(product.getPrice())));
                 int bonusUnits = product.getBonusValues();
                 calculateBonus(bonusUnits);
                 calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
@@ -99,7 +97,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
     @Override
     public String getSelectedSubValue() {
         if(selectedPos < childList.size()){
-            return formatter.format(Double.parseDouble(childList.get(selectedPos).getPrice()));
+            return decimalFormatter.format(Double.parseDouble(childList.get(selectedPos).getPrice()));
         }
         return "";
     }
@@ -123,7 +121,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
             public void setDataOnView(TransactionProduct product){
                 binding.title.setText(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()));
                 try {
-                    binding.subTitle.setText(formatter.format(Double.valueOf(product.getPrice())));
+                    binding.subTitle.setText(decimalFormatter.format(Double.valueOf(product.getPrice())));
                 }catch (NullPointerException ex){
                     Timber.e(TAG,  "Error on inflating data , " + ex.getMessage());
                 }
@@ -135,7 +133,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     if(Objects.nonNull(listener)) {
                         listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()) ,
-                                formatter.format(Double.valueOf(product.getPrice())));
+                                decimalFormatter.format(Double.valueOf(product.getPrice())));
                       calculateBonus(product.getBonusValues());
                       calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
                       listener.expandCollapse();
