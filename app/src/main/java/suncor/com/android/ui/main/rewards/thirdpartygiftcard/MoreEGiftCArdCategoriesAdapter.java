@@ -36,10 +36,7 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
 
     @Override
     public void onBindViewHolder(@NonNull MoreEGiftCArdCategoriesViewHolder holder, int position) {
-
         holder.setDataInView(context, categoriesList.get(position));
-
-
     }
 
     @Override

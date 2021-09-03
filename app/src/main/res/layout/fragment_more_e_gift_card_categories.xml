@@ -30,12 +30,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
-            android:textSize="14sp"
+            android:fontFamily="@font/gibson_semibold"
             android:gravity="center"
             android:padding="16dp"
-            android:fontFamily="@font/gibson_semibold"
             android:text="@{@string/authorization_petropoints_balance(vm.petroPointsBalance)}"
             android:textColor="@color/black_60"
+            android:textSize="14sp"
             app:autoSizeTextType="uniform"
             app:layout_constraintTop_toBottomOf="@+id/app_bar"
             tools:text="You're starting at 2,500 points" />
@@ -46,12 +46,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header_petropoints"
-            app:layout_constrainedHeight="true"
-            android:layout_marginBottom="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/item_more_e_gift_card_categories" />
 
 
