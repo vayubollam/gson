@@ -758,8 +758,8 @@
     <string name="cards_days">%1$s jours</string>
     <string name="cards_washes">%1$s lavages</string>
 
-    <string name="bonus_days"> + %1$d prime jours</string>
-    <string name="bonus_washes"> + %1$d prime lavages</string>
+    <string name="bonus_days"> + %1$d jours en prime</string>
+    <string name="bonus_washes"> + %1$d lavages en prime</string>
 
     <string name="select_cards_to_reload">Sélectionnez la carte pour la recharger</string>
     <string name="select_value_to_reload">Choisir une valeur</string>
