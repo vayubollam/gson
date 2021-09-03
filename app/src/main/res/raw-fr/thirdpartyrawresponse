@@ -1,6 +1,6 @@
 [
   {
-    "categoryName": "Featured",
+    "categoryName": "En vedette",
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Petro-Canada",
@@ -53,7 +53,7 @@
         "largeIcon": "inspired_dining_large"
       },
       {
-        "SubcategoryName": "Tim Hortans",
+        "SubcategoryName": "Tim Hortons",
         "smallIcon": "tim_hortans_small",
         "largeIcon": "tim_hortans_large"
       },
@@ -62,11 +62,10 @@
         "smallIcon": "ultimate_dining_small",
         "largeIcon": "ultimate_dining_large"
       }
-
     ]
   },
   {
-    "categoryName": "Entertainment",
+    "categoryName": "Divertissements et applications",
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "BestBuy",
@@ -91,7 +90,7 @@
     ]
   },
   {
-    "categoryName": "Home and office",
+    "categoryName": "Maison et bureau",
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Home Hardware",
@@ -99,7 +98,7 @@
         "largeIcon": "home_hardware_large"
       },
       {
-        "SubcategoryName": "STAPLES",
+        "SubcategoryName": "BUREAU EN GROS",
         "smallIcon": "staples_small",
         "largeIcon": "staples_large"
       },

@@ -17,7 +17,7 @@ import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
 public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGiftCArdCategoriesAdapter.MoreEGiftCArdCategoriesViewHolder> {
 
     private final List<ThirdPartyGiftCardCategory> categoriesList;
-    private Context context;
+    private final Context context;
 
     public MoreEGiftCArdCategoriesAdapter(Context context, List<ThirdPartyGiftCardCategory> categoriesList) {
         this.context = context;

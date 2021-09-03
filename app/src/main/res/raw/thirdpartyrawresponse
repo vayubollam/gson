@@ -53,7 +53,7 @@
         "largeIcon": "inspired_dining_large"
       },
       {
-        "SubcategoryName": "Tim Hortans",
+        "SubcategoryName": "Tim Hortons",
         "smallIcon": "tim_hortans_small",
         "largeIcon": "tim_hortans_large"
       },
@@ -62,11 +62,10 @@
         "smallIcon": "ultimate_dining_small",
         "largeIcon": "ultimate_dining_large"
       }
-
     ]
   },
   {
-    "categoryName": "Entertainment",
+    "categoryName": "Entertainment and apps",
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "BestBuy",
