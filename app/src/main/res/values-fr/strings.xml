@@ -727,7 +727,7 @@
     <string name="reload_season_pass">Recharger %1$s</string>
     <string name="card">Carte</string>
     <string name="taxes">Taxes</string>
-    <string name="carwash_payment_term_aggrement">En appuyant sur « Confirmer et payer», vous acceptez nos <b><u>politiques juridiques et de confidentialité.</u></b></string>
+    <string name="carwash_payment_term_aggrement">En appuyant sur « Confirmer et payer», vous acceptez nos <b>politiques juridiques et de confidentialité.</b></string>
     <string name="confirm_and_pay">CONFIRMER ET PAYER</string>
 
     <string name="reload">Recharger</string>
@@ -765,7 +765,7 @@
     <string name="select_value_to_reload">Choisir une valeur</string>
     <string name="slect_payment_method">Sélectionnez un mode de paiement</string>
 
-    <string name="discount_prices">%1$s (Ancien prix %2$s)</string>
+    <string name="discount_prices">%1$s (ancien prix %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 
     <string name="transacation_back_alert_title">Interrompre la recharge?</string>
