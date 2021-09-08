@@ -33,7 +33,7 @@
         "largeIcon": "roots_large"
       },
       {
-        "SubcategoryName": "WINNERS, HomeSense and Marshalls",
+        "SubcategoryName": "WINNERS, Marshalls et HomeSense",
         "smallIcon": "winners_small",
         "largeIcon": "winners_large"
       }
@@ -58,7 +58,7 @@
         "largeIcon": "tim_hortans_large"
       },
       {
-        "SubcategoryName": "The Ultimate Dining Card",
+        "SubcategoryName": "Bon Appétit",
         "smallIcon": "ultimate_dining_small",
         "largeIcon": "ultimate_dining_large"
       }
@@ -113,7 +113,7 @@
         "largeIcon": "best_buy_large"
       },
       {
-        "SubcategoryName": "Hudson's Bay",
+        "SubcategoryName": "La Baie d’Hudson",
         "smallIcon": "hudson_bay_small",
         "largeIcon": "hudson_bay_large"
       }

@@ -74,8 +74,8 @@
       },
       {
         "SubcategoryName": "Cineplex",
-        "smallIcon": "new_cineplex_small",
-        "largeIcon": "new_cineplex_large"
+        "smallIcon": "cineplex_small",
+        "largeIcon": "cineplex_large"
       },
       {
         "SubcategoryName": "iTunes",

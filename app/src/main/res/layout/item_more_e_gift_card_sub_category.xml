@@ -77,8 +77,8 @@
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="53dp"
-                android:layout_height="37dp"
+                android:layout_width="44dp"
+                android:layout_height="28dp"
                 android:layout_marginStart="24dp"
                 android:contentDescription="@string/egift_card_value_title"
                 android:scaleType="fitXY"
