@@ -32,7 +32,6 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     private MoreEGiftCardCategoriesViewModel viewModel;
     private FragmentMoreEGiftCardCategoriesBinding binding;
     private MoreEGiftCArdCategoriesAdapter adapter;
-    private List<ThirdPartyGiftCardSubCategory> categoriesList = new ArrayList<>();
     private List<ThirdPartyGiftCardCategory> newCategoryList = new ArrayList<>();
 
 
@@ -49,8 +48,17 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
 
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
 
-        newCategoryList = new ArrayList<>(Arrays.asList(viewModel.getRewards()));
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        newCategoryList.clear();
+        newCategoryList.addAll(viewModel.getRewards());
+        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList);
+        binding.categoriesRecyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -58,9 +66,7 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
         super.onViewCreated(view, savedInstanceState);
 
 
-        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList);
 
-        binding.categoriesRecyclerView.setAdapter(adapter);
     }
 
     @Override
