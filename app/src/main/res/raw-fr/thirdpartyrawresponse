@@ -1,0 +1,87 @@
+[
+  {
+    "categoryName": "En vedette",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Petro-Canada",
+        "smallIcon": "petro_canada_small",
+        "largeIcon": "petro_canada_large"
+      }
+    ]
+  },
+  {
+    "categoryName": "Vêtements",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Gap",
+        "smallIcon": "gap_small",
+        "largeIcon": "gap_large"
+      },
+      {
+        "SubcategoryName": "La Baie d’Hudson",
+        "smallIcon": "hudson_bay_small",
+        "largeIcon": "hudson_bay_large"
+      },
+      {
+        "SubcategoryName": "WINNERS, HomeSense et Marshalls",
+        "smallIcon": "winners_small",
+        "largeIcon": "winners_large"
+      }
+    ]
+  },
+  {
+    "categoryName": "Repas",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Tim Hortons",
+        "smallIcon": "tim_hortans_small",
+        "largeIcon": "tim_hortans_large"
+      },
+      {
+        "SubcategoryName": "The Ultimate Dining",
+        "smallIcon": "ultimate_dining_small",
+        "largeIcon": "ultimate_dining_large"
+      }
+    ]
+  },
+  {
+    "categoryName": "Divertissements et applications",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Best Buy",
+        "smallIcon": "best_buy_small",
+        "largeIcon": "best_buy_large"
+      },
+      {
+        "SubcategoryName": "Cineplex",
+        "smallIcon": "cineplex_small",
+        "largeIcon": "cineplex_large"
+      }
+    ]
+  },
+  {
+    "categoryName": "Maison et bureau",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "SubcategoryName": "Walmart",
+        "smallIcon": "walmart_small",
+        "largeIcon": "walmart_large"
+      },
+      {
+        "SubcategoryName": "Best Buy",
+        "smallIcon": "best_buy_small",
+        "largeIcon": "best_buy_large"
+      },
+      {
+        "SubcategoryName": "La Baie d’Hudson",
+        "smallIcon": "hudson_bay_small",
+        "largeIcon": "hudson_bay_large"
+      },
+      {
+        "SubcategoryName": "WINNERS, HomeSense et Marshalls",
+        "smallIcon": "winners_small",
+        "largeIcon": "winners_large"
+      }
+    ]
+  }
+]

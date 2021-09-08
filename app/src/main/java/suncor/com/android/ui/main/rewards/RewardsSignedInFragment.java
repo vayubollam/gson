@@ -229,7 +229,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private void eCardClicked(GenericEGiftCard genericEGiftCard) {
         if(genericEGiftCard.isDataDynamic()){
             if(genericEGiftCard.isMoreGIftCard()){
-                //               Toast.makeText(requireActivity(), "More Gift Card Clicked", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_more_e_gift_card_categories);
             }else{
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);

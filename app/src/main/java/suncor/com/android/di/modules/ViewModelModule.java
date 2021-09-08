@@ -18,6 +18,7 @@ import suncor.com.android.ui.main.actionmenu.ActionMenuViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 import suncor.com.android.ui.main.pap.receipt.ReceiptViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
+import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesViewModel;
 import suncor.com.android.ui.main.wallet.cards.add.AddCardViewModel;
 import suncor.com.android.ui.main.wallet.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.main.wallet.cards.list.CardsViewModel;
@@ -231,5 +232,10 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ReceiptViewModel.class)
     protected abstract ViewModel receiptViewModel(ReceiptViewModel receiptViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MoreEGiftCardCategoriesViewModel.class)
+    protected abstract ViewModel moreEGiftCardCategoriesViewModel(MoreEGiftCardCategoriesViewModel moreEGiftCardCategoriesViewModel);
 
 }
