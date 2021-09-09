@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,17 +57,18 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
         super.onResume();
         newCategoryList.clear();
         newCategoryList.addAll(viewModel.getRewards());
-        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList);
+        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList, this::onCardClicked);
         binding.categoriesRecyclerView.setAdapter(adapter);
 
+    }
+
+    private void onCardClicked(ThirdPartyGiftCardSubCategory subCategory){
+        Toast.makeText(requireContext(), subCategory.getSubcategoryName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
     }
 
     @Override

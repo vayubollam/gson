@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.rewards.thirdpartygiftcard;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,18 @@ import java.util.List;
 
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
+import suncor.com.android.utilities.Consumer;
 
 public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEGiftCardSubCategoryAdapter.MoreEGiftCardSubCategoryViewHolder> {
 
     private final Context context;
     List<ThirdPartyGiftCardSubCategory> subCategoryList;
+    private static OnCardClickListener clickListener;
 
-    public MoreEGiftCardSubCategoryAdapter(Context context, List<ThirdPartyGiftCardSubCategory> subCategoryList) {
+    public MoreEGiftCardSubCategoryAdapter(Context context, List<ThirdPartyGiftCardSubCategory> subCategoryList, OnCardClickListener clickListener) {
         this.subCategoryList = subCategoryList;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
 
@@ -60,8 +64,20 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
             binding.textView.setText(subcategory.getSubcategoryName());
             int imageId = cont.getResources().getIdentifier(subcategory.getSmallIcon(), "drawable", cont.getPackageName());
             binding.setImage(cont.getDrawable(imageId));
+
+            binding.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickListener != null){
+                        clickListener.onCardClicked(subcategory);
+                    }
+                }
+            });
         }
     }
 
+}
 
+interface OnCardClickListener{
+    public void onCardClicked(ThirdPartyGiftCardSubCategory subCategory);
 }

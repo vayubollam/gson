@@ -13,15 +13,19 @@ import java.util.List;
 
 import suncor.com.android.databinding.ItemMoreEGiftCardCategoriesBinding;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
+import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
+import suncor.com.android.utilities.Consumer;
 
-public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGiftCArdCategoriesAdapter.MoreEGiftCArdCategoriesViewHolder> {
+public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGiftCArdCategoriesAdapter.MoreEGiftCArdCategoriesViewHolder> implements OnCardClickListener {
 
     private final List<ThirdPartyGiftCardCategory> categoriesList;
     private final Context context;
+    private static Consumer<ThirdPartyGiftCardSubCategory> clickListener;
 
-    public MoreEGiftCArdCategoriesAdapter(Context context, List<ThirdPartyGiftCardCategory> categoriesList) {
+    public MoreEGiftCArdCategoriesAdapter(Context context, List<ThirdPartyGiftCardCategory> categoriesList, Consumer<ThirdPartyGiftCardSubCategory> clickListener) {
         this.context = context;
         this.categoriesList = categoriesList;
+        MoreEGiftCArdCategoriesAdapter.clickListener = clickListener;
 
     }
 
@@ -37,6 +41,7 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
     @Override
     public void onBindViewHolder(@NonNull MoreEGiftCArdCategoriesViewHolder holder, int position) {
         holder.setDataInView(context, categoriesList.get(position));
+        ;
     }
 
     @Override
@@ -44,9 +49,16 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
         return categoriesList.size();
     }
 
+    @Override
+    public void onCardClicked(ThirdPartyGiftCardSubCategory subCategory) {
+      clickListener.accept(subCategory);
+    }
+
+
     public static class MoreEGiftCArdCategoriesViewHolder extends RecyclerView.ViewHolder {
 
         ItemMoreEGiftCardCategoriesBinding binding;
+
 
         public MoreEGiftCArdCategoriesViewHolder(@NonNull ItemMoreEGiftCardCategoriesBinding binding) {
             super(binding.getRoot());
@@ -56,12 +68,16 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
         public void setDataInView(Context context, ThirdPartyGiftCardCategory category) {
             binding.titleTextView.setText(category.getCategoryName());
 
-
-            MoreEGiftCardSubCategoryAdapter adapter = new MoreEGiftCardSubCategoryAdapter(context, category.getThirdPartyGiftCardSubCategory());
+            MoreEGiftCardSubCategoryAdapter adapter = new MoreEGiftCardSubCategoryAdapter(context, category.getThirdPartyGiftCardSubCategory(), (OnCardClickListener) context);
             binding.childRecycler.setAdapter(adapter);
+
+
 
             binding.executePendingBindings();
 
         }
+
     }
 }
+
+
