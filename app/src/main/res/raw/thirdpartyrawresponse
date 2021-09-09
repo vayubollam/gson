@@ -4,8 +4,8 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Petro-Canada",
-        "smallIcon": "petro_canada_new_small",
-        "largeIcon": "petro_canada_new_large"
+        "smallIcon": "petro_canada_small",
+        "largeIcon": "petro_canada_large"
       }
     ]
   },
@@ -24,8 +24,8 @@
       },
       {
         "SubcategoryName": "WINNERS , HomeSense and Marshalls",
-        "smallIcon": "tjx_small",
-        "largeIcon": "tjx_large"
+        "smallIcon": "winners_small",
+        "largeIcon": "winners_large"
       }
     ]
   },
