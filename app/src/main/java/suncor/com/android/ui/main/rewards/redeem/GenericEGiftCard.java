@@ -13,7 +13,8 @@ public class GenericEGiftCard implements Parcelable {
     private String points;
     private String title;
     private String subtitle;
-    private String description;
+    private String howToUse;
+    private String howToRedeem;
     private String largeImage;
     private String smallImage;
     private String shortName;
@@ -68,7 +69,8 @@ public class GenericEGiftCard implements Parcelable {
         points = in.readString();
         title = in.readString();
         subtitle = in.readString();
-        description = in.readString();
+        howToUse = in.readString();
+        howToRedeem = in.readString();
         largeImage = in.readString();
         smallImage = in.readString();
         isDataDynamic = in.readByte() != 0;
@@ -118,12 +120,20 @@ public class GenericEGiftCard implements Parcelable {
         this.subtitle = subtitle;
     }
 
-    public String getDescription() {
-        return description;
+    public String getHowToUse() {
+        return howToUse;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setHowToUse(String howToUse) {
+        this.howToUse = howToUse;
+    }
+
+    public String getHowToRedeem() {
+        return howToRedeem;
+    }
+
+    public void setHowToRedeem(String howToRedeem) {
+        this.howToRedeem = howToRedeem;
     }
 
     public String getLargeImage() {
@@ -161,7 +171,8 @@ public class GenericEGiftCard implements Parcelable {
         dest.writeString(points);
         dest.writeString(title);
         dest.writeString(subtitle);
-        dest.writeString(description);
+        dest.writeString(howToRedeem);
+        dest.writeString(howToUse);
         dest.writeString(largeImage);
         dest.writeString(smallImage);
         dest.writeByte((byte) (isDataDynamic ? 1 : 0));
