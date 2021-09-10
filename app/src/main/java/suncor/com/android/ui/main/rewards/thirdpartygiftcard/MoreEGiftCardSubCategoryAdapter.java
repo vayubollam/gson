@@ -38,7 +38,7 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
     @Override
     public void onBindViewHolder(@NonNull @NotNull MoreEGiftCardSubCategoryViewHolder holder, int position) {
 
-        //holder.binding.imageView2.layout(0, 0, 0, 0);
+        holder.binding.imageView2.layout(0, 0, 0, 0);
         holder.setDataInView(context, subCategoryList.get(position));
     }
 
@@ -58,13 +58,13 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
 
         public void setDataInView(Context cont, ThirdPartyGiftCardSubCategory subcategory) {
 
-            //binding.imageView2.layout(0, 0, 0, 0);
+            binding.imageView2.layout(0, 0, 0, 0);
             binding.textView.setText(subcategory.getSubcategoryName());
             int imageId = cont.getResources().getIdentifier(subcategory.getSmallIcon(), "drawable", cont.getPackageName());
-            Glide.with(binding.imageView2.getContext())
-                    .load(cont.getDrawable(imageId))
-                    .into(binding.imageView2);
-            //binding.setImage(cont.getDrawable(imageId));
+//            Glide.with(binding.imageView2.getContext())
+//                    .load(cont.getDrawable(imageId))
+//                    .into(binding.imageView2);
+            binding.setImage(cont.getDrawable(imageId));
         }
     }
 
