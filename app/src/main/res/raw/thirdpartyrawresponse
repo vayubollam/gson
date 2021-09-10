@@ -14,8 +14,8 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Gap",
-        "smallIcon": "gap_small",
-        "largeIcon": "gap_large"
+        "smallIcon": "gap_small_new",
+        "largeIcon": "gap_large_new"
       },
       {
         "SubcategoryName": "Hudson's Bay",
@@ -34,8 +34,8 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Tim Hortons",
-        "smallIcon": "tim_hortans_small",
-        "largeIcon": "tim_hortans_large"
+        "smallIcon": "tim_hortons_small_new",
+        "largeIcon": "tim_hortons_large_new"
       },
       {
         "SubcategoryName": "The Ultimate Dining",

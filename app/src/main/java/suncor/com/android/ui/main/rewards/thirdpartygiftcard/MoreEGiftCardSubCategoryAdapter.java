@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -59,6 +61,9 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
             binding.imageView2.layout(0, 0, 0, 0);
             binding.textView.setText(subcategory.getSubcategoryName());
             int imageId = cont.getResources().getIdentifier(subcategory.getSmallIcon(), "drawable", cont.getPackageName());
+//            Glide.with(binding.imageView2.getContext())
+//                    .load(cont.getDrawable(imageId))
+//                    .into(binding.imageView2);
             binding.setImage(cont.getDrawable(imageId));
         }
     }
