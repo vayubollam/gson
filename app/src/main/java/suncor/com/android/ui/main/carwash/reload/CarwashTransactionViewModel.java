@@ -29,7 +29,9 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.reload.TransactionProduct;
 import suncor.com.android.model.carwash.reload.TransactionReloadData;
+import suncor.com.android.model.carwash.reload.TransactionReloadTaxes;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
@@ -46,6 +48,9 @@ public class CarwashTransactionViewModel extends ViewModel {
     public String cardNumber;
     public String cardName;
     private TransactionReloadData transactionReloadData;
+    private TransactionProduct selectedProduct;
+    private TransactionReloadTaxes transactionReloadTax;
+    private Double selectedValuesAmount = 0.0;
     private String lastSelectedValue;
 
 
@@ -85,16 +90,36 @@ public class CarwashTransactionViewModel extends ViewModel {
         this.transactionReloadData = transactionReloadData;
     }
 
-    public String getLastSelectedValue() {
-        return lastSelectedValue;
+    public TransactionProduct getSelectedProduct() {
+        return selectedProduct;
     }
 
-    public void setLastSelectedValue(String lastSelectedValue) {
-        this.lastSelectedValue = lastSelectedValue;
+    public void setSelectedProduct(TransactionProduct selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
+    public TransactionReloadTaxes getTransactionReloadTax() {
+        return transactionReloadTax;
+    }
+
+    public void setTransactionReloadTax(TransactionReloadTaxes transactionReloadTax) {
+        this.transactionReloadTax = transactionReloadTax;
+    }
+
+    public Double getSelectedValuesAmount() {
+        return selectedValuesAmount;
+    }
+
+    public void setSelectedValuesAmount(Double selectedValuesAmount) {
+        this.selectedValuesAmount = selectedValuesAmount;
     }
 
     LiveData<Resource<TransactionReloadData>> getTransactionData(String cardType) {
         return carwashApi.reloadTransactionCarwash(cardType);
+    }
+
+    LiveData<Resource<TransactionReloadTaxes>> fetchTaxValues(String rewardId , String provience) {
+        return carwashApi.taxCalculationTransactionCarwash(rewardId, provience);
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
@@ -165,6 +190,10 @@ public class CarwashTransactionViewModel extends ViewModel {
 
     public String getPetroPointsBalance() {
         return CardFormatUtils.formatBalance(profile.getPointsBalance());
+    }
+
+    public String getUserProvince() {
+        return profile.getProvince();
     }
 
     public LiveData<Resource<SettingsResponse>> getSettings(){

@@ -58,6 +58,8 @@ import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.reload.TransactionProduct;
+import suncor.com.android.model.carwash.reload.TransactionReloadTaxes;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -228,10 +230,10 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
                 if (result.status == Resource.Status.LOADING) {
                 } else if (result.status == Resource.Status.ERROR) {
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
+                    Alerts.prepareGeneralErrorDialog(getContext(), "").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     viewModel.setTransactionReloadData(result.data);
-                    viewModel.setLastSelectedValue(cardType.equals("SP") ? "90" : "5");
+                    viewModel.setSelectedProduct(result.data.getDefaultSelectProduct(cardType));
                     setCardReloadAdapter();
                 }
             });
@@ -239,14 +241,42 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     }
 
+    private void fetchTaxValues(){
+        viewModel.fetchTaxValues(viewModel.getSelectedProduct().getRewardId(), viewModel.getUserProvince()).observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+                binding.loadingProgressBar.setVisibility(View.VISIBLE);
+            } else if (result.status == Resource.Status.ERROR) {
+                binding.loadingProgressBar.setVisibility(View.GONE);
+                Alerts.prepareGeneralErrorDialog(getContext(), "", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Navigation.findNavController(getView()).popBackStack();
+                    }
+                }).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                binding.loadingProgressBar.setVisibility(View.GONE);
+                viewModel.setTransactionReloadTax(result.data);
+                calculateTax();
+            }
+        });
+    }
+
+    private void calculateTax(){
+        if(Objects.isNull(viewModel.getTransactionReloadTax()) || Objects.isNull(viewModel.getSelectedProduct())) {
+           return;
+         }
+         Double totalTax = viewModel.getTransactionReloadTax().getTotalTax(Double.valueOf(viewModel.getSelectedProduct().getPrice()));
+         binding.taxAmount.setText(formatter.format(totalTax));
+         binding.totalAmount.setText(formatter.format(viewModel.getSelectedValuesAmount() + totalTax));
+    }
+
     private void setCardReloadAdapter(){
         CardReloadValuesDropDownAdapter adapter = new CardReloadValuesDropDownAdapter(
                 getContext(),
                 viewModel.getTransactionReloadData().getProducts(),
-                this, cardType, viewModel.getLastSelectedValue()
+                this, cardType, viewModel.getSelectedProduct().getUnits()
         );
         binding.valuesLayout.setDropDownData(adapter);
-        binding.loadingProgressBar.setVisibility(View.GONE);
     }
 
     private void initializeCards(){
@@ -438,8 +468,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     @Override
-    public void onValueChanged(Double value, String unit) {
-       binding.totalAmount.setText(formatter.format(value));
-       viewModel.setLastSelectedValue(unit);
+    public void onValueChanged(Double value, TransactionProduct product) {
+       viewModel.setSelectedProduct(product);
+       viewModel.setSelectedValuesAmount(value);
+        fetchTaxValues();
     }
 }

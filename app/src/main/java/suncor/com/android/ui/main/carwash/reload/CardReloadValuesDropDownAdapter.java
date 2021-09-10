@@ -81,7 +81,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
                         decimalFormatter.format(Double.valueOf(product.getPrice())));
                 int bonusUnits = product.getBonusValues();
                 calculateBonus(bonusUnits);
-                calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
+                calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product);
                 break;
             }
             position++;
@@ -135,7 +135,7 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
                         listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()) ,
                                 decimalFormatter.format(Double.valueOf(product.getPrice())));
                       calculateBonus(product.getBonusValues());
-                      calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
+                      calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product);
                       listener.expandCollapse();
                     }
                 });
@@ -150,19 +150,19 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
            }
        }
 
-    private void calculateDiscounts(Double discountPrices, Double prices, String unit){
+    private void calculateDiscounts(Double discountPrices, Double prices, TransactionProduct product){
         if(discountPrices != null) {
             listener.onAddDiscount(String.format(mContext.getString(R.string.discount_prices), decimalFormatter.format(discountPrices), decimalFormatter.format(prices)));
-            callbackListener.onValueChanged(discountPrices, unit);
+            callbackListener.onValueChanged(discountPrices, product);
         } else {
             listener.onAddDiscount(null);
-            callbackListener.onValueChanged(prices, unit);
+            callbackListener.onValueChanged(prices, product);
         }
     }
 
 
     interface CardReloadValuesCallbacks {
-        void onValueChanged(Double value, String unit);
+        void onValueChanged(Double value, TransactionProduct transactionProduct);
     }
 
 }
