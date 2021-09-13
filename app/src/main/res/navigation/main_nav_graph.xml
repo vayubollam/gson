@@ -115,9 +115,12 @@
         android:name="suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment"
         android:label="MoreEGiftCardCategories"
         tools:layout="@layout/fragment_more_e_gift_card_categories">
-
-
-
+        <action
+            android:id="@+id/action_more_e_gift_card_categories_to_merchantDetailsFragment"
+            app:destination="@id/merchantDetailsFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_down"/>
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -802,10 +805,7 @@
         android:name="suncor.com.android.ui.tutorial.TutorialFragment"
         android:label="TutorialFragment">
     </keep_state_fragment>
-    <keep_state_fragment
-        android:id="@+id/moreEGiftCardCategoriesFragment"
-        android:name="suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment"
-        android:label="MoreEGiftCardCategoriesFragment" />
+
 
 
 </navigation>

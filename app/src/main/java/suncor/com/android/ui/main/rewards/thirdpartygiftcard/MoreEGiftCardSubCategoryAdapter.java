@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.rewards.thirdpartygiftcard;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,14 +17,20 @@ import java.util.List;
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
 
+interface OnCardClickListener {
+    void onCardClicked(ThirdPartyGiftCardSubCategory subCategory);
+}
+
 public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEGiftCardSubCategoryAdapter.MoreEGiftCardSubCategoryViewHolder> {
 
+    private static OnCardClickListener clickListener;
     private final Context context;
     List<ThirdPartyGiftCardSubCategory> subCategoryList;
 
-    public MoreEGiftCardSubCategoryAdapter(Context context, List<ThirdPartyGiftCardSubCategory> subCategoryList) {
+    public MoreEGiftCardSubCategoryAdapter(Context context, List<ThirdPartyGiftCardSubCategory> subCategoryList, OnCardClickListener clickListener) {
         this.subCategoryList = subCategoryList;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
 
@@ -38,7 +45,6 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
     @Override
     public void onBindViewHolder(@NonNull @NotNull MoreEGiftCardSubCategoryViewHolder holder, int position) {
 
-        holder.binding.imageView2.layout(0, 0, 0, 0);
         holder.setDataInView(context, subCategoryList.get(position));
     }
 
@@ -58,15 +64,22 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
 
         public void setDataInView(Context cont, ThirdPartyGiftCardSubCategory subcategory) {
 
-            binding.imageView2.layout(0, 0, 0, 0);
             binding.textView.setText(subcategory.getSubcategoryName());
             int imageId = cont.getResources().getIdentifier(subcategory.getSmallIcon(), "drawable", cont.getPackageName());
 //            Glide.with(binding.imageView2.getContext())
 //                    .load(cont.getDrawable(imageId))
 //                    .into(binding.imageView2);
             binding.setImage(cont.getDrawable(imageId));
+
+            binding.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (clickListener != null) {
+                        clickListener.onCardClicked(subcategory);
+                    }
+                }
+            });
         }
     }
-
 
 }

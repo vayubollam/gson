@@ -5,6 +5,8 @@ public  class ThirdPartyGiftCardSubCategory{
     private String SubcategoryName;
     private String smallIcon;
     private String largeIcon;
+    private String howToUse;
+    private String howToRedeem;
 
     public String getSubcategoryName() {
         return SubcategoryName;
@@ -25,5 +27,21 @@ public  class ThirdPartyGiftCardSubCategory{
 
     public ThirdPartyGiftCardSubCategory(String subcategoryName) {
         SubcategoryName = subcategoryName;
+    }
+
+    public String getHowToUse() {
+        return howToUse;
+    }
+
+    public void setHowToUse(String howToUse) {
+        this.howToUse = howToUse;
+    }
+
+    public String getHowToRedeem() {
+        return howToRedeem;
+    }
+
+    public void setHowToRedeem(String howToRedeem) {
+        this.howToRedeem = howToRedeem;
     }
 }

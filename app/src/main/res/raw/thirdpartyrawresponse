@@ -5,7 +5,9 @@
       {
         "SubcategoryName": "Petro-Canada",
         "smallIcon": "petro_canada_small",
-        "largeIcon": "petro_canada_large"
+        "largeIcon": "petro_canada_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use your Petro-Canada eGift card in-store at any Petro-Canada location."
       }
     ]
   },
@@ -14,18 +16,27 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Gap",
-        "smallIcon": "gap_small_new",
-        "largeIcon": "gap_large_new"
+
+         "smallIcon": "gap_small_new",
+        "largeIcon": "gap_large_new",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use in store at any Old Navy, Gap, Banana Republic or Athleta store including Outlet and Factory stores. Or, use it online at <a href=\"https://oldnavy.gapcanada.ca/\">oldnavy.ca</a>, <a href=\"https://www.gapcanada.ca\">gapcanada.ca</a> or <a href=\"http://bananarepublic.gapcanada.ca\">bananarepublic.ca</a>."
       },
       {
         "SubcategoryName": "Hudson's Bay",
         "smallIcon": "hudson_bay_small",
-        "largeIcon": "hudson_bay_large"
+        "largeIcon": "hudson_bay_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at Hudson’s Bay and online at <a href=\"https://www.thebay.com\">thebay.com</a>."
+
       },
       {
-        "SubcategoryName": "WINNERS , HomeSense and Marshalls",
-        "smallIcon": "winners_small",
-        "largeIcon": "winners_large"
+        "SubcategoryName": "WINNERS, HomeSense and Marshalls",
+
+         "smallIcon": "winners_small",
+        "largeIcon": "winners_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any WINNERS, HomeSense and Marshalls in Canada."
       }
     ]
   },
@@ -34,13 +45,18 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Tim Hortons",
-        "smallIcon": "tim_hortons_small_new",
-        "largeIcon": "tim_hortons_large_new"
+
+         "smallIcon": "tim_hortons_small_new",
+        "largeIcon": "tim_hortons_large_new",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use in store at any Tim Hortons location."
       },
       {
         "SubcategoryName": "The Ultimate Dining",
         "smallIcon": "ultimate_dining_small",
-        "largeIcon": "ultimate_dining_large"
+        "largeIcon": "ultimate_dining_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "It can be redeemed at over 10 Canadian restaurants like Swiss Chalet, Milestones, Montana’s, Kelseys, Harvey’s, Bier Markt, East Side Mario’s, New York Fries, Fionn MacCools, D’Arcy McGee’s, Paddy Flaherty’s, Tir nan Og, Original Joe’s, Elephant & Castle, State & Main, The Landing Group of Restaurants and Pickle Barrel."
       }
     ]
   },
@@ -50,12 +66,16 @@
       {
         "SubcategoryName": "Best Buy",
         "smallIcon": "best_buy_small",
-        "largeIcon": "best_buy_large"
+        "largeIcon": "best_buy_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Best Buy store in Canada or online at <a href=\"https://www.bestbuy.ca/en-ca\">bestbuy.ca</a>."
       },
       {
         "SubcategoryName": "Cineplex",
         "smallIcon": "cineplex_small",
-        "largeIcon": "cineplex_large"
+        "largeIcon": "cineplex_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Cineplex theatre or online at <a href=\"https://www.cineplex.com\">cineplex.com</a>."
       }
     ]
   },
@@ -65,22 +85,31 @@
       {
         "SubcategoryName": "Walmart",
         "smallIcon": "walmart_small",
-        "largeIcon": "walmart_large"
+        "largeIcon": "walmart_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Walmart Canada store, on <a href=\"https://www.walmart.ca/en\">walmart.ca</a> and on Marketplace."
       },
       {
         "SubcategoryName": "Best Buy",
         "smallIcon": "best_buy_small",
-        "largeIcon": "best_buy_large"
+        "largeIcon": "best_buy_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Best Buy store in Canada or online at <a href=\"https://www.bestbuy.ca/en-ca\">bestbuy.ca</a>."
       },
       {
         "SubcategoryName": "Hudson's Bay",
         "smallIcon": "hudson_bay_small",
-        "largeIcon": "hudson_bay_large"
+        "largeIcon": "hudson_bay_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at Hudson’s Bay and online at <a href=\"https://www.thebay.com\">thebay.com</a>."
       },
       {
-        "SubcategoryName": "WINNERS , HomeSense and Marshalls",
-        "smallIcon": "winners_small",
-        "largeIcon": "winners_large"
+        "SubcategoryName": "WINNERS, HomeSense and Marshalls",
+
+           "smallIcon": "winners_small",
+        "largeIcon": "winners_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any WINNERS, HomeSense and Marshalls in Canada."
       }
     ]
   }

@@ -13,17 +13,18 @@ import androidx.navigation.Navigation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentMoreEGiftCardCategoriesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard;
 
 public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implements OnBackPressedListener {
 
@@ -56,17 +57,30 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
         super.onResume();
         newCategoryList.clear();
         newCategoryList.addAll(viewModel.getRewards());
-        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList);
+        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList, this::onCardClicked);
         binding.categoriesRecyclerView.setAdapter(adapter);
+
+    }
+
+    private void onCardClicked(ThirdPartyGiftCardSubCategory subCategory) {
+
+        GenericEGiftCard genericEGiftCard = new GenericEGiftCard();
+        genericEGiftCard.setTitle(subCategory.getSubcategoryName());
+        genericEGiftCard.setSmallImage(subCategory.getSmallIcon());
+        genericEGiftCard.setLargeImage(subCategory.getLargeIcon());
+        genericEGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
+        genericEGiftCard.setHowToRedeem(subCategory.getHowToRedeem());
+        genericEGiftCard.setHowToUse(subCategory.getHowToUse());
+        genericEGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
+
+        MoreEGiftCardCategoriesFragmentDirections.ActionMoreEGiftCardCategoriesToMerchantDetailsFragment action = MoreEGiftCardCategoriesFragmentDirections.actionMoreEGiftCardCategoriesToMerchantDetailsFragment(genericEGiftCard);
+        Navigation.findNavController(requireView()).navigate(action);
 
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
     }
 
     @Override
