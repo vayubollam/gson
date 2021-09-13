@@ -749,7 +749,6 @@
     <string name="select_value">Value</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
 
-
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Thanks, %1$s!
         Squeaky-clean is coming right up.</string>
@@ -777,5 +776,18 @@
 
     <string name="discount_prices">%1$s (was %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
+
+    <!-- Add petropoints card into google wallet-->
+    <string name="google_passes_name_label">NAME</string>
+    <string name="google_passes_email_label">EMAIL</string>
+    <string name="google_passes_detail_label">DETAILS</string>
+    <string name="google_passes_detail_value">Redeem your Petro-Points for free gas, eGift, cards and more.</string>
+    <string name="google_passes_value_label">VALUE</string>
+    <string name="google_passes_value_value">Earn:\n1L = 10 points\n$1 = 10 points\n\nRedeem:\n1,000 = $1 off"</string>
+    <string name="google_passes_howtouse_label">How to use</string>
+    <string name="google_passes_howtouse_value">Scan your card in store to earn or redeem points. Or, download our app to earn points directly at the pump.</string>
+    <string name="google_passes_termcondition_label">TERMS AND CONDITIONS</string>
+    <string name="google_passes_termcondition_value">This is not a credit card or a Fuel Savings Reward card. By using this Petro-Points card, the member accepts <u>the terms and conditions of the Petro-Points program</u>. Suncor Energy Products Partnership is not responsible for the points used on lost or stolen cards. For more information, <u>visit Petro-Points.com</u> or call customer service at 1 (800) 668-2020.</string>
+
 
 </resources>

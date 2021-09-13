@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "petro-passes-carwash-android",
+  "private_key_id": "02e2eb6991d9a5838897402029688559a424bf26",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQChS4akRCifbeIv\nT/CiNmKRTYTJOdPM7A3Hwntqt+HsysNccwHc5s4jmygkc5sJIUsyfn7/tW1qnk6q\npRmhX1RaPUfmkxFd6kzkGQMsvYGEZxpIHq2ms9Q6O3H5qmYRpzHrymyaCOVVkN+1\nwHBGNaM40/B9cnADrWvXKwwDI9EWy220NSAAcfjajq04WF3EgritrxBzM+9oSxQ9\niGoVxb8GZlOWLsw78BIjfsRcB7gbq6ZulrPiGcIGFJJeJEJr2uK0YFK5xVzAhXSM\nlPEvyyJziknaXMEOgHSnfEFTei8ufUvAKXJFuhjwq2P3R48Q6dBdd1gbPY9G+Vhq\n+r+SqJaLAgMBAAECggEABrYwVnSHU+y51mDgaAC5e7UWSMooAknglutNwPsltQvS\nDkmzIICN5KdDGiUz7dVmwrfG8KpQXp2cM2UvyFgKzuPoDfP0RtWGJpEd4X0T0Wf5\nw8eAKw3dT466sJ7VEpzWGHQxrkUxfmOmik3zBzV1dTZD7V6ywvogfEzVeg6K/E2z\nF7I+96XkZQIZls/MoS3QybVEHBHkjfGgQrJI6cU9M69H+SjjK+FYxsY65JCgQNF+\nKgrxlQc4YfNLxxrBRN61k3/GgLwea3pTqeCuD+bPxaC35wh6axMpKhHa1ga5u3+t\nOrO+AKRiI7wovtc6PB1jasIswZQRyz6FLHmpPnegDQKBgQDWuidP6Xv+TP5Fnmw7\nLCoVcCv902dKFtbcJHy4B4Ld9Q+RG/cWvnNU8Y6ogW610Idi5gatKR32CbldY2Cn\nP48ARXg6QAffPjuEcBmwXnVrs1wtqzYJcHCpJ+xdPP7PlSRkbIJZ86MBfSVw/LFQ\nW1JFQZErncBWxkjbNRh0q/xzBQKBgQDATDHyDhilyaunBWsLWZqFGRIQ6N+AsHUN\nL/ygD3DEDfYHOapwNpIdNa3I6muayHJO1BZSIe7FKfZKoioZ5bnDC+W3Dc0LnG+w\nTFoAMr2TTkI6z3Ati2S/iNqQFrzW4nTetV8AQMEhblUHh81ZLt8t60Akv6jZs34S\nwhzzH7g4TwKBgQDUfvRYiN9EEj2v989z34jmHlPqpUMadu+6fAFQvV4s+U+mct5b\ni63m6gYbi7tcAjl5Ddqdkosr6QOf/7Cu0p9ZzWXlf2hK7PNJZQaHG3NoWd9m8oBP\nZw6W2AN5Ydto4ldZami1S/6MgqSC5A81TqpkDzbyyvKE7UU8aZcCHxF9YQKBgGqm\nF5EyhjL0bVHdbGfIEy28IMvmC4b41oIw2f//cEAbqhaJweAoM9MlYTOr52/ZuaPE\ndniovx70TddIpubkBKmLIKTsb4sAAOWbAtNXUNKwtYSeZY2s4Hxlryn4olTfFYgq\nuPyP7UzYPypFA/txRm/WKCX5cfEDXmmS5LFmJyp7AoGBALwueJzHWWu0A9e/Kp4b\n1ZucuODtP/B0/Pv9qy/EAccoCvlGabxoICB1RjKVcKbxY42KSJcOHiVaxnuXwATV\n/t3B39kIf7rPEBjVG4xODWqJH2tOpFcrMPm0FjPTsxkGC5QQq3WGVKXGXgiY15Mz\nhDUcw+RS98BzLp+96Fr/jCfe\n-----END PRIVATE KEY-----\n",
+  "client_email": "petro-points-carwash@petro-passes-carwash-android.iam.gserviceaccount.com",
+  "client_id": "114179774361015422213",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/petro-points-carwash%40petro-passes-carwash-android.iam.gserviceaccount.com"
+}

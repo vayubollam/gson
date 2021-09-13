@@ -38,6 +38,8 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
+import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
@@ -241,10 +243,47 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 }
         };
 
+
     private View.OnClickListener gpaySaveToWalletListener = view -> {
-        //todo pass the real jwt token with url
-        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://pay.google.com/gp/v/save/")));
+        showAddCardProgress();
+        LoyalityData loyalityData = new LoyalityData();
+        loyalityData.setBarcode(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+        ExpandedCardItem expandedCardItem = new ExpandedCardItem(getContext(), viewModel.cards.getValue().get(clickedCardIndex));
+        loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
+        loyalityData.setNameLabel(getString(R.string.google_passes_name_label));
+        loyalityData.setNameValue(viewModel.getUserProfile().getFirstName() + " " + viewModel.getUserProfile().getLastName() );
+        loyalityData.setEmailLabel(getString(R.string.google_passes_email_label));
+        loyalityData.setEmailValue(viewModel.getUserProfile().getEmail() );
+        loyalityData.setDetailsLabel(getString(R.string.google_passes_detail_label));
+        loyalityData.setDetailsValue(getString(R.string.google_passes_detail_value));
+        loyalityData.setValuesLabel(getString(R.string.google_passes_value_label));
+        loyalityData.setValuesValue(getString(R.string.google_passes_value_value));
+        loyalityData.setHowToUseLabel(getString(R.string.google_passes_howtouse_label));
+        loyalityData.setHowToUseValue(getString(R.string.google_passes_howtouse_value));
+        loyalityData.setTermConditionLabel(getString(R.string.google_passes_termcondition_label));
+        loyalityData.setTermConditionValue(getString(R.string.google_passes_termcondition_value));
+
+        Handler handler = new Handler();
+        new Thread(() -> {
+            GooglePassesApiGateway gateway = new GooglePassesApiGateway();
+            String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData);
+            handler.postDelayed(()-> {
+                hideAddCardProgress();
+                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
+            }, 1000);
+        }).start();
     };
+
+    private void showAddCardProgress(){
+        binding.progressLayout.setVisibility(View.VISIBLE);
+        binding.progressIcon.setImageResource(R.drawable.ic_add);
+        binding.progressContent.setText("Adding to Wallet");
+    }
+    private void hideAddCardProgress(){
+        binding.progressLayout.setVisibility(View.GONE);
+        binding.progressIcon.setImageResource(R.drawable.ic_bin_red);
+        binding.progressContent.setText(getString(R.string.removing_card));
+    }
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
