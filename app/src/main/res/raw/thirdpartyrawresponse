@@ -20,7 +20,7 @@
          "smallIcon": "gap_small_new",
         "largeIcon": "gap_large_new",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
-        "howToUse": "Use in store at any Old Navy, Gap, Banana Republic or Athleta store including Outlet and Factory stores. Or, use it online at <a href=\"https://oldnavy.gapcanada.ca/\">oldnavy.ca</a>, <a href=\"https://www.gapcanada.ca\">gapcanada.ca</a> or <a href=\"http://bananarepublic.gapcanada.ca\">bananarepublic.ca </a>."
+        "howToUse": "Use in store at any Old Navy, Gap, Banana Republic or Athleta store including Outlet and Factory stores. Or, use it online at <a href=\"https://oldnavy.gapcanada.ca/\">oldnavy.ca</a>, <a href=\"https://www.gapcanada.ca\">gapcanada.ca</a> or <a href=\"http://bananarepublic.gapcanada.ca\">bananarepublic.ca</a>."
       },
       {
         "SubcategoryName": "Hudson's Bay",
@@ -31,7 +31,7 @@
 
       },
       {
-        "SubcategoryName": "WINNERS , HomeSense and Marshalls",
+        "SubcategoryName": "WINNERS, HomeSense and Marshalls",
 
          "smallIcon": "winners_small",
         "largeIcon": "winners_large",
@@ -104,7 +104,7 @@
         "howToUse": "Use at Hudson’s Bay and online at <a href=\"https://www.thebay.com\">thebay.com</a>."
       },
       {
-        "SubcategoryName": "WINNERS , HomeSense and Marshalls",
+        "SubcategoryName": "WINNERS, HomeSense and Marshalls",
 
            "smallIcon": "winners_small",
         "largeIcon": "winners_large",
