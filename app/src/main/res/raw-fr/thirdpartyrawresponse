@@ -16,11 +16,10 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Gap",
-        "smallIcon": "gap_small",
-        "largeIcon": "gap_large",
+"smallIcon": "gap_small_new",
+        "largeIcon": "gap_large_new"
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste",
         "howToUse": "Utilisez votre carte-cadeau Gap dans les magasins Gap, Old Navy et Banana Republic du Canada et en ligne sur <a href=\"https://oldnavy.gapcanada.ca/?locale=fr_CA\">oldnavy.ca</a>, <a href=\"https://www.gapcanada.ca/?locale=fr_CA\">gapcanada.ca</a> et <a href=\"http://bananarepublic.gapcanada.ca/?locale=fr_CA\">bananarepublic.ca </a>."
-
       },
       {
         "SubcategoryName": "La Baie d’Hudson",
@@ -43,8 +42,8 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "SubcategoryName": "Tim Hortons",
-        "smallIcon": "tim_hortans_small",
-        "largeIcon": "tim_hortans_large",
+        "smallIcon": "tim_hortons_small_new",
+        "largeIcon": "tim_hortons_large_new"
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez-la à n’importe quel magasin Tim Hortons."
       },
