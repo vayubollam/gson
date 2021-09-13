@@ -5,7 +5,7 @@
       {
         "SubcategoryName": "Petro-Canada",
         "smallIcon": "petro_canada_small",
-        "largeIcon": "petro_canada_large"
+        "largeIcon": "petro_canada_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
         "howToUse": "Use your Petro-Canada eGift card in-store at any Petro-Canada location."
       }
@@ -18,7 +18,7 @@
         "SubcategoryName": "Gap",
 
          "smallIcon": "gap_small_new",
-        "largeIcon": "gap_large_new"
+        "largeIcon": "gap_large_new",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
         "howToUse": "Use in store at any Old Navy, Gap, Banana Republic or Athleta store including Outlet and Factory stores. Or, use it online at <a href=\"https://oldnavy.gapcanada.ca/\">oldnavy.ca</a>, <a href=\"https://www.gapcanada.ca\">gapcanada.ca</a> or <a href=\"http://bananarepublic.gapcanada.ca\">bananarepublic.ca </a>."
       },
@@ -34,7 +34,7 @@
         "SubcategoryName": "WINNERS , HomeSense and Marshalls",
 
          "smallIcon": "winners_small",
-        "largeIcon": "winners_large"
+        "largeIcon": "winners_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
         "howToUse": "Use at any WINNERS, HomeSense and Marshalls in Canada."
       }
@@ -47,7 +47,7 @@
         "SubcategoryName": "Tim Hortons",
 
          "smallIcon": "tim_hortons_small_new",
-        "largeIcon": "tim_hortons_large_new"
+        "largeIcon": "tim_hortons_large_new",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
         "howToUse": "Use in store at any Tim Hortons location."
       },
@@ -107,7 +107,7 @@
         "SubcategoryName": "WINNERS , HomeSense and Marshalls",
 
            "smallIcon": "winners_small",
-        "largeIcon": "winners_large"
+        "largeIcon": "winners_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
         "howToUse": "Use at any WINNERS, HomeSense and Marshalls in Canada."
       }
