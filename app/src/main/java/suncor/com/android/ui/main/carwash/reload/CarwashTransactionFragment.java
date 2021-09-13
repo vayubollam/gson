@@ -265,7 +265,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         if(Objects.isNull(viewModel.getTransactionReloadTax()) || Objects.isNull(viewModel.getSelectedProduct())) {
            return;
          }
-         Double totalTax = viewModel.getTransactionReloadTax().getTotalTax(Double.valueOf(viewModel.getSelectedProduct().getPrice()));
+         Double totalTax = viewModel.getTransactionReloadTax().getTotalTax(Double.valueOf(viewModel.getSelectedValuesAmount()));
          binding.taxAmount.setText(formatter.format(totalTax));
          binding.totalAmount.setText(formatter.format(viewModel.getSelectedValuesAmount() + totalTax));
     }
@@ -471,6 +471,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     public void onValueChanged(Double value, TransactionProduct product) {
        viewModel.setSelectedProduct(product);
        viewModel.setSelectedValuesAmount(value);
-        fetchTaxValues();
+       fetchTaxValues();
     }
 }
