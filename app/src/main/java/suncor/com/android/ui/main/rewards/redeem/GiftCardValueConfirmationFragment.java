@@ -28,7 +28,6 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 
-import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
@@ -39,7 +38,6 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.rewards.MerchantItem;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
@@ -100,21 +98,21 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     break;
                 case ERROR:
                     AnalyticsUtils.logEvent(this.getContext(), "form_error",
-                            new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"),
+                            new Pair<>("formName","Redeem for "+viewModel.getGiftCardItem().getShortName()+" eGift card"),
                             new Pair<>("errorMessage",orderResponseResource.message));
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
+                        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert",
                                 new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")"),
-                                new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card")
+                                new Pair<>("formName","Redeem for "+viewModel.getGiftCardItem().getShortName()+" eGift card")
                         );
-                        new AlertDialog.Builder(getContext())
+                        new AlertDialog.Builder(requireContext())
                                 .setTitle(R.string.msg_e030_title)
                                 .setMessage(R.string.msg_e030_message)
                                 .setPositiveButton(R.string.ok, (dialog, which) -> {
-                                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                                    AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert_interaction",
                                             new Pair<>("alertTitle", getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")"),
                                             new Pair<>("alertSelection",getString(R.string.ok)),
-                                            new Pair<>("formName","Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card")
+                                            new Pair<>("formName","Redeem for "+viewModel.getGiftCardItem().getShortName()+" eGift card")
                                     );
                                     dialog.dismiss();
                                 })
@@ -123,8 +121,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     } else {
                         AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                                 new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"));
-                        Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card").show();
+                                new Pair<>(AnalyticsUtils.Param.formName, "Redeem for "+viewModel.getGiftCardItem().getShortName()+" eGift card"));
+                        Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for "+viewModel.getGiftCardItem().getShortName()+" eGift card").show();
                     }
                     break;
             }
@@ -134,16 +132,16 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        MerchantItem merchantItem = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getMerchanItem();
-        viewModel.setMerchantItem(merchantItem);
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+viewModel.getMerchantItem().getMerchantScreenName()+"-value");
+        GenericEGiftCard genericGiftCard = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getGenericGiftCard();
+        viewModel.setGenericCardItem(genericGiftCard);
+        AnalyticsUtils.setCurrentScreenName(this.requireActivity(), "my-petro-points-redeem-info-"+viewModel.getGiftCardItem().getScreenName()+"-value");
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_gift_card_value_confirmation, container, false);
         binding.setEventHandler(this);
         binding.setLifecycleOwner(this);
         binding.setVm(viewModel);
-        binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
+        binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        adapter = new GiftCardValueAdapter(viewModel.getMerchantItem().getMerchant().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::cardValueChanged);
+        adapter = new GiftCardValueAdapter(viewModel.getGiftCardItem().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::cardValueChanged);
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.redeemTotalLayoutFixShadow.setAlpha(0f);
@@ -158,12 +156,12 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             });
             adapter.showValues();
             binding.redeemAddressLayout.animate()
-                    .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1)))
+                    .translationY(-(binding.redeemAddressLayout.getTranslationY() + adapter.getItemHeight() * (viewModel.getGiftCardItem().geteGifts().size() - 1)))
                     .setInterpolator(animInterpolator)
                     .setStartDelay(0)
                     .setDuration(ANIM_DURATION);
             binding.redeemTotalLayoutScroll.animate()
-                    .translationY(-(binding.redeemTotalLayoutScroll.getTranslationY() + adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1)))
+                    .translationY(-(binding.redeemTotalLayoutScroll.getTranslationY() + adapter.getItemHeight() * (viewModel.getGiftCardItem().geteGifts().size() - 1)))
                     .setInterpolator(animInterpolator)
                     .setStartDelay(0)
                     .setUpdateListener(animation -> {
@@ -208,16 +206,16 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (viewModel.getMerchantItem().getMerchant().geteGifts().get(0).getPetroPointsRequired() > viewModel.getSessionManager().getProfile().getPointsBalance()) {
+        if (viewModel.getGiftCardItem().geteGifts().get(0).getPetroPointsRequired() > viewModel.getSessionManager().getProfile().getPointsBalance()) {
             binding.notEnoughPointLayout.setVisibility(View.VISIBLE);
         }
 
     }
 
     private void cardValueChanged(Integer selectedItem) {
-        int valueSelected = viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem).getPetroPointsRequired();
+        int valueSelected = viewModel.getGiftCardItem().geteGifts().get(selectedItem).getPetroPointsRequired();
         int userPetroPoints = viewModel.getSessionManager().getProfile().getPointsBalance();
-        viewModel.setEGift(viewModel.getMerchantItem().getMerchant().geteGifts().get(selectedItem));
+        viewModel.setEGift(viewModel.getGiftCardItem().geteGifts().get(selectedItem));
         binding.redeemTotalPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
         binding.redeemTotalPointsTxt2.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(valueSelected)));
         binding.redeemNewPointsTxt.setText(getString(R.string.rewards_signedin_egift_value_in_pointr_generic, CardFormatUtils.formatBalance(userPetroPoints - valueSelected)));
@@ -251,12 +249,12 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
             }, ANIM_DURATION);
         }
         binding.redeemAddressLayout.animate()
-                .translationY(-adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1))
+                .translationY(-adapter.getItemHeight() * (viewModel.getGiftCardItem().geteGifts().size() - 1))
                 .setStartDelay(firstTime ? ANIM_DURATION : 0)
                 .setInterpolator(animInterpolator)
                 .setDuration(ANIM_DURATION);
         binding.redeemTotalLayoutScroll.animate()
-                .translationY(-adapter.getItemHeight() * (viewModel.getMerchantItem().getMerchant().geteGifts().size() - 1))
+                .translationY(-adapter.getItemHeight() * (viewModel.getGiftCardItem().geteGifts().size() - 1))
                 .setStartDelay(firstTime ? ANIM_DURATION : 0)
                 .setInterpolator(animInterpolator)
                 .setListener(new AnimatorListenerAdapter() {
@@ -296,14 +294,14 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
 
     @Override
     public void onBackPressed() {
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     public void redeemConfirmButtonClicked() {
         AnalyticsUtils.logEvent(this.getContext(), "form_step",
-                new Pair<>("formName", "Redeem for "+viewModel.getMerchantItem().getMerchantShortName()+" eGift card"),
+                new Pair<>("formName", "Redeem for "+viewModel.getGiftCardItem().getShortName()+" eGift card"),
                 new Pair<>("stepName", "Click to redeem"));
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(),"my-petro-points-redeem-info-"+viewModel.getMerchantItem().getMerchantScreenName()+"-redeeming");
+        AnalyticsUtils.setCurrentScreenName(this.requireActivity(),"my-petro-points-redeem-info-"+viewModel.getGiftCardItem().getScreenName()+"-redeeming");
         viewModel.sendRedeemData();
     }
 }
