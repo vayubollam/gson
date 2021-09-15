@@ -1,5 +1,7 @@
 package suncor.com.android.model.carwash.reload
 
+import java.util.*
+
 data class TransactionProduct(
                                val applyToOnlineReloads: String,
                                val sKU: String,
@@ -13,12 +15,9 @@ data class TransactionProduct(
                                val unitBonuses: List<TransactionUnitBonus>,
                                val pointsBonuses: List<TransactionPointBonus>,
                             ){
-
     fun  getBonusValues(): Int {
-         if(!unitBonuses.isEmpty() && unitBonuses.size > 0){
-             return unitBonuses[0].getBonusValue();
-         }
-           return 0
+           val bonus = unitBonuses.stream().filter{ units -> units.getBonusValue() > 0 }.map { units -> units.getBonusValue() }.findFirst();
+            return  if(bonus.isPresent)  bonus.get() else 0
        }
 
     fun getDiscountPrices(): Double? {
