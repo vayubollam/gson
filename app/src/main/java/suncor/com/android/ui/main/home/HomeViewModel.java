@@ -245,7 +245,7 @@ public class HomeViewModel extends ViewModel {
     public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
         return papRepository.getStoreDetails(storeId);
     }
-
+/*
     public LiveData<Resource<FuelUp>> isPAPAvailable() {
         return Transformations.switchMap(nearestStation, stationItemResource -> {
             if (stationItemResource.status == Resource.Status.SUCCESS && stationItemResource.data != null &&  stationItemResource.data.getStation() != null) {
@@ -269,6 +269,29 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
+*/
+
+public LiveData<Resource<FuelUp>> isPAPAvailable() {
+    return Transformations.switchMap(nearestStation, stationItemResource -> {
+        if (stationItemResource.status == Resource.Status.SUCCESS && stationItemResource.data != null &&
+                stationItemResource.data.getStation() != null) {
+            return Transformations.switchMap(getGeoFenceLiveData(), limit -> {
+                if (limit.status == Resource.Status.SUCCESS && limit.data != null) {
+                    return Transformations.map(getStoreDetails(stationItemResource.data.getStation().getId()), result -> {
+
+                        return new Resource<>(result.status,
+                                new FuelUp(stationItemResource, limit, result), result.message);
+
+                    });
+                } else {
+                    return new MutableLiveData<>(new Resource<>(limit.status, new FuelUp(), limit.message));
+                }
+            });
+        } else {
+            return new MutableLiveData<>(new Resource<>(stationItemResource.status, new FuelUp(), stationItemResource.message));
+        }
+    });
+}
 
     public LiveData<Resource<FuelUp>> isPAPAvailable(StationItem stationItem) {
         Resource<StationItem> nearestStation = new Resource<>(Resource.Status.SUCCESS, stationItem, null);
