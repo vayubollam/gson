@@ -202,6 +202,7 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
             ((TextView) findViewById(R.id.discount_prices)).setText(discount);
         } else {
             ((TextView) findViewById(R.id.discount_prices)).setText("");
+            findViewById(R.id.selected_subheader_value).setVisibility(VISIBLE);
             findViewById(R.id.discount_prices).setVisibility(GONE);
         }
     }
