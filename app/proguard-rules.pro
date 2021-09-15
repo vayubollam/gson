@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 
--dontobfuscate
+
 -keepclassmembers class suncor.com.android.** {
     public *;
     protected *;
@@ -58,3 +58,19 @@
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
 -ignorewarnings
+
+#################
+
+## Keep all the model class
+-keep class suncor.com.android.model.**{ *; }
+
+## Keep all the enums
+-keepclasseswithmembers enum suncor.com.android.**{ *; }
+
+## Keep all the parcelized classes
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+## keep android classes
+-keep class androidx.** { *; }
