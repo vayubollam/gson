@@ -16,6 +16,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,11 +35,15 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    Gson gson;
+
     private FragmentRewardsSignedinBinding binding;
     private RewardsSignedInViewModel viewModel;
     private boolean isHeaderVisible;
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
-    private ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
+    private final ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
     private boolean systemMarginsAlreadyApplied;
 
     @Override
@@ -228,7 +234,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private void eCardClicked(GenericEGiftCard genericEGiftCard) {
         if (genericEGiftCard.isDataDynamic()) {
             if (genericEGiftCard.isMoreGIftCard()) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_more_e_gift_card_categories);
+                String merchantList = gson.toJson(viewModel.getMerchantList());
+                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMoreEGiftCardCategories action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMoreEGiftCardCategories();
+                action.setMerchantList(merchantList);
+                Navigation.findNavController(requireView()).navigate(action);
             } else {
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);

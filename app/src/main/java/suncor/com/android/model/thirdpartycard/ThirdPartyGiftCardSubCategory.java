@@ -7,6 +7,15 @@ public  class ThirdPartyGiftCardSubCategory{
     private String largeIcon;
     private String howToUse;
     private String howToRedeem;
+    private String merchantId;
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
     public String getSubcategoryName() {
         return SubcategoryName;

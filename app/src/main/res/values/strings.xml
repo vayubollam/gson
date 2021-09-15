@@ -487,6 +487,10 @@
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
     <string name="merchant_dining_card">The Ultimate Dining</string>
     <string name="merchant_petrocanada_card">Petro-Canada</string>
+    <string name="merchant_gap_card">Gap</string>
+    <string name="merchant_best_buy_card">Best Buy</string>
+    <string name="merchant_walmart_card">Walmart</string>
+    <string name="merchant_tim_hortons_card">Tim Hortons</string>
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_Hudson_bay">Hudson\'s Bay</string>
     <string name="merchant_more_egift_card">More eGift cards</string>

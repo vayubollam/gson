@@ -10,9 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.gson.Gson;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,6 +23,7 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentMoreEGiftCardCategoriesBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.merchants.Merchant;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
 import suncor.com.android.ui.common.OnBackPressedListener;
@@ -30,10 +34,17 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
 
     @Inject
     ViewModelFactory factory;
+
+    @Inject
+    Gson gson;
+
     private MoreEGiftCardCategoriesViewModel viewModel;
     private FragmentMoreEGiftCardCategoriesBinding binding;
     private MoreEGiftCArdCategoriesAdapter adapter;
     private List<ThirdPartyGiftCardCategory> newCategoryList = new ArrayList<>();
+    private String merchantList;
+    private Merchant[] merchantArray;
+    private List<Merchant> merchantArrayList;
 
 
     @Override
@@ -45,7 +56,11 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         binding = FragmentMoreEGiftCardCategoriesBinding.inflate(inflater, container, false);
+        merchantList = MoreEGiftCardCategoriesFragmentArgs.fromBundle(getArguments()).getMerchantList();
         binding.setVm(viewModel);
+
+        merchantArray = gson.fromJson(merchantList, Merchant[].class);
+        merchantArrayList = new ArrayList<>(Arrays.asList(merchantArray));
 
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
 
@@ -64,17 +79,25 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
 
     private void onCardClicked(ThirdPartyGiftCardSubCategory subCategory) {
 
-        GenericEGiftCard genericEGiftCard = new GenericEGiftCard();
-        genericEGiftCard.setTitle(subCategory.getSubcategoryName());
-        genericEGiftCard.setSmallImage(subCategory.getSmallIcon());
-        genericEGiftCard.setLargeImage(subCategory.getLargeIcon());
-        genericEGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
-        genericEGiftCard.setHowToRedeem(subCategory.getHowToRedeem());
-        genericEGiftCard.setHowToUse(subCategory.getHowToUse());
-        genericEGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
 
-        MoreEGiftCardCategoriesFragmentDirections.ActionMoreEGiftCardCategoriesToMerchantDetailsFragment action = MoreEGiftCardCategoriesFragmentDirections.actionMoreEGiftCardCategoriesToMerchantDetailsFragment(genericEGiftCard);
-        Navigation.findNavController(requireView()).navigate(action);
+        for (Merchant merchant : merchantArrayList) {
+            if (merchant.getMerchantId() == Integer.parseInt(subCategory.getMerchantId())) {
+
+                GenericEGiftCard genericEGiftCard = new GenericEGiftCard();
+                genericEGiftCard.setTitle(subCategory.getSubcategoryName());
+                genericEGiftCard.setSmallImage(subCategory.getSmallIcon());
+                genericEGiftCard.setLargeImage(subCategory.getLargeIcon());
+                genericEGiftCard.seteGifts(merchant.geteGifts());
+                genericEGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
+                genericEGiftCard.setHowToRedeem(subCategory.getHowToRedeem());
+                genericEGiftCard.setHowToUse(subCategory.getHowToUse());
+                genericEGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
+
+                MoreEGiftCardCategoriesFragmentDirections.ActionMoreEGiftCardCategoriesToMerchantDetailsFragment action = MoreEGiftCardCategoriesFragmentDirections.actionMoreEGiftCardCategoriesToMerchantDetailsFragment(genericEGiftCard);
+                Navigation.findNavController(requireView()).navigate(action);
+            }
+        }
+
 
     }
 

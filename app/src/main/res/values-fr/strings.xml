@@ -478,6 +478,10 @@
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_dining_card">The Ultimate Dining</string>
     <string name="merchant_petrocanada_card">Petro-Canada</string>
+    <string name="merchant_gap_card">Gap</string>
+    <string name="merchant_best_buy_card">Best Buy</string>
+    <string name="merchant_walmart_card">Walmart</string>
+    <string name="merchant_tim_hortons_card">Tim Hortons</string>
     <string name="merchant_winners">WINNERS, Marshalls et HomeSense</string>
     <string name="rewards_signedin_how_to_redeem_merchants_title">Comment échanger des points</string>
     <string name="rewards_signedin_redeeming_your_rewards_title">Utilisation de votre prime</string>
