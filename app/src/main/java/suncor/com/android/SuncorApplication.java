@@ -20,6 +20,7 @@ import suncor.com.android.mfp.MFPRequestInterceptor;
 import suncor.com.android.mfp.MfpLogging;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.utilities.KountManager;
 import suncor.com.android.utilities.Timber;
 
 public class SuncorApplication extends DaggerApplication {
@@ -55,9 +56,8 @@ public class SuncorApplication extends DaggerApplication {
         favouriteRepository.observeSessionChanges();
 
         Station.initiateAmenities(this);
-        AnalyticsCollector.setMerchantId(Integer.valueOf(BuildConfig.KOUNT_MERCHANT_ID));
-        AnalyticsCollector.collectAnalytics(true);
-        AnalyticsCollector.setEnvironment(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")
+
+       KountManager.INSTANCE.collect(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")
                 ? AnalyticsCollector.ENVIRONMENT_PRODUCTION : AnalyticsCollector.ENVIRONMENT_TEST);
     }
 
