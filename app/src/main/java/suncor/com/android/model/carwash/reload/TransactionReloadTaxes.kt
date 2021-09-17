@@ -1,5 +1,7 @@
 package suncor.com.android.model.carwash.reload
 
+import java.math.RoundingMode
+
 
 data class TransactionReloadTaxes(
         val pst: Double,
@@ -14,7 +16,7 @@ data class TransactionReloadTaxes(
                        return 0.00;
                 }
                 val totalTaxPercentage = (pst + qst + hst + gst)*100
-                return (reloadTotalAmount * totalTaxPercentage)/100
+                return ((reloadTotalAmount * totalTaxPercentage)/100).toBigDecimal().setScale(2, RoundingMode.UP).toDouble()
         }
 
 
