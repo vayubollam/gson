@@ -44,7 +44,7 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     private List<ThirdPartyGiftCardCategory> newCategoryList = new ArrayList<>();
     private String merchantList;
     private Merchant[] merchantArray;
-    private List<Merchant> merchantArrayList;
+    private List<Merchant> merchantArrayList = new ArrayList<>();
 
 
     @Override
@@ -59,10 +59,11 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
         merchantList = MoreEGiftCardCategoriesFragmentArgs.fromBundle(getArguments()).getMerchantList();
         binding.setVm(viewModel);
 
-        merchantArray = gson.fromJson(merchantList, Merchant[].class);
-        merchantArrayList = new ArrayList<>(Arrays.asList(merchantArray));
-
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
+        viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
+            merchantArrayList.clear();
+            merchantArrayList.addAll(merchants);
+        });
 
         return binding.getRoot();
     }
@@ -70,6 +71,10 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     @Override
     public void onResume() {
         super.onResume();
+
+        viewModel.getMerchantsData();
+      /*  merchantArray = gson.fromJson(merchantList, Merchant[].class);
+        merchantArrayList = new ArrayList<>(Arrays.asList(merchantArray));*/
         newCategoryList.clear();
         newCategoryList.addAll(viewModel.getRewards());
         adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList, this::onCardClicked);
@@ -78,7 +83,6 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
     }
 
     private void onCardClicked(ThirdPartyGiftCardSubCategory subCategory) {
-
 
         for (Merchant merchant : merchantArrayList) {
             if (merchant.getMerchantId() == Integer.parseInt(subCategory.getMerchantId())) {

@@ -1,5 +1,9 @@
 package suncor.com.android.model.thirdpartycard;
 
+import java.util.List;
+
+import suncor.com.android.model.merchants.EGift;
+
 public  class ThirdPartyGiftCardSubCategory{
 
     private String SubcategoryName;
@@ -8,6 +12,7 @@ public  class ThirdPartyGiftCardSubCategory{
     private String howToUse;
     private String howToRedeem;
     private String merchantId;
+    private List<EGift> eGiftList;
 
     public String getMerchantId() {
         return merchantId;
@@ -36,6 +41,14 @@ public  class ThirdPartyGiftCardSubCategory{
 
     public ThirdPartyGiftCardSubCategory(String subcategoryName) {
         SubcategoryName = subcategoryName;
+    }
+
+    public List<EGift> geteGiftList() {
+        return eGiftList;
+    }
+
+    public void seteGiftList(List<EGift> eGiftList) {
+        this.eGiftList = eGiftList;
     }
 
     public String getHowToUse() {

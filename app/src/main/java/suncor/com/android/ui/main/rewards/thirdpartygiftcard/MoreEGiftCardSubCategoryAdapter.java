@@ -66,9 +66,6 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
 
             binding.textView.setText(subcategory.getSubcategoryName());
             int imageId = cont.getResources().getIdentifier(subcategory.getSmallIcon(), "drawable", cont.getPackageName());
-//            Glide.with(binding.imageView2.getContext())
-//                    .load(cont.getDrawable(imageId))
-//                    .into(binding.imageView2);
             binding.setImage(cont.getDrawable(imageId));
 
             binding.cardView.setOnClickListener(new View.OnClickListener() {

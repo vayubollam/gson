@@ -37,10 +37,7 @@ public class RewardsSignedInViewModel extends ViewModel {
         merchantsMutableLiveData = merchantsRepository.getMerchants();
         merchantsMutableLiveData.observeForever(merchantsResource -> {
             if (merchantsResource.status == Resource.Status.SUCCESS) {
-                if (isFirstTym) {
-                    merchantList = merchantsResource.data;
-                    isFirstTym = false;
-                }
+                merchantList = merchantsResource.data;
                 assert merchantsResource.data != null;
                 ArrayList<Merchant> validMerchants = filterValidMerchants(merchantsResource.data);
                 _merchantsLiveData.postValue(validMerchants);
