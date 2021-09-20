@@ -45,7 +45,7 @@ public class AddPaymentViewModel extends ViewModel {
         this.userLocation = userLocation;
     }
 
-    LiveData<Resource<Uri>> getAddPaymentEndpoint(boolean inTransaction) {
+    LiveData<Resource<Uri>> getAddPaymentEndpoint(boolean inTransaction, String kountSessionId) {
         return Transformations.switchMap(repository.addPayment(), result -> {
             viewState.setValue(result.status);
 
@@ -62,7 +62,7 @@ public class AddPaymentViewModel extends ViewModel {
                             .appendQueryParameter("city", profile.getCity())
                             .appendQueryParameter("province", profile.getProvince())
                             .appendQueryParameter("zipCode", profile.getPostalCode())
-                            .appendQueryParameter("kountSessionId", KountManager.INSTANCE.getCurrentSessionId())
+                            .appendQueryParameter("kountSessionId", kountSessionId)
                             .build()
                     : null, result.message));
             return data;

@@ -103,7 +103,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String storeId;
     private String preAuth;
     private String userPaymentId;
-    private String kountSessionId;
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -120,7 +119,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
-        kountSessionId = KountManager.INSTANCE.getCurrentSessionId();
         LocationLiveData locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
             locationLiveData.observe(this, result -> {
@@ -371,16 +369,17 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         });
     }
 
-    private void handleConfirmAndAuthorizedClick(){
+    private void handleConfirmAndAuthorizedClick() {
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
-        if(userPaymentId == null) {
+        if (userPaymentId == null) {
             // select payment type error
             return;
         }
-        if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
+        if (userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)) {
             verifyFingerPrints();
         } else if (preAuth != null) {
             try {
+                String kountSessionId = generateKountSessionID();
                 double preAuthPrices = formatter.parse(preAuth).doubleValue();
                 viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId), kountSessionId).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
@@ -399,7 +398,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         Navigation.findNavController(getView()).navigate(action);
                     }
                 });
-            } catch (ParseException ex){
+            } catch (ParseException ex) {
                 Timber.e(ex.getMessage());
             }
         }
@@ -507,6 +506,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
         double preAuthPrices = formatter.parse(preAuth).doubleValue();
+        String kountSessionId = generateKountSessionID();
         viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken, kountSessionId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
