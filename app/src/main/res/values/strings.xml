@@ -745,5 +745,7 @@
     <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
+    <string name="auto_revoke_message">To protect your data, permissions for this app will be removed if the app isn\'t used for a few months</string>
+    <string name="auto_revoke_title">Auto Revoke Permissions</string>
 
 </resources>

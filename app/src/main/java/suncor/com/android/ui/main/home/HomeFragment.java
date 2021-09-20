@@ -3,6 +3,8 @@ package suncor.com.android.ui.main.home;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -178,6 +181,7 @@ public class HomeFragment extends BottomNavigationFragment {
             }
         });
 
+        checkAndDisableAutoResetPermission();
     }
 
     @Override
@@ -232,6 +236,30 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         return view;
+    }
+
+    private void checkAndDisableAutoResetPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            boolean isAutoResetOnDisabled = requireActivity().getPackageManager().isAutoRevokeWhitelisted();
+            if (!isAutoResetOnDisabled) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.auto_revoke_title)
+                        .setMessage(R.string.auto_revoke_message)
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            startIntentToRevokeAutoPermission();
+                            dialog.dismiss();
+                        });
+                dialogBuilder.show();
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void startIntentToRevokeAutoPermission(){
+        Intent intent = new Intent(Intent.ACTION_AUTO_REVOKE_PERMISSIONS,
+                Uri.fromParts("package", requireActivity().getPackageName(), null));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        requireContext().startActivity(intent);
     }
 
     private View setupSignedInLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
