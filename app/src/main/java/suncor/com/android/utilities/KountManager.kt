@@ -38,6 +38,7 @@ object KountManager {
         AnalyticsCollector.setMerchantId(merchantId)
         AnalyticsCollector.collectAnalytics(true)
         AnalyticsCollector.setEnvironment(environment)
+        AnalyticsCollector.getInstance().setLocationCollectorConfig(AnalyticsCollector.LocationConfig.COLLECT)
         initCompleted.set(true)
     }
 
