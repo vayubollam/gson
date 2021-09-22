@@ -51,7 +51,7 @@ jobs:
     - name: Compile and Build
       run: ./gradlew clean
     - name: Compile and Build
-      run: ./gradlew assemble${env.BUILD_ENV}${env.FEATURE}Release
+      run: ./gradlew assemble${env.BUILD_ENV}Release
     - name: Build with Gradle
       run: ./gradlew build
       
