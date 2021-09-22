@@ -28,8 +28,8 @@ jobs:
           
     - name: Set KEY_PASSWORD and STORE_PASSWORD  
       run: |
-          echo KEY_PASSWORD=ANDROIDSECRETSTOREPASSWORD >> $GITHUB_ENV
-          echo STORE_PASSWORD=ANDROIDSECRETKEYPASSWORD >> $GITHUB_ENV
+          echo KEY_PASSWORD=${{ secrets.ANDROIDSECRETKEYPASSWORD }} >> $GITHUB_ENV
+          echo STORE_PASSWORD=${{ secrets.ANDROIDSECRETSTOREPASSWORD }}  >> $GITHUB_ENV
       
     - name: Get FULL_DATE
       run: |
