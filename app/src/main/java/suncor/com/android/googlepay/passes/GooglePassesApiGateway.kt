@@ -55,7 +55,9 @@ class GooglePassesApiGateway {
             // sign JSON to make signed JWT
             signedJwt = googlePassJwt.generateSignedJwt(context)
         } catch (e: Exception) {
-            Timber.e(e.message!!)
+            e?.let {
+                Timber.e("Error on creating the loyality token")
+            }
         }
         // return "skinny" JWT. Try putting it into save link.
         // See https://developers.google.com/pay/passes/guides/get-started/implementing-the-api/save-to-google-pay#add-link-to-email
@@ -75,10 +77,10 @@ class GooglePassesApiGateway {
     fun insertLoyalityCard(context: Context, loyalityData: LoyalityData): String? {
         val config = GooglePassesConfig()
         val verticalType = VerticalType.LOYALTY
-        val uuidString = "card0_$loyalityData.barcode"
+        val uuidString = "petro_card_$loyalityData.barcode"
 
 
-        // your objectUid hould be a hash based off of pass metadata, for the demo we will use pass-type_object_uniqueid
+        // your objectUid should be a hash based off of pass metadata, for the demo we will use pass-type_object_uniqueid
         val objectUid = String.format("%s_OBJECT_%s", verticalType.toString(), UUID.nameUUIDFromBytes(uuidString?.toByteArray()).toString())
 
         // check Reference API for format of "id", for example offer:(https://developers.google.com/pay/passes/reference/v1/offerobject/insert).
