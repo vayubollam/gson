@@ -585,7 +585,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         return builder.create();
     }
 
-
     private  AlertDialog pumpReservationFailsAlert(Context context) {
         String analyticsName = context.getString( R.string.pump_unavailable_title)
                 + "(" + context.getString(R.string.pump_unavailable_message) + ")";
