@@ -71,8 +71,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
 
-    private SuncorButton confirmButton;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -213,25 +211,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
-                } else if(cardDetail.getStatus().equals(getString(R.string.card_status))) {
-                    AlertDialog alertWashDialog = new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.carwash_zero_error_alert_title)
-                            .setMessage(R.string.carwash_zero_error_alert_message)
-                            .setNegativeButton(R.string.carwash_zero_alert_close, (dialog, which) -> {
-                                dialog.dismiss();
-                            })
-                            .setPositiveButton(R.string.carwash_zero_alert_buy, (dialog, which) -> {
-                                dialog.dismiss();
-
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")
-                                                ? "https://www.petro-canada.ca/fr/personnel/lave-auto"
-                                                : "https://www.petro-canada.ca/en/personal/car-wash"));
-                                startActivity(browserIntent);
-                                confirmButton.setEnabled(true);
-                            }).create();
-                    alertWashDialog.setCanceledOnTouchOutside(false);
-                    alertWashDialog.show();
+                } else if(cardDetail.isSuspendedCard()) {
+                    CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
                     AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action

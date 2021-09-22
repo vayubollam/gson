@@ -166,4 +166,8 @@ public class CardDetail {
     public enum CardCategory {
         PPTS, PETRO_CANADA, PARTNER
     }
+
+    public boolean isSuspendedCard(){
+        return (status != null && status.equals("Suspended"));
+    }
 }

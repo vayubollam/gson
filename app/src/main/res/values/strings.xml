@@ -749,6 +749,6 @@
     <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
-    <string name="card_status" translatable="false">Suspended</string>
+    <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
 
 </resources>
