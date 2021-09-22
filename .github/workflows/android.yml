@@ -18,6 +18,18 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
+        
+        # Actions sets GITHUB_REF tag in form refs/tags/QUTCarwash-3.3.0-RC-3.0.0
+      # split on '/' and then '-' with awk to get the QUTCarwash part out for SchemeFeature
+    - name: Get build Env and Feature from tag
+      run: |
+          ENV=$(echo ${GITHUB_REF} | awk -F/ '{print $3}' | awk -F- '{print $1}')
+          echo BUILD_ENV=$ENV >> $GITHUB_ENV
+          
+    - name: Echo env for logs
+      run: |
+          echo BUILD_ENV=$BUILD_ENV
+          echo SHORT_HASH=$SHORT_HASH
       
     - name: Get time
       run: |
