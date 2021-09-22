@@ -25,11 +25,6 @@ jobs:
       run: |
           ENV=$(echo ${GITHUB_REF} | awk -F/ '{print $3}' | awk -F- '{print $1}')
           echo BUILD_ENV=$ENV >> $GITHUB_ENV
-          
-    - name: Echo env for logs
-      run: |
-          echo BUILD_ENV=$BUILD_ENV
-          echo SHORT_HASH=$SHORT_HASH
       
     - name: Get time
       run: |
@@ -43,6 +38,11 @@ jobs:
       run: |
           short=${GITHUB_SHA::6}
           echo SHORT_HASH=$short >> $GITHUB_ENV
+          
+    - name: Echo env for logs
+      run: |
+          echo BUILD_ENV=$BUILD_ENV
+          echo SHORT_HASH=$SHORT_HASH
    
     - name: Update app buildSettings.properties to show build date
       run: |
@@ -55,7 +55,7 @@ jobs:
     - name: Compile and Build
       run: ./gradlew clean
     - name: Compile and Build
-      run: ./gradlew assemble${env.BUILD_ENV}Release
+      run: ./gradlew assemble${{ env.BUILD_ENV }}Release
     - name: Build with Gradle
       run: ./gradlew build
       
