@@ -25,11 +25,16 @@ jobs:
       run: |
           ENV=$(echo ${GITHUB_REF} | awk -F/ '{print $3}' | awk -F- '{print $1}')
           echo BUILD_ENV=$ENV >> $GITHUB_ENV
+          
+    - name: Set KEY_PASSWORD and STORE_PASSWORD  
+      run: |
+          echo KEY_PASSWORD=ANDROIDSECRETSTOREPASSWORD >> $GITHUB_ENV
+          echo STORE_PASSWORD=ANDROIDSECRETKEYPASSWORD >> $GITHUB_ENV
       
-    - name: Get time
+    - name: Get FULL_DATE
       run: |
           echo FULL_DATE=$(TZ="Canada/Eastern" date) >> $GITHUB_ENV
-    - name: Get date
+    - name: Get SHORT_DATE
       run: |
           echo SHORT_DATE=$(TZ="Canada/Eastern" date +%Y%m%d%H) >> $GITHUB_ENV
           
@@ -52,7 +57,7 @@ jobs:
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Compile and Build
+    - name: Clean Gradle
       run: ./gradlew clean
     - name: Compile and Build
       run: ./gradlew assemble${{ env.BUILD_ENV }}Release
