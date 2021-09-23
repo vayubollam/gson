@@ -62,11 +62,11 @@ jobs:
     - name: Compile and Build
       run: ./gradlew assemble${{ env.BUILD_ENV }}Release
    
-    - name: Upload our APK
+    - name: Upload APK
       uses: actions/upload-artifact@v2.2.0
       with:
        name: Release artifact
-       path: app/build/outputs/apk/ourbuildtype/release/${{ env.BUILD_ENV }}.apk
+       path: app/build/outputs/apk/ourbuildtype/release/*.apk
 
       
    
