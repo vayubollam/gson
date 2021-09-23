@@ -16,7 +16,7 @@ data class TransactionReloadTaxes(
                        return 0.00;
                 }
                 val totalTaxPercentage = (pst + qst + hst + gst)*100
-                return ((reloadTotalAmount * totalTaxPercentage)/100).toBigDecimal().setScale(2, RoundingMode.UP).toDouble()
+                return ((reloadTotalAmount * totalTaxPercentage)/100).toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
         }
 
 
