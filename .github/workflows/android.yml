@@ -66,7 +66,66 @@ jobs:
       uses: actions/upload-artifact@v2.2.0
       with:
        name: Release artifact
-       path: app/build/outputs/apk/QACarwash/release/*.apk
+       path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
+
+    - name: Get appropriate app center credentials
+      run: |
+        case ${{env.BUILD_SCHEME}} in
+          QACarwash)
+            echo APPCNTR_URL=https://qa.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_QA_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_QA_PASSWORD >> $GITHUB_ENV
+            ;;
+          DevCarwash)
+            echo APPCNTR_URL=https://dev.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_DEV_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_DEV_PASSWORD >> $GITHUB_ENV
+            ;;
+          UAT)
+            echo APPCNTR_URL=https://uatqa.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_UAT_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_UAT_PASSWORD >> $GITHUB_ENV
+            ;;
+          Dev)
+            echo APPCNTR_URL=https://dev.rfmp-mfp.com  >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_DEVSCRUM_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_DEVSCRUM_PASSWORD >> $GITHUB_ENV
+            ;;
+          QAScrum)
+            echo APPCNTR_URL=https://scrumqa.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_QASCRUM_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_QASCRUM_PASSWORD >> $GITHUB_ENV
+            ;;
+          Prod)
+            echo APPCNTR_URL=https://mfp.petro-canada.ca >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_PROD_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_PROD_PASSWORD >> $GITHUB_ENV
+            ;;
+          UATTestflight)
+            echo APPCNTR_URL=https://uatqa.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_UAT_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_UAT_PASSWORD >> $GITHUB_ENV
+            ;;
+          DevSus)
+            echo APPCNTR_URL=https://opsdev.rfmp-mfp.com/ >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_DEVSUS_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_DEVSUS_PASSWORD >> $GITHUB_ENV
+            ;;
+          QASus)
+            echo APPCNTR_URL=https://opsqa.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_QASUS_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_QASUS_PASSWORD >> $GITHUB_ENV
+            ;;
+        esac
+   # this jar does not return a non-zero code on failure, so the workflow does not fail even if this upload fails
+    - name: Upload to QA IBM app store
+      env:
+        APPCNTR_URL: ${{ env.APPCNTR_URL }}
+      run: |
+        APPCNTR_USERNAME="${{ secrets[env.APPCNTR_USERNAME]}}"
+        APPCNTR_PASSWORD="${{ secrets[env.APPCNTR_PASSWORD]}}"
+        java -Dhttp.agent='Mozilla/5.0 (Windows NT 6.1)' -cp 'applicationcenterdeploytool.jar:json4j.jar' com.ibm.appcenter.Upload -l 'Petro-Canada ${{env.BUILD_SCHEME}}' -s "$APPCNTR_URL" -c applicationcenter -u "$APPCNTR_USERNAME" -p "$APPCNTR_PASSWORD" -e -isActive true -isInstaller true -f app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
+  
 
       
    
