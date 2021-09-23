@@ -70,7 +70,7 @@ jobs:
 
     - name: Get appropriate app center credentials
       run: |
-        case ${{env.BUILD_SCHEME}} in
+        case ${{ env.BUILD_ENV }} in
           QACarwash)
             echo APPCNTR_URL=https://qa.rfmp-mfp.com >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_QA_USERNAME >> $GITHUB_ENV
