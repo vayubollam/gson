@@ -7,7 +7,52 @@
         "smallIcon": "petro_canada_small",
         "largeIcon": "petro_canada_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez votre carte-cadeau Petro‑Canada à n’importe quel magasin Petro‑Canada."
+        "howToUse": "Utilisez votre carte-cadeau Petro‑Canada à n’importe quel magasin Petro‑Canada.",
+        "merchantId": "4678",
+        "eGifts": [
+          {
+            "id": 657,
+            "description": "PETRO CANADA E-CARTE CAD 10",
+            "merchantId": 4678,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 658,
+            "description": "PETRO CANADA E-CARTE CAD 25",
+            "merchantId": 4678,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 659,
+            "description": "PETRO CANADA E-CARTE CAD 50",
+            "merchantId": 4678,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 660,
+            "description": "PETRO CANADA E-CARTE CAD 100",
+            "merchantId": 4678,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 645,
+            "description": "PETRO CANADA E-CARTE CAD 250",
+            "merchantId": 4678,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 646,
+            "description": "PETRO CANADA E-CARTE CAD 500",
+            "merchantId": 4678,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       }
     ]
   },
@@ -19,21 +64,142 @@
         "smallIcon": "gap_small_new",
         "largeIcon": "gap_large_new",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez votre carte-cadeau Gap dans les magasins Gap, Old Navy et Banana Republic du Canada et en ligne sur <a href=\"https://www.gapcanada.ca/?locale=fr_CA\">gapcanada.ca</a>, <a href=\"https://oldnavy.gapcanada.ca/?locale=fr_CA\">oldnavy.ca</a> et <a href=\"http://bananarepublic.gapcanada.ca/?locale=fr_CA\">bananarepublic.ca</a>."
+        "howToUse": "Utilisez votre carte-cadeau Gap dans les magasins Gap, Old Navy et Banana Republic du Canada et en ligne sur <a href=\"https://www.gapcanada.ca/?locale=fr_CA\">gapcanada.ca</a>, <a href=\"https://oldnavy.gapcanada.ca/?locale=fr_CA\">oldnavy.ca</a> et <a href=\"http://bananarepublic.gapcanada.ca/?locale=fr_CA\">bananarepublic.ca</a>.",
+        "merchantId": "2105",
+        "eGifts": [
+          {
+            "id": 632,
+            "description": "GAP E-CARTE CAD 10",
+            "merchantId": 2105,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 633,
+            "description": "GAP E-CARTE CAD 25",
+            "merchantId": 2105,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 634,
+            "description": "GAP E_GIFT CARD 50",
+            "merchantId": 2105,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 635,
+            "description": "GAP E-CARTE CAD 100",
+            "merchantId": 2105,
+            "petroPointsRequired": 100000,
+            "value": 100
+          }
+        ]
       },
       {
         "SubcategoryName": "La Baie d’Hudson",
         "smallIcon": "hudson_bay_small",
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez votre carte-cadeau HBC à La Baie d’Hudson et en ligne à <a href=\"https://www.labaie.com/?orgin=true\">labaie.com</a>."
+        "howToUse": "Utilisez votre carte-cadeau HBC à La Baie d’Hudson et en ligne à <a href=\"https://www.labaie.com/?orgin=true\">labaie.com</a>.",
+        "merchantId": "2377",
+        "eGifts": [
+        {
+          "id": 527,
+          "description": "HBC E-CARTE CADEAU 10.00",
+          "merchantId": 2377,
+          "petroPointsRequired": 10000,
+          "value": 10
+        },
+        {
+          "id": 533,
+          "description": "HBC E-CARTE CADEAU 25.00",
+          "merchantId": 2377,
+          "petroPointsRequired": 25000,
+          "value": 25
+        },
+        {
+          "id": 534,
+          "description": "HBC E-CARTE CADEAU 50.00",
+          "merchantId": 2377,
+          "petroPointsRequired": 50000,
+          "value": 50
+        },
+        {
+          "id": 535,
+          "description": "HBC E-CARTE CADEAU 100.00",
+          "merchantId": 2377,
+          "petroPointsRequired": 100000,
+          "value": 100
+        },
+        {
+          "id": 536,
+          "description": "HBC E-CARTE CADEAU 250.00",
+          "merchantId": 2377,
+          "petroPointsRequired": 250000,
+          "value": 250
+        },
+        {
+          "id": 537,
+          "description": "HBC E-CARTE CADEAU 500.00",
+          "merchantId": 2377,
+          "petroPointsRequired": 500000,
+          "value": 5000
+        }
+      ]
       },
       {
         "SubcategoryName": "WINNERS, HomeSense et Marshalls",
         "smallIcon": "winners_small",
         "largeIcon": "winners_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez-la à n’importe quel magasin WINNERS, HomeSense et Marshalls au Canada."
+        "howToUse": "Utilisez-la à n’importe quel magasin WINNERS, HomeSense et Marshalls au Canada.",
+        "merchantId": "3267",
+        "eGifts": [
+          {
+            "id": 505,
+            "description": "HOMESENSE-WIN-MARSHALLS 10",
+            "merchantId": 3267,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 506,
+            "description": "HOMESENSE-WIN-MARSHALLS 25",
+            "merchantId": 3267,
+            "petroPointsRequired": 250000,
+            "value": 25
+          },
+          {
+            "id": 507,
+            "description": "HOMESENSE-WIN-MARSHALLS 50",
+            "merchantId": 3267,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 508,
+            "description": "HOMESENSE-WIN-MARSHALLS 100",
+            "merchantId": 3267,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 245,
+            "description": "HOMESENSE-WIN-MARSHALLS 250",
+            "merchantId": 3267,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 246,
+            "description": "HOMESENSE-WIN-MARSHALLS 500",
+            "merchantId": 3267,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       }
     ]
   },
@@ -45,14 +211,104 @@
         "smallIcon": "tim_hortons_small_new",
         "largeIcon": "tim_hortons_large_new",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez-la à n’importe quel magasin Tim Hortons."
+        "howToUse": "Utilisez-la à n’importe quel magasin Tim Hortons.",
+        "merchantId": "2208",
+        "eGifts": [
+          {
+            "id": 613,
+            "description": "TIM HORTONS E-CARTE CAD 10",
+            "merchantId": 2208,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 614,
+            "description": "TIM HORTONS E-CARTE CAD 25",
+            "merchantId": 2208,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 615,
+            "description": "TIM HORTONS E-CARTE CAD 50",
+            "merchantId": 2208,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 616,
+            "description": "TIM HORTONS E-CARTE CAD 100",
+            "merchantId": 2208,
+            "petroPointsRequired": 1000000,
+            "value": 100
+          },
+          {
+            "id": 617,
+            "description": "TIM HORTONS E-CARTE CAD 250",
+            "merchantId": 2208,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 618,
+            "description": "TIM HORTONS E-CARTE CAD 500",
+            "merchantId": 2208,
+            "petroPointsRequired": 5000000,
+            "value": 500
+          }
+        ]
       },
       {
         "SubcategoryName": "The Ultimate Dining",
         "smallIcon": "ultimate_dining_small",
         "largeIcon": "ultimate_dining_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Elle peut être utilisée à plus de 10 restaurants au Canada, incluant le Swiss Chalet, Milestones, Montana’s, Kelseys, Harvey’s, Bier Market, East Side Mario’s, New York Fries, Fionn MacCools, D’Arcy McGee’s, Paddy Flaherty’s, Tir nan Og, Original Joe’s, Elephant & Castle, State & Main, The Landing Group of Restaurants et Pickle Barrel."
+        "howToUse": "Elle peut être utilisée à plus de 10 restaurants au Canada, incluant le Swiss Chalet, Milestones, Montana’s, Kelseys, Harvey’s, Bier Market, East Side Mario’s, New York Fries, Fionn MacCools, D’Arcy McGee’s, Paddy Flaherty’s, Tir nan Og, Original Joe’s, Elephant & Castle, State & Main, The Landing Group of Restaurants et Pickle Barrel.",
+        "merchantId": "2337",
+        "eGifts": [
+          {
+            "id": 317,
+            "description": "ULTIMATE DINING GIFT CARD 10",
+            "merchantId": 2337,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 318,
+            "description": "ULTIMATE DINING GIFT CARD 25",
+            "merchantId": 2337,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 319,
+            "description": "ULTIMATE DINING GIFT CARD 50",
+            "merchantId": 2337,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 320,
+            "description": "ULTIMATE DINING GIFT CARD 100",
+            "merchantId": 2337,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 321,
+            "description": "ULTIMATE DINING GIFT CARD 250",
+            "merchantId": 2337,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 322,
+            "description": "ULTIMATE DINING GIFT CARD 500",
+            "merchantId": 2337,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       }
     ]
   },
@@ -64,14 +320,97 @@
         "smallIcon": "best_buy_small",
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez-la à n’importe quel magasin Best Buy au Canada ou en ligne à <a href=\"https://www.bestbuy.ca/fr-ca\">bestbuy.ca</a>."
+        "howToUse": "Utilisez-la à n’importe quel magasin Best Buy au Canada ou en ligne à <a href=\"https://www.bestbuy.ca/fr-ca\">bestbuy.ca</a>.",
+        "merchantId": "2376",
+        "eGifts": [
+          {
+            "id": 492,
+            "description": "BEST BUY E-GIFT CARD 10",
+            "merchantId": 2376,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 493,
+            "description": "BEST BUY E-GIFT CARD 25",
+            "merchantId": 2376,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 294,
+            "description": "BEST BUY E-GIFT CARD 50",
+            "merchantId": 2376,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 492,
+            "description": "BEST BUY E-GIFT CARD 100",
+            "merchantId": 2376,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 494,
+            "description": "BEST BUY E-GIFT CARD 250",
+            "merchantId": 2376,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 495,
+            "description": "BEST BUY E-GIFT CARD 500",
+            "merchantId": 2376,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       },
       {
         "SubcategoryName": "Cineplex",
         "smallIcon": "cineplex_small",
         "largeIcon": "cineplex_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez-la à n’importe quel cinéma Cineplex ou en ligne à <a href=\"https://www.cineplex.com/\">Cineplex.com</a>."
+        "howToUse": "Utilisez-la à n’importe quel cinéma Cineplex ou en ligne à <a href=\"https://www.cineplex.com/\">Cineplex.com</a>.",
+        "merchantId": "3090",
+        "eGifts": [
+          {
+            "id": 538,
+            "description": "CINEPLEX E-CARTE 10",
+            "merchantId": 3090,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 539,
+            "description": "CINEPLEX E-CARTE 25",
+            "merchantId": 3090,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 540,
+            "description": "CINEPLEX E-CARTE 50",
+            "merchantId": 3090,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 542,
+            "description": "CINEPLEX E-CARTE 250",
+            "merchantId": 3090,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 543,
+            "description": "CINEPLEX E-CARTE 500",
+            "merchantId": 3090,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       }
     ]
   },
@@ -83,28 +422,208 @@
         "smallIcon": "walmart_small",
         "largeIcon": "walmart_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Les cartes-cadeaux Walmart peuvent être échangées dans toutes les succursales Walmart du Canada, au <a href=\"https://www.walmart.ca/fr\">walmart.ca</a> et sur le site du marché électronique."
+        "howToUse": "Les cartes-cadeaux Walmart peuvent être échangées dans toutes les succursales Walmart du Canada, au <a href=\"https://www.walmart.ca/fr\">walmart.ca</a> et sur le site du marché électronique.",
+        "merchantId": "4472",
+        "eGifts": [
+          {
+            "id": 364,
+            "description": "WALMART E-CARD 10",
+            "merchantId": 4472,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 509,
+            "description": "WALMART E-CARD 25",
+            "merchantId": 4472,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 365,
+            "description": "WALMART E-CARD 50",
+            "merchantId": 4472,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 366,
+            "description": "WALMART E-CARD 100",
+            "merchantId": 4472,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 368,
+            "description": "WALMART E-CARD 250",
+            "merchantId": 4472,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 369,
+            "description": "WALMART E-CARD 500",
+            "merchantId": 4472,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       },
       {
         "SubcategoryName": "Best Buy",
         "smallIcon": "best_buy_small",
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez-la à n’importe quel magasin Best Buy au Canada ou en ligne à <a href=\"https://www.bestbuy.ca/fr-ca\">bestbuy.ca</a>."
+        "howToUse": "Utilisez-la à n’importe quel magasin Best Buy au Canada ou en ligne à <a href=\"https://www.bestbuy.ca/fr-ca\">bestbuy.ca</a>.",
+        "merchantId": "2376",
+        "eGifts": [
+          {
+            "id": 492,
+            "description": "BEST BUY E-GIFT CARD 10",
+            "merchantId": 2376,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 493,
+            "description": "BEST BUY E-GIFT CARD 25",
+            "merchantId": 2376,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 294,
+            "description": "BEST BUY E-GIFT CARD 50",
+            "merchantId": 2376,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 295,
+            "description": "BEST BUY E-GIFT CARD 100",
+            "merchantId": 2376,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 494,
+            "description": "BEST BUY E-GIFT CARD 250",
+            "merchantId": 2376,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 495,
+            "description": "BEST BUY E-GIFT CARD 500",
+            "merchantId": 2376,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       },
       {
         "SubcategoryName": "La Baie d’Hudson",
         "smallIcon": "hudson_bay_small",
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez votre carte-cadeau HBC à La Baie d’Hudson et en ligne à <a href=\"https://www.labaie.com/?orgin=true\">labaie.com</a>."
+        "howToUse": "Utilisez votre carte-cadeau HBC à La Baie d’Hudson et en ligne à <a href=\"https://www.labaie.com/?orgin=true\">labaie.com</a>.",
+        "merchantId": "2377",
+        "eGifts": [
+          {
+            "id": 527,
+            "description": "HBC E-CARTE CADEAU 10.00",
+            "merchantId": 2377,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 533,
+            "description": "HBC E-CARTE CADEAU 25.00",
+            "merchantId": 2377,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 534,
+            "description": "HBC E-CARTE CADEAU 50.00",
+            "merchantId": 2377,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 535,
+            "description": "HBC E-CARTE CADEAU 100.00",
+            "merchantId": 2377,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 536,
+            "description": "HBC E-CARTE CADEAU 250.00",
+            "merchantId": 2377,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 537,
+            "description": "HBC E-CARTE CADEAU 500.00",
+            "merchantId": 2377,
+            "petroPointsRequired": 500000,
+            "value": 5000
+          }
+        ]
       },
       {
         "SubcategoryName": "WINNERS, HomeSense et Marshalls",
         "smallIcon": "winners_small",
         "largeIcon": "winners_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
-        "howToUse": "Utilisez-la à n’importe quel magasin WINNERS, HomeSense et Marshalls au Canada."
+        "howToUse": "Utilisez-la à n’importe quel magasin WINNERS, HomeSense et Marshalls au Canada.",
+        "merchantId": "3267",
+        "eGifts": [
+          {
+            "id": 505,
+            "description": "HOMESENSE-WIN-MARSHALLS 10",
+            "merchantId": 3267,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 506,
+            "description": "HOMESENSE-WIN-MARSHALLS 25",
+            "merchantId": 3267,
+            "petroPointsRequired": 250000,
+            "value": 25
+          },
+          {
+            "id": 507,
+            "description": "HOMESENSE-WIN-MARSHALLS 50",
+            "merchantId": 3267,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 508,
+            "description": "HOMESENSE-WIN-MARSHALLS 100",
+            "merchantId": 3267,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 245,
+            "description": "HOMESENSE-WIN-MARSHALLS 250",
+            "merchantId": 3267,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 246,
+            "description": "HOMESENSE-WIN-MARSHALLS 500",
+            "merchantId": 3267,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
       }
     ]
   }

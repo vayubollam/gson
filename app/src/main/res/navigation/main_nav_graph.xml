@@ -115,6 +115,10 @@
         android:name="suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment"
         android:label="MoreEGiftCardCategories"
         tools:layout="@layout/fragment_more_e_gift_card_categories">
+        <argument
+            android:name="merchantList"
+            android:defaultValue="null"
+            app:argType="string"/>
         <action
             android:id="@+id/action_more_e_gift_card_categories_to_merchantDetailsFragment"
             app:destination="@id/merchantDetailsFragment"

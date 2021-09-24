@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -141,7 +142,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        adapter = new GiftCardValueAdapter(viewModel.getGiftCardItem().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::cardValueChanged);
+        adapter = new GiftCardValueAdapter(viewModel.getGiftCardItem().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::onCardClick);
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.redeemTotalLayoutFixShadow.setAlpha(0f);
@@ -203,6 +204,10 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         return binding.getRoot();
     }
 
+    private void onCardClick(Integer integer) {
+
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -211,6 +216,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         }
 
     }
+
 
     private void cardValueChanged(Integer selectedItem) {
         int valueSelected = viewModel.getGiftCardItem().geteGifts().get(selectedItem).getPetroPointsRequired();
