@@ -67,6 +67,13 @@ jobs:
       with:
        name: Release artifact
        path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
+       
+    - name: Upload to Perfecto public cloud
+        if: ${{ env.BUILD_SCHEME == 'QA' || env.BUILD_SCHEME == 'QASus' || env.BUILD_SCHEME == 'Dev' || env.BUILD_SCHEME == 'UAT' }}
+        env:
+          PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
+        run: |
+          curl -v --fail-with-body --data-binary @build/Suncor.ipa "https://ibmgbs.perfectomobile.com/services/repositories/media/Suncor${{env.BUILD_SCHEME}}.ipa?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1   
 
     - name: Get appropriate app center credentials
       run: |
@@ -125,6 +132,17 @@ jobs:
         APPCNTR_USERNAME="${{ secrets[env.APPCNTR_USERNAME]}}"
         APPCNTR_PASSWORD="${{ secrets[env.APPCNTR_PASSWORD]}}"
         java -Dhttp.agent='Mozilla/5.0 (Windows NT 6.1)' -cp 'applicationcenterdeploytool.jar:json4j.jar' com.ibm.appcenter.Upload -l 'Petro-Canada ${{env.BUILD_SCHEME}}' -s "$APPCNTR_URL" -c applicationcenter -u "$APPCNTR_USERNAME" -p "$APPCNTR_PASSWORD" -e -isActive true -isInstaller true -f app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
+         
+    - name: Setup JFrog
+        uses: jfrog/setup-jfrog-cli@v1
+        env:
+          JF_ARTIFACTORY_RFMP_IOS: ${{ secrets.JF_ARTIFACTORY_RFMP }}
+
+    - name: test notify teams
+      env:
+        TEAMS_WEBHOOK_URL: https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a498ba31c5e74dd98b927a932b1c2f0c/5b56d944-e978-4862-a720-a1f9589d6c37
+      run: |
+        curl -H 'Content-Type: application/json' -d "{\"text\": \"Workflow run complete on ${GITHUB_REF}: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" ${TEAMS_WEBHOOK_URL}
   
 
       
