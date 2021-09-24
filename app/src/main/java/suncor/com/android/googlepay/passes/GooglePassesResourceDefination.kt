@@ -38,10 +38,14 @@ object GooglePassesResourceDefination {
                             init {
                              //   add(LabelValue().setLabel(loyalityData.nameLabel).setValue(loyalityData.nameValue))
                              //   add(LabelValue().setLabel(loyalityData.emailLabel).setValue(loyalityData.emailValue))
-                                add(LabelValue().setLabel(loyalityData.detailsLabel).setValue(loyalityData.detailsValue))
-                                add(LabelValue().setLabel(loyalityData.valuesLabel).setValue(loyalityData.valuesValue))
-                                add(LabelValue().setLabel(loyalityData.howToUseLabel).setValue(loyalityData.howToUseValue))
-                                add(LabelValue().setLabel(loyalityData.termConditionLabel).setValue(loyalityData.termConditionValue))
+                                add(LabelValue().setLocalizedLabel(getLocalizedString(loyalityData.detailsLabel, loyalityData.detailsLocalizedLabel, loyalityData.defaultLanguage, loyalityData.localizedLanguage))
+                                    .setLocalizedValue(getLocalizedString(loyalityData.detailsValue, loyalityData.detailsLocalizedValue, loyalityData.defaultLanguage, loyalityData.localizedLanguage)))
+                                add(LabelValue().setLocalizedLabel(getLocalizedString(loyalityData.valuesLabel, loyalityData.valuesLocalizedLabel, loyalityData.defaultLanguage, loyalityData.localizedLanguage))
+                                    .setLocalizedValue(getLocalizedString(loyalityData.valuesValue, loyalityData.valuesLocalizedValue, loyalityData.defaultLanguage, loyalityData.localizedLanguage)))
+                                add(LabelValue().setLocalizedLabel(getLocalizedString(loyalityData.howToUseLabel, loyalityData.howToUseLocalizedLabel, loyalityData.defaultLanguage, loyalityData.localizedLanguage))
+                                    .setLocalizedValue(getLocalizedString(loyalityData.howToUseValue, loyalityData.howToUseLocalizedValue, loyalityData.defaultLanguage, loyalityData.localizedLanguage)))
+                                add(LabelValue().setLocalizedLabel(getLocalizedString(loyalityData.termConditionLabel, loyalityData.termConditionLocalizedLabel, loyalityData.defaultLanguage, loyalityData.localizedLanguage))
+                                    .setLocalizedValue(getLocalizedString(loyalityData.termConditionValue, loyalityData.termConditionLocalizedValue, loyalityData.defaultLanguage, loyalityData.localizedLanguage)))
                             }
                         }))
                     }
@@ -49,4 +53,21 @@ object GooglePassesResourceDefination {
                 )
                // .setLinksModuleData(LinksModuleData().set("Nearby Locations", "https://maps.google.com/maps/search/petro-canada/@46.504933,-89.9771504,3z/data=!3m1!4b1"))
     }
+
+    fun getTranslatedString(value: String? , language: String?) : TranslatedString{
+        return TranslatedString().setLanguage(language).setValue(value)
+    }
+
+    fun getLocalizedvaluesList(value: String? , language: String?): List<TranslatedString>{
+        val localizedList: MutableList<TranslatedString> = ArrayList()
+        localizedList.add(getTranslatedString(value, language))
+        return localizedList
+    }
+
+    fun getLocalizedString(value: String? ,localizedString: String?,defaultLanguage: String?, language: String?) : LocalizedString{
+        return LocalizedString().setDefaultValue(getTranslatedString(value, defaultLanguage)).setTranslatedValues(getLocalizedvaluesList(localizedString, language))
+    }
+
+
+
 }

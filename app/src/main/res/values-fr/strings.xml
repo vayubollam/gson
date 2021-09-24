@@ -769,15 +769,5 @@
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 
     <!-- Add petropoints card into google wallet-->
-    <string name="google_passes_name_label">Nom</string>
-    <string name="google_passes_email_label">Courriel</string>
-    <string name="google_passes_detail_label">Détails</string>
-    <string name="google_passes_detail_value">Échangez vos Petro-Points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
-    <string name="google_passes_value_label">Valeur</string>
-    <string name="google_passes_value_value">Obtenez :\n1 L = 10 points\n1 $ = 10 points\n\nÉchangez :\n1 000 = 1 $ de rabais</string>
-    <string name="google_passes_howtouse_label">Utilisation</string>
-    <string name="google_passes_howtouse_value">Scannez votre carte au dépanneur pour obtenir ou échanger des points. Ou téléchargez notre application pour obtenir des points directement à la pompe.</string>
-    <string name="google_passes_termcondition_label">Conditions</string>
-    <string name="google_passes_termcondition_value">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
 
 </resources>

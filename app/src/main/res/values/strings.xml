@@ -787,18 +787,17 @@
     <string name="google_passes_howtouse_label">How to use</string>
     <string name="google_passes_howtouse_value">Scan your card in store to earn or redeem points. Or, download our app to earn points directly at the pump.</string>
     <string name="google_passes_termcondition_label">TERMS AND CONDITIONS</string>
-    <string name="google_passes_termcondition_value">This is not a credit card or a Fuel Savings Reward card. By using this Petro-Points card, the member accepts <u>the terms and conditions of the Petro-Points program</u>. Suncor Energy Products Partnership is not responsible for the points used on lost or stolen cards. For more information, <u>visit Petro-Points.com</u> or call customer service at 1 (800) 668-2020.</string>
-
-    <!-- Add petropoints card into google wallet-->
-    <string name="google_passes_name_label">NAME</string>
-    <string name="google_passes_email_label">EMAIL</string>
-    <string name="google_passes_detail_label">DETAILS</string>
-    <string name="google_passes_detail_value">Redeem your Petro-Points for free gas, eGift, cards and more.</string>
-    <string name="google_passes_value_label">VALUE</string>
-    <string name="google_passes_value_value">Earn:\n1L = 10 points\n$1 = 10 points\n\nRedeem:\n1,000 = $1 off"</string>
-    <string name="google_passes_howtouse_label">How to use</string>
-    <string name="google_passes_howtouse_value">Scan your card in store to earn or redeem points. Or, download our app to earn points directly at the pump.</string>
-    <string name="google_passes_termcondition_label">TERMS AND CONDITIONS</string>
     <string name="google_passes_termcondition_value">By using this pass, you agree to the Petro Points terms and conditions. Read them on our website.</string>
+
+    <string name="google_passes_name_label_fr">Nom</string>
+    <string name="google_passes_email_label_fr">Courriel</string>
+    <string name="google_passes_detail_label_fr">Détails</string>
+    <string name="google_passes_detail_value_fr">Échangez vos Petro-Points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
+    <string name="google_passes_value_label_fr">Valeur</string>
+    <string name="google_passes_value_value_fr">Obtenez :\n1 L = 10 points\n1 $ = 10 points\n\nÉchangez :\n1 000 = 1 $ de rabais</string>
+    <string name="google_passes_howtouse_label_fr">Utilisation</string>
+    <string name="google_passes_howtouse_value_fr">Scannez votre carte au dépanneur pour obtenir ou échanger des points. Ou téléchargez notre application pour obtenir des points directement à la pompe.</string>
+    <string name="google_passes_termcondition_label_fr">Conditions</string>
+    <string name="google_passes_termcondition_value_fr">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
 
 </resources>

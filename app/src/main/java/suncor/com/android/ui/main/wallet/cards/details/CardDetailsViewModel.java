@@ -144,17 +144,27 @@ public class CardDetailsViewModel extends ViewModel {
         ExpandedCardItem expandedCardItem = new ExpandedCardItem(context, cards.getValue().get(clickedCardIndex));
         loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
         loyalityData.setNameLabel(context.getString(R.string.google_passes_name_label));
+        loyalityData.setNameLocalizedLabel(context.getString(R.string.google_passes_name_label_fr));
         loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName() );
         loyalityData.setEmailLabel(context.getString(R.string.google_passes_email_label));
+        loyalityData.setEmailLocalizedLabel(context.getString(R.string.google_passes_email_label_fr));
         loyalityData.setEmailValue(getUserProfile().getEmail() );
         loyalityData.setDetailsLabel(context.getString(R.string.google_passes_detail_label));
+        loyalityData.setDetailsLocalizedLabel(context.getString(R.string.google_passes_detail_label_fr));
         loyalityData.setDetailsValue(context.getString(R.string.google_passes_detail_value));
+        loyalityData.setDetailsLocalizedValue(context.getString(R.string.google_passes_detail_value_fr));
         loyalityData.setValuesLabel(context.getString(R.string.google_passes_value_label));
+        loyalityData.setValuesLocalizedLabel(context.getString(R.string.google_passes_value_label_fr));
         loyalityData.setValuesValue(context.getString(R.string.google_passes_value_value));
+        loyalityData.setValuesLocalizedValue(context.getString(R.string.google_passes_value_value_fr));
         loyalityData.setHowToUseLabel(context.getString(R.string.google_passes_howtouse_label));
+        loyalityData.setHowToUseLocalizedLabel(context.getString(R.string.google_passes_howtouse_label_fr));
         loyalityData.setHowToUseValue(context.getString(R.string.google_passes_howtouse_value));
+        loyalityData.setHowToUseLocalizedValue(context.getString(R.string.google_passes_howtouse_value_fr));
         loyalityData.setTermConditionLabel(context.getString(R.string.google_passes_termcondition_label));
+        loyalityData.setTermConditionLocalizedLabel(context.getString(R.string.google_passes_termcondition_label_fr));
         loyalityData.setTermConditionValue(context.getString(R.string.google_passes_termcondition_value));
+        loyalityData.setTermConditionLocalizedValue(context.getString(R.string.google_passes_termcondition_value_fr));
         return loyalityData;
     }
 }
