@@ -31,7 +31,7 @@ import java.util.*
 class GooglePassesJwtAuthentication {
     private val audience: String
     private val type: String
-    private val iss: String
+  //  private val iss: String
     private val iat: Instant
     private val payload: JsonObject
     private var signer: RsaSHA256Signer? = null
@@ -57,9 +57,9 @@ class GooglePassesJwtAuthentication {
         return
     }
 
-    fun generateUnsignedJwt(context: Context): JsonToken {
+    fun generateUnsignedJwt(context: Context, serviceAccountEmailAddress: String): JsonToken {
         try {
-            signer = RsaSHA256Signer(iss,
+            signer = RsaSHA256Signer(serviceAccountEmailAddress,
                     null, GooglePassesConfig().getServiceAccountPrivateKey(context))
         } catch (e: InvalidKeyException) {
             e.printStackTrace()
@@ -72,8 +72,8 @@ class GooglePassesJwtAuthentication {
         return token
     }
 
-    fun generateSignedJwt(context: Context): String? {
-        val jwtToSign = generateUnsignedJwt(context)
+    fun generateSignedJwt(context: Context, serviceAccountEmailAddress: String): String? {
+        val jwtToSign = generateUnsignedJwt(context, serviceAccountEmailAddress)
         val signedJwt: String? = null
         try {
             val baseString = computeSignatureBaseString(null, jwtToSign)
@@ -113,7 +113,7 @@ class GooglePassesJwtAuthentication {
         val config = GooglePassesConfig()
         audience = config.audience
         type = config.jwtType
-        iss = config.serviceAccountEmailAddress
+       // iss = config.serviceAccountEmailAddress
         iat = Instant(
                 Calendar.getInstance().timeInMillis - 5000L)
         payload = JsonObject()

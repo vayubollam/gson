@@ -16,9 +16,11 @@ import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.data.cards.CardsRepository;
+import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
@@ -34,11 +36,13 @@ public class CardDetailsViewModel extends ViewModel {
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
     private String newlyAddedCardNumber;
+    private final SettingsApi settingsApi;
 
     @Inject
-    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
+    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, SettingsApi settingsApi) {
         this.cardsRepository = cardsRepository;
         this.sessionManager = sessionManager;
+        this.settingsApi = settingsApi;
     }
 
     public void retrieveCards() {
@@ -166,5 +170,9 @@ public class CardDetailsViewModel extends ViewModel {
         loyalityData.setTermConditionValue(context.getString(R.string.google_passes_termcondition_value));
         loyalityData.setTermConditionLocalizedValue(context.getString(R.string.google_passes_termcondition_value_fr));
         return loyalityData;
+    }
+
+    public LiveData<Resource<SettingsResponse>> getSettings(){
+        return settingsApi.retrieveSettings();
     }
 }

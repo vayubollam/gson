@@ -19,17 +19,14 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.4.1"
+        versionName "3.4.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
         buildConfigField "String", "GOOGLE_PAY_MERCHANT_GATEWAY", GOOGLE_PAY_MERCHANT_GATEWAY
-        buildConfigField "String", "PASSES_SERVICE_ACCOUNT_EMAIL_ADDRESS", PASSES_SERVICE_ACCOUNT_EMAIL_ADDRESS
-        buildConfigField "String", "PASSES_ISSUER_ID", PASSES_ISSUER_ID
         buildConfigField "String", "PASSES_AUDIENCE", PASSES_AUDIENCE
         buildConfigField "String", "PASSES_JWT_TYPE", PASSES_JWT_TYPE
         buildConfigField "String", "PASSES_SERVICE_ACCOUNT_FILE", PASSES_SERVICE_ACCOUNT_FILE
-        buildConfigField "String", "PASSES_CLASS_ID", PASSES_CLASS_ID
     }
 
     dataBinding {

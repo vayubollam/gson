@@ -7,6 +7,7 @@ import com.google.gson.JsonObject
 import suncor.com.android.BuildConfig
 import suncor.com.android.R
 import suncor.com.android.googlepay.passes.LoyalityData
+import suncor.com.android.model.SettingsResponse
 import suncor.com.android.utilities.Timber
 import java.util.*
 
@@ -25,7 +26,7 @@ class GooglePassesApiGateway {
      *
      * See https://developers.google.com/pay/passes/reference/v1/
      */
-    fun makeSkinnyJwt(context: Context, verticalType: VerticalType?, classId: String?, objectId: String?, loyalityData: LoyalityData): String? {
+    fun makeSkinnyJwt(context: Context, verticalType: VerticalType?, passesConfig: SettingsResponse.GooglePassConfig, objectId: String?, loyalityData: LoyalityData): String? {
         var signedJwt: String? = null
         val resourceDefinitions = GooglePassesResourceDefination
         val restMethods: GooglePassesRestClient = GooglePassesRestClient.instance!!
@@ -35,7 +36,7 @@ class GooglePassesApiGateway {
             // get class, object definitions, insert class and object (check class in Merchant center GUI: https://pay.google.com/gp/m/issuer/list)
             when (verticalType) {
                 VerticalType.LOYALTY -> {
-                    objectResourcePayload = resourceDefinitions.makeLoyaltyObjectResource(classId, objectId, loyalityData)
+                    objectResourcePayload = resourceDefinitions.makeLoyaltyObjectResource(passesConfig.googlePassesClassId, objectId, loyalityData)
                     objectResponse = restMethods.insertLoyaltyObject(objectResourcePayload as LoyaltyObject?, context)
                 }
             }
@@ -53,7 +54,7 @@ class GooglePassesApiGateway {
                 }
             }
             // sign JSON to make signed JWT
-            signedJwt = googlePassJwt.generateSignedJwt(context)
+            signedJwt = googlePassJwt.generateSignedJwt(context, passesConfig.googlePassesAccountEmailAddress)
         } catch (e: Exception) {
             e?.let {
                 Timber.e("Error on creating the loyality token")
@@ -64,9 +65,9 @@ class GooglePassesApiGateway {
         return signedJwt
     }
 
-    fun demoSkinnyJwt(context: Context, classId: String?, objectId: String?, loyalityData: LoyalityData): String? {
+    fun demoSkinnyJwt(context: Context, passesConfig: SettingsResponse.GooglePassConfig , objectId: String?, loyalityData: LoyalityData): String? {
         Timber.d("Generates a signed")
-        val skinnyJwt = makeSkinnyJwt(context, VerticalType.LOYALTY, classId, objectId, loyalityData)
+        val skinnyJwt = makeSkinnyJwt(context, VerticalType.LOYALTY, passesConfig, objectId, loyalityData)
         if (skinnyJwt != null) {
             Timber.d("passes auth token {}", skinnyJwt)
             return GooglePassesConfig.SAVE_LINK + skinnyJwt
@@ -74,8 +75,7 @@ class GooglePassesApiGateway {
         return null
     }
 
-    fun insertLoyalityCard(context: Context, loyalityData: LoyalityData): String? {
-        val config = GooglePassesConfig()
+    fun insertLoyalityCard(context: Context, loyalityData: LoyalityData, passesConfig: SettingsResponse.GooglePassConfig): String? {
         val verticalType = VerticalType.LOYALTY
         val uuidString = "petro_card_loyality_$loyalityData.barcode"
 
@@ -85,7 +85,7 @@ class GooglePassesApiGateway {
 
         // check Reference API for format of "id", for example offer:(https://developers.google.com/pay/passes/reference/v1/offerobject/insert).
         // Must be alphanumeric characters, ".", "_", or "-".
-        val objectId = String.format("%s.%s", config.issuerId, objectUid)
-        return demoSkinnyJwt(context, BuildConfig.PASSES_CLASS_ID, objectId, loyalityData)
+        val objectId = String.format("%s.%s", passesConfig.googlePassesIssuerId, objectUid)
+        return demoSkinnyJwt(context, passesConfig, objectId, loyalityData )
     }
 }

@@ -39,9 +39,11 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
+import suncor.com.android.googleapis.passes.GooglePassesConfig;
 import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
@@ -246,22 +248,32 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {
         showAddCardProgress();
-        LoyalityData loyalityData = viewModel.getLoyalityCardDataForGoogleWallet(getContext(), clickedCardIndex);
+        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+            } else if (result.status == Resource.Status.ERROR) {
+                hideAddCardProgress();
+                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                SettingsResponse.GooglePassConfig googlePassesConfig = result.data.getSettings().getGooglePass();
+                LoyalityData loyalityData = viewModel.getLoyalityCardDataForGoogleWallet(getContext(), clickedCardIndex);
 
-        new Thread(() -> {
-            GooglePassesApiGateway gateway = new GooglePassesApiGateway();
-            String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData);
-            if(getActivity() != null){
-                getActivity().runOnUiThread(() -> {
-                    hideAddCardProgress();
-                    if(cardAuthToken == null){
-                        Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
-                        return;
+                new Thread(() -> {
+                    GooglePassesApiGateway gateway = new GooglePassesApiGateway();
+                    String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig);
+                    if(getActivity() != null){
+                        getActivity().runOnUiThread(() -> {
+                            hideAddCardProgress();
+                            if(cardAuthToken == null){
+                                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+                                return;
+                            }
+                            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
+                        });
                     }
-                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
-                });
+                }).start();
             }
-        }).start();
+        });
+
     };
 
     private void showAddCardProgress(){

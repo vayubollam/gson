@@ -55,10 +55,10 @@ class GooglePassesConfig {
 
     val serviceAccountFile: String
         get() = BuildConfig.PASSES_SERVICE_ACCOUNT_FILE
-    val serviceAccountEmailAddress: String
+    /*val serviceAccountEmailAddress: String
         get() = BuildConfig.PASSES_SERVICE_ACCOUNT_EMAIL_ADDRESS
     val issuerId: String
-        get() = BuildConfig.PASSES_ISSUER_ID
+        get() = BuildConfig.PASSES_ISSUER_ID*/
     val audience: String
         get() = BuildConfig.PASSES_AUDIENCE
     val jwtType: String
