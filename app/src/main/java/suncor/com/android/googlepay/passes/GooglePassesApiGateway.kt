@@ -41,13 +41,11 @@ class GooglePassesApiGateway {
                     objectResponse = restMethods.insertLoyaltyObject(objectResourcePayload as LoyaltyObject?, context)
                 }
             }
-            Timber.e("objectResponse " + objectResponse!!["code"])
             if (objectResponse!!["code"]!!.equals("200") && objectResponse["code"]!!.equals("409")) {
                 return null
             }
             // put into JSON Web Token (JWT) format for Google Pay API for Passes
             val googlePassJwt = GooglePassesJwtAuthentication()
-            Timber.e("googlePassJwt " + googlePassJwt)
             // only need to add objectId in JWT because class and object definitions were pre-inserted via REST call
             val jwtPayload = JsonObject()
             when (verticalType) {
