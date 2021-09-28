@@ -42,7 +42,7 @@ class GooglePassesApiGateway {
                 }
             }
             Timber.e("objectResponse " + objectResponse!!["code"])
-            if (objectResponse!!["code"] != 200 && objectResponse["code"] != 409) {
+            if (objectResponse!!["code"]!!.equals("200") && objectResponse["code"]!!.equals("409")) {
                 return null
             }
             // put into JSON Web Token (JWT) format for Google Pay API for Passes
