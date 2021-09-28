@@ -9,6 +9,7 @@ import suncor.com.android.R
 import suncor.com.android.googlepay.passes.LoyalityData
 import suncor.com.android.model.SettingsResponse
 import suncor.com.android.utilities.Timber
+import java.math.BigDecimal
 import java.util.*
 
 class GooglePassesApiGateway {
@@ -40,7 +41,8 @@ class GooglePassesApiGateway {
                     objectResponse = restMethods.insertLoyaltyObject(objectResourcePayload as LoyaltyObject?, context)
                 }
             }
-            if (objectResponse!!["code"] as Int != 200 && objectResponse["code"] as Int != 409) {
+            Timber.e("objectResponse " + objectResponse!!["code"])
+            if (objectResponse!!["code"] != 200 && objectResponse["code"] != 409) {
                 return null
             }
             // put into JSON Web Token (JWT) format for Google Pay API for Passes
