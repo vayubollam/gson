@@ -57,7 +57,7 @@ class GooglePassesApiGateway {
             signedJwt = googlePassJwt.generateSignedJwt(context, passesConfig.googlePassesAccountEmailAddress)
         } catch (e: Exception) {
             e?.let {
-                Timber.e("Error on creating the loyality token")
+                Timber.e("Error on creating the loyality token" + e.message)
             }
         }
         // return "skinny" JWT. Try putting it into save link.

@@ -68,7 +68,7 @@ class GooglePassesRestClient private constructor() {
             response.put("code", 200)
             // System.out.println(response);
         } catch (gException: GoogleJsonResponseException) {
-            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response\n", gException.details)
+            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response\n" + gException.details +" " + gException.message)
             response = gException.details
         } catch (e: Exception) {
             Timber.e(e.message!!)
@@ -100,7 +100,7 @@ class GooglePassesRestClient private constructor() {
             response = client.loyaltyclass()[classId].execute()
             response.put("code", 200)
         } catch (gException: GoogleJsonResponseException) {
-            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response\n", gException.details)
+            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response " + gException.details +" " + gException.message)
             response = gException.details
         } catch (e: Exception) {
             Timber.e(e.message!!)
@@ -134,7 +134,7 @@ class GooglePassesRestClient private constructor() {
             response.put("code", 200)
             // System.out.println(response);
         } catch (gException: GoogleJsonResponseException) {
-            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response\n", gException.details)
+            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response" + gException.details +" " + gException.message)
             response = gException.details
         } catch (e: Exception) {
             e.printStackTrace()
@@ -167,7 +167,7 @@ class GooglePassesRestClient private constructor() {
             response = client.loyaltyobject()[objectId].execute()
             response.put("code", 200)
         } catch (gException: GoogleJsonResponseException) {
-            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response\n", gException.details)
+            Timber.e(">>>> [START] Google Server Error response: {} >>>> [END] Google Server Error response " + gException.details +" " + gException.message)
             response = gException.details
         } catch (e: Exception) {
             Timber.e(e.message!!)
