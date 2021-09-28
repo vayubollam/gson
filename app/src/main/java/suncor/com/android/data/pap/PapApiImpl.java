@@ -118,7 +118,6 @@ public class PapApiImpl implements PapApi {
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
 
-
             String body = gson.toJson(payByGooglePayRequest);
             Timber.i("Send Pay By Google Pay, string: " + payByGooglePayRequest.toString() +  "\nbody: " + body);
 
