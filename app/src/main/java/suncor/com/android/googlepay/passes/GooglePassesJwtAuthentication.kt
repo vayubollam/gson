@@ -69,6 +69,7 @@ class GooglePassesJwtAuthentication {
         token.setParam("typ", type)
         token.issuedAt = iat
         token.payloadAsJsonObject.add("payload", payload)
+        Timber.e("generateUnsignedJwt")
         return token
     }
 
@@ -77,10 +78,12 @@ class GooglePassesJwtAuthentication {
         val signedJwt: String? = null
         try {
             val baseString = computeSignatureBaseString(null, jwtToSign)
+            Timber.e("computeSignatureBaseString")
             val sig = getSignature(baseString)
+            Timber.e("getSignature")
             return toDotFormat(baseString, sig)
         } catch (e: SignatureException) {
-            Timber.e(e.message!!)
+            Timber.e("Error on generate Signed JWT" , e.message!!)
         }
         return signedJwt
     }
