@@ -151,19 +151,19 @@ public class FuelUpViewModel extends ViewModel {
     /**
      * Payment initiate with google pay
      */
-    LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken) {
+    LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, String paymentToken, String kountSessionId) {
         PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount,
                 new PayByGooglePayRequest.FundingPayload(paymentToken), profile.getPetroPointsNumber(),
-                profile.isRbcLinked());
+                profile.isRbcLinked(), kountSessionId);
         return papRepository.authorizePaymentByGooglePay(request, userLocation);
     }
 
     /**
      * Payment initiate with wallet
      */
-    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId) {
+    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int userPaymentSourceId, String kountSessionId) {
         PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount,
-                userPaymentSourceId, profile.getPetroPointsNumber(), profile.isRbcLinked());
+                userPaymentSourceId, profile.getPetroPointsNumber(), profile.isRbcLinked(), kountSessionId);
         return papRepository.authorizePaymentByWallet(request, userLocation);
     }
 
