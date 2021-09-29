@@ -44,6 +44,7 @@ class GooglePassesApiGateway {
             if (objectResponse!!["code"]!!.equals("200") && objectResponse["code"]!!.equals("409")) {
                 return null
             }
+            Timber.e("GOOGLE PASSES: insert loyality Object")
             // put into JSON Web Token (JWT) format for Google Pay API for Passes
             val googlePassJwt = GooglePassesJwtAuthentication()
             // only need to add objectId in JWT because class and object definitions were pre-inserted via REST call
@@ -54,9 +55,10 @@ class GooglePassesApiGateway {
                     googlePassJwt.addLoyaltyObject(jwtPayload)
                 }
             }
-            Timber.e("Add loyality Object")
+            Timber.e("GOOGLE PASSES: Add loyality Object")
             // sign JSON to make signed JWT
             signedJwt = googlePassJwt.generateSignedJwt(context, passesConfig.googlePassesAccountEmailAddress)
+            Timber.i("GOOGLE PASSES: Singed JWT " + signedJwt)
         } catch (e: Exception) {
             e?.let {
                 Timber.e("Error on creating the loyality token" + e.message)
@@ -71,7 +73,7 @@ class GooglePassesApiGateway {
         Timber.d("Generates a signed")
         val skinnyJwt = makeSkinnyJwt(context, VerticalType.LOYALTY, passesConfig, objectId, loyalityData)
         if (skinnyJwt != null) {
-            Timber.d("passes auth token {}", skinnyJwt)
+            Timber.i("passes auth token {}", skinnyJwt)
             return GooglePassesConfig.SAVE_LINK + skinnyJwt
         }
         return null

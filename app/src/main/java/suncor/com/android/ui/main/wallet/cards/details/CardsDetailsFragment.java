@@ -55,6 +55,7 @@ import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
+import suncor.com.android.utilities.Timber;
 
 public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
@@ -260,6 +261,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 new Thread(() -> {
                     GooglePassesApiGateway gateway = new GooglePassesApiGateway();
                     String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig);
+                    Timber.i("GOOGLE PASSES: card Token " + cardAuthToken);
                     if(getActivity() != null){
                         getActivity().runOnUiThread(() -> {
                             hideAddCardProgress();
