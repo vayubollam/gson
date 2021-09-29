@@ -142,7 +142,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         binding.setVm(viewModel);
         binding.appBar.setNavigationOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
         binding.valuesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        adapter = new GiftCardValueAdapter(viewModel.getGiftCardItem().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::onCardClick);
+        adapter = new GiftCardValueAdapter(viewModel.getGiftCardItem().geteGifts(), viewModel.getSessionManager().getProfile().getPointsBalance(), this::cardValueChanged);
         binding.valuesRecyclerView.setAdapter(adapter);
         binding.redeemTotalLayoutFix.setAlpha(0f);
         binding.redeemTotalLayoutFixShadow.setAlpha(0f);
@@ -202,10 +202,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
 
         });
         return binding.getRoot();
-    }
-
-    private void onCardClick(Integer integer) {
-
     }
 
     @Override
@@ -308,6 +304,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 new Pair<>("formName", "Redeem for "+viewModel.getGiftCardItem().getShortName()+" eGift card"),
                 new Pair<>("stepName", "Click to redeem"));
         AnalyticsUtils.setCurrentScreenName(this.requireActivity(),"my-petro-points-redeem-info-"+viewModel.getGiftCardItem().getScreenName()+"-redeeming");
-        viewModel.sendRedeemData();
+//        viewModel.sendRedeemData();
     }
 }
