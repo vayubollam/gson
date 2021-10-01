@@ -13,6 +13,18 @@ public class MerchantsUtil {
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex_small";
+            case MerchantsIds.GAP_EN:
+            case MerchantsIds.GAP_FR:
+                return "gap_small_new";
+            case MerchantsIds.Tim_hortons_EN:
+            case MerchantsIds.Tim_hortons_FR:
+                return "tim_hortons_small_new";
+            case MerchantsIds.Best_Buy_EN:
+            case MerchantsIds.Best_Buy_FR:
+                return "best_buy_small";
+            case MerchantsIds.Walmart_EN:
+            case MerchantsIds.Walmart_FR:
+                return "walmart_small";
             case MerchantsIds.Hudson_Bay_EN:
             case MerchantsIds.Hudson_Bay_FR:
                 return "hbc_small";
@@ -45,6 +57,18 @@ public class MerchantsUtil {
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "Cineplex";
+            case MerchantsIds.GAP_EN:
+            case MerchantsIds.GAP_FR:
+                return "Gap";
+            case MerchantsIds.Tim_hortons_EN:
+            case MerchantsIds.Tim_hortons_FR:
+                return "TIm Hortons";
+            case MerchantsIds.Best_Buy_EN:
+            case MerchantsIds.Best_Buy_FR:
+                return "Best Buy";
+            case MerchantsIds.Walmart_EN:
+            case MerchantsIds.Walmart_FR:
+                return "Walmart";
             case MerchantsIds.Hudson_Bay_EN:
             case MerchantsIds.Hudson_Bay_FR:
                 return "HBC";
@@ -75,6 +99,18 @@ public class MerchantsUtil {
             case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
             case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
                 return "homesense-marshalls-winners-egift-card";
+            case MerchantsIds.GAP_EN:
+            case MerchantsIds.GAP_FR:
+                return "Gap_egift_card";
+            case MerchantsIds.Tim_hortons_EN:
+            case MerchantsIds.Tim_hortons_FR:
+                return "TIm Hortons_egift_card";
+            case MerchantsIds.Best_Buy_EN:
+            case MerchantsIds.Best_Buy_FR:
+                return "Best Buy_egift_card";
+            case MerchantsIds.Walmart_EN:
+            case MerchantsIds.Walmart_FR:
+                return "Walmart_egift_card";
         }
         return null;
     }
