@@ -1,6 +1,7 @@
 package suncor.com.android.mfp;
 
 import android.content.Intent;
+import android.os.Build;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,8 +19,11 @@ import com.worklight.wlclient.auth.AccessToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -109,6 +113,9 @@ public class SessionManager implements SessionChangeListener {
     }
 
     public LiveData<Resource<SigninResponse>> login(String name, String password) {
+        String inputName = encodeCredentials(name);
+        String inputPassword = encodeCredentials(password);
+
         if (challengeHandler == null) {
             throw new IllegalStateException("Security Challenge Handler not initialized, did you forget to call setChallengeHandler()");
         }
@@ -116,8 +123,8 @@ public class SessionManager implements SessionChangeListener {
         loginOngoing = true;
         JSONObject credentials = new JSONObject();
         try {
-            credentials.put("email", name);
-            credentials.put("password", password);
+            credentials.put("Qd2jUUbQNG", inputName);      //email
+            credentials.put("UsmP6D6Dhy", inputPassword);  //password
             loginObservable.postValue(Resource.loading());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -125,6 +132,19 @@ public class SessionManager implements SessionChangeListener {
         challengeHandler.login(credentials);
 
         return loginObservable;
+    }
+
+    private String encodeCredentials(String input)  {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                input = Base64.getEncoder()
+                        .encodeToString(input.getBytes(StandardCharsets.UTF_8.toString()));
+                return input;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
     }
 
     public LiveData<LoginState> getLoginState() {
