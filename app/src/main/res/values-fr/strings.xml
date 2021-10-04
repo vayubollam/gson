@@ -377,7 +377,7 @@
     <string name="transaction_detail_bonus_points">Points en prime</string>
     <string name="transaction_detail_date">Date</string>
     <string name="transaction_detail_total_points">Points totaux</string>
-    <string name="transaction_detail_transaction_type">Détails de la transaction</string>
+    <string name="transaction_detail_transaction_type">Transaction</string>
     <string name="transaction_details_header">Détails</string>
     <string name="transactions_point_summary_header">Résumé de points</string>
     <string name="profile_about_app_version">Version de l\'application</string>
