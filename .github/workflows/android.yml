@@ -138,11 +138,11 @@ jobs:
   #   env:
   #      JF_ARTIFACTORY_RFMP_IOS: ${{ secrets.JF_ARTIFACTORY_RFMP }}
 
-  #  - name: test notify teams
-  #    env:
-  #      TEAMS_WEBHOOK_URL: https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a498ba31c5e74dd98b927a932b1c2f0c/5b56d944-e978-4862-a720-a1f9589d6c37
-  #    run: |
-  #      curl -H 'Content-Type: application/json' -d "{\"text\": \"Workflow run complete on ${GITHUB_REF}: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" ${TEAMS_WEBHOOK_URL}
+    - name: test notify teams
+      env:
+        TEAMS_WEBHOOK_URL: https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a498ba31c5e74dd98b927a932b1c2f0c/5b56d944-e978-4862-a720-a1f9589d6c37
+      run: |
+        curl -H 'Content-Type: application/json' -d "{\"text\": \"Workflow run complete on ${GITHUB_REF}: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" ${TEAMS_WEBHOOK_URL}
   
 
       
