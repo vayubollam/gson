@@ -68,12 +68,12 @@ jobs:
        name: Release artifact
        path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
        
-  # - name: Upload to Perfecto public cloud
-  #    if: ${{ env.BUILD_SCHEME == 'QA' || env.BUILD_SCHEME == 'QASus' || env.BUILD_SCHEME == 'Dev' || env.BUILD_SCHEME == 'UAT' }}
-  #    env:
-  #      PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
-  #    run: |
-  #      curl -v --fail-with-body --data-binary @build/Suncor.ipa "https://ibmgbs.perfectomobile.com/services/repositories/media/Suncor${{env.BUILD_SCHEME}}.ipa?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1   
+    - name: Upload to Perfecto public cloud
+      if: ${{ env.BUILD_SCHEME == 'QA' || env.BUILD_SCHEME == 'QASus' || env.BUILD_SCHEME == 'Dev' || env.BUILD_SCHEME == 'UAT' }}
+      env:
+        PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
+      run: |
+        curl -v --fail-with-body --data-binary @build/Suncor.ipa "https://ibmgbs.perfectomobile.com/services/repositories/media/Suncor${{env.BUILD_SCHEME}}.ipa?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1   
 
     - name: Get appropriate app center credentials
       run: |
