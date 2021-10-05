@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.kount.api.analytics.AnalyticsCollector;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
@@ -25,7 +26,7 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.utilities.Timber;
 
 public class CardsApiImpl implements CardsApi {
-    private final static String GET_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
+    private final static String GET_CARDS_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/cards";
     private final static String ADD_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
     private final static String DELETE_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
     private Gson gson;

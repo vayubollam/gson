@@ -1,5 +1,9 @@
 package suncor.com.android;
 
+import android.provider.Settings;
+
+import com.google.android.gms.wallet.WalletConstants;
+import com.kount.api.analytics.AnalyticsCollector;
 import com.mazenrashed.logdnaandroidclient.LogDna;
 import com.worklight.common.Logger;
 import com.worklight.wlclient.HttpClientManager;
@@ -16,6 +20,7 @@ import suncor.com.android.mfp.MFPRequestInterceptor;
 import suncor.com.android.mfp.MfpLogging;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.utilities.KountManager;
 import suncor.com.android.utilities.Timber;
 
 public class SuncorApplication extends DaggerApplication {
@@ -51,6 +56,9 @@ public class SuncorApplication extends DaggerApplication {
         favouriteRepository.observeSessionChanges();
 
         Station.initiateAmenities(this);
+
+       KountManager.INSTANCE.collect(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")
+                ? AnalyticsCollector.ENVIRONMENT_PRODUCTION : AnalyticsCollector.ENVIRONMENT_TEST, getApplicationContext());
     }
 
     @Override

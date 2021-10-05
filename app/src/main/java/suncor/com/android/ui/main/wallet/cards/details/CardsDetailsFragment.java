@@ -3,7 +3,9 @@ package suncor.com.android.ui.main.wallet.cards.details;
 import android.Manifest;
 import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -29,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -42,13 +45,16 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
+import suncor.com.android.utilities.Timber;
 
 public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
@@ -205,6 +211,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
+                } else if(cardDetail.isSuspendedCard()) {
+                    CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
                     AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
