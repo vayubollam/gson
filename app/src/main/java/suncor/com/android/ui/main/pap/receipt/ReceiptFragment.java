@@ -116,7 +116,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
-                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
+                if (sessionManager.getProfile().getFirstName() != null) {
+                    binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
+                }
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -209,10 +211,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 // TODO: Handle error when launching in app review
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) Objects.requireNonNull(task.getException())).getErrorCode();
 
-                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
-
-                }
-
+                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
+                
                 goBack();
             }
         });

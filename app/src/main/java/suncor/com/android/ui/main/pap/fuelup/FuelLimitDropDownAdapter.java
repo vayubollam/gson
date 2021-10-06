@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,17 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
-import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
 import suncor.com.android.uicomponents.R;
+import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 import suncor.com.android.utilities.Timber;
@@ -46,6 +50,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
     private double editableValue = 0;
     private boolean isRedeemChanged;
 
+    private String inputFieldText;
 
     FuelLimitDropDownAdapter(final Context context, final HashMap<String,String> data, final FuelUpLimitCallbacks callbackListener, final int otherLimitMaxLimit,
                              final int otherLimitMinLimit, ShowWarningPopupListener warningPopup) {
@@ -235,6 +240,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
             binding.manualLimit.setText(String.format(mContext.getString(R.string.fuel_manual_price_limit), formatter.format(otherLimitMinLimit), formatter.format(otherLimitMaxLimit)));
             binding.prefixCurrency.setText((selectedPos == getAdapterPosition()) ? mContext.getString(R.string.currency_dollar) : value);
             binding.inputField.setText(manualValue > 0 ? formatter.format(manualValue).replace("$", "") : "");
+            inputFieldText = binding.inputField.getText().toString().replaceAll("\\s+", "");
+            binding.inputField.setText(inputFieldText);
             binding.inputField.setVisibility(selectedPos == getAdapterPosition() ? View.VISIBLE : View.GONE);
             binding.manualLimit.setVisibility((manualValue == -1) ?  View.VISIBLE : View.GONE);
             binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
@@ -250,6 +257,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
                     binding.inputField.setText(manualValue > 0 ? formatter.format(manualValue).replace("$","") : "");
+                    inputFieldText = binding.inputField.getText().toString().replaceAll("\\s+", "");
+                    binding.inputField.setText(inputFieldText);
                     binding.inputField.setVisibility(selectedPos == getAdapterPosition() ? View.VISIBLE : View.GONE);
                     binding.manualLimit.setVisibility((manualValue == -1) ?  View.VISIBLE : View.GONE);
                     binding.edit.setVisibility(manualValue > 0 ?  View.VISIBLE : View.GONE);
@@ -314,6 +323,8 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
                     if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                         if(manualValue > 0) {
                             binding.inputField.setText(formatter.format(manualValue).replace("$",""));
+                            inputFieldText = binding.inputField.getText().toString().replaceAll("\\s+", "");
+                            binding.inputField.setText(inputFieldText);
                             binding.edit.setVisibility(manualValue > 0 ? View.VISIBLE : View.GONE);
                             binding.manualLimit.setVisibility((selectedPos == getAdapterPosition() && manualValue <= 0) ? View.VISIBLE : View.GONE);
                             binding.inputField.setEnabled(!(manualValue > 0));

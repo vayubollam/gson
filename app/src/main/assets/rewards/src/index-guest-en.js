@@ -68,7 +68,7 @@ window.onload = function () {
     document.getElementById("rewards-link-rbc-title").innerHTML = data.rewardsLink.rbc.title
     document.getElementById("rewards-link-rbc-description").innerHTML = data.rewardsLink.rbc.description;
 
-    document.getElementById("rewards-link-hbc-image").src="images/panel-6/card-hbcrewards.png";
+    document.getElementById("rewards-link-hbc-image").src="images/panel-6/HBC_REWARDS_MCARDS_EN.png";
     document.getElementById("rewards-link-hbc-title").innerHTML = data.rewardsLink.hbc.title
     document.getElementById("rewards-link-hbc-description").innerHTML = data.rewardsLink.hbc.description;
 

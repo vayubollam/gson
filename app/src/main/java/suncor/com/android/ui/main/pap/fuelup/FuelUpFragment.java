@@ -39,6 +39,7 @@ import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
+import com.kount.api.analytics.AnalyticsCollector;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -53,6 +54,7 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import suncor.com.android.BuildConfig;
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
@@ -65,6 +67,7 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
+import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
@@ -437,18 +440,19 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         });
     }
 
-    private void handleConfirmAndAuthorizedClick(){
+    private void handleConfirmAndAuthorizedClick() {
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
-        if(userPaymentId == null) {
+        if (userPaymentId == null) {
             // select payment type error
             return;
         }
-        if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
+        if (userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)) {
             verifyFingerPrints();
         } else if (preAuth != null) {
             try {
+                String kountSessionId = generateKountSessionID();
                 double preAuthPrices = formatter.parse(preAuth).doubleValue();
-                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(preAuthRedeemPoints), Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
+                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices,Integer.parseInt(preAuthRedeemPoints), Integer.parseInt(userPaymentId), kountSessionId).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
@@ -467,7 +471,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         Navigation.findNavController(getView()).navigate(action);
                     }
                 });
-            } catch (ParseException ex){
+            } catch (ParseException ex) {
                 Timber.e(ex.getMessage());
             }
         }
@@ -575,7 +579,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
         double preAuthPrices = formatter.parse(preAuth).doubleValue();
-        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(preAuthRedeemPoints), paymentToken).observe(getViewLifecycleOwner(), result -> {
+        String kountSessionId = generateKountSessionID();
+        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices,Integer.parseInt(preAuthRedeemPoints), paymentToken, kountSessionId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");

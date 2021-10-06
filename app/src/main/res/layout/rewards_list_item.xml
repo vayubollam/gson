@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="reward"
-            type="suncor.com.android.ui.main.rewards.Reward" />
+            name="giftCard"
+            type="suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard" />
 
         <variable
             name="image"
@@ -15,6 +15,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -35,7 +36,7 @@
                 android:layout_marginTop="24dp"
                 android:letterSpacing="0.15"
                 app:textAllCaps="true"
-                android:text="@{reward.points}"
+                android:text="@{giftCard.points}"
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_60"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +50,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{reward.title}"
+                android:text="@{giftCard.title}"
                 android:textAppearance="@style/Title1"
                 android:textColor="@color/black_100"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +65,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
                 android:lineSpacingMultiplier="1.24"
-                android:text="@{reward.subtitle}"
+                android:text="@{giftCard.subtitle}"
                 android:textAppearance="@style/Caption1"
                 android:textColor="@color/black_60"
                 android:textSize="16sp"

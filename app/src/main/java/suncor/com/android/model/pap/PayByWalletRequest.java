@@ -14,10 +14,11 @@ public class PayByWalletRequest {
     private String petroPointsNumber;
     private boolean rbcLinked;
     private int preAuthRedeemPoints;
+    private String kountSessionId;
 
 
     public PayByWalletRequest(String encryptedStoreId, int pumpNumber, double preAuthLimit,int preAuthRedeemPoints,
-                              int userPaymentSourceId, String petroPointsNumber, boolean rbcLinked) {
+                              int userPaymentSourceId, String petroPointsNumber, boolean rbcLinked, String kountSessionId) {
         this.encryptedStoreId = encryptedStoreId;
         this.pumpNumber = pumpNumber;
         this.preAuthLimit = preAuthLimit;
@@ -27,6 +28,7 @@ public class PayByWalletRequest {
         this.rbcLinked = rbcLinked;
         this.paymentProviderName = "moneris";
         this.preferredCulture = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr-CA" : "en-CA";
+        this.kountSessionId = kountSessionId;
     }
 
     @Override
@@ -41,6 +43,7 @@ public class PayByWalletRequest {
                 ", preferredCulture='" + preferredCulture + '\'' +
                 ", petroPointsNumber='" + petroPointsNumber + '\'' +
                 ", rbcLinked=" + rbcLinked +
+                ", kountSessionId=" + kountSessionId +
                 '}';
     }
 }

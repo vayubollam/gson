@@ -140,25 +140,26 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
         checkAndRequestPermission();
     }
 
-    private void fetchAddPaymentEndpoint(){
+    private void fetchAddPaymentEndpoint() {
         boolean inTransaction = AddPaymentFragmentArgs.fromBundle(getArguments()).getInTransaction();
         viewModel.locationServiceLiveData.observe(getViewLifecycleOwner(), (enabled -> {
             if (enabled) {
-                locationLiveData.observe(getViewLifecycleOwner(),result ->{
+                locationLiveData.observe(getViewLifecycleOwner(), result -> {
                     Log.i(AddPaymentFragment.class.getSimpleName(), "location changes");
                 });
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
 
                     Transformations.switchMap(locationLiveData, result -> {
                         viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
-                        return viewModel.getAddPaymentEndpoint(inTransaction);
+                        String kountSessionId = generateKountSessionID();
+                        return viewModel.getAddPaymentEndpoint(inTransaction, kountSessionId);
                     }).observe(getViewLifecycleOwner(), result -> {
                         if (result.status == Resource.Status.LOADING) {
                             binding.setIsAdding(isAdding);
                             binding.setIsWebviewLoading(isWebViewLoading);
                             //hideKeyBoard();
                         } else if (result.status == Resource.Status.ERROR) {
-                            Alerts.prepareGeneralErrorDialog(getContext(),  "Credit Card Added").show();
+                            Alerts.prepareGeneralErrorDialog(getContext(), "Credit Card Added").show();
                         } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                             binding.webView.loadUrl(result.data.toString());
                         }
@@ -278,7 +279,7 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
     }
 
 
-    private void    showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
+    private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
         AnalyticsUtils.logEvent(getActivity().getApplicationContext(),AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),

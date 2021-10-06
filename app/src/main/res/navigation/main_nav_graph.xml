@@ -368,8 +368,8 @@
         android:name="suncor.com.android.ui.main.rewards.RewardsDetailsFragment"
         android:label="RewardsDetailsFragment">
         <argument
-            android:name="reward"
-            app:argType="suncor.com.android.ui.main.rewards.Reward" />
+            android:name="genericGiftCard"
+            app:argType="suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard" />
 
     </keep_state_fragment>
     <keep_state_fragment
@@ -421,8 +421,8 @@
         android:name="suncor.com.android.ui.main.rewards.MerchantDetailsFragment"
         android:label="MerchantDetailsFragment">
         <argument
-            android:name="MerchantItem"
-            app:argType="suncor.com.android.ui.main.rewards.MerchantItem" />
+            android:name="genericGiftCard"
+            app:argType="suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard" />
         <action
             android:id="@+id/action_merchantDetailsFragment_to_giftCardValueConfirmation"
             app:destination="@id/giftCardValueConfirmation"
@@ -436,8 +436,8 @@
         android:name="suncor.com.android.ui.main.rewards.redeem.GiftCardValueConfirmationFragment"
         android:label="GiftCardValueConfirmation">
         <argument
-            android:name="merchanItem"
-            app:argType="suncor.com.android.ui.main.rewards.MerchantItem" />
+            android:name="genericGiftCard"
+            app:argType="suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard" />
         <action
             android:id="@+id/action_giftCardValueConfirmation_to_redeemReceiptFragment"
             app:destination="@id/redeemReceiptFragment"
@@ -561,6 +561,26 @@
             <argument android:defaultValue="false"
                 android:name="isSingleTicket" />
         </action>
+        <action
+            android:id="@+id/action_carWashActivationSecurityFragment_to_carWashActivatedFragment"
+            app:destination="@id/carWashActivatedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="carwashResponse"
+                app:nullable="true"
+                app:argType="suncor.com.android.model.carwash.ActivateCarwashResponse" />
+        </action>
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/carWashActivatedFragment"
+        android:name="suncor.com.android.ui.main.carwash.activate.CarwashActivatedFragment"
+        android:label="CarWashActivatedFragment" >
+        <argument
+            android:name="carwashResponse"
+            app:nullable="true"
+            app:argType="suncor.com.android.model.carwash.ActivateCarwashResponse" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/carWashBarCodeFragment"

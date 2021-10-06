@@ -162,19 +162,19 @@ public class FuelUpViewModel extends ViewModel {
     /**
      * Payment initiate with google pay
      */
-    LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount,int preAuthRedeemPoints, String paymentToken) {
+    LiveData<Resource<PayResponse>> payByGooglePayRequest(String storeId, int pumpNumber, double preAuthAmount, int preAuthRedeemPoints, String paymentToken,  String kountSessionId) {
         PayByGooglePayRequest request = new PayByGooglePayRequest(storeId, pumpNumber,preAuthAmount,preAuthRedeemPoints,
                 new PayByGooglePayRequest.FundingPayload(paymentToken), profile.getPetroPointsNumber(),
-                profile.isRbcLinked());
+                profile.isRbcLinked(), kountSessionId);
         return papRepository.authorizePaymentByGooglePay(request, userLocation);
     }
 
     /**
      * Payment initiate with wallet
      */
-    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int preAuthRedeemPoints, int userPaymentSourceId) {
+    LiveData<Resource<PayResponse>> payByWalletRequest(String storeId, int pumpNumber, double preAuthAmount, int preAuthRedeemPoints, int userPaymentSourceId, String kountSessionId) {
         PayByWalletRequest request = new PayByWalletRequest(storeId, pumpNumber, preAuthAmount,preAuthRedeemPoints,
-                userPaymentSourceId, profile.getPetroPointsNumber(), profile.isRbcLinked());
+                userPaymentSourceId, profile.getPetroPointsNumber(), profile.isRbcLinked(), kountSessionId);
         return papRepository.authorizePaymentByWallet(request, userLocation);
     }
 
@@ -183,7 +183,10 @@ public class FuelUpViewModel extends ViewModel {
     }
 
     public String getPetroPointsBalance() {
-        return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+        if (sessionManager.getProfile() != null) {
+            return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
+        }
+        return "";
     }
 
 }

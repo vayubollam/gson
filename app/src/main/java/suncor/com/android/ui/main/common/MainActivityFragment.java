@@ -9,8 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
+import com.kount.api.analytics.AnalyticsCollector;
+
+import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.ui.common.BaseFragment;
+import suncor.com.android.utilities.KountManager;
 
 public class MainActivityFragment extends BaseFragment {
 
@@ -69,5 +73,11 @@ public class MainActivityFragment extends BaseFragment {
 
     protected boolean isFullScreen() {
         return false;
+    }
+
+    protected String generateKountSessionID() {
+        KountManager.INSTANCE.collect(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")
+                ? AnalyticsCollector.ENVIRONMENT_PRODUCTION : AnalyticsCollector.ENVIRONMENT_TEST, getContext());
+        return KountManager.INSTANCE.getCurrentSessionId();
     }
 }
