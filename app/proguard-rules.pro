@@ -63,6 +63,7 @@
 
 ## Keep all the model class
 -keep class suncor.com.android.model.**{ *; }
+-keep class suncor.com.android.ui.main.rewards.Reward {*;}
 
 ## Keep all the enums
 -keepclasseswithmembers enum suncor.com.android.**{ *; }

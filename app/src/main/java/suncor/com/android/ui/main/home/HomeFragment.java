@@ -180,8 +180,6 @@ public class HomeFragment extends BottomNavigationFragment {
                 mainViewModel.setNearestStation(resource);
             }
         });
-
-        checkAndDisableAutoResetPermission();
     }
 
     @Override
@@ -236,22 +234,6 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         return view;
-    }
-
-    private void checkAndDisableAutoResetPermission() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            boolean isAutoResetOnDisabled = requireActivity().getPackageManager().isAutoRevokeWhitelisted();
-            if (!isAutoResetOnDisabled) {
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.auto_revoke_title)
-                        .setMessage(R.string.auto_revoke_message)
-                        .setPositiveButton("OK", (dialog, which) -> {
-                            startIntentToRevokeAutoPermission();
-                            dialog.dismiss();
-                        });
-                dialogBuilder.show();
-            }
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
