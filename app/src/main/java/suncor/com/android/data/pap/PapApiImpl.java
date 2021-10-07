@@ -76,7 +76,7 @@ public class PapApiImpl implements PapApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/stores");
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.addHeader("x-store-id", storeId);
 
             request.send(new WLResponseListener() {
