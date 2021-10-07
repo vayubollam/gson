@@ -3,7 +3,7 @@
     "categoryName": "En vedette",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Petro-Canada",
+        "subCategoryName": "Petro-Canada",
         "smallIcon": "petro_canada_small",
         "largeIcon": "petro_canada_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -60,7 +60,7 @@
     "categoryName": "Vêtements",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Gap",
+        "subCategoryName": "Gap",
         "smallIcon": "gap_small_new",
         "largeIcon": "gap_large_new",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -98,7 +98,7 @@
         ]
       },
       {
-        "SubcategoryName": "La Baie d’Hudson",
+        "subCategoryName": "La Baie d’Hudson",
         "smallIcon": "hudson_bay_small",
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -150,7 +150,7 @@
       ]
       },
       {
-        "SubcategoryName": "WINNERS, HomeSense et Marshalls",
+        "subCategoryName": "WINNERS, HomeSense et Marshalls",
         "smallIcon": "winners_small",
         "largeIcon": "winners_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -207,7 +207,7 @@
     "categoryName": "Repas",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Tim Hortons",
+        "subCategoryName": "Tim Hortons",
         "smallIcon": "tim_hortons_small_new",
         "largeIcon": "tim_hortons_large_new",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -259,7 +259,7 @@
         ]
       },
       {
-        "SubcategoryName": "The Ultimate Dining",
+        "subCategoryName": "The Ultimate Dining",
         "smallIcon": "ultimate_dining_small",
         "largeIcon": "ultimate_dining_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -316,7 +316,7 @@
     "categoryName": "Divertissements et applications",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Best Buy",
+        "subCategoryName": "Best Buy",
         "smallIcon": "best_buy_small",
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -368,7 +368,7 @@
         ]
       },
       {
-        "SubcategoryName": "Cineplex",
+        "subCategoryName": "Cineplex",
         "smallIcon": "cineplex_small",
         "largeIcon": "cineplex_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -418,7 +418,7 @@
     "categoryName": "Maison et bureau",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Walmart",
+        "subCategoryName": "Walmart",
         "smallIcon": "walmart_small",
         "largeIcon": "walmart_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -470,7 +470,7 @@
         ]
       },
       {
-        "SubcategoryName": "Best Buy",
+        "subCategoryName": "Best Buy",
         "smallIcon": "best_buy_small",
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -522,7 +522,7 @@
         ]
       },
       {
-        "SubcategoryName": "La Baie d’Hudson",
+        "subCategoryName": "La Baie d’Hudson",
         "smallIcon": "hudson_bay_small",
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
@@ -574,7 +574,7 @@
         ]
       },
       {
-        "SubcategoryName": "WINNERS, HomeSense et Marshalls",
+        "subCategoryName": "WINNERS, HomeSense et Marshalls",
         "smallIcon": "winners_small",
         "largeIcon": "winners_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",

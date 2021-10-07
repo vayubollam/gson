@@ -3,7 +3,7 @@
     "categoryName": "Featured",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Petro-Canada",
+        "subCategoryName": "Petro-Canada",
         "smallIcon": "petro_canada_small",
         "largeIcon": "petro_canada_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -60,7 +60,7 @@
     "categoryName": "Apparel",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Gap",
+        "subCategoryName": "Gap",
         "smallIcon": "gap_small_new",
         "largeIcon": "gap_large_new",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -98,7 +98,7 @@
         ]
       },
       {
-        "SubcategoryName": "Hudson's Bay",
+        "subCategoryName": "Hudson's Bay",
         "smallIcon": "hudson_bay_small",
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -150,7 +150,7 @@
         ]
       },
       {
-        "SubcategoryName": "WINNERS, HomeSense and Marshalls",
+        "subCategoryName": "WINNERS, HomeSense and Marshalls",
         "smallIcon": "winners_small",
         "largeIcon": "winners_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -207,7 +207,7 @@
     "categoryName": "Dining",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Tim Hortons",
+        "subCategoryName": "Tim Hortons",
         "smallIcon": "tim_hortons_small_new",
         "largeIcon": "tim_hortons_large_new",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -245,7 +245,7 @@
         ]
       },
       {
-        "SubcategoryName": "The Ultimate Dining",
+        "subCategoryName": "The Ultimate Dining",
         "smallIcon": "ultimate_dining_small",
         "largeIcon": "ultimate_dining_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -302,7 +302,7 @@
     "categoryName": "Entertainment and apps",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Best Buy",
+        "subCategoryName": "Best Buy",
         "smallIcon": "best_buy_small",
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -354,7 +354,7 @@
         ]
       },
       {
-        "SubcategoryName": "Cineplex",
+        "subCategoryName": "Cineplex",
         "smallIcon": "cineplex_small",
         "largeIcon": "cineplex_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -411,7 +411,7 @@
     "categoryName": "Home and office",
     "thirdPartyGiftCardSubCategory": [
       {
-        "SubcategoryName": "Walmart",
+        "subCategoryName": "Walmart",
         "smallIcon": "walmart_small",
         "largeIcon": "walmart_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -463,7 +463,7 @@
         ]
       },
       {
-        "SubcategoryName": "Best Buy",
+        "subCategoryName": "Best Buy",
         "smallIcon": "best_buy_small",
         "largeIcon": "best_buy_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -515,7 +515,7 @@
         ]
       },
       {
-        "SubcategoryName": "Hudson's Bay",
+        "subCategoryName": "Hudson's Bay",
         "smallIcon": "hudson_bay_small",
         "largeIcon": "hudson_bay_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
@@ -567,7 +567,7 @@
         ]
       },
       {
-        "SubcategoryName": "WINNERS, HomeSense and Marshalls",
+        "subCategoryName": "WINNERS, HomeSense and Marshalls",
         "smallIcon": "winners_small",
         "largeIcon": "winners_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",

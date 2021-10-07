@@ -6,7 +6,7 @@ import suncor.com.android.model.merchants.EGift;
 
 public  class ThirdPartyGiftCardSubCategory{
 
-    private String SubcategoryName;
+    private String subCategoryName;
     private String smallIcon;
     private String largeIcon;
     private String howToUse;
@@ -23,11 +23,11 @@ public  class ThirdPartyGiftCardSubCategory{
     }
 
     public String getSubcategoryName() {
-        return SubcategoryName;
+        return subCategoryName;
     }
 
     public void setSubcategoryName(String subcategoryName) {
-        SubcategoryName = subcategoryName;
+        subCategoryName = subcategoryName;
     }
 
 
@@ -40,7 +40,7 @@ public  class ThirdPartyGiftCardSubCategory{
     }
 
     public ThirdPartyGiftCardSubCategory(String subcategoryName) {
-        SubcategoryName = subcategoryName;
+        subCategoryName = subcategoryName;
     }
 
     public List<EGift> geteGiftList() {
