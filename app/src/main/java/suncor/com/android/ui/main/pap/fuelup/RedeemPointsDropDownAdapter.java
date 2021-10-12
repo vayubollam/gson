@@ -273,7 +273,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     }
 
     private String replaceChars(String str) {
-        str = str.replace("$", "");
+        //          str = str.replaceAll("[^0-9]", "");
+        str = str.replaceAll("\\W+","");
+//        str = str.replace("$", "");
         return str;
     }
 

@@ -123,7 +123,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                int burnedPoints = result.data.getLoyaltyPointsMessages().get(0).getBurnedRewardSummary();
+                int burnedPoints =  result.data.getLoyaltyPointsMessages().get(0).getBurnedRewardSummary();
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,

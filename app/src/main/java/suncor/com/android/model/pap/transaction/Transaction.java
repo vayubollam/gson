@@ -199,14 +199,15 @@ public class Transaction {
         public String associatedLoyaltyId;
         public String programId;
         public String unit;
-        public int earnedRewardSummary;
-        public int burnedRewardSummary;
-        public int finalRewardsBalance;
-        public int finalRewardsLimit;
+        public double earnedRewardSummary;
+        public double burnedRewardSummary;
+        public double finalRewardsBalance;
+        public double finalRewardsLimit;
         public List<PetroRedeemedRewards> RedeemedRewards;
 
         public int getBurnedRewardSummary() {
-            return burnedRewardSummary;
+
+            return (int) burnedRewardSummary;
         }
 
     }
@@ -217,19 +218,22 @@ public class Transaction {
     }
 
     public MutableLiveData<String> getCorrespondingDollarOffForBurnedPoints(){
+        loyaltyPointsMessages.get(0).burnedRewardSummary   = (int)  loyaltyPointsMessages.get(0).burnedRewardSummary;
           correspondingDollars.postValue(formatter.format(loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
           return correspondingDollars;
     }
 
     public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData(){
+        loyaltyPointsMessages.get(0).burnedRewardSummary   = (int)  loyaltyPointsMessages.get(0).burnedRewardSummary;
         rbcAlongWithRedemption.postValue(formatter.format(otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
         return rbcAlongWithRedemption;
 
     }
 
     public double getRbcAlongWithRedemptionSavings(){
-        double rbcWithRedemptionSavings =  otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
-        return rbcWithRedemptionSavings;
+        loyaltyPointsMessages.get(0).burnedRewardSummary   = (int)  loyaltyPointsMessages.get(0).burnedRewardSummary;
+        return otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
+
     }
 
 }
