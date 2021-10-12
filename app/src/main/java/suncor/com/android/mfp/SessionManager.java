@@ -1,8 +1,11 @@
 package suncor.com.android.mfp;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.util.Base64;
+import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -23,7 +26,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,10 +33,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
@@ -56,6 +60,7 @@ public class SessionManager implements SessionChangeListener {
     private UserLoginChallengeHandler challengeHandler;
     private WLAuthorizationManager authorizationManager;
     private MutableLiveData<Resource<SigninResponse>> loginObservable;
+    private Context context;
     private MutableLiveData<LoginState> loginState = new MutableLiveData<LoginState>() {
         @Override
         public void postValue(LoginState value) {
@@ -113,18 +118,28 @@ public class SessionManager implements SessionChangeListener {
     }
 
     public LiveData<Resource<SigninResponse>> login(String name, String password) {
-        String inputName = encodeCredentials(name);
-        String inputPassword = encodeCredentials(password);
+        String inputName = "";
+        String inputPassword = "";
+
+        if (((inputName = encodeCredentials(name)) == null) ||
+                ((inputPassword = encodeCredentials(password)) == null)) {
+            Alerts.prepareEncodedLoginEror(context).show();
+
+            return null;
+        }
 
         if (challengeHandler == null) {
-            throw new IllegalStateException("Security Challenge Handler not initialized, did you forget to call setChallengeHandler()");
+            throw new IllegalStateException("Security Challenge Handler not initialized, " +
+                    "did you forget to call setChallengeHandler()");
         }
         loginObservable = new MutableLiveData<>();
         loginOngoing = true;
         JSONObject credentials = new JSONObject();
+
+        /* Setting user credentials */
         try {
-            credentials.put("Qd2jUUbQNG", inputName);      //email
-            credentials.put("UsmP6D6Dhy", inputPassword);  //password
+            credentials.put("Qd2jUUbQNG", inputName);
+            credentials.put("UsmP6D6Dhy", inputPassword);
             loginObservable.postValue(Resource.loading());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -134,17 +149,23 @@ public class SessionManager implements SessionChangeListener {
         return loginObservable;
     }
 
-    private String encodeCredentials(String input)  {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    private String encodeCredentials(String input) {
+        String data;
+        if (input != null) {
             try {
-                input = Base64.getEncoder()
-                        .encodeToString(input.getBytes(StandardCharsets.UTF_8.toString()));
-                return input;
+                data = Base64.encodeToString(input.getBytes(StandardCharsets.UTF_8.toString()), Base64.NO_WRAP);
+                return data;
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
-        return "";
+        return null;
+
+    }
+
+    public void getLoginContext(Context context) {
+        this.context = context;
     }
 
     public LiveData<LoginState> getLoginState() {
