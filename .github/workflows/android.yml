@@ -141,7 +141,7 @@ jobs:
 
     - name: Upload APK 
       run: |
-          jfrog rt u app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk rfmp-android/${{ env.BUILD_ENV }}/release/*.apk
+          jfrog rt u app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk rfmp-android/${{ env.BUILD_ENV }}/release/app-${{ env.BUILD_ENV }}-release.apk
 
     - name: test notify teams
       env:
