@@ -135,7 +135,7 @@ jobs:
          
   
     - name: Setup JFrog
-      uses: jfrog/setup-jfrog-cli@v2
+      uses: jfrog/setup-jfrog-cli@v1
       env:
           JF_ARTIFACTORY_RFMP_ANDROID: ${{ secrets.JF_ARTIFACTORY_RFMP }}
 
