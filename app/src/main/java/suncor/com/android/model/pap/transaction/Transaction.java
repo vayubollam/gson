@@ -213,7 +213,7 @@ public class Transaction {
     }
 
     public static class PetroRedeemedRewards{
-        public int amount;
+        public double amount;
         public String description;
     }
 
