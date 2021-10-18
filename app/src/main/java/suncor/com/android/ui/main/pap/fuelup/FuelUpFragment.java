@@ -340,6 +340,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
            }
 
            fuelLimitDropDownAdapter.findLastFuelUpTransaction(lastTransactionFuelUpLimit);
+           redeemPointsDropDownAdapter.setDefaultPreAuthValue(String.valueOf(lastTransactionFuelUpLimit));
 
            binding.fuelUpLimit.setDropDownData(fuelLimitDropDownAdapter, false);
 

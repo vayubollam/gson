@@ -31,28 +31,26 @@ import suncor.com.android.utilities.Timber;
 
 public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
-    private ChildViewListener listener;
-    private final Context mContext;
-    private String redeemCaps;
-
+    public static final String TAG = "RedeemPointsAdapter";
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
-    public static final String TAG = "RedeemPointsAdapter";
     public final HashMap<String, String> redeemPoints;
-
+    private final Context mContext;
     private final int petroPoints;
     private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
     private final NumberFormat numberInstance = NumberFormat.getNumberInstance(Locale.getDefault());
-
+    private final RedeemPointsCallback redeemPointsCallback;
+    private ChildViewListener listener;
+    private String redeemCaps;
     private int selectedPos = 0;
     private int selectedPosition;
     private String points;
     private String off;
     private String preAuthValue = null;
+    private String defaultPreAuthValue = null;
     private String dollarOffValue;
     private String resultantValue;
     private double roundOffValue;
-    private final RedeemPointsCallback redeemPointsCallback;
     private double amountInDouble;
     private boolean isPreAuthChanges;
     private EditText otherAmountEditText;
@@ -119,6 +117,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     }
 
+    public void setDefaultPreAuthValue(String preAuthValue){
+        defaultPreAuthValue = preAuthValue;
+    }
+
     public void setPreAuthValue(String preAuthValue) {
         this.preAuthValue = preAuthValue;
     }
@@ -139,9 +141,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     private String getLocaleDollarOffText(double amt) {
         if (amt == 0.0) {
-            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")){
+            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 return String.format("%s %s %s", 0, "$", off);
-            }else{
+            } else {
                 return String.format("%s %s %s", "$", 0, off);
             }
         }
@@ -209,6 +211,47 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
     }
 
+    private String replaceChars(String str) {
+        //       str = str.replaceAll("[^0-9]", "");
+        //       str = str.replaceAll("\\W+","");
+        if (str.contains("$")) {
+            str = str.replace("$", "");
+        } else if (str.contains("£")) {
+            str = str.replace("£", "");
+        } else if (str.contains("₹")) {
+            str = str.replace("₹", "");
+        }
+        return str;
+    }
+
+    private String getFormattedPoints(double amount) {
+        return NumberFormat.getNumberInstance(Locale.getDefault()).format(amount);
+    }
+
+    @Override
+    public void showUpdatePreAuthPopup() {
+
+    }
+
+    private void getRoundOffValue() throws ParseException {
+        if(preAuthValue == null){
+            preAuthValue = defaultPreAuthValue;
+        }
+        preAuthValue = replaceChars(preAuthValue);
+        double selectedFuelValue = numberInstance.parse(preAuthValue).doubleValue();
+        if ((selectedFuelValue * 1000) < petroPoints) {
+            DecimalFormat df = new DecimalFormat("###.#");
+            resultantValue = df.format(1000 * selectedFuelValue);
+        } else {
+            resultantValue = CardFormatUtils.formatBalance(petroPoints);
+        }
+        roundOffValue = numberInstance.parse(resultantValue).doubleValue();
+    }
+
+    interface RedeemPointsCallback {
+        void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton, boolean isRedemptionChanged);
+    }
+
     class ChildDropDownViewHolder extends RecyclerView.ViewHolder {
         final FuelUpLimitDropDownItemBinding binding;
 
@@ -248,9 +291,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 if (Objects.nonNull(listener)) {
                     if (selectedPos == 1) {
                         isPreAuthChanges = false;
-                        if(roundOffValue == 0){
+                        if (roundOffValue == 0) {
                             selectedAmountOtherThanZero = false;
-                        }else{
+                        } else {
                             selectedAmountOtherThanZero = true;
                         }
                         if (redeemPointsCallback != null) {
@@ -272,22 +315,6 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         }
     }
 
-    private String replaceChars(String str) {
-        //          str = str.replaceAll("[^0-9]", "");
-        str = str.replaceAll("\\W+","");
-//        str = str.replace("$", "");
-        return str;
-    }
-
-    private String getFormattedPoints(double amount) {
-        return NumberFormat.getNumberInstance(Locale.getDefault()).format(amount);
-    }
-
-    @Override
-    public void showUpdatePreAuthPopup() {
-
-    }
-
     class OtherAmountViewHolder extends RecyclerView.ViewHolder {
         final OtherAmountBinding binding;
 
@@ -297,7 +324,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             setTextListener();
         }
 
-        public void setTextListener(){
+        public void setTextListener() {
             binding.inputField.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -325,12 +352,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             binding.dollarOffText.setText(getDollarOffValue(amountInDouble));
 
                             try {
-                                if(binding.inputField.getText().toString().isEmpty() || amountInDouble == 0.0){
+                                if (binding.inputField.getText().toString().isEmpty() || amountInDouble == 0.0) {
                                     amountInDouble = 0.0;
                                     selectedAmountOtherThanZero = false;
-                                } else if(amountInDouble < 10.0) {
+                                } else if (amountInDouble < 10.0) {
                                     selectedAmountOtherThanZero = false;
-                                }else{
+                                } else {
                                     selectedAmountOtherThanZero = true;
                                 }
                                 getRoundOffValue();
@@ -363,10 +390,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                     if (Objects.nonNull(listener)) {
                         try {
-                            if(binding.inputField.getText().toString().isEmpty() || amountInDouble == 0.0){
+                            if (binding.inputField.getText().toString().isEmpty() || amountInDouble == 0.0) {
                                 amountInDouble = 0.0;
                                 selectedAmountOtherThanZero = false;
-                            }else{
+                            } else {
                                 selectedAmountOtherThanZero = true;
                             }
                             getRoundOffValue();
@@ -375,9 +402,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                             }
                             isPreAuthChanges = false;
                             String selectedValue = getDollarOffValue(amountInDouble);
-                            if(selectedValue.equals("$ 0 off")){
+                            if (selectedValue.equals("$ 0 off")) {
                                 selectedAmountOtherThanZero = false;
-                            }else if (selectedValue.equals("0 $ de rabais")){
+                            } else if (selectedValue.equals("0 $ de rabais")) {
                                 selectedAmountOtherThanZero = false;
                             }
                             listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, !selectedAmountOtherThanZero, true);
@@ -437,21 +464,5 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                 }
             });
         }
-    }
-
-    private void getRoundOffValue() throws ParseException {
-        preAuthValue = replaceChars(preAuthValue);
-        double selectedFuelValue = numberInstance.parse(preAuthValue).doubleValue();
-        if ((selectedFuelValue * 1000) < petroPoints) {
-            DecimalFormat df = new DecimalFormat("###.#");
-            resultantValue = df.format(1000 * selectedFuelValue);
-        } else {
-            resultantValue = CardFormatUtils.formatBalance(petroPoints);
-        }
-        roundOffValue = numberInstance.parse(resultantValue).doubleValue();
-    }
-
-    interface RedeemPointsCallback {
-        void onRedeemPointsChanged(String redeemPoints, String selectedRadioButton, boolean isRedemptionChanged);
     }
 }
