@@ -53,7 +53,20 @@ jobs:
       run: |
           sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
-    
+
+    - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+    - name: Generate sonar report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: ./gradlew build sonarqube --info
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
