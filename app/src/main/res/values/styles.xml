@@ -138,6 +138,21 @@
         <item name="android:minWidth">72dp</item>
     </style>
 
+    <style name="StrokeBlackButton" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="fontFamily">@font/gibson_semibold</item>
+        <item name="android:lines">1</item>
+        <item name="cornerRadius">4dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:textColor">@color/black_100</item>
+        <item name="strokeColor">@color/black_40</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="rippleColor">@color/black_4</item>
+    </style>
+
     <style name="FilledButton.Red.ML">
         <item name="android:textSize">14sp</item>
         <item name="android:minHeight">44dp</item>

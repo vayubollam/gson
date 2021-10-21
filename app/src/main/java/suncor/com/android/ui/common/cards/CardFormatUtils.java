@@ -1,6 +1,8 @@
 package suncor.com.android.ui.common.cards;
 
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Base64;
 
 import java.nio.ByteBuffer;
@@ -166,5 +168,16 @@ public class CardFormatUtils {
 
         // increment the first decimal digit of our 12-digit code by 1 to get rid of any leading zeroes
        return Long.toString(encryptedCardData + 100_000_000_000L);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 }

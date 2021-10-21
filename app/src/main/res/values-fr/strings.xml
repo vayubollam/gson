@@ -730,9 +730,9 @@
     <string name="thank_you_carwash">Merci, %1$s!
         La propreté, droit devant.</string>
     <string name="carwash_activated_copy">Suivez les directives et profitez de votre lavage.</string>
-    <string name="carwash_remaining_copy">Il vous reste %1$s.</string>
-    <string name="carwash_zero_washes">Vous n\'avez plus de lavages. <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points/recharger/lavez-partez/etape-1-numero-carte ">Rechargez votre carte à Petro-Canada.ca.</a></string>
-    <string name="carwash_zero_days">Vous n\'avez plus de jours. <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points/recharger/carte-acces-lave-auto/etape-1-numero-carte">Rechargez votre carte à Petro-Canada.ca.</a></string>
+    <string name="carwash_remaining_copy"><![CDATA[Il vous reste</br><h1><font color=#000000> %1$s </font></h1>.]]></string>
+    <string name="carwash_zero_washes"><![CDATA[Il vous reste</br><h1><font color=#EB182C>  0 lavages. </font></h1>]]></string>
+    <string name="carwash_zero_days"><![CDATA[Il vous reste</br><h1><font color=#EB182C>  0 jours. </font></h1>]]></string>
     <string name="carwash_error_alert_title">Impossible d\'activer le lavage</string>
     <string name="carwash_error_alert_copy">Mousse alors! Quelque chose a mal tourné. Essayez de nouveau ou communiquez avec le préposé.</string>
     <string name="carwash_zero_error_alert_title">Impossible d\'activer le lavage</string>
@@ -740,4 +740,7 @@
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
+
+    <string name="add_more_days">Add more days</string>
+    <string name="add_more_washes">Add more washes</string>
 </resources>
