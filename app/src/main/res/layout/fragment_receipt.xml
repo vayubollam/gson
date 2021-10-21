@@ -5,6 +5,7 @@
 
     <data>
 
+        <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
         <variable
             name="isLoading"
             type="androidx.databinding.ObservableBoolean" />
@@ -167,7 +168,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         tools:visibility="visible">
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -206,7 +207,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="@{transaction.LoyaltyPointsMessages.get(0).burnedRewardSummary}"
+                                android:text="@{CardFormatUtils.formatBalance(transaction.LoyaltyPointsMessages.get(0).burnedRewardSummary)}"
                                 style="@style/Body"
                                 android:textColor="@color/black_C" />
 

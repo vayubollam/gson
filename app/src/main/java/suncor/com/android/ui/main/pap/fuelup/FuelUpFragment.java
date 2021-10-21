@@ -118,6 +118,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Inject
     ViewModelFactory viewModelFactory;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -341,6 +342,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
            fuelLimitDropDownAdapter.findLastFuelUpTransaction(lastTransactionFuelUpLimit);
            redeemPointsDropDownAdapter.setDefaultPreAuthValue(String.valueOf(lastTransactionFuelUpLimit));
+           binding.totalAmount.setText(formatter.format(lastTransactionFuelUpLimit));
 
            binding.fuelUpLimit.setDropDownData(fuelLimitDropDownAdapter, false);
 
