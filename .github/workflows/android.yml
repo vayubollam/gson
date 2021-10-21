@@ -54,6 +54,7 @@ jobs:
           sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
 
+    # this gets the SonarQube code works and analysis
     - name: Cache SonarQube packages
       uses: actions/cache@v1
       with:
