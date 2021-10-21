@@ -43,6 +43,8 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
+import suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CarWashActivationSecurityFragment extends CarwashLocation implements OnBackPressedListener {
@@ -265,7 +267,14 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
     private void navigateToCarwashActivated(ActivateCarwashResponse response) {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        NavDirections action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashActivatedFragment(response);
+        CarWashActivationSecurityFragmentDirections.ActionCarWashActivationSecurityFragmentToCarWashActivatedFragment
+                action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashActivatedFragment(response);
+        action.setCardNumber(CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardNumber());
+        action.setCardName(CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardName());
+        action.setCardType(CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardType());
+        action.setCardIndex(CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex());
+        action.setIsCardFromCarWash(CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash());
+
         AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep, "Activate Carwash");
         Navigation.findNavController(getView()).navigate(action);
         progressBar.setVisibility(View.GONE);
