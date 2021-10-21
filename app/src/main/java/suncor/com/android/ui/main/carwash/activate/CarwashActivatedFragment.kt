@@ -1,14 +1,9 @@
 package suncor.com.android.ui.main.carwash.activate
 
 import android.os.Bundle
-import android.text.Html
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.ObservableBoolean
 import androidx.navigation.Navigation
 import suncor.com.android.R
@@ -19,6 +14,8 @@ import suncor.com.android.model.carwash.CarwashConfigurationType
 import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.common.cards.CardFormatUtils
 import suncor.com.android.ui.main.common.MainActivityFragment
+import suncor.com.android.ui.main.wallet.cards.CardsLoadType
+import suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragmentDirections
 import javax.inject.Inject
 
 
@@ -109,11 +106,24 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
 
         binding.buttonAddMoreDays.setOnClickListener {
             goBack()
+            navigateToCarwashTransaction()
         }
 
         binding.buttonReload.setOnClickListener {
             goBack()
+            navigateToCarwashTransaction()
         }
+    }
+
+    fun navigateToCarwashTransaction(){
+        val action: CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment =
+            CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment()
+        action.cardNumber = CarwashActivatedFragmentArgs.fromBundle(requireArguments()).cardNumber
+        action.cardName = CarwashActivatedFragmentArgs.fromBundle(requireArguments()).cardName
+        action.cardType = CarwashActivatedFragmentArgs.fromBundle(requireArguments()).cardType
+        action.cardIndex = CarwashActivatedFragmentArgs.fromBundle(requireArguments()).cardIndex
+        action.isCardFromCarWash = CarwashActivatedFragmentArgs.fromBundle(requireArguments()).isCardFromCarWash
+        Navigation.findNavController(requireView()).navigate(action)
     }
 
 

@@ -599,6 +599,14 @@
             android:name="cardNumber"
             android:defaultValue="null"
             app:argType="string" />
+        <argument
+            android:name="cardName"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="cardType"
+            android:defaultValue="null"
+            app:argType="string" />
         <action
             android:id="@+id/action_carWashActivationSecurityFragment_to_carWashBarCodeFragment"
             app:destination="@id/carWashBarCodeFragment"
@@ -615,6 +623,26 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right">
             <argument
+                android:name="cardIndex"
+                android:defaultValue="0"
+                app:argType="integer" />
+            <argument
+                android:name="isCardFromCarWash"
+                android:defaultValue="false"
+                app:argType="boolean" />
+            <argument
+                android:name="cardNumber"
+                android:defaultValue="null"
+                app:argType="string" />
+            <argument
+                android:name="cardName"
+                android:defaultValue="null"
+                app:argType="string" />
+            <argument
+                android:name="cardType"
+                android:defaultValue="null"
+                app:argType="string" />
+            <argument
                 android:name="carwashResponse"
                 app:nullable="true"
                 app:argType="suncor.com.android.model.carwash.ActivateCarwashResponse" />
@@ -624,6 +652,26 @@
         android:id="@+id/carWashActivatedFragment"
         android:name="suncor.com.android.ui.main.carwash.activate.CarwashActivatedFragment"
         android:label="CarWashActivatedFragment" >
+        <argument
+            android:name="cardIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="isCardFromCarWash"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="cardNumber"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="cardName"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="cardType"
+            android:defaultValue="null"
+            app:argType="string" />
         <argument
             android:name="carwashResponse"
             app:nullable="true"
