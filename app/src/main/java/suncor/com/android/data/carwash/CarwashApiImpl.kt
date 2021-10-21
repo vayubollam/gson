@@ -13,6 +13,8 @@ import suncor.com.android.mfp.ErrorCodes
 import suncor.com.android.model.Resource
 import suncor.com.android.model.carwash.ActivateCarwashRequest
 import suncor.com.android.model.carwash.ActivateCarwashResponse
+import suncor.com.android.model.carwash.reload.TransactionReloadData
+import suncor.com.android.model.carwash.reload.TransactionReloadTaxes
 import suncor.com.android.utilities.Timber
 import java.net.URI
 import java.net.URISyntaxException
@@ -44,6 +46,73 @@ class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create
 
                 override fun onFailure(wlFailResponse: WLFailResponse) {
                     Timber.d("Activate Carwash API failed, $wlFailResponse")
+                    Timber.e(wlFailResponse.toString())
+                    result.postValue(Resource.error(
+                        if (wlFailResponse.responseJSON != null && wlFailResponse.responseJSON.has("resultSubcode"))
+                            wlFailResponse.responseJSON.getString("resultSubcode") else ""))
+                }
+            })
+        } catch (e: URISyntaxException) {
+            Timber.e(e.toString())
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR))
+        }
+        return result
+    }
+
+    override fun reloadTransactionCarwash(cardType: String): LiveData<Resource<TransactionReloadData>> {
+        Timber.d("request initiate for relaod transaction form data ")
+        val result = MutableLiveData<Resource<TransactionReloadData>>()
+        result.postValue(Resource.loading())
+
+        try {
+            val adapterPath = URI("$ADAPTER_PATH/ReloadTransactionForm/" + cardType)
+            val request = WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE)
+
+            request.send( object : WLResponseListener {
+                override fun onSuccess(wlResponse: WLResponse) {
+                    val jsonText = wlResponse.responseText
+                    Timber.d("Reload Transaction Form Data success, response:\n$jsonText")
+                    val transactionReloadData = gson.fromJson(jsonText, TransactionReloadData::class.java)
+                    result.postValue(Resource.success(transactionReloadData))
+                }
+
+                override fun onFailure(wlFailResponse: WLFailResponse) {
+                    Timber.d("Reload Transaction Form Data API failed, $wlFailResponse")
+                    Timber.e(wlFailResponse.toString())
+                    result.postValue(Resource.error(
+                        if (wlFailResponse.responseJSON != null && wlFailResponse.responseJSON.has("resultSubcode"))
+                            wlFailResponse.responseJSON.getString("resultSubcode") else ""))
+                }
+            })
+        } catch (e: URISyntaxException) {
+            Timber.e(e.toString())
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR))
+        }
+        return result
+    }
+
+    override fun taxCalculationTransactionCarwash(
+        rewardId: String,
+        province: String
+    ): LiveData<Resource<TransactionReloadTaxes>> {
+        Timber.d("request initiate for relaod transaction tax data ")
+        val result = MutableLiveData<Resource<TransactionReloadTaxes>>()
+        result.postValue(Resource.loading())
+
+        try {
+            val adapterPath = URI("$ADAPTER_PATH/ReloadTransactionForm/Tax?rewardId=$rewardId&province=$province")
+            val request = WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE)
+
+            request.send( object : WLResponseListener {
+                override fun onSuccess(wlResponse: WLResponse) {
+                    val jsonText = wlResponse.responseText
+                    Timber.d("Reload Transaction Form tax success, response:\n$jsonText")
+                    val transactionReloadData = gson.fromJson(jsonText, TransactionReloadTaxes::class.java)
+                    result.postValue(Resource.success(transactionReloadData))
+                }
+
+                override fun onFailure(wlFailResponse: WLFailResponse) {
+                    Timber.d("Reload Transaction Form tax API failed, $wlFailResponse")
                     Timber.e(wlFailResponse.toString())
                     result.postValue(Resource.error(
                         if (wlFailResponse.responseJSON != null && wlFailResponse.responseJSON.has("resultSubcode"))

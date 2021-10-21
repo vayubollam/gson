@@ -293,6 +293,53 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_cardsDetailsFragment_to_carWashTransactionFragment"
+            app:destination="@id/carWashTransactionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </keep_state_fragment>
+
+    <keep_state_fragment
+
+        android:id="@+id/carWashTransactionFragment"
+        android:name="suncor.com.android.ui.main.carwash.reload.CarwashTransactionFragment"
+        android:label="CarWashReloadTransactionFragment"
+        tools:layout="@layout/fragment_carwash_transaction" >
+        <argument
+            android:name="cardIndex"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="isCardFromCarWash"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="cardNumber"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="cardName"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="cardType"
+            android:defaultValue="null"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_fuel_up_to_addPaymentFragment"
+            app:destination="@id/addPaymentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+            <argument
+                android:name="inTransaction"
+                app:argType="boolean"
+                android:defaultValue="true"/>
+        </action>
+
     </keep_state_fragment>
 
     <keep_state_fragment

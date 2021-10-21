@@ -9,6 +9,8 @@ import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.util.Locale;
+
 import suncor.com.android.R;
 
 public class CardsUtil {
@@ -90,6 +92,20 @@ public class CardsUtil {
         dialog.show();
     }
 
+    public static void showSuspendedCardAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.reload_card_alet_title)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
+                .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dialog, which) -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_canada_reload_url)));
+                    context.startActivity(browserIntent);
+                }).setNegativeButton(context.getResources().getString(R.string.reload_card_alert_cancel), (dialog, which) -> {
+                    AnalyticsUtils.logEvent(context,AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, context.getString(R.string.reload_card_alet_title)),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection,context.getString(R.string.reload_card_alert_description)),
+                            new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName()));
+                });
+        builder.show();
+    }
+
     public static void ShowSuspendedCardAlertForActivateWash(Context context){
         AlertDialog alertWashDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.carwash_zero_error_alert_title)
@@ -107,4 +123,5 @@ public class CardsUtil {
         alertWashDialog.setCanceledOnTouchOutside(false);
         alertWashDialog.show();
     }
+
 }
