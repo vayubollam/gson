@@ -39,7 +39,9 @@ public class MerchantDetailsFragment extends MainActivityFragment {
         binding.setGenericGiftCard(genericEGiftCard);
         binding.executePendingBindings();
         binding.closeButton.setOnClickListener(v -> Navigation.findNavController(getView()).popBackStack());
-        binding.points.setText(getString(R.string.rewards_signedin_header_balance, CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance())));
+        if (sessionManager.getProfile() != null) {
+            binding.points.setText(getString(R.string.rewards_signedin_header_balance, CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance())));
+        }
         AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+genericEGiftCard.getScreenName());
         binding.buyButton.setOnClickListener(v -> {
             MerchantDetailsFragmentDirections.ActionMerchantDetailsFragmentToGiftCardValueConfirmation action = MerchantDetailsFragmentDirections.actionMerchantDetailsFragmentToGiftCardValueConfirmation(genericEGiftCard);

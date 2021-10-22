@@ -88,9 +88,11 @@ public class PreferencesViewModel extends ViewModel {
                     break;
                 case SUCCESS:
                     profileSharedViewModel.postToast(R.string.profile_update_toast);
-                    sessionManager.getProfile().setEmailOffers(emailOffers.get());
-                    sessionManager.getProfile().setDoNotEmail(donotEmail.get());
-                    sessionManager.getProfile().setTextOffers(textOffers.get());
+                    if (sessionManager.getProfile() != null) {
+                        sessionManager.getProfile().setEmailOffers(emailOffers.get());
+                        sessionManager.getProfile().setDoNotEmail(donotEmail.get());
+                        sessionManager.getProfile().setTextOffers(textOffers.get());
+                    }
                     break;
                 case ERROR:
                     ProfileSharedViewModel.Alert alert = new ProfileSharedViewModel.Alert();
