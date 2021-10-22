@@ -36,7 +36,9 @@ class CarwashActivatedFragment: MainActivityFragment(), OnBackPressedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.transactionGreetings.text = String.format(getString(R.string.thank_you_carwash), sessionManager.profile.firstName)
+        if (sessionManager.profile != null) {
+            binding.transactionGreetings.text = String.format(getString(R.string.thank_you_carwash), sessionManager.profile.firstName)
+        }
 
         binding.remainingTextView.text = when (carwashResponse?.configurationType) {
             CarwashConfigurationType.TBO ->  {

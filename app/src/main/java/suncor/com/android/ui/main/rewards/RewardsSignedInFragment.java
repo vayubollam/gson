@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.rewards;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
@@ -47,7 +49,11 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RewardsSignedInViewModel.class);
         viewModel.navigateToDiscovery.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
+                if (findNavController(requireView()).getCurrentDestination().getId() !=
+                        R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment) {
+
+                    findNavController(requireView()).navigate(R.id.action_stations_tab_to_searchFragment);
+                }
             }
         });
 
@@ -225,11 +231,11 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     private void eCardClicked(GenericEGiftCard genericEGiftCard) {
         if(genericEGiftCard.isDataDynamic()){
             RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
-            Navigation.findNavController(requireView()).navigate(action);
+            findNavController(requireView()).navigate(action);
 
         }else{
             RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
-            Navigation.findNavController(requireView()).navigate(action);
+            findNavController(requireView()).navigate(action);
 
         }
     }

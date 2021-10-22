@@ -128,7 +128,10 @@ public class ReceiptFragment extends MainActivityFragment {
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
-                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
+                if (sessionManager.getProfile() != null) {
+                    binding.transactionGreetings.setText(String.format(getString(R.string.thank_you),
+                            sessionManager.getProfile().getFirstName()));
+                }
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
