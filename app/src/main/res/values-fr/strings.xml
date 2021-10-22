@@ -748,9 +748,9 @@
     <string name="thank_you_carwash">Merci, %1$s!
         La propreté, droit devant.</string>
     <string name="carwash_activated_copy">Suivez les directives et profitez de votre lavage.</string>
-    <string name="carwash_remaining_copy"><![CDATA[Il vous reste</br><h1><font color=#000000> %1$s </font></h1>.]]></string>
-    <string name="carwash_zero_washes"><![CDATA[Il vous reste</br><h1><font color=#EB182C>  0 lavages. </font></h1>]]></string>
-    <string name="carwash_zero_days"><![CDATA[Il vous reste</br><h1><font color=#EB182C>  0 jours. </font></h1>]]></string>
+    <string name="carwash_remaining_copy"><![CDATA[Il vous reste</br><h1><font color=#000000> %1$s.</font></h1]]></string>
+    <string name="carwash_zero_washes"><![CDATA[Il vous reste</br><h1><font color=#EB182C>  0 lavages.</font></h1>]]></string>
+    <string name="carwash_zero_days"><![CDATA[Il vous reste</br><h1><font color=#EB182C>  0 jours.</font></h1>]]></string>
     <string name="carwash_error_alert_title">Impossible d\'activer le lavage</string>
     <string name="carwash_error_alert_copy">Mousse alors! Quelque chose a mal tourné. Essayez de nouveau ou communiquez avec le préposé.</string>
     <string name="carwash_zero_error_alert_title">Impossible d\'activer le lavage</string>
