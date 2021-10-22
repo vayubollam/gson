@@ -759,8 +759,8 @@
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 
-    <string name="add_more_days">Add more days</string>
-    <string name="add_more_washes">Add more washes</string>
+    <string name="add_more_days">Ajouter des jours</string>
+    <string name="add_more_washes">Ajouter des lavages</string>
 
     <string name="cards_days">%1$s jours</string>
     <string name="cards_washes">%1$s lavages</string>
