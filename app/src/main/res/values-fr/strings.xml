@@ -73,6 +73,7 @@
     <string name="login_invalid_credentials_dialog_1st_message">Veuillez réessayer. Si vous avez créé un compte récemment, consultez votre boîte de réception pour accéder à votre lien de vérification.</string>
     <string name="login_invalid_credentials_dialog_2nd_message">Vous avez %1d tentatives restantes avant que votre compte ne soit verrouillé pendant %2d minutes</string>
     <string name="profile_sign_out_button">Déconnexion</string>
+    <string name="encoded_login_error_message">Veuillez réessayer S001</string>
     <string name="profile_about_button">À propos</string>
     <string name="discover_your_next_adventure">DÉCOUVREZ VOTRE \nCOIN DE PARADIS</string>
     <string name="enrollment_card_question">Avez-vous une carte Petro\u2011Points?</string>

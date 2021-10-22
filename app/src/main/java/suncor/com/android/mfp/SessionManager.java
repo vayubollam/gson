@@ -1,7 +1,11 @@
 package suncor.com.android.mfp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.util.Base64;
+import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -18,8 +22,10 @@ import com.worklight.wlclient.auth.AccessToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,10 +33,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.challengeHandlers.UserLoginChallengeHandler;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.account.Profile;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Consumer;
@@ -52,6 +60,7 @@ public class SessionManager implements SessionChangeListener {
     private UserLoginChallengeHandler challengeHandler;
     private WLAuthorizationManager authorizationManager;
     private MutableLiveData<Resource<SigninResponse>> loginObservable;
+    private Context context;
     private MutableLiveData<LoginState> loginState = new MutableLiveData<LoginState>() {
         @Override
         public void postValue(LoginState value) {
@@ -109,15 +118,28 @@ public class SessionManager implements SessionChangeListener {
     }
 
     public LiveData<Resource<SigninResponse>> login(String name, String password) {
+        String inputName = "";
+        String inputPassword = "";
+
+        if (((inputName = encodeCredentials(name)) == null) ||
+                ((inputPassword = encodeCredentials(password)) == null)) {
+            Alerts.prepareEncodedLoginEror(context).show();
+
+            return null;
+        }
+
         if (challengeHandler == null) {
-            throw new IllegalStateException("Security Challenge Handler not initialized, did you forget to call setChallengeHandler()");
+            throw new IllegalStateException("Security Challenge Handler not initialized, " +
+                    "did you forget to call setChallengeHandler()");
         }
         loginObservable = new MutableLiveData<>();
         loginOngoing = true;
         JSONObject credentials = new JSONObject();
+
+        /* Setting user credentials */
         try {
-            credentials.put("email", name);
-            credentials.put("password", password);
+            credentials.put("Qd2jUUbQNG", inputName);
+            credentials.put("UsmP6D6Dhy", inputPassword);
             loginObservable.postValue(Resource.loading());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -125,6 +147,25 @@ public class SessionManager implements SessionChangeListener {
         challengeHandler.login(credentials);
 
         return loginObservable;
+    }
+
+    private String encodeCredentials(String input) {
+        String data;
+        if (input != null) {
+            try {
+                data = Base64.encodeToString(input.getBytes(StandardCharsets.UTF_8.toString()), Base64.NO_WRAP);
+                return data;
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+
+    }
+
+    public void getLoginContext(Context context) {
+        this.context = context;
     }
 
     public LiveData<LoginState> getLoginState() {

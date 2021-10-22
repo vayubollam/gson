@@ -75,6 +75,8 @@ public class LoginFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+        viewModel.getContextFromFragment(getContext());
+
         boolean fromEnrollment = getArguments().getBoolean(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, false);
         fromResetPassword = getArguments().getBoolean(LoginActivity.LOGIN_FROM_RESET_PASSWORD_EXTRA, false);
 
