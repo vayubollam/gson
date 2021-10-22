@@ -76,6 +76,7 @@ import suncor.com.android.utilities.PermissionManager;
 
 import static android.Manifest.permission;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static androidx.navigation.Navigation.findNavController;
 
 
 public class StationsFragment extends BottomNavigationFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
@@ -554,11 +555,17 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     }
 
     public void launchFiltersFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_filtersFragment);
+        findNavController(getView()).navigate(R.id.action_stations_tab_to_filtersFragment);
     }
 
     public void launchSearchFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_searchFragment);
+
+        if (findNavController(getView()).getCurrentDestination().getId() ==
+                (R.id.action_stations_tab_to_searchFragment)) {
+
+        } else {
+            findNavController(getView()).navigate(R.id.action_stations_tab_to_searchFragment);
+        }
 
     }
 
@@ -639,7 +646,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     public void showFavourites() {
         if (sessionManager.isUserLoggedIn()) {
-            Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_favouritesFragment);
+            findNavController(getView()).navigate(R.id.action_stations_tab_to_favouritesFragment);
         } else {
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))

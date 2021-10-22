@@ -17,7 +17,7 @@ public class ActionMenuViewModel extends ViewModel {
     private final SettingsApi settingsApi;
 
     @Inject
-    ActionMenuViewModel(PapRepository repository, SettingsApi settingsApi) {
+    public ActionMenuViewModel(PapRepository repository, SettingsApi settingsApi) {
         this.repository = repository;
         this.settingsApi = settingsApi;
     }
