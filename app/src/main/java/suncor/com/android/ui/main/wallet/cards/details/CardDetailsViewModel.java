@@ -144,7 +144,7 @@ public class CardDetailsViewModel extends ViewModel {
 
     protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex ){
         LoyalityData loyalityData = new LoyalityData();
-        loyalityData.setBarcode(cards.getValue().get(clickedCardIndex).getCardNumber());
+        loyalityData.setBarcode(cards.getValue().get(clickedCardIndex).getCardNumber().replace(" ", ""));
         ExpandedCardItem expandedCardItem = new ExpandedCardItem(context, cards.getValue().get(clickedCardIndex));
         loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
         loyalityData.setNameLabel(context.getString(R.string.google_passes_name_label));

@@ -269,9 +269,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                                 Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                                 return;
                             }
-                            Timber.i("GOOGLE PASSES: hide progress " + cardAuthToken);
-                            startOpenWebPage(cardAuthToken);
-                        //    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
+                           getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
 
                         });
                     }
@@ -280,27 +278,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
         });
 
     };
-
-    public boolean startOpenWebPage(String url) {
-        boolean result = false;
-        if (!url.startsWith("http://") && !url.startsWith("https://"))
-            url = "http://" + url;
-
-        Uri webpage = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-
-        try {
-            startActivity(intent);
-            result = true;
-            Timber.i("GOOGLE PASSES : find browser " + url);
-        }catch (Exception e){
-            Timber.i("GOOGLE PASSES : find browser error ");
-            if (url.startsWith("http://")){
-                startOpenWebPage(url.replace("http://","https://"));
-            }
-        }
-        return result;
-    }
 
     private void showAddCardProgress(){
         binding.loadingProgressBar.setVisibility(View.VISIBLE);

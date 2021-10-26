@@ -58,7 +58,6 @@ class GooglePassesApiGateway {
             Timber.e("GOOGLE PASSES: Add loyality Object")
             // sign JSON to make signed JWT
             signedJwt = googlePassJwt.generateSignedJwt(context, passesConfig.googlePassesAccountEmailAddress)
-            Timber.i("GOOGLE PASSES: Singed JWT " + signedJwt)
         } catch (e: Exception) {
             e?.let {
                 Timber.e("Error on creating the loyality token" + e.message)
@@ -73,7 +72,6 @@ class GooglePassesApiGateway {
         Timber.d("Generates a signed")
         val skinnyJwt = makeSkinnyJwt(context, VerticalType.LOYALTY, passesConfig, objectId, loyalityData)
         if (skinnyJwt != null) {
-            Timber.i("passes auth token {}", skinnyJwt)
             return GooglePassesConfig.SAVE_LINK + skinnyJwt
         }
         return null
