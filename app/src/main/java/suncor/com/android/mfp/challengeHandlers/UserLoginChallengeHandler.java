@@ -1,5 +1,7 @@
 package suncor.com.android.mfp.challengeHandlers;
 
+import android.util.Base64;
+
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLErrorCode;
@@ -11,6 +13,8 @@ import com.worklight.wlclient.api.challengehandler.SecurityCheckChallengeHandler
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -164,11 +168,27 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     }
 
     public void login(JSONObject credentials) {
+
+        JSONObject base64EncodedCredentials = null;
+
+        try {
+            String usernameBase64Encoded = encodeCredentials(credentials.getString("email"));
+            String passwordBase64Encoded = encodeCredentials(credentials.getString("password"));
+
+            base64EncodedCredentials = new JSONObject();
+
+            base64EncodedCredentials.put("Qd2jUUbQNG", usernameBase64Encoded);
+            base64EncodedCredentials.put("UsmP6D6Dhy", passwordBase64Encoded);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         this.credentials = credentials;
         if (isChallenged) {
-            submitChallengeAnswer(credentials);
+            submitChallengeAnswer(base64EncodedCredentials);
         } else {
-            WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
+            WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, base64EncodedCredentials, new WLLoginResponseListener() {
                 @Override
                 public void onSuccess() {
                     listener.onLoginSuccess(profile);
@@ -186,6 +206,21 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 }
             });
         }
+    }
+
+    private String encodeCredentials(String input) {
+        String data;
+        if (input != null) {
+            try {
+                data = Base64.encodeToString(input.getBytes(StandardCharsets.UTF_8.toString()), Base64.NO_WRAP);
+                return data;
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+
     }
 
     @Override
