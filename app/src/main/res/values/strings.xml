@@ -67,7 +67,6 @@
     <string name="favourites_add_station_button">Add a station</string>
     <string name="profile_fragment_title">Profile</string>
     <string name="profile_sign_out_button">Sign out</string>
-    <string name="encoded_login_error_message">Please try again S001</string>
 
     <string name="station_distance_unavailable">Distance not available</string>
     <string name="login_prompt_title">Sign-in or join to favourite</string>
