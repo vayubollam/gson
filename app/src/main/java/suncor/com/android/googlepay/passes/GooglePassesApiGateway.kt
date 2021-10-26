@@ -79,7 +79,7 @@ class GooglePassesApiGateway {
 
     fun insertLoyalityCard(context: Context, loyalityData: LoyalityData, passesConfig: SettingsResponse.GooglePassConfig): String? {
         val verticalType = VerticalType.LOYALTY
-        val uuidString = "petro_card_loyality_$loyalityData.barcode"
+        val uuidString = "petro_card_loyality_passes$loyalityData.barcode"
 
 
         // your objectUid should be a hash based off of pass metadata, for the demo we will use pass-type_object_uniqueid
