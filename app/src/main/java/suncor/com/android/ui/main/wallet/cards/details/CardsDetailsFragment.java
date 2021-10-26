@@ -56,7 +56,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
     CardDetailsViewModel viewModel;
     private MainViewModel mainViewModel;
-    private int clickedCardIndex;
+
     private CardsLoadType loadType;
     @Inject
     ViewModelFactory viewModelFactory;
@@ -83,9 +83,12 @@ public class CardsDetailsFragment extends MainActivityFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
         loadType = CardsDetailsFragmentArgs.fromBundle(getArguments()).getLoadType();
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+        int clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
+        if(viewModel.getClickedCardIndex() == 0) {
+            viewModel.setClickedCardIndex(clickedCardIndex);
+        }
         viewModel.setLoadType(loadType);
         if (loadType == CardsLoadType.REDEEMED_SINGLE_TICKETS)
             viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
@@ -100,17 +103,17 @@ public class CardsDetailsFragment extends MainActivityFragment {
             if (expandedCardItems.size() > 0) {
                 cardsDetailsAdapter.setCardItems(expandedCardItems);
                 cardsDetailsAdapter.notifyDataSetChanged();
-                binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
+                binding.cardDetailRecycler.scrollToPosition(viewModel.getClickedCardIndex());
                 binding.setNumCards(expandedCardItems.size());
                 binding.executePendingBindings();
 
                 //track screen name
                 String screenName;
-                if (clickedCardIndex == 0) {
+                if (viewModel.getClickedCardIndex() == 0) {
                     //todo need to check
                     screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
-                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
+                    screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(viewModel.getClickedCardIndex()).getCardName();
                 }
                 AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
@@ -129,14 +132,14 @@ public class CardsDetailsFragment extends MainActivityFragment {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
+                    viewModel.setClickedCardIndex(linearLayoutManager.findFirstVisibleItemPosition());
                 }
             }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
+                viewModel.setClickedCardIndex(linearLayoutManager.findFirstVisibleItemPosition());
             }
         });
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
@@ -192,16 +195,16 @@ public class CardsDetailsFragment extends MainActivityFragment {
         if (isUserAtIndependentStation()) {
             StationsUtil.showIndependentStationAlert(getContext());
         } else {
-            if (viewModel.cards.getValue().get(clickedCardIndex).getCardType() == CardType.ST) {
+            if (viewModel.cards.getValue().get(viewModel.getClickedCardIndex()).getCardType() == CardType.ST) {
                 CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashBarCodeFragment
                         action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashBarCodeFragment(
                         loadType == CardsLoadType.REDEEMED_SINGLE_TICKETS ||
                                 loadType == CardsLoadType.CAR_WASH_PRODUCTS
                 );
-                action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
+                action.setSingleTicketNumber(viewModel.cards.getValue().get(viewModel.getClickedCardIndex()).getTicketNumber());
                 Navigation.findNavController(getView()).navigate(action);
             } else {
-                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+                CardDetail cardDetail = viewModel.cards.getValue().get(viewModel.getClickedCardIndex());
                 if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
                         viewModel.getIsCarWashBalanceZero().getValue()) {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
@@ -213,10 +216,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
-                    action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
-                    action.setCardName(viewModel.cards.getValue().get(clickedCardIndex).getCardName());
-                    action.setCardType(viewModel.cards.getValue().get(clickedCardIndex).getCardType().name());
-                    action.setCardIndex(clickedCardIndex);
+                    action.setCardNumber(viewModel.cards.getValue().get(viewModel.getClickedCardIndex()).getCardNumber());
+                    action.setCardName(viewModel.cards.getValue().get(viewModel.getClickedCardIndex()).getCardName());
+                    action.setCardType(viewModel.cards.getValue().get(viewModel.getClickedCardIndex()).getCardType().name());
+                    action.setCardIndex(viewModel.getClickedCardIndex());
                     action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
 
                     Navigation.findNavController(getView()).navigate(action);
@@ -227,7 +230,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener cardReloadListener = view -> {
-                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+                CardDetail cardDetail = viewModel.cards.getValue().get(viewModel.getClickedCardIndex());
                 if(cardDetail.isSuspendedCard()){
                     CardsUtil.showSuspendedCardAlert(getContext());
                 } else {
@@ -238,7 +241,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     action.setCardNumber(cardItem.getCardNumber());
                     action.setCardName(cardItem.getCardName());
                     action.setCardType(cardItem.getCardType().name());
-                    action.setCardIndex(clickedCardIndex);
+                    action.setCardIndex(viewModel.getClickedCardIndex());
                     action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                     Navigation.findNavController(getView()).navigate(action);
                 }

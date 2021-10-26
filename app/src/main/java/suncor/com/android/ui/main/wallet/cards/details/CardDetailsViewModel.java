@@ -30,6 +30,7 @@ public class CardDetailsViewModel extends ViewModel {
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
     private String newlyAddedCardNumber;
+    private int clickedCardIndex;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
@@ -127,5 +128,13 @@ public class CardDetailsViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
         return isCarWashBalanceZero;
+    }
+
+    public int getClickedCardIndex() {
+        return clickedCardIndex;
+    }
+
+    public void setClickedCardIndex(int clickedCardIndex) {
+            this.clickedCardIndex = clickedCardIndex;
     }
 }
