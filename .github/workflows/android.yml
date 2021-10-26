@@ -7,18 +7,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build:
 
@@ -68,6 +56,11 @@ jobs:
           sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
 
+    - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
