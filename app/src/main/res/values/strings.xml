@@ -485,6 +485,7 @@
     <string name="rewards_egift_card_subtitle">eGift card</string>
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
     <string name="merchant_dining_card">The Ultimate Dining Card</string>
+    <string name="merchant_petrocanada_card">Petro-Canada</string>
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_Hudson_bay">Hudson\'s Bay</string>
 
@@ -496,16 +497,19 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Use your Petro-Canada eGift card in-store at any Petro-Canada location. \n</string>
 
 
     <string name="redeem_egift_card_select_value">Select value</string>
     <string name="redeem_egoft_total_points">Total</string>
     <string name="redeem_egift_address_disclaimer">If you changed your email address and then redeem for an eGift card, you will not be able to redeem points online or in-store for 24 hours.</string>
-    <string name="redeem_terms_agreement">Transactions are irreversible. By selecting "confirm and redeem," you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">terms and conditions</a></string>
+
+    <string name="redeem_terms_agreement">Transactions are irreversible. By selecting \"confirm and redeem,\" you agree to <a href="https://www.petro-canada.ca/en/personal/terms-conditions">Terms and conditions.</a></string>
+
     <string name="rewards_signedin_egift_value_in_dollar_generic">$%d</string>
     <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
     <string name="redeem_egift_current_value">Value</string>
-    <string name="redeem_egift_not_enough_points">Looks like you don’t have enough points yet.</string>
+    <string name="redeem_egift_not_enough_points">Not enough points yet. Keep saving.</string>
     <string name="redeem_egift_address_title">Order will be sent to:</string>
     <string name="redeem_egift_change_btn">Update</string>
     <string name="redeem_egift_confirm_and_redeem">Confirm and redeem</string>
@@ -799,5 +803,8 @@
     <string name="google_passes_howtouse_value_fr">Scannez votre carte au dépanneur pour obtenir ou échanger des points. Ou téléchargez notre application pour obtenir des points directement à la pompe.</string>
     <string name="google_passes_termcondition_label_fr">Conditions</string>
     <string name="google_passes_termcondition_value_fr">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
+
+    <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
+
 
 </resources>

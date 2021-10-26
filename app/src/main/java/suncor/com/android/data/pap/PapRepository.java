@@ -80,5 +80,4 @@ public class PapRepository {
     public LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation) {
         return papApi.authorizePaymentByWallet(request, userLocation);
     }
-
 }

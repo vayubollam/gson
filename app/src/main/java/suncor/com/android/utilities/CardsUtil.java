@@ -123,5 +123,4 @@ public class CardsUtil {
         alertWashDialog.setCanceledOnTouchOutside(false);
         alertWashDialog.show();
     }
-
 }

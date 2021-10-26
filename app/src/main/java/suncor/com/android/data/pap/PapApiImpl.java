@@ -76,7 +76,7 @@ public class PapApiImpl implements PapApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/stores");
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.addHeader("x-store-id", storeId);
 
             request.send(new WLResponseListener() {
@@ -117,7 +117,6 @@ public class PapApiImpl implements PapApi {
             request.addHeader("deviceOS", "Android");
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID);
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME);
-
 
             String body = gson.toJson(payByGooglePayRequest);
             Timber.i("Send Pay By Google Pay, string: " + payByGooglePayRequest.toString() +  "\nbody: " + body);

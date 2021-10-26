@@ -377,7 +377,7 @@
     <string name="transaction_detail_bonus_points">Points en prime</string>
     <string name="transaction_detail_date">Date</string>
     <string name="transaction_detail_total_points">Points totaux</string>
-    <string name="transaction_detail_transaction_type">Détails de la transaction</string>
+    <string name="transaction_detail_transaction_type">Transaction</string>
     <string name="transaction_details_header">Détails</string>
     <string name="transactions_point_summary_header">Résumé de points</string>
     <string name="profile_about_app_version">Version de l\'application</string>
@@ -475,6 +475,7 @@
     <string name="merchant_Hudson_bay">La Baie d’Hudson</string>
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_dining_card">Bon Appétit</string>
+    <string name="merchant_petrocanada_card">Petro-Canada</string>
     <string name="merchant_winners">WINNERS, Marshalls et HomeSense</string>
     <string name="rewards_signedin_how_to_redeem_merchants_title">Comment échanger des points</string>
     <string name="rewards_signedin_redeeming_your_rewards_title">Utilisation de votre prime</string>
@@ -484,8 +485,10 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Valable dans tous les WINNERS, HomeSense et Marshalls au Canada.\n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Valable dans plus de 10 restaurants Canadiens comme Montana\'s, East Side Mario\'s et Swiss Chalet.\n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Utilisez-la à La Baie d’Hudson, Déco Découverte et en ligne à labaie.com.\n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Utilisez votre carte-cadeau Petro‑Canada à n’importe quel magasin Petro‑Canada.\n</string>
     <string name="redeem_egift_address_disclaimer">Si vous changez votre adresse courriel, puis échangez des points contre une carte-cadeau électronique, vous ne pourrez pas échanger vos points en ligne ou au dépanneur pendant 24 heures.</string>
     <string name="redeem_egift_address_title">La commande sera envoyée à :</string>
+    <string name="redeem_egift_not_enough_points">Vous n\'avez pas assez de points. Continuez à économiser.</string>
     <string name="redeem_egift_card_select_value">Choisir une valeur</string>
     <string name="redeem_egift_current_value">Valeur</string>
     <string name="redeem_egift_change_btn">Mettre à jour</string>
@@ -493,7 +496,7 @@
     <string name="redeem_egift_new_balance">Nouveau solde</string>
     <string name="rewards_signedin_egift_value_in_dollar_generic">%d $</string>
     <string name="rewards_signedin_egift_value_in_pointr_generic">%s points</string>
-    <string name="redeem_terms_agreement">Les transactions sont irréversibles. En choisissant « Confirmer et échanger », vous acceptez <a href="https://www.petro-canada.ca/en/personal/terms-conditions#petropoints">les conditions.</a></string>
+    <string name="redeem_terms_agreement">Les transactions sont irréversibles. En choisissant « Confirmer et échanger », vous acceptez <a href="https://www.petro-canada.ca/fr/personnel/conditions">les conditions.</a></string>
     <string name="redeem_egoft_total_points">Total</string>
 
     <string name="redeeming">Échange en cours…</string>
@@ -506,7 +509,7 @@
     <string name="redeem_receipt_point_redeemeed">Points échangés</string>
     <string name="redeem_receipt_new_balance">Nouveau solde</string>
     <string name="redeem_receipt_details_label">Détails</string>
-    <string name="redeem_receipt_order_id_label">Numéro</string>
+    <string name="redeem_receipt_order_id_label">Numéro de commande</string>
     <string name="msg_e030_message">Si ce problème persiste, appelez-nous au 1-800-668-0222.</string>
     <string name="msg_e030_title">Échange de points non accepté</string>
     <string name="redeem_receipt_email_sent_to_label">Envoyée à</string>
@@ -767,7 +770,5 @@
 
     <string name="discount_prices">%1$s (a été %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
-
-    <!-- Add petropoints card into google wallet-->
 
 </resources>

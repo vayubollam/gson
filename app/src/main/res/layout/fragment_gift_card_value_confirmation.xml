@@ -524,7 +524,7 @@
                 android:layout_height="wrap_content"
                 app:expandable="false"
                 app:layout_constraintTop_toTopOf="parent"
-                app:title="@{vm.merchantItem.localizedMerchantName}" />
+                app:title="@{vm.getGiftCardItem().title}" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

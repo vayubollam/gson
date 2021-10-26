@@ -105,27 +105,29 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
     }
 
     private void observeTransactionData(String transactionId){
         viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt-loading");
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
-                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
+                if (sessionManager.getProfile().getFirstName() != null) {
+                    binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
+                } 
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
 
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
 
-                binding.paymentType.setText(result.data.getPaymentType(getContext(), isGooglePay));
+                binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
@@ -145,7 +147,7 @@ public class ReceiptFragment extends MainActivityFragment {
 
                     Uri pdfUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        pdfUri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName() + ".provider", pdfFile);
+                        pdfUri = FileProvider.getUriForFile(requireContext(), getActivity().getPackageName() + ".provider", pdfFile);
                     } else {
                         pdfUri = Uri.fromFile(pdfFile);
                     }
@@ -166,19 +168,19 @@ public class ReceiptFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        NavController navController = Navigation.findNavController(getView());
+        NavController navController = Navigation.findNavController(requireView());
         navController.popBackStack();
     }
 
     private void checkForReview() {
         //Check for review
-        ReviewManager manager = ReviewManagerFactory.create(getContext());
+        ReviewManager manager = ReviewManagerFactory.create(requireContext());
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 // We can get the ReviewInfo object
                 ReviewInfo reviewInfo = task.getResult();
-                Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+                Task<Void> flow = manager.launchReviewFlow(requireActivity(), reviewInfo);
 
                 flow.addOnCompleteListener(reviewed -> {
                     // The flow has finished. The API does not indicate whether the user
