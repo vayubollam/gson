@@ -144,24 +144,4 @@ public class Alerts {
         return builder.create();
     }
 
-    public static AlertDialog prepareEncodedLoginEror(Context context) {
-
-        int title = R.string.msg_sl005_title;
-        int message = R.string.encoded_login_error_message;
-
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, title + "(" + message + ")"),
-                new Pair<>(AnalyticsUtils.Param.formName, "session")
-        );
-
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-        dialog.setTitle(title);
-        dialog.setMessage(message);
-        dialog.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-
-        });
-        return dialog.create();
-
-    }
-
 }
