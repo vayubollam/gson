@@ -153,12 +153,9 @@ dependencies {
     implementation project(":uicomponents")
 
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-<<<<<<< HEAD
     implementation files('libs/google-walletobjects-v1-rev_20200326-java.jar')
     implementation files('libs/commons-codec-rename_1.15.jar')
-=======
     implementation files('libs/kount-data-collector-4.1.3.jar')
->>>>>>> 3a5c51cc1a2cea10a189df681abb491435890a10
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
