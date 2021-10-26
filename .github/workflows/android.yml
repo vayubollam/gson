@@ -7,14 +7,25 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
   build:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
     - name: set up JDK 11
       uses: actions/setup-java@v2
       with:
@@ -57,15 +68,6 @@ jobs:
           sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
 
-    - name: Checkout the code
-      uses: actions/checkout@v2
-
-    - name: Sonarcloud Scan
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      run: ./gradlew app:sonarqube
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
