@@ -56,6 +56,25 @@ jobs:
           sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
 
+    - name: Cache SonarQube packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+        restore-keys: ${{ runner.os }}-gradle
+
+    - name: Build and analyze
+      env:
+        SONAR_TOKEN: "2c0ad72c4fe8e5675dc2931faa24f11348bcfb18"
+        SONAR_HOST_URL: "https://sonarqube-sqbsbxarmnsp001.apps.mj0pbxvw.westus2.aroapp.io"
+      run: ./gradlew clean && ./gradlew sonarqube
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew

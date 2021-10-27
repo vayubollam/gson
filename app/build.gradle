@@ -39,7 +39,7 @@ android {
     signingConfigs {
         release {
             storeFile file('../petrocanada.keystore')
-            storePassword System.getenv("STORE_PASSWORD")
+            storePassword 'p4tropass'
             keyAlias = 'petrocanada'
             keyPassword System.getenv("KEY_PASSWORD")
         }
@@ -144,16 +144,6 @@ configurations {
 sonarqube {
     properties {
         property "sonar.projectKey", "SEApplicationsOrg_rfmp-suncor-android-petro-canada-app"
-        def libraries = project.android.sdkDirectory.getPath() +
-                "/platforms/android-31/android.jar"/* + ",
-                build/intermediates/exploded-aar*//**//*classes.jar"*/
-        property "sonar.binaries", "build/intermediates/app_classes/debug"
-        property "sonar.libraries", libraries
-        property "sonar.tests", "src/test/java, src/androidTest/java"
-        property "sonar.java.test.binaries", "build/intermediates/app_classes/debug"
-        property "sonar.java.test.libraries", libraries
-        property "sonar.junit.reportsPath", "build/test-results/debug"
-        property "sonar.android.lint.report", "build/outputs/lint-results"
     }
 }
 
