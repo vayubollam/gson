@@ -8,36 +8,6 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  sonar:
-    name: SonarQube Code runner
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Cache SonarQube packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Gradle packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: ./gradlew build sonarqube --info
-
   build:
 
     runs-on: ubuntu-latest
@@ -101,7 +71,7 @@ jobs:
        path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
        
     - name: Upload to Perfecto public cloud
-      if: ${{ env.BUILD_SCHEME == 'QA' || env.BUILD_SCHEME == 'QASus' || env.BUILD_SCHEME == 'Dev' || env.BUILD_SCHEME == 'UAT' }}
+      if: ${{ env.BUILD_ENV == 'QA' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
       env:
         PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
       run: |
@@ -165,10 +135,15 @@ jobs:
         APPCNTR_PASSWORD="${{ secrets[env.APPCNTR_PASSWORD]}}"
         java -Dhttp.agent='Mozilla/5.0 (Windows NT 6.1)' -cp 'applicationcenterdeploytool.jar:json4j.jar' com.ibm.appcenter.Upload -l 'Petro-Canada ${{env.BUILD_SCHEME}}' -s "$APPCNTR_URL" -c applicationcenter -u "$APPCNTR_USERNAME" -p "$APPCNTR_PASSWORD" -e -isActive true -isInstaller true -f app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
          
-  # - name: Setup JFrog
-  #   uses: jfrog/setup-jfrog-cli@v1
-  #   env:
-  #      JF_ARTIFACTORY_RFMP_IOS: ${{ secrets.JF_ARTIFACTORY_RFMP }}
+  
+    - name: Setup JFrog
+      uses: jfrog/setup-jfrog-cli@v1
+      env:
+          JF_ARTIFACTORY_RFMP_ANDROID: ${{ secrets.JF_ARTIFACTORY_RFMP }}
+
+    - name: Upload APK 
+      run: |
+          jfrog rt u app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk rfmp-android/${{ env.BUILD_ENV }}/release/app-${{ env.BUILD_ENV }}-release.apk
 
     - name: test notify teams
       env:
