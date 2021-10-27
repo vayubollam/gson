@@ -10,7 +10,7 @@ on:
 jobs:
   sonar:
     name: SonarQube Code runner
-    runs-on: poc-runner
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -85,6 +85,7 @@ jobs:
       run: |
           sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
+
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
