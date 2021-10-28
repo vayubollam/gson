@@ -4,6 +4,7 @@ apply plugin: "androidx.navigation.safeargs"
 apply from: "./versionCode.gradle"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'org.sonarqube'
+apply from: "../android-sonarqube.gradle"
 
 repositories {
     jcenter()
@@ -139,14 +140,6 @@ android.applicationVariants.all { variant ->
 
 configurations {
     all*.exclude group: 'com.google.guava', module: 'listenablefuture'
-}
-
-sonarqube {
-    properties {
-        property "sonar.projectKey", "SEApplicationsOrg_rfmp-suncor-android-petro-canada-app"
-        properties["sonar.sources"] += "**/build.gradle"
-        property "sonar.exclusions", "**/*.png,**/*.cer,**/RS*"
-    }
 }
 
 

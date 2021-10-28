@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'org.sonarqube'
+apply from: "../android-sonarqube.gradle"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -28,7 +30,6 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
