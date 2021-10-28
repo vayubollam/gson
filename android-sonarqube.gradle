@@ -2,7 +2,6 @@ sonarqube {
 
     properties {
         property "sonar.projectKey", "SEApplicationsOrg_rfmp-suncor-android-petro-canada-app"
-        property "sonar.host.url", "https://sonarqube-sqbsbxarmnsp001.apps.mj0pbxvw.westus2.aroapp.io"
         def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-23/android.jar"
         if (project.plugins.hasPlugin('com.android. application')) {
             "build/intermediates/exploded-aar/**/classes.jar"
