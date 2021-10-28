@@ -72,9 +72,9 @@ jobs:
 
     - name: Build and analyze
       env:
-        SONAR_TOKEN: "2c0ad72c4fe8e5675dc2931faa24f11348bcfb18"
-        SONAR_HOST_URL: "https://sonarqube-sqbsbxarmnsp001.apps.mj0pbxvw.westus2.aroapp.io"
-      run: ./gradlew clean && ./gradlew sonarqube
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      run: ./gradlew clean && ./gradlew build sonarqube --info
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew

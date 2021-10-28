@@ -39,7 +39,7 @@ android {
     signingConfigs {
         release {
             storeFile file('../petrocanada.keystore')
-            storePassword 'p4tropass'
+            storePassword System.getenv("STORE_PASSWORD")
             keyAlias = 'petrocanada'
             keyPassword System.getenv("KEY_PASSWORD")
         }
@@ -144,6 +144,8 @@ configurations {
 sonarqube {
     properties {
         property "sonar.projectKey", "SEApplicationsOrg_rfmp-suncor-android-petro-canada-app"
+        properties["sonar.sources"] += "**/build.gradle"
+        property "sonar.exclusions", "**/*.png,**/*.cer,**/RS*"
     }
 }
 
