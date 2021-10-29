@@ -3,6 +3,7 @@ package suncor.com.android.model.payments;
 import android.net.Uri;
 
 import com.google.gson.annotations.SerializedName;
+import com.kount.api.analytics.AnalyticsCollector;
 
 import java.util.Locale;
 

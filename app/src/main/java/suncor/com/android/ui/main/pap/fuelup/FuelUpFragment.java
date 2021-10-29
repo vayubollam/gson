@@ -40,6 +40,7 @@ import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
+import com.kount.api.analytics.AnalyticsCollector;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -75,6 +76,7 @@ import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
+import suncor.com.android.utilities.KountManager;
 import suncor.com.android.utilities.Timber;
 import suncor.com.android.utilities.UserLocalSettings;
 
@@ -117,7 +119,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(FuelUpViewModel.class);
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
-
         LocationLiveData locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
             locationLiveData.observe(this, result -> {
@@ -368,18 +369,19 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         });
     }
 
-    private void handleConfirmAndAuthorizedClick(){
+    private void handleConfirmAndAuthorizedClick() {
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
-        if(userPaymentId == null) {
+        if (userPaymentId == null) {
             // select payment type error
             return;
         }
-        if(userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)){
+        if (userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY)) {
             verifyFingerPrints();
         } else if (preAuth != null) {
             try {
+                String kountSessionId = generateKountSessionID();
                 double preAuthPrices = formatter.parse(preAuth).doubleValue();
-                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
+                viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId), kountSessionId).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
@@ -396,7 +398,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         Navigation.findNavController(getView()).navigate(action);
                     }
                 });
-            } catch (ParseException ex){
+            } catch (ParseException ex) {
                 Timber.e(ex.getMessage());
             }
         }
@@ -504,7 +506,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
         double preAuthPrices = formatter.parse(preAuth).doubleValue();
-        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken).observe(getViewLifecycleOwner(), result -> {
+        String kountSessionId = generateKountSessionID();
+        viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, paymentToken, kountSessionId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
@@ -584,7 +587,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 });
         return builder.create();
     }
-
 
     private  AlertDialog pumpReservationFailsAlert(Context context) {
         String analyticsName = context.getString( R.string.pump_unavailable_title)

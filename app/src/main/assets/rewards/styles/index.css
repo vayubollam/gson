@@ -243,11 +243,15 @@ body {
 }
 
 #rewards-link-rbc-image,
-#rewards-link-hbc-image,
 #rewards-link-caa-image,
 #rewards-link-bcaa-image,
 #rewards-link-more-image {
   margin-bottom: 19px;
+}
+
+#rewards-link-hbc-image {
+    width: 25%;
+    margin-bottom: 19px;
 }
 
 #rewards-link-rbc-title,

@@ -20,6 +20,13 @@ public class FuelUp {
         this.storeDetailsResponse = storeDetailsResponse;
     }
 
+    public FuelUp(Resource<StationItem> nearestStation, Resource<Integer> geoFenceLimit,
+                  Resource<P97StoreDetailsResponse> storeDetailsResponse) {
+        this.nearestStation = nearestStation;
+        this.geoFenceLimit = geoFenceLimit;
+        this.storeDetailsResponse = storeDetailsResponse;
+    }
+
     public boolean papAvailable() {
         return storeDetailsResponse != null && storeDetailsResponse.data != null && storeDetailsResponse.data.mobilePaymentStatus.getPapAvailable();
     }
