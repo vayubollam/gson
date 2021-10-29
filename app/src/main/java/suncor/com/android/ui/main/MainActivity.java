@@ -143,7 +143,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+               WindowManager.LayoutParams.FLAG_SECURE);
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
 

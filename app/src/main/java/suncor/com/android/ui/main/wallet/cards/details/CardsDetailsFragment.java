@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -45,16 +44,13 @@ import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
-import suncor.com.android.utilities.Timber;
 
 public class CardsDetailsFragment extends MainActivityFragment {
     private FragmentCardsDetailsBinding binding;
@@ -125,7 +121,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -225,6 +221,29 @@ public class CardsDetailsFragment extends MainActivityFragment {
             }
         }
 
+    };
+
+    private View.OnClickListener cardReloadListener = view -> {
+                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+                if(cardDetail.isSuspendedCard()){
+                    CardsUtil.showSuspendedCardAlert(getContext());
+                } else {
+                    ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+                    //open Reload Transaction form
+                    CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
+                            action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
+                    action.setCardNumber(cardItem.getCardNumber());
+                    action.setCardName(cardItem.getCardName());
+                    action.setCardType(cardItem.getCardType().name());
+                    action.setCardIndex(clickedCardIndex);
+                    action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+                    Navigation.findNavController(getView()).navigate(action);
+                }
+        };
+
+    private View.OnClickListener gpaySaveToWalletListener = view -> {
+        //todo pass the real jwt token with url
+        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://pay.google.com/gp/v/save/")));
     };
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {

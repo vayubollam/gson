@@ -166,9 +166,11 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
         ((TextView)findViewById(R.id.selected_subheader_value)).setText(selectedSubValue);
 
-        ((TextView)findViewById(R.id.selected_subheader_value)).setVisibility(selectedSubValue == null || selectedSubValue.isEmpty() ? GONE : VISIBLE);
+        ((TextView)findViewById(R.id.selected_subheader_value)).setVisibility((selectedSubValue == null || selectedSubValue.isEmpty() ||
+                !((TextView) findViewById(R.id.discount_prices)).getText().equals("")) ? GONE : VISIBLE);
         findViewById(R.id.google_pay).setVisibility(GONE);
     }
+
 
     @Override
     public void onSelectGooglePay(String header) {
@@ -179,6 +181,36 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
         ((TextView)findViewById(R.id.selected_value)).setText(selectedValue);
         findViewById(R.id.google_pay).setVisibility(VISIBLE);
         findViewById(R.id.selected_subheader_value).setVisibility(GONE);
+    }
+
+    @Override
+    public void onAddBonus(String bonus) {
+        if(bonus != null && !bonus.isEmpty()){
+            findViewById(R.id.bonus_values).setVisibility(VISIBLE);
+            ((TextView) findViewById(R.id.bonus_values)).setText(bonus);
+        } else {
+            findViewById(R.id.bonus_values).setVisibility(GONE);
+            ((TextView) findViewById(R.id.bonus_values)).setText("");
+        }
+    }
+
+    @Override
+    public void onAddDiscount(String discount) {
+        if(discount != null && !discount.isEmpty()){
+            findViewById(R.id.discount_prices).setVisibility(VISIBLE);
+            findViewById(R.id.selected_subheader_value).setVisibility(GONE);
+            ((TextView) findViewById(R.id.discount_prices)).setText(discount);
+        } else {
+            ((TextView) findViewById(R.id.discount_prices)).setText("");
+            findViewById(R.id.selected_subheader_value).setVisibility(VISIBLE);
+            findViewById(R.id.discount_prices).setVisibility(GONE);
+        }
+    }
+
+    public void hideExpandDropdownButton(){
+        findViewById(R.id.image_button_expand).setVisibility(View.GONE);
+        findViewById(R.id.header_layout).setOnClickListener(null);
+        findViewById(R.id.image_button_expand).setOnClickListener(null);
     }
 
     private void setTitle(String title) {
@@ -248,29 +280,6 @@ public  class ExpandableCardView extends CardView implements View.OnClickListene
     public void collapse(final View v) {
 
         v.setVisibility(View.GONE);
-       /* final int initialHeight = v.getMeasuredHeight();
-
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if (interpolatedTime == 1) {
-                    v.setVisibility(View.GONE);
-                } else {
-                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
-                    v.requestLayout();
-                }
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        // 1dp/ms
-        //a.setDuration((int)(initialHeight / v.getContext().getResources().getDisplayMetrics().density));
-        a.setDuration(500);
-        v.startAnimation(a);*/
     }
 
     public void slideUp(final View view) {

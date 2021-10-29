@@ -273,9 +273,9 @@
     <string name="cards_fsr_balance_conversion">Save %d¢ per litre</string>
     <string name="cards_ppc_balance_conversion">Save %d¢ per litre</string>
     <string name="cards_fsr_description">Our Fuel Savings Rewards card helps you save %d¢ per litre on 200 litres of fuel.\n\u2014\nReload your card at petro-points.com.</string>
-    <string name="cards_wag_description">Use at participating GlideWash and SuperWash locations.</string>
+    <string name="cards_wag_description">Use at any SuperWash or GlideWash location.</string>
     <string name="cards_zero_balance_description">\u2014\nReload on <a href="https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card">petro-canada.ca</a>.</string>
-    <string name="cards_sp_description">Wash your car once every day for 90 days. Use at participating GlideWash and SuperWash locations.</string>
+    <string name="cards_sp_description">Use at any SuperWash or GlideWash location.</string>
     <string name="cards_ppc_description">Save on fuel every time your swipe your Preferred Price card.</string>
     <string name="cards_rbc_description">Our RBC–Petro‑Canada program helps you save on fuel and earn points faster.</string>
     <string name="cards_caa_description">You can also exchange your points for CAA Dollars or a new 1-year basic CAA Membership.</string>
@@ -733,7 +733,26 @@
     <string name="card_enable_location_settings">Settings</string>
 
     <string name="fuelling_almost_done">Almost done…</string>
+
+
+    <!-- Carswash Card Reoad -->
+    <string name="reload_season_pass">Reload %1$s</string>
+    <string name="card">CARD</string>
+    <string name="taxes">Taxes</string>
+    <string name="carwash_payment_term_aggrement">By pressing \'Confirm and Pay\', you agree to the <b>Terms and Conditions.</b></string>
+    <string name="confirm_and_pay">CONFIRM AND PAY</string>
+
+    <string name="reload">RELOAD</string>
+    <string name="reload_card_alet_title">Can\'t reload card</string>
+    <string name="reload_card_alert_description">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
+    <string name="reload_card_alert_cancel">Cancel</string>
+    <string name="reload_card_alert_visit_web">Visit web</string>
+    <string name="petro_canada_reload_url">https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card</string>
+
+
+    <string name="select_value">Value</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
+
 
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Thanks, %1$s!
@@ -749,6 +768,22 @@
     <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
+
+    <string name="cards_days">%1$s days</string>
+    <string name="cards_washes">%1$s washes</string>
+
+    <string name="bonus_days"> + %1$d bonus days</string>
+    <string name="bonus_washes"> + %1$d bonus washes</string>
+
+    <string name="select_cards_to_reload">Select cards to reload</string>
+    <string name="select_value_to_reload">Select value</string>
+    <string name="slect_payment_method">Select payment method</string>
+
+    <string name="discount_prices">%1$s (was %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
 
+    <string name="transacation_back_alert_title">Stop reload?</string>
+    <string name="transacation_back_alert_msg">If you leave this screen you’ll lose your selections.</string>
+    <string name="transacation_back_alert_cancel">Cancel</string>
+    <string name="transacation_back_alert_leave">Exit</string>
 </resources>
