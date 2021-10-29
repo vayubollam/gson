@@ -34,7 +34,6 @@ public class ResetPasswordFragment extends BaseFragment {
 
     private FragmentResetPasswordBinding binding;
     private ResetPasswordViewModel viewModel;
-    private ResetPasswordRequest request;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -43,7 +42,7 @@ public class ResetPasswordFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel.class);
-        request = ResetPasswordFragmentArgs.fromBundle(getArguments()).getResetPasswordRequest();
+        ResetPasswordRequest request = ResetPasswordFragmentArgs.fromBundle(getArguments()).getResetPasswordRequest();
         viewModel.setRequest(request);
 
 
@@ -103,12 +102,12 @@ public class ResetPasswordFragment extends BaseFragment {
 
     private void goBack() {
         hideKeyboard();
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
     }
 
 

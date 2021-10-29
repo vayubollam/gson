@@ -3,7 +3,6 @@ package suncor.com.android.ui.main.home;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import suncor.com.android.BuildConfig;
+
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
-import suncor.com.android.ui.SplashActivity;
-import suncor.com.android.ui.YoutubePlayerActivity;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.MainActivity;
@@ -32,7 +29,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
     private ArrayList<OfferCard> offerCards;
 
-    YoutubePlayerActivity youtubePlayerActivity ;
 
     public OffersAdapter(MainActivity activity, boolean isSignedIn) {
         offerCards = new ArrayList<>();
@@ -205,7 +201,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         }
     }
 
-    public class OffersViewHolder extends RecyclerView.ViewHolder {
+    public static class OffersViewHolder extends RecyclerView.ViewHolder {
 
         OffersCardItemBinding binding;
 
