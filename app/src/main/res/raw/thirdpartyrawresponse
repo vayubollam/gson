@@ -249,7 +249,7 @@
         "smallIcon": "ultimate_dining_small",
         "largeIcon": "ultimate_dining_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
-        "howToUse": "It can be redeemed at over 10 Canadian restaurants like Swiss Chalet, Milestones, Montana’s, Kelseys, Harvey’s, Bier Markt, East Side Mario’s, New York Fries, Fionn MacCools, D’Arcy McGee’s, Paddy Flaherty’s, Tir nan Og, Original Joe’s, Elephant & Castle, State & Main, The Landing Group of Restaurants and Pickle Barrel.",
+        "howToUse": "It can be redeemed at over 10 Canadian restaurants like Swiss Chalet, Montana’s, Kelseys, Harvey’s, Bier Markt, East Side Mario’s, New York Fries, Fionn MacCools, D’Arcy McGee’s, Paddy Flaherty’s, Tir nan Og, Original Joe’s, Elephant & Castle, State & Main, The Landing Group of Restaurants and Pickle Barrel.",
         "merchantId": "2306",
         "eGifts": [
           {
