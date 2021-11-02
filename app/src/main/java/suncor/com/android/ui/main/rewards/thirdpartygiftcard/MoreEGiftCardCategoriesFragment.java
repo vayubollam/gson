@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,11 +39,10 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
 
     private MoreEGiftCardCategoriesViewModel viewModel;
     private FragmentMoreEGiftCardCategoriesBinding binding;
-    private MoreEGiftCArdCategoriesAdapter adapter;
-    private List<ThirdPartyGiftCardCategory> newCategoryList = new ArrayList<>();
+    private final List<ThirdPartyGiftCardCategory> newCategoryList = new ArrayList<>();
     private String merchantList;
     private Merchant[] merchantArray;
-    private List<Merchant> merchantArrayList = new ArrayList<>();
+    private final List<Merchant> merchantArrayList = new ArrayList<>();
 
 
     @Override
@@ -73,11 +71,9 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
         super.onResume();
 
         viewModel.getMerchantsData();
-      /*  merchantArray = gson.fromJson(merchantList, Merchant[].class);
-        merchantArrayList = new ArrayList<>(Arrays.asList(merchantArray));*/
         newCategoryList.clear();
         newCategoryList.addAll(viewModel.getRewards());
-        adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList, this::onCardClicked);
+        MoreEGiftCArdCategoriesAdapter adapter = new MoreEGiftCArdCategoriesAdapter(requireActivity(), newCategoryList, this::onCardClicked);
         binding.categoriesRecyclerView.setAdapter(adapter);
 
     }

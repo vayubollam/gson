@@ -280,7 +280,7 @@
     <string name="cards_rbc_description">Our RBC–Petro‑Canada program helps you save on fuel and earn points faster.</string>
     <string name="cards_caa_description">You can also exchange your points for CAA Dollars or a new 1-year basic CAA Membership.</string>
     <string name="cards_bcaa_description">You can also exchange your points for CAA Dollars.</string>
-    <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay, Home Outfitters and thebay.com.</string>
+    <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay and thebay.com.</string>
     <string name="cards_more_description">You\'re collecting 1 More Rewards point for every $1 spent at our Petro‑Canada locations.</string>
     <string name="cards_rbc_balance_details">Save 3¢ per litre</string>
     <string name="cards_add_fragment_header">Add a card</string>
@@ -502,7 +502,7 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Use at any Cineplex theatre or online at cineplex.com. \n </string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet. \n</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay and online at thebay.com. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Use your Petro-Canada eGift card in-store at any Petro-Canada location. \n</string>
 
 
