@@ -293,8 +293,10 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
             });
         }
     }
+
+    interface FuelUpLimitCallbacks {
+        void onPreAuthChanged(String value);
+    }
 }
 
-interface FuelUpLimitCallbacks {
-    void onPreAuthChanged(String value);
-}
+

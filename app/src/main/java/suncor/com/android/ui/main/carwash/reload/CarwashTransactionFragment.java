@@ -386,9 +386,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                                 new Pair<>(AnalyticsUtils.Param.paymentMethod, "Credit Card"),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(totalAmount)));
-                        NavDirections action = CarwashTransactionFragmentDirections.actionTransactionToReceiptFragment();
                         Navigation.findNavController(getView()).popBackStack();
-                        Navigation.findNavController(getView()).navigate(action);
+                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_transaction_to_receiptFragment);
                     }
                 });
             } catch (Exception ex) {
@@ -399,7 +398,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
 
     public void requestGooglePaymentTransaction() {
-        try {
             double preAuthPrices = viewModel.getTotalAmount();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
@@ -411,9 +409,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 AutoResolveHelper.resolveTask(
                         paymentsClient.loadPaymentData(request),
                         requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
-            }
-        }catch (ParseException ex){
-                Timber.e(ex.getMessage());
             }
 
     }

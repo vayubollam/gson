@@ -5,23 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ObservableBoolean
-import suncor.com.android.databinding.FragmentCarwashTransactionBinding
+import androidx.navigation.Navigation
+import suncor.com.android.databinding.FragmentCarwashTransactionReceiptBinding
 import suncor.com.android.mfp.SessionManager
 import suncor.com.android.ui.main.common.MainActivityFragment
 import javax.inject.Inject
 
 
-class CarwahTransactionReceiptFragment : MainActivityFragment() {
+class CarwashTransactionReceiptFragment : MainActivityFragment() {
 
 
-    private lateinit var binding: FragmentCarwashTransactionBinding
+    private lateinit var binding: FragmentCarwashTransactionReceiptBinding
     private val isLoading = ObservableBoolean(false)
 
     @Inject
     lateinit var sessionManager: SessionManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCarwashTransactionBinding.inflate(inflater, container, false)
+        binding = FragmentCarwashTransactionReceiptBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.isLoading = isLoading
 
@@ -30,5 +31,8 @@ class CarwahTransactionReceiptFragment : MainActivityFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.buttonDone.setOnClickListener {
+            Navigation.findNavController(it).popBackStack()
+        }
     }
 }

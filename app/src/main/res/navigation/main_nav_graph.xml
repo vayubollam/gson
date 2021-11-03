@@ -299,6 +299,14 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_transaction_to_receiptFragment"
+            app:destination="@id/carwahTransactionReceiptFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" >
+        </action>
     </keep_state_fragment>
 
     <keep_state_fragment
@@ -353,7 +361,7 @@
 
     <keep_state_fragment
         android:id="@+id/carwahTransactionReceiptFragment"
-        android:name="suncor.com.android.ui.main.carwash.receipt.CarwahTransactionReceiptFragment"
+        android:name="suncor.com.android.ui.main.carwash.receipt.CarwashTransactionReceiptFragment"
         android:label="CarwahTransactionReceiptFragment" >
     </keep_state_fragment>
 

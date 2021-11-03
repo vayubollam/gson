@@ -83,7 +83,7 @@ import suncor.com.android.utilities.UserLocalSettings;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
-        FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
+        FuelLimitDropDownAdapter.FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
