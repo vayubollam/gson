@@ -23,6 +23,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -385,9 +386,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                                 new Pair<>(AnalyticsUtils.Param.paymentMethod, "Credit Card"),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(totalAmount)));
-                      //  FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber);
+                        NavDirections action = CarwashTransactionFragmentDirections.actionTransactionToReceiptFragment();
                         Navigation.findNavController(getView()).popBackStack();
-                      //  Navigation.findNavController(getView()).navigate(action);
+                        Navigation.findNavController(getView()).navigate(action);
                     }
                 });
             } catch (Exception ex) {
@@ -399,8 +400,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     public void requestGooglePaymentTransaction() {
         try {
-            //todo change value
-            double preAuthPrices = formatter.parse("1").doubleValue();
+            double preAuthPrices = viewModel.getTotalAmount();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
 
@@ -423,7 +423,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             return;
         }
         switch (errorCode.toUpperCase()){
-            case ErrorCodes.ERR_TRANSACTION_FAILS:
+            case ErrorCodes.ERR_TRANSACTION_FAILS_CARWASH:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                         new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
                         new Pair<>(AnalyticsUtils.Param.detailMessage, "Transaction fails, errorCode : " + errorCode),
@@ -463,7 +463,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 }))
 
                 .setPositiveButton(R.string.try_agian, (dialog, which) -> {
-                    verifyFingerPrints();
+                    handleConfirmAndAuthorizedClick();
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.try_agian)),

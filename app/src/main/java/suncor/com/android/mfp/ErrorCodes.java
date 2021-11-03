@@ -44,6 +44,9 @@ public class ErrorCodes {
     public static final String ERR_PUMP_RESERVATION_FAILS = "SUNCOR119";
     public static final String ERR_BACKEND_ERROR = "SUNCOR120";
 
+    //carwash reload
+    public static final String ERR_TRANSACTION_FAILS_CARWASH = "SUNCOR130";
+
 
 
 

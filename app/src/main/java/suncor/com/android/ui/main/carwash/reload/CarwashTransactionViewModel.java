@@ -225,7 +225,7 @@ public class CarwashTransactionViewModel extends ViewModel {
         PayByWalletRequest request = new PayByWalletRequest(cardType, cardNumber.replace(" ", ""), selectedProduct.getBonusValues(),
                 selectedProduct.getSKU(), selectedProduct.getMaterialCode(), getUserProvince(), selectedValuesAmount,transactionReloadTax.getPst(),
                 transactionReloadTax.getGst(), transactionReloadTax.getQst(), transactionReloadTax.getHst(), totalAmount, profile.getPetroPointsNumber(), profile.getPointsBalance(),
-                selectedProduct.getBonusValues(),"mock",userPaymentSourceId,
+                selectedProduct.getBonusValues(),"moneris",userPaymentSourceId,
                 kountSessionId);
         return carwashApi.authorizePaymentByWallet(request, userLocation);
     }
