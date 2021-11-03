@@ -15,9 +15,9 @@ import suncor.com.android.mfp.ErrorCodes
 import suncor.com.android.model.Resource
 import suncor.com.android.model.carwash.ActivateCarwashRequest
 import suncor.com.android.model.carwash.ActivateCarwashResponse
+import suncor.com.android.model.carwash.PayByWalletRequest
 import suncor.com.android.model.carwash.reload.TransactionReloadData
 import suncor.com.android.model.carwash.reload.TransactionReloadTaxes
-import suncor.com.android.model.carwash.PayByWalletRequest
 import suncor.com.android.model.pap.PayResponse
 import suncor.com.android.utilities.Timber
 import java.net.URI
@@ -144,7 +144,11 @@ class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create
             request.addHeader("deviceOS", "Android")
             request.addHeader("appBundleId", BuildConfig.APPLICATION_ID)
             request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME)
-            request.send( object : WLResponseListener {
+
+            val body = gson.toJson(payByWalletRequest)
+            Timber.i("Send Pay By Wallet, string: $payByWalletRequest\nbody: $body")
+
+            request.send( body, object : WLResponseListener {
                 override fun onSuccess(wlResponse: WLResponse) {
                     val jsonText = wlResponse.responseText
                     Timber.d("Wallet authorized payment success, response:\n$jsonText")

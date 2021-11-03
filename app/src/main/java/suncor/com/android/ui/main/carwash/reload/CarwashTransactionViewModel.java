@@ -222,7 +222,7 @@ public class CarwashTransactionViewModel extends ViewModel {
      * Payment initiate with wallet
      */
     LiveData<Resource<PayResponse>> payByWalletRequest(String cardType,double totalAmount, String kountSessionId, int userPaymentSourceId) {
-        PayByWalletRequest request = new PayByWalletRequest(cardType, cardNumber, selectedProduct.getBonusValues(),
+        PayByWalletRequest request = new PayByWalletRequest(cardType, cardNumber.replace(" ", ""), selectedProduct.getBonusValues(),
                 selectedProduct.getSKU(), selectedProduct.getMaterialCode(), getUserProvince(), selectedValuesAmount,transactionReloadTax.getPst(),
                 transactionReloadTax.getGst(), transactionReloadTax.getQst(), transactionReloadTax.getHst(), totalAmount, profile.getPetroPointsNumber(), profile.getPointsBalance(),
                 selectedProduct.getBonusValues(),"mock",userPaymentSourceId,

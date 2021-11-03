@@ -372,10 +372,10 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         } else {
             try {
                 String kountSessionId = generateKountSessionID();
-                Double totalAmount = formatter.parse(String.valueOf(viewModel.getTotalAmount())).doubleValue();
+                Double totalAmount = viewModel.getTotalAmount();
                 viewModel.payByWalletRequest(cardType, totalAmount, kountSessionId, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
-                        isLoading.set(true);te
+                        isLoading.set(true);
                         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
                     } else if (result.status == Resource.Status.ERROR) {
                         isLoading.set(false);
