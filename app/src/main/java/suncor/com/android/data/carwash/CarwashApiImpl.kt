@@ -26,7 +26,7 @@ import java.net.URISyntaxException
 class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create()): CarwashApi {
     companion object {
         private const val ADAPTER_PATH = "/adapters/suncorcarwash/v1/rfmp-secure"
-        private const val PAYMENT_TIMEOUT = 45000
+        private const val PAYMENT_TIMEOUT = 60000
     }
 
     override fun activateCarwash(activateCarwashRequest: ActivateCarwashRequest): LiveData<Resource<ActivateCarwashResponse>> {
