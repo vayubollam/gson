@@ -22,7 +22,7 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener) {
         this.callBack = callBack;
         this.activeWashListener = activeWashListener;
-   }
+    }
 
     @NonNull
     @Override
