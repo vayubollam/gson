@@ -78,7 +78,7 @@
                 app:header_title="@string/payment"
                 app:title_color="@color/black_80"
                 app:title_size="16sp"
-                app:expanded_title="@string/slect_payment_method"
+                app:expanded_title="@string/select_payment_method"
                 android:layout_marginTop="1dp" />
 
             <androidx.cardview.widget.CardView
@@ -209,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:padding="16dp"
-                android:text="@string/carwash_payment_term_aggrement"
+                android:text="@string/carwash_payment_term_aggreement"
                 android:visibility="visible" />
 
             <View
@@ -241,31 +241,49 @@
             app:visibleGone="@{isLoading}">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/progressbar_text"
                 style="@style/Headline1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:padding="16dp"
-                android:text="@string/authorizing"
+                android:text="@string/payment_in_progress"
                 app:autoSizeTextType="uniform"
                 android:layout_centerHorizontal="true"
-                android:layout_above="@+id/authorized_pprogressbar"
+                android:layout_above="@+id/progress_layout"
                 android:visibility="visible" />
 
-            <ProgressBar
-                android:id="@+id/authorized_pprogressbar"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+            <FrameLayout
+                android:id="@+id/progress_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:indeterminateTint="@color/red" />
+                android:layout_centerVertical="true">
+
+                <ProgressBar
+                    android:id="@+id/authorized_progressbar"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:indeterminateTint="@color/red" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/payment_success_image"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/circular_progress"
+                    android:visibility="gone"
+                    android:tint="@color/red" />
+
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/progressbar_image"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_card"
                 android:tint="@color/red" />
+
         </RelativeLayout>
 
         <ProgressBar

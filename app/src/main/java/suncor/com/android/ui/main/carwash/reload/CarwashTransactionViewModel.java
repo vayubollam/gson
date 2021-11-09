@@ -46,7 +46,7 @@ public class CarwashTransactionViewModel extends ViewModel {
     private final PaymentsRepository paymentsRepository;
     private final CardsRepository cardsRepository;
     private LatLng userLocation;
-    private Profile profile;
+    private final Profile profile;
     public String cardNumber;
     public String cardName;
     private TransactionReloadData transactionReloadData;
@@ -228,6 +228,10 @@ public class CarwashTransactionViewModel extends ViewModel {
                 selectedProduct.getBonusValues(),"moneris",userPaymentSourceId,
                 kountSessionId);
         return carwashApi.authorizePaymentByWallet(request, userLocation);
+    }
+
+    public LiveData<Resource<ArrayList<CardDetail>>>  refreshCards(){
+       return cardsRepository.getCards(true);
     }
 
 }

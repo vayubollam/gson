@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -23,7 +25,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -37,7 +38,6 @@ import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +63,6 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentArgs;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.PaymentDropDownAdapter;
 import suncor.com.android.ui.main.pap.fuelup.PaymentDropDownCallbacks;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
@@ -82,18 +81,18 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private FragmentCarwashTransactionBinding binding;
     private CarwashTransactionViewModel viewModel;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
-    private Double lastTransactionValue;
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
     SettingsResponse.Pap papData;
     PaymentDropDownAdapter paymentDropDownAdapter;
 
     private String cardNumber;
     private String userPaymentId;
     private String cardType;
+    private Handler handler;
 
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
@@ -110,11 +109,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarwashTransactionViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
 
-        LocationLiveData locationLiveData = new LocationLiveData(getContext().getApplicationContext());
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
-            locationLiveData.observe(this, result -> {
-                viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
-            });
+        LocationLiveData locationLiveData = new LocationLiveData(Objects.requireNonNull(getContext()).getApplicationContext());
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+            locationLiveData.observe(this, result -> viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude())));
         }
     }
 
@@ -156,18 +153,14 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         initializeCardsValues();
 
         viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-            } else if (result.status == Resource.Status.ERROR) {
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+             if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 papData = result.data.getSettings().getPap();
             }
         });
 
         viewModel.getPayments(getContext()).observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-            } else if (result.status == Resource.Status.ERROR) {
-                List<PaymentListItem> payments = result.data;
-                payments = new ArrayList<>();
+             if (result.status == Resource.Status.ERROR) {
+                List<PaymentListItem> payments new ArrayList<>();
                 paymentDropDownAdapter.addPayments(payments);
 
                 if (userPaymentId == null && payments.size() > 0)
@@ -199,13 +192,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
         NavController navController = NavHostFragment.findNavController(this);
         // We use a String here, but any type that can be put in a Bundle is supported
-        MutableLiveData<PaymentDetail> liveData = navController.getCurrentBackStackEntry()
+        MutableLiveData<PaymentDetail> liveData = Objects.requireNonNull(navController.getCurrentBackStackEntry())
                 .getSavedStateHandle()
                 .getLiveData("tempPayment");
 
-        liveData.observe(getActivity(), paymentDetail -> {
+        liveData.observe(Objects.requireNonNull(getActivity()), paymentDetail -> {
             // Do something with the result.
-            paymentDropDownAdapter.addPayment(new PaymentListItem(getContext(), paymentDetail), true);
+            paymentDropDownAdapter.addPayment(new PaymentListItem(Objects.requireNonNull(getContext()), paymentDetail), true);
             this.userPaymentId = paymentDetail.getId();
         });
 
@@ -227,8 +220,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             setCardReloadAdapter();
         } else {
             viewModel.getTransactionData(cardType).observe(getViewLifecycleOwner(), result -> {
-                if (result.status == Resource.Status.LOADING) {
-                } else if (result.status == Resource.Status.ERROR) {
+                if (result.status == Resource.Status.ERROR) {
                     Alerts.prepareGeneralErrorDialog(getContext(), "").show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     viewModel.setTransactionReloadData(result.data);
@@ -246,12 +238,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 binding.loadingProgressBar.setVisibility(View.VISIBLE);
             } else if (result.status == Resource.Status.ERROR) {
                 binding.loadingProgressBar.setVisibility(View.GONE);
-                Alerts.prepareGeneralErrorDialog(getContext(), "", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Navigation.findNavController(getView()).popBackStack();
-                    }
-                }).show();
+                Alerts.prepareGeneralErrorDialog(getContext(), "", (dialog, which) -> Navigation.findNavController(getView()).popBackStack()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 binding.loadingProgressBar.setVisibility(View.GONE);
                 viewModel.setTransactionReloadTax(result.data);
@@ -264,7 +251,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         if(Objects.isNull(viewModel.getTransactionReloadTax()) || Objects.isNull(viewModel.getSelectedProduct())) {
            return;
          }
-         Double totalTax = viewModel.getTransactionReloadTax().getTotalTax(Double.valueOf(viewModel.getSelectedValuesAmount()));
+         Double totalTax = viewModel.getTransactionReloadTax().getTotalTax(viewModel.getSelectedValuesAmount());
          viewModel.setTotalAmount(viewModel.getSelectedValuesAmount() + totalTax);
          binding.taxAmount.setText(formatter.format(totalTax));
          binding.totalAmount.setText(formatter.format(viewModel.getSelectedValuesAmount() + totalTax));
@@ -281,9 +268,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     private void initializeCards(){
         viewModel.getCards().observe(getViewLifecycleOwner(), result -> {
-            if (result.status == Resource.Status.LOADING) {
-            } else if (result.status == Resource.Status.ERROR) {
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+             if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 List<CardDetail> cards = result.data;
                 List<ExpandedCardItem> selectCards = new ArrayList<>();
                 cards.forEach(card -> {
@@ -305,14 +290,6 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         });
     }
 
-
-    private void showHelp() {
-        DialogFragment fragment = new SelectPumpHelpDialogFragment();
-        fragment.show(getFragmentManager(), "dialog");
-    }
-
-
-
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
       //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTab,
@@ -325,7 +302,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                    new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialogInterface, int i) {
-                           Navigation.findNavController(getView()).popBackStack();
+                           Navigation.findNavController(Objects.requireNonNull(getView())).popBackStack();
                        }
                    }, "carwash_transaction_form"
            ).show();
@@ -377,23 +354,37 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 viewModel.payByWalletRequest(cardType, totalAmount, kountSessionId, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
-                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
+                        AnalyticsUtils.setCurrentScreenName(Objects.requireNonNull(getActivity()), "pay-at-pump-preauthorize-loading");
                     } else if (result.status == Resource.Status.ERROR) {
                         isLoading.set(false);
                         handleAuthorizationFail(result.message);
                     } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                        isLoading.set(false);
+                        showPaymentSuccessfulDialogAndNavigateToReceipt();
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                                 new Pair<>(AnalyticsUtils.Param.paymentMethod, "Credit Card"),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(totalAmount)));
-                        Navigation.findNavController(getView()).popBackStack();
-                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_transaction_to_receiptFragment);
-                    }
+                     }
                 });
             } catch (Exception ex) {
-                Timber.e(ex.getMessage());
+                Timber.e(Objects.requireNonNull(ex.getMessage()));
             }
         }
+    }
+
+    private void showPaymentSuccessfulDialogAndNavigateToReceipt(){
+      viewModel.refreshCards();
+      binding.authorizedProgressbar.setVisibility(View.GONE);
+      binding.progressbarImage.setVisibility(View.GONE);
+      binding.paymentSuccessImage.setVisibility(View.VISIBLE);
+      binding.progressbarText.setText(R.string.payment_successful);
+      if(handler == null){
+          handler =  new Handler(Looper.getMainLooper());
+      }
+      handler.postDelayed(() -> {
+          isLoading.set(false);
+          Navigation.findNavController(Objects.requireNonNull(getView())).popBackStack();
+          Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_transaction_to_receiptFragment);
+      }, 2000);
     }
 
 
@@ -417,22 +408,19 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         if(errorCode == null){
             return;
         }
-        switch (errorCode.toUpperCase()){
-            case ErrorCodes.ERR_TRANSACTION_FAILS_CARWASH:
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
-                        new Pair<>(AnalyticsUtils.Param.detailMessage, "Transaction fails, errorCode : " + errorCode),
-                        new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+        if (ErrorCodes.ERR_TRANSACTION_FAILS_CARWASH.equals(errorCode.toUpperCase())) {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
+                    new Pair<>(AnalyticsUtils.Param.detailMessage, "Transaction fails, errorCode : " + errorCode),
+                    new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
 
-                transactionFailsAlert(getContext()).show();
-                break;
-            default:
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
-                        new Pair<>(AnalyticsUtils.Param.detailMessage, "Something went wrong on our side, errorCode : " + errorCode),
-                        new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
-                Alerts.prepareGeneralErrorDialog(getContext(), "carwash_transaction_form").show();
-                break;
+            transactionFailsAlert(getContext()).show();
+        } else {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
+                    new Pair<>(AnalyticsUtils.Param.detailMessage, "Something went wrong on our side, errorCode : " + errorCode),
+                    new Pair<>(AnalyticsUtils.Param.formName, "carwash_transaction_form"));
+            Alerts.prepareGeneralErrorDialog(getContext(), "carwash_transaction_form").show();
         }
     }
 
@@ -477,7 +465,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 switch (resultCode) {
 
                     case Activity.RESULT_OK:
-                        PaymentData paymentData = PaymentData.getFromIntent(data);
+                        PaymentData paymentData = PaymentData.getFromIntent(Objects.requireNonNull(data));
                       //  String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
 
 
@@ -502,7 +490,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                     .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
             Executor executor = Executors.newSingleThreadExecutor();
-            BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
+            BiometricPrompt biometricPrompt = new BiometricPrompt(Objects.requireNonNull(getActivity()), executor, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);

@@ -739,7 +739,7 @@
     <string name="reload_season_pass">Reload %1$s</string>
     <string name="card">CARD</string>
     <string name="taxes">Taxes</string>
-    <string name="carwash_payment_term_aggrement">By pressing \'Confirm and Pay\', you agree to the <b>Terms and Conditions.</b></string>
+    <string name="carwash_payment_term_aggreement">By pressing \'Confirm and Pay\', you agree to the <b>Terms and Conditions.</b></string>
     <string name="confirm_and_pay">CONFIRM AND PAY</string>
 
     <string name="reload">RELOAD</string>
@@ -777,7 +777,7 @@
 
     <string name="select_cards_to_reload">Select cards to reload</string>
     <string name="select_value_to_reload">Select value</string>
-    <string name="slect_payment_method">Select payment method</string>
+    <string name="select_payment_method">Select payment method</string>
 
     <string name="discount_prices">%1$s (was %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
@@ -786,6 +786,6 @@
     <string name="transacation_back_alert_msg">If you leave this screen you’ll lose your selections.</string>
     <string name="transacation_back_alert_cancel">Cancel</string>
     <string name="transacation_back_alert_leave">Exit</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="payment_in_progress">Payment in progress</string>
+    <string name="payment_successful">Payment successful</string>
 </resources>
