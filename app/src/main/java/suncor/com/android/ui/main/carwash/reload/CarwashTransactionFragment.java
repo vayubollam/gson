@@ -108,8 +108,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CarwashTransactionViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
 
-        LocationLiveData locationLiveData = new LocationLiveData(Objects.requireNonNull(getContext()).getApplicationContext());
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+        LocationLiveData locationLiveData = new LocationLiveData(requireContext().getApplicationContext());
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
             locationLiveData.observe(this, result -> viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude())));
         }
     }
@@ -159,12 +159,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
         viewModel.getPayments(getContext()).observe(getViewLifecycleOwner(), result -> {
              if (result.status == Resource.Status.ERROR) {
-                List<PaymentListItem> payments new ArrayList<>();
-                paymentDropDownAdapter.addPayments(payments);
-
-                if (userPaymentId == null && payments.size() > 0)
-                    this.userPaymentId = payments.get(0).getPaymentDetail().getId();
-
+                paymentDropDownAdapter.addPayments(new ArrayList<>());
                 paymentDropDownAdapter.setSelectedPos(userPaymentId);
                 checkForGooglePayOptions();
                 Alerts.prepareGeneralErrorDialog(getContext(),"carwash_transaction_form").show();
@@ -195,9 +190,9 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 .getSavedStateHandle()
                 .getLiveData("tempPayment");
 
-        liveData.observe(Objects.requireNonNull(getActivity()), paymentDetail -> {
+        liveData.observe(requireActivity(), paymentDetail -> {
             // Do something with the result.
-            paymentDropDownAdapter.addPayment(new PaymentListItem(Objects.requireNonNull(getContext()), paymentDetail), true);
+            paymentDropDownAdapter.addPayment(new PaymentListItem(requireContext(), paymentDetail), true);
             this.userPaymentId = paymentDetail.getId();
         });
 
@@ -301,7 +296,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                    new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialogInterface, int i) {
-                           Navigation.findNavController(Objects.requireNonNull(getView())).popBackStack();
+                           Navigation.findNavController(requireView()).popBackStack();
                        }
                    }, "carwash_transaction_form"
            ).show();
@@ -353,7 +348,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 viewModel.payByWalletRequest(cardType, totalAmount, kountSessionId, Integer.parseInt(userPaymentId)).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
-                        AnalyticsUtils.setCurrentScreenName(Objects.requireNonNull(getActivity()), "pay-at-pump-preauthorize-loading");
+                        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
                     } else if (result.status == Resource.Status.ERROR) {
                         isLoading.set(false);
                         handleAuthorizationFail(result.message);
@@ -381,7 +376,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
       }
       handler.postDelayed(() -> {
           isLoading.set(false);
-          Navigation.findNavController(Objects.requireNonNull(getView())).popBackStack();
+          Navigation.findNavController(requireView()).popBackStack();
           Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_transaction_to_receiptFragment);
       }, 2000);
     }
@@ -489,7 +484,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                     .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
             Executor executor = Executors.newSingleThreadExecutor();
-            BiometricPrompt biometricPrompt = new BiometricPrompt(Objects.requireNonNull(getActivity()), executor, new BiometricPrompt.AuthenticationCallback() {
+            BiometricPrompt biometricPrompt = new BiometricPrompt(requireActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
