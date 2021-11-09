@@ -766,7 +766,6 @@
 
     <string name="select_cards_to_reload">Sélectionnez la carte pour la recharger</string>
     <string name="select_value_to_reload">Choisir une valeur</string>
-    <string name="select_payment_method">Sélectionnez un mode de paiement</string>
 
     <string name="discount_prices">%1$s (ancien prix %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
