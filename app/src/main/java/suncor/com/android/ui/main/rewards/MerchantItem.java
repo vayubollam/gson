@@ -78,7 +78,7 @@ public class MerchantItem implements Parcelable {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
-                return "dining_large";
+                return "ultimate_dining_large";
             case MerchantsIds.Petro_Canada_EN:
             case MerchantsIds.Petro_Canada_FR:
                 return "petro_canada_large";
@@ -99,7 +99,7 @@ public class MerchantItem implements Parcelable {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
-                return "dining_small";
+                return "ultimate_dining_small";
             case MerchantsIds.Petro_Canada_EN:
             case MerchantsIds.Petro_Canada_FR:
                 return "petro_canada_small";

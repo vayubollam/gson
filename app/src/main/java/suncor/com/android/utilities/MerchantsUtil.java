@@ -9,7 +9,7 @@ public class MerchantsUtil {
         switch (merchantId) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
-                return "dining_small";
+                return "ultimate_dining_small";
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex_small";
