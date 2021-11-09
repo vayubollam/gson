@@ -52,7 +52,6 @@ import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 
 import javax.inject.Inject;
@@ -67,7 +66,6 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.ModalDialog;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
-import suncor.com.android.ui.enrollment.form.EnrollmentFormFragmentArgs;
 import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -84,6 +82,15 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private static final int PERMISSION_REQUEST_CODE = 124;
     private static final int REQUEST_CHECK_SETTINGS = 125;
+    String listString = " ";
+    @Inject
+    PermissionManager permissionManager;
+    @Inject
+    ViewModelFactory viewModelFactory;
+    @Inject
+    SessionManager sessionManager;
+    @Inject
+    DistanceApi distanceApi;
     private StationsViewModel mViewModel;
     private LocationLiveData locationLiveData;
     private GoogleMap mGoogleMap;
@@ -97,20 +104,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     private FragmentStationsBinding binding;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
     private ObservableBoolean isErrorCardVisible = new ObservableBoolean(false);
-    String listString = " ";
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
-    @Inject
-    PermissionManager permissionManager;
-
-    @Inject
-    ViewModelFactory viewModelFactory;
-
-    @Inject
-    SessionManager sessionManager;
-
-    @Inject
-    DistanceApi distanceApi;
 
     //convert vector images to bitmap in order to use as lastSelectedMarker icons
     private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
@@ -280,7 +275,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         this.mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.getUiSettings().setCompassEnabled(false);
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
+        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style));
         mGoogleMap.setOnMarkerClickListener(this);
         mGoogleMap.setOnCameraMoveStartedListener(this);
 
@@ -327,10 +322,10 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 myLocationMarker.remove();
             }
             if (mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS) {
-                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_my_location)));
+                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(requireActivity(), R.drawable.ic_my_location)));
                 stationAdapter.setUserLocation(location);
             } else {
-                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(getActivity(), R.drawable.ic_pin_search)));
+                myLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).icon(getBitmapFromVector(requireActivity(), R.drawable.ic_pin_search)));
             }
         });
 
@@ -345,17 +340,22 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             }
         }));
         mViewModel.filters.observe(getViewLifecycleOwner(), v -> {
-                    for (String s : v){
-                        listString += s + " | ";
+                    listString = "";
+                    for (int i = 0; i < v.size(); i++) {
+                        if (i == v.size() - 1) {
+                            listString += v.get(i);
+                        } else {
+                            listString += v.get(i) + " | ";
+                        }
                     }
 
-        }
-                 );
+                }
+        );
 
         mViewModel.queryText.observe(getViewLifecycleOwner(), (text) ->
         {
             binding.addressSearchText.setText(text);
-            AnalyticsUtils.setCurrentScreenName(getActivity(), "my-petro-points-gas-station-locations-filter");
+            AnalyticsUtils.setCurrentScreenName(requireActivity(), "my-petro-points-gas-station-locations-filter");
             AnalyticsUtils.logEvent(getContext(), "Location_search", new Pair<>("location", text), new Pair<>("filtersApplied", listString));
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });
@@ -429,7 +429,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         binding.bottomSheet.requestLayout();
         if (result.status == Resource.Status.LOADING) {
             isLoading.set(true);
-            AnalyticsUtils.setCurrentScreenName(getActivity(), "gas-station-locations-loading");
+            AnalyticsUtils.setCurrentScreenName(requireActivity(), "gas-station-locations-loading");
             isErrorCardVisible.set(false);
         } else {
             isLoading.set(false);
@@ -488,7 +488,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 } else {
                     filterText = Station.FULL_AMENITIES.get(filter);
                 }
-                Chip chip = new Chip(getActivity());
+                Chip chip = new Chip(requireActivity());
                 chip.setText(filterText);
                 chip.setElevation(8);
                 chip.setTag(filter);
@@ -501,7 +501,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                 chip.setOnCloseIconClickListener(listener);
                 binding.filtersChipgroup.addView(chip);
             }
-            Chip clearFiltersChip = new Chip(getActivity());
+            Chip clearFiltersChip = new Chip(requireActivity());
             clearFiltersChip.setText(R.string.station_clear_all_filters_chip);
             clearFiltersChip.setTextColor(getResources().getColor(R.color.red));
             clearFiltersChip.setCloseIconVisible(false);
@@ -541,7 +541,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             }
         }
 
-        return getBitmapFromVector(getActivity(), drawable);
+        return getBitmapFromVector(requireActivity(), drawable);
     }
 
     private Marker findMarkerForStation(StationItem station) {
@@ -554,11 +554,11 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     }
 
     public void launchFiltersFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_filtersFragment);
+        Navigation.findNavController(requireView()).navigate(R.id.action_stations_tab_to_filtersFragment);
     }
 
     public void launchSearchFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_searchFragment);
+        Navigation.findNavController(requireView()).navigate(R.id.action_stations_tab_to_searchFragment);
 
     }
 
@@ -593,40 +593,40 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         //start by loading only if the current location is not initialized or not GPS
         boolean alreadyHasGPSLocation = mViewModel.userLocation.getValue() != null && mViewModel.getUserLocationType() == StationsViewModel.UserLocationType.GPS;
         isLoading.set(!alreadyHasGPSLocation);
-        if (ContextCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(requireContext(), permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationLiveData.observe(getViewLifecycleOwner(), this::gotoMyLocation);
         }
     }
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                new Pair<>("fromName","Gas Station Locations")
+        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert",
+                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"),
+                new Pair<>("fromName", "Gas Station Locations")
         );
-        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-        //AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage",getString(R.string.enable_location_dialog_title)));
+        AlertDialog.Builder adb = new AlertDialog.Builder(requireContext());
+        //AnalyticsUtils.logEvent(requireContext()(), "error_log", new Pair<>("errorMessage",getString(R.string.enable_location_dialog_title)));
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection",getString(R.string.cancel)),
-                    new Pair<>("fromName","Gas Station Locations")
+            AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert_interaction",
+                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"),
+                    new Pair<>("alertSelection", getString(R.string.cancel)),
+                    new Pair<>("fromName", "Gas Station Locations")
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection",getString(R.string.ok)),
-                    new Pair<>("fromName","Gas Station Locations")
+            AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert_interaction",
+                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"),
+                    new Pair<>("alertSelection", getString(R.string.ok)),
+                    new Pair<>("fromName", "Gas Station Locations")
             );
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(requireContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
                 return;
             }
 
             if (previouselyDeniedWithNeverASk) {
-                PermissionManager.openAppSettings(getActivity());
+                PermissionManager.openAppSettings(requireActivity());
             } else {
                 requestPermissions(new String[]{permission.ACCESS_FINE_LOCATION, permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
             }
@@ -639,17 +639,17 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     public void showFavourites() {
         if (sessionManager.isUserLoggedIn()) {
-            Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_favouritesFragment);
+            Navigation.findNavController(requireView()).navigate(R.id.action_stations_tab_to_favouritesFragment);
         } else {
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))
                     .setMessage(getString(R.string.login_prompt_message))
                     .setRightButton(getString(R.string.sign_in), (v) -> {
-                        startActivity(new Intent(getContext(), LoginActivity.class));
+                        startActivity(new Intent(requireContext(), LoginActivity.class));
                         dialog.dismiss();
                     })
                     .setCenterButton(getString(R.string.join), (v) -> {
-                        startActivity(new Intent(getContext(), EnrollmentActivity.class));
+                        startActivity(new Intent(requireContext(), EnrollmentActivity.class));
                         dialog.dismiss();
                     })
                     .setLeftButton(getString(R.string.cancel), (v) -> {

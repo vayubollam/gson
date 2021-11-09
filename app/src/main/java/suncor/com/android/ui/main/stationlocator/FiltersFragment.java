@@ -41,7 +41,7 @@ public class FiltersFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFiltersBinding.inflate(inflater, container, false);
 
-        parentViewModel = ViewModelProviders.of(getActivity()).get(StationsViewModel.class);
+        parentViewModel = ViewModelProviders.of(requireActivity()).get(StationsViewModel.class);
         initCheckBoxes();
         if (parentViewModel.filters.getValue() != null) {
             for (String filter : parentViewModel.filters.getValue()) {
@@ -56,7 +56,7 @@ public class FiltersFragment extends MainActivityFragment {
                 }
             }
             parentViewModel.setCurrentFilters(filters);
-            Navigation.findNavController(getView()).popBackStack();
+            Navigation.findNavController(requireView()).popBackStack();
         });
         binding.clearButton.setOnClickListener((v) -> {
             for (CheckBox checkBox : checkBoxes.values()) {
@@ -64,7 +64,7 @@ public class FiltersFragment extends MainActivityFragment {
             }
         });
         binding.appBar.setNavigationOnClickListener((v) -> {
-            Navigation.findNavController(getView()).popBackStack();
+            Navigation.findNavController(requireView()).popBackStack();
         });
         return binding.getRoot();
     }

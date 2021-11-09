@@ -46,6 +46,7 @@ public class SearchFragment extends MainActivityFragment {
     private SearchNearByAdapter nearbyStationsAdapter;
     private SuggestionsAdapter suggestionsAdapter;
     private ObservableBoolean recentSearch = new ObservableBoolean();
+    private ArrayList<String> searchedPlaces  = new ArrayList<>();
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -53,7 +54,7 @@ public class SearchFragment extends MainActivityFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parentViewModel = ViewModelProviders.of(getActivity()).get(StationsViewModel.class);
+        parentViewModel = ViewModelProviders.of(requireActivity()).get(StationsViewModel.class);
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel.class);
 
@@ -108,13 +109,13 @@ public class SearchFragment extends MainActivityFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (LocationUtils.isLocationEnabled(getContext()) && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (LocationUtils.isLocationEnabled(getContext()) && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationLiveData.observe(this, location -> {
                 userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 viewModel.setUserLocation(userLocation);
             });
 
-            viewModel.nearbyStations.observe(this, arrayListResource -> {
+            viewModel.nearbyStations.observe(getViewLifecycleOwner(), arrayListResource -> {
                 if (arrayListResource.status == Resource.Status.SUCCESS) {
                     ArrayList<StationItem> stationItems = arrayListResource.data;
                     nearbyStationsAdapter = new SearchNearByAdapter(stationItems, (this::nearbyItemClicked));
@@ -124,7 +125,7 @@ public class SearchFragment extends MainActivityFragment {
         } else {
             nearbySearchBinding.getRoot().setVisibility(View.GONE);
         }
-        viewModel.placeSuggestions.observe(this, arrayListResource -> {
+        viewModel.placeSuggestions.observe(getViewLifecycleOwner(), arrayListResource -> {
             if (arrayListResource.status == Resource.Status.SUCCESS) {
                 ArrayList<PlaceSuggestion> suggestions = arrayListResource.data;
                 suggestionsAdapter.setSuggestions(suggestions);
@@ -173,7 +174,7 @@ public class SearchFragment extends MainActivityFragment {
             imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         } catch (NullPointerException ignored) {
         }
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     private void showKeyBoard() {
