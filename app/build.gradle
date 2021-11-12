@@ -44,6 +44,21 @@ android {
         }
     }
 
+    applicationVariants.all {
+        variant -> variant.outputs.each {
+            output ->
+                variant.assembleProvider.get().doLast {
+                    if ( variant.mappingFile != null &&
+                            variant.mappingFile.exists() ) {
+                        copy {
+                            from variant.mappingFile
+                            into output.outputFile.parent
+                        }
+                    }
+                }
+        }
+    }
+
 
     buildTypes {
         release {

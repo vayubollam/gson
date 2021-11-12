@@ -67,6 +67,12 @@ jobs:
       with:
        name: Release artifact
        path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
+
+    - name: Upload mapping file
+      uses: actions/upload-artifact@v2.2.0
+      with:
+       name: Release mapping
+       path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/mapping.txt
        
    # - name: Upload to Perfecto public cloud
    #   if: ${{ env.BUILD_ENV == 'QA' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
