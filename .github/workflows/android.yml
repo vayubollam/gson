@@ -145,10 +145,8 @@ jobs:
 
     - name: Upload mapping file to JFrog
       run: |
-        jfrog rt u app/build/outputs/apk/${{ env.BUILD_ENV }}/release/mapping.txt rfmp-android/${{ env.BUILD_ENV }}/release/app-${{ env.BUILD_ENV }}-release.txt
+          jfrog rt u app/build/outputs/apk/${{ env.BUILD_ENV }}/release/mapping.txt rfmp-android/${{ env.BUILD_ENV }}/release/app-${{ env.BUILD_ENV }}-release.txt
 
-
-  app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.txt
     - name: Notify Teams
       env:
         TEAMS_WEBHOOK_URL: https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a498ba31c5e74dd98b927a932b1c2f0c/5b56d944-e978-4862-a720-a1f9589d6c37
