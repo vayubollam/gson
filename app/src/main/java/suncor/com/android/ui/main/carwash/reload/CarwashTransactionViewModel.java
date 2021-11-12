@@ -124,6 +124,10 @@ public class CarwashTransactionViewModel extends ViewModel {
         this.totalAmount = totalAmount;
     }
 
+    public String getUserName() {
+        return profile.getFirstName();
+    }
+
     LiveData<Resource<TransactionReloadData>> getTransactionData(String cardType) {
         return carwashApi.reloadTransactionCarwash(cardType);
     }

@@ -49,4 +49,9 @@ public class DateUtils {
         return calender.get(Calendar.DATE);
     }
 
+    public static String getFromattedDate(long timestamp, String format){
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        return DateFormat.getDateInstance(DateFormat.LONG).format(new Date(timestamp));
+    }
+
 }

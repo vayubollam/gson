@@ -363,6 +363,19 @@
         android:id="@+id/carwahTransactionReceiptFragment"
         android:name="suncor.com.android.ui.main.carwash.receipt.CarwashTransactionReceiptFragment"
         android:label="CarwahTransactionReceiptFragment" >
+        <argument
+            android:name="cardType"
+            android:defaultValue="0"
+            app:argType="string" />
+
+        <argument
+            android:name="totalAmount"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="userName"
+            android:defaultValue="0"
+            app:argType="string" />
     </keep_state_fragment>
 
     <keep_state_fragment

@@ -777,4 +777,11 @@
     <string name="payment_in_progress">Paiement en cours</string>
     <string name="payment_successful">Paiement réussi</string>
 
+    <string name="wng_washes_added_msg">Vos nouveaux lavages sont disponibles dans l\'application et sur votre carte physique.</string>
+    <string name="sp_washes_added_msg">Vos jours sont disponibles dans l\'application et sur votre carte physique.</string>
+<!-- Transaction Receipt -->
+    <string name="base_points_earned">Points de base</string>
+    <string name="bonus_points_earned">Points en prime</string>
+    <string name="new_balance">Nouveau solde</string>
+
 </resources>

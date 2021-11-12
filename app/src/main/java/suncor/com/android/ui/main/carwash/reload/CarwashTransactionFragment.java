@@ -64,7 +64,6 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentArgs;
 import suncor.com.android.ui.main.pap.fuelup.PaymentDropDownAdapter;
 import suncor.com.android.ui.main.pap.fuelup.PaymentDropDownCallbacks;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.wallet.cards.details.ExpandedCardItem;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentListItem;
 import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
@@ -377,7 +376,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
       handler.postDelayed(() -> {
           isLoading.set(false);
           Navigation.findNavController(requireView()).popBackStack();
-          Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_transaction_to_receiptFragment);
+          CarwashTransactionFragmentDirections.ActionTransactionToReceiptFragment action
+                  = CarwashTransactionFragmentDirections.actionTransactionToReceiptFragment();
+          action.setCardType(cardType);
+          action.setTotalAmount(formatter.format(viewModel.getTotalAmount()));
+          action.setUserName(viewModel.getUserName());
+          Navigation.findNavController(getView()).navigate(action);
+
       }, 2000);
     }
 

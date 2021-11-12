@@ -13,9 +13,13 @@
             name="context"
             type="android.content.Context" />
 
+        <variable
+            name="transaction"
+            type="suncor.com.android.model.carwash.reload.TransactionReceipt" />
+
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_4"
@@ -23,19 +27,25 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black_4"
                 android:orientation="vertical">
 
                 <RelativeLayout
+                    android:id="@+id/header_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="16dp">
-
+                    android:paddingTop="16dp"
+                    app:layout_constraintRight_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -59,6 +69,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="78dp"
+                                android:text="@string/thank_you"
                                 style="@style/Title2" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -68,6 +79,7 @@
                                 android:layout_marginTop="10dp"
                                 android:textAlignment="center"
                                 style="@style/Body2"
+                                android:text="@string/wng_washes_added_msg"
                                 android:lineSpacingMultiplier="1.25"/>
 
 
@@ -85,18 +97,12 @@
                         app:cardCornerRadius="5dp"
                         app:cardElevation="16dp"
                         app:cardUseCompatPadding="false">
-
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center">
-
                             <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/card_image"
                                 android:layout_width="80dp"
                                 android:layout_height="match_parent"
+                                android:layout_gravity="center"
                                 app:srcCompat="@drawable/seasons_pass_card" />
-                        </FrameLayout>
-
                     </androidx.cardview.widget.CardView>
 
 
@@ -106,6 +112,7 @@
                     android:id="@+id/transaction_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/header_layout"
                     android:orientation="vertical">
 
                     <Space
@@ -114,6 +121,315 @@
                         android:layout_weight="1" />
 
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="23dp"
+                            android:paddingEnd="20dp"
+                            android:gravity="center">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/transaction_summary"
+                                style="@style/Title2" />
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/share_button"
+                                android:background="@android:color/transparent"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_share"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/loyalty_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            tools:visibility="gone">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="30dp"
+                                android:text="@string/transaction_ppt_lbl"
+                                style="@style/Caption1"
+                                android:letterSpacing="0.1"
+                                android:textColor="@color/black_9"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/black_8" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="16dp"
+                                android:paddingEnd="20dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:text="@string/base_points_earned"
+                                    style="@style/Body"
+                                    android:textColor="@color/black_C" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    style="@style/Body"
+                                    android:text="@{transaction.basePoints}"
+                                    android:textColor="@color/black_C" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/black_8" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="16dp"
+                                android:paddingEnd="20dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center"
+                                    android:text="@string/bonus_points_earned"
+                                    style="@style/Body"
+                                    android:textColor="@color/black_C" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/Body"
+                                    android:text="@{transaction.bonusPoints}"
+                                    android:textColor="@color/black_C" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/black_8" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="16dp"
+                                android:paddingEnd="20dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="center"
+                                    android:text="@string/new_balance"
+                                    style="@style/Body"
+                                    android:textColor="@color/black_C" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/Body"
+                                    android:text="@{transaction.newBalance}"
+                                    android:textColor="@color/black_C" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/black_8" />
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/transaction_details"
+                            android:textAllCaps="true"
+                            style="@style/Caption1"
+                            android:letterSpacing="0.1"
+                            android:textColor="@color/black_9"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/black_8" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="16dp"
+                            android:visibility="gone"
+                            android:paddingEnd="20dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:text="@string/transaction"
+                                style="@style/Body"
+                                android:textColor="@color/black_C"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                style="@style/Body"
+                                android:textColor="@color/black_C" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:visibility="gone"
+                            android:background="@color/black_8" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="16dp"
+                            android:paddingEnd="20dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/transaction_detail_date"
+                                style="@style/Body"
+                                android:textColor="@color/black_C" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Body"
+                                android:text="@{transaction.transactionDate}"
+                                android:textColor="@color/black_C" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/black_8" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="16dp"
+                            android:paddingEnd="20dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/transaction_payment_type"
+                                style="@style/Body"
+                                android:textColor="@color/black_C" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/payment_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Body"
+                                android:text="@{transaction.paymentType}"
+                                android:textColor="@color/black_C" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/black_8" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="16dp"
+                            android:paddingEnd="20dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:text="@string/transaction_total"
+                                style="@style/BodyBold"
+                                android:textColor="@color/black_C" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@{transaction.formattedTotal}"
+                                style="@style/BodyBold"
+                                android:textColor="@color/black_C" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/black_8" />
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/view_receipt_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/view_receipt"
+                        style="@style/LinkButton.Red.L"
+                        android:visibility="visible" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
                     <Button
                         android:id="@+id/button_done"
@@ -126,7 +442,7 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
         <RelativeLayout
@@ -145,11 +461,11 @@
                 android:padding="16dp"
                 app:autoSizeTextType="uniform"
                 android:layout_centerHorizontal="true"
-                android:layout_above="@+id/authorized_pprogressbar"
+                android:layout_above="@+id/progressbar"
                 android:visibility="visible" />
 
             <ProgressBar
-                android:id="@+id/authorized_pprogressbar"
+                android:id="@+id/progressbar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_centerHorizontal="true"
@@ -162,5 +478,5 @@
                 android:layout_centerInParent="true"
                 android:tint="@color/red" />
         </RelativeLayout>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

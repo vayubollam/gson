@@ -787,4 +787,11 @@
     <string name="transacation_back_alert_leave">Exit</string>
     <string name="payment_in_progress">Payment in progress</string>
     <string name="payment_successful">Payment successful</string>
+
+    <string name="wng_washes_added_msg">Your new washes are available in-app and on your physical card.</string>
+    <string name="sp_washes_added_msg">Your days are available in-app and on your physical card.</string>
+    <!-- Transaction Receipt -->
+    <string name="base_points_earned">Base Points</string>
+    <string name="bonus_points_earned">Bonus Points</string>
+    <string name="new_balance">New Balance</string>
 </resources>
