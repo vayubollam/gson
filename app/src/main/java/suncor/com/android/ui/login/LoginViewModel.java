@@ -1,5 +1,6 @@
 package suncor.com.android.ui.login;
 
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -33,6 +34,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> navigateToHomeEvent = new MutableLiveData<>();
     private boolean isLoginFromEnrollment;
 
+
     private SettingsApi settingsApi;
 
     @Inject
@@ -40,6 +42,7 @@ public class LoginViewModel extends ViewModel {
         this.settingsApi = settingsApi;
         this.passwordInputField = new InputField(R.string.login_password_field_error);
         this.emailInputField = new InputField(R.string.login_email_field_error);
+
         LiveData<Resource<SigninResponse>> loginLiveData = Transformations.switchMap(loginEvent, (event) -> {
             if (event.getContentIfNotHandled() != null) {
                 return sessionManager.login(emailInputField.getText(), passwordInputField.getText());

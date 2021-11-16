@@ -772,5 +772,7 @@
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
+    <string name="auto_revoke_message">To protect your data, permissions for this app will be removed if the app isn\'t used for a few months</string>
+    <string name="auto_revoke_title">Auto Revoke Permissions</string>
 
 </resources>
