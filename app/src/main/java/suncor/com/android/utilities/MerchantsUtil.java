@@ -30,7 +30,7 @@ public class MerchantsUtil {
                 return "hbc_small";
             case MerchantsIds.Petro_Canada_EN:
             case MerchantsIds.Petro_Canada_FR:
-                return "petro_canada_small";
+                return "pc_card_small";
             case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
             case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
                 return "winners_small";

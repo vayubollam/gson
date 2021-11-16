@@ -4,8 +4,8 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "subCategoryName": "Petro-Canada",
-        "smallIcon": "petro_canada_small",
-        "largeIcon": "petro_canada_large",
+        "smallIcon": "pc_card_small",
+        "largeIcon": "pc_card_large",
         "howToRedeem": "Choisissez une valeur, confirmez l'échange, puis recevez la carte-cadeau électronique par la poste.",
         "howToUse": "Utilisez votre carte-cadeau Petro‑Canada à n’importe quel magasin Petro‑Canada.",
         "merchantId": "4678",
