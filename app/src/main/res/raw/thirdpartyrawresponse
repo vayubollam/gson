@@ -4,8 +4,8 @@
     "thirdPartyGiftCardSubCategory": [
       {
         "subCategoryName": "Petro-Canada",
-        "smallIcon": "petro_canada_small",
-        "largeIcon": "petro_canada_large",
+        "smallIcon": "pc_card_small",
+        "largeIcon": "pc_card_large",
         "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
         "howToUse": "Use your Petro-Canada eGift card in-store at any Petro-Canada location.",
         "merchantId": "4677",
