@@ -102,7 +102,7 @@ public class MerchantItem implements Parcelable {
                 return "ultimate_dining_small";
             case MerchantsIds.Petro_Canada_EN:
             case MerchantsIds.Petro_Canada_FR:
-                return "petro_canada_small";
+                return "pc_card_small";
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex_small";
