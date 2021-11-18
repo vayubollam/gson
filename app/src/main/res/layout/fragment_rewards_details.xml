@@ -155,7 +155,7 @@
                             android:paddingEnd="16dp"
                             android:gravity="start"
                             android:lineSpacingMultiplier="1.63"
-                            android:text="@{Html.fromHtml(genericEGiftCard.description)}"
+                            android:text="@{Html.fromHtml(genericEGiftCard.howToUse)}"
                             android:textAppearance="@style/Caption1"
                             android:textColor="@color/black_60"
                             android:textSize="16sp"

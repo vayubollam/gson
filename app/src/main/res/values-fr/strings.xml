@@ -235,7 +235,7 @@
     <string name="cards_rbc_description">Notre programme RBC Petro‑Canada vous aide à économiser sur l\'essence et à accumuler des points plus rapidement.</string>
     <string name="cards_caa_description">Vous pouvez également convertir vos points en dollars CAA ou les utiliser pour obtenir une nouvelle adhésion de base d\'un an à la CAA.</string>
     <string name="cards_bcaa_description">Vous pouvez également convertir vos points en dollars CAA.</string>
-    <string name="cards_hbc_description">Vous pouvez également obtenir 20 % plus de points Primes La Baie d’Hudson sur vos achats à La Baie d’Hudson, Déco Découverte et labaie.com.</string>
+    <string name="cards_hbc_description">Vous pouvez également obtenir 20 % plus de points Primes La Baie d’Hudson sur vos achats à La Baie d’Hudson et labaie.com.</string>
     <string name="cards_more_description">Vous obtenez 1 point More Rewards pour chaque dollar dépensé dans les établissements Petro-Canada participants.</string>
     <string name="cards_rbc_balance_details">Économisez 3 ¢ le litre sur l\'essence</string>
     <string name="cards_fsr_balance_conversion">Économie de %d ¢ le litre</string>
@@ -431,6 +431,7 @@
     <string name="rewards_signedin_petropoints_value">ou %d $ de rabais</string>
     <string name="rewards_signedin_how_to_redeem_title">Comment échanger</string>
     <string name="rewards_signedin_header_balance">Vous avez %s points</string>
+    <string name="how_to_use_petrocanada">Utilisez votre carte-cadeau Petro‑Canada à n’importe quel magasin Petro‑Canada.</string>
     <string name="navigation_rewards_signedin_tab">Échanger</string>
     <string name="cards_add_fragment_cvv_field_empty_error">Veuillez entrer le code de sécurité.</string>
     <string name="cards_add_fragment_cvv_field_format_error">Votre code de sécurité est erroné.</string>
@@ -473,9 +474,14 @@
     <string name="rewards_egift_card_subtitle">Carte-cadeau électronique</string>
     <string name="rewards_e_gift_card_starting_points">À compter de 10 000 points</string>
     <string name="merchant_Hudson_bay">La Baie d’Hudson</string>
+    <string name="merchant_more_egift_card">Plus de cartes-cadeaux électroniques</string>
     <string name="merchant_cineplex">Cineplex</string>
-    <string name="merchant_dining_card">Bon Appétit</string>
+    <string name="merchant_dining_card">The Ultimate Dining</string>
     <string name="merchant_petrocanada_card">Petro-Canada</string>
+    <string name="merchant_gap_card">Gap</string>
+    <string name="merchant_best_buy_card">Best Buy</string>
+    <string name="merchant_walmart_card">Walmart</string>
+    <string name="merchant_tim_hortons_card">Tim Hortons</string>
     <string name="merchant_winners">WINNERS, Marshalls et HomeSense</string>
     <string name="rewards_signedin_how_to_redeem_merchants_title">Comment échanger des points</string>
     <string name="rewards_signedin_redeeming_your_rewards_title">Utilisation de votre prime</string>
@@ -723,8 +729,6 @@
     <string name="card_enable_location_message">Vous devrez activer votre emplacement pour payer à la pompe.</string>
     <string name="card_enable_location_settings">Paramètres</string>
 
-    <string name="fuelling_almost_done">Vous y êtes presque…</string>
-    <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Merci, %1$s!
@@ -739,5 +743,11 @@
     <string name="carwash_zero_error_alert_message">Cette carte n\'est plus valide. De nouvelles cartes peuvent être achetées sur notre site Web ou au dépanneur.</string>
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
+
+    <string name="fuelling_almost_done">Vous y êtes presque…</string>
+    <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
+
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
+
+
 </resources>
