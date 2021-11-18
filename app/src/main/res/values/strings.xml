@@ -780,6 +780,8 @@
 
     <string name="discount_prices">%1$s (was %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
+    <string name="auto_revoke_message">To protect your data, permissions for this app will be removed if the app isn\'t used for a few months</string>
+    <string name="auto_revoke_title">Auto Revoke Permissions</string>
 
     <!-- Add petropoints card into google wallet-->
     <string name="google_passes_name_label">NAME</string>
