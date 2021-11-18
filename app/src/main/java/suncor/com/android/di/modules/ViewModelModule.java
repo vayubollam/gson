@@ -15,6 +15,7 @@ import suncor.com.android.ui.login.CreatePasswordViewModel;
 import suncor.com.android.ui.login.LoginViewModel;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.actionmenu.ActionMenuViewModel;
+import suncor.com.android.ui.main.carwash.reload.CarwashTransactionViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 import suncor.com.android.ui.main.pap.receipt.ReceiptViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
@@ -235,6 +236,9 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(CarwashTransactionViewModel.class)
+    protected abstract ViewModel carwashTransactionViewModel(CarwashTransactionViewModel carwashTransactionViewModel);
+
     @ViewModelKey(MoreEGiftCardCategoriesViewModel.class)
     protected abstract ViewModel moreEGiftCardCategoriesViewModel(MoreEGiftCardCategoriesViewModel moreEGiftCardCategoriesViewModel);
 

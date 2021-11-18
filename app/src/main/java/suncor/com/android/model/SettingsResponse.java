@@ -30,6 +30,7 @@ public class SettingsResponse {
         private Pap pap;
         private String maintenanceMsgFR;
         private String maintenanceMsgEN;
+        private GooglePassConfig googlePass;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -69,6 +70,10 @@ public class SettingsResponse {
 
         public String getMaintenanceDisplayMsg() {
            return Locale.getDefault().getDisplayLanguage().equals("English") ? maintenanceMsgEN : maintenanceMsgFR;
+        }
+
+        public GooglePassConfig getGooglePass() {
+            return googlePass;
         }
     }
 
@@ -135,6 +140,25 @@ public class SettingsResponse {
         public String getP97TenantID() {
             return p97TenantID;
         }
+    }
+
+    public static class GooglePassConfig{
+        private String googlePassesClassId;
+        private String googlePassesIssuerId;
+        private String googlePassesAccountEmailAddress;
+
+        public String getGooglePassesClassId() {
+            return googlePassesClassId;
+        }
+
+        public String getGooglePassesIssuerId() {
+            return googlePassesIssuerId;
+        }
+
+        public String getGooglePassesAccountEmailAddress() {
+            return googlePassesAccountEmailAddress;
+        }
+
     }
 }
 
