@@ -239,6 +239,8 @@ public abstract class ViewModelModule {
     @ViewModelKey(CarwashTransactionViewModel.class)
     protected abstract ViewModel carwashTransactionViewModel(CarwashTransactionViewModel carwashTransactionViewModel);
 
+    @Binds
+    @IntoMap
     @ViewModelKey(MoreEGiftCardCategoriesViewModel.class)
     protected abstract ViewModel moreEGiftCardCategoriesViewModel(MoreEGiftCardCategoriesViewModel moreEGiftCardCategoriesViewModel);
 
