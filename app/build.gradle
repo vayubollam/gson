@@ -20,7 +20,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.4.5"
+        versionName "3.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
@@ -44,6 +44,21 @@ android {
             storePassword System.getenv("STORE_PASSWORD")
             keyAlias = 'petrocanada'
             keyPassword System.getenv("KEY_PASSWORD")
+        }
+    }
+
+    applicationVariants.all {
+        variant -> variant.outputs.each {
+            output ->
+                variant.assembleProvider.get().doLast {
+                    if ( variant.mappingFile != null &&
+                            variant.mappingFile.exists() ) {
+                        copy {
+                            from variant.mappingFile
+                            into output.outputFile.parent
+                        }
+                    }
+                }
         }
     }
 

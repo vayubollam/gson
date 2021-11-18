@@ -280,7 +280,7 @@
     <string name="cards_rbc_description">Our RBC–Petro‑Canada program helps you save on fuel and earn points faster.</string>
     <string name="cards_caa_description">You can also exchange your points for CAA Dollars or a new 1-year basic CAA Membership.</string>
     <string name="cards_bcaa_description">You can also exchange your points for CAA Dollars.</string>
-    <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay, Home Outfitters and thebay.com.</string>
+    <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay and thebay.com.</string>
     <string name="cards_more_description">You\'re collecting 1 More Rewards point for every $1 spent at our Petro‑Canada locations.</string>
     <string name="cards_rbc_balance_details">Save 3¢ per litre</string>
     <string name="cards_add_fragment_header">Add a card</string>
@@ -438,6 +438,7 @@
     <string name="rewards_signedin_petropoints_balance">You have\n%s points</string>
     <string name="rewards_signedin_petropoints_value">or $%d off</string>
     <string name="rewards_signedin_header_balance">You have %s points</string>
+    <string name="how_to_use_petrocanada">Use your Petro-Canada eGift card in-store at any Petro-Canada location.</string>
     <string name="rewards_signedin_discoery_title">Petro-Points</string>
     <string name="cards_add_fragment_cvv_field_empty_error">Please enter a security code.</string>
     <string name="cards_add_fragment_cvv_field_format_error">Your security code is wrong.</string>
@@ -484,10 +485,15 @@
     <string name="rewards_e_gift_card_starting_points">From 10,000 points</string>
     <string name="rewards_egift_card_subtitle">eGift card</string>
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
-    <string name="merchant_dining_card">The Ultimate Dining Card</string>
+    <string name="merchant_dining_card">The Ultimate Dining</string>
     <string name="merchant_petrocanada_card">Petro-Canada</string>
+    <string name="merchant_gap_card">Gap</string>
+    <string name="merchant_best_buy_card">Best Buy</string>
+    <string name="merchant_walmart_card">Walmart</string>
+    <string name="merchant_tim_hortons_card">Tim Hortons</string>
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_Hudson_bay">Hudson\'s Bay</string>
+    <string name="merchant_more_egift_card">More eGift cards</string>
 
     <string name="rewards_signedin_how_to_redeem_merchants_title">How to redeem</string>
     <string name="rewards_signedin_how_to_redeem_merchants_description">Choose a value, confirm redemption and get the eGift card in your email.</string>
@@ -496,7 +502,7 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Use at any Cineplex theatre or online at cineplex.com. \n </string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet. \n</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay and online at thebay.com. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Use your Petro-Canada eGift card in-store at any Petro-Canada location. \n</string>
 
 
@@ -723,6 +729,7 @@
     <string name="cancelling">Cancelling…</string>
     <string name="cancellation_alert_title">Transaction cancelled</string>
     <string name="cancellation_alert_body">Your transaction was cancelled. You have not been charged.</string>
+
 
     <string name="card_enable_gps_title">Location Services not enabled</string>
     <string name="card_enable_gps_message">You\'ll need to enable location services to pay at the pump.</string>

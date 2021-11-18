@@ -7,11 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -20,6 +15,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
@@ -31,14 +33,17 @@ import suncor.com.android.utilities.AnalyticsUtils;
 
 public class RewardsSignedInFragment extends BottomNavigationFragment {
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    @Inject
+    Gson gson;
+
     private FragmentRewardsSignedinBinding binding;
     private RewardsSignedInViewModel viewModel;
     private boolean isHeaderVisible;
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
-    private ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
-
-    @Inject
-    ViewModelFactory viewModelFactory;
+    private final ArrayList<GenericEGiftCard> eGiftCardsList = new ArrayList<>();
     private boolean systemMarginsAlreadyApplied;
 
     @Override
@@ -60,29 +65,17 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
             if (merchants != null) {
                 for (Merchant m : merchants) {
                     MerchantItem merchantItem = new MerchantItem(m, getContext());
-                    if((!merchantItem.getLocalizedMerchantName().equals(requireContext().getResources().getString(R.string.merchant_petrocanada_card))) ){
+                    if ((merchantItem.getLocalizedMerchantName().equals(requireContext().getResources().getString(R.string.merchant_petrocanada_card)))) {
                         GenericEGiftCard eGiftCard = new GenericEGiftCard();
                         eGiftCard.setSmallImage(merchantItem.getMerchantSmallImage());
                         eGiftCard.setLargeImage(merchantItem.getMerchantLargeImage());
                         eGiftCard.setTitle(merchantItem.getLocalizedMerchantName());
                         eGiftCard.setPoints(merchantItem.getPointsMerchantName());
                         eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
-                        eGiftCard.setDescription(merchantItem.getRedeemingDescription());
+                        eGiftCard.setHowToUse(merchantItem.getRedeemingDescription());
+                        eGiftCard.setHowToRedeem(getContext().getString(R.string.how_to_use_petrocanada));
                         eGiftCard.setDataDynamic(true);
-                        eGiftCard.seteGifts(m.geteGifts());
-                        eGiftCard.setScreenName(merchantItem.getMerchantScreenName());
-                        eGiftCard.setShortName(merchantItem.getMerchantShortName());
-
-                        eGiftCardsList.add(eGiftCard);
-                    }else{
-                        GenericEGiftCard eGiftCard = new GenericEGiftCard();
-                        eGiftCard.setSmallImage(merchantItem.getMerchantSmallImage());
-                        eGiftCard.setLargeImage(merchantItem.getMerchantLargeImage());
-                        eGiftCard.setTitle(merchantItem.getLocalizedMerchantName());
-                        eGiftCard.setPoints(merchantItem.getPointsMerchantName());
-                        eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
-                        eGiftCard.setDescription(merchantItem.getRedeemingDescription());
-                        eGiftCard.setDataDynamic(true);
+                        eGiftCard.setMoreGIftCard(false);
                         eGiftCard.seteGifts(m.geteGifts());
                         eGiftCard.setScreenName(merchantItem.getMerchantScreenName());
                         eGiftCard.setShortName(merchantItem.getMerchantShortName());
@@ -90,6 +83,22 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         eGiftCardsList.add(2, eGiftCard);
                     }
                 }
+
+                GenericEGiftCard eGiftCard = new GenericEGiftCard();
+                eGiftCard.setSmallImage("more_egift_card_small");
+                eGiftCard.setLargeImage("more_egift_card_large");
+                eGiftCard.setMoreGIftCard(true);
+                eGiftCard.setTitle(getResources().getString(R.string.merchant_more_egift_card));
+                eGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
+                eGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
+                eGiftCard.setHowToUse(getResources().getString(R.string.rewards_signedin_redeeming_your_rewards_desc_dining_card));
+                eGiftCard.setDataDynamic(true);
+                eGiftCard.setSubtitle(getResources().getString(R.string.rewards_egift_card_subtitle));
+                eGiftCard.seteGifts(null);
+                eGiftCard.setScreenName("more_gift_card");
+                eGiftCard.setShortName("More_gift_card");
+
+                eGiftCardsList.add(3, eGiftCard);
 
                 binding.rewardsList.setAdapter(new GenericGiftCardsAdapter(eGiftCardsList, this::eCardClicked));
 
@@ -132,19 +141,19 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 int percentage = (int) scrollPosition;
                 if (percentage > 20 && !scroll20) {
                     scroll20 = true;
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","20"));
-                } else if (percentage > 40 && !scroll40){
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "20"));
+                } else if (percentage > 40 && !scroll40) {
                     scroll40 = true;
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","40"));
-                } else if (percentage > 60 && !scroll60){
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "40"));
+                } else if (percentage > 60 && !scroll60) {
                     scroll60 = true;
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","60"));
-                } else if (percentage > 80 && !scroll80){
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "60"));
+                } else if (percentage > 80 && !scroll80) {
                     scroll80 = true;
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","80"));
-                } else if (percentage > 100 && !scroll100){
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "80"));
+                } else if (percentage > 100 && !scroll100) {
                     scroll100 = true;
-                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold","100"));
+                    AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "100"));
                 }
             }
             if (scrollY >= threshold) {
@@ -223,32 +232,39 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     }
 
     private void eCardClicked(GenericEGiftCard genericEGiftCard) {
-        if(genericEGiftCard.isDataDynamic()){
-            RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
-            Navigation.findNavController(requireView()).navigate(action);
-
-        }else{
+        if (genericEGiftCard.isDataDynamic()) {
+            if (genericEGiftCard.isMoreGIftCard()) {
+                String merchantList = gson.toJson(viewModel.getMerchantList());
+                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMoreEGiftCardCategories action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMoreEGiftCardCategories();
+                action.setMerchantList(merchantList);
+                Navigation.findNavController(requireView()).navigate(action);
+            } else {
+                RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
+                Navigation.findNavController(requireView()).navigate(action);
+            }
+        } else {
             RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
             Navigation.findNavController(requireView()).navigate(action);
 
         }
     }
 
-    private void mapRewardsListIntoGeneric(ArrayList<Reward> rewardsList){
+    private void mapRewardsListIntoGeneric(ArrayList<Reward> rewardsList) {
 
         eGiftCardsList.clear();
 
-        for(Reward reward : rewardsList){
-            if(!reward.getName().equals("egift-cards")){
+        for (Reward reward : rewardsList) {
+            if (!reward.getName().equals("egift-cards")) {
                 GenericEGiftCard giftCard = new GenericEGiftCard();
                 giftCard.setName(reward.getName());
                 giftCard.setPoints(reward.getPoints());
                 giftCard.setTitle(reward.getTitle());
                 giftCard.setSubtitle(reward.getSubtitle());
-                giftCard.setDescription(reward.getDescription());
+                giftCard.setHowToUse(reward.getDescription());
                 giftCard.setLargeImage(reward.getLargeImage());
                 giftCard.setSmallImage(reward.getSmallImage());
                 giftCard.setDataDynamic(false);
+                giftCard.setMoreGIftCard(false);
 
                 eGiftCardsList.add(giftCard);
             }

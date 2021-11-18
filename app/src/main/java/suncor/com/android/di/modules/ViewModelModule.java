@@ -19,6 +19,7 @@ import suncor.com.android.ui.main.carwash.reload.CarwashTransactionViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 import suncor.com.android.ui.main.pap.receipt.ReceiptViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
+import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesViewModel;
 import suncor.com.android.ui.main.wallet.cards.add.AddCardViewModel;
 import suncor.com.android.ui.main.wallet.cards.details.CardDetailsViewModel;
 import suncor.com.android.ui.main.wallet.cards.list.CardsViewModel;
@@ -237,5 +238,8 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CarwashTransactionViewModel.class)
     protected abstract ViewModel carwashTransactionViewModel(CarwashTransactionViewModel carwashTransactionViewModel);
+
+    @ViewModelKey(MoreEGiftCardCategoriesViewModel.class)
+    protected abstract ViewModel moreEGiftCardCategoriesViewModel(MoreEGiftCardCategoriesViewModel moreEGiftCardCategoriesViewModel);
 
 }
