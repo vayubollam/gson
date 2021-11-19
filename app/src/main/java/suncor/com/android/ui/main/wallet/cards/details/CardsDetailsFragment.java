@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -39,17 +38,19 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
+import suncor.com.android.googleapis.passes.GooglePassesConfig;
+import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
-import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.LocationUtils;
@@ -125,7 +126,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -226,6 +227,74 @@ public class CardsDetailsFragment extends MainActivityFragment {
         }
 
     };
+
+    private View.OnClickListener cardReloadListener = view -> {
+                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+                if(cardDetail.isSuspendedCard()){
+                    CardsUtil.showSuspendedCardAlert(getContext());
+                } else {
+                    ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+                    //open Reload Transaction form
+                    CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
+                            action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
+                    action.setCardNumber(cardItem.getCardNumber());
+                    action.setCardName(cardItem.getCardName());
+                    action.setCardType(cardItem.getCardType().name());
+                    action.setCardIndex(clickedCardIndex);
+                    action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+                    Navigation.findNavController(getView()).navigate(action);
+                }
+        };
+
+
+    private View.OnClickListener gpaySaveToWalletListener = view -> {
+        showAddCardProgress();
+        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+            } else if (result.status == Resource.Status.ERROR) {
+                hideAddCardProgress();
+                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                SettingsResponse.GooglePassConfig googlePassesConfig = result.data.getSettings().getGooglePass();
+                LoyalityData loyalityData = viewModel.getLoyalityCardDataForGoogleWallet(getContext(), clickedCardIndex);
+
+                new Thread(() -> {
+                    GooglePassesApiGateway gateway = new GooglePassesApiGateway();
+                    String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig);
+                    Timber.i("GOOGLE PASSES: card Token " + cardAuthToken);
+                    if(getActivity() != null){
+                        getActivity().runOnUiThread(() -> {
+                            hideAddCardProgress();
+                            if(cardAuthToken == null){
+                                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+                                return;
+                            }
+                           getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
+
+                        });
+                    }
+                }).start();
+            }
+        });
+
+    };
+
+    private void showAddCardProgress(){
+        binding.loadingProgressBar.setVisibility(View.VISIBLE);
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void hideAddCardProgress(){
+        binding.loadingProgressBar.setVisibility(View.GONE);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideAddCardProgress();
+    }
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";

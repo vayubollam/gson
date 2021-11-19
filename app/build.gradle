@@ -20,11 +20,14 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.4.5"
+        versionName "3.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
         buildConfigField "String", "GOOGLE_PAY_MERCHANT_GATEWAY", GOOGLE_PAY_MERCHANT_GATEWAY
+        buildConfigField "String", "PASSES_AUDIENCE", PASSES_AUDIENCE
+        buildConfigField "String", "PASSES_JWT_TYPE", PASSES_JWT_TYPE
+        buildConfigField "String", "PASSES_SERVICE_ACCOUNT_FILE", PASSES_SERVICE_ACCOUNT_FILE
         buildConfigField "String", "KOUNT_MERCHANT_ID", KOUNT_MERCHANT_ID
     }
 
@@ -41,6 +44,21 @@ android {
             storePassword System.getenv("STORE_PASSWORD")
             keyAlias = 'petrocanada'
             keyPassword System.getenv("KEY_PASSWORD")
+        }
+    }
+
+    applicationVariants.all {
+        variant -> variant.outputs.each {
+            output ->
+                variant.assembleProvider.get().doLast {
+                    if ( variant.mappingFile != null &&
+                            variant.mappingFile.exists() ) {
+                        copy {
+                            from variant.mappingFile
+                            into output.outputFile.parent
+                        }
+                    }
+                }
         }
     }
 
@@ -63,6 +81,7 @@ android {
         pickFirst 'META-INF/ASL2.0'
         pickFirst 'META-INF/LICENSE'
         pickFirst 'META-INF/NOTICE'
+        pickFirst 'META-INF/DEPENDENCIES'
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -75,6 +94,7 @@ android {
             applicationId "com.suncor.android.SuncorApplicationDev"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
+
         DevCarwash {
             dimension "version"
             applicationId "com.suncor.android.SuncorApplicationDev.Carwash"
@@ -143,6 +163,7 @@ android.applicationVariants.all { variant ->
 
 configurations {
     all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+    all*.exclude group: 'com.google.collections'
 }
 
 
@@ -152,6 +173,8 @@ dependencies {
     implementation project(":uicomponents")
 
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation files('libs/google-walletobjects-v1-rev_20200326-java.jar')
+    implementation files('libs/commons-codec-rename_1.15.jar')
     implementation files('libs/kount-data-collector-4.1.3.jar')
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
@@ -204,6 +227,10 @@ dependencies {
     implementation "androidx.core:core-ktx:1.3.2"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin_version"
+    //Google Passes Rest Api
+    implementation 'com.google.api-client:google-api-client:1.31.1'
+    implementation 'com.google.api-client:google-api-client-gson:1.31.1'
+    implementation 'com.googlecode.jsontoken:jsontoken:1.1'
 
     //kount sdk
     implementation 'com.google.android.instantapps:instantapps:1.1.0'
