@@ -334,7 +334,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     private void handleConfirmAndAuthorizedClick(){
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
-        if(userPaymentId == null) {
+        if(userPaymentId == null || Objects.isNull(viewModel.getTransactionReloadTax())) {
             // select payment type error
             return;
         }
@@ -465,9 +465,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
                     case Activity.RESULT_OK:
                         PaymentData paymentData = PaymentData.getFromIntent(Objects.requireNonNull(data));
-                      //  String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
-
-
+                        String paymentToken =  viewModel.handlePaymentSuccess(paymentData);
+                        payByGooglePayRequestToServer(paymentToken);
                         break;
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
@@ -480,6 +479,30 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 }
         }
     }
+
+    private void payByGooglePayRequestToServer(String paymentToken){
+        try {
+            String kountSessionId = generateKountSessionID();
+            Double totalAmount = viewModel.getTotalAmount();
+            viewModel.payByGooglePayRequest(cardType, totalAmount, kountSessionId, paymentToken).observe(getViewLifecycleOwner(), result -> {
+                if (result.status == Resource.Status.LOADING) {
+                    isLoading.set(true);
+                    AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
+                } else if (result.status == Resource.Status.ERROR) {
+                    isLoading.set(false);
+                    handleAuthorizationFail(result.message);
+                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                    showPaymentSuccessfulDialogAndNavigateToReceipt();
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
+                            new Pair<>(AnalyticsUtils.Param.paymentMethod, "Google Pay"),
+                            new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(totalAmount)));
+                }
+            });
+        } catch (Exception ex) {
+            Timber.e(Objects.requireNonNull(ex.getMessage()));
+        }
+    }
+
 
     private void verifyFingerPrints(){
         if (fingerPrintManager.isFingerPrintExistAndEnrolled()) {

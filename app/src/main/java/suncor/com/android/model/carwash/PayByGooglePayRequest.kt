@@ -1,6 +1,6 @@
 package suncor.com.android.model.carwash
 
-data class PayByWalletRequest @JvmOverloads constructor (
+data class PayByGooglePayRequest @JvmOverloads constructor (
         val cardType: String,
         val carwashCardNumber: String,
         val addUnitsDays: Int,
@@ -17,6 +17,16 @@ data class PayByWalletRequest @JvmOverloads constructor (
         val petroPointsBalance: Double,
         val bonusPoints: Double,
         val paymentProviderName: String = "moneris",
-        val userPaymentSourceId: Int,
-        val kountSessionId: String
+        val kountSessionId: String,
+        val fundingPayload: FundingPayload
+
 )
+
+class FundingPayload(private var token: String) {
+
+        override fun toString(): String {
+                return "FundingPayload{" +
+                        "token='" + token + '\'' +
+                        '}'
+        }
+}

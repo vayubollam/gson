@@ -15,6 +15,7 @@ import suncor.com.android.mfp.ErrorCodes
 import suncor.com.android.model.Resource
 import suncor.com.android.model.carwash.ActivateCarwashRequest
 import suncor.com.android.model.carwash.ActivateCarwashResponse
+import suncor.com.android.model.carwash.PayByGooglePayRequest
 import suncor.com.android.model.carwash.PayByWalletRequest
 import suncor.com.android.model.carwash.reload.TransactionReloadData
 import suncor.com.android.model.carwash.reload.TransactionReloadTaxes
@@ -147,6 +148,44 @@ class CarwashApiImpl(val gson: Gson = GsonBuilder().disableHtmlEscaping().create
 
             val body = gson.toJson(payByWalletRequest)
             Timber.i("Send Pay By Wallet, string: $payByWalletRequest\nbody: $body")
+
+            request.send( body, object : WLResponseListener {
+                override fun onSuccess(wlResponse: WLResponse) {
+                    val jsonText = wlResponse.responseText
+                    Timber.d("Wallet authorized payment success, response:\n$jsonText")
+                    val payResponse = gson.fromJson(jsonText, PayResponse::class.java)
+                    result.postValue(Resource.success(payResponse))
+                }
+
+                override fun onFailure(wlFailResponse: WLFailResponse) {
+                    Timber.d("Wallet authorized payment API failed, $wlFailResponse")
+                    Timber.e(wlFailResponse.toString())
+                    result.postValue(Resource.error(wlFailResponse.errorMsg))
+                }
+            })
+        } catch (e: URISyntaxException) {
+            Timber.e(e.toString())
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR))
+        }
+        return result
+    }
+
+    override fun authorizePaymentByGooglePay(payByWalletRequest: PayByGooglePayRequest, userLocation: LatLng): LiveData<Resource<PayResponse>> {
+        Timber.d("request initiate for authorized google pay payment ")
+        val result = MutableLiveData<Resource<PayResponse>>()
+        result.postValue(Resource.loading())
+
+        try {
+            val adapterPath = URI("$ADAPTER_PATH/CarWashReload/PayByGoogle")
+            val request = WLResourceRequest(adapterPath, WLResourceRequest.POST, PAYMENT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE)
+            request.addHeader("latitude", java.lang.Double.toString(userLocation.latitude))
+            request.addHeader("longitude", java.lang.Double.toString(userLocation.longitude))
+            request.addHeader("deviceOS", "Android")
+            request.addHeader("appBundleId", BuildConfig.APPLICATION_ID)
+            request.addHeader("appVersionNumber", BuildConfig.VERSION_NAME)
+
+            val body = gson.toJson(payByWalletRequest)
+            Timber.i("Send Pay By GooglePay, string: $payByWalletRequest\nbody: $body")
 
             request.send( body, object : WLResponseListener {
                 override fun onSuccess(wlResponse: WLResponse) {

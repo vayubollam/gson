@@ -29,10 +29,12 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.carwash.FundingPayload;
 import suncor.com.android.model.carwash.reload.TransactionProduct;
 import suncor.com.android.model.carwash.reload.TransactionReloadData;
 import suncor.com.android.model.carwash.reload.TransactionReloadTaxes;
 import suncor.com.android.model.carwash.PayByWalletRequest;
+import suncor.com.android.model.carwash.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
@@ -232,6 +234,18 @@ public class CarwashTransactionViewModel extends ViewModel {
                 selectedProduct.getBonusValues(),"moneris",userPaymentSourceId,
                 kountSessionId);
         return carwashApi.authorizePaymentByWallet(request, userLocation);
+    }
+
+    /**
+     * Payment initiate with wallet
+     */
+    LiveData<Resource<PayResponse>> payByGooglePayRequest(String cardType,double totalAmount, String kountSessionId, String token) {
+        PayByGooglePayRequest request = new PayByGooglePayRequest(cardType, cardNumber.replace(" ", ""), selectedProduct.getBonusValues(),
+                selectedProduct.getSKU(), selectedProduct.getMaterialCode(), getUserProvince(), selectedValuesAmount,transactionReloadTax.getPst(),
+                transactionReloadTax.getGst(), transactionReloadTax.getQst(), transactionReloadTax.getHst(), totalAmount, profile.getPetroPointsNumber(), profile.getPointsBalance(),
+                selectedProduct.getBonusValues(),"moneris",
+                kountSessionId, new FundingPayload(token));
+        return carwashApi.authorizePaymentByGooglePay(request, userLocation);
     }
 
     public LiveData<Resource<ArrayList<CardDetail>>>  refreshCards(){
