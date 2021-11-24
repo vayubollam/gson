@@ -6,6 +6,7 @@
     <data>
 
         <import type="suncor.com.android.ui.common.cards.CardFormatUtils" />
+
         <variable
             name="isLoading"
             type="androidx.databinding.ObservableBoolean" />
@@ -186,12 +187,80 @@
                             android:layout_marginTop="16dp"
                             android:background="@color/black_8" />
 
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_marginTop="16dp"
-                            visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary>0}"
+                            visibleGone="@{transaction.getBasePoints()>0}"
+                            android:paddingEnd="20dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_gravity="center"
+                                android:text="@string/transaction_base_points_eaarned"
+                                style="@style/Body"
+                                android:textColor="@color/black_C" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Body"
+                                android:text="@{CardFormatUtils.formatBalance(transaction.getBasePointsMutableData())}"
+                                android:textColor="@color/black_C" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            visibleGone="@{transaction.getBasePoints()>0}"
+                            android:background="@color/black_8" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="16dp"
+                            visibleGone="@{transaction.getBonusPoints()>0}"
+                            android:paddingEnd="20dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_gravity="center"
+                                android:text="@string/transaction_bonus_points_eaarned"
+                                style="@style/Body"
+                                android:textColor="@color/black_C" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Body"
+                                android:text="@{CardFormatUtils.formatBalance(transaction.getBonusPointsMutableData())}"
+                                android:textColor="@color/black_C" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            visibleGone="@{transaction.getBonusPoints()>0}"
+                            android:background="@color/black_8" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="16dp"
+                            visibleGone="@{transaction.getPointsRedeemed()>0}"
                             android:paddingEnd="20dp">
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -207,7 +276,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="@{CardFormatUtils.formatBalance(transaction.LoyaltyPointsMessages.get(0).burnedRewardSummary)}"
+                                android:text="@{CardFormatUtils.formatBalance(transaction.getPointsRedeemedMutableData())}"
                                 style="@style/Body"
                                 android:textColor="@color/black_C" />
 
@@ -217,7 +286,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="16dp"
-                            visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary>0}"
+                            visibleGone="@{transaction.getPointsRedeemed()>0}"
                             android:background="@color/black_8" />
 
                         <LinearLayout
@@ -225,7 +294,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_marginTop="16dp"
-                            android:visibility="gone"
+                            visibleGone="@{transaction.getNewBalance > 0}"
                             android:paddingEnd="20dp">
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -233,71 +302,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_gravity="center"
-                                android:text="@string/transaction_base_points_eaarned"
-                                style="@style/Body"
-                                android:textColor="@color/black_C" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/Body"
-                                android:textColor="@color/black_C" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="16dp"
-                            android:visibility="gone"
-                            android:background="@color/black_8" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="16dp"
-                            android:visibility="gone"
-                            android:paddingEnd="20dp">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_gravity="center"
-                                android:text="@string/transaction_base_points_eaarned"
-                                style="@style/Body"
-                                android:textColor="@color/black_C" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/Body"
-                                android:textColor="@color/black_C" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:visibility="gone"
-                            android:layout_marginTop="16dp"
-                            android:background="@color/black_8" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="16dp"
-                            android:visibility="gone"
-                            android:paddingEnd="20dp">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_gravity="center"
-                                android:text="@string/transaction_base_points_eaarned"
+                                android:text="@string/transaction_new_balance"
                                 style="@style/Body"
                                 android:textColor="@color/black_C" />
 
@@ -306,6 +311,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 style="@style/Body"
+                                android:text="@{CardFormatUtils.formatBalance(transaction.getNewBalanceMutableData())}"
                                 android:textColor="@color/black_C" />
 
                         </LinearLayout>
@@ -314,7 +320,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="16dp"
-                            android:visibility="gone"
+                            visibleGone="@{transaction.getNewBalance > 0}"
                             android:background="@color/black_8" />
                     </LinearLayout>
 
@@ -500,7 +506,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
-                        app:visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary > 0}"
+                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0}"
                         android:background="@color/black_8" />
 
                     <LinearLayout
@@ -508,7 +514,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary > 0}"
+                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0}"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:paddingEnd="20dp">
@@ -526,7 +532,7 @@
                             android:id="@+id/pointsRedemption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{transaction.getCorrespondingDollarOffForBurnedPoints}"
+                            android:text="@{transaction.getCorrespondingDollarOffForBurnedPointsMutableData()}"
                             style="@style/Body"
                             android:textColor="@color/black_C" />
 
@@ -536,7 +542,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
-                        app:visibleGone="@{transaction.loyaltyPointsMessages.get(0).burnedRewardSummary > 0}"
+                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0}"
                         android:background="@color/black_8" />
 
 

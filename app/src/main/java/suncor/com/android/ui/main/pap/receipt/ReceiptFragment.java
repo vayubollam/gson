@@ -34,6 +34,7 @@ import suncor.com.android.databinding.FragmentReceiptBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
@@ -123,20 +124,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                int burnedPoints =  result.data.getLoyaltyPointsMessages().get(0).getBurnedRewardSummary();
+                Transaction transaction = new Transaction();
 
-                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
-                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
-                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
 
-                sessionManager.retrieveProfile((profile) -> {
-                    updatedPoints = profile.getPointsBalance();
-                }, (error) -> {
-                    // Handling can be made for the error
-                });
-                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints );
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
@@ -148,6 +138,24 @@ public class ReceiptFragment extends MainActivityFragment {
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
                 binding.setTransaction(result.data);
+
+                sessionManager.retrieveProfile((profile) -> {
+                    updatedPoints = profile.getPointsBalance();
+                    transaction.setCurrentBalance(updatedPoints);
+                }, (error) -> {
+                    // Handling can be made for the error
+                });
+
+                int burnedPoints =  transaction.getBurnedPoints();
+
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
+                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+
+
+                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints );
 
                 if(result.data.getRbcAlongWithRedemptionSavings() >0.0){
 

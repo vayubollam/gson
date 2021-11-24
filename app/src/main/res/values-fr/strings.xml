@@ -707,6 +707,8 @@
     <string name="transaction_tax_inclusive">Comprend les taxes</string>
     <string name="transaction_your_rbc_savings">Vos économies RBC</string>
     <string name="transaction_base_points_eaarned">Points de base</string>
+    <string name="transaction_bonus_points_eaarned">Points en prime</string>
+    <string name="transaction_new_balance">Nouveau solde</string>
     <string name="transaction_points_redemption">Échange de points</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">Voir le reçu</string>
