@@ -154,7 +154,9 @@ jobs:
         curl -H 'Content-Type: application/json' -d "{\"text\": \"Workflow run complete on ${GITHUB_REF}: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" ${TEAMS_WEBHOOK_URL}
   
 
-      
+    - name: Send MS Teams build notification
+      run: |
+        curl -H 'Content-Type: application/json' -d "{ \"type\":\"message\", \"attachments\":[ { \"contentType\":\"application\/vnd.microsoft.card.adaptive\", \"contentUrl\":null, \"content\": { \"type\": \"AdaptiveCard\", \"summary\":\"Build\", \"msTeams\": { \"width\": \"full\" }, \"body\": [ { \"type\": \"TextBlock\", \"size\": \"Large\", \"weight\": \"Bolder\", \"text\": \"Github Actions build deployed on $BUILD_SCHEME\", \"wrap\": true, \"style\": \"heading\", \"color\": \"Default\" }, { \"type\": \"FactSet\", \"facts\": [ { \"title\": \"Build Number\", \"value\": \"$SHORT_DATE\" }, { \"title\": \"Tag\", \"value\": \"$GITHUB_REF_NAME\" }, { \"title\": \"Platform\", \"value\": \"Android\" }, { \"title\": \"Build time\", \"value\": \"$FULL_DATE\" }, { \"title\": \"SHA\", \"value\": \"$SHORT_HASH\" }, { \"title\": \"Started by\", \"value\": \"$GITHUB_ACTOR\" } ], \"separator\": true, \"spacing\": \"Medium\" } ], \"actions\": [ { \"type\": \"Action.OpenUrl\", \"title\": \"View in AppCenter\", \"url\": \"${APPCNTR_URL}/appcenterconsole/console.html\" } ], \"$schema\": \"http:\/\/adaptivecards.io\/schemas\/adaptive-card.json\", \"version\": \"1.3\" } } ] }" ${TEAMS_WEBHOOK_URL}
    
     
     
