@@ -351,36 +351,4 @@ public class Transaction {
         public String description;
     }
 
-    /*  public MutableLiveData<String> getCorrespondingDollarOffForBurnedPoints(){
-        if(loyaltyPointsMessages != null){
-            loyaltyPointsMessages.get(0).burnedRewardSummary   = (int)  loyaltyPointsMessages.get(0).burnedRewardSummary;
-            correspondingDollars.postValue(formatter.format(loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
-
-        }else{
-            correspondingDollars.postValue("0");
-        }
-        return correspondingDollars;
-    }*/
-
-    //    public double getRbcAlongWithRedemptionSavings(){
-//        if(loyaltyPointsMessages != null){
-//            loyaltyPointsMessages.get(0).burnedRewardSummary   = (int)  loyaltyPointsMessages.get(0).burnedRewardSummary;
-//            return otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0;
-//        }else{
-//            return 0.0;
-//        }
-//    }
-
-
-      /* public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData(){
-        if(loyaltyPointsMessages != null){
-            loyaltyPointsMessages.get(0).burnedRewardSummary   = (int)  loyaltyPointsMessages.get(0).burnedRewardSummary;
-            rbcAlongWithRedemption.postValue(formatter.format(otherDiscount + loyaltyPointsMessages.get(0).burnedRewardSummary / 1000.0));
-        }else{
-            rbcAlongWithRedemption.postValue("0");
-        }
-        return rbcAlongWithRedemption;
-    }*/
-
-
 }

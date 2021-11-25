@@ -126,6 +126,12 @@ public class ReceiptFragment extends MainActivityFragment {
                 isLoading.set(false);
                 Transaction transaction = new Transaction();
 
+                sessionManager.retrieveProfile((profile) -> {
+                    updatedPoints = profile.getPointsBalance();
+
+                }, (error) -> {
+                    // Handling can be made for the error
+                });
 
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
@@ -139,13 +145,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 }
                 binding.setTransaction(result.data);
 
-                sessionManager.retrieveProfile((profile) -> {
-                    updatedPoints = profile.getPointsBalance();
-                    transaction.setCurrentBalance(updatedPoints);
-                }, (error) -> {
-                    // Handling can be made for the error
-                });
 
+                transaction.setCurrentBalance(updatedPoints);
                 int burnedPoints =  transaction.getBurnedPoints();
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
