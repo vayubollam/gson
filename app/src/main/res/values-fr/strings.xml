@@ -227,10 +227,11 @@
     <string name="profile_get_help_call">Appel</string>
     <string name="profile_get_help_email">Courriel</string>
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
+    <string name="cards_ppts_description">Problème de lecture? Glissez la carte vers le haut ou vers le bas pour essayer une version différente du code.</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
-    <string name="cards_wag_description">Acceptée dans tous les établissements avec lave-auto SuperDoux ou GlideWash.</string>
+    <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
-    <string name="cards_sp_description">Acceptée dans tous les établissements avec lave-auto SuperDoux ou GlideWash.</string>
+    <string name="cards_sp_description">Lavez votre voiture une fois par jour pendant 90 jours. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_ppc_description">Économisez chaque fois que vous utilisez votre Carte Prix Préférentiel.</string>
     <string name="cards_rbc_description">Notre programme RBC Petro‑Canada vous aide à économiser sur l\'essence et à accumuler des points plus rapidement.</string>
     <string name="cards_caa_description">Vous pouvez également convertir vos points en dollars CAA ou les utiliser pour obtenir une nouvelle adhésion de base d\'un an à la CAA.</string>
