@@ -43,7 +43,9 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public void onBindViewHolder(@NonNull CardsDetailHolder holder, int position) {
         holder.binding.setCard(cardItems.get(position));
         holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
-        holder.binding.cardReloadButton.setOnClickListener(cardReloadListener);
+        if(holder.binding.cardReloadButton.isShown()) {
+            holder.binding.cardReloadButton.setOnClickListener(cardReloadListener);
+        }
         holder.binding.savetowallet.setOnClickListener(gpaySaveToWalletListener);
     }
 
