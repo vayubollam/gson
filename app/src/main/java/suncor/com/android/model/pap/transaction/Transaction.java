@@ -261,24 +261,13 @@ public class Transaction {
                 for (LoyaltyPointsMessages loyaltyPointsMessages : loyaltyPointsMessages) {
                     if (loyaltyPointsMessages.programId.equals("Base Points")) {
                         basePoints += loyaltyPointsMessages.earnedRewardSummary;
-                        pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
                     }
-                    if (loyaltyPointsMessages.programId.equals("RBC Bonus")) {
+
+                    if (loyaltyPointsMessages.programId.contains("Bonus")) {
                         bonusPoints += loyaltyPointsMessages.earnedRewardSummary;
-                        pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
                     }
 
-                    if (loyaltyPointsMessages.programId.equals("HBC Bonus")) {
-                        bonusPoints += loyaltyPointsMessages.earnedRewardSummary;
-                        pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
-                    }
-
-                    if (loyaltyPointsMessages.programId.equalsIgnoreCase("Others")) {
-                        bonusPoints += loyaltyPointsMessages.earnedRewardSummary;
-                        pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
-
-                    }
-
+                    pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
                 }
 
                 this.pointsRedeemed = (int) pointsRedeemed;

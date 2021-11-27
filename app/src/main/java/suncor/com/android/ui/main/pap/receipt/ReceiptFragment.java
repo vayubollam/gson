@@ -48,6 +48,7 @@ public class ReceiptFragment extends MainActivityFragment {
     private String transactionId;
     private boolean isGooglePay;
     private String preAuthRedeemPoints;
+    private String availablePoints;
     private int updatedPoints;
     private boolean isReceiptValid = false;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
@@ -81,6 +82,7 @@ public class ReceiptFragment extends MainActivityFragment {
         transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
         preAuthRedeemPoints = ReceiptFragmentArgs.fromBundle(getArguments()).getPreAuthRedeemPoints();
         isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
+        availablePoints = ReceiptFragmentArgs.fromBundle(getArguments()).getAvailablePoints();
 
         observeTransactionData(transactionId);
 

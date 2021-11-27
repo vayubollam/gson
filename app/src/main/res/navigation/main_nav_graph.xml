@@ -629,6 +629,10 @@
         <argument
             android:name="preAuthRedeemPoints"
             app:argType="string"/>
+
+        <argument
+            android:name="availablePoints"
+            app:argType="string"/>
     </action>
 
     <keep_state_fragment
@@ -693,6 +697,10 @@
         <argument
             android:name="preAuthRedeemPoints"
             app:argType="string"/>
+
+        <argument
+            android:name="availablePoints"
+            app:argType="string"/>
     </action>
 
     <keep_state_fragment
@@ -711,6 +719,13 @@
             app:argType="string"
             app:nullable="true"/>
 
+        <argument
+            android:name="availablePoints"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+
+
         <action
             android:id="@+id/action_fuelling_to_ReceiptFragment"
             app:destination="@id/receiptFragment"
@@ -727,6 +742,10 @@
 
             <argument
                 android:name="preAuthRedeemPoints"
+                app:argType="string"/>
+
+            <argument
+                android:name="availablePoints"
                 app:argType="string"/>
         </action>
 
@@ -772,6 +791,10 @@
             <argument
                 android:name="preAuthRedeemPoints"
                 app:argType="string"/>
+
+            <argument
+                android:name="availablePoints"
+                app:argType="string"/>
         </action>
     </keep_state_fragment>
 
@@ -796,6 +819,13 @@
             android:defaultValue="null"
             app:argType="string"
             app:nullable="true"/>
+
+        <argument
+            android:name="availablePoints"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+
     </keep_state_fragment>
 
 

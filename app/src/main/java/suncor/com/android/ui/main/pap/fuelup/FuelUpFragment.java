@@ -126,8 +126,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
 
-        LocationLiveData locationLiveData = new LocationLiveData(getContext().getApplicationContext());
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+        LocationLiveData locationLiveData = new LocationLiveData(requireContext().getApplicationContext());
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
             locationLiveData.observe(this, result -> {
                 viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
             });
@@ -238,7 +238,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -300,9 +300,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 .getSavedStateHandle()
                 .getLiveData("tempPayment");
 
-        liveData.observe(getActivity(), paymentDetail -> {
+        liveData.observe(requireActivity(), paymentDetail -> {
             // Do something with the result.
-            paymentDropDownAdapter.addPayment(new PaymentListItem(getContext(), paymentDetail), true);
+            paymentDropDownAdapter.addPayment(new PaymentListItem(requireContext(), paymentDetail), true);
             this.userPaymentId = paymentDetail.getId();
         });
 
@@ -311,7 +311,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 .getSavedStateHandle()
                 .getLiveData("selectedPayment");
 
-        selectedPaymentLiveData.observe(getActivity(), userPaymentSourceId -> {
+        selectedPaymentLiveData.observe(requireActivity(), userPaymentSourceId -> {
             this.userPaymentId = userPaymentSourceId;
 
             // Do something with the result.
@@ -399,7 +399,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override
@@ -462,7 +462,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices,Integer.parseInt(preAuthRedeemPoints), Integer.parseInt(userPaymentId), kountSessionId).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
-                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
+                        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
                     } else if (result.status == Resource.Status.ERROR) {
                         isLoading.set(false);
                         handleAuthorizationFail(result.message);
@@ -473,9 +473,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                                 new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
 
-                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints);
-                        Navigation.findNavController(getView()).popBackStack();
-                        Navigation.findNavController(getView()).navigate(action);
+                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, viewModel.getPetroPointsBalance());
+                        Navigation.findNavController(requireView()).popBackStack();
+                        Navigation.findNavController(requireView()).navigate(action);
                     }
                 });
             } catch (ParseException ex) {
@@ -551,7 +551,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                     .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
             Executor executor = Executors.newSingleThreadExecutor();
-            BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
+            BiometricPrompt biometricPrompt = new BiometricPrompt(requireActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
@@ -581,7 +581,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize");
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize");
     }
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
@@ -590,7 +590,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices,Integer.parseInt(preAuthRedeemPoints), paymentToken, kountSessionId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
-                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 handleAuthorizationFail(result.message);
@@ -601,7 +601,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton),
                         new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
 
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints);
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, viewModel.getPetroPointsBalance());
                 Navigation.findNavController(requireView()).popBackStack();
                 Navigation.findNavController(requireView()).navigate(action);
             }
@@ -619,14 +619,14 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         new Pair<>(AnalyticsUtils.Param.detailMessage, "Transaction fails, errorCode : " + errorCode),
                         new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
 
-                 transactionFailsAlert(getContext()).show();
+                 transactionFailsAlert(requireContext()).show();
                 break;
             case ErrorCodes.ERR_PUMP_RESERVATION_FAILS:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                         new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
                         new Pair<>(AnalyticsUtils.Param.detailMessage, "Pump Registration fails, errorCode : " + errorCode),
                         new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
-                pumpReservationFailsAlert(getContext()).show();
+                pumpReservationFailsAlert(requireContext()).show();
                 break;
             default:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,

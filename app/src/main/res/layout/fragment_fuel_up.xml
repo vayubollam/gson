@@ -282,13 +282,5 @@
                 android:src="@drawable/ic_card"
                 android:tint="@color/red" />
         </RelativeLayout>
-
-
-
-
-
-
     </RelativeLayout>
-
-
 </layout>
