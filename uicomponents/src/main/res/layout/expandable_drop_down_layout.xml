@@ -29,7 +29,7 @@
             android:id="@+id/selected_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:layout_marginStart="6dp"
             android:orientation="vertical">
 
@@ -49,6 +49,17 @@
                     android:visibility="visible"
                     tools:text="$100.00"/>
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/bonus_values"
+                    android:textColor="@color/red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingLeft="4dp"
+                    app:autoSizeTextType="uniform"
+                    android:visibility="gone"
+                    tools:text="+2 bonus days"/>
+
                 <ImageView
                     android:id="@+id/google_pay"
                     android:layout_width="75dp"
@@ -67,6 +78,16 @@
                 android:textSize="14sp"
                 app:autoSizeTextType="uniform"
                 android:visibility="gone"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/discount_prices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="14sp"
+                app:autoSizeTextType="uniform"
+                android:visibility="gone"/>
+
 
         </LinearLayout>
 

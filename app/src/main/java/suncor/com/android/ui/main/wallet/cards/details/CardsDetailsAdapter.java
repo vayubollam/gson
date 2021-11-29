@@ -19,10 +19,18 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     private Consumer<ExpandedCardItem> callBack;
     private View.OnClickListener activeWashListener;
 
-    public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener) {
+    private View.OnClickListener cardReloadListener;
+    private View.OnClickListener gpaySaveToWalletListener;
+
+
+    public CardsDetailsAdapter( Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
+                               View.OnClickListener cardReloadListener, View.OnClickListener gpaySaveToWalletListener) {
         this.callBack = callBack;
         this.activeWashListener = activeWashListener;
-   }
+        this.cardReloadListener = cardReloadListener;
+        this.gpaySaveToWalletListener = gpaySaveToWalletListener;
+    }
+
 
     @NonNull
     @Override
@@ -35,6 +43,10 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public void onBindViewHolder(@NonNull CardsDetailHolder holder, int position) {
         holder.binding.setCard(cardItems.get(position));
         holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
+        if(holder.binding.cardReloadButton.isShown()) {
+            holder.binding.cardReloadButton.setOnClickListener(cardReloadListener);
+        }
+        holder.binding.savetowallet.setOnClickListener(gpaySaveToWalletListener);
     }
 
     public void removeCard(ExpandedCardItem expandedCardItem) {
