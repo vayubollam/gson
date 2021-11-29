@@ -72,8 +72,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         eGiftCard.setTitle(merchantItem.getLocalizedMerchantName());
                         eGiftCard.setPoints(merchantItem.getPointsMerchantName());
                         eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
-                        eGiftCard.setHowToUse(merchantItem.getRedeemingDescription());
-                        eGiftCard.setHowToRedeem(getContext().getString(R.string.how_to_use_petrocanada));
+                        eGiftCard.setHowToRedeem(merchantItem.getRedeemingDescription());
+                        eGiftCard.setHowToUse(getContext().getString(R.string.how_to_use_petrocanada));
                         eGiftCard.setDataDynamic(true);
                         eGiftCard.setMoreGIftCard(false);
                         eGiftCard.seteGifts(m.geteGifts());
