@@ -130,6 +130,7 @@ public class ReceiptFragment extends MainActivityFragment {
 
                 sessionManager.retrieveProfile((profile) -> {
                     updatedPoints = profile.getPointsBalance();
+  //                  transaction.setCurrentBalance(updatedPoints);
 
                 }, (error) -> {
                     // Handling can be made for the error
@@ -145,10 +146,10 @@ public class ReceiptFragment extends MainActivityFragment {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
-                binding.setTransaction(result.data);
-
-
-                transaction.setCurrentBalance(updatedPoints);
+                transaction = result.data;
+                binding.setTransaction(transaction);
+                String points = availablePoints;
+                transaction.setCurrentBalance(Integer.parseInt(points));
                 int burnedPoints =  transaction.getBurnedPoints();
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
@@ -159,7 +160,6 @@ public class ReceiptFragment extends MainActivityFragment {
 
 
                 AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints );
-
                 if(result.data.getRbcAlongWithRedemptionSavings() >0.0){
 
                     binding.greetingsSaving.setVisibility(View.VISIBLE);
