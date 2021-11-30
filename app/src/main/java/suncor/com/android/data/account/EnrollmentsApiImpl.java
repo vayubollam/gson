@@ -28,6 +28,8 @@ import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
+import static suncor.com.android.utilities.ApiKeys.ACCEPT_LANGUAGE;
+
 public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/enrollments";
     private final static String GET_SECURITY_QUESTIONS_FOR_ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/enrollments/security-questions";
@@ -47,9 +49,9 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
             URI adapterPath = new URI(ENROLLMENT_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                request.addHeader("Accept-Language", "fr-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
             } else {
-                request.addHeader("Accept-Language", "en-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "en-CA");
             }
             JSONObject body = new JSONObject(gson.toJson(account));
             request.send(body, new WLResponseListener() {
@@ -95,9 +97,9 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
             adapterPath = new URI(GET_SECURITY_QUESTIONS_FOR_ENROLLMENT_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                request.addHeader("Accept-Language", "fr-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
             } else {
-                request.addHeader("Accept-Language", "en-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "en-CA");
             }
             request.send(new WLResponseListener() {
                 @Override

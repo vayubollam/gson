@@ -43,6 +43,8 @@ public class BindingAdapters {
             case 2:
                 amenitiesMap = Station.WASH_AMENITIES;
                 break;
+            default:
+                //do nothing
         }
         if (amenitieType == 0 || amenitieType == 1) {
             for (String amenitie : station.getAmenities()) {

@@ -26,7 +26,7 @@ public class FavouriteMock implements FavouriteRepository {
 
     @Override
     public void observeSessionChanges() {
-
+        //do nothing
     }
 
     @Override

@@ -27,6 +27,8 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
+import static suncor.com.android.utilities.ApiKeys.ACCEPT_LANGUAGE;
+
 public class ProfilesApiImpl implements ProfilesApi {
     private static final String EDIT_PROFILES_ADAPTER_PATH = "/adapters/suncor/v9/rfmp-secure/profiles";
     private static final String GET_SECURITY_QUESTION_ON_PROFILES_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/profiles/security-question";
@@ -54,9 +56,9 @@ public class ProfilesApiImpl implements ProfilesApi {
             JSONObject body = new JSONObject(gson.toJson(profileRequest));
             Timber.d("Sending request\n" + body.toString());
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                request.addHeader("Accept-Language", "fr-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
             } else {
-                request.addHeader("Accept-Language", "en-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "en-CA");
             }
             request.send(body, new WLResponseListener() {
                 @Override
@@ -90,9 +92,9 @@ public class ProfilesApiImpl implements ProfilesApi {
             adapterPath = new URI(GET_SECURITY_QUESTION_ON_PROFILES_ADAPTER_PATH);
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                request.addHeader("Accept-Language", "fr-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
             } else {
-                request.addHeader("Accept-Language", "en-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "en-CA");
             }
             request.send(new WLResponseListener() {
                 @Override

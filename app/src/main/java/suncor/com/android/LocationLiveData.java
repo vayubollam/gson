@@ -60,11 +60,17 @@ public class LocationLiveData extends LiveData<Location> {
             }
         }
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) { }
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // do nothing
+        }
         @Override
-        public void onProviderEnabled(String provider) { }
+        public void onProviderEnabled(String provider) {
+            // do nothing
+        }
         @Override
-        public void onProviderDisabled(String provider) { }
+        public void onProviderDisabled(String provider) {
+            // do nothing
+        }
     };
 
     public LocationLiveData(Context context, boolean useLastKnownLocation) {

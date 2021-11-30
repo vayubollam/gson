@@ -25,6 +25,7 @@ import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
+import suncor.com.android.utilities.ApiKeys;
 import suncor.com.android.utilities.Timber;
 
 @Singleton
@@ -67,11 +68,11 @@ public class DistanceApi {
                 if (response.isSuccessful()) {
                     try {
                         JSONObject jsonObj = new JSONObject(response.body().string());
-                        String status = jsonObj.getString("status");
+                        String status = jsonObj.getString(ApiKeys.STATUS);
                         Timber.d("Distance result for " + origin + " to " + dest + " is " + status);
                         if (status.equals("OK")) {
                             JSONObject distanceResult = jsonObj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-                            if ("OK".equals(distanceResult.getString("status"))) {
+                            if ("OK".equals(distanceResult.getString(ApiKeys.STATUS))) {
                                 Location locationA = new Location("point A");
 
                                 locationA.setLatitude(origin.latitude);
@@ -89,7 +90,7 @@ public class DistanceApi {
                                                 (int) distance,
                                                 distanceResult.getJSONObject("duration").getInt("value"))));
                             } else {
-                                result.postValue(Resource.error(distanceResult.getString("status"), null));
+                                result.postValue(Resource.error(distanceResult.getString(ApiKeys.STATUS), null));
                             }
                         } else {
                             result.postValue(Resource.error(status, null));

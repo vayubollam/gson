@@ -84,9 +84,13 @@ public class AnalyticsUtils {
         }
     }
 
-    public static String userID;
+    public static volatile String userID;
     public static CardType currentCardType;
     public static int buildNumber;
+
+    public static void setUserId(String userId){
+         userID = userId;
+    }
 
     @SafeVarargs
     public static void logEvent(Context context, String eventName, Pair<String, String>... variables) {
