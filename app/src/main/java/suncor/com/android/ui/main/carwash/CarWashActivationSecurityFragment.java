@@ -320,6 +320,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            //do nothing
         }
 
         @Override
@@ -344,6 +345,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
         @Override
         public void afterTextChanged(Editable editable) {
+            //do nothing
         }
     }
 

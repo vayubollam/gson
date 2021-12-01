@@ -14,6 +14,8 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.Transaction;
 import suncor.com.android.utilities.Timber;
 
+import static suncor.com.android.utilities.CommonUtils.getMockResponse;
+
 public class TransactionsMock implements TransactionApi {
     @Override
     public LiveData<Resource<ArrayList<Transaction>>> getTransactions(String cardId, int startMonth, int monthsBack) {
@@ -27,101 +29,7 @@ public class TransactionsMock implements TransactionApi {
             }
             String jsonText;
             if (startMonth == 7) {
-                jsonText = "[\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
-                        "                                \"basePoints\": -10000,\n" +
-                        "                                \"bonusPoints\": 0,\n" +
-                        "                                \"totalPoints\": -10000,\n" +
-                        "                                \"purchaseAmount\": 0.00,\n" +
-                        "                                \"rewardDescription\": \"SWP PPTS SUPERWORKS\",\n" +
-                        "                                \"locationAddress\": \"3100 Ellesmere Road, Scarborough ON - M1E4C2\"\n" +
-                        "                            },\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-07-09T00:00:00\",\n" +
-                        "                                \"basePoints\": 304,\n" +
-                        "                                \"bonusPoints\": 183,\n" +
-                        "                                \"totalPoints\": 487,\n" +
-                        "                                \"purchaseAmount\": 32.91,\n" +
-                        "                                \"rewardDescription\": \"\",\n" +
-                        "                                \"locationAddress\": \"3100 Ellesmere Road, Scarborough ON - M1E4C2\"\n" +
-                        "                            },\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
-                        "                                \"basePoints\": 0,\n" +
-                        "                                \"bonusPoints\": 1000,\n" +
-                        "                                \"totalPoints\": 1000,\n" +
-                        "                                \"purchaseAmount\": 0.00,\n" +
-                        "                                \"rewardDescription\": \"\",\n" +
-                        "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
-                        "                            },\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
-                        "                                \"basePoints\": 0,\n" +
-                        "                                \"bonusPoints\": 1000,\n" +
-                        "                                \"totalPoints\": 1000,\n" +
-                        "                                \"purchaseAmount\": 8.00,\n" +
-                        "                                \"rewardDescription\": \"\",\n" +
-                        "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
-                        "                            },\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-07-11T00:00:00\",\n" +
-                        "                                \"basePoints\": 0,\n" +
-                        "                                \"bonusPoints\": 1000,\n" +
-                        "                                \"totalPoints\": 1000,\n" +
-                        "                                \"purchaseAmount\": 0.50,\n" +
-                        "                                \"rewardDescription\": \"\",\n" +
-                        "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
-                        "                            }\n" +
-                        "                        ]";
-            } else if (startMonth == 6) {
-                jsonText = "[\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"redemption\",\n" +
-                        "                                \"date\": \"2019-04-09T00:00:00\",\n" +
-                        "                                \"basePoints\": -10000,\n" +
-                        "                                \"bonusPoints\": 0,\n" +
-                        "                                \"totalPoints\": -10000,\n" +
-                        "                                \"purchaseAmount\": 0.00,\n" +
-                        "                                \"rewardDescription\": \"SWP PPTS SUPERWORKS\",\n" +
-                        "                                \"locationAddress\": \"3100 Ellesmere Road, Scarborough ON - M1E4C2\"\n" +
-                        "                            },\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"purchase\",\n" +
-                        "                                \"date\": \"2019-04-09T00:00:00\",\n" +
-                        "                                \"basePoints\": 304,\n" +
-                        "                                \"bonusPoints\": 183,\n" +
-                        "                                \"totalPoints\": 487,\n" +
-                        "                                \"purchaseAmount\": 32.91,\n" +
-                        "                                \"rewardDescription\": \"\",\n" +
-                        "                                \"locationAddress\": \"3100 Ellesmere Road, Scarborough ON - M1E4C2\"\n" +
-                        "                            },\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-04-11T00:00:00\",\n" +
-                        "                                \"basePoints\": 0,\n" +
-                        "                                \"bonusPoints\": 1000,\n" +
-                        "                                \"totalPoints\": 1000,\n" +
-                        "                                \"purchaseAmount\": 0.00,\n" +
-                        "                                \"rewardDescription\": \"\",\n" +
-                        "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
-                        "                            },\n" +
-                        "                            {\n" +
-                        "                                \"transactionType\": \"bonus\",\n" +
-                        "                                \"date\": \"2019-04-11T00:00:00\",\n" +
-                        "                                \"basePoints\": 0,\n" +
-                        "                                \"bonusPoints\": 1000,\n" +
-                        "                                \"totalPoints\": 1000,\n" +
-                        "                                \"purchaseAmount\": 0.00,\n" +
-                        "                                \"rewardDescription\": \"\",\n" +
-                        "                                \"locationAddress\": \"Online/Petro-Points Partner\"\n" +
-                        "                            }\n" +
-                        "                        ]";
+                jsonText = getMockResponse(null, "transactionsApiResponse.json");
             } else {
                 jsonText = "[]";
             }

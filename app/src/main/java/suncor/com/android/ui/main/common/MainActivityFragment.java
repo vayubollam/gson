@@ -21,7 +21,7 @@ public class MainActivityFragment extends BaseFragment {
     private boolean insetsApplyed;
 
     public void onLoginStatusChanged() {
-
+        //do nothing
     }
 
     @Override

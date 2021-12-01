@@ -45,6 +45,7 @@ public class CardQuestionFragment extends BaseFragment {
     ViewModelFactory viewModelFactory;
 
     public CardQuestionFragment() {
+        //do nothing
     }
 
     @Override
@@ -136,7 +137,7 @@ public class CardQuestionFragment extends BaseFragment {
         set.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                //do nothing
             }
 
             @Override
@@ -150,7 +151,7 @@ public class CardQuestionFragment extends BaseFragment {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                //do nothing
             }
         });
     }

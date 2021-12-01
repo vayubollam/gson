@@ -24,7 +24,7 @@ import suncor.com.android.model.resetpassword.ResetPasswordRequest;
 import suncor.com.android.model.resetpassword.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
-import static suncor.com.android.utilities.ApiKeys.ACCEPT_LANGUAGE;
+import static suncor.com.android.utilities.Constants.ACCEPT_LANGUAGE;
 
 public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
 

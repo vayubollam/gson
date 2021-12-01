@@ -45,6 +45,8 @@ import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
+import static suncor.com.android.utilities.Constants.CARWASH_TICKET;
+
 public class SingleTicketFragment extends MainActivityFragment implements OnBackPressedListener {
 
     @Inject
@@ -72,7 +74,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         animFromBottom.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                //do nothing
             }
 
             @Override
@@ -84,7 +86,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                //do nothing
             }
         });
 
@@ -117,7 +119,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                         String analyticName = getString(R.string.msg_e030_title)+"("+getString(R.string.msg_e030_message)+")";
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                                        new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
+                                        new Pair<>(AnalyticsUtils.Param.formName, CARWASH_TICKET)
                         );
                         new AlertDialog.Builder(getContext())
                                 .setTitle(R.string.msg_e030_title)
@@ -126,14 +128,14 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                                             new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.msg_e030_message)),
-                                            new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
+                                            new Pair<>(AnalyticsUtils.Param.formName, CARWASH_TICKET)
                                     );
                                     dialog.dismiss();
                                 })
                                 .create()
                                 .show();
                     } else {
-                        Alerts.prepareGeneralErrorDialog(getActivity(), "Carwash Ticket").show();
+                        Alerts.prepareGeneralErrorDialog(getActivity(), CARWASH_TICKET).show();
                     }
                     break;
             }
@@ -203,7 +205,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
         String analyticName = getString(R.string.single_ticket_add_to_account_help_title)+"("+getString(R.string.single_ticket_add_to_account_help_message)+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
+                new Pair<>(AnalyticsUtils.Param.formName, CARWASH_TICKET)
         );
         Dialog dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.single_ticket_add_to_account_help_title)
@@ -213,7 +215,7 @@ public class SingleTicketFragment extends MainActivityFragment implements OnBack
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.ok)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Carwash Ticket" )
+                            new Pair<>(AnalyticsUtils.Param.formName, CARWASH_TICKET)
                     );
                 })
                 .create();

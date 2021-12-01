@@ -87,30 +87,34 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         @Override
         public void onBuffering(boolean b) {
-
+            //do nothing
         }
 
         @Override
         public void onSeekTo(int i) {
-
+            //do nothing
         }
     };
 
     YouTubePlayer.PlayerStateChangeListener mPlayerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
         @Override
         public void onAdStarted() {
+            //do nothing
         }
 
         @Override
         public void onError(YouTubePlayer.ErrorReason arg0) {
+            //do nothing
         }
 
         @Override
         public void onLoaded(String arg0) {
+            //do nothing
         }
 
         @Override
         public void onLoading() {
+            //do nothing
         }
 
         @Override
@@ -149,6 +153,6 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
     };
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
+        //do nothing
     }
 }

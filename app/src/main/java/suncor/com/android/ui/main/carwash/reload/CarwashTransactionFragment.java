@@ -83,6 +83,7 @@ import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.utilities.Constants.PUMP_PRE_AUTHORIZED;
 
 public class CarwashTransactionFragment extends MainActivityFragment implements ExpandableViewListener,
         PaymentDropDownCallbacks, CardReloadValuesDropDownAdapter.CardReloadValuesCallbacks, CardsDropDownAdapter.CardCallbacks {
@@ -184,7 +185,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
                 paymentDropDownAdapter.setSelectedPos(userPaymentId);
                 checkForGooglePayOptions();
-                Alerts.prepareGeneralErrorDialog(getContext(),"Pump PreAuthorized").show();
+                Alerts.prepareGeneralErrorDialog(getContext(),PUMP_PRE_AUTHORIZED).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 List<PaymentListItem> payments = result.data;
                 paymentDropDownAdapter.addPayments(payments);
@@ -239,7 +240,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 if (result.status == Resource.Status.LOADING) {
                     //hideKeyBoard();
                 } else if (result.status == Resource.Status.ERROR) {
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
+                    Alerts.prepareGeneralErrorDialog(getContext(), PUMP_PRE_AUTHORIZED).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     viewModel.setTransactionReloadData(result.data);
                     viewModel.setLastSelectedValue(cardType.equals("SP") ? "90" : "5");
@@ -306,7 +307,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     public void onPaymentChanged(String userPaymentId) {
         this.userPaymentId = userPaymentId;
 
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, PUMP_PRE_AUTHORIZED),
                 new Pair<>(AnalyticsUtils.Param.formSelection,userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY) ? PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY : "credit_card"));
     }
 

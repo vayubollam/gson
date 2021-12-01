@@ -50,6 +50,16 @@ import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 
+import static suncor.com.android.utilities.Constants.ACTION_MENU;
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.HOME;
+
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
     public static final String LOGGED_OUT_DUE_PASSWORD_CHANGE = "password_change_requires_re_login";
@@ -78,14 +88,14 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         @Override
         public void onReceive(Context context, Intent intent) {
             if (LOGGED_OUT_DUE_CONFLICTING_LOGIN.equals(intent.getAction())) {
-                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", LOGGED_OUT_DUE_CONFLICTING_LOGIN),
-                        new Pair<>("formName","Home"));
+                AnalyticsUtils.logEvent(application.getApplicationContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, LOGGED_OUT_DUE_CONFLICTING_LOGIN),
+                        new Pair<>(FORM_NAME,HOME));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")"),
-                        new Pair<>("alertSelection",getString(R.string.login_conflict_alert_positive_button)),
-                            new Pair<>("formName","Home")
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT_INTERACTION,
+                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")"),
+                        new Pair<>(ALERT_SELECTION,getString(R.string.login_conflict_alert_positive_button)),
+                            new Pair<>(FORM_NAME, HOME)
                     );
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
                     homeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -93,9 +103,9 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
                 adb.setMessage(getResources().getString(R.string.alert_signed_out_conflicting_login));
-                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
-                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")"),
-                        new Pair<>("formName","Home")
+                AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT,
+                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")"),
+                        new Pair<>(FORM_NAME, HOME)
                 );
                 adb.show();
             }
@@ -107,22 +117,22 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         public void onReceive(Context context, Intent intent) {
             if (LOGGED_OUT_DUE_PASSWORD_CHANGE.equals(intent.getAction()) && !autoLoginFailed) {
                 navController.navigate(R.id.action_global_home_tab);
-                AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", LOGGED_OUT_DUE_PASSWORD_CHANGE));
+                AnalyticsUtils.logEvent(application.getApplicationContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, LOGGED_OUT_DUE_PASSWORD_CHANGE));
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")"),
-                        new Pair<>("alertSelection",getString(R.string.login_conflict_alert_positive_button)),
-                            new Pair<>("formName","Home")
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT_INTERACTION,
+                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")"),
+                        new Pair<>(ALERT_SELECTION,getString(R.string.login_conflict_alert_positive_button)),
+                            new Pair<>(FORM_NAME,HOME)
                     );
                     Intent loginActivityIntent = new Intent(MainActivity.this, LoginActivity.class);
                     MainActivity.this.startActivity(loginActivityIntent);
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
                 adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
-                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
-                        new Pair<>("alertTitle", getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")"),
-                        new Pair<>("formName","Home")
+                AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT,
+                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")"),
+                        new Pair<>(FORM_NAME,HOME)
                 );
                 adb.show();
             }
@@ -154,10 +164,10 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton = findViewById(R.id.action_float_button);
         actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
-            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, "Action Menu"));
+            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, ACTION_MENU));
 
-            if (getSupportFragmentManager().findFragmentByTag("ActionMenu") == null)
-                actionMenuFragment.show(getSupportFragmentManager(), "ActionMenu");
+            if (getSupportFragmentManager().findFragmentByTag(ACTION_MENU) == null)
+                actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU);
         });
 
         bottomNavigation = findViewById(R.id.bottom_navigation);

@@ -68,6 +68,7 @@ import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.utilities.Constants.*;
 
 public class HomeFragment extends BottomNavigationFragment {
 
@@ -361,25 +362,25 @@ public class HomeFragment extends BottomNavigationFragment {
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                new Pair<>("formName","Home")
+        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT,
+                new Pair<>(ALERT_TITLE, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                new Pair<>(FORM_NAME,HOME)
         );
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection", getString(R.string.cancel)),
-                    new Pair<>("alertTitle","home"),
-                    new Pair<>("formName","Home")
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                    new Pair<>(ALERT_TITLE, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                    new Pair<>(ALERT_SELECTION, getString(R.string.cancel)),
+                    new Pair<>(ALERT_TITLE, HOME),
+                    new Pair<>(FORM_NAME, ALERT_SELECTION)
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                    new Pair<>("alertTitle", getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                    new Pair<>("alertSelection", getString(R.string.ok)),
-                    new Pair<>("formName","Home")
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                    new Pair<>(ALERT_TITLE, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
+                    new Pair<>(ALERT_SELECTION, getString(R.string.ok)),
+                    new Pair<>(FORM_NAME, HOME)
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
@@ -503,15 +504,15 @@ public class HomeFragment extends BottomNavigationFragment {
                 if (result.status == Resource.Status.LOADING) {
                 } else if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side" ),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, SOMETHING_WRONG),
+                            new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                    Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
-                        if(result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")){
+                        if(result.data.status.equalsIgnoreCase(NEW) || result.data.status.equalsIgnoreCase(AUTHORIZED)){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                         }
                         // TODO: handle processing and session end state
@@ -525,7 +526,7 @@ public class HomeFragment extends BottomNavigationFragment {
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
                         }
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
@@ -533,8 +534,8 @@ public class HomeFragment extends BottomNavigationFragment {
                     } else {
                         if (mViewModel.activeFuellingSession.get()) {
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
-                                    new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                                    new Pair<>(AnalyticsUtils.Param.formSelection, FUELING_COMPLETE),
+                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
                         }
 
                         mViewModel.updateFuellingSession(false, "");

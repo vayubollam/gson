@@ -88,6 +88,14 @@ public class AnalyticsUtils {
     public static CardType currentCardType;
     public static int buildNumber;
 
+    public static int getBuildNumber() {
+        return buildNumber;
+    }
+
+    public static void setBuildNumber(int buildNumber) {
+        buildNumber = buildNumber;
+    }
+
     public static void setUserId(String userId){
          userID = userId;
     }

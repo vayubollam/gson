@@ -116,8 +116,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                     }
                 }
                 
-                if (jsonObject.has("errorCode")) {
-                    String errorCode = jsonObject.get("errorCode").toString();
+                if (jsonObject.has(ERROR_CODE)) {
+                    String errorCode = jsonObject.get(ERROR_CODE).toString();
                     String messageCode = jsonObject.get("messageId").toString();
                     if (errorCode.equals("SUNCOR013")  && messageCode.isEmpty()) {
                         listener.onLoginFailed(SigninResponse.unexpectedFailure());

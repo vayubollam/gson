@@ -37,6 +37,8 @@ import suncor.com.android.utilities.BiometricListener;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
 
+import static suncor.com.android.utilities.Constants.LOGIN;
+
 public class LoginFragment extends BaseFragment {
 
     @Inject
@@ -58,7 +60,7 @@ public class LoginFragment extends BaseFragment {
     private static final String CREDENTIALS_KEY = "credentials";
 
     public LoginFragment() {
-
+        //do nothing
     }
 
     public static LoginFragment newInstance(boolean fromEnrollment, boolean fromResetPassword, String email) {
@@ -107,8 +109,8 @@ public class LoginFragment extends BaseFragment {
                             getActivity().finish();
                         }
                         fingerPrintManager.activateAutoLogin();
-                        AnalyticsUtils.logEvent(getContext(), "login");
-                        AnalyticsUtils.setCurrentScreenName(getActivity(), "login");
+                        AnalyticsUtils.logEvent(getContext(), LOGIN);
+                        AnalyticsUtils.setCurrentScreenName(getActivity(), LOGIN);
                     }
                 }
         );
@@ -205,7 +207,7 @@ public class LoginFragment extends BaseFragment {
 
                     @Override
                     public void onFailed() {
-
+                        //do nothing
                     }
                 });
 
@@ -217,7 +219,7 @@ public class LoginFragment extends BaseFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
         AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage, getString(response.title)),
-                new Pair<>(AnalyticsUtils.Param.formName, "Login"));
+                new Pair<>(AnalyticsUtils.Param.formName, LOGIN));
         if (response.message.args != null) {
             message = getString(response.message.content, response.message.args);
         } else {
@@ -226,7 +228,7 @@ public class LoginFragment extends BaseFragment {
         String analyticName = getString(response.title) + "("+message+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                new Pair<>(AnalyticsUtils.Param.formName, "Login")
+                new Pair<>(AnalyticsUtils.Param.formName, LOGIN)
         );
         builder.setMessage(message)
                 .setTitle(response.title);
@@ -234,7 +236,7 @@ public class LoginFragment extends BaseFragment {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(response.positiveButtonTitle)),
-                    new Pair<>(AnalyticsUtils.Param.formName, "Login")
+                    new Pair<>(AnalyticsUtils.Param.formName, LOGIN)
             );
             if (response.positiveButtonCallback != null) {
                 response.positiveButtonCallback.call();

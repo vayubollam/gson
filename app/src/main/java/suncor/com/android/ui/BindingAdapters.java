@@ -98,11 +98,12 @@ public class BindingAdapters {
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //do nothing
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                //do nothing
             }
 
             @Override
@@ -135,12 +136,12 @@ public class BindingAdapters {
             errorInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                    //do nothing
                 }
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                    //do nothing
                 }
 
                 @Override

@@ -27,7 +27,7 @@ import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Consumer;
 import suncor.com.android.utilities.Timber;
 
-import static suncor.com.android.utilities.ApiKeys.ACCEPT_LANGUAGE;
+import static suncor.com.android.utilities.Constants.ACCEPT_LANGUAGE;
 
 public class ProfilesApiImpl implements ProfilesApi {
     private static final String EDIT_PROFILES_ADAPTER_PATH = "/adapters/suncor/v9/rfmp-secure/profiles";

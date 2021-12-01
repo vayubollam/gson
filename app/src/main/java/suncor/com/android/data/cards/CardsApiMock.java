@@ -1,15 +1,10 @@
 package suncor.com.android.data.cards;
 
-import android.app.Activity;
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,9 +12,12 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
 
+import static suncor.com.android.utilities.CommonUtils.getMockResponse;
+
 public class CardsApiMock implements CardsApi {
     ArrayList<CardDetail> cardDetails;
-    private String responseJson = getCardsApiResponse(null);
+
+    private String responseJson = getMockResponse(null, "cardsApiResponse.json");
 
     @Override
     public LiveData<Resource<ArrayList<CardDetail>>> retrieveCards() {
@@ -76,21 +74,5 @@ public class CardsApiMock implements CardsApi {
         });
         thread.start();
         return result;
-    }
-
-    private String getCardsApiResponse(Context context) {
-        String json = null;
-        try {
-            InputStream is = context.getAssets().open("cardsApiResponse.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
     }
 }

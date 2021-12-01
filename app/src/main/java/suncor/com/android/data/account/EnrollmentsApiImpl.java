@@ -28,7 +28,7 @@ import suncor.com.android.model.account.NewEnrollment;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
-import static suncor.com.android.utilities.ApiKeys.ACCEPT_LANGUAGE;
+import static suncor.com.android.utilities.Constants.ACCEPT_LANGUAGE;
 
 public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/enrollments";
