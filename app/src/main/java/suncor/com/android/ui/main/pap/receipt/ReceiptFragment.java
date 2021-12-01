@@ -43,6 +43,10 @@ import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STO
 
 public class ReceiptFragment extends MainActivityFragment {
 
+    @Inject
+    SessionManager sessionManager;
+    @Inject
+    ViewModelFactory viewModelFactory;
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
     private String transactionId;
@@ -51,13 +55,7 @@ public class ReceiptFragment extends MainActivityFragment {
     private String availablePoints;
     private int updatedPoints;
     private boolean isReceiptValid = false;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
-
-    @Inject
-    SessionManager sessionManager;
-
-    @Inject
-    ViewModelFactory viewModelFactory;
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,8 +110,8 @@ public class ReceiptFragment extends MainActivityFragment {
         AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
     }
 
-    private void observeTransactionData(String transactionId){
-        viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result->{
+    private void observeTransactionData(String transactionId) {
+        viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
@@ -130,7 +128,7 @@ public class ReceiptFragment extends MainActivityFragment {
 
                 sessionManager.retrieveProfile((profile) -> {
                     updatedPoints = profile.getPointsBalance();
-  //                  transaction.setCurrentBalance(updatedPoints);
+                    //                  transaction.setCurrentBalance(updatedPoints);
 
                 }, (error) -> {
                     // Handling can be made for the error
@@ -139,7 +137,7 @@ public class ReceiptFragment extends MainActivityFragment {
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
+                if (Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()) {
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
                 } else {
@@ -148,9 +146,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 }
                 transaction = result.data;
                 binding.setTransaction(transaction);
-                String points = availablePoints;
+                String points = availablePoints.replace(",", "");
                 transaction.setCurrentBalance(Integer.parseInt(points));
-                int burnedPoints =  transaction.getBurnedPoints();
+                int burnedPoints = transaction.getBurnedPoints();
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
@@ -159,12 +157,12 @@ public class ReceiptFragment extends MainActivityFragment {
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
 
 
-                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints );
-                if(result.data.getRbcAlongWithRedemptionSavings() >0.0){
+                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
+                if (result.data.getRbcAlongWithRedemptionSavings() > 0.0) {
 
                     binding.greetingsSaving.setVisibility(View.VISIBLE);
                     binding.greetingsSaving.setText(String.format(getString(R.string.transaction_saved), result.data.getRbcAlongWithRedemptionSavingsMutableData()));
-                }else{
+                } else {
                     binding.greetingsSaving.setVisibility(View.GONE);
                 }
 
@@ -222,8 +220,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 // TODO: Handle error when launching in app review
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) Objects.requireNonNull(task.getException())).getErrorCode();
 
-                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
-                
+                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
+                }
+
                 goBack();
             }
         });

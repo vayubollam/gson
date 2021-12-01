@@ -64,7 +64,7 @@ public class Transaction {
     private int newBalance = 0;
 
 
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     public Address getAddress() {
         return address;
@@ -193,8 +193,8 @@ public class Transaction {
         return correspondingDollars;
     }
 
-    public int getCorrespondingDollarOff(){
-        return (int) (pointsRedeemed/1000.0);
+    public int getCorrespondingDollarOff() {
+        return (int) (pointsRedeemed / 1000.0);
     }
 
     public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData() {
@@ -235,19 +235,19 @@ public class Transaction {
         return bonusPointsEarnedMutableData;
     }
 
-    public int getBonusPoints(){
+    public int getBonusPoints() {
         return bonusPoints;
     }
 
-    public int getBasePoints(){
+    public int getBasePoints() {
         return basePoints;
     }
 
-    public int getPointsRedeemed(){
+    public int getPointsRedeemed() {
         return pointsRedeemed;
     }
 
-    public int getNewBalance(){
+    public int getNewBalance() {
         return newBalance;
     }
 
@@ -273,7 +273,7 @@ public class Transaction {
                 this.pointsRedeemed = (int) pointsRedeemed;
                 this.bonusPoints = (int) bonusPoints;
                 this.basePoints = (int) basePoints;
-                newBalance = currentBalance +this.basePoints+this.bonusPoints- this.pointsRedeemed;
+                newBalance = currentBalance + this.basePoints + this.bonusPoints - this.pointsRedeemed;
             } else {
                 this.pointsRedeemed = 0;
                 this.bonusPoints = 0;
