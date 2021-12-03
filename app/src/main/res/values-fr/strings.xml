@@ -501,7 +501,7 @@
 
     <string name="redeeming">Échange en cours…</string>
     <string name="points_redeemed">Points échangés</string>
-    <string name="thank_you">Merci %1$s!</string>
+    <string name="thank_you">Merci, %1$s!</string>
     <string name="redeem_done">Terminé</string>
     <string name="redeem_receipt_body">Vérifiez vos courriels pour trouver un lien menant à votre carte-cadeau électronique.</string>
     <string name="redeem_receipt_header">Votre reçu</string>
@@ -695,7 +695,7 @@
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
     <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte. Veuillez prévoir un délai de 24 heures avant de recevoir vos Petro-Points.</string>
-    <string name="transaction_summary">Résumé de votre transaction</string>
+    <string name="transaction_summary">Sommaire de votre transaction</string>
     <string name="transaction_saved">Vous avez économisé %1$s</string>
 
     <string name="transaction">Transactions</string>
