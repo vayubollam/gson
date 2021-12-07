@@ -167,7 +167,8 @@ public class CardDetail {
         PPTS, PETRO_CANADA, PARTNER
     }
 
-    public boolean isSuspendedCard(){
+   public boolean isSuspendedCard(){
         return (status != null && status.equals("Suspended"));
-    }
+   }
+
 }
