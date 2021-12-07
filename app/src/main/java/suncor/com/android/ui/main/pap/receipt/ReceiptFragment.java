@@ -147,7 +147,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 transaction = result.data;
                 binding.setTransaction(transaction);
                 String points = availablePoints.replace(",", "");
-                transaction.setCurrentBalance(Integer.parseInt(points));
+                String formattedPoints = points.replaceAll("\\s+", "");
+                transaction.setCurrentBalance(Integer.parseInt(formattedPoints));
                 int burnedPoints = transaction.getBurnedPoints();
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");

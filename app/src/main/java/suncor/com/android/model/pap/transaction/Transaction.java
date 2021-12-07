@@ -153,7 +153,7 @@ public class Transaction {
             e.printStackTrace();
             return null;
         }
-        return DateFormat.getDateInstance(DateFormat.LONG).format(date);
+        return DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
     }
 
     public String getPaymentType(Context context, boolean isGooglePay) {

@@ -65,6 +65,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="78dp"
                                 android:text="@string/thank_you"
+                                android:textAlignment="center"
                                 style="@style/Title2" />
 
                             <androidx.appcompat.widget.AppCompatTextView
