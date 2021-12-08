@@ -281,7 +281,7 @@
     <string name="cards_rbc_description">Our RBC–Petro‑Canada program helps you save on fuel and earn points faster.</string>
     <string name="cards_caa_description">You can also exchange your points for CAA Dollars or a new 1-year basic CAA Membership.</string>
     <string name="cards_bcaa_description">You can also exchange your points for CAA Dollars.</string>
-    <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay, Home Outfitters and thebay.com.</string>
+    <string name="cards_hbc_description">You\'re also collecting 20% more Hudson\'s Bay Rewards points on purchases at Hudson\'s Bay and thebay.com.</string>
     <string name="cards_more_description">You\'re collecting 1 More Rewards point for every $1 spent at our Petro‑Canada locations.</string>
     <string name="cards_rbc_balance_details">Save 3¢ per litre</string>
     <string name="cards_add_fragment_header">Add a card</string>
@@ -439,6 +439,7 @@
     <string name="rewards_signedin_petropoints_balance">You have\n%s points</string>
     <string name="rewards_signedin_petropoints_value">or $%d off</string>
     <string name="rewards_signedin_header_balance">You have %s points</string>
+    <string name="how_to_use_petrocanada">Use your Petro-Canada eGift card in-store at any Petro-Canada location.</string>
     <string name="rewards_signedin_discoery_title">Petro-Points</string>
     <string name="cards_add_fragment_cvv_field_empty_error">Please enter a security code.</string>
     <string name="cards_add_fragment_cvv_field_format_error">Your security code is wrong.</string>
@@ -485,10 +486,15 @@
     <string name="rewards_e_gift_card_starting_points">From 10,000 points</string>
     <string name="rewards_egift_card_subtitle">eGift card</string>
     <string name="merchant_winners">WINNERS, Marshalls and HomeSense</string>
-    <string name="merchant_dining_card">The Ultimate Dining Card</string>
+    <string name="merchant_dining_card">The Ultimate Dining</string>
     <string name="merchant_petrocanada_card">Petro-Canada</string>
+    <string name="merchant_gap_card">Gap</string>
+    <string name="merchant_best_buy_card">Best Buy</string>
+    <string name="merchant_walmart_card">Walmart</string>
+    <string name="merchant_tim_hortons_card">Tim Hortons</string>
     <string name="merchant_cineplex">Cineplex</string>
     <string name="merchant_Hudson_bay">Hudson\'s Bay</string>
+    <string name="merchant_more_egift_card">More eGift cards</string>
 
     <string name="rewards_signedin_how_to_redeem_merchants_title">How to redeem</string>
     <string name="rewards_signedin_how_to_redeem_merchants_description">Choose a value, confirm redemption and get the eGift card in your email.</string>
@@ -497,8 +503,8 @@
     <string name="rewards_signedin_redeeming_your_rewards_desc_cineplex">Use at any Cineplex theatre or online at cineplex.com. \n </string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_winners">Use at any WINNERS, HomeSense or Marshalls in Canada. \n</string>
     <string name="rewards_signedin_redeeming_your_rewards_desc_dining_card">Use at over 10 Canadian restaurants like Montana\'s, East Side Mario\'s and Swiss Chalet. \n</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay, Home Outfitters and online at thebay.com. \n</string>
-    <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Use your Petro-Canada eGift card in-store at any Petro-Canada location. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_Hudson_bay">Use at Hudson\'s Bay and online at thebay.com. \n</string>
+    <string name="rewards_signedin_redeeming_your_rewards_desc_petro_canada">Choose a value, confirm redemption and get the eGift card in your email.</string>
 
 
     <string name="redeem_egift_card_select_value">Select value</string>
@@ -748,6 +754,7 @@
     <string name="cancellation_alert_title">Transaction cancelled</string>
     <string name="cancellation_alert_body">Your transaction was cancelled. You have not been charged.</string>
 
+
     <string name="card_enable_gps_title">Location Services not enabled</string>
     <string name="card_enable_gps_message">You\'ll need to enable location services to pay at the pump.</string>
     <string name="card_enable_gps_settings">Settings</string>
@@ -757,6 +764,24 @@
     <string name="card_enable_location_settings">Settings</string>
 
     <string name="fuelling_almost_done">Almost done…</string>
+
+
+    <!-- Carswash Card Reoad -->
+    <string name="reload_season_pass">Reload %1$s</string>
+    <string name="card">CARD</string>
+    <string name="taxes">Taxes</string>
+    <string name="carwash_payment_term_aggrement">By pressing \"Confirm and pay\", you agree to our <b><u>Terms and Conditions.</u></b> </string>
+    <string name="confirm_and_pay">CONFIRM AND PAY</string>
+
+    <string name="reload">RELOAD</string>
+    <string name="reload_card_alet_title">Can\'t reload card</string>
+    <string name="reload_card_alert_description">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
+    <string name="reload_card_alert_cancel">Cancel</string>
+    <string name="reload_card_alert_visit_web">Visit web</string>
+    <string name="petro_canada_reload_url">https://www.petro-canada.ca/en/personal/my-petro-points?modalUrl=%2Fen%2Fpersonal%2Fmy-petro-points%2Freload%2Freload-card</string>
+
+
+    <string name="select_value">Value</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
 
     <!-- Carwash POE -->
@@ -773,8 +798,44 @@
     <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
+
+    <string name="cards_days">%1$s days</string>
+    <string name="cards_washes">%1$s washes</string>
+
+    <string name="bonus_days"> + %1$d bonus days</string>
+    <string name="bonus_washes"> + %1$d bonus washes</string>
+
+    <string name="select_cards_to_reload">Select cards to reload</string>
+    <string name="select_value_to_reload">Select value</string>
+    <string name="slect_payment_method">Select payment method</string>
+
+    <string name="discount_prices">%1$s (was %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/en/personal/car-wash</string>
     <string name="auto_revoke_message">To protect your data, permissions for this app will be removed if the app isn\'t used for a few months</string>
     <string name="auto_revoke_title">Auto Revoke Permissions</string>
+
+    <!-- Add petropoints card into google wallet-->
+    <string name="google_passes_name_label">NAME</string>
+    <string name="google_passes_email_label">EMAIL</string>
+    <string name="google_passes_detail_label">DETAILS</string>
+    <string name="google_passes_detail_value">Redeem your Petro-Points for free gas, eGift, cards and more.</string>
+    <string name="google_passes_value_label">VALUE</string>
+    <string name="google_passes_value_value">Earn:\n1L = 10 points\n$1 = 10 points\n\nRedeem:\n1,000 = $1 off"</string>
+    <string name="google_passes_howtouse_label">How to use</string>
+    <string name="google_passes_howtouse_value">Scan your card in store to earn or redeem points. Or, download our app to earn points directly at the pump.</string>
+    <string name="google_passes_termcondition_label">TERMS AND CONDITIONS</string>
+    <string name="google_passes_termcondition_value">By using this pass, you agree to the Petro Points terms and conditions. Read them on our website.</string>
+
+    <string name="google_passes_name_label_fr">Nom</string>
+    <string name="google_passes_email_label_fr">Courriel</string>
+    <string name="google_passes_detail_label_fr">Détails</string>
+    <string name="google_passes_detail_value_fr">Échangez vos Petro-Points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
+    <string name="google_passes_value_label_fr">Valeur</string>
+    <string name="google_passes_value_value_fr">Obtenez :\n1 L = 10 points\n1 $ = 10 points\n\nÉchangez :\n1 000 = 1 $ de rabais</string>
+    <string name="google_passes_howtouse_label_fr">Utilisation</string>
+    <string name="google_passes_howtouse_value_fr">Scannez votre carte au dépanneur pour obtenir ou échanger des points. Ou téléchargez notre application pour obtenir des points directement à la pompe.</string>
+    <string name="google_passes_termcondition_label_fr">Conditions</string>
+    <string name="google_passes_termcondition_value_fr">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
+
 
 </resources>

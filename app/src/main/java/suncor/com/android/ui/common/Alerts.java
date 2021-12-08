@@ -20,8 +20,7 @@ public class Alerts {
             String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
         AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.formName, formName)
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName), new Pair<>(AnalyticsUtils.Param.formName, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -39,7 +38,6 @@ import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
-import com.kount.api.analytics.AnalyticsCollector;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -54,7 +52,6 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import suncor.com.android.BuildConfig;
-import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
@@ -67,7 +64,6 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
-import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
@@ -77,7 +73,6 @@ import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
-import suncor.com.android.utilities.UserLocalSettings;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -86,7 +81,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
@@ -321,7 +316,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
     private void initializeFuelUpLimit(){
        if (Objects.nonNull(mPapData) && Objects.nonNull(mPapData.getPreAuthLimits())) {
-          // binding.totalAmount.setText(String.format("$%s", mPapData.getPreAuthLimits().get("1")));
 
             fuelLimitDropDownAdapter = new FuelLimitDropDownAdapter(
                    getContext(),
@@ -473,7 +467,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                                 new Pair<>(AnalyticsUtils.Param.checkboxInput, selectedRadioButton),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
 
+
                         FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, viewModel.getPetroPointsBalance());
+
                         Navigation.findNavController(requireView()).popBackStack();
                         Navigation.findNavController(requireView()).navigate(action);
                     }
