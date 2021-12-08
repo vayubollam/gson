@@ -100,7 +100,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding.actionFuelUpButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_fuel_up)));
             if (activeSession) {
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("", "0");
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("", "0", homeViewModel.getPetroPointsBalance());
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }

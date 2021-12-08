@@ -49,7 +49,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
+        mainViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(MainViewModel.class);
     }
 
     @Nullable
@@ -93,7 +93,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
             binding.dateValue.setText(DateUtils.getFormattedDate(Calendar.getInstance().getTime()));
         }
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
+        AnalyticsUtils.setCurrentScreenName(this.requireActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
         AnalyticsUtils.logEvent(this.getContext(),"form_complete",
                 new Pair<>("formName", "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card"),
                 new Pair<>("formSelection","$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card")
@@ -114,7 +114,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             mainViewModel.setLinkedToAccount(true);
             mainViewModel.setSingleTicketNumber(Sets.newHashSet(orderResponse.getProductsDelivered()));
         }
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
 }

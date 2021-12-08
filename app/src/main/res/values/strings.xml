@@ -724,6 +724,8 @@
     <string name="transaction_your_rbc_savings">Your RBC savings</string>
     <string name="transaction_points_redemption">Points redemption</string>
     <string name="transaction_base_points_eaarned">Base Points</string>
+    <string name="transaction_bonus_points_eaarned">Bonus Points</string>
+    <string name="transaction_new_balance">New Balance</string>
     <string name="transaction_total">Total</string>
     <string name="view_receipt">View Receipt</string>
     <string name="email_receipt_subject">Petro-Canada fuel receipt: %1$s</string>

@@ -34,6 +34,7 @@ import suncor.com.android.databinding.FragmentReceiptBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
@@ -42,20 +43,19 @@ import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STO
 
 public class ReceiptFragment extends MainActivityFragment {
 
+    @Inject
+    SessionManager sessionManager;
+    @Inject
+    ViewModelFactory viewModelFactory;
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
     private String transactionId;
     private boolean isGooglePay;
     private String preAuthRedeemPoints;
+    private String availablePoints;
     private int updatedPoints;
     private boolean isReceiptValid = false;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
-
-    @Inject
-    SessionManager sessionManager;
-
-    @Inject
-    ViewModelFactory viewModelFactory;
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +80,7 @@ public class ReceiptFragment extends MainActivityFragment {
         transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
         preAuthRedeemPoints = ReceiptFragmentArgs.fromBundle(getArguments()).getPreAuthRedeemPoints();
         isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
+        availablePoints = ReceiptFragmentArgs.fromBundle(getArguments()).getAvailablePoints();
 
         observeTransactionData(transactionId);
 
@@ -109,8 +110,8 @@ public class ReceiptFragment extends MainActivityFragment {
         AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
     }
 
-    private void observeTransactionData(String transactionId){
-        viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result->{
+    private void observeTransactionData(String transactionId) {
+        viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
@@ -123,7 +124,32 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                int burnedPoints =  result.data.getLoyaltyPointsMessages().get(0).getBurnedRewardSummary();
+                Transaction transaction = new Transaction();
+
+                sessionManager.retrieveProfile((profile) -> {
+                    updatedPoints = profile.getPointsBalance();
+                    //                  transaction.setCurrentBalance(updatedPoints);
+
+                }, (error) -> {
+                    // Handling can be made for the error
+                });
+
+
+                binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
+                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
+                if (Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()) {
+                    binding.shareButton.setVisibility(View.GONE);
+                    binding.viewReceiptBtn.setVisibility(View.GONE);
+                } else {
+                    isReceiptValid = true;
+                    binding.receiptDetails.setText(result.data.getReceiptFormatted());
+                }
+                transaction = result.data;
+                binding.setTransaction(transaction);
+                String points = availablePoints.replace(",", "");
+                String formattedPoints = points.replaceAll("\\s+", "");
+                transaction.setCurrentBalance(Integer.parseInt(formattedPoints));
+                int burnedPoints = transaction.getBurnedPoints();
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
@@ -131,29 +157,13 @@ public class ReceiptFragment extends MainActivityFragment {
                         new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
 
-                sessionManager.retrieveProfile((profile) -> {
-                    updatedPoints = profile.getPointsBalance();
-                }, (error) -> {
-                    // Handling can be made for the error
-                });
-                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints );
 
-                binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
-                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
-                    binding.shareButton.setVisibility(View.GONE);
-                    binding.viewReceiptBtn.setVisibility(View.GONE);
-                } else {
-                    isReceiptValid = true;
-                    binding.receiptDetails.setText(result.data.getReceiptFormatted());
-                }
-                binding.setTransaction(result.data);
-
-                if(result.data.getRbcAlongWithRedemptionSavings() >0.0){
+                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
+                if (result.data.getRbcAlongWithRedemptionSavings() > 0.0) {
 
                     binding.greetingsSaving.setVisibility(View.VISIBLE);
                     binding.greetingsSaving.setText(String.format(getString(R.string.transaction_saved), result.data.getRbcAlongWithRedemptionSavingsMutableData()));
-                }else{
+                } else {
                     binding.greetingsSaving.setVisibility(View.GONE);
                 }
 
@@ -211,8 +221,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 // TODO: Handle error when launching in app review
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) Objects.requireNonNull(task.getException())).getErrorCode();
 
-                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
-                
+                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
+                }
+
                 goBack();
             }
         });

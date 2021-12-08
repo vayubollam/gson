@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +30,6 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -40,6 +39,7 @@ public class FuellingFragment extends MainActivityFragment {
     private FragmentFuellingBinding binding;
     private String pumpNumber;
     private String preAuthRedeemPoints;
+    private String availablePoints;
     private String transactionId;
 
     private boolean pingActiveSessionStarted = false;
@@ -61,7 +61,7 @@ public class FuellingFragment extends MainActivityFragment {
         binding = FragmentFuellingBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.setIsLoading(isLoading);
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-authorizing-loading");
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-fuelling-authorizing-loading");
         return binding.getRoot();
     }
 
@@ -71,7 +71,8 @@ public class FuellingFragment extends MainActivityFragment {
 
         pumpNumber = FuellingFragmentArgs.fromBundle(getArguments()).getPumpNumber();
         preAuthRedeemPoints = FuellingFragmentArgs.fromBundle(getArguments()).getPreAuthRedeemPoints();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-authorizing");
+        availablePoints = FuellingFragmentArgs.fromBundle(getArguments()).getAvailablePoints();
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-fuelling-authorizing");
         binding.pumpAuthorizedText.setText(getString(R.string.pump_authorized, pumpNumber));
         binding.pumpNumberText.setText(pumpNumber);
 
@@ -127,7 +128,7 @@ public class FuellingFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-will-begin");
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-fuelling-will-begin");
         startFuellingActiveSession();
     }
 
@@ -149,7 +150,7 @@ public class FuellingFragment extends MainActivityFragment {
                                     getString(R.string.cancellation_alert_body),
                                     getContext(),
                                     (dialogInterface, i) -> {
-                                        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
+                                        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
                                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
                                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
@@ -159,7 +160,7 @@ public class FuellingFragment extends MainActivityFragment {
                                     }, "Pay at Pump").show();
                         } else {
                             observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
-                            AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-almost-complete" );
+                            AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-fuelling-almost-complete" );
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
                                     new Pair<>(AnalyticsUtils.Param.formSelection, "Fuelling Complete"),
                                     new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
@@ -171,7 +172,7 @@ public class FuellingFragment extends MainActivityFragment {
                                 new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
                                 new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
 
-                        AnalyticsUtils.setCurrentScreenName(getActivity(), result.data.status.equalsIgnoreCase("New")
+                        AnalyticsUtils.setCurrentScreenName(requireActivity(), result.data.status.equalsIgnoreCase("New")
                                 || result.data.status.equalsIgnoreCase("Authorized") ? "pay-at-pump-fuelling-will-begin" : "pay-at-pump-fuelling-has-begun" );
 
                         binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase("New")
@@ -209,7 +210,7 @@ public class FuellingFragment extends MainActivityFragment {
     };
 
     private void observeTransactionData(String transactionId, String lastPaymentProvider){
-        FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId, preAuthRedeemPoints);
+        FuellingFragmentDirections.ActionFuellingToReceiptFragment action = FuellingFragmentDirections.actionFuellingToReceiptFragment(transactionId, preAuthRedeemPoints, availablePoints);
         action.setIsGooglePay(lastPaymentProvider.toLowerCase().contains("google"));
         Navigation.findNavController(requireView()).popBackStack();
         Navigation.findNavController(requireView()).navigate(action);
@@ -231,7 +232,7 @@ public class FuellingFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        NavController navController = Navigation.findNavController(getView());
+        NavController navController = Navigation.findNavController(requireView());
         navController.popBackStack();
     }
 }
