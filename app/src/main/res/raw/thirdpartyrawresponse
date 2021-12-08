@@ -1,0 +1,623 @@
+[
+  {
+    "categoryName": "Featured",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "subCategoryName": "Petro-Canada",
+        "smallIcon": "pc_card_small",
+        "largeIcon": "pc_card_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use your Petro-Canada eGift card in-store at any Petro-Canada location.",
+        "merchantId": "4677",
+        "eGifts": [
+          {
+            "id": 555,
+            "description": "PETRO CANADA E-CARD 10",
+            "merchantId": 4677,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 556,
+            "description": "PETRO CANADA E-CARD 25",
+            "merchantId": 4677,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 557,
+            "description": "PETRO CANADA E-CARD 50",
+            "merchantId": 4677,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 647,
+            "description": "PETRO CANADA E-CARD 100",
+            "merchantId": 4677,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 648,
+            "description": "PETRO CANADA E-CARD 250",
+            "merchantId": 4677,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 649,
+            "description": "PETRO CANADA E-CARD 500",
+            "merchantId": 4677,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "categoryName": "Apparel",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "subCategoryName": "Gap",
+        "smallIcon": "gap_small_new",
+        "largeIcon": "gap_large_new",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use in store at any Old Navy, Gap, Banana Republic or Athleta store including Outlet and Factory stores. Or, use it online at <a href=\"https://oldnavy.gapcanada.ca/\">oldnavy.ca</a>, <a href=\"https://www.gapcanada.ca\">gapcanada.ca</a> or <a href=\"http://bananarepublic.gapcanada.ca\">bananarepublic.ca</a>.",
+        "merchantId": "2001",
+        "eGifts": [
+          {
+            "id": 393,
+            "description": "GAP E_GIFT CARD 10",
+            "merchantId": 2001,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 394,
+            "description": "GAP E_GIFT CARD 25",
+            "merchantId": 2001,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 395,
+            "description": "GAP E_GIFT CARD 50",
+            "merchantId": 2001,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 396,
+            "description": "GAP E_GIFT CARD 100",
+            "merchantId": 2001,
+            "petroPointsRequired": 100000,
+            "value": 100
+          }
+        ]
+      },
+      {
+        "subCategoryName": "Hudson's Bay",
+        "smallIcon": "hudson_bay_small",
+        "largeIcon": "hudson_bay_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at Hudson’s Bay and online at <a href=\"https://www.thebay.com\">thebay.com</a>.",
+        "merchantId": "2288",
+        "eGifts": [
+          {
+            "id": 299,
+            "description": "HBC E-GIFT CARD 10.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 300,
+            "description": "HBC E-GIFT CARD 25.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 301,
+            "description": "HBC E-GIFT CARD 50.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 302,
+            "description": "HBC E-GIFT CARD 100.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 503,
+            "description": "HBC E-GIFT CARD 250.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 504,
+            "description": "HBC E-GIFT CARD 500.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 500000,
+            "value": 5000
+          }
+        ]
+      },
+      {
+        "subCategoryName": "WINNERS, HomeSense and Marshalls",
+        "smallIcon": "winners_small",
+        "largeIcon": "winners_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any WINNERS, HomeSense and Marshalls in Canada.",
+        "merchantId": "3063",
+        "eGifts": [
+          {
+            "id": 505,
+            "description": "HOMESENSE-WIN-MARSHALLS 10",
+            "merchantId": 3063,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 506,
+            "description": "HOMESENSE-WIN-MARSHALLS 20",
+            "merchantId": 3063,
+            "petroPointsRequired": 250000,
+            "value": 25
+          },
+          {
+            "id": 507,
+            "description": "HOMESENSE-WIN-MARSHALLS 50",
+            "merchantId": 3063,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 508,
+            "description": "HOMESENSE-WIN-MARSHALLS 100",
+            "merchantId": 3063,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 245,
+            "description": "HOMESENSE-WIN-MARSHALLS 250",
+            "merchantId": 3063,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 246,
+            "description": "HOMESENSE-WIN-MARSHALLS 500",
+            "merchantId": 3063,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "categoryName": "Dining",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "subCategoryName": "Tim Hortons",
+        "smallIcon": "tim_hortons_small_new",
+        "largeIcon": "tim_hortons_large_new",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use in store at any Tim Hortons location.",
+        "merchantId": "2207",
+        "eGifts": [
+          {
+            "id": 512,
+            "description": "TIM HORTONS E-GIFT CARD 10",
+            "merchantId": 2207,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 370,
+            "description": "TIM HORTONS E-GIFT CARD 25",
+            "merchantId": 2207,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 371,
+            "description": "TIM HORTONS E-GIFT CARD 50",
+            "merchantId": 2207,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 372,
+            "description": "TIM HORTONS E-GIFT CARD 100",
+            "merchantId": 2207,
+            "petroPointsRequired": 1000000,
+            "value": 100
+          }
+        ]
+      },
+      {
+        "subCategoryName": "The Ultimate Dining",
+        "smallIcon": "ultimate_dining_small",
+        "largeIcon": "ultimate_dining_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "It can be redeemed at over 10 Canadian restaurants like Swiss Chalet, Montana’s, Kelseys, Harvey’s, Bier Markt, East Side Mario’s, New York Fries, Fionn MacCools, D’Arcy McGee’s, Paddy Flaherty’s, Tir nan Og, Original Joe’s, Elephant & Castle, State & Main, The Landing Group of Restaurants and Pickle Barrel.",
+        "merchantId": "2306",
+        "eGifts": [
+          {
+            "id": 317,
+            "description": "ULTIMATE DINING GIFT CARD 10",
+            "merchantId": 2306,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 318,
+            "description": "ULTIMATE DINING GIFT CARD 25",
+            "merchantId": 2306,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 319,
+            "description": "ULTIMATE DINING GIFT CARD 50",
+            "merchantId": 2306,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 320,
+            "description": "ULTIMATE DINING GIFT CARD 100",
+            "merchantId": 2306,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 321,
+            "description": "ULTIMATE DINING GIFT CARD 250",
+            "merchantId": 2306,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 322,
+            "description": "ULTIMATE DINING GIFT CARD 500",
+            "merchantId": 2306,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "categoryName": "Entertainment and apps",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "subCategoryName": "Best Buy",
+        "smallIcon": "best_buy_small",
+        "largeIcon": "best_buy_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Best Buy store in Canada or online at <a href=\"https://www.bestbuy.ca/en-ca\">bestbuy.ca</a>.",
+        "merchantId": "1940",
+        "eGifts": [
+          {
+            "id": 492,
+            "description": "BEST BUY E_GIFT CARD 10",
+            "merchantId": 1940,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 493,
+            "description": "BEST BUY E_GIFT CARD 25",
+            "merchantId": 1940,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 294,
+            "description": "BEST BUY E_GIFT CARD 50",
+            "merchantId": 1940,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 492,
+            "description": "BEST BUY E_GIFT CARD 100",
+            "merchantId": 1940,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 494,
+            "description": "BEST BUY E_GIFT CARD 250",
+            "merchantId": 1940,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 495,
+            "description": "BEST BUY E_GIFT CARD 500",
+            "merchantId": 1940,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      },
+      {
+        "subCategoryName": "Cineplex",
+        "smallIcon": "cineplex_small",
+        "largeIcon": "cineplex_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Cineplex theatre or online at <a href=\"https://www.cineplex.com\">cineplex.com</a>.",
+        "merchantId": "3089",
+        "eGifts": [
+          {
+            "id": 520,
+            "description": "CINEPLEX E_GIFT CARD 10",
+            "merchantId": 3089,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 272,
+            "description": "CINEPLEX E_GIFT CARD 25",
+            "merchantId": 3089,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 273,
+            "description": "CINEPLEX E_GIFT CARD 50",
+            "merchantId": 3089,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 274,
+            "description": "CINEPLEX E_GIFT CARD 100",
+            "merchantId": 3089,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 296,
+            "description": "CINEPLEX E_GIFT CARD 250",
+            "merchantId": 3089,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 297,
+            "description": "CINEPLEX E_GIFT CARD 500",
+            "merchantId": 3089,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "categoryName": "Home and office",
+    "thirdPartyGiftCardSubCategory": [
+      {
+        "subCategoryName": "Walmart",
+        "smallIcon": "walmart_small",
+        "largeIcon": "walmart_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Walmart Canada store, on <a href=\"https://www.walmart.ca/en\">walmart.ca</a> and on Marketplace.",
+        "merchantId": "4471",
+        "eGifts": [
+          {
+            "id": 364,
+            "description": "WALMART E_GIFT CARD 10",
+            "merchantId": 4471,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 509,
+            "description": "WALMART E_GIFT CARD 25",
+            "merchantId": 4471,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 365,
+            "description": "WALMART E_GIFT CARD 50",
+            "merchantId": 4471,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 366,
+            "description": "WALMART E_GIFT CARD 100",
+            "merchantId": 4471,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 368,
+            "description": "WALMART E_GIFT CARD 250",
+            "merchantId": 4471,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 369,
+            "description": "WALMART E_GIFT CARD 500",
+            "merchantId": 4471,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      },
+      {
+        "subCategoryName": "Best Buy",
+        "smallIcon": "best_buy_small",
+        "largeIcon": "best_buy_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any Best Buy store in Canada or online at <a href=\"https://www.bestbuy.ca/en-ca\">bestbuy.ca</a>.",
+        "merchantId": "1940",
+        "eGifts": [
+          {
+            "id": 492,
+            "description": "BEST BUY E_GIFT CARD 10",
+            "merchantId": 1940,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 493,
+            "description": "BEST BUY E_GIFT CARD 25",
+            "merchantId": 1940,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 294,
+            "description": "BEST BUY E_GIFT CARD 50",
+            "merchantId": 1940,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 492,
+            "description": "BEST BUY E_GIFT CARD 100",
+            "merchantId": 1940,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 494,
+            "description": "BEST BUY E_GIFT CARD 250",
+            "merchantId": 1940,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 495,
+            "description": "BEST BUY E_GIFT CARD 500",
+            "merchantId": 1940,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      },
+      {
+        "subCategoryName": "Hudson's Bay",
+        "smallIcon": "hudson_bay_small",
+        "largeIcon": "hudson_bay_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at Hudson’s Bay and online at <a href=\"https://www.thebay.com\">thebay.com</a>.",
+        "merchantId": "2288",
+        "eGifts": [
+          {
+            "id": 299,
+            "description": "HBC E-GIFT CARD 10.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 300,
+            "description": "HBC E-GIFT CARD 25.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 25000,
+            "value": 25
+          },
+          {
+            "id": 301,
+            "description": "HBC E-GIFT CARD 50.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 302,
+            "description": "HBC E-GIFT CARD 100.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 503,
+            "description": "HBC E-GIFT CARD 250.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 504,
+            "description": "HBC E-GIFT CARD 500.00",
+            "merchantId": 2288,
+            "petroPointsRequired": 500000,
+            "value": 5000
+          }
+        ]
+      },
+      {
+        "subCategoryName": "WINNERS, HomeSense and Marshalls",
+        "smallIcon": "winners_small",
+        "largeIcon": "winners_large",
+        "howToRedeem": "Choose a value, confirm redemption and get the eGift card in your email.",
+        "howToUse": "Use at any WINNERS, HomeSense and Marshalls in Canada.",
+        "merchantId": "3063",
+        "eGifts": [
+          {
+            "id": 505,
+            "description": "HOMESENSE-WIN-MARSHALLS 10",
+            "merchantId": 3063,
+            "petroPointsRequired": 10000,
+            "value": 10
+          },
+          {
+            "id": 506,
+            "description": "HOMESENSE-WIN-MARSHALLS 20",
+            "merchantId": 3063,
+            "petroPointsRequired": 250000,
+            "value": 25
+          },
+          {
+            "id": 507,
+            "description": "HOMESENSE-WIN-MARSHALLS 50",
+            "merchantId": 3063,
+            "petroPointsRequired": 50000,
+            "value": 50
+          },
+          {
+            "id": 508,
+            "description": "HOMESENSE-WIN-MARSHALLS 100",
+            "merchantId": 3063,
+            "petroPointsRequired": 100000,
+            "value": 100
+          },
+          {
+            "id": 245,
+            "description": "HOMESENSE-WIN-MARSHALLS 250",
+            "merchantId": 3063,
+            "petroPointsRequired": 250000,
+            "value": 250
+          },
+          {
+            "id": 246,
+            "description": "HOMESENSE-WIN-MARSHALLS 500",
+            "merchantId": 3063,
+            "petroPointsRequired": 500000,
+            "value": 500
+          }
+        ]
+      }
+    ]
+  }
+]
