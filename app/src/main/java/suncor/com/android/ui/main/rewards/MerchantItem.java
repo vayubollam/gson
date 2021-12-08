@@ -9,14 +9,6 @@ import suncor.com.android.R;
 import suncor.com.android.model.merchants.Merchant;
 
 public class MerchantItem implements Parcelable {
-    private Merchant merchant;
-    private Context context;
-
-    public MerchantItem(Merchant merchant, Context context) {
-        this.merchant = merchant;
-        this.context = context;
-    }
-
     public static final Creator<MerchantItem> CREATOR = new Creator<MerchantItem>() {
         @Override
         public MerchantItem createFromParcel(Parcel in) {
@@ -28,6 +20,13 @@ public class MerchantItem implements Parcelable {
             return new MerchantItem[size];
         }
     };
+    private Merchant merchant;
+    private Context context;
+
+    public MerchantItem(Merchant merchant, Context context) {
+        this.merchant = merchant;
+        this.context = context;
+    }
 
     protected MerchantItem(Parcel in) {
         merchant = in.readParcelable(Merchant.class.getClassLoader());
@@ -79,7 +78,7 @@ public class MerchantItem implements Parcelable {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
-                return "dining_large";
+                return "ultimate_dining_large";
             case MerchantsIds.Petro_Canada_EN:
             case MerchantsIds.Petro_Canada_FR:
                 return "petro_canada_large";
@@ -100,10 +99,10 @@ public class MerchantItem implements Parcelable {
         switch (merchant.getMerchantId()) {
             case MerchantsIds.Cara_EN:
             case MerchantsIds.Cara_FR:
-                return "dining_small";
+                return "ultimate_dining_small";
             case MerchantsIds.Petro_Canada_EN:
             case MerchantsIds.Petro_Canada_FR:
-                return "petro_canada_small";
+                return "pc_card_small";
             case MerchantsIds.Cineplex_EN:
             case MerchantsIds.Cineplex_FR:
                 return "cineplex_small";
@@ -117,11 +116,11 @@ public class MerchantItem implements Parcelable {
         return null;
     }
 
-    public String getSubtitleMerchantName(){
+    public String getSubtitleMerchantName() {
         return context.getResources().getString(R.string.rewards_egift_card_subtitle);
     }
 
-    public String getPointsMerchantName(){
+    public String getPointsMerchantName() {
         return context.getResources().getString(R.string.rewards_e_gift_card_starting_points);
     }
 
@@ -142,6 +141,18 @@ public class MerchantItem implements Parcelable {
             case MerchantsIds.WINNERS_HomeSense_Marshalls_EN:
             case MerchantsIds.WINNERS_HomeSense_Marshalls_FR:
                 return context.getResources().getString(R.string.merchant_winners);
+            case MerchantsIds.GAP_EN:
+            case MerchantsIds.GAP_FR:
+                return context.getResources().getString(R.string.merchant_gap_card);
+            case MerchantsIds.Best_Buy_EN:
+            case MerchantsIds.Best_Buy_FR:
+                return context.getResources().getString(R.string.merchant_best_buy_card);
+            case MerchantsIds.Tim_hortons_EN:
+            case MerchantsIds.Tim_hortons_FR:
+                return context.getResources().getString(R.string.merchant_tim_hortons_card);
+            case MerchantsIds.Walmart_EN:
+            case MerchantsIds.Walmart_FR:
+                return context.getResources().getString(R.string.merchant_walmart_card);
         }
         return null;
     }

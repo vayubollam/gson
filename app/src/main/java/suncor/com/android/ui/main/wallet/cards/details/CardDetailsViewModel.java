@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.wallet.cards.details;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -12,9 +14,13 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import suncor.com.android.R;
 import suncor.com.android.data.cards.CardsRepository;
+import suncor.com.android.data.settings.SettingsApi;
+import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
@@ -30,11 +36,13 @@ public class CardDetailsViewModel extends ViewModel {
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
     private String newlyAddedCardNumber;
+    private final SettingsApi settingsApi;
 
     @Inject
-    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager) {
+    public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, SettingsApi settingsApi) {
         this.cardsRepository = cardsRepository;
         this.sessionManager = sessionManager;
+        this.settingsApi = settingsApi;
     }
 
     public void retrieveCards() {
@@ -127,5 +135,44 @@ public class CardDetailsViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
         return isCarWashBalanceZero;
+    }
+
+
+    protected Profile getUserProfile(){
+        return sessionManager.getProfile();
+    }
+
+    protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex ){
+        LoyalityData loyalityData = new LoyalityData();
+        loyalityData.setBarcode(cards.getValue().get(clickedCardIndex).getCardNumber().replace(" ", ""));
+        ExpandedCardItem expandedCardItem = new ExpandedCardItem(context, cards.getValue().get(clickedCardIndex));
+        loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
+        loyalityData.setNameLabel(context.getString(R.string.google_passes_name_label));
+        loyalityData.setNameLocalizedLabel(context.getString(R.string.google_passes_name_label_fr));
+        loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName() );
+        loyalityData.setEmailLabel(context.getString(R.string.google_passes_email_label));
+        loyalityData.setEmailLocalizedLabel(context.getString(R.string.google_passes_email_label_fr));
+        loyalityData.setEmailValue(getUserProfile().getEmail() );
+        loyalityData.setDetailsLabel(context.getString(R.string.google_passes_detail_label));
+        loyalityData.setDetailsLocalizedLabel(context.getString(R.string.google_passes_detail_label_fr));
+        loyalityData.setDetailsValue(context.getString(R.string.google_passes_detail_value));
+        loyalityData.setDetailsLocalizedValue(context.getString(R.string.google_passes_detail_value_fr));
+        loyalityData.setValuesLabel(context.getString(R.string.google_passes_value_label));
+        loyalityData.setValuesLocalizedLabel(context.getString(R.string.google_passes_value_label_fr));
+        loyalityData.setValuesValue(context.getString(R.string.google_passes_value_value));
+        loyalityData.setValuesLocalizedValue(context.getString(R.string.google_passes_value_value_fr));
+        loyalityData.setHowToUseLabel(context.getString(R.string.google_passes_howtouse_label));
+        loyalityData.setHowToUseLocalizedLabel(context.getString(R.string.google_passes_howtouse_label_fr));
+        loyalityData.setHowToUseValue(context.getString(R.string.google_passes_howtouse_value));
+        loyalityData.setHowToUseLocalizedValue(context.getString(R.string.google_passes_howtouse_value_fr));
+        loyalityData.setTermConditionLabel(context.getString(R.string.google_passes_termcondition_label));
+        loyalityData.setTermConditionLocalizedLabel(context.getString(R.string.google_passes_termcondition_label_fr));
+        loyalityData.setTermConditionValue(context.getString(R.string.google_passes_termcondition_value));
+        loyalityData.setTermConditionLocalizedValue(context.getString(R.string.google_passes_termcondition_value_fr));
+        return loyalityData;
+    }
+
+    public LiveData<Resource<SettingsResponse>> getSettings(){
+        return settingsApi.retrieveSettings();
     }
 }
