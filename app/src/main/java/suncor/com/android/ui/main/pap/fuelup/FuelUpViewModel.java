@@ -1,6 +1,8 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
 import android.content.Context;
+import android.se.omapi.Session;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,11 +17,13 @@ import com.google.android.gms.wallet.PaymentDataRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
+import suncor.com.android.LocationLiveData;
 import suncor.com.android.data.pap.PapRepository;
 import suncor.com.android.data.payments.PaymentsRepository;
 import suncor.com.android.data.settings.SettingsApi;
@@ -31,6 +35,7 @@ import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.PayByWalletRequest;
+import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.common.cards.CardFormatUtils;

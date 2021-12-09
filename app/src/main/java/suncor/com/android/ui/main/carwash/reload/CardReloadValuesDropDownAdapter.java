@@ -80,7 +80,8 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
             if(product.getUnits().equals(lastSelectedValue)){
                 selectedPos = position;
                 listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()) ,
-                        formatter.format(Double.valueOf(product.getPrice())));
+                        formatter.format(Double.valueOf(product.getPrice())),
+                        false, false);
                 int bonusUnits = product.getBonusValues();
                 calculateBonus(bonusUnits);
                 calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
@@ -103,6 +104,9 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
         }
         return "";
     }
+
+    @Override
+    public void showUpdatePreAuthPopup() {  }
 
     @Override
     public void setListener(ChildViewListener listener) {
@@ -135,7 +139,8 @@ public class CardReloadValuesDropDownAdapter extends DropDownAdapter {
                     notifyItemChanged(selectedPos);
                     if(Objects.nonNull(listener)) {
                         listener.onSelectValue(cardType.equals("SP") ? String.format(mContext.getString(R.string.cards_days), product.getUnits()): String.format(mContext.getString(R.string.cards_washes), product.getUnits()) ,
-                                formatter.format(Double.valueOf(product.getPrice())));
+                                formatter.format(Double.valueOf(product.getPrice())),
+                                false, false);
                       calculateBonus(product.getBonusValues());
                       calculateDiscounts(product.getDiscountPrices(), Double.valueOf(product.getPrice()), product.getUnits());
                       listener.expandCollapse();

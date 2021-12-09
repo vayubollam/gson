@@ -76,7 +76,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
         for(ExpandedCardItem card: childList){
             if( card.getCardNumber().equals(cardNumber)){
                 selectedPos = position;
-                listener.onSelectValue(card.getCardName(), card.getCardNumber());
+                listener.onSelectValue(card.getCardName(), card.getCardNumber(), false, false);
                 notifyDataSetChanged();
                 return;
             }
@@ -95,6 +95,9 @@ public class CardsDropDownAdapter extends DropDownAdapter {
     public String getSelectedSubValue() {
         return childList.get(selectedPos).getCardNumber();
     }
+
+    @Override
+    public void showUpdatePreAuthPopup() {  }
 
     @Override
     public void setListener(ChildViewListener listener) {
@@ -122,7 +125,7 @@ public class CardsDropDownAdapter extends DropDownAdapter {
                     selectedPos = getAdapterPosition();
                     notifyItemChanged(selectedPos);
                     if(Objects.nonNull(listener)) {
-                        listener.onSelectValue(cardDetail.getCardName(), cardDetail.getCardNumber());
+                        listener.onSelectValue(cardDetail.getCardName(), cardDetail.getCardNumber(), false, false);
                         listener.expandCollapse();
                         callbackListener.onSelectCardChanged(cardDetail.getCardNumber(), cardDetail.getCardNumber());
                     }

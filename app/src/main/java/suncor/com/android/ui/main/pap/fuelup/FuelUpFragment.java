@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -38,6 +39,7 @@ import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
+import com.kount.api.analytics.AnalyticsCollector;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -52,6 +54,7 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import suncor.com.android.BuildConfig;
+import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
@@ -64,6 +67,7 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
+import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
@@ -73,6 +77,7 @@ import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
+import suncor.com.android.utilities.UserLocalSettings;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -547,7 +552,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                     .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
                     .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
             Executor executor = Executors.newSingleThreadExecutor();
-            BiometricPrompt biometricPrompt = new BiometricPrompt(requireActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
+            BiometricPrompt biometricPrompt = new BiometricPrompt(getActivity(), executor, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
@@ -577,7 +582,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize");
+        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize");
     }
 
     private void requestPayByGooglePay(String paymentToken) throws ParseException {
@@ -586,7 +591,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         viewModel.payByGooglePayRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices,Integer.parseInt(preAuthRedeemPoints), paymentToken, kountSessionId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
-                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-preauthorize-loading");
+                AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-preauthorize-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 handleAuthorizationFail(result.message);
@@ -615,14 +620,14 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         new Pair<>(AnalyticsUtils.Param.detailMessage, "Transaction fails, errorCode : " + errorCode),
                         new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
 
-                 transactionFailsAlert(requireContext()).show();
+                 transactionFailsAlert(getContext()).show();
                 break;
             case ErrorCodes.ERR_PUMP_RESERVATION_FAILS:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                         new Pair<>(AnalyticsUtils.Param.errorMessage, "Something went wrong on our side"),
                         new Pair<>(AnalyticsUtils.Param.detailMessage, "Pump Registration fails, errorCode : " + errorCode),
                         new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
-                pumpReservationFailsAlert(requireContext()).show();
+                pumpReservationFailsAlert(getContext()).show();
                 break;
             default:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,

@@ -148,7 +148,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 this
         );
 
-        binding.paymentExpandable.setDropDownData(paymentDropDownAdapter);
+        binding.paymentExpandable.setDropDownData(paymentDropDownAdapter, true);
         return binding.getRoot();
     }
 
@@ -256,7 +256,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 viewModel.getTransactionReloadData().getProducts(),
                 this, cardType, viewModel.getLastSelectedValue()
         );
-        binding.valuesLayout.setDropDownData(adapter);
+        binding.valuesLayout.setDropDownData(adapter, true);
         binding.loadingProgressBar.setVisibility(View.GONE);
     }
 
@@ -277,7 +277,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                         selectCards,
                         this, viewModel.cardNumber
                 );
-                binding.cardsLayout.setDropDownData(adapter);
+                binding.cardsLayout.setDropDownData(adapter, true);
 
             }
         });
@@ -290,12 +290,14 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
 
-
     @Override
     public void onExpandCollapseListener(boolean isExpand, String cardTitle) {
       //  AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTab,
           //      new Pair<>(AnalyticsUtils.Param.infoText, cardTitle));
     }
+
+    @Override
+    public void collapseManage(boolean isExpand, String cardTitle) {  }
 
     private void goBack() {
         Navigation.findNavController(getView()).popBackStack();
