@@ -446,6 +446,8 @@
     <string name="settings_failure_dialog_button">Fermer l\'application.</string>
     <string name="settings_failure_dialog_message">Veuillez réessayer plus tard.</string>
     <string name="settings_failure_dialog_title">Nous ne pouvons pas charger l\'application.</string>
+    <string name="settings_failure_forbidden_dialog_message" translatable="false">Veuillez changer votre connexion Internet et essayer de nouveau.</string>
+    <string name="settings_failure_invalid_request_dialog_message" translatable="false">L\'application doit être redémarrée. Une fois fermée, vous pourrez la rouvrir.</string>
     <string name="login_fingerprint_alert_title">Ouvrir une session</string>
     <string name="login_fingerprint_alert_negative_button">Annuler</string>
     <string name="login_fingerprint_alert_desc">Appuyez sur le capteur d\'empreinte digitale.</string>

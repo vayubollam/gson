@@ -45,8 +45,16 @@ public class SettingsApiImpl implements SettingsApi {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
+                    String errorDetails = wlFailResponse.toString();
                     Timber.e("Retrieving settings failed due to " + wlFailResponse.toString());
-                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+
+                    if (errorDetails.contains("403") && !errorDetails.contains("APPLICATION_DOES_NOT_EXIST")) {
+                        result.postValue(Resource.error("FORBIDDEN"));
+                    } else if (errorDetails.contains("400")) {
+                        result.postValue(Resource.error("INVALIDREQUEST"));
+                    } else {
+                        result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                    }
                 }
             });
         } catch (Throwable e) {

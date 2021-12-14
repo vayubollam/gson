@@ -452,6 +452,8 @@
     <string name="update_required_dialog_button">Update</string>
     <string name="settings_failure_dialog_title">We can\'t load the app</string>
     <string name="settings_failure_dialog_message" translatable="false">Try again in a few minutes.</string>
+    <string name="settings_failure_forbidden_dialog_message" translatable="false">Please switch your internet connection and try again.</string>
+    <string name="settings_failure_invalid_request_dialog_message" translatable="false">The app needs to be restarted. You can start it up again after it closes.</string>
     <string name="settings_failure_dialog_button">Close app</string>
     <string name="clear_cache_dialog_title"></string>
     <string name="clear_cache_dialog_message">Hey, the app needs to be restarted! We\'ll shut down, you can start it up again. \nS013</string>

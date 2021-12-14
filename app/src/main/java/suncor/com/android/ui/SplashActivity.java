@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -159,7 +161,21 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
                     String responseMessage = resource.message;
                     String unverifiedConnectionCode = "";
-                    if ((responseMessage.contains("SSLPeerUnverifiedException")) || (responseMessage.contains("SSLHandshakeException")) ||  (responseMessage.contains("java.security.cert"))) {
+                    String errorMessage = getString(R.string.settings_failure_dialog_message);
+                    String forbiddenMessage = getString(R.string.settings_failure_dialog_button);
+                    String invalidRequestTitle =getString(R.string.settings_failure_dialog_title);
+                    boolean invalidRequest = false;
+
+                    if (responseMessage.contains("FORBIDDEN")) {
+                        errorMessage = getString(R.string.settings_failure_forbidden_dialog_message);
+                        forbiddenMessage = getString(R.string.ok);
+
+                    } else if (responseMessage.contains("INVALIDREQUEST")) {
+                        errorMessage = getString(R.string.settings_failure_invalid_request_dialog_message);
+                        invalidRequest = true;
+                        invalidRequestTitle =getString(R.string.msg_sl005_title);
+
+                    } else if ((responseMessage.contains("SSLPeerUnverifiedException")) || (responseMessage.contains("SSLHandshakeException")) || (responseMessage.contains("java.security.cert"))) {
                         unverifiedConnectionCode = "\nS000";
                     }
 
@@ -169,15 +185,20 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                             new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
                             new Pair<>("formName", "Splash")
                     );
+                    String finalErrorMessage = errorMessage;
+                    boolean finalInvalidRequest = invalidRequest;
                     new AlertDialog.Builder(this)
-                            .setTitle(R.string.settings_failure_dialog_title)
-                            .setMessage(getString(R.string.settings_failure_dialog_message) + unverifiedConnectionCode)
-                            .setPositiveButton(R.string.settings_failure_dialog_button, (dialog, which) -> {
+                            .setTitle(invalidRequestTitle)
+                            .setMessage(errorMessage + unverifiedConnectionCode)
+                            .setPositiveButton(forbiddenMessage, (dialog, which) -> {
                                 AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
-                                        new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
+                                        new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + finalErrorMessage + ")"),
                                         new Pair<>("alertSelection", getString(R.string.settings_failure_dialog_button)),
                                         new Pair<>("formName", "Splash")
                                 );
+                                if (finalInvalidRequest) {
+                                    ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).clearApplicationUserData();
+                                }
                                 finish();
                             })
                             .setCancelable(false)
