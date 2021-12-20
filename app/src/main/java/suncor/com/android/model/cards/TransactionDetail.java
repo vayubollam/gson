@@ -93,7 +93,6 @@ public class TransactionDetail {
             case PETRO_POINTS:
             case PARTNER_POINTS_TRANSFER:
             case REDEMPTION:
-                return redeemPoint;
             default:
                 return redeemPoint;
         }
