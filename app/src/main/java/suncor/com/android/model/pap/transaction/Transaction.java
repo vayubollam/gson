@@ -205,7 +205,7 @@ public class Transaction {
 
     public double getRbcAlongWithRedemptionSavings() {
         getCalculatedFieldValues();
-        return (int) otherDiscount + pointsRedeemed / 1000.0;
+        return  otherDiscount + pointsRedeemed / 1000.0;
 
     }
 

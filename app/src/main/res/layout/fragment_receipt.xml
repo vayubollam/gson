@@ -89,7 +89,7 @@
                                 android:textColor="@color/red"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                app:visibleGone="@{transaction.getRbcAlongWithRedemptionSavings > 0}" />
+                                app:visibleGone="@{transaction.getRbcAlongWithRedemptionSavings > 0.0}" />
 
                         </LinearLayout>
 
