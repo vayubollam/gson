@@ -37,7 +37,7 @@ public class CardsUtil {
 //                    .create();
 //        }
         String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
         );
         if (negListener == null) {
@@ -73,7 +73,7 @@ public class CardsUtil {
     public static void showOtherCardAvailableAlert(Context context) {
         Dialog dialog;
         String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
         );
         dialog = new AlertDialog.Builder(context)
@@ -101,7 +101,7 @@ public class CardsUtil {
                     AnalyticsUtils.logEvent(context,AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, context.getString(R.string.reload_card_alet_title)),
                             new Pair<>(AnalyticsUtils.Param.alertSelection,context.getString(R.string.reload_card_alert_description)),
-                            new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName()));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName()));
                 });
         builder.show();
     }

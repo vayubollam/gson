@@ -78,7 +78,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_invalid_card_dialog_title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, ACTIVATE_PETRO_POINTS_CARD));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_PETRO_POINTS_CARD));
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_invalid_card_dialog_message))
@@ -96,7 +96,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_existing_card_dialog_title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, ACTIVATE_PETRO_POINTS_CARD));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_PETRO_POINTS_CARD));
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))

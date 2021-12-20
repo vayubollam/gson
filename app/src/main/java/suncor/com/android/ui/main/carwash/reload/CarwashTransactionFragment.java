@@ -307,8 +307,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     public void onPaymentChanged(String userPaymentId) {
         this.userPaymentId = userPaymentId;
 
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, PUMP_PRE_AUTHORIZED),
-                new Pair<>(AnalyticsUtils.Param.formSelection,userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY) ? PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY : "credit_card"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, new Pair<>(AnalyticsUtils.Param.FORMNAME, PUMP_PRE_AUTHORIZED),
+                new Pair<>(AnalyticsUtils.Param.FORMSELECTION,userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY) ? PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY : "credit_card"));
     }
 
 
@@ -330,7 +330,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void handleConfirmAndAuthorizedClick(){
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
         if(userPaymentId == null) {
             // select payment type error
             return;
@@ -412,7 +412,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     super.onAuthenticationError(errorCode, errString);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, "Biometrics fails"),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Pump PreAuthorized"));
                 }
 
                 @Override

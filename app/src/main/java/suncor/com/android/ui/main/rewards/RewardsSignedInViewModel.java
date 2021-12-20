@@ -50,13 +50,13 @@ public class RewardsSignedInViewModel extends ViewModel {
         for (Iterator<Merchant> merchantIterator = merchants.iterator(); merchantIterator.hasNext(); ) {
             Merchant m = merchantIterator.next();
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                if (m.getMerchantId() != MerchantsIds.Cara_FR && m.getMerchantId() != MerchantsIds.Cineplex_FR
-                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_FR && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_FR && m.getMerchantId() != MerchantsIds.Petro_Canada_FR && m.getMerchantId() != MerchantsIds.Best_Buy_FR && m.getMerchantId() != MerchantsIds.GAP_FR && m.getMerchantId() != MerchantsIds.Walmart_FR && m.getMerchantId() != MerchantsIds.Tim_hortons_FR) {
+                if (m.getMerchantId() != MerchantsIds.CARA_FR && m.getMerchantId() != MerchantsIds.CINEPLEX_FR
+                        && m.getMerchantId() != MerchantsIds.HUDSON_BAY_FR && m.getMerchantId() != MerchantsIds.WINNERS_HOMESENSE_MARSHALLS_FR && m.getMerchantId() != MerchantsIds.PETRO_CANADA_FR && m.getMerchantId() != MerchantsIds.BEST_BUY_FR && m.getMerchantId() != MerchantsIds.GAP_FR && m.getMerchantId() != MerchantsIds.WALMART_FR && m.getMerchantId() != MerchantsIds.TIM_HORTONS_FR) {
                     merchantIterator.remove();
                 }
             } else {
-                if (m.getMerchantId() != MerchantsIds.Cara_EN && m.getMerchantId() != MerchantsIds.Cineplex_EN
-                        && m.getMerchantId() != MerchantsIds.Hudson_Bay_EN && m.getMerchantId() != MerchantsIds.WINNERS_HomeSense_Marshalls_EN && m.getMerchantId() != MerchantsIds.Petro_Canada_EN && m.getMerchantId() != MerchantsIds.Best_Buy_EN && m.getMerchantId() != MerchantsIds.GAP_EN && m.getMerchantId() != MerchantsIds.Walmart_EN && m.getMerchantId() != MerchantsIds.Tim_hortons_EN) {
+                if (m.getMerchantId() != MerchantsIds.CARA_EN && m.getMerchantId() != MerchantsIds.CINEPLEX_EN
+                        && m.getMerchantId() != MerchantsIds.HUDSON_BAY_EN && m.getMerchantId() != MerchantsIds.WINNERS_HOMESENSE_MARSHALLS_EN && m.getMerchantId() != MerchantsIds.PETRO_CANADA_EN && m.getMerchantId() != MerchantsIds.BEST_BUY_EN && m.getMerchantId() != MerchantsIds.GAP_EN && m.getMerchantId() != MerchantsIds.WALMART_EN && m.getMerchantId() != MerchantsIds.TIM_HORTONS_EN) {
                     merchantIterator.remove();
                 }
             }

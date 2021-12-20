@@ -83,7 +83,7 @@ public class ReceiptFragment extends MainActivityFragment {
         observeTransactionData(transactionId);
 
         binding.viewReceiptBtn.setOnClickListener((v) -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });
@@ -139,7 +139,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.setTransaction(result.data);
 
                 binding.shareButton.setOnClickListener(v -> {
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
                     File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
 
                     // TODO: Create error handling

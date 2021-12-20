@@ -42,7 +42,7 @@ public class AddCardFragment extends MainActivityFragment {
         super.onCreate(savedInstanceState);
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AddCardViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "add card"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTART, new Pair<>(AnalyticsUtils.Param.FORMNAME, "add card"));
 
         viewModel.addCardApiResult.observe(this, result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -52,9 +52,9 @@ public class AddCardFragment extends MainActivityFragment {
                 if (ErrorCodes.ERR_LIKING_CARD_FAILED.equals(result.message)) {
                     String analyticsName = getContext().getString(R.string.cards_add_fragment_invalid_card_title)
                             + "(" + getContext().getString(R.string.cards_add_fragment_invalid_card_message) +")";
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Add Card")
                     );
                     new AlertDialog.Builder(getContext())
                             .setTitle(R.string.cards_add_fragment_invalid_card_title)
@@ -63,7 +63,7 @@ public class AddCardFragment extends MainActivityFragment {
                                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                         new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                                         new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
-                                        new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
+                                        new Pair<>(AnalyticsUtils.Param.FORMNAME, "Add Card")
                                 );
                                 dialog.dismiss();
                             })
@@ -81,9 +81,9 @@ public class AddCardFragment extends MainActivityFragment {
             String optionsChecked = "";
             AnalyticsUtils.logEvent(
                     getContext(),
-                    AnalyticsUtils.Event.formComplete,
-                    new Pair<>(AnalyticsUtils.Param.formSelection, optionsChecked),
-                    new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
+                    AnalyticsUtils.Event.FORMCOMPLETE,
+                    new Pair<>(AnalyticsUtils.Param.FORMSELECTION, optionsChecked),
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Add Card")
             );
             AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             goBack();
@@ -137,9 +137,9 @@ public class AddCardFragment extends MainActivityFragment {
 
     private void showCvvHelp() {
         AnalyticsUtils.setCurrentScreenName(getActivity(), "card-security-code-info");
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cards_add_fragment_help_dialog_title)+"("+")"),
-                new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, "Add Card")
         );
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.cards_add_fragment_help_dialog_title)
@@ -148,7 +148,7 @@ public class AddCardFragment extends MainActivityFragment {
                     AnalyticsUtils.logEvent(getActivity().getApplicationContext(),  AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cards_add_fragment_help_dialog_title)+"("+")"),
                             new Pair<>(AnalyticsUtils.Param.alertSelection,getString(R.string.ok)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Add Card")
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Add Card")
                     );
                 })
                 .show();

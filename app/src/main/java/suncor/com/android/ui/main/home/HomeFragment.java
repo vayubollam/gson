@@ -114,7 +114,7 @@ public class HomeFragment extends BottomNavigationFragment {
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 int position = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
                 OfferCard card = offersAdapter.getOffer(position);
-                AnalyticsUtils.logPromotionEvent(getContext(), AnalyticsUtils.Event.viewItem , position + "|" + card.getText(),card.getText(),card.getText(),position+"");
+                AnalyticsUtils.logPromotionEvent(getContext(), AnalyticsUtils.Event.VIEWITEM , position + "|" + card.getText(),card.getText(),card.getText(),position+"");
             }
         }
     };
@@ -488,6 +488,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
             @Override
             public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                //do nothing
             }
 
             @Override
@@ -505,37 +506,37 @@ public class HomeFragment extends BottomNavigationFragment {
                 } else if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, SOMETHING_WRONG),
-                            new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if (result.data.activeSession && result.data.status != null) {
                         if(result.data.status.equalsIgnoreCase(NEW) || result.data.status.equalsIgnoreCase(AUTHORIZED)){
-                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
-                                    new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fuelling_about_to_begin)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
+                                    new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fuelling_about_to_begin)),
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                         }
                         // TODO: handle processing and session end state
                         /*else if(result.data.status.equals("BeginFueling")){
-                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
-                                    new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
+                                    new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fueling_up)),
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Pay at Pump"));
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
                         } */
                         else {
                             mViewModel.updateFuellingSession(true, getString(R.string.fueling_up));
-                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
-                                    new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
+                                    new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fueling_up)),
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                         }
                         if(pingActiveSessionStarted) {
                             observerFuellingActiveSession();
                         }
                     } else {
                         if (mViewModel.activeFuellingSession.get()) {
-                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
-                                    new Pair<>(AnalyticsUtils.Param.formSelection, FUELING_COMPLETE),
-                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMCOMPLETE,
+                                    new Pair<>(AnalyticsUtils.Param.FORMSELECTION, FUELING_COMPLETE),
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                         }
 
                         mViewModel.updateFuellingSession(false, "");

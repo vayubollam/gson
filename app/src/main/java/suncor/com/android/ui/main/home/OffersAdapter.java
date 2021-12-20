@@ -41,7 +41,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
                     activity.getDrawable(R.drawable.banner_8_signin_summer),
                     new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
-                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                 "1|"+activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
@@ -50,7 +50,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.startActivity(new Intent(activity, EnrollmentActivity.class));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
-                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                 "1|"+activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
@@ -69,7 +69,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
                             activity.getNavController().navigate(R.id.action_to_TutorialFragment);
 
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
@@ -94,7 +94,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             {
                                 activity.getNavController().navigate(R.id.rewards_tab);
                             }
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
@@ -110,7 +110,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_4_button),
                         () -> {
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "3":"4") +"|"+activity.getString(R.string.offers_banner_4_text),
                                     activity.getString(R.string.offers_banner_4_text),
                                     activity.getString(R.string.offers_banner_4_text),
@@ -130,7 +130,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_5_button),
                         () -> {
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "4":"5") +"|"+activity.getString(R.string.offers_banner_5_text),
                                     activity.getString(R.string.offers_banner_5_text),
                                     activity.getString(R.string.offers_banner_5_text),

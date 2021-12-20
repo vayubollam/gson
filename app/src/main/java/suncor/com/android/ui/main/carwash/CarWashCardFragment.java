@@ -121,7 +121,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
                     carWashCardViewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong"),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Carwash Cards"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Carwash Cards"));
                 }));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {

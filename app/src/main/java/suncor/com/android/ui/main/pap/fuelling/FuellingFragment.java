@@ -86,7 +86,7 @@ public class FuellingFragment extends MainActivityFragment {
         binding.borderImageView.startAnimation(rotate);
 
         binding.cancelButton.setOnClickListener(button -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.cancel)));
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.cancel)));
             if (binding.cancelButton.getText().equals(getString(R.string.hide))) {
                 // Navigate to home
                 goBack();
@@ -102,7 +102,7 @@ public class FuellingFragment extends MainActivityFragment {
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                     new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancel_alert_title)+"("+getString(R.string.cancel_alert_body)+")"),
                                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel_alert_button)),
-                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                             viewModel.cancelTransaction(transactionId).observe(getViewLifecycleOwner(), result -> {
                                 if (result.status == Resource.Status.LOADING) {
                                     binding.cancelLayout.setVisibility(View.VISIBLE);
@@ -138,7 +138,7 @@ public class FuellingFragment extends MainActivityFragment {
                 if (result.status == Resource.Status.ERROR) {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, SOMETHING_WRONG ),
-                            new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     if(!result.data.activeSession){
@@ -153,23 +153,23 @@ public class FuellingFragment extends MainActivityFragment {
                                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
                                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                                                new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                                                new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                                         dialogInterface.dismiss();
                                         goBack();
                                     }, PAY_AT_PUMP).show();
                         } else {
                             observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
                             AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_FUELING_ALMOST_COMPLETE );
-                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formComplete,
-                                    new Pair<>(AnalyticsUtils.Param.formSelection, PAY_AT_PAUMP_FUELING_COMPLETE),
-                                    new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMCOMPLETE,
+                                    new Pair<>(AnalyticsUtils.Param.FORMSELECTION, PAY_AT_PAUMP_FUELING_COMPLETE),
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                         }
                     } else if (result.data.status != null) {
                         transactionId = result.data.transId;
                         binding.cancelButton.setVisibility(View.VISIBLE);
-                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep,
-                                new Pair<>(AnalyticsUtils.Param.formSelection, getString(R.string.fueling_up)),
-                                new Pair<>(AnalyticsUtils.Param.formName, PAY_AT_PUMP));
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
+                                new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fueling_up)),
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
 
                         AnalyticsUtils.setCurrentScreenName(getActivity(), result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED) ? PAY_AT_PAUMP_FUELING_BEGIN : PAY_AT_PAUMP_FUELING_BEGUN );

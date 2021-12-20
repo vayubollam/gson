@@ -164,7 +164,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton = findViewById(R.id.action_float_button);
         actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
-            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, ACTION_MENU));
+            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event._NAVIGATION, new Pair<>(AnalyticsUtils.Param.ACTIONBARTAP, ACTION_MENU));
 
             if (getSupportFragmentManager().findFragmentByTag(ACTION_MENU) == null)
                 actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU);
@@ -196,7 +196,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             isProfileTabSelected = false;
         });
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event.navigation, new Pair<>(AnalyticsUtils.Param.actionBarTap, item.getTitle().toString()));
+            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event._NAVIGATION, new Pair<>(AnalyticsUtils.Param.ACTIONBARTAP, item.getTitle().toString()));
             if (item.getItemId() == R.id.profile_tab) {
                 isProfileTabSelected = true;
             }

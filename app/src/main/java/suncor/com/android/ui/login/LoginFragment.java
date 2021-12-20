@@ -219,16 +219,16 @@ public class LoginFragment extends BaseFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
         AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage, getString(response.title)),
-                new Pair<>(AnalyticsUtils.Param.formName, LOGIN));
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, LOGIN));
         if (response.message.args != null) {
             message = getString(response.message.content, response.message.args);
         } else {
             message = getString(response.message.content);
         }
         String analyticName = getString(response.title) + "("+message+")";
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                new Pair<>(AnalyticsUtils.Param.formName, LOGIN)
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, LOGIN)
         );
         builder.setMessage(message)
                 .setTitle(response.title);
@@ -236,7 +236,7 @@ public class LoginFragment extends BaseFragment {
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(response.positiveButtonTitle)),
-                    new Pair<>(AnalyticsUtils.Param.formName, LOGIN)
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, LOGIN)
             );
             if (response.positiveButtonCallback != null) {
                 response.positiveButtonCallback.call();

@@ -119,13 +119,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         @Override
         public void onVideoEnded() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoStart, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.VIDEOSTART, new Pair<>(AnalyticsUtils.Param.VIDEOTITLE, videoTitle));
 
         }
 
         @Override
         public void onVideoStarted() {
-            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoComplete, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+            AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.VIDEOCOMPLETE, new Pair<>(AnalyticsUtils.Param.VIDEOTITLE, videoTitle));
         }
     };
     private void displayCurrentTime() {
@@ -134,13 +134,13 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
             int percentage =  ( mPlayer.getCurrentTimeMillis() * 100 ) / mPlayer.getDurationMillis();
             if (percentage > 25 && !show25) {
                 show25 = true;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold25, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.VIDEOTHRESHOLD25, new Pair<>(AnalyticsUtils.Param.VIDEOTITLE, videoTitle));
             } else if (percentage > 50 && !show50) {
                 show50 = true;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold50, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.VIDEOTHRESHOLD50, new Pair<>(AnalyticsUtils.Param.VIDEOTITLE, videoTitle));
             } else if (percentage > 75 && !show75) {
                 show75 = true;
-                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.videoThreshold75, new Pair<>(AnalyticsUtils.Param.videoTitle, videoTitle));
+                AnalyticsUtils.logEvent(getApplication().getBaseContext(), AnalyticsUtils.Event.VIDEOTHRESHOLD75, new Pair<>(AnalyticsUtils.Param.VIDEOTITLE, videoTitle));
             }
         }
     }
