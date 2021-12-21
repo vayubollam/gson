@@ -156,7 +156,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         binding.refreshLayout.setOnRefreshListener(this);
 
         CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
-        //TODO: UNCOMMENT THIS ONCE SINGLE TICKET IS IN SCOPE
+        //UNCOMMENT THIS ONCE SINGLE TICKET IS IN SCOPE
         //binding.carwashWashCards.carWashGetMoreCard.setOnClickListener(buyTicketListener);
         binding.carwashWashCards.carWashCardsList.setAdapter(petroCanadaCardsAdapter);
         binding.carwashWashCards.carWashCardsList.addItemDecoration(listDecorator);
@@ -245,7 +245,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         }
     }
 
-    //TODO: UNCOMMENT THIS WHEN REDDEM/BUY SINGLE TICKET IS IN THE SCOPE
+    //UNCOMMENT THIS WHEN REDDEM/BUY SINGLE TICKET IS IN THE SCOPE
 //    private View.OnClickListener buyTicketListener = v -> {
 //        Navigation.findNavController(getView()).navigate(R.id.action_carWashCardFragment_to_carWashPurchaseFragment);
 //    };

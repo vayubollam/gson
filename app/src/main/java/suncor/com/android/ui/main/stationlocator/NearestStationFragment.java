@@ -319,7 +319,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
      */
     @Override
     public void onRefresh() {
-        // TODO: Implement refreshing
+        // Implement refreshing
         binding.refreshLayout.setRefreshing(false);
     }
 

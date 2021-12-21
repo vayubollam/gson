@@ -142,7 +142,7 @@ public class ReceiptFragment extends MainActivityFragment {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
                     File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
 
-                    // TODO: Create error handling
+                    //Create error handling
                     if (pdfFile == null) return;
 
                     Uri pdfUri;
@@ -190,7 +190,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 });
             } else {
                 // There was some problem, log or handle the error code.
-                // TODO: Handle error when launching in app review
+                // Handle error when launching in app review
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
 
                 if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }

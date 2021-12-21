@@ -40,7 +40,7 @@ public class LocationLiveData extends LiveData<Location> {
 
         @Override
         public void onLocationAvailability(LocationAvailability locationAvailability) {
-            //TODO do we need to handle errors here
+            //Do-Nothing
         }
 
         @Override

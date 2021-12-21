@@ -242,7 +242,7 @@ public class GooglePayUtils {
 
       /* An optional shipping address requirement is a top-level property of the PaymentDataRequest
       JSON object. */
-      //todo uncomment only when billing address required
+      //uncomment only when billing address required
           /*  paymentDataRequest.put("shippingAddressRequired", false);
 
             JSONObject shippingAddressParameters = new JSONObject();

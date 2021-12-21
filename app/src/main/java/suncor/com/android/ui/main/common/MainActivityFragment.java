@@ -62,7 +62,7 @@ public class MainActivityFragment extends BaseFragment {
     }
 
     //A hackish solution to this issue: https://issuetracker.google.com/issues/37036000
-    //TODO find a better and more general solution for fragments being popped out of backstack
+    //find a better and more general solution for fragments being popped out of backstack
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         if (!enter && nextAnim == R.anim.dummy) {

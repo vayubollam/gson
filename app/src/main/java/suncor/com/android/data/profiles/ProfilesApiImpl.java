@@ -42,7 +42,7 @@ public class ProfilesApiImpl implements ProfilesApi {
 
     @Override
     public void retrieveProfile(Consumer<Profile> successCallback, Consumer<String> errorCallback) {
-        //TODO
+        //Do-Nothing
     }
 
     @Override

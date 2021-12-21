@@ -112,7 +112,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 //track screen name
                 String screenName;
                 if (clickedCardIndex == 0) {
-                    //todo need to check
+                    //need to check
                     screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();

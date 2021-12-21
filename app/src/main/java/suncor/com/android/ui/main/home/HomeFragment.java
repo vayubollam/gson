@@ -516,7 +516,7 @@ public class HomeFragment extends BottomNavigationFragment {
                                     new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                             mViewModel.updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                         }
-                        // TODO: handle processing and session end state
+                        //handle processing and session end state
                         /*else if(result.data.status.equals("BeginFueling")){
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
                                     new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fueling_up)),

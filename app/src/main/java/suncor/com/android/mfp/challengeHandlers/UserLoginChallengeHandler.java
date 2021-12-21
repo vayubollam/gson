@@ -197,7 +197,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    //TODO handle failures related to connection issue
+                    //handle failures related to connection issue
                     AnalyticsUtils.setUserId(null);
                     Timber.d("Login Preemptive Failure, error: " + wlFailResponse.toString());
                     if (listener != null && !WLErrorCode.CHALLENGE_HANDLING_CANCELED.getDescription().equals(wlFailResponse.getErrorMsg())) {

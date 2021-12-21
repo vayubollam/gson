@@ -17,7 +17,7 @@ public class CardsUtil {
     public static void showZeroBalanceAlert(Context context, DialogInterface.OnClickListener posListener,
                                             DialogInterface.OnClickListener negListener) {
         Dialog dialog;
-        //TODO: UNCOMMENT WHEN REDEEM/BUG SINGLE TICKET IS BACK
+        // UNCOMMENT WHEN REDEEM/BUG SINGLE TICKET IS BACK
 //        if (negListener == null) {
 //            dialog = new AlertDialog.Builder(context)
 //                    .setTitle(R.string.zero_balance_alert_title)

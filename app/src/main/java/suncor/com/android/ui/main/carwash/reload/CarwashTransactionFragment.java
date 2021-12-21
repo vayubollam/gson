@@ -345,7 +345,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     public void requestGooglePaymentTransaction() {
         try {
-            //todo change value
+            //change value
             double preAuthPrices = formatter.parse("1").doubleValue();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());

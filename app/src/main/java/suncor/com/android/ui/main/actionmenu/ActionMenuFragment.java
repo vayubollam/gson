@@ -242,7 +242,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                     } else if (result.data.status.equals("BeginFueling")) {
                         updateFuellingSession(true, getString(R.string.fueling_up));
                     } else {
-                        //todo handle processing and session end state
+                        //handle processing and session end state
                         updateFuellingSession(true, getString(R.string.fueling_up));
                     }
                 } else {
