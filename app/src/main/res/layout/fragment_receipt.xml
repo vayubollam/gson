@@ -507,7 +507,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
-                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0}"
+                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0.0}"
                         android:background="@color/black_8" />
 
                     <LinearLayout
@@ -515,7 +515,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0}"
+                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0.0}"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:paddingEnd="20dp">
@@ -543,7 +543,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
-                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0}"
+                        app:visibleGone="@{transaction.getCorrespondingDollarOff() > 0.0}"
                         android:background="@color/black_8" />
 
 

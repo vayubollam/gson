@@ -59,7 +59,7 @@ public class Transaction {
     private boolean isFirstTym = true;
     private int bonusPoints = 0;
     private int basePoints = 0;
-    private int pointsRedeemed = 0;
+    private double pointsRedeemed = 0;
     private int currentBalance;
     private int newBalance = 0;
 
@@ -184,7 +184,7 @@ public class Transaction {
 
     public int getBurnedPoints() {
         getCalculatedFieldValues();
-        return pointsRedeemed;
+        return (int) pointsRedeemed;
     }
 
     public MutableLiveData<String> getCorrespondingDollarOffForBurnedPointsMutableData() {
@@ -193,8 +193,8 @@ public class Transaction {
         return correspondingDollars;
     }
 
-    public int getCorrespondingDollarOff() {
-        return (int) (pointsRedeemed / 1000.0);
+    public double getCorrespondingDollarOff() {
+        return  pointsRedeemed / 1000.0;
     }
 
     public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData() {
@@ -218,7 +218,7 @@ public class Transaction {
 
     public MutableLiveData<Integer> getPointsRedeemedMutableData() {
         getCalculatedFieldValues();
-        pointsRedeemedMutableData.postValue(pointsRedeemed);
+        pointsRedeemedMutableData.postValue((int) pointsRedeemed);
         return pointsRedeemedMutableData;
     }
 
@@ -244,7 +244,7 @@ public class Transaction {
     }
 
     public int getPointsRedeemed() {
-        return pointsRedeemed;
+        return (int) pointsRedeemed;
     }
 
     public int getNewBalance() {
@@ -270,10 +270,10 @@ public class Transaction {
                     pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
                 }
 
-                this.pointsRedeemed = (int) pointsRedeemed;
+                this.pointsRedeemed =  pointsRedeemed;
                 this.bonusPoints = (int) bonusPoints;
                 this.basePoints = (int) basePoints;
-                newBalance = currentBalance + this.basePoints + this.bonusPoints - this.pointsRedeemed;
+                newBalance = (int) (currentBalance + basePoints + bonusPoints - pointsRedeemed);
             } else {
                 this.pointsRedeemed = 0;
                 this.bonusPoints = 0;
