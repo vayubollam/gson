@@ -112,7 +112,7 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
     private void cardClick(CardDetail cardDetail) {
         if (viewModel.viewState.getValue() == CardsViewModel.ViewState.FAILED) {
             //the card was loaded from profile, so the repository is still empty
-            if(viewModel.getPetroPointsCard() != null && viewModel.getPetroPointsCard().getValue() != null) {
+            if(viewModel.getPetroPointsCard().getValue() != null) {
                 AnalyticsUtils.setCurrentScreenName(getActivity(), viewModel.getPetroPointsCard().getValue().getFirebaseScreenName());
             }
             CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
