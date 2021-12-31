@@ -7,6 +7,8 @@ import android.util.Pair;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import suncor.com.android.model.cards.CardType;
 
@@ -169,7 +171,7 @@ public class AnalyticsUtils {
         return "None";
     }
 
-    public static void setCurrentScreenName(Activity activity, String screenName) {
+    public static void setCurrentScreenName(@NotNull Activity activity, String screenName) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getComponentName().getClassName());
