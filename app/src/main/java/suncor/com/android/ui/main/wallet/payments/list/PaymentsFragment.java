@@ -129,9 +129,9 @@ public class PaymentsFragment extends MainActivityFragment implements WalletTabI
 
     @Override
     public void navigateToAddCard() {
-        if (getView() == null) return;
+        if (getView() == null || !isVisible()) return;
 
-        NavController controller = Navigation.findNavController(getView());
+        NavController controller = Navigation.findNavController(requireView());
         if (controller.getCurrentDestination() != null
                 && controller.getCurrentDestination().getAction(R.id.action_payments_tab_to_addPaymentFragment) != null ) {
             controller.navigate(R.id.action_payments_tab_to_addPaymentFragment);

@@ -187,9 +187,9 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
 
     @Override
     public void navigateToAddCard() {
-        if (getView() == null) return;
+        if (getView() == null || !isVisible()) return;
 
-        NavController controller = Navigation.findNavController(getView());
+        NavController controller = Navigation.findNavController(requireView());
         if (controller.getCurrentDestination() != null
                 && controller.getCurrentDestination().getAction(R.id.action_cards_tab_to_addCardFragment) != null ) {
             controller.navigate(R.id.action_cards_tab_to_addCardFragment);
