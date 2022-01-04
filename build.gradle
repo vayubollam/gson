@@ -34,13 +34,13 @@ ext {
     compileSdkVersion = 30
     appcompatVersion = "1.0.2"
     constraintLayoutVersion = "1.1.3"
-    navigationVersion = "2.3.0"
+    navigationVersion = "2.3.5"
     archLifecycleVersion = "2.0.0"
-    playServicesVersion = "16.0.0"
+    playServicesVersion = "18.0.0"
     tagManagerVersion = "17.0.0"
     legacyLibraryVersion = "1.0.0"
     materialLibraryVersion = "1.1.0-alpha07"
-    googlePlacesVersion = "1.0.0"
+    googlePlacesVersion = "2.5.0"
     gsonVersion = "2.8.5"
     mfpVersion = "8.0.2020090912"
     workManagerVersion = "1.0.0"
@@ -54,6 +54,7 @@ ext {
     googleWalletVersion = '18.0.0'
     firebaseAnalyticsVersion = '17.6.0'
     playCoreVersion = '1.10.0'
+    glideVersion = '4.12.0'
 }
 
 
