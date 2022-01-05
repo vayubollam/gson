@@ -9,7 +9,7 @@ repositories {
 }
 
 static def getDate() {
-    return  (int) (new Date().getTime()/1000)
+   return new Date().format('yyMMddHHmm').toInteger()
 }
 
 android {
