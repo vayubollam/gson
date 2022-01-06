@@ -1,7 +1,9 @@
 name: Android CI
 
-on: workflow_dispatch
-#   push:
+on:
+  push:
+    branches:
+      - task/RMP-5564
 #     tags:
 #       - "*"
 
