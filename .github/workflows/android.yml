@@ -2,10 +2,8 @@ name: Android CI
 
 on:
   push:
-    branches:
-      - task/RMP-5564
-#     tags:
-#       - "*"
+    tags:
+      - "*"
 
 jobs:
   build:
