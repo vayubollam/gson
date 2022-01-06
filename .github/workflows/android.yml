@@ -1,9 +1,9 @@
 name: Android CI
 
-on:
-  push:
-    tags:
-      - "*"
+on: workflow_dispatch
+#   push:
+#     tags:
+#       - "*"
 
 jobs:
   build:
