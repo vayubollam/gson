@@ -68,12 +68,12 @@ jobs:
        name: Release artifact
        path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
        
-   # - name: Upload to Perfecto public cloud
-   #   if: ${{ env.BUILD_ENV == 'QA' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
-   #   env:
-   #     PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
-   #   run: |
-   #     curl -v --fail-with-body --data-binary app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk "https://ibmgbs.perfectomobile.com/services/repositories/media/app-${env.BUILD_ENV}${env.FEATURE}-release.apk?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1   
+    - name: Upload to Perfecto public cloud
+      if: ${{ env.BUILD_ENV == 'QACarwash' || env.BUILD_ENV == 'QAScrum' || env.BUILD_ENV == 'DevCarwash' || env.BUILD_ENV == 'Prod' || env.BUILD_ENV == 'UATTestflight' || env.BUILD_ENV == 'DevSus' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
+      env:
+        PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
+      run: |
+        curl -v --fail --data-binary app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk "https://ibmgbs.perfectomobile.com/services/repositories/media/app-${{ env.BUILD_ENV }}${{ env.FEATURE }}-release.apk?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1
 
     - name: Get appropriate credentials for AppCenter
       run: |
