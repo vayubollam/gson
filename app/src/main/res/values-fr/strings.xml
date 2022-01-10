@@ -701,6 +701,7 @@
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
     <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte. Veuillez prévoir un délai de 24 heures avant de recevoir vos Petro-Points.</string>
+    <string name="transaction_copy_receipt_send_mail_clpe_down">La mise à jour de vos renseignements Petro-Points pourrait prendre jusqu'à 24 heures. Veuillez revenir plus tard pour voir vos renseignements mis à jour. </string>
     <string name="transaction_summary">Sommaire de votre transaction</string>
     <string name="transaction_saved">Vous avez économisé %1$s</string>
 
