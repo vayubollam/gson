@@ -196,6 +196,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
                             android:text="@string/cardetail_balance_update_message"
                             android:textAppearance="@style/Caption1"
                             android:textColor="@color/black_60"
@@ -269,13 +271,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="24dp"
                     android:layout_marginBottom="24dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/card_reload_button" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/card_reload_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
                     android:paddingStart="16dp"
