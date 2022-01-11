@@ -72,12 +72,16 @@ public class PaymentsFragment extends MainActivityFragment implements WalletTabI
                         AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseScreenName());
                         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
                         action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
-                        Navigation.findNavController(getView()).navigate(action);
+                        if(Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.addPaymentFragment) {
+                            Navigation.findNavController(getView()).navigate(action);
+                        }
                     } else if (mainViewModel.isNewCardAdded()) {
                         AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseScreenName());
                         CardsFragmentDirections.ActionCardsTabToCardsDetailsFragment action = CardsFragmentDirections.actionCardsTabToCardsDetailsFragment();
                         action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
-                        Navigation.findNavController(getView()).navigate(action);
+                        if(Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.addPaymentFragment) {
+                            Navigation.findNavController(requireView()).navigate(action);
+                        }
                     } else {
                         ArrayList<PaymentListItem> payments = new ArrayList<>();
                         for (PaymentDetail paymentDetail : viewModel.getPayments().getValue()) {
