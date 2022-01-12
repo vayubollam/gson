@@ -45,6 +45,7 @@ public class CardQuestionFragment extends BaseFragment {
     ViewModelFactory viewModelFactory;
 
     public CardQuestionFragment() {
+        //do nothing
     }
 
     @Override
@@ -102,9 +103,9 @@ public class CardQuestionFragment extends BaseFragment {
                     animateCard();
                     break;
                 case ERROR:
-                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong"),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Petro Points Sign Up Activate"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Petro Points Sign Up Activate"));
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> getActivity().finish());
@@ -136,7 +137,7 @@ public class CardQuestionFragment extends BaseFragment {
         set.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                //do nothing
             }
 
             @Override
@@ -150,7 +151,7 @@ public class CardQuestionFragment extends BaseFragment {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                //do nothing
             }
         });
     }

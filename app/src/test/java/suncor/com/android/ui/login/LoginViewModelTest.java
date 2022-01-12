@@ -27,7 +27,7 @@ public class LoginViewModelTest {
 
     @Before
     public void init() {
-        viewModel = new LoginViewModel(sessionManager);
+        viewModel = new LoginViewModel(sessionManager,null);
     }
 
     @Test

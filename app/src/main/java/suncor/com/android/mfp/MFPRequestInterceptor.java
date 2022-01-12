@@ -29,6 +29,8 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
+import static suncor.com.android.utilities.Constants.ERROR_CODE;
+
 public class MFPRequestInterceptor implements Interceptor {
 
     @Inject
@@ -60,8 +62,8 @@ public class MFPRequestInterceptor implements Interceptor {
             Timber.v("Response Intercepted:\nRequest URI:%s\ncode :%d\nbody:%s", response.request().url().toString(), response.code(), body);
             try {
                 JSONObject object = new JSONObject(body);
-                if (object.has("errorCode")) {
-                    if (ErrorCodes.ERR_CONFLICTING_LOGINS.equalsIgnoreCase(object.getString("errorCode"))) {
+                if (object.has(ERROR_CODE)) {
+                    if (ErrorCodes.ERR_CONFLICTING_LOGINS.equalsIgnoreCase(object.getString(ERROR_CODE))) {
                         Handler mainHandler = new Handler(application.getMainLooper());
                         mainHandler.post(() -> sessionManager.logout().observeForever((result) -> {
                             //The livedata from logout is short lived, so observing it forever won't leak memories
@@ -69,7 +71,7 @@ public class MFPRequestInterceptor implements Interceptor {
                                 LocalBroadcastManager.getInstance(application).sendBroadcast(new Intent(MainActivity.LOGGED_OUT_DUE_CONFLICTING_LOGIN));
                             }
                         }));
-                    } else if (ErrorCodes.ERR_PASSWORD_CHANGE_REQUIRES_RE_LOGIN.equalsIgnoreCase(object.getString("errorCode"))) {
+                    } else if (ErrorCodes.ERR_PASSWORD_CHANGE_REQUIRES_RE_LOGIN.equalsIgnoreCase(object.getString(ERROR_CODE))) {
                         Handler mainHandler = new Handler(application.getMainLooper());
                         mainHandler.post(() -> {
                             sessionManager.logout().observeForever(result -> {

@@ -44,6 +44,14 @@ import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.FingerprintManager;
 
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.SPLASH;
+
 public class SplashActivity extends DaggerAppCompatActivity implements Animation.AnimationListener {
     private final static int ENTER_ANIMATION_DURATION = 1400;
     private final static int EXIT_ANIMATION_DURATION = 900;
@@ -81,7 +89,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
         super.onCreate(savedInstanceState);
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            AnalyticsUtils.buildNumber = pInfo.versionCode;
+            AnalyticsUtils.setBuildNumber(pInfo.versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -144,7 +152,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     @Override
     public void onAnimationStart(Animation animation) {
-
+        //do nothing
     }
 
 
@@ -164,19 +172,19 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
                     }
 
                     binding.profilePd.setVisibility(View.GONE);
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), "error_log", new Pair<>("errorMessage", getString(R.string.settings_failure_dialog_title)));
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), "alert",
-                            new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
-                            new Pair<>("formName", "Splash")
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), ERROR_LOG, new Pair<>("errorMessage", getString(R.string.settings_failure_dialog_title)));
+                    AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT,
+                            new Pair<>(ALERT_TITLE, getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
+                            new Pair<>(FORM_NAME, SPLASH)
                     );
                     new AlertDialog.Builder(this)
                             .setTitle(R.string.settings_failure_dialog_title)
                             .setMessage(getString(R.string.settings_failure_dialog_message) + unverifiedConnectionCode)
                             .setPositiveButton(R.string.settings_failure_dialog_button, (dialog, which) -> {
-                                AnalyticsUtils.logEvent(application.getApplicationContext(), "alert_interaction",
-                                        new Pair<>("alertTitle", getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
-                                        new Pair<>("alertSelection", getString(R.string.settings_failure_dialog_button)),
-                                        new Pair<>("formName", "Splash")
+                                AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT_INTERACTION,
+                                        new Pair<>(ALERT_TITLE, getString(R.string.settings_failure_dialog_title) + "(" + getString(R.string.settings_failure_dialog_message) + ")"),
+                                        new Pair<>(ALERT_SELECTION, getString(R.string.settings_failure_dialog_button)),
+                                        new Pair<>(FORM_NAME, SPLASH)
                                 );
                                 finish();
                             })
@@ -277,7 +285,7 @@ public class SplashActivity extends DaggerAppCompatActivity implements Animation
 
     @Override
     public void onAnimationRepeat(Animation animation) {
-
+        //do nothing
     }
 
     public AppStart checkAppStart() {

@@ -154,6 +154,7 @@ public class CardsRepository {
                         }
                     case PARTNER:
                         return 1;
+
                 }
             } else if (card1.getCardType() == CardType.FSR && card2.getCardType() == CardType.FSR) {
                 if (card1.getCpl() == card2.getCpl()) {
@@ -194,6 +195,7 @@ public class CardsRepository {
                             }
                         case PPC:
                             return 1;
+
                     }
                 } else {
                     if (card1.getCardType() == CardType.FSR || card1.getCardType() == CardType.PPC) {

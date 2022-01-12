@@ -206,7 +206,7 @@ public class HomeViewModel extends ViewModel {
         }
     }
 
-    public void openNavigationApps() {
+    public void openNavigationForNearestStation() {
         Station nearestStation = _nearestStation.getValue().data.getStation();
         _openNavigationApps.setValue(Event.newEvent(nearestStation));
     }
@@ -234,7 +234,7 @@ public class HomeViewModel extends ViewModel {
         _dismissEnrollmentRewardsCardEvent.setValue(Event.newEvent(true));
     }
 
-    public void navigateToPetroPoints() {
+    public void navigateToPetroPointsScreen() {
         _navigateToPetroPoints.setValue(Event.newEvent(true));
     }
 

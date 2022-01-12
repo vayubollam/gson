@@ -14,7 +14,7 @@ import suncor.com.android.model.station.Station;
 public class StationsUtil {
     public static void showIndependentStationAlert(Context context) {
         String analyticsTitle = context.getString(R.string.carwash_independent_alert_title)+"("+context.getString(R.string.carwash_independent_alert_message)+")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle)
         );
         Dialog dialog = new AlertDialog.Builder(context)
