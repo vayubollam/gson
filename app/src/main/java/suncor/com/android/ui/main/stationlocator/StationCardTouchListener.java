@@ -106,10 +106,11 @@ public class StationCardTouchListener implements RecyclerView.OnItemTouchListene
 
     @Override
     public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+        //Do nothing
     }
 
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
+        //Do nothing
     }
 }

@@ -198,7 +198,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                 provinceField.notifyPropertyChanged(BR.text);
                 showAutocompleteLayout.setValue(false);
             } else {
-                //TODO handle error
+                //handle error
                 showAutocompleteLayout.setValue(false);
             }
         });

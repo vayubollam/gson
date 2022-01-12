@@ -17,6 +17,7 @@ public class ProfileRequest {
     }
 
     public ProfileRequest() {
+        //do nothing
     }
 
     public String getPassword() {

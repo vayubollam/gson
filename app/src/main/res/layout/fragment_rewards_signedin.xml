@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
-                android:onClick="@{v -> vm.navigateToDiscovery()}"
+                android:onClick="@{v -> vm.navigateToDiscoveryScreen()}"
                 android:padding="8dp"
                 android:src="@drawable/ic_info_outline"
                 android:tint="@color/black_60"

@@ -202,7 +202,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
                 @Override
                 public void onStateChanged(@NonNull View view, int i) {
-
+                    //Do nothing
                 }
 
                 @Override
