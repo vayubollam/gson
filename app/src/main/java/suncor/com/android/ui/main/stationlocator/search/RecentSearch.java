@@ -43,7 +43,7 @@ public class RecentSearch {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if( (obj instanceof RecentSearch))
+        if( (obj instanceof RecentSearch && ((RecentSearch) obj).placeId != null))
             return (((RecentSearch) obj).placeId.equals(this.placeId));
         return false;
     }

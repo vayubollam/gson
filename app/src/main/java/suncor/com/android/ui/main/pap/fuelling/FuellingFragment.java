@@ -149,7 +149,9 @@ public class FuellingFragment extends MainActivityFragment {
                                     getString(R.string.cancellation_alert_body),
                                     getContext(),
                                     (dialogInterface, i) -> {
-                                        AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_FUELING_CANCELED );
+
+                                        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-fuelling-transaction-cancelled" );
+
                                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cancellation_alert_title)+"("+getString(R.string.cancellation_alert_body)+")"),
                                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
