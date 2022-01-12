@@ -10,7 +10,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, poc-runner]
 
     steps:
     - uses: actions/checkout@v2
@@ -71,7 +71,6 @@ jobs:
         restore-keys: ${{ runner.os }}-gradle
 
     - name: Build and analyze
-      runs-on: [self-hosted, poc-runner]
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
