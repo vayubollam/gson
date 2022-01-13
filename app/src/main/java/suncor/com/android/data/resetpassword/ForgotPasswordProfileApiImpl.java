@@ -67,8 +67,13 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
                     Timber.d("Profile forgot password API  " + wlFailResponse.toString());
                     int remainingMinutes = 0 ;
                     try {
-                        remainingMinutes = wlFailResponse.getResponseJSON().getInt("remainingMinutes");
-                        result.postValue(Resource.error(wlFailResponse.getErrorMsg() + ";" + remainingMinutes));
+                        JSONObject failJSONObject = wlFailResponse.getResponseJSON();
+                        if (failJSONObject != null) {
+                            remainingMinutes = failJSONObject.getInt("remainingMinutes");
+                            result.postValue(Resource.error(wlFailResponse.getErrorMsg() + ";" + remainingMinutes));
+                        } else {
+                            result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                        }
                     } catch (JSONException e) {
                         result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                         e.printStackTrace();
