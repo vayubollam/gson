@@ -53,6 +53,8 @@
     <string name="login_invalid_credentials_dialog_2nd_message">%1d attempts left before the app gets locked for %2d mins</string>
     <string name="login_invalid_credentials_reset_password">Reset password</string>
     <string name="login_soft_lock_alert_title">Account locked</string>
+    <string name="clpe_down_prompt">Points redemption is not available at this time. Your Petro-Points details will be updated within 24 hours. </string>
+    <string name="clpe_down_prompt_heading">Petro-Points is unavailable </string>
     <string name="login_soft_lock_alert_message">Sign in is locked due to %1d failed attempts.\nRetry in %2d minutes.</string>
     <string name="security_answer_soft_lock_alert_message">You\'ve entered the wrong security answer too many times. Please try again in 30 minutes.</string>
     <string name="security_answer_soft_lock_retry_alert_message"> You entered the wrong security answer too many times. Please wait X minutes before trying to sign in.</string>
@@ -419,6 +421,7 @@
     <string name="home_enrollment_greeting">Your %s points will take up to 15 minutes to appear.</string>
     <string name="home_enrollment_greeting_title">Thank you!</string>
     <string name="home_enrollment_greeting_dismiss">Dismiss</string>
+    <string name="dismiss">Dismiss </string>
     <string name="cards_remove_card_alert_title">Are you sure?</string>
     <string name="cards_remove_card_alert_message">This will remove the card from your account and any remaining balance will no longer be protected.</string>
     <string name="cards_remove_card_alert_remove">Remove</string>
