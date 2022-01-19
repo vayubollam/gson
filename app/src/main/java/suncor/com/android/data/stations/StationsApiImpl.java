@@ -23,10 +23,11 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.utilities.Timber;
 
+import static suncor.com.android.utilities.Constants.GET_LOCATIONS_ADAPTER__PATH;
+
 @Singleton
 public class StationsApiImpl implements StationsApi {
 
-    private static final String GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations";
     private Gson gson;
 
     public StationsApiImpl(Gson gson) {

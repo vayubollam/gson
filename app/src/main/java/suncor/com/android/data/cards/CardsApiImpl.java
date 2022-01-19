@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
@@ -50,7 +51,11 @@ public class CardsApiImpl implements CardsApi {
                     Timber.d("Cards API success, response:\n" + jsonText);
 
                     CardDetail[] cards = gson.fromJson(jsonText, CardDetail[].class);
-                    result.postValue(Resource.success(new ArrayList<>(Arrays.asList(cards))));
+                    if(Objects.nonNull(cards)){
+                        result.postValue(Resource.success(new ArrayList<>(Arrays.asList(cards))));
+                    } else {
+                        result.postValue(Resource.success(new ArrayList<>()));
+                    }
                 }
 
                 @Override

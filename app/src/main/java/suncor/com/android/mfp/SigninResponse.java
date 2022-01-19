@@ -22,6 +22,8 @@ public class SigninResponse {
                 this.timeOut = data;
                 this.remainingAttempts = -1;
                 break;
+            default:
+                //do nothing
         }
     }
 
