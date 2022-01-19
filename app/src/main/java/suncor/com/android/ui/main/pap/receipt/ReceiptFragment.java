@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
@@ -167,6 +168,13 @@ public class ReceiptFragment extends MainActivityFragment {
                     binding.greetingsSaving.setVisibility(View.GONE);
                 }
 
+                if(transaction.getLoyaltyPointsMessages() == null){
+
+                    AlertDialog.Builder dialog = createAlert();
+                    dialog.setCancelable(true);
+                    dialog.show();
+                }
+
                 binding.shareButton.setOnClickListener(v -> {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
                     File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
@@ -189,8 +197,6 @@ public class ReceiptFragment extends MainActivityFragment {
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(share, "Share"));
                 });
-
-
             }
         });
     }
@@ -198,6 +204,18 @@ public class ReceiptFragment extends MainActivityFragment {
     private void goBack() {
         NavController navController = Navigation.findNavController(requireView());
         navController.popBackStack();
+    }
+
+    private AlertDialog.Builder createAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+        builder.setMessage(R.string.clpe_down_prompt)
+                .setTitle(R.string.clpe_down_prompt_heading);
+        builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> {
+            dialog.dismiss();
+        }));
+
+        return builder;
     }
 
     private void checkForReview() {

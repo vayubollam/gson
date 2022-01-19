@@ -174,6 +174,8 @@
     <string name="enrollment_postalcode_format_error">Le code postal entré est erroné.</string>
     <string name="customer_support_number">18006680222</string>
     <string name="login_soft_lock_alert_title">Compte verrouillé</string>
+    <string name="clpe_down_prompt">La fonction d\'échange de points n\'est pas disponible pour le moment. Les détails sur vos Petro-Points seront mis à jour au cours des 24 prochaines heures.</string>
+    <string name="clpe_down_prompt_heading">Les Petro-Points ne sont pas disponibles</string>
     <string name="security_answer_soft_lock_alert_message">Vous avez entré la mauvaise réponse de sécurité à trop de reprises. Veuillez réessayer dans 30 minutes.</string>
     <string name="security_answer_soft_lock_retry_alert_message"> Vous avez entré la mauvaise réponse de sécurité à trop de reprises. Veuillez attendre X minutes avant d\'essayer d\'ouvrir une session.</string>
     <string name="home_nearest_no_station_message">Nous ne trouvons pas l\'établissement le plus près pour le moment.</string>
@@ -397,6 +399,7 @@
     <string name="home_enrollment_greeting">Vos %s points apparaîtront dans environ 15 minutes.</string>
     <string name="home_enrollment_greeting_title">Merci !</string>
     <string name="home_enrollment_greeting_dismiss">Fermer</string>
+    <string name="dismiss">Rejeter </string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
     <string name="offers_banner_2_text">Paiement sans contact maintenant disponible dans l\'application.</string>
     <string name="offers_banner_2_button">Lancer la visite des fonctionnalités</string>
@@ -701,6 +704,7 @@
 
     <string name="transaction_ppt_lbl">PETRO-POINTS</string>
     <string name="transaction_copy_receipt_send_mail">Partagez votre reçu ci-dessous ou accédez aux renseignements relatifs à votre achat à partir de votre compte. Veuillez prévoir un délai de 24 heures avant de recevoir vos Petro-Points.</string>
+    <string name="transaction_copy_receipt_send_mail_clpe_down">La mise à jour de vos renseignements Petro-Points pourrait prendre jusqu\'à 24 heures. Veuillez revenir plus tard pour voir vos renseignements mis à jour. </string>
     <string name="transaction_summary">Sommaire de votre transaction</string>
     <string name="transaction_saved">Vous avez économisé %1$s</string>
 
