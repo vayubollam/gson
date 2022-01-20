@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - "*"
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 jobs:
   build:
