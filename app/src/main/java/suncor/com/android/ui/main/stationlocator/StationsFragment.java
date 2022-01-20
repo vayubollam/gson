@@ -554,11 +554,11 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     }
 
     public void launchFiltersFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_filtersFragment);
+        Navigation.findNavController(requireView()).navigate(R.id.action_stations_tab_to_filtersFragment);
     }
 
     public void launchSearchFragment() {
-        Navigation.findNavController(getView()).navigate(R.id.action_stations_tab_to_searchFragment);
+        Navigation.findNavController(requireView()).navigate(R.id.action_stations_tab_to_searchFragment);
 
     }
 
