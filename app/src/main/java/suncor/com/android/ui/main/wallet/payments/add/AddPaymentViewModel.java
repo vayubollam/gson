@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.kount.api.analytics.AnalyticsCollector;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.data.payments.PaymentsRepository;
@@ -52,7 +54,7 @@ public class AddPaymentViewModel extends ViewModel {
             redirectUrl = result.data != null ? result.data.getRedirectUrl() : null;
 
             MutableLiveData<Resource<Uri>> data = new MutableLiveData<>();
-            data.setValue(new Resource<>(result.status, result.data != null ?
+            data.setValue(new Resource<>(result.status, result.data != null && Objects.nonNull(profile) ?
                     result.data.getP97Url()
                             .buildUpon()
                             .appendQueryParameter("lat", Double.toString(userLocation.latitude))
