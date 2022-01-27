@@ -83,13 +83,11 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
         concatAdapter = new ConcatAdapter(
                 new ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build(),
                 headerCardAdapter,
-                partnerCardsTitleAdapter,
-                partnerCardsAdapter,
                 petroCanadaCardsTitleAdapter,
-                petroCanadaCardsAdapter
-
+                petroCanadaCardsAdapter,
+                partnerCardsTitleAdapter,
+                partnerCardsAdapter
         );
-
 
         viewModel.viewState.observe(this, (result) -> {
             if (result != CardsViewModel.ViewState.REFRESHING) {
