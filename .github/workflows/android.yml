@@ -51,7 +51,7 @@ jobs:
    
     - name: Update app buildSettings.properties to show build date
       run: |
-          sed -i -e 's/__BUILD_DATE__/${{ env.SHORT_DATE }}/g' "app/src/main/assets/buildSettings.properties"
+          sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
 
     - name: Cache SonarQube packages
@@ -94,6 +94,9 @@ jobs:
       run: |
         curl -X POST -T app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk "https://ibmgbs.perfectomobile.com/services/repositories/media/app-${{ env.BUILD_ENV }}${{ env.FEATURE }}-release.apk?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1
 
+    - name: Print new build number
+      run: echo "Build number is $BUILD_NUMBER"
+      
     - name: Get appropriate credentials for AppCenter
       run: |
         case ${{ env.BUILD_ENV }} in
