@@ -11,8 +11,15 @@ repositories {
 }
 
 static def getDate() {
-    return  (int) (new Date().getTime()/1000)
+   print("versionCode" +new Date().format('YYYYMMDDHH').toInteger())
+             return new Date().format('YYYYMMDDHH').toInteger()
+    //  return  (int) (new Date().getTime()/1000)
+
+
 }
+
+
+
 
 android {
 
@@ -149,8 +156,7 @@ android {
 
 android.applicationVariants.all { variant ->
     def buildType = variant.buildType.name
-
-    if (buildType == "release") {
+        if (buildType == "release") {
         variant.outputs.all { output ->
             setVersionCodeOverride(generatedVersionCode)
         }
