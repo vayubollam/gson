@@ -16,6 +16,7 @@
     <string name="filters_services_header">Produits et services</string>
     <string name="filters_fuel_header">Options de carburants</string>
     <string name="filters_carwash_header">Lave-auto</string>
+    <string name="address_warning_message">Your address will be updated within 24 hrs. Some features may be unavailable until then.</string>
     <string name="filters_only_in_qc_message">(QC seulement)</string>
     <string name="station_recently_searched">Recherche récente</string>
     <string name="station_result_no_stations_found">Désolé, votre recherche n\'a donné aucun résultat.</string>

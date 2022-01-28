@@ -69,12 +69,12 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         binding.appBar.setNavigationOnClickListener(v -> goBack());
 
         binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
-        binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        DividerItemDecoration dividerDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+        DividerItemDecoration dividerDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
         binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
-        viewModel.showSaveButtonEvent.observe(this, event -> {
+        viewModel.showSaveButtonEvent.observe(getViewLifecycleOwner(), event -> {
             if (event.getContentIfNotHandled() != null) {
                 isEditing.set(true);
             }
@@ -87,9 +87,9 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
         super.onCreate(savedInstanceState);
         isLoadedFirstTime = true;
         viewModel = ViewModelProviders.of(this, factory).get(AddressViewModel.class);
-        sharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
+        sharedViewModel = ViewModelProviders.of(requireActivity()).get(ProfileSharedViewModel.class);
         viewModel.setSharedViewModel(sharedViewModel);
-        viewModel.setProvincesList(((MainActivity) getActivity()).getProvinces());
+        viewModel.setProvincesList(((MainActivity) requireActivity()).getProvinces());
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
         viewModel.showAutocompleteLayout.observe(this, (show) -> {
@@ -132,7 +132,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
 
         viewModel.navigateToProfile.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
-                Navigation.findNavController(getView()).popBackStack();
+                Navigation.findNavController(requireView()).popBackStack();
             }
         });
     }
@@ -159,8 +159,8 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
 
 
     private void hideKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
     }
 
     void goBack() {
@@ -169,7 +169,7 @@ public class AddressFragment extends MainActivityFragment implements OnBackPress
             viewModel.hideAutoCompleteLayout();
         }
         sharedViewModel.setSelectedProvince(null);
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
 
     }
 

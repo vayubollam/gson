@@ -31,7 +31,6 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
-import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -75,10 +74,10 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ActionMenuViewModel.class);
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
 
-        locationLiveData = new LocationLiveData(getContext().getApplicationContext());
+        locationLiveData = new LocationLiveData(requireContext().getApplicationContext());
         homeViewModel.locationServiceEnabled.observe(this, (enabled -> {
             if (enabled) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
                     homeViewModel.isLoading.set(homeViewModel.getUserLocation() == null);
                     locationLiveData.observe(getViewLifecycleOwner(), (location -> homeViewModel.setUserLocation(new LatLng(location.getLatitude(), location.getLongitude()))));
                 }
@@ -94,7 +93,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
 
         binding.actionAccountButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_menu_account)));
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_profile_tab);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_profile_tab);
             dismiss();
         });
         binding.actionFuelUpButton.setOnClickListener(view -> {
@@ -116,17 +115,17 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             }
         });
         binding.actionScanCardButton.setOnClickListener(view -> {
-            AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_menu_scan_card)));
+            AnalyticsUtils.logEvent(requireActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_menu_scan_card)));
 
             HomeNavigationDirections.ActionToCardsDetailsFragment action = HomeNavigationDirections.actionToCardsDetailsFragment();
             action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
             dismiss();
         });
         binding.actionWashCarButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_menu_wash_car)));
 
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_carWashFragment);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.action_to_carWashFragment);
             dismiss();
         });
 

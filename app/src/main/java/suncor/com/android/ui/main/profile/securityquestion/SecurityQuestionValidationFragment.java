@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.profile.securityquestion;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -26,8 +25,6 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
-import suncor.com.android.ui.login.LoginActivity;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
@@ -55,14 +52,14 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(SecurityQuestionValidationViewModel.class);
-        sharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
+        sharedViewModel = ViewModelProviders.of(requireActivity()).get(ProfileSharedViewModel.class);
         mViewModel.securityQuestionLiveData.observe(this, securityQuestionResource -> {
             switch (securityQuestionResource.status) {
                 case SUCCESS:
                     binding.getRoot().post(() -> {
                         binding.questionAnswerInput.getHintTextView().setText(securityQuestionResource.data.getQuestion());
                         binding.questionAnswerInput.getEditText().requestFocus();
-                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                     });
                     break;
@@ -78,20 +75,20 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                             new Pair<>("formName","Update Personal Information"),
                             new Pair<>("stepName","Answer security question")
                         );
-                        Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
+                        Navigation.findNavController(requireView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
                     } else if (AddressFragment.ADDRESS_FRAGMENT.equalsIgnoreCase(destination)) {
                         AnalyticsUtils.logEvent(getContext(),"form_step",
                                 new Pair<>("formName","Update Address"),
                                 new Pair<>("stepName","Answer security question")
                         );
-                        Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
+                        Navigation.findNavController(requireView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
                     }
                     break;
                 case ERROR:
                     if (Objects.requireNonNull(stringResource.message).equalsIgnoreCase(ErrorCodes.ERR_INVALID_SECURITY_ANSWER)) {
                         Alerts.prepareCustomDialogWithTryAgain(getResources().getString(R.string.profile_security_question_wrong_answer_alert_title), null, getContext(), ((dialog, which) -> {
                             binding.questionAnswerInput.setText("");
-                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.showSoftInput(binding.questionAnswerInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
                             dialog.dismiss();
                         }), "Security Question Validation").show();
@@ -99,7 +96,7 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                         Alerts.prepareCustomDialogOk(getResources().getString(R.string.login_soft_lock_alert_title), getResources().getString(R.string.security_answer_soft_lock_alert_message), getContext(), ((dialog, which) -> {
                             sessionManager.logout().observe(this, (result) -> {
                                 if (result.status == Resource.Status.SUCCESS) {
-                                    Navigation.findNavController(getView()).navigate(R.id.home_tab);
+                                    Navigation.findNavController(requireView()).navigate(R.id.home_tab);
                                 } else if (result.status == Resource.Status.ERROR) {
                                 }
                             });
@@ -113,7 +110,7 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                     }
                     break;
                 case LOADING:
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
                     break;
             }
@@ -134,7 +131,7 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        findNavController(getView()).popBackStack();
+        findNavController(requireView()).popBackStack();
     }
 
 
