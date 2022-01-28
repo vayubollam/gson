@@ -51,7 +51,7 @@ jobs:
    
     - name: Update app buildSettings.properties to show build date
       run: |
-          sed -i -e 's/__BUILD_DATE__/${{ env.FULL_DATE }}/g' "app/src/main/assets/buildSettings.properties"
+          sed -i -e 's/__BUILD_DATE__/${{ env.SHORT_DATE }}/g' "app/src/main/assets/buildSettings.properties"
           sed -i -e 's/__BUILD_SHA__/${{ env.SHORT_HASH }}/g' "app/src/main/assets/buildSettings.properties"
 
     - name: Cache SonarQube packages
