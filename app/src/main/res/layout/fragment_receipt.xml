@@ -34,6 +34,12 @@
                 android:background="@color/black_4"
                 android:orientation="vertical">
 
+                <suncor.com.android.uicomponents.SuncorAppBarLayout
+                    android:id="@+id/app_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
