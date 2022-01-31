@@ -137,6 +137,7 @@ public class ReceiptFragment extends MainActivityFragment {
                     // Handling can be made for the error
                 });
 
+                binding.paymentMethod.setText(result.data.getPaymentType(requireContext(), isGooglePay));
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));

@@ -493,7 +493,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@{transaction.formattedTotal}"
+                            android:text="@{transaction.formattedSubtotal}"
                             style="@style/BodyBold"
                             android:textColor="@color/black_C" />
 
@@ -574,6 +574,7 @@
                             android:id="@+id/payment_from_method"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@{transaction.formattedTotal}"
                             tools:text="$1000"
                             style="@style/Body"
                             android:textColor="@color/black_C" />
