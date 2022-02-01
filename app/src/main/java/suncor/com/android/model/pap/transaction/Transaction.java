@@ -107,7 +107,7 @@ public class Transaction {
     }
 
     public String getFormattedSubtotal() {
-        return formattedSubtotal;
+        return formatter.format(subtotal);
     }
 
     public String getFormattedTax() {
