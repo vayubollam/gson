@@ -1,5 +1,9 @@
 package suncor.com.android.ui.main.pap.receipt;
 
+
+
+import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -39,8 +43,6 @@ import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
-
-import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
 
 public class ReceiptFragment extends MainActivityFragment {
 
@@ -135,6 +137,7 @@ public class ReceiptFragment extends MainActivityFragment {
                     // Handling can be made for the error
                 });
 
+                binding.paymentMethod.setText(result.data.getPaymentType(requireContext(), isGooglePay));
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
