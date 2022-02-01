@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/black_4"
+        android:clickable="true">
+
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            app:expandable="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <suncor.com.android.uicomponents.ExtendedNestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/headerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="16dp"
+                        android:lineSpacingMultiplier="1.31"
+                        android:text="@string/account_details_page_header"
+                        android:textAppearance="@style/Title1"
+                        app:layout_constraintBottom_toTopOf="@id/email_output"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/email_output"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="32dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/gibson_regular"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:textAppearance="@style/Body"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/header"
+                        tools:text="email@test.com" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/black_8"
+                        android:elevation="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/headerLayout">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:background="@color/black_4" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/personal_informations_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_personnal_informations_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/horizontal_divider" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/address_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_address_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body"
+                        android:visibility="visible" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/horizontal_divider"
+                        android:visibility="visible" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/preferences_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="?selectableItemBackground"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="@string/profile_preferences_button"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Body" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:background="@color/black_4" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/delete_account_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="?selectableItemBackground"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/account_details_delete_button"
+                            android:textAllCaps="false"
+                            android:textAppearance="@style/Body"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/delete_account_alert_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:paddingStart="16dp"
+                            android:text="@string/account_details_delete_alert_title"
+                            android:textColor="@color/quantum_grey"
+                            android:textSize="10sp"
+
+                            app:layout_constraintBottom_toBottomOf="@id/delete_account_button"
+                            app:layout_constraintStart_toStartOf="@id/delete_account_button">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </suncor.com.android.uicomponents.ExtendedNestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/sign_out_PB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -254,6 +254,48 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_accountdetailsFragment"
+            app:destination="@id/account_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+
+
+    </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/account_details"
+        android:name="suncor.com.android.ui.main.profile.AccountDetailsFragment"
+        android:label="AccountDetailsFragment"
+        tools:layout="@layout/fragment_account_details">
+        <action
+            android:id="@+id/action_profile_tab_to_preferencesFragment"
+            app:destination="@id/preferencesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_personalInfoFragment"
+            app:destination="@id/personalInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_tab_to_addressFragment"
+            app:destination="@id/addressFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_account_details_to_securityQuestionValidationFragment2"
+            app:destination="@id/securityQuestionValidationFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/dummy"
+            app:launchSingleTop="false"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/account_details" />
+
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
