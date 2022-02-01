@@ -17,6 +17,7 @@
     <string name="filters_services_header">Products &amp; Services</string>
     <string name="filters_fuel_header">Fuel options</string>
     <string name="filters_carwash_header">Car wash</string>
+    <string name="address_warning_message">Your address will be updated within 24 hrs. Some features may be unavailable until then.</string>
 
     <string name="station_call_button_generic">Call \u00b7 %s</string>
     <string name="station_distance_generic">%.1f km away</string>
