@@ -32,6 +32,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
@@ -176,13 +177,12 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_aboutFragment));
         binding.addressButton.setOnClickListener(v -> {
             AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update Address"));
-            Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_addressFragment);
-           /* if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
+            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
                 Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_addressFragment);
             } else {
                 ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT);
                 Navigation.findNavController(requireView()).navigate(action);
-            }*/
+            }
         });
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
@@ -194,7 +194,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
     private void signUserOut() {
         binding.signOutPB.setVisibility(View.VISIBLE);
-        sessionManager.logout().observe(this, (result) -> {
+        sessionManager.logout().observe(getViewLifecycleOwner(), (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Navigation.findNavController(requireView()).navigate(R.id.home_tab);
