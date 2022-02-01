@@ -124,49 +124,13 @@
                         android:background="@color/black_4" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/personal_informations_button"
+                        android:id="@+id/account_details_button"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
-                        android:text="@string/profile_personnal_informations_button"
-                        android:textAllCaps="false"
-                        android:textAppearance="@style/Body" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="16dp"
-                        android:background="@drawable/horizontal_divider" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/address_button"
-                        android:layout_width="match_parent"
-                        android:visibility="visible"
-                        android:layout_height="48dp"
-                        android:background="?selectableItemBackground"
-                        android:gravity="start|center_vertical"
-                        android:paddingStart="16dp"
-                        android:text="@string/profile_address_button"
-                        android:textAllCaps="false"
-                        android:textAppearance="@style/Body" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="16dp"
-                        android:visibility="visible"
-                        android:background="@drawable/horizontal_divider" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/preferences_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="?selectableItemBackground"
-                        android:gravity="start|center_vertical"
-                        android:paddingStart="16dp"
-                        android:text="@string/profile_preferences_button"
+                        android:text="@string/account_details_page_header"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body" />
 
