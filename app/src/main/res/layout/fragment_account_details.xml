@@ -114,7 +114,9 @@
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
+                        android:paddingRight="16dp"
                         android:text="@string/profile_personnal_informations_button"
+                        android:drawableRight="@drawable/ic_chevron_right"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body" />
 
@@ -131,7 +133,9 @@
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
+                        android:paddingRight="16dp"
                         android:text="@string/profile_address_button"
+                        android:drawableRight="@drawable/ic_chevron_right"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body"
                         android:visibility="visible" />
@@ -150,6 +154,8 @@
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
+                        android:paddingRight="16dp"
+                        android:drawableRight="@drawable/ic_chevron_right"
                         android:text="@string/profile_preferences_button"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body" />
@@ -170,9 +176,11 @@
                             android:background="?selectableItemBackground"
                             android:gravity="start|center_vertical"
                             android:paddingStart="16dp"
+                            android:paddingRight="16dp"
                             android:text="@string/account_details_delete_button"
                             android:textAllCaps="false"
                             android:textAppearance="@style/Body"
+                            android:drawableRight="@drawable/ic_chevron_right"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -183,6 +191,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
                             android:paddingStart="16dp"
+                            android:visibility="gone"
                             android:text="@string/account_details_delete_alert_title"
                             android:textColor="@color/quantum_grey"
                             android:textSize="10sp"
@@ -199,19 +208,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </suncor.com.android.uicomponents.ExtendedNestedScrollView>
-
-        <ProgressBar
-            android:id="@+id/sign_out_PB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

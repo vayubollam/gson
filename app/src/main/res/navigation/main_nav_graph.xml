@@ -266,7 +266,7 @@
 
     <keep_state_fragment
         android:id="@+id/account_details"
-        android:name="suncor.com.android.ui.main.profile.AccountDetailsFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDetailsFragment"
         android:label="AccountDetailsFragment"
         tools:layout="@layout/fragment_account_details">
         <action

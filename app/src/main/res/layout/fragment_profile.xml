@@ -114,7 +114,9 @@
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
+                        android:paddingRight="16dp"
                         android:text="@string/profile_transactions_button"
+                        android:drawableRight="@drawable/ic_chevron_right"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body" />
 
@@ -130,7 +132,9 @@
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
+                        android:paddingRight="16dp"
                         android:text="@string/account_details_page_header"
+                        android:drawableRight="@drawable/ic_chevron_right"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body" />
 
@@ -146,7 +150,9 @@
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
+                        android:paddingRight="16dp"
                         android:text="@string/profile_faq_get_help_title"
+                        android:drawableRight="@drawable/ic_chevron_right"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body" />
 
@@ -163,7 +169,9 @@
                         android:background="?selectableItemBackground"
                         android:gravity="start|center_vertical"
                         android:paddingStart="16dp"
+                        android:paddingRight="16dp"
                         android:text="@string/profile_about_button"
+                        android:drawableRight="@drawable/ic_chevron_right"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Body" />
 

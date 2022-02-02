@@ -25,61 +25,40 @@ import suncor.com.android.utilities.AnalyticsUtils
 import javax.inject.Inject
 
 class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
+
     private lateinit var binding: FragmentAccountDetailsBinding
     private lateinit var profileSharedViewModel: ProfileSharedViewModel
     private var appBarElevation = 0f
 
-    @Inject
-    var sessionManager: SessionManager? = null
+    @Inject lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appBarElevation =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics)
-        profileSharedViewModel =
-            ViewModelProviders.of(requireActivity())[ProfileSharedViewModel::class.java]
+        appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4f, resources.displayMetrics)
+        profileSharedViewModel = ViewModelProviders.of(requireActivity())[ProfileSharedViewModel::class.java]
 
-        profileSharedViewModel.alertObservable.observe(
-            requireActivity()
-        ) { event: Event<ProfileSharedViewModel.Alert?> ->
+        profileSharedViewModel.alertObservable.observe(requireActivity()) { event: Event<ProfileSharedViewModel.Alert?> ->
             val alert = event.contentIfNotHandled
             if (alert != null) {
-                val dialog =
-                    AlertDialog.Builder(
-                        requireActivity()
-                    )
+                val dialog = AlertDialog.Builder(requireActivity())
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title)
-                    AnalyticsUtils.logEvent(
-                        context,
-                        AnalyticsUtils.Event.error,
-                        Pair(
-                            AnalyticsUtils.Param.errorMessage,
-                            getString(alert.title)
-                        ),
-                        Pair(
-                            AnalyticsUtils.Param.formName,
-                            "My petro points Account Navigation List"
-                        )
-                    )
+                    AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error, Pair(
+                        AnalyticsUtils.Param.errorMessage, getString(alert.title)),
+                        Pair(AnalyticsUtils.Param.formName, "My petro points Account Navigation List"))
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message)
                 }
                 if (alert.positiveButton != -1) {
-                    dialog.setPositiveButton(
-                        alert.positiveButton
-                    ) { i: DialogInterface, w: Int ->
+                    dialog.setPositiveButton(alert.positiveButton) { i: DialogInterface, w: Int ->
                         if (alert.positiveButtonClick != null) {
                             alert.positiveButtonClick.run()
                         }
                         i.dismiss()
                     }
                 }
-                if (alert.negativeButton != -1) {
-                    dialog.setNegativeButton(
-                        alert.negativeButton
-                    ) { i: DialogInterface, w: Int ->
+                if (alert.negativeButton != -1) { dialog.setNegativeButton(alert.negativeButton) { i: DialogInterface, w: Int ->
                         if (alert.negativeButtonClick != null) {
                             alert.negativeButtonClick.run()
                         }
@@ -99,11 +78,7 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAccountDetailsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
 
@@ -117,52 +92,31 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         }
         binding.emailOutput.text = sessionManager?.profile?.email
 
-
-        binding.personalInformationsButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(
-                context,
-                "form_start",
-                Pair(
-                    "formName",
-                    "Update Personal Information"
-                )
+        binding.personalInformationsButton.setOnClickListener { v -> AnalyticsUtils.logEvent(context,
+                "form_start", Pair("formName", "Update Personal Information")
             )
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(requireView())
-                    .navigate(R.id.action_profile_tab_to_personalInfoFragment)
+                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_personalInfoFragment)
             } else {
                 val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
-                    AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(
-                        PersonalInfoFragment.PERSONAL_INFO_FRAGMENT
-                    )
+                    AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT)
                 Navigation.findNavController(requireView()).navigate(action)
             }
         }
 
         binding.preferencesButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(
-                context,
-                "form_start",
-                Pair("formName", "Change Preferences")
-            )
+            AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Change Preferences"))
             Navigation.findNavController(requireView())
                 .navigate(R.id.action_profile_tab_to_preferencesFragment)
         }
 
         binding.addressButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(
-                context,
-                "form_start",
-                Pair("formName", "Update Address")
-            )
+            AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Update Address"))
             if (profileSharedViewModel.ecryptedSecurityAnswer != null) {
-                Navigation.findNavController(requireView())
-                    .navigate(R.id.action_profile_tab_to_addressFragment)
+                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_addressFragment)
             } else {
                 val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
-                    AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(
-                        AddressFragment.ADDRESS_FRAGMENT
-                    )
+                    AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT)
                 Navigation.findNavController(requireView()).navigate(action)
             }
         }
