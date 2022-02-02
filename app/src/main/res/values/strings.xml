@@ -719,10 +719,12 @@
     <string name="transaction_saved">You saved %1$s</string>
     <string name="transaction_summary">Your transaction summary</string>
 
-    <string name="transaction">Transactions</string>
+    <string name="transaction">Transaction</string>
     <string name="transaction_details">DETAILS</string>
     <string name="traansaction_date">Date</string>
     <string name="transaction_payment_type">Payment type</string>
+    <string name="transaction_type_reciept">Purchase/Redemption</string>
+    <string name="transaction_type_reciept_only_purchase">Purchase</string>
 
     <string name="transaction_payment_type_value">Purchase</string>
     <string name="transaction_tax_inclusive">Includes tax</string>

@@ -709,11 +709,13 @@
     <string name="transaction_summary">Sommaire de votre transaction</string>
     <string name="transaction_saved">Vous avez économisé %1$s</string>
 
-    <string name="transaction">Transactions</string>
+    <string name="transaction">Transaction</string>
     <string name="transaction_details">Détails</string>
     <string name="traansaction_date">Date</string>
     <string name="transaction_payment_type">Mode de paiement</string>
     <string name="transaction_payment_type_value">Achat</string>
+    <string name="transaction_type_reciept">Achat/Échange</string>
+    <string name="transaction_type_reciept_only_purchase">Achat</string>
 
     <string name="transaction_tax_inclusive">Comprend les taxes</string>
     <string name="transaction_your_rbc_savings">Vos économies RBC</string>
