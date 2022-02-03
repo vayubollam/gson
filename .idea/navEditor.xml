@@ -53,6 +53,42 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="account_details">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_account_details_to_securityQuestionValidationFragment2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_addressFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_personalInfoFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_preferencesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="action_fuel_up_to_fuellingFragment">
                     <value>
                       <LayoutPositions />
@@ -283,6 +319,15 @@
                             <option name="y" value="12" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_fuel_up_to_addPaymentFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -492,6 +537,27 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="more_e_gift_card_categories">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_more_e_gift_card_categories_to_merchantDetailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="nearestStationFragment">
                     <value>
                       <LayoutPositions>
@@ -566,6 +632,11 @@
                               </value>
                             </entry>
                             <entry key="action_profile_tab_to_aboutFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_profile_tab_to_accountdetailsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -672,6 +743,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_rewards_signedin_tab_to_merchantDetailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_rewards_signedin_tab_to_more_e_gift_card_categories">
                               <value>
                                 <LayoutPositions />
                               </value>

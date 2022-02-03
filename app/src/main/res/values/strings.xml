@@ -813,5 +813,10 @@
     <string name="google_passes_termcondition_label_fr">Conditions</string>
     <string name="google_passes_termcondition_value_fr">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
 
+    <!-- account details-->
+    <string name="account_details_page_header">Account Details</string>
+    <string name="account_details_delete_button">Delete Account</string>
+    <string name="account_details_delete_alert_title">This account will be deleted within 30 days</string>
+
 
 </resources>
