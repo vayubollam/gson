@@ -808,4 +808,9 @@
     <string name="discount_prices">%1$s (a été %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 
+    <!--Receipt Section-->
+    <string name="member_lock_partial_redemption_title">Échange partiel de points</string>
+    <string name="member_lock_partial_redemption_message">Il semblerait que vous avez manqué de points pendant que vous faisiez le plein. Pas de soucis, nous avons tout de même finalisé la transaction.</string>
+    <string name="member_lock_partial_redemption_button">Rejeter</string>
+
 </resources>

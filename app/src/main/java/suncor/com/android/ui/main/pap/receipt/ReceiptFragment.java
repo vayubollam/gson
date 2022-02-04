@@ -127,7 +127,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                Transaction transaction = new Transaction();
+                Transaction transaction = result.data;
 
                 sessionManager.retrieveProfile((profile) -> {
                     updatedPoints = profile.getPointsBalance();
@@ -148,23 +148,14 @@ public class ReceiptFragment extends MainActivityFragment {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
-                transaction = result.data;
+
                 binding.setTransaction(transaction);
                 String points = availablePoints.replace(",", "");
                 String formattedPoints = points.replaceAll("\\s+", "");
                 transaction.setCurrentBalance(Integer.parseInt(formattedPoints));
                 int burnedPoints = transaction.getBurnedPoints();
 
-                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
-                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
-                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
-
-
-                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
                 if (result.data.getRbcAlongWithRedemptionSavings() > 0.0) {
-
                     binding.greetingsSaving.setVisibility(View.VISIBLE);
                     binding.greetingsSaving.setText(String.format(getString(R.string.transaction_saved), result.data.getRbcAlongWithRedemptionSavingsMutableData()));
                 } else {
@@ -200,6 +191,21 @@ public class ReceiptFragment extends MainActivityFragment {
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(share, "Share"));
                 });
+
+                // Analytics
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
+                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+
+                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
+
+                // Partial redemption check
+                if(burnedPoints<Integer.parseInt(preAuthRedeemPoints)){
+                    showPartialRedemptionPopup();
+                }
+
             }
         });
     }
@@ -219,6 +225,12 @@ public class ReceiptFragment extends MainActivityFragment {
         }));
 
         return builder;
+    }
+
+    public void showPartialRedemptionPopup(){
+        AlertDialog.Builder dialog = createAlert(R.string.member_lock_partial_redemption_message, R.string.member_lock_partial_redemption_title);
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     private void checkForReview() {
@@ -248,5 +260,16 @@ public class ReceiptFragment extends MainActivityFragment {
                 goBack();
             }
         });
+    }
+
+    @NonNull
+    private AlertDialog.Builder createAlert(int message, int title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage(message)
+                .setTitle(title);
+        builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> {
+            dialog.dismiss();
+        }));
+        return builder;
     }
 }
