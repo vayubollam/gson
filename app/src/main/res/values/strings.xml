@@ -116,7 +116,7 @@
     <string name="enrollment_email_empty_error">Email is required.</string>
     <string name="enrollment_password_empty_error">Password is required.</string>
     <string name="enrollment_street_address_error">Address is required.</string>
-    <string name="enrollment_secuirty_question_error">Security Question is required.</string>
+    <string name="enrollment_secuirty_question_error">Please select a security question.</string>
     <string name="enrollment_secuirty_answer_error">Answer is required.</string>
     <string name="enrollment_phone_field_invalid_format">Please enter a valid phone number (e.g. 416-123-4567)</string>
     <string name="enrollment_city_error">City is required.</string>
