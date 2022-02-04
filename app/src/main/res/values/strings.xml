@@ -125,6 +125,8 @@
     <string name="enrollment_postalcode_error">Postal code is required.</string>
     <string name="enrollment_postalcode_format_error">The postal code you entered isn\'t valid.</string>
     <string name="enrollment_email_restricted_alert_title">Please enter a different email account</string>
+    <string name="redemption_unavailable_title">Redemption is unavailable </string>
+    <string name="redemption_unavailable_description">Petro–Points redemption is unavailable at this time. Please, contact us at 1(800) 688–0220 for more information. </string>
 
     <string name="enrollment_email_format_error">Please enter a valid email address.</string>
     <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>

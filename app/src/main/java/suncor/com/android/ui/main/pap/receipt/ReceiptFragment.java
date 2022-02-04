@@ -171,11 +171,26 @@ public class ReceiptFragment extends MainActivityFragment {
                     binding.greetingsSaving.setVisibility(View.GONE);
                 }
 
+                /*
+                 * Alert dialog in order to let the user know that their operation could not be completed due to CLPE down.
+                 */
                 if(transaction.getLoyaltyPointsMessages() == null){
 
-                    AlertDialog.Builder dialog = createAlert();
+                    AlertDialog.Builder dialog = createAlert(R.string.clpe_down_prompt, R.string.clpe_down_prompt_heading);
                     dialog.setCancelable(true);
                     dialog.show();
+                }
+
+                /*
+                 *Alert dialog in order to let the user know that their operation could not be completed due to Member locking/No Redemption.
+                 */
+                if(Integer.parseInt(preAuthRedeemPoints) > 0 && transaction.getBasePoints() > 0){
+
+                    if(transaction.getPointsRedeemed() == 0){
+                        AlertDialog.Builder dialog = createAlert(R.string.redemption_unavailable_description, R.string.redemption_unavailable_title);
+                        dialog.setCancelable(true);
+                        dialog.show();
+                    }
                 }
 
                 binding.shareButton.setOnClickListener(v -> {
@@ -209,11 +224,11 @@ public class ReceiptFragment extends MainActivityFragment {
         navController.popBackStack();
     }
 
-    private AlertDialog.Builder createAlert() {
+    private AlertDialog.Builder createAlert(int message, int title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
-        builder.setMessage(R.string.clpe_down_prompt)
-                .setTitle(R.string.clpe_down_prompt_heading);
+        builder.setMessage(message)
+                .setTitle(title);
         builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> {
             dialog.dismiss();
         }));
