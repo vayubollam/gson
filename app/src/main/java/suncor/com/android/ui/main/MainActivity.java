@@ -34,6 +34,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -55,6 +56,7 @@ import static suncor.com.android.utilities.Constants.ALERT;
 import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
 import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
 import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.BUILD_NUMBER;
 import static suncor.com.android.utilities.Constants.ERROR_LOG;
 import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
 import static suncor.com.android.utilities.Constants.FORM_NAME;
@@ -152,8 +154,9 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-      //  getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-           //     WindowManager.LayoutParams.FLAG_SECURE);
+        if(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")) {
+              getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
 
