@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -237,7 +238,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 String merchantList = gson.toJson(viewModel.getMerchantList());
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMoreEGiftCardCategories action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMoreEGiftCardCategories();
                 action.setMerchantList(merchantList);
-                Navigation.findNavController(requireView()).navigate(action);
+                NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                    Navigation.findNavController(requireView()).navigate(action);
+                }
             } else {
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);
