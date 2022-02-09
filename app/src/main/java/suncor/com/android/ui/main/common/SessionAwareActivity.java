@@ -67,14 +67,18 @@ public class SessionAwareActivity extends DaggerAppCompatActivity {
     }
 
     protected void requestLogin() {
+        //do nothing
     }
 
     protected void onLoginSuccess() {
+        //do nothing
     }
 
     protected void onLogout() {
+        //do nothing
     }
 
     protected void onLoginFailed() {
+        //do nothing
     }
 }

@@ -107,7 +107,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                         emailOffersField.get(),
                         smsOffersField.get(),
                         selectedQuestion != null ? selectedQuestion.getId() : null,
-                        securityAnswerField != null ? securityAnswerField.getText().toString().trim() : ""
+                        (securityAnswerField != null && securityAnswerField.getText() != null ) ? securityAnswerField.getText().trim() : ""
                 );
 
                 return enrollmentsApi.registerAccount(account);
@@ -198,7 +198,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                 provinceField.notifyPropertyChanged(BR.text);
                 showAutocompleteLayout.setValue(false);
             } else {
-                //TODO handle error
+                //handle error
                 showAutocompleteLayout.setValue(false);
             }
         });
