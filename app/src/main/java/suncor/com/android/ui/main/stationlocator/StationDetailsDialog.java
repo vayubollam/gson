@@ -145,9 +145,9 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         DisplayMetrics dp = new DisplayMetrics();
         requireActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
         WindowInsets insets = requireActivity().getWindow().getDecorView().getRootWindowInsets();
-        if(insets !=null) {
+        if (insets !=null) {
             fullHeight = dp.heightPixels - insets.getSystemWindowInsetTop() - insets.getStableInsetBottom();
-        }else{
+        } else{
             fullHeight = dp.heightPixels - getStatusBarHeight();
         }
 
