@@ -123,9 +123,9 @@ public class FavouritesFragment extends MainActivityFragment {
                     userLocalSettings.setBool(SHOW_FAVS_HINT, false);
                 }
             } else if(stations.status == Resource.Status.ERROR) {
-                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
                         new Pair<>(AnalyticsUtils.Param.errorMessage, stations.message  + ", Error on fetch favorite Gas Station"),
-                        new Pair<>(AnalyticsUtils.Param.formName, "Favorite Gas Stations"));
+                        new Pair<>(AnalyticsUtils.Param.FORMNAME, "Favorite Gas Stations"));
             }
         });
         if (LocationUtils.isLocationEnabled(getContext())

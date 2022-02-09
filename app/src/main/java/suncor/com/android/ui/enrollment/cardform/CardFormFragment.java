@@ -38,6 +38,9 @@ import suncor.com.android.ui.login.LoginActivity;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.Timber;
 
+import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_CARD;
+import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_SIGN_UP;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,7 +78,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_invalid_card_dialog_title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Activate Petro-Points Card"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_PETRO_POINTS_CARD));
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_invalid_card_dialog_message))
@@ -93,7 +96,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_existing_card_dialog_title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Activate Petro-Points Card"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_PETRO_POINTS_CARD));
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
@@ -123,7 +126,7 @@ public class CardFormFragment extends BaseFragment {
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
                 }else {
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), ACTIVATE_PETRO_POINTS_SIGN_UP);
 
                     dialog.show();
                 }
@@ -158,7 +161,7 @@ public class CardFormFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         AnalyticsUtils.setCurrentScreenName(getActivity(), "activate-match-card");
-        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Activate Petro-Points Card"));
+        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", ACTIVATE_PETRO_POINTS_CARD));
     }
 
     private void hideKeyBoard() {

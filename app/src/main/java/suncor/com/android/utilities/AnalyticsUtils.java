@@ -7,33 +7,37 @@ import android.util.Pair;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import suncor.com.android.model.cards.CardType;
+
+import static suncor.com.android.utilities.Constants.*;
 
 public class AnalyticsUtils {
 
     public enum Event {
-        viewItem("view_item"),
-        selectContent("select_content"),
-        videoStart("video_start"),
-        videoThreshold25("video_threshold_25"),
-        videoThreshold50("video_threshold_50"),
-        videoThreshold75("video_threshold_75"),
-        videoComplete("video_complete"),
-        formStart("form_start"),
-        formStep("form_step"),
-        formComplete("form_complete"),
-        formError("form_error"),
-        navigation("navigation"),
-        buttonTap("button_tap"),
-        alert("alert"),
-        alertInteraction("alert_interaction"),
-        error("error_log"),
-        paymentPreauthorize("payment_preauthorize"),
-        paymentComplete("payment_complete"),
-        intersite("intersite"),
-        infoTap("info_tap"),
-        menuTap("menu_tap");
+        VIEWITEM(VIEW_ITEM),
+        SELECTCONTENT(SELECT_CONTENT),
+        VIDEOSTART(VIDEO_START),
+        VIDEOTHRESHOLD25(VIDEO_THRESHOLD_25),
+        VIDEOTHRESHOLD50(VIDEO_THRESHOLD_50),
+        VIDEOTHRESHOLD75(VIDEO_THRESHOLD_75),
+        VIDEOCOMPLETE(VIDEO_COMPLETE),
+        FORMSTART(FORM_START),
+        FORMSTEP(FORM_STEP),
+        FORMCOMPLETE(FORM_COMPLETE),
+        FORMERROR(FORM_ERROR),
+        _NAVIGATION(NAVIGATION),
+        BUTTONTAP(BUTTON_TAP),
+        _ALERT(ALERT),
+        alertInteraction(ALERT_INTERACTION),
+        error(ERROR_LOG),
+        paymentPreauthorize(PAYMENT_PREAUTHORIZE),
+        paymentComplete(PAYMENT_COMPLETE),
+        intersite(INTERSITE),
+        infoTap(INFO_TAP),
+        menuTap(MENU_TAP);
 
 
         private final String name;
@@ -49,28 +53,28 @@ public class AnalyticsUtils {
     }
 
     public enum Param {
-        itemId("item_id"),
-        itemName("item_name"),
-        creativeName("creative_name"),
-        creativeSlot("creative_slot"),
-        contentType("content_type"),
-        promotions("promotions"),
-        videoTitle("videoTitle"),
-        formName("formName"),
-        stepName("stepName"),
-        formSelection("formSelection"),
-        actionBarTap("actionBarTap"),
-        buttonText("buttonText"),
-        alertTitle("alertTitle"),
-        alertSelection("alertSelection"),
-        cardType("cardType"),
-        errorMessage("errorMessage"),
-        detailMessage("detailErrorMessage"),
-        paymentMethod("paymentMethod"),
-        fuelAmountSelection("fuelAmountSelection"),
-        intersiteURL("intersiteURL"),
-        infoText("infoText"),
-        menuSelection("menuSelection");
+        ITEMID(ITEM_ID),
+        ITEMNAME(ITEM_NAME),
+        CREATIVENAME(CREATIVE_NAME),
+        CREATIVESLOT(CREATIVE_SLOT),
+        CONTENTTYPE(CONTENT_TYPE),
+        PROMOTIONS_ENUM(PROMOTIONS),
+        VIDEOTITLE(VIDEO_TITLE),
+        FORMNAME(FORM_NAME),
+        STEPNAME(STEP_NAME),
+        FORMSELECTION(FORM_SELECTION),
+        ACTIONBARTAP(ACTIONBAR_TAP),
+        buttonText(BUTTON_TEXT),
+        alertTitle(ALERT_TITLE),
+        alertSelection(ALERT_SELECTION),
+        cardType(CARD_TYPE),
+        errorMessage(ERROR_MESSAGE),
+        detailMessage(DETAIL_ERROR_MESSAGE),
+        paymentMethod(PAYMENT_METHOD),
+        fuelAmountSelection(FUEL_AMOUNT_SELECTION),
+        intersiteURL(INTERSITE_URL),
+        infoText(INFO_TEXT),
+        menuSelection(MENU_SELECTION);
 
         private final String name;
 
@@ -84,9 +88,21 @@ public class AnalyticsUtils {
         }
     }
 
-    public static String userID;
+    public static volatile String userID;
     public static CardType currentCardType;
     public static int buildNumber;
+
+    public static int getBuildNumber() {
+        return buildNumber;
+    }
+
+    public static void setBuildNumber(int buildNumber) {
+        buildNumber = buildNumber;
+    }
+
+    public static void setUserId(String userId){
+         userID = userId;
+    }
 
     @SafeVarargs
     public static void logEvent(Context context, String eventName, Pair<String, String>... variables) {
@@ -95,18 +111,18 @@ public class AnalyticsUtils {
             bundle.putString(variable.first, variable.second);
         }
         if (userID != null) {
-            bundle.putString("user_id", userID);
+            bundle.putString(USER_ID, userID);
         }
         if (buildNumber != 0) {
-            bundle.putString("BuildNumber", String.valueOf(buildNumber));
+            bundle.putString(BUILD_NUMBER, String.valueOf(buildNumber));
         }
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
     }
 
     public static void setUserProperty(Context context, String userID, boolean rbcLinked ){
         FirebaseAnalytics.getInstance(context).setUserId(userID);
-        FirebaseAnalytics.getInstance(context).setUserProperty("userID", userID);
-        FirebaseAnalytics.getInstance(context).setUserProperty("is_linked_rbc", rbcLinked ? "true" : "false");
+        FirebaseAnalytics.getInstance(context).setUserProperty(USER_ID_1, userID);
+        FirebaseAnalytics.getInstance(context).setUserProperty(IS_RBC_LINKED, rbcLinked ? TRUE : FALSE);
     }
 
     @SafeVarargs
@@ -120,25 +136,25 @@ public class AnalyticsUtils {
 
     public static void logPromotionEvent(Context context, Event event, String itemId, String itemName, String creativeName, String creativeSlot, String contentType) {
         Bundle promotion = new Bundle();
-        promotion.putString(Param.itemId.toString(), itemId);
-        promotion.putString(Param.itemName.toString(), itemName);
-        promotion.putString(Param.creativeName.toString(), creativeName);
-        promotion.putString(Param.creativeSlot.toString(), creativeSlot);
+        promotion.putString(Param.ITEMID.toString(), itemId);
+        promotion.putString(Param.ITEMNAME.toString(), itemName);
+        promotion.putString(Param.CREATIVENAME.toString(), creativeName);
+        promotion.putString(Param.CREATIVESLOT.toString(), creativeSlot);
         ArrayList promotions = new ArrayList();
         promotions.add(promotion);
 
         Bundle ecommerceBundle = new Bundle();
-        ecommerceBundle.putParcelableArrayList(Param.promotions.toString(), promotions);
-        if (event.equals(Event.selectContent)){
-            ecommerceBundle.putString(Param.contentType.toString(), contentType);
-            ecommerceBundle.putString(Param.itemId.toString(), itemId);
+        ecommerceBundle.putParcelableArrayList(Param.PROMOTIONS_ENUM.toString(), promotions);
+        if (event.equals(Event.SELECTCONTENT)){
+            ecommerceBundle.putString(Param.CONTENTTYPE.toString(), contentType);
+            ecommerceBundle.putString(Param.ITEMID.toString(), itemId);
         }
 
         FirebaseAnalytics.getInstance(context).logEvent(event.toString(), ecommerceBundle);
     }
 
     public static void logPromotionEvent(Context context, Event event, String itemId, String itemName, String creativeName, String creativeSlot){
-        logPromotionEvent(context, event, itemId, itemName, creativeName, creativeSlot, "Internal Promotions");
+        logPromotionEvent(context, event, itemId, itemName, creativeName, creativeSlot, INTERNAL_PROMOTIONS);
     }
 
     public static void logCarwashActivationEvent(Context context, Event event, String stepName, CardType cardType) {
@@ -149,27 +165,27 @@ public class AnalyticsUtils {
     public static void logCarwashActivationEvent(Context context, Event event, String stepName) {
         if (currentCardType == CardType.WAG) {
             logEvent(context, event,
-                    new Pair<>(Param.formName, "Activate Wash by Wash & Go card"),
-                    new Pair<>(Param.stepName, stepName)
+                    new Pair<>(Param.FORMNAME, ACTIVATE_WNG),
+                    new Pair<>(Param.STEPNAME, stepName)
             );
         } else if (currentCardType == CardType.SP) {
             logEvent(context, event,
-                    new Pair<>(Param.formName, "Activate Wash by Season Pass card"),
-                    new Pair<>(Param.stepName, stepName)
+                    new Pair<>(Param.FORMNAME, ACTIVATE_SP),
+                    new Pair<>(Param.STEPNAME, stepName)
             );
         }
     }
 
     public static String getCardFormName() {
         if (currentCardType == CardType.WAG) {
-            return "Activate Wash by Wash & Go card";
+            return ACTIVATE_WNG;
         } else if (currentCardType == CardType.SP) {
-            return "Activate Wash by Season Pass card";
+            return ACTIVATE_SP;
         }
-        return "None";
+        return NONE;
     }
 
-    public static void setCurrentScreenName(Activity activity, String screenName) {
+    public static void setCurrentScreenName(@NotNull Activity activity, String screenName) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getComponentName().getClassName());
@@ -179,7 +195,7 @@ public class AnalyticsUtils {
 
     public enum ErrorMessages {
 
-        backendError("SUNCORXXXX");
+        backendError(DEFAULT_ERROR_SUNCORXXXX);
 
         private final String name;
 

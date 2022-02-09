@@ -3,6 +3,7 @@ package suncor.com.android.model.cards;
 import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 
 import java.text.NumberFormat;
@@ -40,7 +41,7 @@ public class TransactionDetail {
                 break;
         }
         SpannableString titleSpan = new SpannableString(formattedTootlePoints + " " + title);
-        titleSpan.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red)), 0, formattedTootlePoints.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        titleSpan.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red)), 0, formattedTootlePoints.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return titleSpan;
 
     }
@@ -92,7 +93,6 @@ public class TransactionDetail {
             case PETRO_POINTS:
             case PARTNER_POINTS_TRANSFER:
             case REDEMPTION:
-                return redeemPoint;
             default:
                 return redeemPoint;
         }
