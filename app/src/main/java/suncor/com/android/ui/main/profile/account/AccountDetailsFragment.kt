@@ -29,6 +29,7 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
     private lateinit var binding: FragmentAccountDetailsBinding
     private lateinit var profileSharedViewModel: ProfileSharedViewModel
     private var appBarElevation = 0f
+    private var isDeleteAccountClicked = false;
 
     @Inject lateinit var sessionManager: SessionManager
 
@@ -95,8 +96,8 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         binding.personalInformationsButton.setOnClickListener { v -> AnalyticsUtils.logEvent(context,
                 "form_start", Pair("formName", "Update Personal Information")
             )
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_personalInfoFragment)
+            if ( profileSharedViewModel.ecryptedSecurityAnswer != null) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_personalInfoFragment)
             } else {
                 val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
                     AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT)
@@ -107,22 +108,39 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         binding.preferencesButton.setOnClickListener { v ->
             AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Change Preferences"))
             Navigation.findNavController(requireView())
-                .navigate(R.id.action_profile_tab_to_preferencesFragment)
+                .navigate(R.id.action_account_details_to_preferencesFragment)
         }
 
         binding.addressButton.setOnClickListener { v ->
             AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Update Address"))
             if (profileSharedViewModel.ecryptedSecurityAnswer != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_addressFragment)
+                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_addressFragment)
             } else {
                 val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
                     AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT)
                 Navigation.findNavController(requireView()).navigate(action)
             }
         }
+        binding.deleteAccountButton.setOnClickListener { v ->
+            AnalyticsUtils.logEvent(context,
+                "form_start", Pair("formName", "Delete Account Form")
+            )
+            if(!isDeleteAccountClicked){
+                profileSharedViewModel.ecryptedSecurityAnswer = null
+            }
+            if(profileSharedViewModel.ecryptedSecurityAnswer == null){
+                isDeleteAccountClicked = false;
+            }
+            if (isDeleteAccountClicked && profileSharedViewModel.ecryptedSecurityAnswer != null) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_deleteAccountFragment)
+            } else {
+                isDeleteAccountClicked = true;
+                val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
+                    AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT)
+                Navigation.findNavController(requireView()).navigate(action)
+            }
+        }
         binding.appBar.setNavigationOnClickListener { v -> goBack() }
-
-
     }
 
     override fun onBackPressed() {
