@@ -116,4 +116,8 @@ object Constants {
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
+
+    //Signup methods
+    const val JOIN_NO_CARD="Join-No-Card"
+    const val JOIN_YES_CARD="Join-Yes_card"
 }

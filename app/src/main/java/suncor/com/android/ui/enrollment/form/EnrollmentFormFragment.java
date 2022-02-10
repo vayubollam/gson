@@ -1,5 +1,24 @@
 package suncor.com.android.ui.enrollment.form;
 
+import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_CARD;
+import static suncor.com.android.utilities.Constants.ACTIVATE_SUCCESS;
+import static suncor.com.android.utilities.Constants.ADDRESS;
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.FORM_START;
+import static suncor.com.android.utilities.Constants.FORM_STEP;
+import static suncor.com.android.utilities.Constants.JOIN_NO_CARD;
+import static suncor.com.android.utilities.Constants.JOIN_YES_CARD;
+import static suncor.com.android.utilities.Constants.PERSONAL_INFORMATION;
+import static suncor.com.android.utilities.Constants.SCROLL;
+import static suncor.com.android.utilities.Constants.SCROLL_DEPTH_THRESHOLD;
+import static suncor.com.android.utilities.Constants.SIGNUP_SUCCESS;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -32,13 +51,11 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
-
 import suncor.com.android.model.Resource;
-
+import suncor.com.android.model.account.CardStatus;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.common.ModalDialog;
@@ -52,23 +69,6 @@ import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
-
-import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_CARD;
-import static suncor.com.android.utilities.Constants.ACTIVATE_SUCCESS;
-import static suncor.com.android.utilities.Constants.ADDRESS;
-import static suncor.com.android.utilities.Constants.ALERT;
-import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
-import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
-import static suncor.com.android.utilities.Constants.ALERT_TITLE;
-import static suncor.com.android.utilities.Constants.ERROR_LOG;
-import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
-import static suncor.com.android.utilities.Constants.FORM_NAME;
-import static suncor.com.android.utilities.Constants.FORM_START;
-import static suncor.com.android.utilities.Constants.FORM_STEP;
-import static suncor.com.android.utilities.Constants.PERSONAL_INFORMATION;
-import static suncor.com.android.utilities.Constants.SCROLL;
-import static suncor.com.android.utilities.Constants.SCROLL_DEPTH_THRESHOLD;
-import static suncor.com.android.utilities.Constants.SIGNUP_SUCCESS;
 
 public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
 
@@ -86,6 +86,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
 
+    // By Default it remain JOIN_NO_CARD will check if the card is provided i.e JOIN_YES_CARD.
+    private String sign_up_method = JOIN_NO_CARD;
+
     public EnrollmentFormFragment() {
         //do nothing
     }
@@ -101,7 +104,11 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
         if (getArguments() != null) {
-            viewModel.setCardStatus(EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus());
+            CardStatus cardStatus =EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus();
+            if(cardStatus!=null){
+                sign_up_method = JOIN_YES_CARD;
+            }
+            viewModel.setCardStatus(cardStatus);
         }
 
         boolean joinWithCard = viewModel.getCardStatus() != null;
@@ -154,7 +161,12 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         new Pair<>(FORM_NAME, formName),
                         new Pair<>("formSelection", optionsChecked)
                 );
-                AnalyticsUtils.logEvent(getContext(), "sign_up");
+
+                // Log method of signup to Analytics
+                AnalyticsUtils.logEvent(
+                            getContext(),
+                            "sign_up",
+                        new Pair<>("method",sign_up_method));
 
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
