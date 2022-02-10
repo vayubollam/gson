@@ -816,7 +816,7 @@
     <!-- account details-->
     <string name="account_details_page_header">Account Details</string>
     <string name="account_details_delete_button">Delete Account</string>
-    <string name="account_details_delete_alert_title">This account will be deleted within 30 days</string>
+    <string name="account_details_delete_alert_title">Your account will be deleted within %1$s days. </string>
 
 
 </resources>

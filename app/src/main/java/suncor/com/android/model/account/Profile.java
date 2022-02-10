@@ -2,6 +2,11 @@ package suncor.com.android.model.account;
 
 import androidx.annotation.Nullable;
 
+import java.text.ParseException;
+
+import suncor.com.android.utilities.DateUtils;
+import suncor.com.android.utilities.Timber;
+
 public class Profile {
     private String email;
     private String firstName;
@@ -143,6 +148,17 @@ public class Profile {
     public void setAccountDeleteDateTime(String accountDeleteDateTime) {
         this.accountDeleteDateTime = accountDeleteDateTime;
     }
+    public long getAccountDeleteDaysLeft()  {
+        try {
+           return DateUtils.findDateDifference( accountDeleteDateTime, DateUtils.getTodayFormattedDate());
+        }catch (ParseException ex){
+            Timber.e("Error on parse date", ex.getMessage());
+        }
+        return 0;
+    }
+
+
+
 
     @Override
     public boolean equals(@Nullable Object obj) {

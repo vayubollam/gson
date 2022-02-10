@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.room.util.StringUtil
 import suncor.com.android.R
 import suncor.com.android.databinding.FragmentAccountDetailsBinding
 import suncor.com.android.mfp.SessionManager
@@ -22,6 +23,7 @@ import suncor.com.android.ui.main.profile.ProfileSharedViewModel
 import suncor.com.android.ui.main.profile.address.AddressFragment
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment
 import suncor.com.android.utilities.AnalyticsUtils
+import suncor.com.android.utilities.Constants
 import javax.inject.Inject
 
 class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
@@ -46,7 +48,7 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
                     dialog.setTitle(alert.title)
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error, Pair(
                         AnalyticsUtils.Param.errorMessage, getString(alert.title)),
-                        Pair(AnalyticsUtils.Param.formName, "My petro points Account Navigation List"))
+                        Pair(AnalyticsUtils.Param.FORMNAME, Constants.MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST))
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message)
@@ -92,9 +94,10 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             return
         }
         binding.emailOutput.text = sessionManager?.profile?.email
+        accountDeleteText()
 
         binding.personalInformationsButton.setOnClickListener { v -> AnalyticsUtils.logEvent(context,
-                "form_start", Pair("formName", "Update Personal Information")
+                AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.UPDATE_PERSONAL_INFORMATION)
             )
             if ( profileSharedViewModel.ecryptedSecurityAnswer != null) {
                 Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_personalInfoFragment)
@@ -106,13 +109,13 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         }
 
         binding.preferencesButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Change Preferences"))
+            AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.CHANGES_PREFERENCES))
             Navigation.findNavController(requireView())
                 .navigate(R.id.action_account_details_to_preferencesFragment)
         }
 
         binding.addressButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Update Address"))
+            AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.UPDATE_ADDRESS))
             if (profileSharedViewModel.ecryptedSecurityAnswer != null) {
                 Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_addressFragment)
             } else {
@@ -123,7 +126,7 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         }
         binding.deleteAccountButton.setOnClickListener { v ->
             AnalyticsUtils.logEvent(context,
-                "form_start", Pair("formName", "Delete Account Form")
+                AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT)
             )
             if(!isDeleteAccountClicked){
                 profileSharedViewModel.ecryptedSecurityAnswer = null
@@ -142,6 +145,14 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         }
         binding.appBar.setNavigationOnClickListener { v -> goBack() }
     }
+    private fun accountDeleteText(){
+        if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
+            var deleteAccountText = String.format(getString(R.string.account_details_delete_alert_title), sessionManager.profile.accountDeleteDaysLeft)
+            binding.deleteAccountAlertText.text = deleteAccountText
+            binding.deleteAccountAlertText.visibility = View.VISIBLE
+        }
+    }
+
 
     override fun onBackPressed() {
         goBack()
