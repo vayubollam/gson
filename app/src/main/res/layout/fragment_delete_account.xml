@@ -3,10 +3,302 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="suncor.com.android.ui.main.profile.account.DeleteAccountFragemnt">
+    <data>
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
+        <variable
+            name="vm"
+            type="suncor.com.android.ui.main.profile.account.AccountDeleteViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        android:clickable="true">
+
+
+        <suncor.com.android.uicomponents.SuncorAppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp"
+            app:expandable="false"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/account_delete_page_header"
+            app:titleAppearance="@style/Body">
+
+        </suncor.com.android.uicomponents.SuncorAppBarLayout>
+
+
+        <suncor.com.android.uicomponents.ExtendedNestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@{@string/account_deletion_title(vm.getUserName())}"
+                    android:textAppearance="@style/Title1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_deletion_subtitle"
+                    android:textAppearance="@style/Body"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_title">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_point_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_delete_point_one"
+                    android:drawableLeft="@drawable/buttet_point"
+                    android:drawablePadding="8dp"
+                    android:textAppearance="@style/Body2"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_subtitle">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_point_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_delete_point_two"
+                    android:drawableLeft="@drawable/buttet_point"
+                    android:drawablePadding="8dp"
+                    android:textAppearance="@style/Body2"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_point_one">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_point_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_delete_point_three"
+                    android:drawableLeft="@drawable/buttet_point"
+                    android:drawablePadding="8dp"
+                    android:textAppearance="@style/Body2"
+                    android:textColor="@color/black_60"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_point_two">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_subtitle_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_deletion_subtitle_review"
+                    android:textAppearance="@style/BodyBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_point_three">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/first_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/enrollment_first_name_label"
+                    android:inputType="textCapWords"
+                    android:maxLength="20"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_subtitle_review"
+                    tools:layout_editor_absoluteX="16dp" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/last_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/enrollment_last_name_label"
+                    android:maxLength="20"
+                    app:layout_constraintTop_toBottomOf="@id/first_name_input" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/phone_no_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/account_deletion_phone_label"
+                    android:inputType="phone"
+                    android:maxLength="15"
+                    app:layout_constraintTop_toBottomOf="@id/last_name_input" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/address_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/account_deletion_address_label"
+                    android:maxLength="50"
+                    app:layout_constraintTop_toBottomOf="@id/phone_no_input" />
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/email_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/enrollment_email_label"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="99"
+                    app:layout_constraintTop_toBottomOf="@id/address_input" />
+
+
+                <suncor.com.android.uicomponents.SuncorTextInputLayout
+                    android:id="@+id/petro_points_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="@string/account_deletion_petro_points_label"
+                    android:inputType="number"
+                    android:maxLength="20"
+                    app:layout_constraintTop_toBottomOf="@id/email_input" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_subtitle_acknowledgement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_deletion_subtitle_acknowledgement"
+                    android:textAppearance="@style/BodyBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/petro_points_input">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/acknoledgement_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintStart_toStartOf="@id/delete_account_subtitle_acknowledgement"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_subtitle_acknowledgement">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delete_account_subtitle_leaving"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/account_deletion_subtitle_leaving"
+                    android:textAppearance="@style/BodyBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/acknoledgement_recyclerview">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/leave_message_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintStart_toStartOf="@id/delete_account_subtitle_leaving"
+                    app:layout_constraintTop_toBottomOf="@id/delete_account_subtitle_leaving">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/other_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/black_100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/delete_account_subtitle_leaving"
+                    app:layout_constraintTop_toBottomOf="@id/leave_message_recyclerview" />
+
+                <suncor.com.android.ui.common.SuncorButton
+                    android:id="@+id/start_deletion_button"
+                    style="@style/FilledButton.Red.L"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/account_deletion_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/other_edittext" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </suncor.com.android.uicomponents.ExtendedNestedScrollView>
+
+
+        <ProgressBar
+            android:id="@+id/sign_out_PB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -458,7 +458,7 @@
     <string name="profile_personnal_informations_password">Mot de passe</string>
     <string name="update_password_progress">Mise à jour…</string>
     <string name="profile_security_question_header">Question de sécurité</string>
-    <string name="profile_security_question_content">Nous voulons vous aider à protéger vos renseignements. Répondez à la question de sécurité pour continuer.</string>
+    <string name="profile_security_question_content">Nous ne voulons pas vous ralentir. Nous voulons juste nous assurer qu\'il s\'agit bien de vous avant de poursuivre.</string>
     <string name="profile_security_question_error">Une réponse est exigée.</string>
     <string name="profile_security_question_continue">Continuer</string>
     <string name="profile_security_question_checking_answer">Vérification de la réponse…</string>

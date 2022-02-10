@@ -53,7 +53,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="account_details">
+                  <entry key="accountDetailsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -64,22 +64,27 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_account_details_to_addressFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_account_details_to_deleteAccountFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_account_details_to_personalInfoFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_account_details_to_preferencesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_account_details_to_securityQuestionValidationFragment2">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_profile_tab_to_addressFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_profile_tab_to_personalInfoFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_profile_tab_to_preferencesFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -398,6 +403,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="deleteAccountFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="favouritesFragment">
                     <value>
                       <LayoutPositions>
@@ -636,22 +653,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_profile_tab_to_accountdetailsFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_profile_tab_to_addressFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_profile_tab_to_personalInfoFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_profile_tab_to_preferencesFragment">
+                            <entry key="action_profile_tab_to_accountDetailsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

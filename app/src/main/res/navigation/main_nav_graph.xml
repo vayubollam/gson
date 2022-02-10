@@ -241,7 +241,8 @@
             app:destination="@id/accountDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/profile_tab"/>
 
 
     </keep_state_fragment>
@@ -269,22 +270,14 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+
         <action
             android:id="@+id/action_account_details_to_securityQuestionValidationFragment2"
             app:destination="@id/securityQuestionValidationFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/dummy"
             app:launchSingleTop="false"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@+id/account_details" />
-        <action
-            android:id="@+id/action_account_details_to_deleteAccountFragment"
-            app:destination="@id/deleteAccountFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/dummy"
-            app:launchSingleTop="false"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@+id/account_details" />
+            app:popExitAnim="@anim/fade_out"/>
 
     </keep_state_fragment>
     <keep_state_fragment
@@ -494,7 +487,7 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/profile_tab" />
+            app:popUpTo="@+id/accountDetailsFragment" />
         <argument
             android:name="destinationFragment"
             app:argType="string" />
@@ -504,7 +497,14 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/profile_tab" />
+            app:popUpTo="@+id/accountDetailsFragment" />
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_deleteAccountFragment"
+            app:destination="@id/deleteAccountFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/accountDetailsFragment" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/addressFragment"
