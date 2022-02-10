@@ -12,8 +12,8 @@ import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
 import static suncor.com.android.utilities.Constants.FORM_NAME;
 import static suncor.com.android.utilities.Constants.FORM_START;
 import static suncor.com.android.utilities.Constants.FORM_STEP;
-import static suncor.com.android.utilities.Constants.JOIN_NO_CARD;
-import static suncor.com.android.utilities.Constants.JOIN_YES_CARD;
+import static suncor.com.android.utilities.Constants.METHOD_SIGN_UP;
+import static suncor.com.android.utilities.Constants.METHOD_ACTIVATION;
 import static suncor.com.android.utilities.Constants.PERSONAL_INFORMATION;
 import static suncor.com.android.utilities.Constants.SCROLL;
 import static suncor.com.android.utilities.Constants.SCROLL_DEPTH_THRESHOLD;
@@ -87,7 +87,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
 
     // By Default it remain JOIN_NO_CARD will check if the card is provided i.e JOIN_YES_CARD.
-    private String sign_up_method = JOIN_NO_CARD;
+    private String sign_up_method = METHOD_SIGN_UP;
 
     public EnrollmentFormFragment() {
         //do nothing
@@ -106,7 +106,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         if (getArguments() != null) {
             CardStatus cardStatus =EnrollmentFormFragmentArgs.fromBundle(getArguments()).getCardStatus();
             if(cardStatus!=null){
-                sign_up_method = JOIN_YES_CARD;
+                sign_up_method = METHOD_ACTIVATION;
             }
             viewModel.setCardStatus(cardStatus);
         }
