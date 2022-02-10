@@ -18,6 +18,7 @@ public class Profile {
     private boolean textOffers;
     private String retailId;
     private boolean rbcLinked;
+    private String accountDeleteDateTime;
 
     public String getRetailId() {
         return retailId;
@@ -133,6 +134,14 @@ public class Profile {
 
     public void setRbcLinked(boolean rbcLinked) {
         this.rbcLinked = rbcLinked;
+    }
+
+    public String getAccountDeleteDateTime() {
+        return accountDeleteDateTime;
+    }
+
+    public void setAccountDeleteDateTime(String accountDeleteDateTime) {
+        this.accountDeleteDateTime = accountDeleteDateTime;
     }
 
     @Override
