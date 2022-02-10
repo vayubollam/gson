@@ -112,7 +112,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 //track screen name
                 String screenName;
                 if (clickedCardIndex == 0) {
-                    //todo need to check
+                    //need to check
                     screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
                     screenName = "my-petro-points-wallet-view-" + viewModel.cards.getValue().get(clickedCardIndex).getCardName();
@@ -215,7 +215,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 } else if(cardDetail.isSuspendedCard()) {
                     CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
-                    AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep,"Enter 3 digits", cardDetail.getCardType());
+                    AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,"Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
@@ -298,9 +298,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
         String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
+                new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName())
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
@@ -308,7 +308,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
-                                new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName())
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName())
                         );
                         if (cardDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
@@ -330,7 +330,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cards_remove_card_alert_title)),
                             new Pair<>(AnalyticsUtils.Param.alertSelection,getString(R.string.cards_remove_card_alert_cancel)),
-                            new Pair<>(AnalyticsUtils.Param.formName,AnalyticsUtils.getCardFormName()));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName()));
                 });
         builder.show();
     }

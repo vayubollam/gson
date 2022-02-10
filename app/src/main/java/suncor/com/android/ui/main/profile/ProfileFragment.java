@@ -61,7 +61,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage, getString(alert.title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "My petro points Account Navigation List"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "My petro points Account Navigation List"));
 
                 }
                 if (alert.message != -1) {
@@ -188,9 +188,9 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
                 AnalyticsUtils.logEvent(getContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
-                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.formError,
+                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
                         new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)),
-                        new Pair<>(AnalyticsUtils.Param.formName, "My petro points Account Navigation List"));
+                        new Pair<>(AnalyticsUtils.Param.FORMNAME, "My petro points Account Navigation List"));
                 binding.signOutPB.setVisibility(View.GONE);
                 Alerts.prepareGeneralErrorDialog(getActivity(), "My petro points Account Navigation List").show();
             }

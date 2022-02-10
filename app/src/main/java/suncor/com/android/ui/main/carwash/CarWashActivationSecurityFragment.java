@@ -172,9 +172,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         } else {
             confirmButton.setEnabled(false);
             String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title) + "(" + getContext().getString(R.string.carwash_activation_pin_error_message) + ")";
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alert,
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
                     new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle),
-                    new Pair<>(AnalyticsUtils.Param.formName,"Activate Wash by Wash & Go card")
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME,"Activate Wash by Wash & Go card")
             );
             AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
@@ -183,7 +183,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
-                                new Pair<>(AnalyticsUtils.Param.formName,"Activate Wash by Wash & Go card")
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME,"Activate Wash by Wash & Go card")
                         );
                         dialog.dismiss();
                         confirmButton.setEnabled(true);
@@ -259,14 +259,14 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         boolean loadFromCarWash = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getIsCardFromCarWash();
         CarWashActivationSecurityFragmentDirections.ActionCarWashActivationSecurityFragmentToCarWashBarCodeFragment
                 action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashBarCodeFragment(loadFromCarWash);
-        AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep, "Generate Barcode");
+        AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, "Generate Barcode");
         Navigation.findNavController(getView()).navigate((NavDirections) action);
     }
 
     private void navigateToCarwashActivated(ActivateCarwashResponse response) {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         NavDirections action = CarWashActivationSecurityFragmentDirections.actionCarWashActivationSecurityFragmentToCarWashActivatedFragment(response);
-        AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.formStep, "Activate Carwash");
+        AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, "Activate Carwash");
         Navigation.findNavController(getView()).navigate(action);
         progressBar.setVisibility(View.GONE);
     }
@@ -320,6 +320,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            //do nothing
         }
 
         @Override
@@ -344,6 +345,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
         @Override
         public void afterTextChanged(Editable editable) {
+            //do nothing
         }
     }
 

@@ -15,6 +15,8 @@ import java.util.Optional;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import static suncor.com.android.utilities.Constants.PARAMETERS;
+
 /**
  * Contains helper static methods for dealing with the Payments API.
  *
@@ -63,7 +65,7 @@ public class GooglePayUtils {
     private static JSONObject getGatewayTokenizationSpecification(String gateway, String merchantId) throws JSONException {
         return new JSONObject() {{
             put("type", "PAYMENT_GATEWAY");
-            put("parameters", new JSONObject() {{
+            put(PARAMETERS, new JSONObject() {{
                 put("gateway", gateway);
                 put("gatewayMerchantId", merchantId);
             }});
@@ -129,7 +131,7 @@ public class GooglePayUtils {
 
         parameters.put("billingAddressParameters", billingAddressParameters);
 
-        cardPaymentMethod.put("parameters", parameters);
+        cardPaymentMethod.put(PARAMETERS, parameters);
 
         return cardPaymentMethod;
     }
@@ -149,7 +151,7 @@ public class GooglePayUtils {
 
         parameters.put("billingAddressParameters", billingAddressParameters);
 
-        cardPaymentMethod.put("parameters", parameters);
+        cardPaymentMethod.put(PARAMETERS, parameters);
 
         return cardPaymentMethod;
     }
@@ -240,7 +242,7 @@ public class GooglePayUtils {
 
       /* An optional shipping address requirement is a top-level property of the PaymentDataRequest
       JSON object. */
-      //todo uncomment only when billing address required
+      //uncomment only when billing address required
           /*  paymentDataRequest.put("shippingAddressRequired", false);
 
             JSONObject shippingAddressParameters = new JSONObject();

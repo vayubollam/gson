@@ -378,7 +378,6 @@
                             android:text="@{transaction.getFormattedDate}"
                             style="@style/Body"
                             android:textColor="@color/black_C" />
-
                     </LinearLayout>
 
                     <View
