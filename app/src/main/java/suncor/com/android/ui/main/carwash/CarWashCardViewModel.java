@@ -204,7 +204,7 @@ public class CarWashCardViewModel extends ViewModel {
                 cardQuantity++;
             } else if (card.getCardType().equals(CardType.ST)) {
                 ticketQuantity++;
-                //isAllBalanceZero = false; //TODO: uncomment this once single ticket back end is ready
+                //isAllBalanceZero = false; //uncomment this once single ticket back end is ready
             }
         }
         if (cardQuantity == 0 && ticketQuantity != 0) {

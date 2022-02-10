@@ -233,7 +233,7 @@ public class SessionManager implements SessionChangeListener {
             //when the app is just being launched, we want to assume that it was logged in if we have a cached profile
             return profile != null;
 */
-            //when the app is just being launched, start with guest mode, until we check login status TODO: revisit this
+            //when the app is just being launched, start with guest mode, until we check login status: revisit this
             return false;
         }
     }

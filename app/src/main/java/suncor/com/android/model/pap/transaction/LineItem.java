@@ -14,9 +14,9 @@ public  class LineItem {
     private List<Offer> offers;
 
 
-    //todo add properties
+    //add properties
     public static final class Offer {
-
+        //Do-Nothing
     }
 
 }

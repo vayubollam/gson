@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: "androidx.navigation.safeargs"
 apply from: "./versionCode.gradle"
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'org.sonarqube'
+apply from: "../android-sonarqube.gradle"
 
 repositories {
     jcenter()
@@ -94,7 +96,11 @@ android {
             applicationId "com.suncor.android.SuncorApplicationDev"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
-
+        DevScrum {
+            dimension "version"
+            applicationId "com.suncor.android.SuncorApplicationDev.Scrum"
+            buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
+        }
         DevCarwash {
             dimension "version"
             applicationId "com.suncor.android.SuncorApplicationDev.Carwash"
@@ -176,6 +182,8 @@ dependencies {
     implementation files('libs/google-walletobjects-v1-rev_20200326-java.jar')
     implementation files('libs/commons-codec-rename_1.15.jar')
     implementation files('libs/kount-data-collector-4.1.3.jar')
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+
 
     implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
@@ -237,6 +245,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation group: 'com.android.volley', name: 'volley', version: '1.1.1'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72'
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 
 }
     apply plugin: 'com.google.gms.google-services'

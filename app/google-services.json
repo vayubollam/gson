@@ -361,6 +361,45 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013213340484:android:75a7c6f9ecf92ca48ded11",
+        "android_client_info": {
+          "package_name": "com.suncor.android.SuncorApplicationDev.Scrum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCth0mvQVk1AXf27gnKIcmEqS91KOudQzo"
+        },
+        {
+          "current_key": "AIzaSyDD8jxMzcizwOVVVePiPXycy-P8JLn-grU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013213340484-shdq1ppqt54qfaqg4eoirk875upevhnd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1013213340484-04vjnqtb53isdd4fmorek5fe1o99p5ek.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.suncor.dev.iossuncoreapplication.scrum2"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

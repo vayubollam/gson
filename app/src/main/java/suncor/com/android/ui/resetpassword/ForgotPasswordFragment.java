@@ -59,7 +59,7 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                 case ERROR:
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Forgot Password"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Forgot Password"));
 
                     try {
                         String[] arrayResponse = resource.message.split(";");
@@ -68,7 +68,7 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                         if (errorMessage.equals(ERR_ACCOUNT_SOFT_LOCK)) {
                             String remainingMinutes = arrayResponse[1].toString();
                             String alertMessage = getResources().getString(R.string.security_answer_soft_lock_retry_alert_message);
-                            alertMessage = alertMessage.replaceAll("X", remainingMinutes);
+                            alertMessage = alertMessage.replace("X", remainingMinutes);
 
                             Alerts.prepareCustomDialogOk(getResources().getString(R.string.login_soft_lock_alert_title), alertMessage, getActivity(), ((dialog, which) -> {
                                 dialog.dismiss();

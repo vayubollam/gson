@@ -189,23 +189,23 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
-        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
-                new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station"));
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, "Nearest Station"));
         adb.setTitle(R.string.enable_location_dialog_title);
         adb.setMessage(R.string.enable_location_dialog_message);
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                    new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station")
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Nearest Station")
             );
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), AnalyticsUtils.Event.alertInteraction,
                     new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.enable_location_dialog_title)+"("+getString(R.string.enable_location_dialog_message)+")"),
                     new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.ok)),
-                    new Pair<>(AnalyticsUtils.Param.formName, "Nearest Station")
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Nearest Station")
             );
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(getContext())) {
                 LocationUtils.openLocationSettings(this, REQUEST_CHECK_SETTINGS);
@@ -302,6 +302,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
 
             @Override
             public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                //Do nothing
             }
 
             @Override
@@ -318,7 +319,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
      */
     @Override
     public void onRefresh() {
-        // TODO: Implement refreshing
+        // Implement refreshing
         binding.refreshLayout.setRefreshing(false);
     }
 
