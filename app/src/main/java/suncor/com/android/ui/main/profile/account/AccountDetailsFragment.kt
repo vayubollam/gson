@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.room.util.StringUtil
 import suncor.com.android.R
 import suncor.com.android.databinding.FragmentAccountDetailsBinding
 import suncor.com.android.mfp.SessionManager
@@ -22,6 +23,7 @@ import suncor.com.android.ui.main.profile.ProfileSharedViewModel
 import suncor.com.android.ui.main.profile.address.AddressFragment
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment
 import suncor.com.android.utilities.AnalyticsUtils
+import suncor.com.android.utilities.Constants
 import javax.inject.Inject
 
 class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
@@ -29,6 +31,7 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
     private lateinit var binding: FragmentAccountDetailsBinding
     private lateinit var profileSharedViewModel: ProfileSharedViewModel
     private var appBarElevation = 0f
+    private var isDeleteAccountClicked = false;
 
     @Inject lateinit var sessionManager: SessionManager
 
@@ -45,7 +48,7 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
                     dialog.setTitle(alert.title)
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error, Pair(
                         AnalyticsUtils.Param.errorMessage, getString(alert.title)),
-                        Pair(AnalyticsUtils.Param.formName, "My petro points Account Navigation List"))
+                        Pair(AnalyticsUtils.Param.FORMNAME, Constants.MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST))
                 }
                 if (alert.message != -1) {
                     dialog.setMessage(alert.message)
@@ -91,12 +94,13 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             return
         }
         binding.emailOutput.text = sessionManager?.profile?.email
+        accountDeleteText()
 
         binding.personalInformationsButton.setOnClickListener { v -> AnalyticsUtils.logEvent(context,
-                "form_start", Pair("formName", "Update Personal Information")
+                AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.UPDATE_PERSONAL_INFORMATION)
             )
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_personalInfoFragment)
+            if ( profileSharedViewModel.ecryptedSecurityAnswer != null) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_personalInfoFragment)
             } else {
                 val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
                     AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT)
@@ -105,25 +109,50 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
         }
 
         binding.preferencesButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Change Preferences"))
+            AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.CHANGES_PREFERENCES))
             Navigation.findNavController(requireView())
-                .navigate(R.id.action_profile_tab_to_preferencesFragment)
+                .navigate(R.id.action_account_details_to_preferencesFragment)
         }
 
         binding.addressButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(context, "form_start", Pair("formName", "Update Address"))
+            AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.UPDATE_ADDRESS))
             if (profileSharedViewModel.ecryptedSecurityAnswer != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_addressFragment)
+                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_addressFragment)
             } else {
                 val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
                     AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT)
                 Navigation.findNavController(requireView()).navigate(action)
             }
         }
+        binding.deleteAccountButton.setOnClickListener { v ->
+            AnalyticsUtils.logEvent(context,
+                AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT)
+            )
+            if(!isDeleteAccountClicked){
+                profileSharedViewModel.ecryptedSecurityAnswer = null
+            }
+            if(profileSharedViewModel.ecryptedSecurityAnswer == null){
+                isDeleteAccountClicked = false;
+            }
+            if (isDeleteAccountClicked && profileSharedViewModel.ecryptedSecurityAnswer != null) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_deleteAccountFragment)
+            } else {
+                isDeleteAccountClicked = true;
+                val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
+                    AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT)
+                Navigation.findNavController(requireView()).navigate(action)
+            }
+        }
         binding.appBar.setNavigationOnClickListener { v -> goBack() }
-
-
     }
+    private fun accountDeleteText(){
+        if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
+            var deleteAccountText = String.format(getString(R.string.account_details_delete_alert_title), sessionManager.profile.accountDeleteDaysLeft)
+            binding.deleteAccountAlertText.text = deleteAccountText
+            binding.deleteAccountAlertText.visibility = View.VISIBLE
+        }
+    }
+
 
     override fun onBackPressed() {
         goBack()

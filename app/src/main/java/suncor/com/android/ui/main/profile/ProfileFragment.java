@@ -3,7 +3,6 @@ package suncor.com.android.ui.main.profile;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,19 +24,14 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorToast;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.profile.address.AddressFragment;
-import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
@@ -167,7 +161,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
 
-        binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_accountdetailsFragment));
+        binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_accountDetailsFragment));
 
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
 

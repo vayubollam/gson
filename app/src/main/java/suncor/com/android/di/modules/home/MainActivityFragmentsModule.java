@@ -10,6 +10,7 @@ import suncor.com.android.ui.main.pap.fuelup.FuelUpFragment;
 import suncor.com.android.ui.main.pap.receipt.ReceiptFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragment;
 import suncor.com.android.ui.main.profile.account.AccountDetailsFragment;
+import suncor.com.android.ui.main.profile.account.DeleteAccountFragment;
 import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment;
 import suncor.com.android.ui.main.stationlocator.NearestStationFragment;
 import suncor.com.android.ui.main.wallet.WalletFragment;
@@ -185,5 +186,8 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract AccountDetailsFragment contributeAccountDetailsFragment();
+
+    @ContributesAndroidInjector
+    abstract DeleteAccountFragment contributeDeleteAccountFragment();
 
 }

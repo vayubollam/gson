@@ -779,5 +779,6 @@
     <!-- account details  -->
     <string name="account_details_page_header">Détails du compte</string>
     <string name="account_details_delete_button">Supprimer le compte</string>
+    <string name="account_details_delete_alert_title">Votre compte sera supprimé dans %1$s jours.</string>
 
 </resources>

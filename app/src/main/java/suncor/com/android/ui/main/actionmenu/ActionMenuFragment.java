@@ -164,7 +164,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 binding.actionFuelUpButton.setLoading(activeSession);
             }
         });
-
+        accountDeleteText();
         homeViewModel.nearestStation.observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.SUCCESS && result.data != null
                     && result.data.getDistanceDuration() != null && result.data.getDistanceDuration().getDistance() < geoFenceLimit) {
@@ -180,6 +180,14 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             }
         });
       //  ObserverActiveSession();
+    }
+
+    private void accountDeleteText(){
+        if(binding.actionLocation.getVisibility() != View.VISIBLE && viewModel.getProfile() != null && viewModel.getProfile().getAccountDeleteDateTime() != null){
+            String deleteAccountText = String.format(getString(R.string.account_details_delete_alert_title), String.valueOf(viewModel.getProfile().getAccountDeleteDaysLeft()));
+            binding.actionLocation.setText(deleteAccountText);
+            binding.actionLocation.setVisibility(View.VISIBLE);
+        }
     }
 
     //This is for fixing bottom sheet dialog not fully extended issue.
