@@ -81,8 +81,8 @@ object Constants {
     const val VIDEO_THRESHOLD_50 = "video_threshold_50"
     const val VIDEO_THRESHOLD_75 = "video_threshold_75"
     const val VIDEO_COMPLETE = "video_complete"
-    const val FORM_COMPLETE ="form_complete"
-    const val FORM_ERROR ="form_error"
+    const val FORM_COMPLETE = "form_complete"
+    const val FORM_ERROR = "form_error"
     const val NAVIGATION = "navigation"
     const val BUTTON_TAP = "button_tap"
     const val PAYMENT_PREAUTHORIZE = "payment_preauthorize"
@@ -116,4 +116,8 @@ object Constants {
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
+
+    //Signup methods
+    const val METHOD_SIGN_UP = "Sign-Up"
+    const val METHOD_ACTIVATION = "Activation"
 }
