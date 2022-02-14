@@ -9,6 +9,8 @@ public class P97StoreDetailsResponse {
 
     public MobilePaymentStatus mobilePaymentStatus;
 
+    public Address address;
+
     @SerializedName("fuelService")
     public FuelService fuelService;
 
@@ -18,6 +20,23 @@ public class P97StoreDetailsResponse {
 
         public boolean getPapAvailable() {
             return papAvailable;
+        }
+    }
+
+    public static class Address{
+
+        String streetAddress;
+        String city;
+        String countryIsoCode;
+        String postalCode;
+        String stateCode;
+
+        public String getStateCode() {
+            return stateCode;
+        }
+
+        public void setStateCode(String stateCode) {
+            this.stateCode = stateCode;
         }
     }
 

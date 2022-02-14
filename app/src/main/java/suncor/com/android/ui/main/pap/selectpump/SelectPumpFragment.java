@@ -2,6 +2,7 @@ package suncor.com.android.ui.main.pap.selectpump;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +29,6 @@ import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.home.HomeViewModel;
-import suncor.com.android.ui.main.pap.fuelling.FuellingFragmentDirections;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
-import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class SelectPumpFragment extends MainActivityFragment implements SelectPumpListener {
@@ -40,6 +38,9 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     private SelectPumpAdapter adapter;
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private String storeId;
+    private String stateCode;
+    private boolean isRedeemable;
+    private int isFirstTime = 0;
     private HomeViewModel homeViewModel;
 
     @Inject
@@ -59,6 +60,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         binding = FragmentSelectPumpBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
         binding.setIsLoading(isLoading);
+        binding.setVm(viewModel);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.helpButton.setOnClickListener(v -> {
@@ -78,7 +80,8 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onViewCreated(view, savedInstanceState);
 
         isLoading.set(true);
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump-loading");
+        binding.loadQuestionsLayout.setVisibility(View.VISIBLE);
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-select-pump-loading");
         storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
         String location = SelectPumpFragmentArgs.fromBundle(getArguments()).getLocation();
         if(Objects.nonNull(location)) {
@@ -90,6 +93,21 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                 }
             });
         }
+
+        viewModel.redeemableFlag.observe(getViewLifecycleOwner(), result ->{
+            switch (result.status){
+                case LOADING:
+                case SUCCESS:
+                    if(result.data != null){
+                        isRedeemable = result.data.redeemable;
+                        binding.loadQuestionsLayout.setVisibility(View.GONE);
+                        isLoading.set(false);
+                    }
+                case ERROR:
+                    binding.loadQuestionsLayout.setVisibility(View.GONE);
+            }
+
+        });
 
         viewModel.isPAPAvailable(storeId).observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
@@ -130,10 +148,21 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
 
                             adapter.setPumpNumbers(pumpNumbers);
 
-                            isLoading.set(false);
-
                             // Update the storeId to the P97 store id
                             storeId = storeDetailsResponseResource.data.storeNumber;
+                            if(++ isFirstTime == 1){
+                                 if(!TextUtils.isEmpty(storeDetailsResponse.address.getStateCode())){
+
+                                stateCode = storeDetailsResponse.address.getStateCode();
+                            }else{
+                                stateCode = "";
+                            }
+                            viewModel.getRedeemableFlag(stateCode);
+                            }else{
+
+                                isLoading.set(false);
+                            }
+
                         } else if (storeDetailsResponseResource.status != Resource.Status.LOADING){
                             Alerts.prepareGeneralErrorDialog(getContext(), "Pay at Pump").show();
                             goBack();
@@ -150,8 +179,8 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     public void selectPumpNumber(String pumpNumber) {
         new Handler().postDelayed(() -> {
             HomeNavigationDirections.ActionToFuelUpFragment action = HomeNavigationDirections.actionToFuelUpFragment(storeId, pumpNumber);
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
-            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         }, 200);
     }
 
@@ -161,12 +190,12 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     }
 
     private void goBack() {
-       Navigation.findNavController(getView()).popBackStack();
+       Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump");
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-select-pump");
     }
 }

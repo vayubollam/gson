@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
+import suncor.com.android.model.pap.GetRedeemableFlag;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
@@ -63,6 +64,10 @@ public class PapRepository {
 
     public LiveData<Resource<P97StoreDetailsResponse>> getStoreDetails(String storeId) {
         return papApi.storeDetails(storeId);
+    }
+
+    public LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode) {
+        return papApi.getRedeemableFlag(stateCode);
     }
 
     public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId) {
