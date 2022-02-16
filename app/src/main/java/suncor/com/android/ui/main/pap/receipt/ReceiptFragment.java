@@ -162,12 +162,17 @@ public class ReceiptFragment extends MainActivityFragment {
                     binding.greetingsSaving.setVisibility(View.GONE);
                 }
 
+                /*
+                 * Alert dialog in order to let the user know that their operation could not be completed due to CLPE down.
+                 */
                 if(transaction.getLoyaltyPointsMessages() == null){
 
-                    AlertDialog.Builder dialog = createAlert();
+                    AlertDialog.Builder dialog = createAlert(R.string.clpe_down_prompt, R.string.clpe_down_prompt_heading);
                     dialog.setCancelable(true);
                     dialog.show();
                 }
+
+
 
                 binding.shareButton.setOnClickListener(v -> {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
@@ -201,11 +206,15 @@ public class ReceiptFragment extends MainActivityFragment {
 
                 AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
 
-                // Partial redemption check
-                if(burnedPoints<Integer.parseInt(preAuthRedeemPoints)){
-                    showPartialRedemptionPopup();
-                }
 
+                // Member locking /Partial and No redemption check
+                if(Integer.parseInt(preAuthRedeemPoints) > 0 && burnedPoints<Integer.parseInt(preAuthRedeemPoints) && transaction.getBasePoints() > 0){
+                    if(transaction.getPointsRedeemed() == 0){
+                       showNoRedemptionPopup();
+                    }else{
+                        showPartialRedemptionPopup();
+                    }
+                }
             }
         });
     }
@@ -215,20 +224,20 @@ public class ReceiptFragment extends MainActivityFragment {
         navController.popBackStack();
     }
 
-    private AlertDialog.Builder createAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-
-        builder.setMessage(R.string.clpe_down_prompt)
-                .setTitle(R.string.clpe_down_prompt_heading);
-        builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> {
-            dialog.dismiss();
-        }));
-
-        return builder;
+    /*
+     *Partial Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/Partial Redemption.
+     */
+    private void showPartialRedemptionPopup(){
+        AlertDialog.Builder dialog = createAlert(R.string.member_lock_partial_redemption_message, R.string.member_lock_partial_redemption_title);
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
-    public void showPartialRedemptionPopup(){
-        AlertDialog.Builder dialog = createAlert(R.string.member_lock_partial_redemption_message, R.string.member_lock_partial_redemption_title);
+    /*
+     *No Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/No Redemption.
+     */
+    private void showNoRedemptionPopup(){
+        AlertDialog.Builder dialog = createAlert(R.string.redemption_unavailable_description, R.string.redemption_unavailable_title);
         dialog.setCancelable(true);
         dialog.show();
     }

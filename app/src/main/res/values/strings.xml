@@ -849,4 +849,7 @@
     <string name="member_lock_partial_redemption_message">"Looks like you ran out of points while fuelling. No worries, we still completed the transaction."</string>
     <string name="member_lock_partial_redemption_button">"Dismiss"</string>
 
+    <string name="redemption_unavailable_title">Redemption is unavailable </string>
+    <string name="redemption_unavailable_description">Petro–Points redemption is unavailable at this time. Please, contact us at 1(800) 688–0220 for more information. </string>
+
 </resources>
