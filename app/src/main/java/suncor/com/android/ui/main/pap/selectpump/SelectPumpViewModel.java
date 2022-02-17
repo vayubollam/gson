@@ -34,18 +34,21 @@ public class SelectPumpViewModel extends ViewModel {
                         result.message));
     }
 
-    public void getRedeemableFlag(String stateCode) {
+    public void getRedeemableFlag(String stateCode, String currentCity) {
 
-        repository.getRedeemableFlag(stateCode).observeForever(it -> {
+        repository.getRedeemableFlag(stateCode, currentCity).observeForever(it -> {
             switch (it.status) {
                 case LOADING:
                     redeemableFlag.postValue(Resource.loading());
+                    break;
 
                 case SUCCESS:
                     redeemableFlag.postValue(Resource.success(it.data != null ? it.data : null));
+                    break;
 
                 case ERROR:
                     redeemableFlag.postValue(Resource.error(it.message));
+                    break;
 
             }
         });

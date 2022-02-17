@@ -31,6 +31,14 @@ public class P97StoreDetailsResponse {
         String postalCode;
         String stateCode;
 
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
         public String getStateCode() {
             return stateCode;
         }

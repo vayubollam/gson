@@ -39,6 +39,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     private ObservableBoolean isLoading = new ObservableBoolean(true);
     private String storeId;
     private String stateCode;
+    private String currentCity;
     private boolean isRedeemable;
     private int isFirstTime = 0;
     private HomeViewModel homeViewModel;
@@ -97,14 +98,17 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         viewModel.redeemableFlag.observe(getViewLifecycleOwner(), result ->{
             switch (result.status){
                 case LOADING:
+                    break;
                 case SUCCESS:
                     if(result.data != null){
                         isRedeemable = result.data.redeemable;
                         binding.loadQuestionsLayout.setVisibility(View.GONE);
                         isLoading.set(false);
                     }
+                    break;
                 case ERROR:
                     binding.loadQuestionsLayout.setVisibility(View.GONE);
+                    break;
             }
 
         });
@@ -151,13 +155,15 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                             // Update the storeId to the P97 store id
                             storeId = storeDetailsResponseResource.data.storeNumber;
                             if(++ isFirstTime == 1){
-                                 if(!TextUtils.isEmpty(storeDetailsResponse.address.getStateCode())){
+                                 if(!TextUtils.isEmpty(storeDetailsResponse.address.getStateCode()) && (!TextUtils.isEmpty(storeDetailsResponse.address.getCity()))){
 
                                 stateCode = storeDetailsResponse.address.getStateCode();
+                                currentCity = storeDetailsResponse.address.getCity();
                             }else{
                                 stateCode = "";
+                                currentCity = "";
                             }
-                            viewModel.getRedeemableFlag(stateCode);
+                            viewModel.getRedeemableFlag(stateCode, currentCity);
                             }else{
 
                                 isLoading.set(false);

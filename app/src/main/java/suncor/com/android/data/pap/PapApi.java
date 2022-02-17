@@ -21,5 +21,5 @@ public interface PapApi {
     LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation);
     LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId);
     LiveData<Resource<Boolean>> cancelTransaction(String transactionId);
-    LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode);
+    LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode, String currentCity);
 }

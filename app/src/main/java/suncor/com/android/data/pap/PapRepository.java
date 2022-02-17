@@ -66,8 +66,8 @@ public class PapRepository {
         return papApi.storeDetails(storeId);
     }
 
-    public LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode) {
-        return papApi.getRedeemableFlag(stateCode);
+    public LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode, String currentCity) {
+        return papApi.getRedeemableFlag(stateCode, currentCity);
     }
 
     public LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId) {

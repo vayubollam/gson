@@ -255,19 +255,14 @@ public class PapApiImpl implements PapApi {
     }
 
     @Override
-    public LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode) {
+    public LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode, String currentCity) {
         Timber.d("request initiate for fetch transaction details ");
         MutableLiveData<Resource<GetRedeemableFlag>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/redemptionflag?currentProvCode="+ stateCode );
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.PUT, SuncorApplication.DEFAULT_TIMEOUT);
+            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/redemptionflag?currentCity=" + currentCity +"&currentProvCode="+ stateCode );
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
 
-            if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                request.addHeader("Accept-Language", "fr-CA");
-            } else {
-                request.addHeader("Accept-Language", "en-CA");
-            }
             request.send( new WLResponseListener() {
                 @Override
                 public void onSuccess(WLResponse wlResponse) {
