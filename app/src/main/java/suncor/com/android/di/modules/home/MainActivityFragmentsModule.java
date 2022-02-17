@@ -9,8 +9,10 @@ import suncor.com.android.ui.main.pap.fuelling.FuellingFragment;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragment;
 import suncor.com.android.ui.main.pap.receipt.ReceiptFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragment;
+import suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment;
+import suncor.com.android.ui.main.profile.account.AccountDeleteSubmitFragment;
 import suncor.com.android.ui.main.profile.account.AccountDetailsFragment;
-import suncor.com.android.ui.main.profile.account.DeleteAccountFragment;
+import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
 import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment;
 import suncor.com.android.ui.main.stationlocator.NearestStationFragment;
 import suncor.com.android.ui.main.wallet.WalletFragment;
@@ -48,7 +50,6 @@ import suncor.com.android.ui.main.stationlocator.search.SearchFragment;
 import suncor.com.android.ui.main.wallet.payments.add.AddPaymentFragment;
 import suncor.com.android.ui.main.wallet.payments.details.PaymentsDetailsFragment;
 import suncor.com.android.ui.main.wallet.payments.list.PaymentsFragment;
-import suncor.com.android.ui.tutorial.TutorialFragment;
 
 @Module
 abstract class MainActivityFragmentsModule {
@@ -188,6 +189,12 @@ abstract class MainActivityFragmentsModule {
     abstract AccountDetailsFragment contributeAccountDetailsFragment();
 
     @ContributesAndroidInjector
-    abstract DeleteAccountFragment contributeDeleteAccountFragment();
+    abstract AccountDeleteFragment contributeDeleteAccountFragment();
+
+    @ContributesAndroidInjector
+    abstract AccountDeleteSubmitFragment contributeAccountDeleteSubmitFragment();
+
+    @ContributesAndroidInjector
+    abstract AccountDeleteNotesFragment contributeAccountDeleteNotesFragment();
 
 }

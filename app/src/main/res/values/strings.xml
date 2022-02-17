@@ -840,4 +840,9 @@
     <string name="account_deletion_account_unused_points">You have %s unused points.</string>
     <string name="account_deletion_account_redeem_donate">Don\'t forgot to redeem or donate them\n before your account is deleted.</string>
 
+    <!-- Notes Screen -->
+    <string name="account_deletion_submitted_header">Delete Account</string>
+    <string name="account_deletion_requested">You made an account deletion request on %$1. It may take up to 30 days to delete your account. </string>
+    <string name="account_deletion_contact_customer_service">If this request was not made by you, please contact <a href="https://www.petro-canada.ca/en/personal/contact-customer-service">Customer Service </a> </string>
+
 </resources>

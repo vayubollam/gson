@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.profile.securityquestion;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -26,11 +25,9 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
-import suncor.com.android.ui.login.LoginActivity;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
-import suncor.com.android.ui.main.profile.account.DeleteAccountFragment;
+import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -87,12 +84,11 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                                 new Pair<>(AnalyticsUtils.Param.STEPNAME, Constants.ANSWER_SECURITY_QUESTION)
                         );
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
-                    } else if (DeleteAccountFragment.DELETE_ACCOUNT_FRAGMENT.equalsIgnoreCase(destination)){
+                    } else if (AccountDeleteFragment.DELETE_ACCOUNT_FRAGMENT.equalsIgnoreCase(destination)){
                         AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.FORMSTEP,
                                 new Pair<>(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT),
                                 new Pair<>(AnalyticsUtils.Param.STEPNAME, Constants.ANSWER_SECURITY_QUESTION)
                         );
-                       // Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
                         Navigation.findNavController(requireView()).navigate(R.id.action_securityQuestionValidationFragment_to_deleteAccountFragment);
                     }
                     break;
