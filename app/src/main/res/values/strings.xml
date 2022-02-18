@@ -844,5 +844,12 @@
     <string name="google_passes_termcondition_label_fr">Conditions</string>
     <string name="google_passes_termcondition_value_fr">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
 
+    <!--Receipt Section-->
+    <string name="member_lock_partial_redemption_title">"Partial points redemption"</string>
+    <string name="member_lock_partial_redemption_message">"Looks like you ran out of points while fuelling. No worries, we still completed the transaction."</string>
+    <string name="member_lock_partial_redemption_button">"Dismiss"</string>
+
+    <string name="redemption_unavailable_title">Redemption is unavailable </string>
+    <string name="redemption_unavailable_description">Petro–Points redemption is unavailable at this time. Please, contact us at 1(800) 688–0220 for more information. </string>
 
 </resources>

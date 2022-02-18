@@ -127,7 +127,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.transactionLayout.setVisibility(View.GONE);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-                Transaction transaction = new Transaction();
+                Transaction transaction = result.data;
 
                 sessionManager.retrieveProfile((profile) -> {
                     updatedPoints = profile.getPointsBalance();
@@ -148,35 +148,31 @@ public class ReceiptFragment extends MainActivityFragment {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
                 }
-                transaction = result.data;
+
                 binding.setTransaction(transaction);
                 String points = availablePoints.replace(",", "");
                 String formattedPoints = points.replaceAll("\\s+", "");
                 transaction.setCurrentBalance(Integer.parseInt(formattedPoints));
                 int burnedPoints = transaction.getBurnedPoints();
 
-                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
-                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
-                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
-
-
-                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
                 if (result.data.getRbcAlongWithRedemptionSavings() > 0.0) {
-
                     binding.greetingsSaving.setVisibility(View.VISIBLE);
                     binding.greetingsSaving.setText(String.format(getString(R.string.transaction_saved), result.data.getRbcAlongWithRedemptionSavingsMutableData()));
                 } else {
                     binding.greetingsSaving.setVisibility(View.GONE);
                 }
 
+                /*
+                 * Alert dialog in order to let the user know that their operation could not be completed due to CLPE down.
+                 */
                 if(transaction.getLoyaltyPointsMessages() == null){
 
-                    AlertDialog.Builder dialog = createAlert();
+                    AlertDialog.Builder dialog = createAlert(R.string.clpe_down_prompt, R.string.clpe_down_prompt_heading);
                     dialog.setCancelable(true);
                     dialog.show();
                 }
+
+
 
                 binding.shareButton.setOnClickListener(v -> {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
@@ -200,6 +196,25 @@ public class ReceiptFragment extends MainActivityFragment {
                     share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(share, "Share"));
                 });
+
+                // Analytics
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
+                        new Pair<>(AnalyticsUtils.Param.pointsRedeemed, String.valueOf(burnedPoints)),
+                        new Pair<>(AnalyticsUtils.Param.redeemedPoints, String.valueOf(burnedPoints)),
+                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+
+                AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
+
+
+                // Member locking /Partial and No redemption check
+                if(Integer.parseInt(preAuthRedeemPoints) > 0 && burnedPoints<Integer.parseInt(preAuthRedeemPoints) && transaction.getBasePoints() > 0){
+                    if(transaction.getPointsRedeemed() == 0){
+                       showNoRedemptionPopup();
+                    }else{
+                        showPartialRedemptionPopup();
+                    }
+                }
             }
         });
     }
@@ -209,16 +224,22 @@ public class ReceiptFragment extends MainActivityFragment {
         navController.popBackStack();
     }
 
-    private AlertDialog.Builder createAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+    /*
+     *Partial Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/Partial Redemption.
+     */
+    private void showPartialRedemptionPopup(){
+        AlertDialog.Builder dialog = createAlert(R.string.member_lock_partial_redemption_message, R.string.member_lock_partial_redemption_title);
+        dialog.setCancelable(true);
+        dialog.show();
+    }
 
-        builder.setMessage(R.string.clpe_down_prompt)
-                .setTitle(R.string.clpe_down_prompt_heading);
-        builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> {
-            dialog.dismiss();
-        }));
-
-        return builder;
+    /*
+     *No Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/No Redemption.
+     */
+    private void showNoRedemptionPopup(){
+        AlertDialog.Builder dialog = createAlert(R.string.redemption_unavailable_description, R.string.redemption_unavailable_title);
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     private void checkForReview() {
@@ -248,5 +269,16 @@ public class ReceiptFragment extends MainActivityFragment {
                 goBack();
             }
         });
+    }
+
+    @NonNull
+    private AlertDialog.Builder createAlert(int message, int title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage(message)
+                .setTitle(title);
+        builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> {
+            dialog.dismiss();
+        }));
+        return builder;
     }
 }

@@ -351,6 +351,7 @@
     <string name="enrollment_email_restricted_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_format_error">Veuillez entrer une adresse courriel valide.</string>
     <string name="enrollment_email_restricted_alert_title">Veuillez utiliser un autre adresse courriel.</string>
+
     <string name="enrollment_street_format_error">Adresse invalide</string>
     <string name="enrollment_city_format_error">Ville invalide</string>
     <string name="profile_preferences_email_header">Courriel</string>
@@ -808,4 +809,11 @@
     <string name="discount_prices">%1$s (a été %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
 
+    <!--Receipt Section-->
+    <string name="member_lock_partial_redemption_title">Échange partiel de points</string>
+    <string name="member_lock_partial_redemption_message">Il semblerait que vous avez manqué de points pendant que vous faisiez le plein. Pas de soucis, nous avons tout de même finalisé la transaction.</string>
+    <string name="member_lock_partial_redemption_button">Rejeter</string>
+
+    <string name="redemption_unavailable_title">L\'échange n\'est pas disponible </string>
+    <string name="redemption_unavailable_description">L\'échange de Petro–Points n\'est pas disponible pour le moment. Veuillez communiquer avec nous au 1-800-688-0222 pour obtenir plus de renseignements. </string>
 </resources>
