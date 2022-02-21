@@ -7,15 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +36,6 @@ import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
-import com.kount.api.analytics.AnalyticsCollector;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -54,7 +50,6 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import suncor.com.android.BuildConfig;
-import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
@@ -67,7 +62,6 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
-import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
@@ -77,7 +71,6 @@ import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
-import suncor.com.android.utilities.UserLocalSettings;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -92,6 +85,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private FuelUpViewModel viewModel;
     private SelectPumpViewModel selectPumpViewModel;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
+    private ObservableBoolean isRedemptionRestricted = new ObservableBoolean(false);
     private Double lastTransactionFuelUpLimit;
     SettingsResponse.Pap mPapData;
     PaymentDropDownAdapter paymentDropDownAdapter;
@@ -104,6 +98,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String pumpNumber;
     private String storeId;
     private String preAuth;
+    private boolean isRedeemable;
     private String userPaymentId;
     private String preAuthRedeemPoints = "0";
     private String selectedRadioButton = "No Redemption";
@@ -142,6 +137,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         binding.setIsLoading(isLoading);
         binding.setVm(viewModel);
+        binding.setIsRedemptionRestricted(isRedemptionRestricted);
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.preauthorizeButton.setOnClickListener(v-> handleConfirmAndAuthorizedClick());
@@ -194,6 +190,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         storeId = FuelUpFragmentArgs.fromBundle(getArguments()).getStoreId();
+        isRedeemable = FuelUpFragmentArgs.fromBundle(getArguments()).getIsRedeemable();
+        isRedemptionRestricted.set(!isRedeemable);
 
         if (pumpNumber == null) {
             pumpNumber = FuelUpFragmentArgs.fromBundle(getArguments()).getPumpNumber();

@@ -749,6 +749,9 @@
         <argument
             android:name="pumpNumber"
             app:argType="string"/>
+        <argument
+            android:name="isRedeemable"
+            app:argType="boolean"/>
     </action>
 
     <action
@@ -835,6 +838,10 @@
             android:defaultValue="null"
             app:argType="string"
             app:nullable="false"/>
+        <argument
+            android:name="isRedeemable"
+            android:defaultValue="false"
+            app:argType="boolean"/>
 
         <action
             android:id="@+id/action_fuel_up_to_addPaymentFragment"
