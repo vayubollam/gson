@@ -121,7 +121,7 @@
     <string name="enrollment_province_error">Province is required.</string>
     <string name="enrollment_postalcode_error">Postal code is required.</string>
     <string name="enrollment_postalcode_format_error">The postal code you entered isn\'t valid.</string>
-    <string name="enrollment_email_restricted_alert_title">Please enter a different email account</string>
+    <string name="enrollment_email_restricted_alert_title">Please enter a different email address or Call 1-800-668-0220 if you have any issues.</string>
 
     <string name="enrollment_email_format_error">Please enter a valid email address.</string>
     <string name="discover_your_next_adventure">FIND YOUR \nHAPPY PLACE</string>
@@ -323,7 +323,7 @@
     <string name="profile_personnal_informations_email_empty_alert_title">Email required</string>
     <string name="profile_personnal_informations_email_invalid_alert_title">Invalid email</string>
     <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
-    <string name="profile_personnal_informations_email_invalid_alert_message">Please use a different email account.</string>
+    <string name="profile_personnal_informations_email_invalid_alert_message">Please enter a different email address or Call <annotation type="call-csn">1-800-668-0220</annotation> if you have any issues.</string>
     <string name="profile_personnal_informations_email_alert_title">Save changes</string>
     <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign in again. If you\'ve changed your email, check your inbox to verify your email address.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
