@@ -323,7 +323,7 @@
     <string name="profile_personnal_informations_email_empty_alert_title">Email required</string>
     <string name="profile_personnal_informations_email_invalid_alert_title">Invalid email</string>
     <string name="profile_personnal_informations_email_empty_alert_message">Please enter an email.</string>
-    <string name="profile_personnal_informations_email_invalid_alert_message">Please enter a different email address or Call <annotation type="call-csn">1-800-668-0220</annotation> if you have any issues.</string>
+    <string name="profile_personnal_informations_email_invalid_alert_message">Please enter a different email address or Call 1-800-668-0220 if you have any issues.</string>
     <string name="profile_personnal_informations_email_alert_title">Save changes</string>
     <string name="profile_personnal_informations_email_alert_message">Changing your info will require you to sign in again. If you\'ve changed your email, check your inbox to verify your email address.</string>
     <string name="profile_personnal_informations_email_alert_signout_button">Sign out</string>
