@@ -6,22 +6,22 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="20dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/request_submitted_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
             android:gravity="center"
             android:text="@string/account_deletion_request_submitted"
-            android:textAppearance="@style/BodyBold"
+            android:textAppearance="@style/Title2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toTopOf="@id/progress_layout">
 
         </androidx.appcompat.widget.AppCompatTextView>
 
@@ -29,12 +29,11 @@
             android:id="@+id/progress_layout"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/request_submitted_textview">
-
+            app:layout_constraintBottom_toTopOf="@id/delete_account_process_textview">
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -64,48 +63,64 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/delete_account_process_textview"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
             android:gravity="center"
+            android:lineSpacingMultiplier="1.28"
             android:text="@string/account_deletion_account_deletion_begun"
             android:textAppearance="@style/Body1"
-            android:textColor="@color/quantum_grey"
+            android:textColor="@color/black_60"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progress_layout"></androidx.appcompat.widget.AppCompatTextView>
+            app:layout_constraintBottom_toTopOf="@id/delete_account_unused_points_textview"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/delete_account_unused_points_textview"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="@string/account_deletion_account_unused_points"
             android:textAppearance="@style/BodyBold"
-            android:textColor="@color/quantum_grey700"
+            android:textColor="@color/black_60"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/delete_account_process_textview"></androidx.appcompat.widget.AppCompatTextView>
+            app:layout_constraintBottom_toTopOf="@id/delete_account_redeem_donate_textview"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/delete_account_redeem_donate_textview"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
+            android:lineSpacingMultiplier="1.28"
             android:text="@string/account_deletion_account_redeem_donate"
             android:textAppearance="@style/Body1"
-            android:textColor="@color/quantum_grey"
+            android:textColor="@color/black_60"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/delete_account_unused_points_textview"></androidx.appcompat.widget.AppCompatTextView>
+            app:layout_constraintBottom_toTopOf="@id/button_layout"/>
+
+        <FrameLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <suncor.com.android.ui.common.SuncorButton
+            android:id="@+id/back_to_home_button"
+            style="@style/FilledButton.Red.L"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="@string/back_to_home" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

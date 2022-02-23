@@ -6,15 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import suncor.com.android.R
 import suncor.com.android.databinding.FragmentAccountDeleteSubmitBinding
+import suncor.com.android.mfp.SessionManager
+import suncor.com.android.model.account.Profile
 import suncor.com.android.ui.common.OnBackPressedListener
+import suncor.com.android.ui.common.cards.CardFormatUtils
 import suncor.com.android.ui.main.common.MainActivityFragment
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel
+import javax.inject.Inject
 
 class AccountDeleteSubmitFragment : MainActivityFragment(), OnBackPressedListener {
 
     private lateinit var binding: FragmentAccountDeleteSubmitBinding
     private lateinit var profileSharedViewModel: ProfileSharedViewModel
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +43,21 @@ class AccountDeleteSubmitFragment : MainActivityFragment(), OnBackPressedListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-     // handle text view and clicks
-
+        dataMapFromProfile()
+        binding.backToHomeButton.setOnClickListener { view-> goBack() }
     }
+
     override fun onBackPressed() {
         goBack()
     }
 
     private fun goBack() {
-        profileSharedViewModel.ecryptedSecurityAnswer = null
         Navigation.findNavController(requireView()).popBackStack()
     }
 
+    private fun dataMapFromProfile(){
+        binding.deleteAccountUnusedPointsTextview.text = String.format(getString(R.string.account_deletion_account_unused_points),
+            CardFormatUtils.formatBalance(sessionManager!!.profile.pointsBalance))
+    }
 
 }

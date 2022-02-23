@@ -175,6 +175,7 @@
                             android:layout_height="48dp"
                             android:paddingStart="16dp"
                             android:paddingRight="16dp"
+                            android:paddingBottom="5dp"
                             android:background="?selectableItemBackground"
                             android:gravity="start|center_vertical"
                             android:text="@string/account_details_delete_button"
@@ -182,7 +183,6 @@
                             android:textAppearance="@style/Body"
                             android:drawableRight="@drawable/ic_chevron_right"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -192,13 +192,11 @@
                             android:gravity="start|center_vertical"
                             android:paddingStart="16dp"
                             android:paddingRight="16dp"
-                            android:layout_marginTop="8dp"
-                            android:paddingBottom="8dp"
+                            android:layout_marginBottom="5dp"
                             android:visibility="gone"
                             android:text="@string/account_details_delete_alert_title"
                             android:textColor="@color/quantum_grey"
                             android:textSize="10sp"
-
                             app:layout_constraintBottom_toBottomOf="@id/delete_account_button"
                             app:layout_constraintStart_toStartOf="@id/delete_account_button">
 

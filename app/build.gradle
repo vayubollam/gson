@@ -31,6 +31,7 @@ android {
         buildConfigField "String", "PASSES_JWT_TYPE", PASSES_JWT_TYPE
         buildConfigField "String", "PASSES_SERVICE_ACCOUNT_FILE", PASSES_SERVICE_ACCOUNT_FILE
         buildConfigField "String", "KOUNT_MERCHANT_ID", KOUNT_MERCHANT_ID
+        buildConfigField "String", 'ACCOUNT_DELETION_PERIOD_IN_DAYS', ACCOUNT_DELETION_PERIOD_IN_DAYS
     }
 
     dataBinding {
@@ -73,8 +74,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

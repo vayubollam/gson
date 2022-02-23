@@ -60,7 +60,7 @@ public class DateUtils {
         Date date = dateFormat.parse(startDate);
         Date dateD = dateFormat.parse(endDate);
 
-        Long difference_In_Time  = date.getTime() - dateD.getTime();
+        Long difference_In_Time = dateD.getTime() - date.getTime();
 
         long difference_In_Days = ((difference_In_Time
                 / (1000 * 60 * 60 * 24))

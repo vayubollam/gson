@@ -826,23 +826,30 @@
     <string name="account_delete_point_one">This process may take 30 days to complete. Your account will remain active until it is deleted.</string>
     <string name="account_delete_point_two">We highly recommend that you export copies of your transactions as you will no longer have access to them via the mobile app or on Petro-Canada.ca.</string>
     <string name="account_delete_point_three">You will forfeit all unused points if you do not redeem or donate them prior to deletion. You can donate your points by accessing your account on Petro-Canada.ca.</string>
-    <string name="account_deletion_subtitle_review">Please review the Information below</string>
     <string name="account_deletion_phone_label">Phone (required)</string>
-    <string name="account_deletion_address_label">Address</string>
-    <string name="account_deletion_petro_points_label">Petro-Points No.</string>
-    <string name="account_deletion_subtitle_acknowledgement">Acknowledgement (required)</string>
-    <string name="account_deletion_subtitle_acknowledgement_checkbox1">I acknowledge that I will forfeit all unused points if I do not redeem them prior to deletion.</string>
-    <string name="account_deletion_subtitle_acknowledgement_checkbox2">I acknowledge that this action will remove from the PetroPointsTM program and I will no longer have the ability to earn points.</string>
-    <string name="account_deletion_subtitle_leaving"> Before you leave, do you mind telling us why you\'re leaving?</string>
     <string name="account_deletion_button">START ACCOUNT DELETION</string>
     <string name="account_deletion_request_submitted">Request Submitted</string>
     <string name="account_deletion_account_deletion_begun">We\'ve begun your account deletion process.</string>
-    <string name="account_deletion_account_unused_points">You have %s unused points.</string>
+    <string name="account_deletion_account_unused_points">You have <font color='#EB182C'>%s </font>unused points.</string>
     <string name="account_deletion_account_redeem_donate">Don\'t forgot to redeem or donate them\n before your account is deleted.</string>
 
     <!-- Notes Screen -->
     <string name="account_deletion_submitted_header">Delete Account</string>
-    <string name="account_deletion_requested">You made an account deletion request on %$1. It may take up to 30 days to delete your account. </string>
-    <string name="account_deletion_contact_customer_service">If this request was not made by you, please contact <a href="https://www.petro-canada.ca/en/personal/contact-customer-service">Customer Service </a> </string>
+    <string name="account_deletion_requested">You made an account deletion request on %1$s. It may take up to %2$s days to delete your account. </string>
+    <string name="account_deletion_contact_customer_service">If this request was not made by you, please contact <a href="https://www.petro-canada.ca/en/personal/contact-customer-service">Customer Service.</a> </string>
+    <string name="account_deletion_notes_title">Hi, %1$s</string>
+    <string name="customer_service_url">https://www.petro-canada.ca/en/personal/contact-customer-service</string>
 
+    <string name="account_deletion_subtitle_review">Please review the Information below</string>
+    <string name="account_deletion_address_label">Full Mailing Address</string>
+    <string name="account_deletion_petro_points_label">Petro-Points No.</string>
+    <string name="account_deletion_subtitle_acknowledgement">Acknowledgement </string>
+    <string name="account_deletion_subtitle_acknowledgement_required">(required)</string>
+    <string name="account_deletion_subtitle_acknowledgement_checkbox1">I acknowledge that I will forfeit all unused points if I do not redeem them prior to deletion.</string>
+    <string name="account_deletion_subtitle_acknowledgement_checkbox2">I acknowledge that this action will remove from the PetroPointsTM program and I will no longer have the ability to earn points.</string>
+    <string name="account_deletion_subtitle_leaving"> Before you leave, do you mind telling us why you\'re leaving?</string>
+    <string name="account_deletion_acknowledgment_validation">You have to agree to all the acknowledgements to begin the account deletion process.</string>
+    <string name="account_deletion_different_reason_validation">This field cannot be left blank if selected !</string>
+    <string name="account_deletion_phone_field_required">This field is required!</string>
+    <string name="account_deletion_submitted">Submitting</string>
 </resources>

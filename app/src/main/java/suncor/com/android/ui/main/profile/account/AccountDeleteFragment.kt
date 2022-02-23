@@ -1,10 +1,13 @@
 package suncor.com.android.ui.main.profile.account
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
@@ -18,21 +21,30 @@ import suncor.com.android.model.account.DeleteAccountRequest
 import suncor.com.android.model.account.Profile
 import suncor.com.android.ui.common.Alerts
 import suncor.com.android.ui.common.OnBackPressedListener
-import suncor.com.android.ui.main.AcknowledgementList
+import suncor.com.android.ui.main.AckFeedbackList
 import suncor.com.android.ui.main.common.MainActivityFragment
 import suncor.com.android.ui.main.profile.AcknowledgementListAdapter
 import suncor.com.android.ui.main.profile.BeforeLeavingListAdapter
+import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher
+import suncor.com.android.utilities.Timber
 import javax.inject.Inject
 
-class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener {
+class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
+    AcknowledgementListAdapter.ValidateDataListner, BeforeLeavingListAdapter.checkReasonListner {
 
     companion object {
         const val DELETE_ACCOUNT_FRAGMENT = "delete_account_fragment"
     }
     private lateinit var binding: FragmentDeleteAccountBinding
-    private val acknowledgementList = ArrayList<AcknowledgementList>()
-    private val beforeLeavingList = ArrayList<AcknowledgementList>()
     private var viewModel: AccountDeleteViewModel? = null
+
+    lateinit var beforeLeavingListAdapter: BeforeLeavingListAdapter
+    lateinit var acknowledgementListAdapter: AcknowledgementListAdapter
+
+    private val acknowledgementList = ArrayList<AckFeedbackList>()
+    private val beforeLeavingList = ArrayList<AckFeedbackList>()
+    private var isLoading = ObservableBoolean(false)
+
 
     @Inject lateinit var viewModelFactory: ViewModelFactory
 
@@ -45,34 +57,46 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentDeleteAccountBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-
+        binding.vm = viewModel
+        binding.isLoading = isLoading
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
-        binding.startDeletionButton.setOnClickListener { v ->
-            // navigation for account submit fragment
-        }
         binding.appBar.setNavigationOnClickListener { v -> goBack() }
-
         binding.appBar.setTitle(resources.getString(R.string.account_details_delete_button))
         dataMapFromProfile()
         setAckRecycler()
         setBeforeLeavingRecycler()
         binding.startDeletionButton.setOnClickListener { v -> deleteAccountApiCall() }
+        binding.phoneNoInput.editText.addTextChangedListener(SuncorPhoneNumberTextWatcher())
+        binding.phoneNoInput.editText.imeOptions = EditorInfo.IME_ACTION_DONE
+        binding.phoneNoInput.editText.setOnEditorActionListener { v, actionId, event ->
+            if (actionId === EditorInfo.IME_ACTION_DONE) {
+                hideKeyBoard()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+    }
+
+    private fun hideKeyBoard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     /**
-     * deleteion form Data mapping from profile
+     * deletion form Data mapping from profile
      */
     private fun dataMapFromProfile(){
         var profile: Profile = viewModel!!.getProfile()
+        binding.deleteAccountTitle.text = String.format(getString(R.string.account_deletion_title), profile.firstName)
         binding.firstNameInput.text = profile.firstName
         binding.lastNameInput.text = profile.lastName
         binding.phoneNoInput.text = profile.phone
-        binding.addressInput.text = profile.streetAddress
+        binding.addressInput.text = profile.formattedAddress
         binding.emailInput.text = profile.email
         binding.petroPointsInput.text = profile.petroPointsNumber
     }
@@ -81,17 +105,48 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener {
      * delete account api call
      */
     private fun deleteAccountApiCall(){
+        if (binding.phoneNoInput.text.isEmpty()) {
+            binding.phoneNoInput.setError(getString(R.string.account_deletion_phone_field_required))
+            binding.phoneNoInput.requestFocus()
+            return
+        }
+        if(!viewModel!!.isPhoneNumberValid(binding.phoneNoInput.text.toString())){
+            binding.phoneNoInput.setError(R.string.profile_personnal_informations_phone_field_invalid_format)
+            return
+        }
+        binding.phoneNoInput.setError(false)
+
+        if (!ackListValidate()) {
+            Timber.d("Did not select all acknowledgement points")
+            return
+        }
+        if (!beforeListValidate()) {
+            Timber.d("Did not select reason")
+            return
+        }
+        binding.acknowledgementValidationTextview.visibility = View.GONE
+        binding.differentReasonEditText.visibility = View.GONE
+        Timber.d("Passed !")
+
         var profile: Profile = viewModel!!.getProfile()
         var deleteAccountRequest = DeleteAccountRequest(profile.petroPointsNumber,
             profile.firstName, profile.lastName, profile.email, profile.streetAddress, profile.city,
-           profile.province, profile.postalCode, binding.phoneNoInput.text.trim().toString(), true,false, false,"" )
+           profile.province, profile.postalCode, binding.phoneNoInput.text.trim().toString(), beforeLeavingList[0].checked, beforeLeavingList[1].checked,
+            beforeLeavingList[2].checked, binding.differentReasonEditText.text.toString() )
         viewModel!!.deleteApi(deleteAccountRequest).observe(viewLifecycleOwner) { result ->
-            if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(context, "").show()
-            } else if (result.status == Resource.Status.SUCCESS) {
-                val action: NavDirections = AccountDeleteFragmentDirections.actionAccountDeleteToAccountDeleteSubmitFragment()
-                Navigation.findNavController(requireView()).navigate(action)
-                goBack()
+            when(result.status) {
+                Resource.Status.LOADING -> {
+                    isLoading.set(true)
+                }
+                Resource.Status.ERROR -> {
+                    isLoading.set(false)
+                    Alerts.prepareGeneralErrorDialog(context, "Delete Account").show()
+                }
+                Resource.Status.SUCCESS -> {
+                    viewModel!!.refreshProfile()
+                    val action: NavDirections = AccountDeleteFragmentDirections.actionAccountDeleteToAccountDeleteSubmitFragment()
+                    Navigation.findNavController(requireView()).navigate(action)
+                }
             }
         }
     }
@@ -107,23 +162,101 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener {
     private fun setAckRecycler() {
         val ackArray = resources.getStringArray(R.array.acknowledgment_list)
         for (ackName in ackArray) {
-            acknowledgementList.add(AcknowledgementList(ackName))
+            acknowledgementList.add(AckFeedbackList(ackName, false, false))
         }
 
-        val ackAdapter = AcknowledgementListAdapter(acknowledgementList)
-        binding.acknoledgementRecyclerview.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.acknoledgementRecyclerview.adapter = ackAdapter
+        acknowledgementListAdapter =
+            AcknowledgementListAdapter(requireContext(), acknowledgementList, this)
+        binding.acknoledgementRecyclerview.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.acknoledgementRecyclerview.adapter = acknowledgementListAdapter
 
     }
 
     private fun setBeforeLeavingRecycler() {
         val beforeLeavingArray = resources.getStringArray(R.array.before_leaving_list)
         for (blName in beforeLeavingArray) {
-            beforeLeavingList.add(AcknowledgementList(blName))
+            beforeLeavingList.add(AckFeedbackList(blName, false, false))
         }
-        val beforeLeavingListAdapter = BeforeLeavingListAdapter(beforeLeavingList)
-        binding.leaveMessageRecyclerview.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        beforeLeavingListAdapter =
+            BeforeLeavingListAdapter(requireContext(), beforeLeavingList, this)
+        binding.leaveMessageRecyclerview.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.leaveMessageRecyclerview.adapter = beforeLeavingListAdapter
+    }
+
+    override fun setAckListChecks(
+        size: Int,
+        ackFeedbackList: ArrayList<AckFeedbackList>
+    ) {
+        for (ackListItem in 0 until this.acknowledgementList.size) {
+            for (checkAckListItem in 0 until ackFeedbackList.size) {
+                if (this.acknowledgementList[ackListItem] == ackFeedbackList[checkAckListItem]) {
+                    this.acknowledgementList[ackListItem].checked =
+                        ackFeedbackList[checkAckListItem].checked
+                }
+            }
+        }
+
+        Timber.d("Check For size: $size")
+    }
+
+    private fun ackListValidate(): Boolean {
+        var isValidate = false
+
+        for (i in 0 until acknowledgementList.size) {
+            when (acknowledgementList[i].checked) {
+                true -> {
+                    isValidate = true
+                    binding.acknowledgementValidationTextview.visibility = View.GONE
+                }
+                false -> {
+                    isValidate = false
+                    binding.acknowledgementValidationTextview.visibility = View.VISIBLE
+                    acknowledgementList[i].setError = true
+                    acknowledgementListAdapter.notifyDataSetChanged()
+                }
+
+            }
+
+        }
+        return isValidate
+    }
+
+    private fun beforeListValidate(): Boolean {
+        var isValidate = false
+        for (i in 0 until beforeLeavingList.size) {
+            if (beforeLeavingList[i].checked) {
+                isValidate = true
+                binding.differentReasonValidationTextview.visibility = View.GONE
+                break
+            }
+            if (beforeLeavingList[beforeLeavingList.size - 1].checked && binding.differentReasonEditText.text?.length == 0) {
+                isValidate = false
+                binding.differentReasonValidationTextview.visibility = View.VISIBLE
+                beforeLeavingList[beforeLeavingList.size - 1].setError = true
+                beforeLeavingListAdapter.notifyDataSetChanged()
+            } else {
+                isValidate = false
+                beforeLeavingList[i].setError = true
+                beforeLeavingListAdapter.notifyDataSetChanged()
+            }
+        }
+        return isValidate
+    }
+
+    override fun setFeebackChecks(size: Int, ackFeedbackList: ArrayList<AckFeedbackList>) {
+
+        for (ackListItem in 0 until this.beforeLeavingList.size) {
+            for (checkAckListItem in 0 until ackFeedbackList.size) {
+                if (this.beforeLeavingList[ackListItem] == ackFeedbackList[checkAckListItem]) {
+                    this.beforeLeavingList[ackListItem].checked =
+                        ackFeedbackList[checkAckListItem].checked
+                }
+            }
+        }
+        Timber.d("Check For size: $size")
+
     }
 
 

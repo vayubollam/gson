@@ -28,6 +28,7 @@ import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
+import suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
@@ -90,6 +91,12 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                                 new Pair<>(AnalyticsUtils.Param.STEPNAME, Constants.ANSWER_SECURITY_QUESTION)
                         );
                         Navigation.findNavController(requireView()).navigate(R.id.action_securityQuestionValidationFragment_to_deleteAccountFragment);
+                    } else if (AccountDeleteNotesFragment.ACCOUNT_DELETE_NOTES_FRAGMENT.equalsIgnoreCase(destination)){
+                        AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.FORMSTEP,
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT_NOTES),
+                                new Pair<>(AnalyticsUtils.Param.STEPNAME, Constants.ANSWER_SECURITY_QUESTION)
+                        );
+                        Navigation.findNavController(requireView()).navigate(R.id.action_securityQuestionValidationFragment_to_accountDeleteNotesFragment);
                     }
                     break;
                 case ERROR:

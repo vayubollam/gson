@@ -126,9 +126,8 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             AnalyticsUtils.logEvent(context,
                 AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT)
             )
-            goBack()
             if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
-                Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToAccountDeleteNotesFragment())
+                Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteNotesFragment.ACCOUNT_DELETE_NOTES_FRAGMENT))
             } else {
                 Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteFragment.DELETE_ACCOUNT_FRAGMENT))
             }
