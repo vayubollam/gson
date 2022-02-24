@@ -74,6 +74,8 @@ public class PersonalInfoViewModel extends ViewModel {
         return email;
     }
     public boolean isDuplicateEmail =  false;
+    private MutableLiveData<Event<Integer>> _callEvent = new MutableLiveData<>();
+    public LiveData<Event<Integer>> callEvent = _callEvent;
 
 
     @SuppressWarnings("unchecked")
@@ -286,8 +288,11 @@ public class PersonalInfoViewModel extends ViewModel {
             Alert alert = new Alert();
             alert.title = emailInputField.isEmpty() ? R.string.profile_personnal_informations_email_empty_alert_title : R.string.profile_personnal_informations_email_invalid_alert_title;
             alert.message = emailInputField.isEmpty() ? R.string.profile_personnal_informations_email_empty_alert_message : R.string.profile_personnal_informations_email_invalid_alert_message;
-            alert.positiveButton = R.string.ok;
+            alert.positiveButton = R.string.profile_get_help_call;
             alert.positiveButtonClick = () -> {
+                if(!emailInputField.isEmpty()){
+                    _callEvent.setValue(new Event<Integer>(R.string.customer_support_number));
+                }
                 emailInputField.setText("");
                 emailInputField.notifyPropertyChanged(BR.text);
             };
