@@ -298,7 +298,7 @@ public class PersonalInfoViewModel extends ViewModel {
             };
             alert.negativeButton = R.string.cancel;
             alert.negativeButtonClick = () -> {
-                emailInputField.setText(profile.getEmail());
+                emailInputField.setShowError(true);
                 emailInputField.notifyPropertyChanged(BR.text);
             };
             profileSharedViewModel.postAlert(alert);
