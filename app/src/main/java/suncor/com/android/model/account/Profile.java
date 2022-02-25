@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import java.text.ParseException;
 
+import suncor.com.android.BuildConfig;
 import suncor.com.android.utilities.DateUtils;
 import suncor.com.android.utilities.Timber;
 
@@ -150,14 +151,13 @@ public class Profile {
     }
     public long getAccountDeleteDaysLeft()  {
         try {
-           return DateUtils.findDateDifference( accountDeleteDateTime, DateUtils.getTodayFormattedDate());
+            int accountDeletionDays = Integer.parseInt(BuildConfig.ACCOUNT_DELETION_PERIOD_IN_DAYS);
+           return accountDeletionDays - DateUtils.findDateDifference( accountDeleteDateTime, DateUtils.getTodayFormattedDate());
         }catch (ParseException ex){
             Timber.e("Error on parse date", ex.getMessage());
         }
         return 0;
     }
-
-
 
 
     @Override
@@ -167,5 +167,11 @@ public class Profile {
         }
         Profile profile = (Profile) obj;
         return email.equals(profile.email) && firstName.equals(profile.firstName) && lastName.equals(profile.lastName);
+    }
+
+    public String getFormattedAddress(){
+        StringBuilder sb = new StringBuilder(streetAddress);
+        sb.append(",").append(city).append(",").append(province).append(",").append(postalCode);
+        return sb.toString();
     }
 }

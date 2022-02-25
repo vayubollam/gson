@@ -24,6 +24,17 @@ public class DateUtils {
         return DateFormat.getDateInstance(DateFormat.LONG).format(date);
     }
 
+    public static String getFormattedDate(String inputDate, String format) {
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = dateFormat.parse(inputDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return DateFormat.getDateInstance(DateFormat.LONG).format(date);
+    }
+
     public static String getFormattedDate(Date inputDate) {
         Locale local = Resources.getSystem().getConfiguration().getLocales().get(0);
         if (local.equals(Locale.CANADA_FRENCH) ||
@@ -60,7 +71,7 @@ public class DateUtils {
         Date date = dateFormat.parse(startDate);
         Date dateD = dateFormat.parse(endDate);
 
-        Long difference_In_Time  = date.getTime() - dateD.getTime();
+        Long difference_In_Time = dateD.getTime() - date.getTime();
 
         long difference_In_Days = ((difference_In_Time
                 / (1000 * 60 * 60 * 24))

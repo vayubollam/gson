@@ -122,6 +122,7 @@ object Constants {
     const val CHANGES_PREFERENCES = "Change Preferences"
     const val UPDATE_ADDRESS = "Update Address"
     const val DELETE_ACCOUNT = "Delete Account"
+    const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
     const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
     const val ANSWER_SECURITY_QUESTION= "Answer security question"
 }

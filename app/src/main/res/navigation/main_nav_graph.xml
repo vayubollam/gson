@@ -279,12 +279,40 @@
             app:launchSingleTop="false"
             app:popExitAnim="@anim/fade_out"/>
 
+        <action
+            android:id="@+id/action_account_details_to_accountDeleteNotesFragment"
+            app:destination="@id/accountDeleteNotesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/deleteAccountFragment"
-        android:name="suncor.com.android.ui.main.profile.account.DeleteAccountFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDeleteFragment"
         android:label="DeleteAccountFragment"
         tools:layout="@layout/fragment_delete_account">
+
+        <action
+            android:id="@+id/action_account_delete_to_accountDeleteSubmitFragment"
+            app:destination="@id/accountDeleteSubmitFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/home_tab" />
+
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/accountDeleteSubmitFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDeleteSubmitFragment"
+        android:label="AccountDeleteSubmitFragment"
+        tools:layout="@layout/fragment_account_delete_submit">
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/accountDeleteNotesFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment"
+        android:label="AccountDeleteNotesFragment"
+        tools:layout="@layout/fragment_account_delete_notes">
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
@@ -501,6 +529,13 @@
         <action
             android:id="@+id/action_securityQuestionValidationFragment_to_deleteAccountFragment"
             app:destination="@id/deleteAccountFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/accountDetailsFragment" />
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_accountDeleteNotesFragment"
+            app:destination="@id/accountDeleteNotesFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"

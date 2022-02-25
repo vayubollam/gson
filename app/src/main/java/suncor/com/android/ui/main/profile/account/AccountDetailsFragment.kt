@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.room.util.StringUtil
 import suncor.com.android.R
 import suncor.com.android.databinding.FragmentAccountDetailsBinding
 import suncor.com.android.mfp.SessionManager
@@ -127,12 +126,15 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             AnalyticsUtils.logEvent(context,
                 AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT)
             )
-            val action: AccountDetailsFragmentDirections.ActionAccountDetailsToSecurityQuestionValidationFragment2 =
-                    AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(DeleteAccountFragment.DELETE_ACCOUNT_FRAGMENT)
-                Navigation.findNavController(requireView()).navigate(action)
+            if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
+                Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteNotesFragment.ACCOUNT_DELETE_NOTES_FRAGMENT))
+            } else {
+                Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteFragment.DELETE_ACCOUNT_FRAGMENT))
+            }
         }
         binding.appBar.setNavigationOnClickListener { v -> goBack() }
     }
+
     private fun accountDeleteText(){
         if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
             var deleteAccountText = String.format(getString(R.string.account_details_delete_alert_title), sessionManager.profile.accountDeleteDaysLeft)
@@ -140,7 +142,6 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             binding.deleteAccountAlertText.visibility = View.VISIBLE
         }
     }
-
 
     override fun onBackPressed() {
         goBack()
