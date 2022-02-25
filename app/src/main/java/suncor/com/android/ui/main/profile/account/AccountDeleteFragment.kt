@@ -21,16 +21,13 @@ import suncor.com.android.model.account.DeleteAccountRequest
 import suncor.com.android.model.account.Profile
 import suncor.com.android.ui.common.Alerts
 import suncor.com.android.ui.common.OnBackPressedListener
-import suncor.com.android.ui.main.AckFeedbackList
 import suncor.com.android.ui.main.common.MainActivityFragment
-import suncor.com.android.ui.main.profile.AcknowledgementListAdapter
-import suncor.com.android.ui.main.profile.BeforeLeavingListAdapter
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher
 import suncor.com.android.utilities.Timber
 import javax.inject.Inject
 
 class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
-    AcknowledgementListAdapter.ValidateDataListner, BeforeLeavingListAdapter.checkReasonListner {
+    AcknowledgementListAdapter.ValidateDataListner, BeforeLeavingListAdapter.ValidateDataListner {
 
     companion object {
         const val DELETE_ACCOUNT_FRAGMENT = "delete_account_fragment"
@@ -73,7 +70,7 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
         binding.startDeletionButton.setOnClickListener { v -> deleteAccountApiCall() }
         binding.phoneNoInput.editText.addTextChangedListener(SuncorPhoneNumberTextWatcher())
         binding.phoneNoInput.editText.imeOptions = EditorInfo.IME_ACTION_DONE
-        binding.phoneNoInput.editText.setOnEditorActionListener { v, actionId, event ->
+        binding.phoneNoInput.editText.setOnEditorActionListener { view, actionId, event ->
             if (actionId === EditorInfo.IME_ACTION_DONE) {
                 hideKeyBoard()
                 return@setOnEditorActionListener true
@@ -110,23 +107,25 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
             binding.phoneNoInput.requestFocus()
             return
         }
+        binding.phoneNoInput.setError(null)
         if(!viewModel!!.isPhoneNumberValid(binding.phoneNoInput.text.toString())){
             binding.phoneNoInput.setError(R.string.profile_personnal_informations_phone_field_invalid_format)
+            binding.phoneNoInput.requestFocus()
             return
         }
-        binding.phoneNoInput.setError(false)
+        binding.phoneNoInput.setError(null)
 
         if (!ackListValidate()) {
-            Timber.d("Did not select all acknowledgement points")
+            Timber.d("All Acknowledgement points did not select.")
             return
         }
         if (!beforeListValidate()) {
-            Timber.d("Did not select reason")
+            Timber.d("Before leaving options did not select reason.")
             return
         }
         binding.acknowledgementValidationTextview.visibility = View.GONE
-        binding.differentReasonEditText.visibility = View.GONE
-        Timber.d("Passed !")
+        binding.differentReasonValidationTextview.visibility = View.GONE
+        Timber.d("Validations Passed !")
 
         var profile: Profile = viewModel!!.getProfile()
         var deleteAccountRequest = DeleteAccountRequest(profile.petroPointsNumber,
@@ -225,27 +224,24 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
 
     private fun beforeListValidate(): Boolean {
         var isValidate = false
+        if (beforeLeavingList[3].checked && binding.differentReasonEditText.text?.isEmpty() == true) {
+            binding.differentReasonValidationTextview.visibility = View.VISIBLE
+            return isValidate
+        }
         for (i in 0 until beforeLeavingList.size) {
             if (beforeLeavingList[i].checked) {
                 isValidate = true
-                binding.differentReasonValidationTextview.visibility = View.GONE
                 break
-            }
-            if (beforeLeavingList[beforeLeavingList.size - 1].checked && binding.differentReasonEditText.text?.length == 0) {
-                isValidate = false
-                binding.differentReasonValidationTextview.visibility = View.VISIBLE
-                beforeLeavingList[beforeLeavingList.size - 1].setError = true
-                beforeLeavingListAdapter.notifyDataSetChanged()
-            } else {
+            } else if(!isValidate){
                 isValidate = false
                 beforeLeavingList[i].setError = true
-                beforeLeavingListAdapter.notifyDataSetChanged()
             }
         }
+        beforeLeavingListAdapter.notifyDataSetChanged()
         return isValidate
     }
 
-    override fun setFeebackChecks(size: Int, ackFeedbackList: ArrayList<AckFeedbackList>) {
+    override fun setFeedbackChecks(size: Int, ackFeedbackList: ArrayList<AckFeedbackList>) {
 
         for (ackListItem in 0 until this.beforeLeavingList.size) {
             for (checkAckListItem in 0 until ackFeedbackList.size) {
@@ -258,6 +254,5 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
         Timber.d("Check For size: $size")
 
     }
-
 
 }

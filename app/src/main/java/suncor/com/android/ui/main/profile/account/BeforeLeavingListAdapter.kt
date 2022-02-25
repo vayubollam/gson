@@ -1,4 +1,4 @@
-package suncor.com.android.ui.main.profile
+package suncor.com.android.ui.main.profile.account
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import suncor.com.android.R
 import suncor.com.android.databinding.DeleteAccountCheckboxItemBinding
-import suncor.com.android.ui.main.AckFeedbackList
 import suncor.com.android.utilities.Timber
 
 
 class BeforeLeavingListAdapter(val context: Context,
                                private val ackFeedbackList: ArrayList<AckFeedbackList>,
-                               var validateDataListner: checkReasonListner
+                               private var validateDataListner: ValidateDataListner
 ) :
     RecyclerView.Adapter<BeforeLeavingListAdapter.BeforeLeavingListHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeforeLeavingListHolder {
@@ -26,33 +25,32 @@ class BeforeLeavingListAdapter(val context: Context,
     }
 
     companion object {
-        lateinit var mValidateDataListner: checkReasonListner
+        lateinit var mValidateDataListner: ValidateDataListner
     }
 
     override fun onBindViewHolder(holder: BeforeLeavingListHolder, position: Int) {
         mValidateDataListner = validateDataListner
 
-        holder.binding.checkAckFeedback.text = ackFeedbackList[holder.adapterPosition].name
+        holder.binding.checkAckFeedback.text = ackFeedbackList[holder.bindingAdapterPosition].name
 
         holder.binding.checkAckFeedback.setOnClickListener { v ->
             holder.binding.checkAckFeedback.buttonDrawable =
                 context.getDrawable(R.drawable.custom_checkbox)
-            ackFeedbackList[holder.adapterPosition].setError = false
+            ackFeedbackList[holder.bindingAdapterPosition].setError = false
             if (holder.binding.checkAckFeedback.isChecked) {
-                ackFeedbackList[holder.adapterPosition].checked = true
-                Timber.d(holder.adapterPosition.toString() + "--" + ackFeedbackList[holder.adapterPosition].name + "--" + ackFeedbackList[holder.adapterPosition].checked)
-                validateDataListner.setFeebackChecks(
+                ackFeedbackList[holder.bindingAdapterPosition].checked = true
+                Timber.d(holder.bindingAdapterPosition.toString() + "--" + ackFeedbackList[holder.bindingAdapterPosition].name + "--" + ackFeedbackList[holder.bindingAdapterPosition].checked)
+                validateDataListner.setFeedbackChecks(
                     ackFeedbackList.size,ackFeedbackList
                 )
             } else {
-                ackFeedbackList[holder.adapterPosition].checked = false
-                Timber.d(holder.adapterPosition.toString() + "--" + ackFeedbackList[holder.adapterPosition].name + "--" + ackFeedbackList[holder.adapterPosition].checked)
+                ackFeedbackList[holder.bindingAdapterPosition].checked = false
+                Timber.d(holder.bindingAdapterPosition.toString() + "--" + ackFeedbackList[holder.bindingAdapterPosition].name + "--" + ackFeedbackList[holder.bindingAdapterPosition].checked)
 
             }
         }
-        //   ackFeedbackList[holder.adapterPosition]==ackFeedbackList[ackFeedbackList.size-1]&&
 
-        if (ackFeedbackList[holder.adapterPosition].setError==true) {
+        if (ackFeedbackList[holder.bindingAdapterPosition].setError) {
             holder.binding.checkAckFeedback.buttonDrawable =
                 context.getDrawable(R.drawable.checkbox_error)
         } else {
@@ -75,7 +73,7 @@ class BeforeLeavingListAdapter(val context: Context,
         return super.getItemViewType(position)
     }
 
-    interface checkReasonListner {
-        fun setFeebackChecks(size: Int, ackFeedbackList: ArrayList<AckFeedbackList>)
+    interface ValidateDataListner {
+        fun setFeedbackChecks(size: Int, ackFeedbackList: ArrayList<AckFeedbackList>)
     }
 }

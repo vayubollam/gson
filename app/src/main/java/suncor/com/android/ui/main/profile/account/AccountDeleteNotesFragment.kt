@@ -15,6 +15,7 @@ import suncor.com.android.model.account.Profile
 import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.main.common.MainActivityFragment
 import suncor.com.android.utilities.AnalyticsUtils
+import suncor.com.android.utilities.DateUtils
 import javax.inject.Inject
 
 class AccountDeleteNotesFragment : MainActivityFragment(), OnBackPressedListener {
@@ -22,14 +23,10 @@ class AccountDeleteNotesFragment : MainActivityFragment(), OnBackPressedListener
     companion object {
         const val ACCOUNT_DELETE_NOTES_FRAGMENT = "account_delete_notes_fragment"
     }
-
     private lateinit var binding: FragmentAccountDeleteNotesBinding
+
     @Inject
     lateinit var sessionManager: SessionManager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -65,11 +62,8 @@ class AccountDeleteNotesFragment : MainActivityFragment(), OnBackPressedListener
     private fun dataMapFromProfile(){
         var profile: Profile = sessionManager!!.profile
         binding.deleteAccountTitle.text = String.format(getString(R.string.account_deletion_notes_title), profile.firstName)
-        binding.deleteAccountBodyDateRequested.text =  String.format(getString(R.string.account_deletion_requested), profile.accountDeleteDateTime, profile.accountDeleteDaysLeft)
-
+        binding.deleteAccountBodyDateRequested.text =  String.format(getString(R.string.account_deletion_requested), DateUtils.getFormattedDate(profile.accountDeleteDateTime), profile.accountDeleteDaysLeft)
     }
-
-
 
     override fun onBackPressed() {
         goBack()
@@ -78,6 +72,5 @@ class AccountDeleteNotesFragment : MainActivityFragment(), OnBackPressedListener
     private fun goBack() {
         Navigation.findNavController(requireView()).popBackStack()
     }
-
 
 }

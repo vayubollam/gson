@@ -24,6 +24,17 @@ public class DateUtils {
         return DateFormat.getDateInstance(DateFormat.LONG).format(date);
     }
 
+    public static String getFormattedDate(String inputDate, String format) {
+        DateFormat dateFormat = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = dateFormat.parse(inputDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return DateFormat.getDateInstance(DateFormat.LONG).format(date);
+    }
+
     public static String getFormattedDate(Date inputDate) {
         Locale local = Resources.getSystem().getConfiguration().getLocales().get(0);
         if (local.equals(Locale.CANADA_FRENCH) ||

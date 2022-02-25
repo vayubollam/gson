@@ -9,7 +9,6 @@ import androidx.navigation.Navigation
 import suncor.com.android.R
 import suncor.com.android.databinding.FragmentAccountDeleteSubmitBinding
 import suncor.com.android.mfp.SessionManager
-import suncor.com.android.model.account.Profile
 import suncor.com.android.ui.common.OnBackPressedListener
 import suncor.com.android.ui.common.cards.CardFormatUtils
 import suncor.com.android.ui.main.common.MainActivityFragment

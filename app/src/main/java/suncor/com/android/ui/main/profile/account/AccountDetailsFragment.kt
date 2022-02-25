@@ -131,10 +131,10 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             } else {
                 Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteFragment.DELETE_ACCOUNT_FRAGMENT))
             }
-
         }
         binding.appBar.setNavigationOnClickListener { v -> goBack() }
     }
+
     private fun accountDeleteText(){
         if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
             var deleteAccountText = String.format(getString(R.string.account_details_delete_alert_title), sessionManager.profile.accountDeleteDaysLeft)
@@ -142,7 +142,6 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             binding.deleteAccountAlertText.visibility = View.VISIBLE
         }
     }
-
 
     override fun onBackPressed() {
         goBack()

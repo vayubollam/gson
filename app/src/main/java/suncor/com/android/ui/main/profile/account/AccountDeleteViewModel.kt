@@ -15,33 +15,32 @@ import javax.inject.Inject
 class AccountDeleteViewModel @Inject constructor(private val sessionManager: SessionManager,
                                                  private val profilesApi: ProfilesApi) : ViewModel(){
 
-    val phoneField =
+    private val phoneField =
         PhoneInputField(R.string.profile_personnal_informations_phone_field_invalid_format)
 
-    public fun getUserName(): String? {
+    fun getUserName(): String? {
         return sessionManager.profile.firstName
     }
 
-    public fun refreshProfile() {
+    fun refreshProfile() {
         sessionManager.profile!!.accountDeleteDateTime = DateUtils.getTodayFormattedDate();
     }
 
-    public fun getProfile(): Profile {
+    fun getProfile(): Profile {
         return sessionManager.profile
     }
 
-    public fun deleteApi(deleteAccountRequest: DeleteAccountRequest): LiveData<Resource<Boolean>> {
+    fun deleteApi(deleteAccountRequest: DeleteAccountRequest): LiveData<Resource<Boolean>> {
         return profilesApi.deleteAccount(deleteAccountRequest);
     }
 
     fun isPhoneNumberValid(text : String) : Boolean{
+        phoneField.text = text
         if (!phoneField.isValid) {
             phoneField.showError = true
             return false
         }
         return true
     }
-
-
 
 }
