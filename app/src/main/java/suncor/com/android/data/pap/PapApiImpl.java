@@ -13,12 +13,14 @@ import com.worklight.wlclient.api.WLResponseListener;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
+import suncor.com.android.model.pap.GetRedeemableFlag;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
@@ -241,6 +243,38 @@ public class PapApiImpl implements PapApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.d("Cancel transaction API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode, String currentCity) {
+        Timber.d("request initiate for fetch transaction details ");
+        MutableLiveData<Resource<GetRedeemableFlag>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/redemptionflag?currentCity=" + currentCity +"&currentProvCode="+ stateCode );
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
+
+            request.send( new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("Redeemable flag fetch success, response:\n" + jsonText);
+                    GetRedeemableFlag redeemableFlag = gson.fromJson(jsonText, GetRedeemableFlag.class);
+                    result.postValue(Resource.success(redeemableFlag));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Redeemable flag fetch API failed, " + wlFailResponse.toString());
                     Timber.e(wlFailResponse.toString());
                     result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                 }

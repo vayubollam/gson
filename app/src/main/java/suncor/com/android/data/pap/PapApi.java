@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
+import suncor.com.android.model.pap.GetRedeemableFlag;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
@@ -20,4 +21,5 @@ public interface PapApi {
     LiveData<Resource<PayResponse>> authorizePaymentByWallet(PayByWalletRequest request, LatLng userLocation);
     LiveData<Resource<Transaction>> getTransactionDetails(String transactionId, boolean isPartnerTransactionId);
     LiveData<Resource<Boolean>> cancelTransaction(String transactionId);
+    LiveData<Resource<GetRedeemableFlag>> getRedeemableFlag(String stateCode, String currentCity);
 }
