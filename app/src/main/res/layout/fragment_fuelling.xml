@@ -167,7 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            app:visibleGone="@{isLoading}"
+           android:visibility="gone"
             tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatTextView

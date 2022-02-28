@@ -321,6 +321,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         requiredFields.add(binding.cityInput);
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
+        requiredFields.add(binding.securityQuestionInput);
+        requiredFields.add(binding.securityAnswerInput);
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
         binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());

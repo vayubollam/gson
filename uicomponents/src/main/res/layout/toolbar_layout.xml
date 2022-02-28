@@ -52,15 +52,17 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/collapsed_title"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50sp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="52dp"
-                    android:layout_marginRight="52dp"
-                    android:ellipsize="end"
-                    android:lines="1"
+                    android:gravity="center"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="16dp"
+                    android:autoSizeStepGranularity="1dp"
+                    android:maxLines="2"
                     app:autoSizeMaxTextSize="22sp"
                     app:autoSizeMinTextSize="18sp"
-                    app:autoSizeTextType="uniform" />
+                    app:autoSizeTextType="uniform"
+                    style="TextAppearance.AppCompat.Subhead"/>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/right_button"

@@ -463,6 +463,8 @@
     <string name="profile_security_question_continue">Continuer</string>
     <string name="profile_security_question_checking_answer">Vérification de la réponse…</string>
     <string name="profile_security_question_wrong_answer_alert_title">Mauvaise réponse</string>
+    <string name="enrollment_secuirty_question_error">La question de sécurité est requise.</string>
+    <string name="enrollment_secuirty_answer_error">La résponse à la question de sécurité est requise.</string>
     <string name="msg_001_dialog_cancel">Annuler</string>
     <string name="msg_001_dialog_try_again">Essayez de nouveau</string>
     <string name="profile_uodate_account_toast">Les changements ont été sauvegardés.</string>

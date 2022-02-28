@@ -75,7 +75,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static suncor.com.android.utilities.Constants.*;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
-        FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
+        FuelLimitDropDownAdapter.FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
@@ -381,7 +381,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         isLoading.set(false);
                         handleAuthorizationFail(result.message);
                     } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                        isLoading.set(false);
+                       // isLoading.set(false);
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                                 new Pair<>(AnalyticsUtils.Param.paymentMethod, CREDIT_CARD),
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
@@ -507,7 +507,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 isLoading.set(false);
                 handleAuthorizationFail(result.message);
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                isLoading.set(false);
+              //  isLoading.set(false);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentPreauthorize,
                         new Pair<>(AnalyticsUtils.Param.paymentMethod, GPAY),
                         new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
