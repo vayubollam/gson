@@ -110,7 +110,7 @@ public class FuellingFragment extends MainActivityFragment {
                                     binding.cancelLayout.setVisibility(View.GONE);
                                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                                 } else if (result.status == Resource.Status.SUCCESS) {
-                                    //goBack();
+                                    goBack();
                                 }
                             });
                         },  PAY_AT_PUMP).show();

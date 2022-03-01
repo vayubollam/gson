@@ -20,6 +20,7 @@ import static suncor.com.android.utilities.Constants.SCROLL_DEPTH_THRESHOLD;
 import static suncor.com.android.utilities.Constants.SIGNUP_SUCCESS;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -177,12 +178,16 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                             new Pair<>(FORM_NAME,  formName));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
-                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                    dialog.setNegativeButton(R.string.cancel, (d, w) -> {
+                        d.dismiss();
+                    });
+                    dialog.setPositiveButton(R.string.profile_get_help_call, (d, w) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
                                 new Pair<>(ALERT_TITLE, getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
                                 new Pair<>(ALERT_SELECTION, getString(R.string.ok)),
                                 new Pair<>(FORM_NAME,  formName)
                         );
+                        callCostumerSupport(getString(R.string.customer_support_number));
                         binding.emailInput.setText("");
                         d.dismiss();
                         focusOnItem(binding.emailInput);
@@ -328,6 +333,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         requiredFields.add(binding.cityInput);
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
+        requiredFields.add(binding.securityQuestionInput);
+        requiredFields.add(binding.securityAnswerInput);
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
         binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
