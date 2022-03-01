@@ -52,7 +52,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStart, new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTART, new Pair<>(AnalyticsUtils.Param.FORMNAME, "Pay at Pump"));
     }
 
     @Nullable
@@ -130,7 +130,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                         new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.pap_not_available_header)+"("+getString(R.string.pap_not_available_description)+")"),
                                         new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                                        new Pair<>(AnalyticsUtils.Param.formName, "Pay at Pump"));
+                                        new Pair<>(AnalyticsUtils.Param.FORMNAME, "Pay at Pump"));
                                 goBack();
                             }, "Pay at Pump").show();
 

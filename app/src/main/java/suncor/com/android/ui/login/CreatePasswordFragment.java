@@ -26,6 +26,15 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.LOGIN_FORCE_NEW_PASSWORD;
+
 public class CreatePasswordFragment extends BaseFragment {
 
     private static final String EMAIL_EXTRA = "email";
@@ -46,6 +55,7 @@ public class CreatePasswordFragment extends BaseFragment {
     }
 
     public CreatePasswordFragment() {
+        //do nothing
     }
 
     @Override
@@ -66,27 +76,27 @@ public class CreatePasswordFragment extends BaseFragment {
                 }
             } else if (r.status == Resource.Status.ERROR) {
                 if (ErrorCodes.ERR_PASSWORD_DUPLICATED.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), "error_log",
-                            new Pair<>("errorMessage",getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
-                            new Pair<>("formName","Login Force New Password")
+                    AnalyticsUtils.logEvent(getContext(), ERROR_LOG,
+                            new Pair<>(ERROR_MESSAGE,getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
+                            new Pair<>(FORM_NAME,LOGIN_FORCE_NEW_PASSWORD)
                     );
 
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT, new Pair<>(ALERT_TITLE, getString(R.string.login_create_password_duplicated_alert_title)));
                     alertBuilder.setTitle(R.string.login_create_password_duplicated_alert_title);
                     alertBuilder.setMessage(R.string.login_create_password_duplicated_alert_message);
                     alertBuilder.setPositiveButton(R.string.ok, ((dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
-                                new Pair<>("alertSelection",getString(R.string.ok)),
-                                new Pair<>("formName","Login Force New Password")
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                                new Pair<>(ALERT_TITLE, getString(R.string.login_create_password_duplicated_alert_title)+"("+getString(R.string.login_create_password_duplicated_alert_message)+")"),
+                                new Pair<>(ALERT_SELECTION,getString(R.string.ok)),
+                                new Pair<>(FORM_NAME, LOGIN_FORCE_NEW_PASSWORD)
                         );
                         binding.passwordInput.setText("");
                         dialog.dismiss();
                     }));
                     alertBuilder.show();
                 } else {
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity(), "Login Force New Password");
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity(), LOGIN_FORCE_NEW_PASSWORD);
                     dialog.setOnDismissListener(dialogInterface -> getActivity().finish());
                     dialog.show();
                 }

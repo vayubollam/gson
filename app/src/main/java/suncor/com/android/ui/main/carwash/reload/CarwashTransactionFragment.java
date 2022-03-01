@@ -83,6 +83,7 @@ import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.utilities.Constants.PUMP_PRE_AUTHORIZED;
 
 public class CarwashTransactionFragment extends MainActivityFragment implements ExpandableViewListener,
         PaymentDropDownCallbacks, CardReloadValuesDropDownAdapter.CardReloadValuesCallbacks, CardsDropDownAdapter.CardCallbacks {
@@ -184,7 +185,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
                 paymentDropDownAdapter.setSelectedPos(userPaymentId);
                 checkForGooglePayOptions();
-                Alerts.prepareGeneralErrorDialog(getContext(),"Pump PreAuthorized").show();
+                Alerts.prepareGeneralErrorDialog(getContext(),PUMP_PRE_AUTHORIZED).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 List<PaymentListItem> payments = result.data;
                 paymentDropDownAdapter.addPayments(payments);
@@ -239,7 +240,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 if (result.status == Resource.Status.LOADING) {
                     //hideKeyBoard();
                 } else if (result.status == Resource.Status.ERROR) {
-                    Alerts.prepareGeneralErrorDialog(getContext(), "Pump PreAuthorized").show();
+                    Alerts.prepareGeneralErrorDialog(getContext(), PUMP_PRE_AUTHORIZED).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     viewModel.setTransactionReloadData(result.data);
                     viewModel.setLastSelectedValue(cardType.equals("SP") ? "90" : "5");
@@ -308,8 +309,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     public void onPaymentChanged(String userPaymentId) {
         this.userPaymentId = userPaymentId;
 
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.formStep, new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"),
-                new Pair<>(AnalyticsUtils.Param.formSelection,userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY) ? PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY : "credit_card"));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, new Pair<>(AnalyticsUtils.Param.FORMNAME, PUMP_PRE_AUTHORIZED),
+                new Pair<>(AnalyticsUtils.Param.FORMSELECTION,userPaymentId.equals(PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY) ? PaymentDropDownAdapter.PAYMENT_TYPE_GOOGLE_PAY : "credit_card"));
     }
 
 
@@ -331,7 +332,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
     }
 
     private void handleConfirmAndAuthorizedClick(){
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, getString(R.string.confirm_and_authorized).toLowerCase()));
         if(userPaymentId == null) {
             // select payment type error
             return;
@@ -346,7 +347,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
 
     public void requestGooglePaymentTransaction() {
         try {
-            //todo change value
+            //change value
             double preAuthPrices = formatter.parse("1").doubleValue();
             PaymentDataRequest request = viewModel.createGooglePayInitiationRequest(preAuthPrices,
                     BuildConfig.GOOGLE_PAY_MERCHANT_GATEWAY, papData.getP97TenantID());
@@ -413,7 +414,7 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                     super.onAuthenticationError(errorCode, errString);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
                             new Pair<>(AnalyticsUtils.Param.errorMessage, "Biometrics fails"),
-                            new Pair<>(AnalyticsUtils.Param.formName, "Pump PreAuthorized"));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Pump PreAuthorized"));
                 }
 
                 @Override

@@ -38,6 +38,9 @@ import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.utilities.Constants.ACTIVE_SESSION;
+import static suncor.com.android.utilities.Constants.AUTHORIZED;
+import static suncor.com.android.utilities.Constants.NEW;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
     private FragmentActionButtonMenuBinding binding;
@@ -58,7 +61,9 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
     ViewModelFactory viewModelFactory;
 
     @Inject
-    public ActionMenuFragment(){};
+    public ActionMenuFragment(){
+        //do nothing
+    };
 
     @Override
     public void onStart() {
@@ -144,12 +149,12 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 activeSession = result.data.activeSession;
 
                 binding.actionFuelUpButton.setText(activeSession ?
-                        result.data.status.equalsIgnoreCase("New")
-                                || result.data.status.equalsIgnoreCase("Authorized") ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
+                        result.data.status.equalsIgnoreCase(NEW)
+                                || result.data.status.equalsIgnoreCase(AUTHORIZED) ? R.string.fuelling_about_to_begin : R.string.action_fuelling : R.string.action_fuel_up);
 
                 AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, activeSession ?
-                        result.data.status.equalsIgnoreCase("New")
-                                || result.data.status.equalsIgnoreCase("Authorized")? getString(R.string.fuelling_about_to_begin) : getString(R.string.action_fuelling) : getString(R.string.action_fuel_up)));
+                        result.data.status.equalsIgnoreCase(NEW)
+                                || result.data.status.equalsIgnoreCase(AUTHORIZED)? getString(R.string.fuelling_about_to_begin) : getString(R.string.action_fuelling) : getString(R.string.action_fuel_up)));
 
                 binding.actionFuelUpButton.setLoading(activeSession);
             }
@@ -210,6 +215,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
 
             @Override
             public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
+                //do nothing
             }
 
             @Override
@@ -223,15 +229,15 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         homeViewModel.getActiveSession().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
-                Alerts.prepareGeneralErrorDialog(getContext(), "Active Session" ).show();
+                Alerts.prepareGeneralErrorDialog(getContext(), ACTIVE_SESSION ).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 if (result.data.activeSession && result.data.status != null) {
-                    if (result.data.status.equalsIgnoreCase("New") || result.data.status.equalsIgnoreCase("Authorized")) {
+                    if (result.data.status.equalsIgnoreCase(NEW) || result.data.status.equalsIgnoreCase(AUTHORIZED)) {
                         updateFuellingSession(true, getString(R.string.fuelling_about_to_begin));
                     } else if (result.data.status.equals("BeginFueling")) {
                         updateFuellingSession(true, getString(R.string.fueling_up));
                     } else {
-                        //todo handle processing and session end state
+                        //handle processing and session end state
                         updateFuellingSession(true, getString(R.string.fueling_up));
                     }
                 } else {

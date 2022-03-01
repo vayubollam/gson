@@ -3,7 +3,7 @@
     "name": "free-gas-and-more",
     "points": "A compter de 1 000",
     "title": "L'essence gratuit et plus",
-    "subtitle": "Utilisez vos points pour le gaz, des lavages d'auto ou des articles de dépanneur.",
+    "subtitle": "Utilisez vos points pour le gaz, des lavages d'auto ou d es articles de dépanneur.",
     "description": "Il vous suffit de vous rendre au dépanneur et de présenter votre carte Petro-Points au comptoir et nous nous occuperons du reste.",
     "largeImage": "member_large_cards_dollarsoff",
     "smallImage": "member_small_cards_dollarsoff"
@@ -22,7 +22,7 @@
     "points": "A compter de 10 000",
     "title": "Économie sur l'essence en prime",
     "subtitle": "Économisez 5 ¢ ou 10 ¢ le litre sur 200 L d'essence.",
-    "description": "Vous pouvez vous procurer une nouvelle carte Économie sur l'essence en prime au dépanneur. Il vous suffit de présenter votre carte Petro-Points et votre carte Économie sur l'essence en prime au comptoir et nous nous occuperons du reste. Une fois les litres épuisés sur votre carte, rendez-vous à <a href=\"http://petro-canada.ca\">petro-canada.ca</a>, ouvrez une session dans votre compte Petro-Points et sous Mes cartes, vous serez en mesure de la recharger.\n\n",
+    "description": "Vous pouvez vous procurer une nouvelle carte Économie sur l'essence en prime au dépanneur. Il vous suffit de présenter votre carte Petro-Points et votre carte Économie sur l'essence en prime au comptoir et nous nous occuperons du reste. Une fois les litres épuisés sur votre carte, rendez-vous à <a href=\"https://www.petro-canada.ca/fr/personnel\">petro-canada.ca</a>, ouvrez une session dans votre compte Petro-Points et sous Mes cartes, vous serez en mesure de la recharger.\n\n",
     "largeImage": "member_large_cards_fsr",
     "smallImage": "member_small_cards_fsr"
   },
@@ -31,7 +31,7 @@
     "points": "A compter de 10 000",
     "title": "Voyages",
     "subtitle": "Échangez vos Petro‑Points contre des voyages.",
-    "description": "Échangez vos points contre des voyages quand vous réservez vos prochaines vacances sur notre site <a href=\"https://www.petro-canada.ca/api/petrocanadaaccounts/RedirectToItravel?ds=14FD20E1EE1F4F419E53D59F9ED0E037\">Web exclusif aux membres</a> ou directement à  <a href=\"http://itravel2000.com\">itravel2000.com</a>.",
+    "description": "Échangez vos points contre des voyages quand vous réservez vos prochaines vacances sur notre site <a href=\"https://www.petro-canada.ca/fr/personnel/ouvrir-une-session-itravel2000\">Web exclusif aux membres</a> ou directement à  <a href=\"https://www.itravel2000.com/fr\">itravel2000.com</a>.",
     "largeImage": "member_large_cards_travel",
     "smallImage": "member_small_cards_travel"
   },

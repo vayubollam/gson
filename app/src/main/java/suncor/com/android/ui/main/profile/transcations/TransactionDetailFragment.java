@@ -69,7 +69,7 @@ public class TransactionDetailFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.viewReceiptBtn.setOnClickListener((v) -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });

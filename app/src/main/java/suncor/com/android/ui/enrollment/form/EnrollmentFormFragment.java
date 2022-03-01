@@ -1,6 +1,7 @@
 package suncor.com.android.ui.enrollment.form;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -53,6 +54,23 @@ import suncor.com.android.uicomponents.SuncorTextInputLayout;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
+import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_CARD;
+import static suncor.com.android.utilities.Constants.ACTIVATE_SUCCESS;
+import static suncor.com.android.utilities.Constants.ADDRESS;
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.FORM_START;
+import static suncor.com.android.utilities.Constants.FORM_STEP;
+import static suncor.com.android.utilities.Constants.PERSONAL_INFORMATION;
+import static suncor.com.android.utilities.Constants.SCROLL;
+import static suncor.com.android.utilities.Constants.SCROLL_DEPTH_THRESHOLD;
+import static suncor.com.android.utilities.Constants.SIGNUP_SUCCESS;
+
 public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
 
     @Inject
@@ -70,6 +88,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
 
     public EnrollmentFormFragment() {
+        //do nothing
     }
 
 
@@ -89,7 +108,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         boolean joinWithCard = viewModel.getCardStatus() != null;
         if (joinWithCard) {
             screenName = "activate-i-have-a-card";
-            formName = "Activate Petro-Points Card";
+            formName = ACTIVATE_PETRO_POINTS_CARD;
         } else {
             screenName = "sign-up-i-dont-have-a-card";
             formName = "Join Petro-Points";
@@ -103,9 +122,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
         AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
         if (viewModel.getCardStatus() == null) {
-            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", formName));
+            AnalyticsUtils.logEvent(getContext(), FORM_START, new Pair<>(FORM_NAME, formName));
         } else {
-            AnalyticsUtils.logEvent(getContext(), "form_step", new Pair<>("formName", formName), new Pair<>("stepName", "Personal Information"));
+            AnalyticsUtils.logEvent(getContext(), FORM_STEP, new Pair<>(FORM_NAME, formName), new Pair<>("stepName", "Personal Information"));
         }
         
         //enrollments api call result
@@ -114,9 +133,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 //Log success events
                 String screenName;
                 if (viewModel.getCardStatus() != null) {
-                    screenName = "activate-success";
+                    screenName = ACTIVATE_SUCCESS;
                 } else {
-                    screenName = "sign-up-success";
+                    screenName = SIGNUP_SUCCESS;
                 }
                 AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
 
@@ -131,9 +150,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 binding.emailAddress.setText(viewModel.getEmailInputField().getText());
                 AnalyticsUtils.logEvent(
                         getContext(),
-                        "form_step",
+                        FORM_STEP,
                         new Pair<>("stepName", "Complete Signup"),
-                        new Pair<>("formName", formName),
+                        new Pair<>(FORM_NAME, formName),
                         new Pair<>("formSelection", optionsChecked)
                 );
                 AnalyticsUtils.logEvent(getContext(), "sign_up");
@@ -142,17 +161,21 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>("formName",  formName));
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert", new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
-                            new Pair<>("formName",  formName));
+                    AnalyticsUtils.logEvent(getContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>(FORM_NAME,  formName));
+                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT, new Pair<>(ALERT_TITLE, getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
+                            new Pair<>(FORM_NAME,  formName));
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
-                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
-                                new Pair<>("alertSelection", getString(R.string.ok)),
-                                new Pair<>("formName",  formName)
+                    dialog.setNegativeButton(R.string.cancel, (d, w) -> {
+                        d.dismiss();
+                    });
+                    dialog.setPositiveButton(R.string.profile_get_help_call, (d, w) -> {
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                                new Pair<>(ALERT_TITLE, getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
+                                new Pair<>(ALERT_SELECTION, getString(R.string.ok)),
+                                new Pair<>(FORM_NAME,  formName)
                         );
+                        callCostumerSupport(getString(R.string.customer_support_number));
                         binding.emailInput.setText("");
                         d.dismiss();
                         focusOnItem(binding.emailInput);
@@ -172,7 +195,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
                     dialog.show();
                 }else {
-                    Alerts.prepareGeneralErrorDialog(getActivity(), "Activate Petro-Points Card").show();
+                    Alerts.prepareGeneralErrorDialog(getActivity(), ACTIVATE_PETRO_POINTS_CARD).show();
                 }
             }
         });
@@ -231,26 +254,26 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             }
         });
         viewModel.showBiometricAlert.observe(this, booleanEvent -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
-                    new Pair<>("formName",  "Activate Petro-Points Card")
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT,
+                    new Pair<>(ALERT_TITLE, getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
+                    new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
             );
             new AlertDialog.Builder(getContext())
                     .setTitle(R.string.sign_enable_fp_title)
                     .setMessage(R.string.sign_enable_fb_message)
                     .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
-                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_possitive_button)),
-                                new Pair<>("formName",  "Activate Petro-Points Card")
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                                new Pair<>(ALERT_TITLE, getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
+                                new Pair<>(ALERT_SELECTION, getString(R.string.sign_enable_fb_possitive_button)),
+                                new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
                         );
                         viewModel.proccedToJoin(true);
                     })
                     .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
-                                new Pair<>("alertSelection", getString(R.string.sign_enable_fb_negative_button)),
-                                new Pair<>("formName",  "Activate Petro-Points Card")
+                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                                new Pair<>(ALERT_TITLE, getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
+                                new Pair<>(ALERT_SELECTION, getString(R.string.sign_enable_fb_negative_button)),
+                                new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
                         );
                         viewModel.proccedToJoin(false);
                     })
@@ -262,8 +285,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
-        AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(R.string.enrollment_invalid_email_title)),
-                new Pair<>("formName",  "Activate Petro-Points Card"));
+        AnalyticsUtils.logEvent(getContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, getString(R.string.enrollment_invalid_email_title)),
+                new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD));
 
         dialog.setTitle(getString(R.string.enrollment_email_already_exists_title))
                 .setMessage(getString(R.string.enrollment_email_already_exists_description))
@@ -298,6 +321,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         requiredFields.add(binding.cityInput);
         requiredFields.add(binding.provinceInput);
         requiredFields.add(binding.postalcodeInput);
+        requiredFields.add(binding.securityQuestionInput);
+        requiredFields.add(binding.securityAnswerInput);
         binding.postalcodeInput.getEditText().addTextChangedListener(new PostalCodeFormattingTextWatcher());
 
         binding.phoneInput.getEditText().addTextChangedListener(new SuncorPhoneNumberTextWatcher());
@@ -363,19 +388,19 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         int percentage = (int) scrollPosition;
                         if (percentage > 20 && !scroll20) {
                             scroll20 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "20"));
+                            AnalyticsUtils.logEvent(getContext(), SCROLL, new Pair<>(SCROLL_DEPTH_THRESHOLD, "20"));
                         } else if (percentage > 40 && !scroll40) {
                             scroll40 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "40"));
+                            AnalyticsUtils.logEvent(getContext(), SCROLL, new Pair<>(SCROLL_DEPTH_THRESHOLD, "40"));
                         } else if (percentage > 60 && !scroll60) {
                             scroll60 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "60"));
+                            AnalyticsUtils.logEvent(getContext(), SCROLL, new Pair<>(SCROLL_DEPTH_THRESHOLD, "60"));
                         } else if (percentage > 80 && !scroll80) {
                             scroll80 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "80"));
+                            AnalyticsUtils.logEvent(getContext(), SCROLL, new Pair<>(SCROLL_DEPTH_THRESHOLD, "80"));
                         } else if (percentage > 100 && !scroll100) {
                             scroll100 = true;
-                            AnalyticsUtils.logEvent(getContext(), "scroll", new Pair<>("scrollDepthThreshold", "100"));
+                            AnalyticsUtils.logEvent(getContext(), SCROLL, new Pair<>(SCROLL_DEPTH_THRESHOLD, "100"));
                         }
                     }
 
@@ -401,25 +426,25 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             viewModel.hideAutoCompleteLayout();
         } else if (viewModel.isOneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
-                    new Pair<>("formName",  "Activate Petro-Points Card")
+            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT,
+                    new Pair<>(ALERT_TITLE, getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
+                    new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
             );
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
             alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
-                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
-                        new Pair<>("alertSelection", getString(R.string.ok)),
-                        new Pair<>("formName",  "Activate Petro-Points Card")
+                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                        new Pair<>(ALERT_TITLE, getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
+                        new Pair<>(ALERT_SELECTION, getString(R.string.ok)),
+                        new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
                 );
                 getActivity().finish();
             });
             alertDialog.setNegativeButton(R.string.cancel, (d, w) -> {
-                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                        new Pair<>("alertTitle", getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
-                        new Pair<>("alertSelection", getString(R.string.cancel)),
-                        new Pair<>("formName",  "Activate Petro-Points Card")
+                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                        new Pair<>(ALERT_TITLE, getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
+                        new Pair<>(ALERT_SELECTION, getString(R.string.cancel)),
+                        new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
                 );
             });
             alertDialog.show();
@@ -485,16 +510,16 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             if (view == binding.firstNameInput) {
                 AnalyticsUtils.logEvent(
                         getContext(),
-                        AnalyticsUtils.Event.formStep,
-                        new Pair<>(AnalyticsUtils.Param.formName, formName),
-                        new Pair<>(AnalyticsUtils.Param.stepName, "Personal Information")
+                        AnalyticsUtils.Event.FORMSTEP,
+                        new Pair<>(AnalyticsUtils.Param.FORMNAME, formName),
+                        new Pair<>(AnalyticsUtils.Param.STEPNAME, PERSONAL_INFORMATION)
                 );
             } else if (view == binding.streetAddressInput) {
                 AnalyticsUtils.logEvent(
                         getContext(),
-                        AnalyticsUtils.Event.formStep,
-                        new Pair<>(AnalyticsUtils.Param.formName, formName),
-                        new Pair<>(AnalyticsUtils.Param.stepName, "Address")
+                        AnalyticsUtils.Event.FORMSTEP,
+                        new Pair<>(AnalyticsUtils.Param.FORMNAME, formName),
+                        new Pair<>(AnalyticsUtils.Param.STEPNAME, ADDRESS)
                 );
             }
         }

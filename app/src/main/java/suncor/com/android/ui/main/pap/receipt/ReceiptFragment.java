@@ -88,7 +88,7 @@ public class ReceiptFragment extends MainActivityFragment {
         observeTransactionData(transactionId);
 
         binding.viewReceiptBtn.setOnClickListener((v) -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });
@@ -123,8 +123,10 @@ public class ReceiptFragment extends MainActivityFragment {
                 if (sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 }
+                binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
+                binding.appBar.setOnClickListener((view)-> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 Transaction transaction = result.data;
@@ -165,7 +167,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 /*
                  * Alert dialog in order to let the user know that their operation could not be completed due to CLPE down.
                  */
-                if(transaction.getLoyaltyPointsMessages() == null){
+                if (transaction.getLoyaltyPointsMessages() == null) {
 
                     AlertDialog.Builder dialog = createAlert(R.string.clpe_down_prompt, R.string.clpe_down_prompt_heading);
                     dialog.setCancelable(true);
@@ -173,9 +175,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 }
 
 
-
                 binding.shareButton.setOnClickListener(v -> {
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
                     File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
 
                     // TODO: Create error handling
@@ -208,16 +209,17 @@ public class ReceiptFragment extends MainActivityFragment {
 
 
                 // Member locking /Partial and No redemption check
-                if(Integer.parseInt(preAuthRedeemPoints) > 0 && burnedPoints<Integer.parseInt(preAuthRedeemPoints) && transaction.getBasePoints() > 0){
-                    if(transaction.getPointsRedeemed() == 0){
-                       showNoRedemptionPopup();
-                    }else{
+                if (Integer.parseInt(preAuthRedeemPoints) > 0 && burnedPoints < Integer.parseInt(preAuthRedeemPoints) && transaction.getBasePoints() > 0) {
+                    if (transaction.getPointsRedeemed() == 0) {
+                        showNoRedemptionPopup();
+                    } else {
                         showPartialRedemptionPopup();
                     }
                 }
             }
         });
     }
+
 
     private void goBack() {
         NavController navController = Navigation.findNavController(requireView());
@@ -261,7 +263,7 @@ public class ReceiptFragment extends MainActivityFragment {
             } else {
                 // There was some problem, log or handle the error code.
                 // TODO: Handle error when launching in app review
-                @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) Objects.requireNonNull(task.getException())).getErrorCode();
+                @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
 
                 if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
                 }
