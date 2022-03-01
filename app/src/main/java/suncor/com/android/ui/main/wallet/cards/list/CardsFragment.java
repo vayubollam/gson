@@ -19,8 +19,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ConcatAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -46,8 +52,13 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
     private FragmentCardsBinding binding;
     private CardsViewModel viewModel;
     private MainViewModel mainViewModel;
+    private CardsHeaderAdapter headerCardAdapter;
+    private CardsListTitleAdapter petroCanadaCardsTitleAdapter;
     private CardsListAdapter petroCanadaCardsAdapter;
+    private CardsListTitleAdapter partnerCardsTitleAdapter;
     private CardsListAdapter partnerCardsAdapter;
+    private ConcatAdapter concatAdapter;
+
 
 
     @Override
@@ -63,6 +74,20 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardsViewModel.class);
         petroCanadaCardsAdapter = new CardsListAdapter(this::cardClick);
         partnerCardsAdapter = new CardsListAdapter(this::cardClick);
+        headerCardAdapter = new CardsHeaderAdapter(() -> {
+            cardClick(viewModel.getPetroPointsCard().getValue());
+            return null;
+        });
+        partnerCardsTitleAdapter = new CardsListTitleAdapter();
+        petroCanadaCardsTitleAdapter = new CardsListTitleAdapter();
+        concatAdapter = new ConcatAdapter(
+                new ConcatAdapter.Config.Builder().setIsolateViewTypes(false).build(),
+                headerCardAdapter,
+                petroCanadaCardsTitleAdapter,
+                petroCanadaCardsAdapter,
+                partnerCardsTitleAdapter,
+                partnerCardsAdapter
+        );
 
         viewModel.viewState.observe(this, (result) -> {
             if (result != CardsViewModel.ViewState.REFRESHING) {
@@ -74,7 +99,10 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
 
             if (result != CardsViewModel.ViewState.REFRESHING && result != CardsViewModel.ViewState.LOADING) {
 
-                binding.setPptsCard(new PetroPointsCard(getContext(), viewModel.getPetroPointsCard().getValue()));
+                PetroPointsCard petroPointsCard = new PetroPointsCard(getContext(), viewModel.getPetroPointsCard().getValue());
+                binding.setPptsCard(petroPointsCard);
+                List<PetroPointsCard> headerList = new ArrayList<>(Arrays.asList(petroPointsCard));
+                headerCardAdapter.setList(headerList);
 
                 if (result != CardsViewModel.ViewState.FAILED) {
                     if (mainViewModel.isLinkedToAccount()) {
@@ -88,17 +116,27 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
                         action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
                         Navigation.findNavController(getView()).navigate(action);
                     } else {
-                        ArrayList<CardListItem> petroCanadaCards = new ArrayList<>();
-                        for (CardDetail cardDetail : viewModel.getPetroCanadaCards().getValue()) {
-                            petroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                        ArrayList<CardListItem> displayPetroCanadaCards = new ArrayList<>();
+                        List<CardDetail> petroCanadaCards = viewModel.getPetroCanadaCards().getValue();
+                        if (petroCanadaCards != null && !petroCanadaCards.isEmpty()) {
+                            for (CardDetail cardDetail : petroCanadaCards) {
+                                displayPetroCanadaCards.add(new CardListItem(getContext(), cardDetail));
+                            }
+                            List<String> titleList = Arrays.asList(getString(R.string.cards_fragment_petrocanada_cards_header));
+                            petroCanadaCardsTitleAdapter.setTitleList(titleList);
+                            petroCanadaCardsAdapter.setCards(displayPetroCanadaCards);
                         }
-                        petroCanadaCardsAdapter.setCards(petroCanadaCards);
 
-                        ArrayList<CardListItem> partnerCards = new ArrayList<>();
-                        for (CardDetail cardDetail : viewModel.getPartnerCards().getValue()) {
-                            partnerCards.add(new CardListItem(getContext(), cardDetail));
+                        ArrayList<CardListItem> displayPartnerCards = new ArrayList<>();
+                        List<CardDetail> partnerCards = viewModel.getPartnerCards().getValue();
+                        if (partnerCards != null && !partnerCards.isEmpty()) {
+                            for (CardDetail cardDetail : partnerCards) {
+                                displayPartnerCards.add(new CardListItem(getContext(), cardDetail));
+                            }
+                            List<String> titleList = Arrays.asList(getString(R.string.cards_fragment_partner_cards_header));
+                            partnerCardsTitleAdapter.setTitleList(titleList);
+                            partnerCardsAdapter.setCards(displayPartnerCards);
                         }
-                        partnerCardsAdapter.setCards(partnerCards);
                     }
                 }
 
@@ -162,25 +200,26 @@ public class CardsFragment extends MainActivityFragment implements SwipeRefreshL
             //binding.cardsLayout.setMinHeight(binding.scrollView.getHeight() - binding.appBar.getHeight());
         });
 
-        CardItemDecorator listDecorator = new CardItemDecorator(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding));
+        CardItemDecorator2 listDecorator = new CardItemDecorator2(-getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_padding),
+                getResources().getDimensionPixelSize(R.dimen.petro_canada_cards_divider_padding));
 
-        binding.petroCanadaCardsList.setAdapter(petroCanadaCardsAdapter);
+        binding.petroCanadaCardsList.setAdapter(concatAdapter);
         binding.petroCanadaCardsList.addItemDecoration(listDecorator);
-        binding.petroCanadaCardsList.setOutlineProvider(new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View view, Outline outline) {
-                Drawable drawable = getActivity().getDrawable(R.drawable.petro_canada_card_background);
-                drawable.setBounds(new Rect(0, 0, view.getWidth(), view.getHeight()));
-                drawable.getOutline(outline);
-            }
-        });
+//        binding.petroCanadaCardsList.setOutlineProvider(new ViewOutlineProvider() {
+//            @Override
+//            public void getOutline(View view, Outline outline) {
+//                Drawable drawable = getActivity().getDrawable(R.drawable.petro_canada_card_background);
+//                drawable.setBounds(new Rect(0, 0, view.getWidth(), view.getHeight()));
+//                drawable.getOutline(outline);
+//            }
+//        });
 
-        binding.partnerCardsList.setAdapter(partnerCardsAdapter);
-        binding.partnerCardsList.addItemDecoration(listDecorator);
+//        binding.partnerCardsList.setAdapter(concatAdapter);
+//        binding.partnerCardsList.addItemDecoration(listDecorator);
 
         binding.addCardButton.setOnClickListener((v) -> navigateToAddCard());
 
-        binding.petroPointsCard.setOnClickListener((v) -> cardClick(viewModel.getPetroPointsCard().getValue()));
+        //binding.petroPointsCard.setOnClickListener((v) -> cardClick(viewModel.getPetroPointsCard().getValue()));
 
         return binding.getRoot();
     }

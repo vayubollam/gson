@@ -11,13 +11,13 @@ import java.text.SimpleDateFormat
 ext {
     def today = new Date()
 
-    def year = String.valueOf((new SimpleDateFormat("yy").format(today) as int))
+    def yearMonDay = new SimpleDateFormat("yyyyMMdd")
+    yearMonDay.setTimeZone(TimeZone.getTimeZone("EST"))
 
-    def day = String.format("%03d", (new SimpleDateFormat("D").format(today) as int))
+    def hours = new SimpleDateFormat("HH")
+    hours.setTimeZone(TimeZone.getTimeZone("EST"))
 
-    def time = new SimpleDateFormat("HHmm").format(today)
-
-    generatedVersionCode = (year + day + time) as int
+    generatedVersionCode = (yearMonDay.format(today) + hours.format(today)) as int
 
     println("Generated versionCode: $generatedVersionCode")
 }

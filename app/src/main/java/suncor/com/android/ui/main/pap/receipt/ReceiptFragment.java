@@ -21,13 +21,11 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.review.model.ReviewErrorCode;
-import com.google.android.play.core.review.testing.FakeReviewManager;
 import com.google.android.play.core.tasks.RuntimeExecutionException;
 import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -117,9 +115,11 @@ public class ReceiptFragment extends MainActivityFragment {
                 isLoading.set(false);
                 if (sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                } 
+                }
+                binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
+                binding.appBar.setOnClickListener((view)-> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
 

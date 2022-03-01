@@ -44,7 +44,7 @@ ext {
     materialLibraryVersion = "1.1.0-alpha07"
     googlePlacesVersion = "2.5.0"
     gsonVersion = "2.8.5"
-    mfpVersion = "8.0.2020090912"
+    mfpVersion = "8.0.2021061706"
     workManagerVersion = "1.0.0"
     daggerVersion = "2.17"
     firebaseVersion = "17.5.1"

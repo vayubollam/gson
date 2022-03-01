@@ -68,11 +68,11 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
 
-      # - name: Build and analyze
-      #  env:
-      #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #  SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      #run: ./gradlew clean && ./gradlew build sonarqube --info
+    #- name: Build and analyze
+    #  env:
+    #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #    SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    #  run: ./gradlew clean && ./gradlew build sonarqube --info
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -88,7 +88,7 @@ jobs:
        path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
        
     - name: Upload to Perfecto public cloud
-      if: ${{ env.BUILD_ENV == 'QACarwash' || env.BUILD_ENV == 'QAScrum' || env.BUILD_ENV == 'DevCarwash' || env.BUILD_ENV == 'Prod' || env.BUILD_ENV == 'UATTestflight' || env.BUILD_ENV == 'DevSus' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
+      if: ${{ env.BUILD_ENV == 'QACarwash' || env.BUILD_ENV == 'QAScrum' || env.BUILD_ENV == 'DevScrum' || env.BUILD_ENV == 'DevCarwash' || env.BUILD_ENV == 'Prod' || env.BUILD_ENV == 'UATTestflight' || env.BUILD_ENV == 'DevSus' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
       env:
         PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
       run: |
@@ -120,6 +120,12 @@ jobs:
             echo APPCNTR_USERNAME=APPCENTRE_DEVSCRUM_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_DEVSCRUM_PASSWORD >> $GITHUB_ENV
             echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a997fdcf36434291ad2e55168666d916/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
+            ;;
+          DevScrum)
+            echo APPCNTR_URL=https://scrumdev.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_DEVSCRUM_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_DEVSCRUM_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/f706e2a8d74a454fa3274fd261c4dca7/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           QAScrum)
             echo APPCNTR_URL=https://scrumqa.rfmp-mfp.com >> $GITHUB_ENV

@@ -31,89 +31,87 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cards_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 app:visibleGone="@{vm.viewState != ViewState.LOADING}">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/petro_points_card"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:foreground="@drawable/petro_points_card_ripple"
-                    android:src="@drawable/petro_points_card"
-                    app:layout_constraintDimensionRatio="1.58"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                    android:id="@+id/petro_points_card"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_marginStart="16dp"-->
+<!--                    android:layout_marginTop="16dp"-->
+<!--                    android:layout_marginEnd="16dp"-->
+<!--                    android:foreground="@drawable/petro_points_card_ripple"-->
+<!--                    android:src="@drawable/petro_points_card"-->
+<!--                    app:layout_constraintDimensionRatio="1.58"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:fontFamily="@font/gibson_semibold"
-                    android:shadowColor="@color/black_80"
-                    android:shadowDx="2"
-                    android:shadowDy="1"
-                    android:shadowRadius="8"
-                    android:text="@string/cards_fragment_you_have"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@id/petro_points_balance"
-                    app:layout_constraintEnd_toEndOf="@id/petro_points_balance"
-                    app:layout_constraintStart_toStartOf="@id/petro_points_balance" />
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginBottom="6dp"-->
+<!--                    android:fontFamily="@font/gibson_semibold"-->
+<!--                    android:shadowColor="@color/black_80"-->
+<!--                    android:shadowDx="2"-->
+<!--                    android:shadowDy="1"-->
+<!--                    android:shadowRadius="8"-->
+<!--                    android:text="@string/cards_fragment_you_have"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="18sp"-->
+<!--                    app:layout_constraintBottom_toTopOf="@id/petro_points_balance"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/petro_points_balance"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/petro_points_balance" />-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/petro_points_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:shadowColor="@color/black_80"
-                    android:shadowDx="2"
-                    android:shadowDy="1"
-                    android:shadowRadius="8"
-                    android:text="@{pptsCard.balance}"
-                    android:textColor="@color/white"
-                    android:textSize="36sp"
-                    app:fontFamily="@font/gibson_semibold"
-                    app:layout_constraintBottom_toBottomOf="@id/petro_points_card"
-                    app:layout_constraintEnd_toEndOf="@id/petro_points_card"
-                    app:layout_constraintStart_toStartOf="@id/petro_points_card"
-                    app:layout_constraintTop_toTopOf="@id/petro_points_card"
-                    tools:text="100,500 points" />
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/petro_points_balance"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:shadowColor="@color/black_80"-->
+<!--                    android:shadowDx="2"-->
+<!--                    android:shadowDy="1"-->
+<!--                    android:shadowRadius="8"-->
+<!--                    android:text="@{pptsCard.balance}"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="36sp"-->
+<!--                    app:fontFamily="@font/gibson_semibold"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/petro_points_card"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/petro_points_card"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/petro_points_card"-->
+<!--                    app:layout_constraintTop_toTopOf="@id/petro_points_card"-->
+<!--                    tools:text="100,500 points" />-->
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/petro_points_balance_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:fontFamily="@font/gibson_semibold"
-                    android:shadowColor="@color/black_80"
-                    android:shadowDx="2"
-                    android:shadowDy="1"
-                    android:shadowRadius="8"
-                    android:text="@{pptsCard.monetaryBalance}"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="@id/petro_points_balance"
-                    app:layout_constraintStart_toStartOf="@id/petro_points_balance"
-                    app:layout_constraintTop_toBottomOf="@id/petro_points_balance"
-                    tools:text="or $100 off" />
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/petro_points_balance_value"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="6dp"-->
+<!--                    android:fontFamily="@font/gibson_semibold"-->
+<!--                    android:shadowColor="@color/black_80"-->
+<!--                    android:shadowDx="2"-->
+<!--                    android:shadowDy="1"-->
+<!--                    android:shadowRadius="8"-->
+<!--                    android:text="@{pptsCard.monetaryBalance}"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="18sp"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/petro_points_balance"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/petro_points_balance"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/petro_points_balance"-->
+<!--                    tools:text="or $100 off" />-->
 
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/petro_canada_card_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
+                    android:layout_height="0dp"
                     android:paddingStart="16dp"
-                    android:paddingTop="20dp"
+                    android:paddingTop="8dp"
                     android:paddingEnd="16dp"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@id/update_time_text"
-                    app:layout_constraintTop_toBottomOf="@id/petro_points_card"
-                    app:layout_constraintVertical_chainStyle="spread_inside"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:visibleGone="@{vm.viewState != ViewState.FAILED}">
 
                     <LinearLayout
@@ -122,18 +120,16 @@
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="vertical"
-                        android:visibility="gone"
-                        app:visibleGone="@{!vm.petroCanadaCards.isEmpty() || !vm.partnerCards.isEmpty()}"
                         tools:visibility="visible">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/petro_canada_cards_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/cards_fragment_petrocanada_cards_header"
-                            android:textAppearance="@style/Body"
-                            app:fontFamily="@font/gibson_semibold"
-                            app:visibleGone="@{!vm.petroCanadaCards.isEmpty()}" />
+<!--                        <androidx.appcompat.widget.AppCompatTextView-->
+<!--                            android:id="@+id/petro_canada_cards_title"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="@string/cards_fragment_petrocanada_cards_header"-->
+<!--                            android:textAppearance="@style/Body"-->
+<!--                            app:fontFamily="@font/gibson_semibold"-->
+<!--                            app:visibleGone="@{!vm.petroCanadaCards.isEmpty()}" />-->
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/petro_canada_cards_list"
@@ -141,19 +137,22 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:elevation="2dp"
+                            tools:itemCount="1"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:visibleGone="@{!vm.petroCanadaCards.isEmpty()}"
                             tools:listitem="@layout/petro_canada_small_card_item" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
+                        <!--<androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/partner_cards_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
                             android:layout_marginTop="20dp"
                             android:text="@string/cards_fragment_partner_cards_header"
                             android:textAppearance="@style/Body"
                             app:fontFamily="@font/gibson_semibold"
-                            app:visibleGone="@{!vm.partnerCards.isEmpty()}" />
+                            app:visibleGone="@{!vm.partnerCards.isEmpty()}"
+
+                            />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/partner_cards_list"
@@ -162,7 +161,7 @@
                             android:layout_marginTop="8dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:visibleGone="@{!vm.partnerCards.isEmpty()}"
-                            tools:listitem="@layout/petro_canada_small_card_item" />
+                            tools:listitem="@layout/petro_canada_small_card_item" />-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -171,7 +170,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         app:visibleGone="@{vm.petroCanadaCards.isEmpty() &amp;&amp; vm.partnerCards.isEmpty()}"
-                        tools:visibility="gone">
+                        tools:visibility="visible">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
@@ -198,13 +197,13 @@
                             android:layout_marginTop="16dp"
                             android:text="@string/cards_fragment_add_card_button" />
                     </LinearLayout>
-                </FrameLayout>
+                </LinearLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/petro_points_card"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:visibleGone="@{vm.viewState == ViewState.FAILED}"
                     tools:visibility="gone">
 
@@ -218,15 +217,16 @@
                     android:id="@+id/update_time_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="32dp"
+                    android:gravity="center_vertical"
+                    tools:text ="last updated"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     android:text="@{vm.dateOfUpdate != null ? @string/cards_fragment_update_date(TimeUtils.formatDate(vm.dateOfUpdate), TimeUtils.formatTime(vm.dateOfUpdate)) : ``}"
                     android:textAppearance="@style/Caption1"
                     android:textColor="@color/black_40"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/petro_canada_card_layout"
                     app:visibleGone="@{vm.viewState != ViewState.FAILED}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
