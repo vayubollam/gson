@@ -72,7 +72,7 @@ public class FavouritesAdapter extends RecyclerSwipeAdapter<FavouritesAdapter.Fa
         } else if (stationItem.getDistanceDuration() == null) {
             LatLng dest = new LatLng(station.getAddress().getLatitude(), station.getAddress().getLongitude());
             distanceApi.enqueuJob(userLocation, dest)
-                    .observe(fragment, result -> { //TODO choose right lifecycle owner
+                    .observe(fragment, result -> { //choose right lifecycle owner
                         if (result.status == Resource.Status.SUCCESS) {
                             stationItem.setDistanceDuration(result.data);
                         } else if (result.status == Resource.Status.ERROR) {

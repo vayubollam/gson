@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.profile.info;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -148,6 +149,13 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
             }
         });
+
+        viewModel.callEvent.observe(this, event -> {
+            Integer customerCareStringRes = event.getContentIfNotHandled();
+            if (customerCareStringRes != null) {
+                callCostumerSupport(getString(customerCareStringRes));
+            }
+        });
     }
 
     @Override
@@ -230,5 +238,14 @@ public class PersonalInfoFragment extends MainActivityFragment {
             }
                 binding.scrollView.smoothScrollTo(0, scrollPosition);
         }, 400);
+    }
+
+
+    private void callCostumerSupport(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
+
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", phoneNumber));
     }
 }

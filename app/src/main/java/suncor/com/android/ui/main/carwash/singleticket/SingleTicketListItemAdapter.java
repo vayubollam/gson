@@ -20,6 +20,9 @@ import suncor.com.android.databinding.SingleTicketListitemBinding;
 import suncor.com.android.model.petrocanadaproduct.PetroCanadaProduct;
 import suncor.com.android.utilities.Consumer;
 
+import static suncor.com.android.utilities.Constants.ALPHA;
+import static suncor.com.android.utilities.Constants.TRANS_Y;
+
 public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTicketListItemAdapter.SingleTicketViewHolder> {
     private List<PetroCanadaProduct> singleTicketList;
     private int petroPoints;
@@ -100,10 +103,10 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
         });
         if (shouldHideTheRest) {
             itemsExpanded = false;
-            ObjectAnimator animationY = ObjectAnimator.ofFloat(holder.itemView, "translationY", -getItemHeight() * position);
-            ObjectAnimator animationAlpha = ObjectAnimator.ofFloat(holder.itemView, "alpha", 1f, 0f);
-            ObjectAnimator animationValueRBAlpha = ObjectAnimator.ofFloat(holder.binding.valueRb, "alpha", 1f, 0f);
-            ObjectAnimator animationTxtSelectionAlpha = ObjectAnimator.ofFloat(holder.binding.txtSelectedCardGift, "alpha", 0f, 1f);
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(holder.itemView, TRANS_Y, -getItemHeight() * position);
+            ObjectAnimator animationAlpha = ObjectAnimator.ofFloat(holder.itemView, ALPHA, 1f, 0f);
+            ObjectAnimator animationValueRBAlpha = ObjectAnimator.ofFloat(holder.binding.valueRb, ALPHA, 1f, 0f);
+            ObjectAnimator animationTxtSelectionAlpha = ObjectAnimator.ofFloat(holder.binding.txtSelectedCardGift, ALPHA, 0f, 1f);
             holder.binding.txtSelectedCardGift.setText(context.getResources().getQuantityString(R.plurals.single_ticket_receipt_quantity,
                     singleTicketList.get(selectedItem).getUnits(),  singleTicketList.get(selectedItem).getUnits()));
             AnimatorSet animatorSet = new AnimatorSet();
@@ -121,10 +124,10 @@ public class SingleTicketListItemAdapter extends RecyclerView.Adapter<SingleTick
         }
         if (shouldShowValues) {
             itemsExpanded = true;
-            ObjectAnimator animationY = ObjectAnimator.ofFloat(holder.itemView, "translationY", 0f);
-            ObjectAnimator animationItemViewAlpha = ObjectAnimator.ofFloat(holder.itemView, "alpha", 0f, 1f);
-            ObjectAnimator animationValueRBAlpha = ObjectAnimator.ofFloat(holder.binding.valueRb, "alpha", 0f, 1f);
-            ObjectAnimator animationTxtSelectionAlpha = ObjectAnimator.ofFloat(holder.binding.txtSelectedCardGift, "alpha", 1f, 0f);
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(holder.itemView, TRANS_Y, 0f);
+            ObjectAnimator animationItemViewAlpha = ObjectAnimator.ofFloat(holder.itemView, ALPHA, 0f, 1f);
+            ObjectAnimator animationValueRBAlpha = ObjectAnimator.ofFloat(holder.binding.valueRb, ALPHA, 0f, 1f);
+            ObjectAnimator animationTxtSelectionAlpha = ObjectAnimator.ofFloat(holder.binding.txtSelectedCardGift, ALPHA, 1f, 0f);
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.setDuration(ANIM_DURATION / 2);
             animatorSet.play(animationY).with(animationItemViewAlpha).with(animationValueRBAlpha).with(animationTxtSelectionAlpha);

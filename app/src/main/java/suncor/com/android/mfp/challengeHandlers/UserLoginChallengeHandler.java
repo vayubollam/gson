@@ -76,12 +76,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
                 switch (errorCode) {
                     case ErrorCodes.ERR_ACCOUNT_BAD_PASSWORD:
-                        if (pubWebResponse.has(REMAINING_ATTEMPTS)) {
-                            int remainingAttempts = pubWebResponse.getInt(REMAINING_ATTEMPTS);
-                            listener.onLoginFailed(SigninResponse.wrongCredentials(remainingAttempts));
-                        } else {
-                            listener.onLoginFailed(SigninResponse.wrongCredentials());
-                        }
+                        listener.onLoginFailed(SigninResponse.wrongCredentials());
                         cancel();
                         break;
                     case ErrorCodes.ERR_ACCOUNT_SOFT_LOCK:
@@ -116,8 +111,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                     }
                 }
                 
-                if (jsonObject.has("errorCode")) {
-                    String errorCode = jsonObject.get("errorCode").toString();
+                if (jsonObject.has(ERROR_CODE)) {
+                    String errorCode = jsonObject.get(ERROR_CODE).toString();
                     String messageCode = jsonObject.get("messageId").toString();
                     if (errorCode.equals("SUNCOR013")  && messageCode.isEmpty()) {
                         listener.onLoginFailed(SigninResponse.unexpectedFailure());
@@ -141,7 +136,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         super.handleFailure(error);
         Timber.d("Handle failure");
         Timber.v(error.toString());
-        AnalyticsUtils.userID = null;
+        AnalyticsUtils.setUserId(null);
         isChallenged = false;
         listener.onLoginFailed(SigninResponse.generalFailure());
     }
@@ -160,7 +155,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             String profileStr = identity.getJSONObject("user").getString("attributes");
             profile = gson.fromJson(profileStr, Profile.class);
 
-            AnalyticsUtils.userID = profile.getRetailId();
+            AnalyticsUtils.setUserId(profile.getRetailId());
             AnalyticsUtils.setUserProperty(application.getApplicationContext(), profile.getRetailId(), profile.isRbcLinked());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -197,8 +192,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    //TODO handle failures related to connection issue
-                    AnalyticsUtils.userID = null;
+                    //handle failures related to connection issue
+                    AnalyticsUtils.setUserId(null);
                     Timber.d("Login Preemptive Failure, error: " + wlFailResponse.toString());
                     if (listener != null && !WLErrorCode.CHALLENGE_HANDLING_CANCELED.getDescription().equals(wlFailResponse.getErrorMsg())) {
                         listener.onLoginFailed(SigninResponse.generalFailure());
@@ -243,7 +238,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         WLAuthorizationManager.getInstance().logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
-                AnalyticsUtils.userID = null;
+                AnalyticsUtils.setUserId(null);
                 fingerPrintManager.deactivateAutoLogin();
                 listener.onSuccess();
             }

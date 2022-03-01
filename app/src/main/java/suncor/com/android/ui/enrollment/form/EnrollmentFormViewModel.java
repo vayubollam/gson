@@ -54,8 +54,8 @@ public class EnrollmentFormViewModel extends ViewModel {
     private InputField lastNameField = new InputField(R.string.enrollment_last_name_error);
     private EmailInputField emailInputField = new EmailInputField(R.string.enrollment_email_empty_error, R.string.enrollment_email_format_error, R.string.enrollment_email_restricted_error);
     private PasswordInputField passwordField = new PasswordInputField(R.string.enrollment_password_empty_error);
-    private InputField securityQuestionField = new InputField();
-    private InputField securityAnswerField = new InputField();
+    private InputField securityQuestionField = new InputField(R.string.enrollment_secuirty_question_error);
+    private InputField securityAnswerField = new InputField(R.string.enrollment_secuirty_answer_error);
     private StreetAddressInputField streetAddressField = new StreetAddressInputField(R.string.enrollment_street_address_error, R.string.enrollment_street_format_error);
     private CityInputField cityField = new CityInputField(R.string.enrollment_city_error, R.string.enrollment_city_format_error);
     private InputField provinceField = new InputField(R.string.enrollment_province_error);
@@ -87,6 +87,8 @@ public class EnrollmentFormViewModel extends ViewModel {
         requiredFields.add(cityField);
         requiredFields.add(provinceField);
         requiredFields.add(postalCodeField);
+        requiredFields.add(securityQuestionField);
+        requiredFields.add(securityAnswerField);
         this.fingerPrintManager = fingerPrintManager;
 
         LiveData<Resource<EnrollmentPointsAndHours>> joinApiData = Transformations.switchMap(join, (event) -> {
@@ -107,7 +109,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                         emailOffersField.get(),
                         smsOffersField.get(),
                         selectedQuestion != null ? selectedQuestion.getId() : null,
-                        securityAnswerField != null ? securityAnswerField.getText().toString().trim() : ""
+                        (securityAnswerField != null && securityAnswerField.getText() != null ) ? securityAnswerField.getText().trim() : ""
                 );
 
                 return enrollmentsApi.registerAccount(account);
@@ -198,7 +200,7 @@ public class EnrollmentFormViewModel extends ViewModel {
                 provinceField.notifyPropertyChanged(BR.text);
                 showAutocompleteLayout.setValue(false);
             } else {
-                //TODO handle error
+                //handle error
                 showAutocompleteLayout.setValue(false);
             }
         });

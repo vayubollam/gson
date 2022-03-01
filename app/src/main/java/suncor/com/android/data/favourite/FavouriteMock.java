@@ -14,6 +14,8 @@ import androidx.lifecycle.MutableLiveData;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
 
+import static suncor.com.android.utilities.CommonUtils.getMockResponse;
+
 public class FavouriteMock implements FavouriteRepository {
 
     private final static ArrayList<Station> FAVOURITES = new ArrayList<>();
@@ -26,7 +28,7 @@ public class FavouriteMock implements FavouriteRepository {
 
     @Override
     public void observeSessionChanges() {
-
+        //do nothing
     }
 
     @Override
@@ -112,217 +114,7 @@ public class FavouriteMock implements FavouriteRepository {
     }
 
     private ArrayList<Station> mockFavourites() {
-        String json = "[\n" +
-                "  {\n" +
-                "    \"amenities\": [\n" +
-                "      \"electricChargingStation\",\n" +
-                "      \"lottery\",\n" +
-                "      \"ultra94\",\n" +
-                "      \"diesel\",\n" +
-                "      \"bankMachine\",\n" +
-                "      \"open24Hours\",\n" +
-                "      \"convenienceStore\"\n" +
-                "    ],\n" +
-                "    \"hours\": [\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"address\": {\n" +
-                "      \"subdivision\": \"Ontario\",\n" +
-                "      \"phone\": \"4163912903\",\n" +
-                "      \"countryRegion\": \"Canada\",\n" +
-                "      \"postalCode\": \"V8C1V6\",\n" +
-                "      \"latitude\": 43.736993,\n" +
-                "      \"addressLine\": \"1095 Don Mills Road test 4351\",\n" +
-                "      \"crossStreet\": \"LAWRENCE\",\n" +
-                "      \"primaryCity\": \"York1\",\n" +
-                "      \"longitude\": -79.343357\n" +
-                "    },\n" +
-                "    \"id\": 182\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"amenities\": [\n" +
-                "      \"lottery\",\n" +
-                "      \"ultra94\",\n" +
-                "      \"diesel\",\n" +
-                "      \"bankMachine\",\n" +
-                "      \"open24Hours\",\n" +
-                "      \"convenienceStore\"\n" +
-                "    ],\n" +
-                "    \"hours\": [\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"address\": {\n" +
-                "      \"subdivision\": \"Ontario\",\n" +
-                "      \"phone\": \"4167404027\",\n" +
-                "      \"countryRegion\": \"Canada\",\n" +
-                "      \"postalCode\": \"V8C1V6\",\n" +
-                "      \"latitude\": 43.757013,\n" +
-                "      \"addressLine\": \"3900 Jane Street\",\n" +
-                "      \"crossStreet\": \"FINCH\",\n" +
-                "      \"primaryCity\": \"North York\",\n" +
-                "      \"longitude\": -79.517663\n" +
-                "    },\n" +
-                "    \"id\": 194\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"amenities\": [\n" +
-                "      \"electricChargingStation\",\n" +
-                "      \"lottery\",\n" +
-                "      \"ultra94\",\n" +
-                "      \"diesel\",\n" +
-                "      \"open24Hours\",\n" +
-                "      \"convenienceStore\"\n" +
-                "    ],\n" +
-                "    \"hours\": [\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"2400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"address\": {\n" +
-                "      \"subdivision\": \"Ontario\",\n" +
-                "      \"phone\": \"4162983974\",\n" +
-                "      \"countryRegion\": \"Canada\",\n" +
-                "      \"postalCode\": \"V8C1V6\",\n" +
-                "      \"latitude\": 43.823675,\n" +
-                "      \"addressLine\": \"4575 Steeles Avenue East\",\n" +
-                "      \"crossStreet\": \"KENNEDY\",\n" +
-                "      \"primaryCity\": \"Scarborough\",\n" +
-                "      \"longitude\": -79.307007\n" +
-                "    },\n" +
-                "    \"id\": 445\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"amenities\": [\n" +
-                "      \"electricChargingStation\",\n" +
-                "      \"lottery\",\n" +
-                "      \"ultra94\",\n" +
-                "      \"diesel\",\n" +
-                "      \"open24Hours\",\n" +
-                "      \"convenienceStore\"\n" +
-                "    ],\n" +
-                "    \"hours\": [\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"close\": \"1400\",\n" +
-                "        \"open\": \"0000\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"address\": {\n" +
-                "      \"subdivision\": \"Ontario\",\n" +
-                "      \"phone\": \"4162983974\",\n" +
-                "      \"countryRegion\": \"Canada\",\n" +
-                "      \"postalCode\": \"V8C1V6\",\n" +
-                "      \"latitude\": 43.823675,\n" +
-                "      \"addressLine\": \"4575 Steeles Avenue East\",\n" +
-                "      \"crossStreet\": \"KENNEDY\",\n" +
-                "      \"primaryCity\": \"Scarborough\",\n" +
-                "      \"longitude\": -79.307007\n" +
-                "    },\n" +
-                "    \"id\": 445\n" +
-                "  }\n" +
-                "]";
+        String json = getMockResponse(null, "favouritesApiResponse.json");
 
         try {
             JSONArray jsonArray = new JSONArray(json);

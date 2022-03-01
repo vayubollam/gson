@@ -29,7 +29,7 @@ object GooglePassesResourceDefination {
                 .setId(objectId).setClassId(classId).setState("active")
                // .setAccountId(loyalityData.barcodeDisplay)
                 .setBarcode(Barcode().setType(loyalityData.barcodeType).setValue(loyalityData.barcode))
-                //todo uncomment for update the balance
+                //uncomment for update the balance
               //  .setLoyaltyPoints(LoyaltyPoints().setBalance(LoyaltyPointsBalance().setString("105,154 " +
               //          "\n\n DOLLARS OFF  \n  $105 ")))
                 .setInfoModuleData(InfoModuleData().setLabelValueRows(object : ArrayList<LabelValueRow?>() {

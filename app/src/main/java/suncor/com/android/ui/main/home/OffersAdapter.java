@@ -26,6 +26,7 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
+import static suncor.com.android.utilities.Constants.*;
 
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
@@ -40,7 +41,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
                     activity.getDrawable(R.drawable.banner_8_signin_summer),
                     new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
-                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                 "1|"+activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
@@ -49,7 +50,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.startActivity(new Intent(activity, EnrollmentActivity.class));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
-                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                        AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                 "1|"+activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
@@ -68,7 +69,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
                             activity.getNavController().navigate(R.id.action_to_TutorialFragment);
 
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
@@ -93,7 +94,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             {
                                 activity.getNavController().navigate(R.id.rewards_tab);
                             }
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
@@ -109,7 +110,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_4_button),
                         () -> {
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "3":"4") +"|"+activity.getString(R.string.offers_banner_4_text),
                                     activity.getString(R.string.offers_banner_4_text),
                                     activity.getString(R.string.offers_banner_4_text),
@@ -129,22 +130,22 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_5_button),
                         () -> {
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.selectContent,
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
                                     (isSignedIn? "4":"5") +"|"+activity.getString(R.string.offers_banner_5_text),
                                     activity.getString(R.string.offers_banner_5_text),
                                     activity.getString(R.string.offers_banner_5_text),
                                     (isSignedIn? "4":"5")
                             );
-                            AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert",
-                                    new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")")
+                            AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT,
+                                    new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")")
                             );
                             new AlertDialog.Builder(activity)
                                     .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
                                     .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
                                     .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
-                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert_interaction",
-                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
-                                                new Pair<>("alertSelection",activity.getString(R.string.offers_leaving_app_alert_button))
+                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT_INTERACTION,
+                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
+                                                new Pair<>(ALERT_SELECTION,activity.getString(R.string.offers_leaving_app_alert_button))
                                         );
                                         String url = activity.getString(R.string.rbc_url);
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -154,9 +155,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                         AnalyticsUtils.logEvent(activity, "intersite", new Pair<>("intersiteURL", url));
                                     })
                                     .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), "alert_interaction",
-                                                new Pair<>("alertTitle", activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
-                                                new Pair<>("alertSelection",activity.getString(R.string.cancel))
+                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT_INTERACTION,
+                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
+                                                new Pair<>(ALERT_SELECTION,activity.getString(R.string.cancel))
                                         );
                                     })
                                     .show();

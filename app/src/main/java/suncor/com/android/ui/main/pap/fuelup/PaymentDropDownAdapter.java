@@ -239,7 +239,7 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
             binding.container.setSelected(selectedPos == getAdapterPosition());
 
             binding.container.setOnClickListener(v -> {
-                AnalyticsUtils.logEvent(mContext, AnalyticsUtils.Event.buttonTap,
+                AnalyticsUtils.logEvent(mContext, AnalyticsUtils.Event.BUTTONTAP,
                         new Pair<>(AnalyticsUtils.Param.buttonText, mContext.getString(R.string.add_new_payment).toLowerCase()));
                 AnalyticsUtils.setCurrentScreenName((Activity) mContext, "pay-at-pump-add-credit-card");
                 Navigation.findNavController((Activity) mContext, R.id.nav_host_fragment).navigate(R.id.action_fuel_up_to_addPaymentFragment);

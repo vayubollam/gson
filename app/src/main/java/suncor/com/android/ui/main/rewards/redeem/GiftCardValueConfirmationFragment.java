@@ -69,7 +69,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         animFromBottom.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                //Do nothing
             }
 
             @Override
@@ -81,7 +81,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                //Do nothing
             }
         });
 
@@ -122,7 +122,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     } else {
                         AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
                                 new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)),
-                                new Pair<>(AnalyticsUtils.Param.formName, "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"));
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"));
                         Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card").show();
                     }
                     break;
