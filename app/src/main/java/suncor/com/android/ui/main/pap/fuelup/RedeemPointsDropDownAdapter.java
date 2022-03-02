@@ -145,7 +145,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 return String.format("%s %s %s", 0, "$", off);
             } else {
-                return String.format("%s %s %s", "$", 0, off);
+                return String.format("%s%s %s", "$", 0, off);
             }
         }
         DecimalFormat df;
@@ -157,7 +157,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
             return String.format("%s %s %s", df.format(amt), "$", off);
         } else {
-            return String.format("%s %s %s", "$", df.format(amt), off);
+            return String.format("%s%s %s", "$", df.format(amt), off);
         }
     }
 
