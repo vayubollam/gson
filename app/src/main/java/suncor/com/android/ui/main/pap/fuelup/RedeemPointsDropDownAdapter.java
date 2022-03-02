@@ -238,8 +238,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         if(preAuthValue == null){
             preAuthValue = defaultPreAuthValue;
         }
-   //     preAuthValue = replaceChars(preAuthValue);
-        preAuthValue = "110";
+        preAuthValue = replaceChars(preAuthValue);
+    //    preAuthValue = "110";
         double selectedFuelValue = numberInstance.parse(preAuthValue).doubleValue();
         if ((selectedFuelValue * 1000) < petroPoints) {
             DecimalFormat df = new DecimalFormat("###.#");
