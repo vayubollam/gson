@@ -134,6 +134,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
+                    binding.transactionTotal.setVisibility(View.GONE);
                 } else {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
