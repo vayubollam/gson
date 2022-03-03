@@ -1,5 +1,16 @@
 package suncor.com.android.ui.main.pap.fuelling;
 
+import static suncor.com.android.utilities.Constants.AUTHORIZED;
+import static suncor.com.android.utilities.Constants.CANCELED;
+import static suncor.com.android.utilities.Constants.CANCELLED;
+import static suncor.com.android.utilities.Constants.NEW;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_FUELING_ALMOST_COMPLETE;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_FUELING_BEGIN;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_FUELING_BEGUN;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_FUELING_COMPLETE;
+import static suncor.com.android.utilities.Constants.PAY_AT_PUMP;
+import static suncor.com.android.utilities.Constants.SOMETHING_WRONG;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,11 +40,8 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
-
-import static suncor.com.android.utilities.Constants.*;
 
 public class FuellingFragment extends MainActivityFragment {
 
@@ -73,6 +80,9 @@ public class FuellingFragment extends MainActivityFragment {
         super.onViewCreated(view, savedInstanceState);
 
         pumpNumber = FuellingFragmentArgs.fromBundle(getArguments()).getPumpNumber();
+        preAuthRedeemPoints = FuellingFragmentArgs.fromBundle(getArguments()).getPreAuthRedeemPoints();
+        availablePoints = FuellingFragmentArgs.fromBundle(getArguments()).getAvailablePoints();
+
         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-fuelling-authorizing");
         binding.pumpAuthorizedText.setText(getString(R.string.pump_authorized, pumpNumber));
         binding.pumpNumberText.setText(pumpNumber);

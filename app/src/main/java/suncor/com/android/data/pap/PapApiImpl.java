@@ -13,7 +13,6 @@ import com.worklight.wlclient.api.WLResponseListener;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
 
 import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
@@ -23,8 +22,8 @@ import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.GetRedeemableFlag;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
-import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.PayByWalletRequest;
+import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.transaction.CancelTransaction;
 import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.utilities.Timber;
@@ -260,7 +259,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<GetRedeemableFlag>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/redemptionflag?currentCity=" + currentCity +"&currentProvCode="+ "AB" );
+            URI adapterPath = new URI("/adapters/suncor/v1/rfmp-secure/redemptionflag?currentCity=" + currentCity +"&currentProvCode="+ stateCode );
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {

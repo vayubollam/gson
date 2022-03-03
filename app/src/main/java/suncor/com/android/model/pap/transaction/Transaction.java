@@ -259,11 +259,11 @@ public class Transaction {
             double bonusPoints = 0;
             if (loyaltyPointsMessages != null) {
                 for (LoyaltyPointsMessages loyaltyPointsMessages : loyaltyPointsMessages) {
-                    if (loyaltyPointsMessages.programId.equals("Base Points")) {
+                    if (loyaltyPointsMessages.programId !=null && loyaltyPointsMessages.programId.equals("Base Points")) {
                         basePoints += loyaltyPointsMessages.earnedRewardSummary;
                     }
 
-                    if (loyaltyPointsMessages.programId.contains("Bonus")) {
+                    if (loyaltyPointsMessages.programId !=null && loyaltyPointsMessages.programId.contains("Bonus")) {
                         bonusPoints += loyaltyPointsMessages.earnedRewardSummary;
                     }
 
