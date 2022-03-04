@@ -37,6 +37,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public final HashMap<String, String> redeemPoints;
     private final Context mContext;
     private final int petroPoints;
+    public static final double MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION = 100000;
     private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
     private final NumberFormat numberInstance = NumberFormat.getNumberInstance(Locale.getDefault());
     private final RedeemPointsCallback redeemPointsCallback;
@@ -144,7 +145,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 return String.format("%s %s %s", 0, "$", off);
             } else {
-                return String.format("%s %s %s", "$", 0, off);
+                return String.format("%s%s %s", "$", 0, off);
             }
         }
         DecimalFormat df;
@@ -156,7 +157,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
             return String.format("%s %s %s", df.format(amt), "$", off);
         } else {
-            return String.format("%s %s %s", "$", df.format(amt), off);
+            return String.format("%s%s %s", "$", df.format(amt), off);
         }
     }
 
@@ -238,6 +239,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             preAuthValue = defaultPreAuthValue;
         }
         preAuthValue = replaceChars(preAuthValue);
+    //    preAuthValue = "110";
         double selectedFuelValue = numberInstance.parse(preAuthValue).doubleValue();
         if ((selectedFuelValue * 1000) < petroPoints) {
             DecimalFormat df = new DecimalFormat("###.#");
@@ -246,6 +248,9 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             resultantValue = CardFormatUtils.formatBalance(petroPoints);
         }
         roundOffValue = numberInstance.parse(resultantValue).doubleValue();
+        if(roundOffValue > MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION){
+            roundOffValue = MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION;
+        }
     }
 
     interface RedeemPointsCallback {

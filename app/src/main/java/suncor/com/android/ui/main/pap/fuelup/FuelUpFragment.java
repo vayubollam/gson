@@ -407,8 +407,17 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         }
         this.preAuth = value;
         binding.totalAmount.setText(value);
+        redeemPointsDropDownAdapter.setPreAuthValue(preAuth);
+        if( ++ isPreAuthChanges >1 && fuelLimitDropDownAdapter.isEditableValueChange()){
+            redeemPointsDropDownAdapter.collapseIfPreAuthChanges(0);
+            fuelLimitDropDownAdapter.setIsRedeem(false);
+            preAuthRedeemPoints = "0";
+            selectedRadioButton = "No Redemption";
+            redeemPointsDropDownAdapter.notifyDataSetChanged();
+        }
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP),
                 new Pair<>(AnalyticsUtils.Param.FORMSELECTION, value));
+
     }
 
     @Override

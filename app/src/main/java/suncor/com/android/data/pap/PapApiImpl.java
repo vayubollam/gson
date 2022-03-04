@@ -13,7 +13,6 @@ import com.worklight.wlclient.api.WLResponseListener;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
 
 import suncor.com.android.BuildConfig;
 import suncor.com.android.SuncorApplication;
@@ -23,8 +22,8 @@ import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.GetRedeemableFlag;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.pap.PayByGooglePayRequest;
-import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.PayByWalletRequest;
+import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.transaction.CancelTransaction;
 import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.utilities.Timber;
