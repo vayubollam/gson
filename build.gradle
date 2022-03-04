@@ -46,7 +46,7 @@ ext {
     gsonVersion = "2.8.5"
     mfpVersion = "8.0.2021061706"
     workManagerVersion = "1.0.0"
-    daggerVersion = "2.17"
+    daggerVersion = "2.41"
     firebaseVersion = "17.5.1"
     crashlyticsVersion = "17.2.2"
     mockitoVersion = "2.25.1"
