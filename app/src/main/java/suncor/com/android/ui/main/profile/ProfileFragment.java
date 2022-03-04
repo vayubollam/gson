@@ -182,7 +182,11 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Change Preferences"));
             Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
         });
-        binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
+        binding.aboutButton.setOnClickListener(v -> {
+            if(Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.profile_tab) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment);
+            }
+        });
         binding.addressButton.setOnClickListener(v -> {
             AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Address"));
             if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
