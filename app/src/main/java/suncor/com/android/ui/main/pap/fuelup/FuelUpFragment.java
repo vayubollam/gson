@@ -60,6 +60,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
+import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
@@ -100,6 +101,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String storeId;
     private String preAuth;
     private boolean isRedeemable;
+    private int petroPoints;
     private String userPaymentId;
     private String preAuthRedeemPoints = "0";
     private String selectedRadioButton = "No Redemption";
@@ -165,22 +167,6 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         binding.paymentExpandable.setDropDownData(paymentDropDownAdapter, false);
 
-
-        HashMap<String, String> redeemPointsData = new HashMap<>();
-        redeemPointsData.put("1", getString(R.string.no_redemption));
-        redeemPointsData.put("2", getString(R.string.redeem_x_points));
-        redeemPointsData.put("3", getString(R.string.other_amount));
-
-
-        redeemPointsDropDownAdapter = new RedeemPointsDropDownAdapter(
-                getContext(),
-                redeemPointsData,
-                viewModel.getPetroPoints(),
-                this
-        );
-
-        binding.redeemPointsExpandable.setDropDownData(redeemPointsDropDownAdapter, true);
-
         adapter = new SelectPumpAdapter(this);
         binding.selectPumpLayout.pumpRecyclerView.setAdapter(adapter);
 
@@ -192,6 +178,25 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         super.onViewCreated(view, savedInstanceState);
         storeId = FuelUpFragmentArgs.fromBundle(getArguments()).getStoreId();
         isRedeemable = FuelUpFragmentArgs.fromBundle(getArguments()).getIsRedeemable();
+        petroPoints = Integer.parseInt(FuelUpFragmentArgs.fromBundle(getArguments()).getPetroPoints());
+
+        binding.headerPetropoints.setText(getResources().getString(R.string.authorization_petropoints_balance, CardFormatUtils.formatBalance(petroPoints)));
+
+        HashMap<String, String> redeemPointsData = new HashMap<>();
+        redeemPointsData.put("1", getString(R.string.no_redemption));
+        redeemPointsData.put("2", getString(R.string.redeem_x_points));
+        redeemPointsData.put("3", getString(R.string.other_amount));
+
+
+        redeemPointsDropDownAdapter = new RedeemPointsDropDownAdapter(
+                getContext(),
+                redeemPointsData,
+                petroPoints,
+                this
+        );
+
+        binding.redeemPointsExpandable.setDropDownData(redeemPointsDropDownAdapter, true);
+
         isRedemptionRestricted.set(!isRedeemable);
 
         if (pumpNumber == null) {
@@ -472,7 +477,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
 
 
-                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, viewModel.getPetroPointsBalance());
+                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, CardFormatUtils.formatBalance(petroPoints));
 
                         Navigation.findNavController(requireView()).popBackStack();
                         Navigation.findNavController(requireView()).navigate(action);
@@ -601,7 +606,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         new Pair<>(AnalyticsUtils.Param.checkBoxInput, selectedRadioButton),
                         new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
 
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, viewModel.getPetroPointsBalance());
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, CardFormatUtils.formatBalance(petroPoints));
                 Navigation.findNavController(requireView()).popBackStack();
                 Navigation.findNavController(requireView()).navigate(action);
             }

@@ -48,7 +48,6 @@ public class FuelUpViewModel extends ViewModel {
     private final SettingsApi settingsApi;
     private final PapRepository papRepository;
     private final PaymentsRepository paymentsRepository;
-    private MutableLiveData<String> headerPetroPoints = new MutableLiveData<>();
     private LatLng userLocation;
     private Profile profile;
     private SessionManager sessionManager;
@@ -61,7 +60,6 @@ public class FuelUpViewModel extends ViewModel {
         this.papRepository = papRepository;
         this.paymentsRepository = paymentsRepository;
         this.profile = sessionManager.getProfile();
-        headerPetroPoints.postValue(CardFormatUtils.formatBalance(profile.getPointsBalance()));
         this.sessionManager = sessionManager;
     }
 
@@ -83,14 +81,6 @@ public class FuelUpViewModel extends ViewModel {
             sessionManager.getUserLocalSettings().setLong(UserLocalSettings.LAST_SUCCESSFUL_PAP_DATE,
                     activeSession.getLastStatusUpdated());
         }
-    }
-
-    public MutableLiveData<String> getHeaderPoints(){
-         return headerPetroPoints;
-    }
-
-    public int getPetroPoints(){
-        return profile.getPointsBalance();
     }
 
     LiveData<Resource<ArrayList<PaymentListItem>>> getPayments(Context context) {
@@ -180,13 +170,6 @@ public class FuelUpViewModel extends ViewModel {
 
     public LiveData<Resource<Boolean>> cancelTransaction(String transactionId) {
         return papRepository.cancelTransaction(transactionId);
-    }
-
-    public String getPetroPointsBalance() {
-        if (sessionManager.getProfile() != null) {
-            return CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance());
-        }
-        return "";
     }
 
 }
