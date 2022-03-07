@@ -752,6 +752,9 @@
         <argument
             android:name="isRedeemable"
             app:argType="boolean"/>
+        <argument
+            android:name="petroPoints"
+            app:argType="string"/>
     </action>
 
     <action
@@ -842,6 +845,11 @@
             android:name="isRedeemable"
             android:defaultValue="false"
             app:argType="boolean"/>
+        <argument
+            android:name="petroPoints"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="false"/>
 
         <action
             android:id="@+id/action_fuel_up_to_addPaymentFragment"

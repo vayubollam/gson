@@ -41,6 +41,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     private String stateCode;
     private String currentCity;
     private boolean isRedeemable;
+    private String petroPoints ="0";
     private int isFirstTime = 0;
     private HomeViewModel homeViewModel;
 
@@ -102,6 +103,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                 case SUCCESS:
                     if(result.data != null){
                         isRedeemable = result.data.redeemable;
+                        petroPoints = String.valueOf(result.data.pointsBalance);
                         binding.loadQuestionsLayout.setVisibility(View.GONE);
                         isLoading.set(false);
                     }
@@ -184,7 +186,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     @Override
     public void selectPumpNumber(String pumpNumber) {
         new Handler().postDelayed(() -> {
-            HomeNavigationDirections.ActionToFuelUpFragment action = HomeNavigationDirections.actionToFuelUpFragment(storeId, pumpNumber, isRedeemable);
+            HomeNavigationDirections.ActionToFuelUpFragment action = HomeNavigationDirections.actionToFuelUpFragment(storeId, pumpNumber, isRedeemable, petroPoints);
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         }, 200);
