@@ -76,12 +76,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
                 switch (errorCode) {
                     case ErrorCodes.ERR_ACCOUNT_BAD_PASSWORD:
-                        if (pubWebResponse.has(REMAINING_ATTEMPTS)) {
-                            int remainingAttempts = pubWebResponse.getInt(REMAINING_ATTEMPTS);
-                            listener.onLoginFailed(SigninResponse.wrongCredentials(remainingAttempts));
-                        } else {
-                            listener.onLoginFailed(SigninResponse.wrongCredentials());
-                        }
+                        listener.onLoginFailed(SigninResponse.wrongCredentials());
                         cancel();
                         break;
                     case ErrorCodes.ERR_ACCOUNT_SOFT_LOCK:
