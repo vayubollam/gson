@@ -306,7 +306,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void onResume() {
         super.onResume();
         binding.setIsLoggedIn(sessionManager.isUserLoggedIn());
-        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+        if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             getDialog().getWindow().setDimAmount(DIM_AMOUNT);
         }
     }
