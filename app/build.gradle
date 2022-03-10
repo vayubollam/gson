@@ -98,7 +98,7 @@ android {
         }
         DevScrum {
             dimension "version"
-            applicationId "com.suncor.android.SuncorApplicationDev.Scrum"
+            applicationId "com.suncor.android.SuncorApplicationDev.Carwash"
             buildConfigField("String", "SUNCOR_WEBSITE", "\"https://petrocanada-scqut.network.qut/\"")
         }
         DevCarwash {
