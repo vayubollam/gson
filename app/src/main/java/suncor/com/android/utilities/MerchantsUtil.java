@@ -27,7 +27,7 @@ public class MerchantsUtil {
                 return "walmart_small";
             case MerchantsIds.HUDSON_BAY_EN:
             case MerchantsIds.HUDSON_BAY_FR:
-                return "hbc_small";
+                return "hudson_bay_small";
             case MerchantsIds.PETRO_CANADA_EN:
             case MerchantsIds.PETRO_CANADA_FR:
                 return "pc_card_small";
