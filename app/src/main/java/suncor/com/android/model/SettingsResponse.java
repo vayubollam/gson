@@ -31,6 +31,7 @@ public class SettingsResponse {
         private String maintenanceMsgFR;
         private String maintenanceMsgEN;
         private GooglePassConfig googlePass;
+        private Redemptions redemptions;
 
         public String getDescriptionEN() {
             return descriptionEN;
@@ -75,6 +76,19 @@ public class SettingsResponse {
         public GooglePassConfig getGooglePass() {
             return googlePass;
         }
+
+        public Redemptions getRedemptions() {
+            return redemptions;
+        }
+
+    }
+
+    public static class Redemptions{
+        private int redemptionPointsMaxLimit;
+
+        public int getRedemptionPointsMaxLimit() {
+            return redemptionPointsMaxLimit;
+        }
     }
 
 
@@ -113,6 +127,8 @@ public class SettingsResponse {
             return key;
         }
     }
+
+
 
     public static class Pap {
         private int otherAmountHighLimit;
