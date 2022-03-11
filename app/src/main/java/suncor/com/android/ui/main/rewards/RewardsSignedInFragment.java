@@ -85,8 +85,8 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
 
                 GenericEGiftCard eGiftCard = new GenericEGiftCard();
-                eGiftCard.setSmallImage("more_egift_card_small");
-                eGiftCard.setLargeImage("more_egift_card_large");
+                eGiftCard.setSmallImage("more_e_gift_card_small");
+                eGiftCard.setLargeImage("more_e_gift_card_large");
                 eGiftCard.setMoreGIftCard(true);
                 eGiftCard.setTitle(getResources().getString(R.string.merchant_more_egift_card));
                 eGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
