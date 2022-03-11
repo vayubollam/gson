@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
@@ -77,6 +78,15 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
             }
             false
         }
+        binding.differentReasonEditText.hintTextView.setTextAppearance(R.style.Caption1)
+
+        binding.differentReasonEditText.inputLayout.background =
+            context?.let { ContextCompat.getDrawable(it, R.color.white) }
+        binding.differentReasonEditText.setShouldUpdateBackground(false)
+        binding.checkAckFeedback.setOnCheckedChangeListener { buttonView, isChecked ->
+                binding.differentReasonEditText.isEnabled = isChecked
+                binding.differentReasonEditText.requestFocus()
+        }
     }
 
     private fun hideKeyBoard() {
@@ -119,8 +129,8 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
             Timber.d("All Acknowledgement points did not select.")
             return
         }
-        if (!beforeListValidate()) {
-            Timber.d("Before leaving options did not select reason.")
+        if (!differentReasonValidation()) {
+            Timber.d("Different Reason options did not select reason.")
             return
         }
         binding.acknowledgementValidationTextview.visibility = View.GONE
@@ -222,23 +232,15 @@ class AccountDeleteFragment : MainActivityFragment(), OnBackPressedListener,
         return isValidate
     }
 
-    private fun beforeListValidate(): Boolean {
-        var isValidate = false
-        if (beforeLeavingList[3].checked && binding.differentReasonEditText.text?.isEmpty() == true) {
+    private fun differentReasonValidation(): Boolean {
+        if (binding.checkAckFeedback.isChecked && binding.differentReasonEditText.text?.isEmpty() == true) {
+            binding.differentReasonEditText.setError(true)
             binding.differentReasonValidationTextview.visibility = View.VISIBLE
-            return isValidate
+            binding.bottomDivider.visibility = View.VISIBLE
+            binding.differentReasonEditText.requestFocus()
+            return false
         }
-        for (i in 0 until beforeLeavingList.size) {
-            if (beforeLeavingList[i].checked) {
-                isValidate = true
-                break
-            } else if(!isValidate){
-                isValidate = false
-                beforeLeavingList[i].setError = true
-            }
-        }
-        beforeLeavingListAdapter.notifyDataSetChanged()
-        return isValidate
+        return true
     }
 
     override fun setFeedbackChecks(size: Int, ackFeedbackList: ArrayList<AckFeedbackList>) {

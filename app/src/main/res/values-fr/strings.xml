@@ -815,5 +815,6 @@
     <string name="account_deletion_different_reason_validation">Ce champ ne peut rester vide! </string>
     <string name="account_deletion_phone_field_required">Ce champ est requis!</string>
     <string name="account_deletion_submitted">Soumettre</string>
+    <string name="different_reason">Une autre raison : </string>
 
 </resources>

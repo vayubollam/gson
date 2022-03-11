@@ -32,7 +32,7 @@ class AcknowledgementListAdapter(
 
     override fun onBindViewHolder(holder: AcknowledgementHolder, position: Int) {
         mvalidateDataListner = validateDataListner
-        holder.binding.checkAckFeedback.text = ackFeedbackList[holder.adapterPosition].name
+        holder.binding.checkAckFeedback.text = ackFeedbackList[holder.absoluteAdapterPosition].name
 
         holder.binding.checkAckFeedback.setOnClickListener { v ->
             holder.binding.checkAckFeedback.buttonDrawable =

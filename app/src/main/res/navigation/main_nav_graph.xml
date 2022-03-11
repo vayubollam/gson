@@ -533,13 +533,6 @@
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/accountDetailsFragment" />
-        <action
-            android:id="@+id/action_securityQuestionValidationFragment_to_accountDeleteNotesFragment"
-            app:destination="@id/accountDeleteNotesFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/accountDetailsFragment" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/addressFragment"

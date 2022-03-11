@@ -57,9 +57,6 @@ class BeforeLeavingListAdapter(val context: Context,
             holder.binding.checkAckFeedback.buttonDrawable =
                 context.getDrawable(R.drawable.custom_checkbox)
         }
-        if (position == ackFeedbackList.size - 1) {
-            holder.binding.bottomDivider.visibility = View.GONE
-        }
     }
 
     override fun getItemCount(): Int {

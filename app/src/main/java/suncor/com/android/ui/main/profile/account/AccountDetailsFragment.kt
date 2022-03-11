@@ -123,12 +123,11 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             }
         }
         binding.deleteAccountButton.setOnClickListener { v ->
-            AnalyticsUtils.logEvent(context,
-                AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT)
-            )
             if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
-                Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteNotesFragment.ACCOUNT_DELETE_NOTES_FRAGMENT))
+                AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTEP, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT_NOTES))
+                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_accountDeleteNotesFragment)
             } else {
+                AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT))
                 Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteFragment.DELETE_ACCOUNT_FRAGMENT))
             }
         }

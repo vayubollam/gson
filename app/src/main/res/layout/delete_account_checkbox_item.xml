@@ -22,7 +22,7 @@
             android:textAppearance="@style/Caption1"
             android:lineSpacingMultiplier="1.28"
             android:textColor="@color/black_60"
-            tools:text="Petro-cananda locations are not convinient for me" />
+            tools:text="Petro-canada locations are not convenient for me" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/bottom_divider"
