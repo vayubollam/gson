@@ -282,29 +282,79 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/different_reason_editText"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/different_reason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/black_100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/delete_account_subtitle_leaving"
-                    app:layout_constraintTop_toBottomOf="@id/leave_message_recyclerview" />
+                    app:layout_constraintStart_toStartOf="@id/leave_message_recyclerview"
+                    app:layout_constraintTop_toBottomOf="@id/leave_message_recyclerview">
+
+                    <LinearLayout
+                        android:id="@+id/different_reason_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center_vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:orientation="horizontal"
+                        tools:ignore="MissingConstraints">
+
+                    <CheckBox
+                        android:id="@+id/check_ack_feedback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:button="@drawable/custom_checkbox"
+                        android:checked="false"
+                        android:paddingBottom="10dp"
+                        android:textAppearance="@style/Caption1"
+                        android:lineSpacingMultiplier="1.28"
+                        android:textColor="@color/black_60"
+                        tools:ignore="MissingConstraints" />
+
+                    <suncor.com.android.uicomponents.SuncorTextInputLayout
+                        android:id="@+id/different_reason_editText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/different_reason"
+                        android:textColorHint="@color/black_60"
+                        android:textAppearance="@style/Caption1"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        app:errorColor="@color/red"
+                        android:layout_weight="1"
+                        android:enabled="false"
+                        android:textColor="@color/black_60" />
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/bottom_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/black_100"
+                        android:src="@drawable/horizontal_divider"
+                        app:layout_constraintStart_toStartOf="@id/different_reason_layout"
+                        app:layout_constraintTop_toBottomOf="@id/different_reason_layout"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/different_reason_validation_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:visibility="gone"
                     android:gravity="center_vertical"
                     android:text="@string/account_deletion_different_reason_validation"
                     android:textAppearance="@style/Caption1"
-                    app:layout_constraintStart_toStartOf="@id/different_reason_editText"
-                    app:layout_constraintTop_toBottomOf="@id/different_reason_editText" />
-
+                    app:layout_constraintStart_toStartOf="@id/bottom_divider"
+                    app:layout_constraintTop_toBottomOf="@id/bottom_divider" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <suncor.com.android.ui.common.SuncorButton
                     android:id="@+id/start_deletion_button"
@@ -317,7 +367,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="@string/account_deletion_button"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/different_reason_validation_textview" />
+                    app:layout_constraintTop_toBottomOf="@id/different_reason" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -328,6 +378,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:clickable="true"
+            android:visibility="gone"
             app:visibleGone="@{isLoading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

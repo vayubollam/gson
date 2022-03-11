@@ -20,9 +20,6 @@ import javax.inject.Inject
 
 class AccountDeleteNotesFragment : MainActivityFragment(), OnBackPressedListener {
 
-    companion object {
-        const val ACCOUNT_DELETE_NOTES_FRAGMENT = "account_delete_notes_fragment"
-    }
     private lateinit var binding: FragmentAccountDeleteNotesBinding
 
     @Inject
