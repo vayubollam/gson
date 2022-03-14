@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.pap.SelectPumpAnalytics;
 import suncor.com.android.databinding.TutorialSelectPumpBinding;
 import suncor.com.android.ui.common.SuncorButton;
 import suncor.com.android.uicomponents.pagerindicator.CircleIndicator;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class SelectPumpHelpDialogFragment extends DialogFragment {
 
@@ -102,7 +102,7 @@ public class SelectPumpHelpDialogFragment extends DialogFragment {
     public void onResume() {
         super.onResume();
 
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump-help");
+        SelectPumpAnalytics.logSelectPumpHelpScreenName(requireActivity());
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;

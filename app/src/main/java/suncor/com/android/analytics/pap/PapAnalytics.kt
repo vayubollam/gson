@@ -3,6 +3,7 @@ package suncor.com.android.analytics.pap
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import suncor.com.android.analytics.BaseAnalytics
 
 
@@ -54,6 +55,55 @@ object ReceiptAnalytics : BaseAnalytics() {
 }
 
 object SelectPumpAnalytics : BaseAnalytics(){
+    private const val SCREEN_NAME = "pay-at-pump-select-pump"
+    private const val SCREEN_NAME_LOADING = "pay-at-pump-select-pump-loading"
+    private const val SCREEN_NAME_SELECT_PUMP_HELP = "pay-at-pump-select-pump-help"
+    private const val FORM_NAME_PAP = "Pay at Pump"
+    private const val INFO_TEXT_SELECT_PUMP = "select pump number info"
+    private const val ALERT_TITLE_APP_PAY_NOT_AVAILABLE = "In-app payment unavailable(You can\\’t use your app to pay at this station.)"
+    private const val ALERT_SELECTION_CANCEL = "Cancel"
+
+
+    @JvmStatic
+    fun logScreenName(activity: Activity) {
+        logScreenNameClass(activity, screenName = SCREEN_NAME)
+    }
+
+    @JvmStatic
+    fun logLoadingScreenName(activity: Activity) {
+        logScreenNameClass(activity, screenName = SCREEN_NAME_LOADING)
+    }
+
+    @JvmStatic
+    fun logFormStart(context: Context) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.FORM_NAME, FORM_NAME_PAP)
+        logEvent(context,BaseEvents.FORM_START,bundle)
+    }
+
+    @JvmStatic
+    fun logSelectPumpInfoTap(context: Context) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.INFO_TEXT, INFO_TEXT_SELECT_PUMP)
+        logEvent(context,BaseEvents.INFO_TAP,bundle)
+    }
+
+    @JvmStatic
+    fun logInAppPaymentUnAvailableAlert(context: Context) {
+        logAlertDialogInteraction(
+            context,
+            ALERT_TITLE_APP_PAY_NOT_AVAILABLE,
+            ALERT_SELECTION_CANCEL,
+            FORM_NAME_PAP
+        )
+    }
+
+    @JvmStatic
+    fun logSelectPumpHelpScreenName(activity: Activity) {
+        logScreenNameClass(activity, screenName = SCREEN_NAME_SELECT_PUMP_HELP)
+
+    }
+
 
 }
 
