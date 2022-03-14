@@ -1,10 +1,11 @@
 package suncor.com.android.ui.main.pap.receipt;
 
+import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,26 +22,22 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.review.model.ReviewErrorCode;
-import com.google.android.play.core.review.testing.FakeReviewManager;
 import com.google.android.play.core.tasks.RuntimeExecutionException;
 import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.pap.ReceiptAnalytics;
 import suncor.com.android.databinding.FragmentReceiptBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
-
-import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
 
 public class ReceiptFragment extends MainActivityFragment {
 
@@ -83,7 +80,7 @@ public class ReceiptFragment extends MainActivityFragment {
         observeTransactionData(transactionId);
 
         binding.viewReceiptBtn.setOnClickListener((v) -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
+            ReceiptAnalytics.logViewReceiptButtonTap(requireContext());
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });
@@ -105,14 +102,14 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
+        ReceiptAnalytics.logScreenName(requireActivity());
     }
 
     private void observeTransactionData(String transactionId){
         viewModel.getTransactionDetails(transactionId, false).observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
-                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
+                ReceiptAnalytics.logLoadingScreenName(requireActivity());
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 if (sessionManager.getProfile().getFirstName() != null) {
@@ -124,10 +121,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.appBar.setOnClickListener((view)-> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
-
-                AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.paymentComplete,
-                        new Pair<>(AnalyticsUtils.Param.paymentMethod, isGooglePay ? "Google Pay" : "Credit Card"));
+                ReceiptAnalytics.logScreenName(requireActivity());
+                ReceiptAnalytics.logPaymentComplete(requireContext(),isGooglePay ? "Google Pay" : "Credit Card");
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
                 binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
@@ -141,7 +136,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.setTransaction(result.data);
 
                 binding.shareButton.setOnClickListener(v -> {
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
+                    ReceiptAnalytics.logReceiptButtonTap(requireContext());
+
                     File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
 
                     //Create error handling

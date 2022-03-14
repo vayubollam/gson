@@ -101,6 +101,7 @@ public class SelectPumpHelpDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
+
         AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump-help");
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();

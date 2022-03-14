@@ -1,5 +1,60 @@
 package suncor.com.android.utilities;
 
+import static suncor.com.android.utilities.Constants.ACTIONBAR_TAP;
+import static suncor.com.android.utilities.Constants.ACTIVATE_SP;
+import static suncor.com.android.utilities.Constants.ACTIVATE_WNG;
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.BUILD_NUMBER;
+import static suncor.com.android.utilities.Constants.BUTTON_TAP;
+import static suncor.com.android.utilities.Constants.BUTTON_TEXT;
+import static suncor.com.android.utilities.Constants.CARD_TYPE;
+import static suncor.com.android.utilities.Constants.CONTENT_TYPE;
+import static suncor.com.android.utilities.Constants.CREATIVE_NAME;
+import static suncor.com.android.utilities.Constants.CREATIVE_SLOT;
+import static suncor.com.android.utilities.Constants.DEFAULT_ERROR_SUNCORXXXX;
+import static suncor.com.android.utilities.Constants.DETAIL_ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.FALSE;
+import static suncor.com.android.utilities.Constants.FORM_COMPLETE;
+import static suncor.com.android.utilities.Constants.FORM_ERROR;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.FORM_SELECTION;
+import static suncor.com.android.utilities.Constants.FORM_START;
+import static suncor.com.android.utilities.Constants.FORM_STEP;
+import static suncor.com.android.utilities.Constants.FUEL_AMOUNT_SELECTION;
+import static suncor.com.android.utilities.Constants.INFO_TAP;
+import static suncor.com.android.utilities.Constants.INFO_TEXT;
+import static suncor.com.android.utilities.Constants.INTERNAL_PROMOTIONS;
+import static suncor.com.android.utilities.Constants.INTERSITE;
+import static suncor.com.android.utilities.Constants.INTERSITE_URL;
+import static suncor.com.android.utilities.Constants.IS_RBC_LINKED;
+import static suncor.com.android.utilities.Constants.ITEM_ID;
+import static suncor.com.android.utilities.Constants.ITEM_NAME;
+import static suncor.com.android.utilities.Constants.MENU_SELECTION;
+import static suncor.com.android.utilities.Constants.MENU_TAP;
+import static suncor.com.android.utilities.Constants.NAVIGATION;
+import static suncor.com.android.utilities.Constants.NONE;
+import static suncor.com.android.utilities.Constants.PAYMENT_COMPLETE;
+import static suncor.com.android.utilities.Constants.PAYMENT_METHOD;
+import static suncor.com.android.utilities.Constants.PAYMENT_PREAUTHORIZE;
+import static suncor.com.android.utilities.Constants.PROMOTIONS;
+import static suncor.com.android.utilities.Constants.SELECT_CONTENT;
+import static suncor.com.android.utilities.Constants.STEP_NAME;
+import static suncor.com.android.utilities.Constants.TRUE;
+import static suncor.com.android.utilities.Constants.USER_ID;
+import static suncor.com.android.utilities.Constants.USER_ID_1;
+import static suncor.com.android.utilities.Constants.VIDEO_COMPLETE;
+import static suncor.com.android.utilities.Constants.VIDEO_START;
+import static suncor.com.android.utilities.Constants.VIDEO_THRESHOLD_25;
+import static suncor.com.android.utilities.Constants.VIDEO_THRESHOLD_50;
+import static suncor.com.android.utilities.Constants.VIDEO_THRESHOLD_75;
+import static suncor.com.android.utilities.Constants.VIDEO_TITLE;
+import static suncor.com.android.utilities.Constants.VIEW_ITEM;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,9 +65,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import suncor.com.android.model.cards.CardType;
 
-import static suncor.com.android.utilities.Constants.*;
+import suncor.com.android.model.cards.CardType;
 
 public class AnalyticsUtils {
 
@@ -75,6 +129,9 @@ public class AnalyticsUtils {
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
         menuSelection(MENU_SELECTION);
+
+
+
 
         private final String name;
 
