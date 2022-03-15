@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
 import suncor.com.android.databinding.FuelUpLimitDropDownItemBinding;
-import suncor.com.android.uicomponents.R;
 import suncor.com.android.databinding.ManualLimitDropDownItemBinding;
+import suncor.com.android.uicomponents.R;
 import suncor.com.android.uicomponents.dropdown.ChildViewListener;
 import suncor.com.android.uicomponents.dropdown.DropDownAdapter;
 import suncor.com.android.utilities.Timber;
@@ -33,7 +31,7 @@ import suncor.com.android.utilities.Timber;
 public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = FuelLimitDropDownAdapter.class.getSimpleName();
-    private NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private static final int DROP_DOWN_LAYOUT = 1;
     private static final int MANUAL_DROP_DOWN_LAYOUT = 2;
@@ -61,7 +59,11 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
         this.warningPopup = warningPopup;
         this.callbackListener = callbackListener;
 
+        DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.getDefault());
+        symbol.setCurrencySymbol("$");
+
         formatter.setMinimumFractionDigits(0);
+        formatter.setDecimalFormatSymbols(symbol);
     }
 
     @NonNull
