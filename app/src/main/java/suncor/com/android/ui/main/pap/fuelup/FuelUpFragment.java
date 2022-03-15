@@ -1,5 +1,25 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.utilities.Constants.AVAILABLE;
+import static suncor.com.android.utilities.Constants.BIOMETRICS_FAILURE;
+import static suncor.com.android.utilities.Constants.CREDIT_CARD;
+import static suncor.com.android.utilities.Constants.CREDIT_CARD_1;
+import static suncor.com.android.utilities.Constants.DIALOG_TITLE;
+import static suncor.com.android.utilities.Constants.GPAY;
+import static suncor.com.android.utilities.Constants.GPAY_CANCEL_USER;
+import static suncor.com.android.utilities.Constants.GPAY_ERROR_MSG;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_PRE_AUTH;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_PRE_AUTH_LOADING;
+import static suncor.com.android.utilities.Constants.PAY_AT_PUMP;
+import static suncor.com.android.utilities.Constants.PUMP_REG_FAILS_ERROR_CODE;
+import static suncor.com.android.utilities.Constants.READY_PAY_FAILURE;
+import static suncor.com.android.utilities.Constants.SELECTED_PAYMENT;
+import static suncor.com.android.utilities.Constants.SOEMTHING_WRONG_ERROR_CODE;
+import static suncor.com.android.utilities.Constants.SOMETHING_WRONG;
+import static suncor.com.android.utilities.Constants.TEMP_PAYMENT;
+import static suncor.com.android.utilities.Constants.TRANSACTION_FAILURE_ERROR_CODE;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +47,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
@@ -51,8 +70,10 @@ import javax.inject.Inject;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
+import suncor.com.android.analytics.pap.FuelUpAnalytics;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
@@ -60,7 +81,6 @@ import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
@@ -70,9 +90,6 @@ import suncor.com.android.uicomponents.dropdown.ExpandableViewListener;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
-
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static suncor.com.android.utilities.Constants.*;
 
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
         FuelLimitDropDownAdapter.FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks {
@@ -166,8 +183,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         binding.paymentExpandable.initListener(this);
 
         binding.selectPumpLayout.helpButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTap,
-                    new Pair<>(AnalyticsUtils.Param.infoText, "select pump number info"));
+            FuelUpAnalytics.logSelectPumpInfoTap(requireContext());
             showHelp();
         });
 
@@ -197,7 +213,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         viewModel.getActiveSession().observe(getViewLifecycleOwner(), result->{
             if (result.status == Resource.Status.LOADING) {
-                AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_PRE_AUTH_LOADING);
+                FuelUpAnalytics.logPAPreAuthLoadingScreenName(requireActivity());
             } else if (result.status == Resource.Status.ERROR) {
                 Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
@@ -246,8 +262,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         });
 
         binding.termsAgreement.setOnClickListener((v) -> {
+            FuelUpAnalytics.logInterSiteURL(requireContext());
+
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.intersite,
                     new Pair<>(AnalyticsUtils.Param.intersiteURL, getString(R.string.privacy_policy_url)));
+
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)));
             startActivity(browserIntent);
 

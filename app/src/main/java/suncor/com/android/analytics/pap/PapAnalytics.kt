@@ -3,7 +3,6 @@ package suncor.com.android.analytics.pap
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
 import suncor.com.android.analytics.BaseAnalytics
 
 
@@ -101,10 +100,35 @@ object SelectPumpAnalytics : BaseAnalytics(){
     @JvmStatic
     fun logSelectPumpHelpScreenName(activity: Activity) {
         logScreenNameClass(activity, screenName = SCREEN_NAME_SELECT_PUMP_HELP)
+    }
+}
 
+object FuelUpAnalytics: BaseAnalytics(){
+    private const val INFO_TEXT_SELECT_PUMP = "select pump number info"
+    private const val SCREEN_NAME_PAP_PRE_AUTH_LOADING = "pay-at-pump-preauthorize-loading"
+
+
+    @JvmStatic
+    fun logSelectPumpInfoTap(context: Context) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.INFO_TEXT, INFO_TEXT_SELECT_PUMP)
+        logEvent(context,BaseEvents.INFO_TAP,bundle)
+    }
+
+    @JvmStatic
+    fun logPAPreAuthLoadingScreenName(activity: Activity) {
+        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH_LOADING)
+    }
+
+    @JvmStatic
+    fun logInterSiteURL(context: Context) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.INTER_SITE_URL, INFO_TEXT_SELECT_PUMP)
+        logEvent(context,BaseEvents.INTER_SITE,bundle)
     }
 
 
 }
+
 
 

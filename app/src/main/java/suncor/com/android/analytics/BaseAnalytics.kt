@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import suncor.com.android.analytics.BaseAnalytics.BaseEvents.ALERT_INTERACTION
 
 
 open class BaseAnalytics {
@@ -14,6 +13,7 @@ open class BaseAnalytics {
         const val FORM_START = "form_start"
         const val INFO_TAP = "info_tap"
         const val ALERT_INTERACTION = "alert_interaction"
+        const val INTER_SITE = "intersite"
 
     }
 
@@ -23,6 +23,11 @@ open class BaseAnalytics {
         const val INFO_TEXT = "infoText"
         const val ALERT_TITLE = "alertTitle"
         const val ALERT_SELECTION = "alertSelection"
+        const val INTER_SITE_URL = "intersiteURL"
+
+    }
+
+    fun logUserProperty() {
 
     }
 
@@ -39,15 +44,6 @@ open class BaseAnalytics {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle)
     }
 
-//    // TODO: This is how it should be done(Screen class is not related to the activity)
-//    fun logScreenName(context: Context, className: String, screenName: String?) {
-//        val bundle = Bundle()
-//        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-//        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS,className)
-//        FirebaseAnalytics.getInstance(context)
-//            .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
-//    }
-
     open fun logScreenNameClass(activity: Activity, screenName: String?) {
         val bundle = Bundle()
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
@@ -56,8 +52,14 @@ open class BaseAnalytics {
             .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
     }
 
-    fun logUserProperty() {
+    //    // TODO: This is how it should be done(Screen class is not related to the activity)
+//    fun logScreenName(context: Context, className: String, screenName: String?) {
+//        val bundle = Bundle()
+//        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+//        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS,className)
+//        FirebaseAnalytics.getInstance(context)
+//            .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+//    }
 
-    }
 
 }
