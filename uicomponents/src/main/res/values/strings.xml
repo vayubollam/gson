@@ -3,6 +3,7 @@
     <string name="fuel_manual_price_limit">%1$s to %2$s</string>
     <string name="other_amount">Other amount</string>
     <string name="currency_dollar">$</string>
+    <string name="currency_dollar_postfix">" $"</string>
     <string name="invalid_manual_fuel_up_limit">Please select valid PreAuth limit.</string>
     <string name="edit">Edit</string>
 

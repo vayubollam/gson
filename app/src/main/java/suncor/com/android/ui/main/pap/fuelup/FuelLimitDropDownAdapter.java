@@ -31,6 +31,7 @@ import suncor.com.android.utilities.Timber;
 public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
     private static final String TAG = FuelLimitDropDownAdapter.class.getSimpleName();
+    private final boolean isFrench;
     private DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private static final int DROP_DOWN_LAYOUT = 1;
@@ -64,6 +65,9 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
 
         formatter.setMinimumFractionDigits(0);
         formatter.setDecimalFormatSymbols(symbol);
+
+        isFrench = (Locale.getDefault().equals( Locale.CANADA_FRENCH));
+
     }
 
     @NonNull
@@ -253,6 +257,10 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
             binding.separator.setVisibility((isRedeemChanged) ? View.GONE : View.VISIBLE);
             binding.separatorFade.setVisibility((isRedeemChanged) ? View.VISIBLE : View.GONE);
             binding.separatorFade1.setVisibility((isRedeemChanged) ? View.VISIBLE : View.GONE);
+
+            binding.postfixCurrency.setVisibility(isFrench ?  View.VISIBLE : View.GONE);
+            binding.prefixCurrency.setVisibility(isFrench ?  View.GONE : View.VISIBLE);
+
             binding.container.setOnClickListener(v -> {
 
                 if (selectedPos != getAdapterPosition()) {
