@@ -68,11 +68,11 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
 
-    #- name: Build and analyze
-    #  env:
-    #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    #    SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    #  run: ./gradlew clean && ./gradlew build sonarqube --info
+    - name: Build and analyze
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      run: ./gradlew clean && ./gradlew build sonarqube --info
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
