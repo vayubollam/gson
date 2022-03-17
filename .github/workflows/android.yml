@@ -41,7 +41,7 @@ jobs:
       run: |
           echo SHORT_DATE=$(TZ="Canada/Eastern" date +%Y%m%d%H) >> $GITHUB_ENV
           
-    # this gets the first 6 characters of the git hash, used for labelling
+    # this  gets the first 6 characters of the git hash, used for labelling
     - name: Get short hash
       run: |
           short=${GITHUB_SHA::6}
