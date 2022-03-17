@@ -20,7 +20,7 @@ jobs:
         cache: gradle
 
     - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+      uses: android-actions/setup-android@v2
         
         # Actions sets GITHUB_REF tag in form refs/tags/QUTCarwash-3.3.0-RC-3.0.0
       # split on '/' and then '-' with awk to get the QUTCarwash part out for SchemeFeature
