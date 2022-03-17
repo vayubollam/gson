@@ -58,6 +58,22 @@ public class MerchantsRepository {
         });
     }
 
+    public LiveData<Resource<ArrayList<Merchant>>> getMerchantLiveData(){
+        return Transformations.map(merchantsApi.retrieveMerchants(), resource -> {
+            if (resource.status == Resource.Status.SUCCESS) {
+                cachedMerchants = null;
+                if (cachedMerchants == null) {
+                    Collections.sort(resource.data, merchantsComparator);
+                    cachedMerchants = resource.data;
+                    Timber.d("merchants retrieved and cached");
+                }
+
+            }
+            return resource;
+    });
+    }
+
+
     private class MerchantsComparator implements Comparator<Merchant> {
         @Override
         public int compare(Merchant merchant1, Merchant merchant2) {

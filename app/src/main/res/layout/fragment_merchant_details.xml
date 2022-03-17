@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.text.Html" />
+
         <variable
             name="genericGiftCard"
             type="suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard" />
@@ -150,7 +152,7 @@
                             android:lineSpacingMultiplier="1.63"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
-                            android:text="@string/rewards_signedin_how_to_redeem_merchants_description"
+                            android:text="@{genericGiftCard.howToRedeem}"
                             android:textAppearance="@style/Body"
                             android:textColor="@color/black_60"
                             app:layout_constraintTop_toBottomOf="@id/redeem_title"
@@ -188,12 +190,21 @@
                             android:lineSpacingMultiplier="1.63"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
-                            android:text="@{genericGiftCard.description}"
+                            android:layout_marginBottom="8dp"
+                            android:text="@{Html.fromHtml(genericGiftCard.howToUse)}"
                             android:textAppearance="@style/Body"
                             android:textColor="@color/black_60"
                             app:layout_constraintTop_toBottomOf="@id/redeeming_title"
                             tools:text="Use at Hudson's Bay, Home Outfitters and online at thebay.com." />
 
+                        <View
+                            android:id="@+id/divider4"
+                            android:layout_width="match_parent"
+                            android:layout_height="33dp"
+                            android:layout_marginTop="@dimen/action_menu_margin_12"
+                            android:visibility="visible"
+                            android:background="@drawable/merchantshadow"
+                            app:layout_constraintTop_toBottomOf="@id/redeeming_description"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
@@ -201,7 +212,8 @@
                 <View
                     android:id="@+id/divider3"
                     android:layout_width="match_parent"
-                    android:layout_height="43dp"
+                    android:layout_height="33dp"
+                    android:visibility="gone"
                     android:layout_marginBottom="21dp"
                     android:background="@drawable/merchantshadow"
                     app:layout_constraintBottom_toTopOf="@id/buy_button" />

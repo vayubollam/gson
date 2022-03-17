@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.profile.info;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -12,13 +13,13 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
-import afu.org.checkerframework.checker.nullness.qual.Nullable;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.databinding.FragmentPersonalInfoBinding;
@@ -148,6 +149,19 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);
             }
         });
+
+        viewModel.callEvent.observe(this, event -> {
+            Integer customerCareStringRes = event.getContentIfNotHandled();
+            if (customerCareStringRes != null) {
+                callCostumerSupport(getString(customerCareStringRes));
+            }
+        });
+
+        viewModel.focusWithError.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null){
+                binding.emailInput.setError(true);
+            }
+        });
     }
 
     @Override
@@ -230,5 +244,14 @@ public class PersonalInfoFragment extends MainActivityFragment {
             }
                 binding.scrollView.smoothScrollTo(0, scrollPosition);
         }, 400);
+    }
+
+
+    private void callCostumerSupport(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
+
+        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", phoneNumber));
     }
 }

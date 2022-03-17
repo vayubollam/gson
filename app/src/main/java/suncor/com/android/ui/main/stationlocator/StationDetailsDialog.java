@@ -28,6 +28,8 @@ import androidx.navigation.Navigation;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
@@ -48,6 +50,7 @@ import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpFragmentDirections;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
+import suncor.com.android.utilities.Timber;
 
 public class StationDetailsDialog extends BottomSheetDialogFragment {
 
@@ -105,13 +108,13 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Window window = getDialog().getWindow();
+        Window window = Objects.requireNonNull(getDialog()).getWindow();
         WindowManager.LayoutParams windowParams = window.getAttributes();
         windowParams.dimAmount = 0f;
         windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(windowParams);
 
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "station-details-home");
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), "station-details-home");
     }
 
     @Override
@@ -133,6 +136,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
     @Override
     public void setupDialog(@NonNull Dialog dialog, int style) {
+        try{
         binding = CardStationItemBinding.inflate(LayoutInflater.from(getContext()));
         binding.setVm(stationItem);
         int padding = getResources().getDimensionPixelOffset(R.dimen.cards_padding_expanded);
@@ -141,12 +145,12 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             DisplayMetrics dp = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
-            WindowInsets insets = getActivity().getWindow().getDecorView().getRootWindowInsets();
+            requireActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
+            WindowInsets insets = requireActivity().getWindow().getDecorView().getRootWindowInsets();
             fullHeight = dp.heightPixels - insets.getSystemWindowInsetTop() - insets.getStableInsetBottom();
         } else {
             DisplayMetrics dp = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
+            requireActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
             fullHeight = dp.heightPixels - getStatusBarHeight();
         }
 
@@ -170,14 +174,14 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         binding.directionsButton.setOnClickListener((v) -> {
             if (fuelUp != null && fuelUp.fuelUpAvailable()) {
                 HomeNavigationDirections.ActionToSelectPumpFragment action =
-                        SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                        HomeNavigationDirections.actionToSelectPumpFragment(
                                 stationItem.getStation().getId(),
                                 getString(R.string.action_location, stationItem.getStation().getAddress().getAddressLine())
                         );
-                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(action);
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismissAllowingStateLoss();
             } else {
-                NavigationAppsHelper.openNavigationApps(getActivity(), stationItem.getStation());
+                NavigationAppsHelper.openNavigationApps(requireActivity(), stationItem.getStation());
             }
         });
 
@@ -198,7 +202,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
 
                 @Override
                 public void onStateChanged(@NonNull View view, int i) {
-
+                    //Do nothing
                 }
 
                 @Override
@@ -239,6 +243,10 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         dialog.setOnShowListener((dialog1 -> {
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }));
+
+        }catch (Exception e){
+            Timber.d( Objects.requireNonNull(e.getLocalizedMessage()));
+        }
     }
 
     private void toggleFavourite() {

@@ -60,6 +60,9 @@ public class PersonalInfoViewModel extends ViewModel {
     private MutableLiveData<Event<Boolean>> _navigateToProfile = new MutableLiveData<>();
     public LiveData<Event<Boolean>> navigateToProfile = _navigateToProfile;
 
+    private MutableLiveData<Event> _focusWithError = new MutableLiveData<>();
+    public LiveData<Event> focusWithError = _focusWithError;
+
     private MutableLiveData<Event> updateProfileEvent = new MutableLiveData<>();
     private MutableLiveData<Event> signOutEvent = new MutableLiveData<>();
     private boolean isUpdatingEmail;
@@ -74,6 +77,8 @@ public class PersonalInfoViewModel extends ViewModel {
         return email;
     }
     public boolean isDuplicateEmail =  false;
+    private MutableLiveData<Event<Integer>> _callEvent = new MutableLiveData<>();
+    public LiveData<Event<Integer>> callEvent = _callEvent;
 
 
     @SuppressWarnings("unchecked")
@@ -180,6 +185,19 @@ public class PersonalInfoViewModel extends ViewModel {
                         alert.title = R.string.msg_used_password_title;
                         alert.message = R.string.msg_used_password_message;
                         alert.positiveButton = R.string.ok;
+                    } else if (Objects.requireNonNull(result.message).equalsIgnoreCase(ErrorCodes.ERR_EMAIL_VALIDATION_INVALID_PUBWEB)) {
+                        alert.title = R.string.msg_used_password_title;
+                        alert.message = R.string.profile_personnal_informations_email_invalid_alert_message;
+                        alert.positiveButton = R.string.profile_get_help_call;
+                        alert.positiveButtonClick = () -> {
+                            if(!emailInputField.isEmpty()){
+                                _callEvent.setValue(new Event<Integer>(R.string.customer_support_number));
+                            }
+                        };
+                        alert.negativeButton = R.string.profile_personnal_informations_email_duplicate_undo_button;
+                        alert.negativeButtonClick =  () -> {
+                            _focusWithError.setValue(Event.newEvent(true));
+                        };
                     }
                     else {
                         alert.title = R.string.msg_am001_title;
@@ -286,15 +304,17 @@ public class PersonalInfoViewModel extends ViewModel {
             Alert alert = new Alert();
             alert.title = emailInputField.isEmpty() ? R.string.profile_personnal_informations_email_empty_alert_title : R.string.profile_personnal_informations_email_invalid_alert_title;
             alert.message = emailInputField.isEmpty() ? R.string.profile_personnal_informations_email_empty_alert_message : R.string.profile_personnal_informations_email_invalid_alert_message;
-            alert.positiveButton = R.string.ok;
+            alert.positiveButton = R.string.profile_get_help_call;
             alert.positiveButtonClick = () -> {
+                if(!emailInputField.isEmpty()){
+                    _callEvent.setValue(new Event<Integer>(R.string.customer_support_number));
+                }
                 emailInputField.setText("");
                 emailInputField.notifyPropertyChanged(BR.text);
             };
             alert.negativeButton = R.string.cancel;
             alert.negativeButtonClick = () -> {
-                emailInputField.setText(profile.getEmail());
-                emailInputField.notifyPropertyChanged(BR.text);
+                emailInputField.setShowError(true);
             };
             profileSharedViewModel.postAlert(alert);
 

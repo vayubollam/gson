@@ -83,7 +83,7 @@ public class ReceiptFragment extends MainActivityFragment {
         observeTransactionData(transactionId);
 
         binding.viewReceiptBtn.setOnClickListener((v) -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "View Receipt"));
             binding.receiptLayout.setVisibility(View.VISIBLE);
             v.setVisibility(View.GONE);
         });
@@ -117,9 +117,11 @@ public class ReceiptFragment extends MainActivityFragment {
                 isLoading.set(false);
                 if (sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                } 
+                }
+                binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
+                binding.appBar.setOnClickListener((view)-> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
 
@@ -132,6 +134,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
+                    binding.transactionTotal.setVisibility(View.GONE);
+                    binding.transactionTaxInclusive.setVisibility(View.GONE);
+                    binding.transactionSeparator.setVisibility(View.GONE);
                 } else {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
@@ -139,10 +144,10 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.setTransaction(result.data);
 
                 binding.shareButton.setOnClickListener(v -> {
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.buttonTap, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
                     File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
 
-                    // TODO: Create error handling
+                    //Create error handling
                     if (pdfFile == null) return;
 
                     Uri pdfUri;
@@ -190,7 +195,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 });
             } else {
                 // There was some problem, log or handle the error code.
-                // TODO: Handle error when launching in app review
+                // Handle error when launching in app review
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
 
                 if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }

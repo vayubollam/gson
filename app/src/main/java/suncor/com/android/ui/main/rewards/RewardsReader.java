@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
 
 public class RewardsReader {
 
@@ -26,4 +27,10 @@ public class RewardsReader {
         Reward[] rewards = gson.fromJson(new InputStreamReader(jsonFile), Reward[].class);
         return rewards;
     }
+
+    public ThirdPartyGiftCardCategory[] getThirdPartyRawFile() {
+        InputStream jsonFile = application.getResources().openRawResource(R.raw.thirdpartyrawresponse);
+        return gson.fromJson(new InputStreamReader(jsonFile), ThirdPartyGiftCardCategory[].class);
+    }
+
 }

@@ -1,5 +1,7 @@
 package suncor.com.android.mfp.challengeHandlers;
 
+import android.util.Base64;
+
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLAuthorizationManager;
 import com.worklight.wlclient.api.WLErrorCode;
@@ -11,6 +13,8 @@ import com.worklight.wlclient.api.challengehandler.SecurityCheckChallengeHandler
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -72,12 +76,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 JSONObject pubWebResponse = jsonObject.getJSONObject(PUBWEB);
                 switch (errorCode) {
                     case ErrorCodes.ERR_ACCOUNT_BAD_PASSWORD:
-                        if (pubWebResponse.has(REMAINING_ATTEMPTS)) {
-                            int remainingAttempts = pubWebResponse.getInt(REMAINING_ATTEMPTS);
-                            listener.onLoginFailed(SigninResponse.wrongCredentials(remainingAttempts));
-                        } else {
-                            listener.onLoginFailed(SigninResponse.wrongCredentials());
-                        }
+                        listener.onLoginFailed(SigninResponse.wrongCredentials());
                         cancel();
                         break;
                     case ErrorCodes.ERR_ACCOUNT_SOFT_LOCK:
@@ -112,8 +111,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                     }
                 }
                 
-                if (jsonObject.has("errorCode")) {
-                    String errorCode = jsonObject.get("errorCode").toString();
+                if (jsonObject.has(ERROR_CODE)) {
+                    String errorCode = jsonObject.get(ERROR_CODE).toString();
                     String messageCode = jsonObject.get("messageId").toString();
                     if (errorCode.equals("SUNCOR013")  && messageCode.isEmpty()) {
                         listener.onLoginFailed(SigninResponse.unexpectedFailure());
@@ -137,7 +136,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         super.handleFailure(error);
         Timber.d("Handle failure");
         Timber.v(error.toString());
-        AnalyticsUtils.userID = null;
+        AnalyticsUtils.setUserId(null);
         isChallenged = false;
         listener.onLoginFailed(SigninResponse.generalFailure());
     }
@@ -156,7 +155,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
             String profileStr = identity.getJSONObject("user").getString("attributes");
             profile = gson.fromJson(profileStr, Profile.class);
 
-            AnalyticsUtils.userID = profile.getRetailId();
+            AnalyticsUtils.setUserId(profile.getRetailId());
             AnalyticsUtils.setUserProperty(application.getApplicationContext(), profile.getRetailId(), profile.isRbcLinked());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -164,11 +163,27 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
     }
 
     public void login(JSONObject credentials) {
+
+        JSONObject base64EncodedCredentials = null;
+
+        try {
+            String usernameBase64Encoded = encodeCredentials(credentials.getString("email"));
+            String passwordBase64Encoded = encodeCredentials(credentials.getString("password"));
+
+            base64EncodedCredentials = new JSONObject();
+
+            base64EncodedCredentials.put("Qd2jUUbQNG", usernameBase64Encoded);
+            base64EncodedCredentials.put("UsmP6D6Dhy", passwordBase64Encoded);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         this.credentials = credentials;
         if (isChallenged) {
-            submitChallengeAnswer(credentials);
+            submitChallengeAnswer(base64EncodedCredentials);
         } else {
-            WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, credentials, new WLLoginResponseListener() {
+            WLAuthorizationManager.getInstance().login(SECURITY_CHECK_NAME_LOGIN, base64EncodedCredentials, new WLLoginResponseListener() {
                 @Override
                 public void onSuccess() {
                     listener.onLoginSuccess(profile);
@@ -177,8 +192,8 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
 
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
-                    //TODO handle failures related to connection issue
-                    AnalyticsUtils.userID = null;
+                    //handle failures related to connection issue
+                    AnalyticsUtils.setUserId(null);
                     Timber.d("Login Preemptive Failure, error: " + wlFailResponse.toString());
                     if (listener != null && !WLErrorCode.CHALLENGE_HANDLING_CANCELED.getDescription().equals(wlFailResponse.getErrorMsg())) {
                         listener.onLoginFailed(SigninResponse.generalFailure());
@@ -186,6 +201,21 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
                 }
             });
         }
+    }
+
+    private String encodeCredentials(String input) {
+        String data;
+        if (input != null) {
+            try {
+                data = Base64.encodeToString(input.getBytes(StandardCharsets.UTF_8.toString()), Base64.NO_WRAP);
+                return data;
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+
     }
 
     @Override
@@ -208,7 +238,7 @@ public class UserLoginChallengeHandler extends SecurityCheckChallengeHandler {
         WLAuthorizationManager.getInstance().logout(UserLoginChallengeHandler.SECURITY_CHECK_NAME_LOGIN, new WLLogoutResponseListener() {
             @Override
             public void onSuccess() {
-                AnalyticsUtils.userID = null;
+                AnalyticsUtils.setUserId(null);
                 fingerPrintManager.deactivateAutoLogin();
                 listener.onSuccess();
             }

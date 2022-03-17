@@ -23,6 +23,7 @@
     <dimen name="petro_canada_cards_last_height">64dp</dimen>
 
     <dimen name="petro_canada_cards_padding">12dp</dimen>
+    <dimen name ="petro_canada_cards_divider_padding">16dp</dimen>
     <dimen name="suncor_toast_bottom_margin">80dp</dimen>
 
     <dimen name="help_icon_end_margin">16dp</dimen>

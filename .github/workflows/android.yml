@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - "*"
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -70,11 +68,11 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
 
-    - name: Build and analyze
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      run: ./gradlew clean && ./gradlew build sonarqube --info
+    #- name: Build and analyze
+    #  env:
+    #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #    SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    #  run: ./gradlew clean && ./gradlew build sonarqube --info
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -83,70 +81,85 @@ jobs:
     - name: Compile and Build
       run: ./gradlew assemble${{ env.BUILD_ENV }}Release
    
-    - name: Upload APK
+    - name: Upload Artifact
       uses: actions/upload-artifact@v2.2.0
       with:
        name: Release artifact
        path: app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk
        
     - name: Upload to Perfecto public cloud
-      if: ${{ env.BUILD_ENV == 'QA' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
+      if: ${{ env.BUILD_ENV == 'QACarwash' || env.BUILD_ENV == 'QAScrum' || env.BUILD_ENV == 'DevScrum' || env.BUILD_ENV == 'DevCarwash' || env.BUILD_ENV == 'Prod' || env.BUILD_ENV == 'UATTestflight' || env.BUILD_ENV == 'DevSus' || env.BUILD_ENV == 'QASus' || env.BUILD_ENV == 'Dev' || env.BUILD_ENV == 'UAT' }}
       env:
         PERFECTO_TOKEN: ${{ secrets.PERFECTO_TOKEN }}
       run: |
-        curl -v --fail-with-body --data-binary app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk "https://ibmgbs.perfectomobile.com/services/repositories/media/app-${env.BUILD_ENV}${env.FEATURE}-release.apk?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1   
+        curl -X POST -T app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk "https://ibmgbs.perfectomobile.com/services/repositories/media/app-${{ env.BUILD_ENV }}${{ env.FEATURE }}-release.apk?operation=upload&securityToken=$PERFECTO_TOKEN&overwrite=true" -H 'Content-Type: application/x-www-form-urlencoded' -H 'cache-control: no-cache' --http1.1
 
-    - name: Get appropriate app center credentials
+    - name: Get appropriate credentials for AppCenter
       run: |
         case ${{ env.BUILD_ENV }} in
           QACarwash)
             echo APPCNTR_URL=https://qa.rfmp-mfp.com >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_QA_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_QA_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/e62caca0e4d443789a0e5bf1ab827386/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           DevCarwash)
             echo APPCNTR_URL=https://dev.rfmp-mfp.com >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_DEV_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_DEV_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a997fdcf36434291ad2e55168666d916/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           UAT)
             echo APPCNTR_URL=https://uatqa.rfmp-mfp.com >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_UAT_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_UAT_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/2886be1b605d47d7bbe6709e312825b0/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           Dev)
             echo APPCNTR_URL=https://dev.rfmp-mfp.com  >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_DEVSCRUM_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_DEVSCRUM_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a997fdcf36434291ad2e55168666d916/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
+            ;;
+          DevScrum)
+            echo APPCNTR_URL=https://scrumdev.rfmp-mfp.com >> $GITHUB_ENV
+            echo APPCNTR_USERNAME=APPCENTRE_DEVSCRUM_USERNAME >> $GITHUB_ENV
+            echo APPCNTR_PASSWORD=APPCENTRE_DEVSCRUM_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/f706e2a8d74a454fa3274fd261c4dca7/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           QAScrum)
             echo APPCNTR_URL=https://scrumqa.rfmp-mfp.com >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_QASCRUM_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_QASCRUM_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/2b0b614c42774492959a70e890466267/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           Prod)
             echo APPCNTR_URL=https://mfp.petro-canada.ca >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_PROD_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_PROD_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/5f43bb283062434eb63fb6245495b687/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           UATTestflight)
             echo APPCNTR_URL=https://uatqa.rfmp-mfp.com >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_UAT_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_UAT_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/2886be1b605d47d7bbe6709e312825b0/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           DevSus)
             echo APPCNTR_URL=https://opsdev.rfmp-mfp.com/ >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_DEVSUS_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_DEVSUS_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/480b7560045846db9f9814b9347ce38c/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
           QASus)
             echo APPCNTR_URL=https://opsqa.rfmp-mfp.com >> $GITHUB_ENV
             echo APPCNTR_USERNAME=APPCENTRE_QASUS_USERNAME >> $GITHUB_ENV
             echo APPCNTR_PASSWORD=APPCENTRE_QASUS_PASSWORD >> $GITHUB_ENV
+            echo TEAMS_WEBHOOK_URL=https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/4db61fdb48e8409b897ba6c220636322/6438f740-0192-4e30-b672-cdbd594c63cf >> $GITHUB_ENV
             ;;
         esac
    # this jar does not return a non-zero code on failure, so the workflow does not fail even if this upload fails
-    - name: Upload to QA IBM app store
+    - name: Upload to IBM app store
       env:
         APPCNTR_URL: ${{ env.APPCNTR_URL }}
       run: |
@@ -160,18 +173,17 @@ jobs:
       env:
           JF_ARTIFACTORY_RFMP_ANDROID: ${{ secrets.JF_ARTIFACTORY_RFMP }}
 
-    - name: Upload APK 
+    - name: Upload APK to JFrog
       run: |
           jfrog rt u app/build/outputs/apk/${{ env.BUILD_ENV }}/release/*.apk rfmp-android/${{ env.BUILD_ENV }}/release/app-${{ env.BUILD_ENV }}-release.apk
 
-    - name: test notify teams
-      env:
-        TEAMS_WEBHOOK_URL: https://suncor.webhook.office.com/webhookb2/9f66d075-001e-4288-8913-b34a1044b1d2@1aa51068-11a6-4bd2-8646-1fff31a30ffc/IncomingWebhook/a498ba31c5e74dd98b927a932b1c2f0c/5b56d944-e978-4862-a720-a1f9589d6c37
+    - name: Upload mapping file to JFrog
       run: |
-        curl -H 'Content-Type: application/json' -d "{\"text\": \"Workflow run complete on ${GITHUB_REF}: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" ${TEAMS_WEBHOOK_URL}
-  
+          jfrog rt u app/build/outputs/apk/${{ env.BUILD_ENV }}/release/mapping.txt rfmp-android/${{ env.BUILD_ENV }}/release/mapping-${{ env.BUILD_ENV }}-release.txt
 
-      
+    - name: Send MS Teams build notification
+      run: |
+        curl -H 'Content-Type: application/json' -d "{ \"type\":\"message\", \"attachments\":[ { \"contentType\":\"application\/vnd.microsoft.card.adaptive\", \"contentUrl\":null, \"content\": { \"type\": \"AdaptiveCard\", \"summary\":\"Build\", \"msTeams\": { \"width\": \"full\" }, \"body\": [ { \"type\": \"TextBlock\", \"size\": \"Large\", \"weight\": \"Bolder\", \"text\": \"Github Actions build deployed on $BUILD_ENV\", \"wrap\": true, \"style\": \"heading\", \"color\": \"Default\" }, { \"type\": \"FactSet\", \"facts\": [ { \"title\": \"Build Number\", \"value\": \"$SHORT_DATE\" }, { \"title\": \"Tag\", \"value\": \"$GITHUB_REF_NAME\" }, { \"title\": \"Platform\", \"value\": \"Android\" }, { \"title\": \"Build time\", \"value\": \"$FULL_DATE\" }, { \"title\": \"SHA\", \"value\": \"$SHORT_HASH\" }, { \"title\": \"Started by\", \"value\": \"$GITHUB_ACTOR\" } ], \"separator\": true, \"spacing\": \"Medium\" } ], \"actions\": [ { \"type\": \"Action.OpenUrl\", \"title\": \"View in AppCenter\", \"url\": \"${APPCNTR_URL}/appcenterconsole/console.html\" } ], \"$schema\": \"http:\/\/adaptivecards.io\/schemas\/adaptive-card.json\", \"version\": \"1.3\" } } ] }" ${TEAMS_WEBHOOK_URL}
    
     
     

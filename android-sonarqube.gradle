@@ -10,8 +10,6 @@ sonarqube {
         // Analyze tests classes
         if (project.plugins.hasPlugin('com.android.application')) {
             property "sonar.tests", "src/test/java, src/androidTest/java"
-        } else {
-            property "sonar.tests", "src/test/java"
         }
         property "sonar.junit. reportsPath", "build/test-results/Debug"
         property "sonar.android.lint. report", "build/outputs/lint-results.xml"

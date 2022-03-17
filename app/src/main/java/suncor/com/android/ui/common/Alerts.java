@@ -13,15 +13,14 @@ import suncor.com.android.utilities.ConnectionUtil;
 public class Alerts {
     public static AlertDialog prepareGeneralErrorDialog(Context context, String formName ) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
-            AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+            AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMERROR,
                     new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title))
-                ,new Pair<>(AnalyticsUtils.Param.formName, formName));
+                ,new Pair<>(AnalyticsUtils.Param.FORMNAME, formName));
 
             String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.formName, formName)
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
+                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName), new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
@@ -31,7 +30,7 @@ public class Alerts {
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.ok)),
-                            new Pair<>(AnalyticsUtils.Param.formName, formName)
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
                     );
                     dialog.dismiss();
                 });
@@ -40,15 +39,15 @@ public class Alerts {
 
     public static AlertDialog prepareGeneralErrorDialogWithTryAgain(Context context, DialogInterface.OnClickListener listener, String formName) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMERROR,
                 new Pair<>(AnalyticsUtils.Param.errorMessage,hasInternetConnection ? context.getString( R.string.msg_e001_title) : context.getString( R.string.msg_e002_title)),
-                new Pair<>(AnalyticsUtils.Param.formName, formName));
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, formName));
 
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                 new Pair<>(AnalyticsUtils.Param.formName, formName)
+                 new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
@@ -58,7 +57,7 @@ public class Alerts {
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.msg_001_dialog_cancel)),
-                            new Pair<>(AnalyticsUtils.Param.formName, formName)
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
                     );
                     dialog.dismiss();
                 });
@@ -66,13 +65,13 @@ public class Alerts {
     }
 
     public static AlertDialog prepareCustomDialogWithTryAgain(String title, String message, Context context, DialogInterface.OnClickListener listener, String formName) {
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.formError,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMERROR,
                 new Pair<>(AnalyticsUtils.Param.errorMessage, title+"("+message+")")
-                ,new Pair<>(AnalyticsUtils.Param.formName, formName));
+                ,new Pair<>(AnalyticsUtils.Param.FORMNAME, formName));
 
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
-                new Pair<>(AnalyticsUtils.Param.formName, formName)
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -82,7 +81,7 @@ public class Alerts {
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, context.getString(R.string.msg_001_dialog_cancel)),
-                            new Pair<>(AnalyticsUtils.Param.formName, formName)
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
                     );
                     dialog.dismiss();
                 });
@@ -91,9 +90,9 @@ public class Alerts {
 
     public static AlertDialog prepareCustomDialog(String title, String message, Context context, DialogInterface.OnClickListener listener,
                                                String formName ) {
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
-                new Pair<>(AnalyticsUtils.Param.formName, formName)
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -108,9 +107,9 @@ public class Alerts {
     public static AlertDialog prepareCustomDialog(Context context, String title, String message,
                                                   String positiveButton, String negativeButton,
                                                   DialogInterface.OnClickListener positiveListener, String formName) {
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
-                new Pair<>(AnalyticsUtils.Param.formName, formName)
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(title)
@@ -120,7 +119,7 @@ public class Alerts {
                     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
                             new Pair<>(AnalyticsUtils.Param.alertSelection, negativeButton),
-                            new Pair<>(AnalyticsUtils.Param.formName, formName));
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, formName));
                     {dialogInterface.dismiss();
                     }
                 })
@@ -130,9 +129,9 @@ public class Alerts {
 
     public static AlertDialog prepareCustomDialogOk(String title, String message, Context context, DialogInterface.OnClickListener listener,
                                                   String formName ) {
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, title+"("+message+")"),
-                new Pair<>(AnalyticsUtils.Param.formName, formName)
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, formName)
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(title)

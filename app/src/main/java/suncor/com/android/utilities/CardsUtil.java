@@ -9,13 +9,15 @@ import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.util.Locale;
+
 import suncor.com.android.R;
 
 public class CardsUtil {
     public static void showZeroBalanceAlert(Context context, DialogInterface.OnClickListener posListener,
                                             DialogInterface.OnClickListener negListener) {
         Dialog dialog;
-        //TODO: UNCOMMENT WHEN REDEEM/BUG SINGLE TICKET IS BACK
+        // UNCOMMENT WHEN REDEEM/BUG SINGLE TICKET IS BACK
 //        if (negListener == null) {
 //            dialog = new AlertDialog.Builder(context)
 //                    .setTitle(R.string.zero_balance_alert_title)
@@ -35,7 +37,7 @@ public class CardsUtil {
 //                    .create();
 //        }
         String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
         );
         if (negListener == null) {
@@ -71,7 +73,7 @@ public class CardsUtil {
     public static void showOtherCardAvailableAlert(Context context) {
         Dialog dialog;
         String analyticName = context.getString(R.string.zero_balance_alert_title)+"("+context.getString(R.string.zero_balance_alert_message)+")";
-        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.alert,
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName)
         );
         dialog = new AlertDialog.Builder(context)
@@ -88,6 +90,20 @@ public class CardsUtil {
 
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+    }
+
+    public static void showSuspendedCardAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.reload_card_alet_title)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
+                .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dialog, which) -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_canada_reload_url)));
+                    context.startActivity(browserIntent);
+                }).setNegativeButton(context.getResources().getString(R.string.reload_card_alert_cancel), (dialog, which) -> {
+                    AnalyticsUtils.logEvent(context,AnalyticsUtils.Event.alertInteraction,
+                            new Pair<>(AnalyticsUtils.Param.alertTitle, context.getString(R.string.reload_card_alet_title)),
+                            new Pair<>(AnalyticsUtils.Param.alertSelection,context.getString(R.string.reload_card_alert_description)),
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName()));
+                });
+        builder.show();
     }
 
     public static void ShowSuspendedCardAlertForActivateWash(Context context){
