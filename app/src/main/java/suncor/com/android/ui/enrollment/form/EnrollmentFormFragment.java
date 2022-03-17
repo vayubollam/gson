@@ -194,6 +194,15 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         d.dismiss();
                     });
                     dialog.show();
+                } else if(ErrorCodes.ERR_EMAIL_VALIDATION_INVALID_PUBWEB.equals(r.message)){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    dialog.setTitle(R.string.enrollment_email_restricted_error);
+                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                        focusOnItem(binding.emailInput);
+                        binding.emailInput.setError(true);
+                        d.dismiss();
+                    });
+                    dialog.show();
                 }else {
                     Alerts.prepareGeneralErrorDialog(getActivity(), ACTIVATE_PETRO_POINTS_CARD).show();
                 }
