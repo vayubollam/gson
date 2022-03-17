@@ -673,6 +673,7 @@
     <string name="no_redemption">Aucun échange</string>
     <string name="redeem_x_points">Échangez points</string>
     <string name="redeem_petro_points">Échangez vos Petro-Points</string>
+    <string name="warning_for_beyond_limit_redemption">You cannot redeem more than %s points</string>
 
     <string name="zero_dollar_off">0 $ de rabais</string>
     <string name="zero_points">0 points</string>

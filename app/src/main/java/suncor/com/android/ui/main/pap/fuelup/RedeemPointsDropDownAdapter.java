@@ -12,6 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableDouble;
+import androidx.databinding.ObservableInt;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -55,6 +58,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private double amountInDouble;
     private boolean isPreAuthChanges;
     private EditText otherAmountEditText;
+    private ObservableBoolean isGoingBeyondLimit = new ObservableBoolean(false);
+    private ObservableInt availablePoints = new ObservableInt();
     private double zeroInDouble = 0.0;
     private boolean selectedAmountOtherThanZero;
 
@@ -178,6 +183,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     public void collapseIfPreAuthChanges(int selectedPos) {
         isPreAuthChanges = true;
+        isGoingBeyondLimit.set(false);
         this.selectedPos = selectedPos;
         listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true, false);
     }
@@ -190,6 +196,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         if (position != redeemPoints.size() - 1) {
             ((ChildDropDownViewHolder) holder).setDataOnView(redeemPoints.get(String.valueOf(position + 1)));
         } else {
+            ((OtherAmountViewHolder) holder).binding.setIsGoingBeyondLimit(isGoingBeyondLimit);
+            ((OtherAmountViewHolder) holder).binding.setAvailablePoints(availablePoints);
             ((OtherAmountViewHolder) holder).setDataOnView();
         }
     }
@@ -366,8 +374,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                                     selectedAmountOtherThanZero = true;
                                 }
                                 getRoundOffValue();
+                                availablePoints.set((int) roundOffValue);
                                 if (amountInDouble > roundOffValue) {
+                                    isGoingBeyondLimit.set(true);
                                     amountInDouble = roundOffValue;
+                                }else{
+                                    isGoingBeyondLimit.set(false);
                                 }
                                 isPreAuthChanges = false;
                                 listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false, true);
