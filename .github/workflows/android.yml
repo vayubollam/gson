@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - 'feature/RMP-5228-test-*'
-      
-  workflow_dispatch:
 
 jobs:
   build:
