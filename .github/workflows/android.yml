@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - * # or the name of your main branch
+      - origin/feature/RMP-5228-implementation-sonarqube # or the name of your main branch
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
