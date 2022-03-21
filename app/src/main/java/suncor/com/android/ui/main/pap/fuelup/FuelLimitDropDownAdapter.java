@@ -246,6 +246,7 @@ public class FuelLimitDropDownAdapter extends DropDownAdapter {
             binding.container.setSelected(selectedPos == getAdapterPosition());
             binding.manualLimit.setText(String.format(mContext.getString(R.string.fuel_manual_price_limit), formatter.format(otherLimitMinLimit), formatter.format(otherLimitMaxLimit)));
             binding.prefixCurrency.setText((selectedPos == getAdapterPosition()) ? mContext.getString(R.string.currency_dollar) : value);
+            binding.postfixCurrency.setText((selectedPos == getAdapterPosition()) ? mContext.getString(R.string.currency_dollar) : value);
             binding.inputField.setText(manualValue > 0 ? formatter.format(manualValue).replace("$", "") : "");
             inputFieldText = binding.inputField.getText().toString().replaceAll("\\s+", "");
             binding.inputField.setText(inputFieldText);

@@ -55,8 +55,10 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_80"
                 android:textSize="16sp"
+                android:paddingEnd="4dp"
                 android:background="@null"
                 android:hint="@string/from"
+                android:minEms="1"
                 android:inputType="numberDecimal"
                 android:visibility="gone"
                 app:autoSizeTextType="uniform"/>
