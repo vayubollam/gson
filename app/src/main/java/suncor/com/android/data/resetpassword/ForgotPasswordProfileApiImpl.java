@@ -24,6 +24,8 @@ import suncor.com.android.model.resetpassword.ResetPasswordRequest;
 import suncor.com.android.model.resetpassword.SecurityQuestion;
 import suncor.com.android.utilities.Timber;
 
+import static suncor.com.android.utilities.Constants.ACCEPT_LANGUAGE;
+
 public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
 
 
@@ -47,9 +49,9 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             request.addHeader("X-Email",email);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                request.addHeader("Accept-Language", "fr-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
             } else {
-                request.addHeader("Accept-Language", "en-CA");
+                request.addHeader(ACCEPT_LANGUAGE, "en-CA");
             }
             request.send(new WLResponseListener() {
                 @Override
@@ -65,8 +67,13 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
                     Timber.d("Profile forgot password API  " + wlFailResponse.toString());
                     int remainingMinutes = 0 ;
                     try {
-                        remainingMinutes = wlFailResponse.getResponseJSON().getInt("remainingMinutes");
-                        result.postValue(Resource.error(wlFailResponse.getErrorMsg() + ";" + remainingMinutes));
+                        JSONObject failJSONObject = wlFailResponse.getResponseJSON();
+                        if (failJSONObject != null) {
+                            remainingMinutes = failJSONObject.getInt("remainingMinutes");
+                            result.postValue(Resource.error(wlFailResponse.getErrorMsg() + ";" + remainingMinutes));
+                        } else {
+                            result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                        }
                     } catch (JSONException e) {
                         result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
                         e.printStackTrace();
@@ -91,9 +98,9 @@ public class ForgotPasswordProfileApiImpl implements ForgotPasswordProfileApi {
                 WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
                 request.addHeader("X-Guid",GUID);
                 if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
-                    request.addHeader("Accept-Language", "fr-CA");
+                    request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
                 } else {
-                    request.addHeader("Accept-Language", "en-CA");
+                    request.addHeader(ACCEPT_LANGUAGE, "en-CA");
                 }
                 request.send(new WLResponseListener() {
                     @Override

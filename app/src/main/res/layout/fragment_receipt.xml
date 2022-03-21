@@ -34,6 +34,12 @@
                 android:background="@color/black_4"
                 android:orientation="vertical">
 
+                <suncor.com.android.uicomponents.SuncorAppBarLayout
+                    android:id="@+id/app_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -378,7 +384,6 @@
                             android:text="@{transaction.getFormattedDate}"
                             style="@style/Body"
                             android:textColor="@color/black_C" />
-
                     </LinearLayout>
 
                     <View
@@ -412,12 +417,14 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/transaction_separator"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
                         android:background="@color/black_8" />
 
                     <LinearLayout
+                        android:id="@+id/transaction_total"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -444,6 +451,7 @@
                     </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/transaction_tax_inclusive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"

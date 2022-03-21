@@ -219,7 +219,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
             @Override
             public void onSlide(@NonNull View view, float v) {
-
+                //Do nothing
             }
         });
 
@@ -567,17 +567,17 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         permissionManager.checkPermission(getContext(), permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
             public void onNeedPermission() {
-
+                //Do nothing
             }
 
             @Override
             public void onPermissionPreviouslyDenied() {
-
+                //Do nothing
             }
 
             @Override
             public void onPermissionPreviouslyDeniedWithNeverAskAgain() {
-
+                //Do nothing
             }
 
             @Override
