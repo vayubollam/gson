@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import suncor.com.android.analytics.BaseAnalytics.BaseParams.ERROR_MESSAGE
+import suncor.com.android.analytics.BaseAnalytics.BaseParams.ERROR_MESSAGE_DETAIL
 import suncor.com.android.analytics.BaseAnalytics.BaseParams.FORM_NAME
 
 
@@ -13,14 +14,20 @@ open class BaseAnalytics {
     object BaseEvents {
         const val BUTTON_TAP = "button_tap"
         const val INFO_TAP = "info_tap"
-        const val ALERT_INTERACTION = "alert_interaction"
         const val INTER_SITE = "intersite"
         const val ERROR_LOG = "error_log"
 
-        /*Forms*/
+        /* Forms */
         const val FORM_START = "form_start"
         const val FORM_COMPLETE = "form_complete"
         const val FORM_STEP = "form_step"
+
+        const val PAYMENT_PREAUTHORIZE = "payment_preauthorize"
+
+
+        /* Alerts */
+        const val ALERT = "alert"
+        const val ALERT_INTERACTION = "alert_interaction"
 
     }
 
@@ -37,6 +44,10 @@ open class BaseAnalytics {
 
         const val INTER_SITE_URL = "intersiteURL"
         const val ERROR_MESSAGE = "errorMessage"
+        const val ERROR_MESSAGE_DETAIL = "detailErrorMessage"
+
+        const val PAYMENT_METHOD = "paymentMethod"
+        const val FUEL_AMOUNT_SELECTION = "fuelAmountSelection"
 
     }
 
@@ -48,15 +59,23 @@ open class BaseAnalytics {
         val bundle = Bundle()
         bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
         bundle.putString(BaseParams.ALERT_SELECTION,alertSelection)
-        bundle.putString(BaseParams.FORM_NAME,formName)
+        bundle.putString(FORM_NAME,formName)
 
         FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
     }
 
-    fun logErrorEvent(context: Context,errorMessage: String,formName: String){
+    fun logAlertShown(context: Context,alertTitle: String, formName : String){
+        val bundle = Bundle()
+        bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+        bundle.putString(FORM_NAME,formName)
+        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
+    }
+
+    fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
         val bundle = Bundle()
         bundle.putString(ERROR_MESSAGE,errorMessage)
         bundle.putString(FORM_NAME,formName)
+        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
         FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
     }
 

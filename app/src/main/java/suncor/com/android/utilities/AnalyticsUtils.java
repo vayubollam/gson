@@ -87,7 +87,6 @@ public class AnalyticsUtils {
         _ALERT(ALERT),
         alertInteraction(ALERT_INTERACTION),
         error(ERROR_LOG),
-        paymentPreauthorize(PAYMENT_PREAUTHORIZE),
         paymentComplete(PAYMENT_COMPLETE),
         intersite(INTERSITE),
         infoTap(INFO_TAP),

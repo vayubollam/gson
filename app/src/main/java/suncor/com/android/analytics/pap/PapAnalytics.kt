@@ -3,9 +3,11 @@ package suncor.com.android.analytics.pap
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import com.google.errorprone.annotations.FormatMethod
 import suncor.com.android.analytics.BaseAnalytics
 import suncor.com.android.analytics.Errors
 
+private const val FORM_NAME_PAP = "Pay at Pump"
 
 object ReceiptAnalytics : BaseAnalytics() {
     private const val SCREEN_NAME = "pay-at-pump-receipt"
@@ -107,6 +109,7 @@ object SelectPumpAnalytics : BaseAnalytics(){
 object FuelUpAnalytics: BaseAnalytics(){
     private const val INFO_TEXT_SELECT_PUMP = "select pump number info"
     private const val SCREEN_NAME_PAP_PRE_AUTH_LOADING = "pay-at-pump-preauthorize-loading"
+   private const val SCREEN_NAME_PAP_PRE_AUTH = "pay-at-pump-preauthorize"
 
 
     @JvmStatic
@@ -117,17 +120,108 @@ object FuelUpAnalytics: BaseAnalytics(){
     }
 
     @JvmStatic
+    fun logPAPreAuthScreenName(activity: Activity) {
+        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH)
+    }
+
+    @JvmStatic
     fun logPAPreAuthLoadingScreenName(activity: Activity) {
         logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH_LOADING)
     }
 
     @JvmStatic
-    fun logInterSiteURL(context: Context) {
+    fun logPapPreAuthLoadingScreenName(activity: Activity) {
+        logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH_LOADING)
+    }
+    @JvmStatic
+    fun logInterSitePrivacyURL(context: Context, url: String) {
         val bundle = Bundle()
-        bundle.putString(BaseParams.INTER_SITE_URL, INFO_TEXT_SELECT_PUMP)
+        bundle.putString(BaseParams.INTER_SITE_URL, url)
         logEvent(context,BaseEvents.INTER_SITE,bundle)
     }
 
+    @JvmStatic
+    fun logPumpSelectionFormStep(context: Context, pumpNumber: String) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.FORM_SELECTION, pumpNumber)
+        bundle.putString(BaseParams.FORM_NAME, FORM_NAME_PAP)
+        logEvent(context, BaseEvents.FORM_STEP, bundle)
+    }
+
+    @JvmStatic
+    fun logFuelValueFormStep(context: Context, fuelValue: String) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.FORM_SELECTION, fuelValue)
+        bundle.putString(BaseParams.FORM_NAME, FORM_NAME_PAP)
+        logEvent(context, BaseEvents.FORM_STEP, bundle)
+    }
+
+    @JvmStatic
+    fun logPaymentMethodFormStep(context: Context, paymentMethodType: String) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.FORM_SELECTION, paymentMethodType)
+        bundle.putString(BaseParams.FORM_NAME, FORM_NAME_PAP)
+        logEvent(context, BaseEvents.FORM_STEP, bundle)
+    }
+
+    @JvmStatic
+    fun logConfirmAuthorizeButtonTap(context: Context, buttonText: String) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.BUTTON_TEXT, buttonText)
+        logEvent(context, BaseEvents.BUTTON_TAP, bundle)
+    }
+
+    @JvmStatic
+    fun logPaymentPreAuthorized(context: Context,paymentMethodType: String,fuelValue: String) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.PAYMENT_METHOD, paymentMethodType)
+        bundle.putString(BaseParams.FUEL_AMOUNT_SELECTION, fuelValue)
+        logEvent(context, BaseEvents.PAYMENT_PREAUTHORIZE, bundle)
+    }
+
+    @JvmStatic
+    fun logGpayCancelError(context: Context) {
+        logErrorEvent(context,Errors.SOMETHING_WRONG, FORM_NAME_PAP,Errors.DETAIL_G_PAY_CANCELlED)
+    }
+
+    @JvmStatic
+    fun logGPayError(context: Context, statusMessage: String) {
+        logErrorEvent(context,Errors.SOMETHING_WRONG, FORM_NAME_PAP,Errors.DETAIL_G_PAY_ERROR+statusMessage)
+    }
+
+    @JvmStatic
+    fun logAuthenticationError(context: Context) {
+        logErrorEvent(context,Errors.SOMETHING_WRONG, FORM_NAME_PAP,Errors.DETAIL_BIOMETRICS_FAILURE)
+    }
+
+    @JvmStatic
+    fun logTransactionFailureError(context: Context, errorCode: String) {
+        logErrorEvent(context,Errors.SOMETHING_WRONG, FORM_NAME_PAP,Errors.DETAIL_TRANSACTION_FAILURE_ERROR_CODE+errorCode)
+    }
+
+    @JvmStatic
+    fun logPapPumpRegFail(context: Context, errorCode: String) {
+        logErrorEvent(context,Errors.SOMETHING_WRONG, FORM_NAME_PAP,Errors.DETAIL_PUMP_REG_FAILS_ERROR_CODE+errorCode)
+    }
+
+    @JvmStatic
+    fun logSomethingWrongError(context: Context, errorCode: String) {
+        logErrorEvent(context,Errors.SOMETHING_WRONG, FORM_NAME_PAP,Errors.DETAIL_SOMETHING_WRONG_ERROR_CODE+errorCode)
+    }
+
+    @JvmStatic
+    fun logAlert(context: Context, title: String) {
+        logAlertShown(context,title, FORM_NAME_PAP);
+    }
+
+    @JvmStatic
+    fun logAlertInteraction(context: Context, title: String, buttonText: String) {
+        logAlertDialogInteraction(context,
+            title,
+            buttonText,
+            FORM_NAME_PAP
+        )
+    }
 
 }
 
@@ -141,7 +235,6 @@ object FuellingAnalytics : BaseAnalytics(){
     private const val SCREEN_NAME_PAP_FUELING_ALMOST_COMPLETE = "pay-at-pump-fuelling-almost-complete"
     private const val PAP_FUELING_COMPLETE = "Fuelling Complete"
 
-    private const val FORM_NAME_PAP = "Pay at Pump"
 
 
     @JvmStatic
