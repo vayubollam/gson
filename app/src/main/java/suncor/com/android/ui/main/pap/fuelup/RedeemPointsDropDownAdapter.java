@@ -40,7 +40,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public final HashMap<String, String> redeemPoints;
     private final Context mContext;
     private final int petroPoints;
-    public static final double MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION = 100000;
+    private  int maximumPointsAllowedForRedemption ;
     private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
     private final NumberFormat numberInstance = NumberFormat.getNumberInstance(Locale.getDefault());
     private final RedeemPointsCallback redeemPointsCallback;
@@ -129,6 +129,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     public void setPreAuthValue(String preAuthValue) {
         this.preAuthValue = preAuthValue;
+    }
+
+    public void setMaxRedeemValue(int maximumPointsAllowedForRedemption){
+        this.maximumPointsAllowedForRedemption = maximumPointsAllowedForRedemption;
     }
 
 
@@ -256,8 +260,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             resultantValue = CardFormatUtils.formatBalance(petroPoints);
         }
         roundOffValue = numberInstance.parse(resultantValue).doubleValue();
-        if(roundOffValue > MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION){
-            roundOffValue = MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION;
+        if(roundOffValue > maximumPointsAllowedForRedemption){
+            roundOffValue = maximumPointsAllowedForRedemption;
         }
     }
 
