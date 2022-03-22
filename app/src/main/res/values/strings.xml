@@ -538,14 +538,14 @@
 
     <string name="action_menu_what_would_you_like_to_do">What would you \nlike to do?</string>
     <string name="action_menu_scan_card">Scan my points card</string>
-    <string name="action_menu_wash_car">Wash my vehicle</string>
+    <string name="action_menu_wash_car">Clean my vehicle</string>
     <string name="action_menu_account">Go to my account</string>
     <string name="cardetail_balance_update_message">Balance may take up to 24 hours to update</string>
     <string name="carddetail_active_wash">ACTIVATE WASH</string>
 
     <string name="carwash_header">Let\'s clean your vehicle</string>
     <string name="carwash_getwash_header">Get your wash</string>
-    <string name="carwash_getwash_message_card_only">Select your car wash card to get started.</string>
+    <string name="carwash_getwash_message_card_only">Select a card to get started.</string>
     <string name="carwash_getwash_message_ticket_only">Select your car wash ticket to get started.</string>
     <string name="carwash_getwash_message_card_and_ticket">Select your car wash card or ticket to get started.</string>
     <string name="carwash_no_card_get_ticket_header">Get a car wash</string>
