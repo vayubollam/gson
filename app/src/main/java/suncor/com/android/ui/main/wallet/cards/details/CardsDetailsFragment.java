@@ -39,7 +39,6 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
-import suncor.com.android.googleapis.passes.GooglePassesConfig;
 import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
@@ -126,7 +125,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -245,6 +244,16 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     Navigation.findNavController(getView()).navigate(action);
                 }
         };
+
+    private View.OnClickListener vacuumListener = view -> {
+        CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+        if(cardDetail.isSuspendedCard()){
+            CardsUtil.showSuspendedCardAlert(getContext());
+        } else {
+            ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+           //todo action for vacuum barcode screen
+        }
+    };
 
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {

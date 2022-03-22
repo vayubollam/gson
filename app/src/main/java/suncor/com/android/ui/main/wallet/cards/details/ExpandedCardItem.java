@@ -104,7 +104,7 @@ public class ExpandedCardItem {
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.WAG_SP_FORMAT);
                     cardName = context.getString(R.string.cards_sp_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_days_balance_expanded, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                             CardFormatUtils.formatBalance(balanceValue)
                             : null;
                     cardDescription = context.getString(R.string.cards_sp_description);
                     isBalanceDetailsVisible = false;
@@ -114,7 +114,7 @@ public class ExpandedCardItem {
                     cardNumber = CardFormatUtils.formatForViewing(cardDetail.getCardNumber(), CardFormatUtils.WAG_SP_FORMAT);
                     cardName = context.getString(R.string.cards_wag_expanded_label);
                     balance = balanceValue != -1 ?
-                            context.getResources().getQuantityString(R.plurals.cards_washes_balance_expanded, balanceValue, CardFormatUtils.formatBalance(balanceValue))
+                             CardFormatUtils.formatBalance(balanceValue)
                             : null;
                     cardDescription = context.getString(R.string.cards_wag_description);
                     isBalanceDetailsVisible = false;
