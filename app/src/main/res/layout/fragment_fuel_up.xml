@@ -113,6 +113,7 @@
                 app:title_color="@color/black_80"
                 app:title_size="16sp"
                 app:selected_position="2"
+                app:visibleGone="@{!isRedemptionRestricted}"
                 app:expanded_title="@string/redeem_petro_points"
                 android:layout_marginTop="1dp" />
 
