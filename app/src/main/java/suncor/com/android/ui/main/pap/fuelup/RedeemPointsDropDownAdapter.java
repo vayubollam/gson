@@ -18,6 +18,7 @@ import androidx.databinding.ObservableInt;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private final Context mContext;
     private final int petroPoints;
     private  int maximumPointsAllowedForRedemption ;
-    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.getDefault());
     private final NumberFormat numberInstance = NumberFormat.getNumberInstance(Locale.getDefault());
     private final RedeemPointsCallback redeemPointsCallback;
     private ChildViewListener listener;
@@ -69,7 +70,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         this.redeemPoints = redeemPoints;
         this.petroPoints = petroPoints;
         this.redeemPointsCallback = redeemPointsCallback;
+
+        DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.getDefault());
+        symbol.setCurrencySymbol("$");
+
         formatter.setMinimumFractionDigits(0);
+        formatter.setDecimalFormatSymbols(symbol);
     }
 
     @Override
