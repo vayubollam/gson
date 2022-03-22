@@ -55,10 +55,22 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_80"
                 android:textSize="16sp"
+                android:paddingEnd="4dp"
                 android:background="@null"
                 android:hint="@string/from"
+                android:minEms="1"
                 android:inputType="numberDecimal"
                 android:visibility="gone"
+                app:autoSizeTextType="uniform"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/postfix_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_80"
+                android:visibility="gone"
+                android:text="@string/currency_dollar_postfix"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"/>
 
             <androidx.appcompat.widget.AppCompatTextView
