@@ -167,7 +167,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 /*
                  * Alert dialog in order to let the user know that their operation could not be completed due to CLPE down.
                  */
-                if (transaction.getLoyaltyPointsMessages() == null) {
+                if (transaction.getBasePoints() == 0) {
 
                     AlertDialog.Builder dialog = createAlert(R.string.clpe_down_prompt, R.string.clpe_down_prompt_heading);
                     dialog.setCancelable(true);

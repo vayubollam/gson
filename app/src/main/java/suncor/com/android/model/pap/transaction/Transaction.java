@@ -22,6 +22,7 @@ public class Transaction {
     private final MutableLiveData<Integer> bonusPointsEarnedMutableData = new MutableLiveData<>();
     private final MutableLiveData<Integer> pointsRedeemedMutableData = new MutableLiveData<>();
     private final MutableLiveData<Integer> newBalanceMutableData = new MutableLiveData<>();
+    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
     public List<String> receiptData;
     private String transactionId;
     private Address address;
@@ -62,9 +63,6 @@ public class Transaction {
     private double pointsRedeemed = 0;
     private int currentBalance;
     private int newBalance = 0;
-
-
-    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     public Address getAddress() {
         return address;
@@ -194,7 +192,7 @@ public class Transaction {
     }
 
     public double getCorrespondingDollarOff() {
-        return  pointsRedeemed / 1000.0;
+        return pointsRedeemed / 1000.0;
     }
 
     public MutableLiveData<String> getRbcAlongWithRedemptionSavingsMutableData() {
@@ -205,7 +203,7 @@ public class Transaction {
 
     public double getRbcAlongWithRedemptionSavings() {
         getCalculatedFieldValues();
-        return  otherDiscount + pointsRedeemed / 1000.0;
+        return otherDiscount + pointsRedeemed / 1000.0;
 
     }
 
@@ -257,20 +255,20 @@ public class Transaction {
             double pointsRedeemed = 0;
             double basePoints = 0;
             double bonusPoints = 0;
-            if (loyaltyPointsMessages != null) {
+            if (loyaltyPointsMessages != null && loyaltyPointsMessages.size() > 0 && loyaltyPointsMessages.get(0).programId != null) {
                 for (LoyaltyPointsMessages loyaltyPointsMessages : loyaltyPointsMessages) {
-                    if (loyaltyPointsMessages.programId !=null && loyaltyPointsMessages.programId.equals("Base Points")) {
+                    if (loyaltyPointsMessages.programId != null && loyaltyPointsMessages.programId.equals("Base Points")) {
                         basePoints += loyaltyPointsMessages.earnedRewardSummary;
                     }
 
-                    if (loyaltyPointsMessages.programId !=null && loyaltyPointsMessages.programId.contains("Bonus")) {
+                    if (loyaltyPointsMessages.programId != null && loyaltyPointsMessages.programId.contains("Bonus")) {
                         bonusPoints += loyaltyPointsMessages.earnedRewardSummary;
                     }
 
                     pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
                 }
 
-                this.pointsRedeemed =  pointsRedeemed;
+                this.pointsRedeemed = pointsRedeemed;
                 this.bonusPoints = (int) bonusPoints;
                 this.basePoints = (int) basePoints;
                 newBalance = (int) (currentBalance + basePoints + bonusPoints - pointsRedeemed);
@@ -319,7 +317,7 @@ public class Transaction {
         public String p97programId;
         public String programName;
         public String loyaltyInstrument;
-        public String programId;
+        public String programId = null;
         public String unit;
         public double earnedRewardSummary;
         public double burnedRewardSummary;
