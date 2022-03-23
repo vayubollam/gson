@@ -1,5 +1,22 @@
 package suncor.com.android.ui.main.pap.fuelup;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.utilities.Constants.AVAILABLE;
+import static suncor.com.android.utilities.Constants.BIOMETRICS_FAILURE;
+import static suncor.com.android.utilities.Constants.CREDIT_CARD_1;
+import static suncor.com.android.utilities.Constants.DIALOG_TITLE;
+import static suncor.com.android.utilities.Constants.GPAY_CANCEL_USER;
+import static suncor.com.android.utilities.Constants.GPAY_ERROR_MSG;
+import static suncor.com.android.utilities.Constants.PAY_AT_PAUMP_PRE_AUTH_LOADING;
+import static suncor.com.android.utilities.Constants.PAY_AT_PUMP;
+import static suncor.com.android.utilities.Constants.PUMP_REG_FAILS_ERROR_CODE;
+import static suncor.com.android.utilities.Constants.READY_PAY_FAILURE;
+import static suncor.com.android.utilities.Constants.SELECTED_PAYMENT;
+import static suncor.com.android.utilities.Constants.SOEMTHING_WRONG_ERROR_CODE;
+import static suncor.com.android.utilities.Constants.SOMETHING_WRONG;
+import static suncor.com.android.utilities.Constants.TEMP_PAYMENT;
+import static suncor.com.android.utilities.Constants.TRANSACTION_FAILURE_ERROR_CODE;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -27,7 +44,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +53,8 @@ import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.PaymentDataRequest;
 import com.google.android.gms.wallet.PaymentsClient;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,6 +72,7 @@ import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentFuelUpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
@@ -62,7 +81,6 @@ import suncor.com.android.model.payments.PaymentDetail;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.googlepay.GooglePayUtils;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpAdapter;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpHelpDialogFragment;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpListener;
@@ -73,15 +91,12 @@ import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.Timber;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static suncor.com.android.utilities.Constants.*;
-
 public class FuelUpFragment extends MainActivityFragment implements ExpandableViewListener,
         FuelUpLimitCallbacks, SelectPumpListener, PaymentDropDownCallbacks, RedeemPointsDropDownAdapter.RedeemPointsCallback, ShowWarningPopupListener {
 
     // Arbitrarily-picked constant integer you define to track a request for payment data activity.
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 991;
-    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private final DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.getDefault());
 
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
@@ -131,6 +146,11 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
             });
         }
+
+        DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.getDefault());
+        symbol.setCurrencySymbol("$");
+
+        formatter.setDecimalFormatSymbols(symbol);
     }
 
     @Nullable
