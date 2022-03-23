@@ -55,16 +55,16 @@
             android:id="@+id/cardview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="50dp"
             android:layout_marginStart="4dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="8dp"
             android:background="@color/white"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/savetowallet">
+            app:layout_constraintBottom_toTopOf="@id/savetowallet"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -87,8 +87,8 @@
                     android:id="@+id/card_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="70dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="70dp"
                     android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -126,31 +126,88 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:fillViewport="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     app:layout_constraintBottom_toBottomOf="@id/divider3"
                     app:layout_constraintTop_toBottomOf="@id/divider">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
+                        android:layout_height="wrap_content"
+                        >
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance"
-                            android:layout_width="match_parent"
+                            android:id="@+id/balance_wash"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/expanded_card_balance_margin"
-                            android:gravity="center"
+                            android:layout_marginTop="8dp"
                             android:lineSpacingMultiplier="1.12"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
-                            android:paddingBottom="8dp"
                             android:text="@{card.balance}"
+                            android:visibility="gone"
                             android:textAppearance="@style/Headline2"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/divider_3"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:visibleGone="@{card.balance != null}"
-                            tools:text="100,500 points" />
+                            tools:text="15" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/balance_wash_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/washes_left"
+                            android:textColor="@color/black_80"
+                            android:textSize="18sp"
+                            app:fontFamily="@font/gibson_semibold"
+                            app:layout_constraintEnd_toEndOf="@id/balance_wash"
+                            app:layout_constraintStart_toStartOf="@id/balance_wash"
+                            app:layout_constraintTop_toBottomOf="@id/balance_wash"
+                            app:visibleGone="@{card.balance != null}"
+                            tools:text="washes left" />
+
+                        <View
+                            android:id="@+id/divider_3"
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:background="@drawable/horizontal_divider"
+                            app:layout_constraintBottom_toTopOf="@id/divider_2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/balance_vaccum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:lineSpacingMultiplier="1.12"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="@{card.balance}"
+                            android:textAppearance="@style/Headline2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/divider_3"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:visibleGone="@{card.balance != null}"
+                            tools:text="15" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/balance_vaccum_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/vacuum_left"
+                            android:textColor="@color/black_80"
+                            android:textSize="18sp"
+                            app:fontFamily="@font/gibson_semibold"
+                            app:layout_constraintEnd_toEndOf="@id/balance_vaccum"
+                            app:layout_constraintStart_toStartOf="@id/balance_vaccum"
+                            app:layout_constraintTop_toBottomOf="@id/balance_vaccum"
+                            app:visibleGone="@{card.balance != null}"
+                            tools:text="vacuum left" />
+
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/balance_details"
@@ -162,8 +219,8 @@
                             android:textColor="@color/black_60"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/balance"
-                            app:visibleGone="@{card.balance != null &amp;&amp; card.isBalanceDetailsVisible}"
+                            app:layout_constraintTop_toBottomOf="@id/balance_wash"
+                            app:visibleGone="@{(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)||(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)}"
                             tools:text="or $100 off" />
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -175,8 +232,8 @@
                             android:tint="@color/black_20"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/balance"
-                            app:visibleGone="@{card.balance == null}" />
+                            app:layout_constraintTop_toTopOf="@id/balance_wash"
+                            app:visibleGone="@{card.balance == null&amp;&amp;card.balance == null}" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/balance_unavailable"
@@ -189,27 +246,15 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/alert_image"
-                            app:visibleGone="@{card.balance == null}" />
+                            app:visibleGone="@{card.balance == null&amp;&amp;card.balance == null}" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/carwash_balance_update_message"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/cardetail_balance_update_message"
-                            android:textAppearance="@style/Caption1"
-                            android:textColor="@color/black_60"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/balance"
-                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}" />
 
                         <androidx.constraintlayout.widget.Barrier
                             android:id="@+id/balance_barriere"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:barrierDirection="bottom"
-                            app:constraint_referenced_ids="balance,balance_details,alert_image,balance_unavailable,carwash_balance_update_message" />
+                            app:constraint_referenced_ids="balance,balance_wash,balance_wash_left,balance_details,alert_image,balance_unavailable,balance_vaccum,balance_vaccum_left" />
 
                         <View
                             android:id="@+id/divider_2"
@@ -220,18 +265,31 @@
                             app:layout_constraintTop_toBottomOf="@id/balance_barriere" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/carwash_balance_update_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/cardetail_balance_update_message"
+                            android:textAppearance="@style/Caption1"
+                            android:textColor="@color/black_60"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/divider_2"
+                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/card_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
                             android:gravity="center"
                             android:lineSpacingMultiplier="1.57"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:layout_marginTop="5dp"
                             android:text="@{card.cardDescription}"
                             android:textAppearance="@style/Caption1"
                             android:textColor="@color/black_60"
-                            app:layout_constraintTop_toBottomOf="@id/divider_2"
+                            app:layout_constraintTop_toBottomOf="@id/carwash_balance_update_message"
                             tools:text="With Season Pass card you can wash your car every day (one wash per day) for 90 days.\nReload from 30 to 360 daily washes.\n—\nScan your card at the car wash entrance." />
 
                         <suncor.com.android.ui.common.LinkableTextView
@@ -240,15 +298,15 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:lineSpacingMultiplier="1.57"
-                            android:paddingTop="8dp"
                             android:paddingStart="16dp"
+                            android:paddingTop="8dp"
                             android:paddingEnd="16dp"
                             android:paddingBottom="16dp"
-                            android:textColor="@color/black_60"
                             android:text="@string/cards_zero_balance_description"
-                            app:layout_constraintTop_toBottomOf="@id/card_description"
                             android:textAppearance="@style/Caption1"
-                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}"/>
+                            android:textColor="@color/black_60"
+                            app:layout_constraintTop_toBottomOf="@id/card_description"
+                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}" />
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/barcode_image"
@@ -280,32 +338,77 @@
                     android:gravity="center"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:visibility="gone"
                     android:textColor="@color/red"
-                    android:textStyle="bold"
                     android:textSize="16dp"
-                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}"
+                    android:textStyle="bold"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/active_wash_button"
-                    />
+                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}" />
 
 
-                <suncor.com.android.ui.common.SuncorButton
+
+                <LinearLayout
                     android:id="@+id/active_wash_button"
-                    style="@style/FilledButton.Red.L"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:textAllCaps="true"
-                    android:text="@string/carddetail_active_wash"
-                    android:textSize="16sp"
-                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/card_number"
+                    app:layout_constraintEnd_toStartOf="@id/vacuum_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_icon_grey"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_wash_car" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/wash_heading"
+                        android:paddingTop="8dp"
+                        android:textColor="@color/black_80"
+                        android:textSize="12sp"
+                        app:fontFamily="@font/gibson_semibold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vacuum_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="ACTIVATE WASH"
-                    tools:visibility="visible" />
+                    app:layout_constraintStart_toEndOf="@id/active_wash_button">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_icon_grey"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_fuel_up" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/vacuum_heading"
+                        android:paddingTop="8dp"
+                        android:textColor="@color/black_80"
+                        android:textSize="12sp"
+                        app:fontFamily="@font/gibson_semibold" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -313,21 +416,20 @@
 
 
         <ImageButton
+            android:id="@+id/savetowallet"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:id="@+id/savetowallet"
-            android:src="@drawable/ic_buttons_save_to_phone"
             android:layout_margin="20dp"
-            android:longClickable="false"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
             android:background="#0000"
             android:clickable="true"
-            app:visibleGone="@{card.cardType==CardType.PPTS}"
+            android:longClickable="false"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_buttons_save_to_phone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            app:visibleGone="@{card.cardType==CardType.PPTS}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
