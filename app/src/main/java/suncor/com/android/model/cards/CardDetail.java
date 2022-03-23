@@ -16,6 +16,7 @@ public class CardDetail {
     private int litresRemaining = INVALID_BALANCE;
     private int unitsRemaining = INVALID_BALANCE;
     private int daysRemaining = INVALID_BALANCE;
+    private int vacuumRemaining = INVALID_BALANCE;
 
     //Defaulting to 5cent if the balance service is down
     private float cpl = 0.05f;
@@ -171,4 +172,11 @@ public class CardDetail {
         return (status != null && status.equals("Suspended"));
    }
 
+    public int getVacuumRemaining() {
+        return vacuumRemaining;
+    }
+
+    public void setVacuumRemaining(int vacuumRemaining) {
+        this.vacuumRemaining = vacuumRemaining;
+    }
 }

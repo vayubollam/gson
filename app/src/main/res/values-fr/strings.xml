@@ -230,7 +230,7 @@
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
     <string name="cards_wag_description">À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_zero_balance_description">\u2014\nRechargez-la sur le site <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">petro-canada.ca</a>.</string>
-    <string name="cards_sp_description">Lavez votre voiture une fois par jour pendant 90 jours. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
+    <string name="cards_sp_description">Lavez votre voiture et passez l\'aspirateur une fois par jour. À utiliser aux établissements avec lave-auto GlideWash ou SuperDoux participants.</string>
     <string name="cards_ppc_description">Économisez chaque fois que vous utilisez votre Carte Prix Préférentiel.</string>
     <string name="cards_rbc_description">Notre programme RBC Petro‑Canada vous aide à économiser sur l\'essence et à accumuler des points plus rapidement.</string>
     <string name="cards_caa_description">Vous pouvez également convertir vos points en dollars CAA ou les utiliser pour obtenir une nouvelle adhésion de base d\'un an à la CAA.</string>
@@ -294,6 +294,16 @@
     <plurals name="cards_days_balance_expanded">
         <item quantity="one">%s jour restant</item>
         <item quantity="other">%s jours restants</item>
+    </plurals>
+
+    <plurals name="cards_days_left_expanded">
+        <item quantity="one">jour restant</item>
+        <item quantity="other">jours restant</item>
+    </plurals>
+
+    <plurals name="cards_wash_left_expanded">
+        <item quantity="one">lavage restant</item>
+        <item quantity="other">lavages restant</item>
     </plurals>
 
     <plurals name="cards_washes_balance">
@@ -538,7 +548,7 @@
 
     <string name="action_menu_what_would_you_like_to_do">Que voulez-vous \nfaire?</string>
     <string name="action_menu_scan_card">Scanner ma Petro-Points</string>
-    <string name="action_menu_wash_car">Laver mon véhicule</string>
+    <string name="action_menu_wash_car">Nettoyer mon véhicule</string>
     <string name="action_menu_account">Aller à mon compte</string>
 
     <string name="carwash_header">Nettoyons votre véhicule</string>
@@ -547,7 +557,7 @@
     <string name="carwash_no_card_get_ticket_message">Ajoutez votre carte de lave-auto à votre application Wallet ou achetez un billet de lavage au dépanneur.</string>
     <string name="carwash_nocard_add_card_button">Ajouter une carte</string>
     <string name="carwash_get_ticket_button"><a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points?modalUrl=%2Ffr%2Fpersonnel%2Fmes-petro-points%2Frecharger%2Frecharger-carte">Recharger en Ligne</a></string>
-    <string name="carwash_getwash_message_card_only">Sélectionnez votre carte de lavage pour commencer.</string>
+    <string name="carwash_getwash_message_card_only">Pour commencer, sélectionnez une carte.</string>
     <string name="carwash_getwash_message_ticket_only">Sélectionnez votre billet de lavage pour commencer.</string>
     <string name="carwash_getwash_message_card_and_ticket">Sélectionnez votre carte ou billet de lavage pour commencer.</string>
     <string name="carwash_no_carwash_station_available">Pas de lave-auto</string>
@@ -777,5 +787,11 @@
 
     <string name="discount_prices">%1$s (a été %2$s)</string>
     <string name="petro_canada_carwash">https://www.petro-canada.ca/fr/personnel/lave-auto</string>
+
+    <!-- vacuum   -->
+    <string name="vacuum_barcode_header">Scannez le code à barres pour activer votre aspirateur</string>
+    <string name="vacuum_heading">Aspirateur</string>
+    <string name="wash_heading">lavage</string>
+    <string name="vacuum_left">utilisations restantes de l\'aspirateur</string>
 
 </resources>

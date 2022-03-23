@@ -1,435 +1,460 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-
         <import type="suncor.com.android.model.cards.CardType" />
-
         <variable
             name="card"
             type="suncor.com.android.ui.main.wallet.cards.details.ExpandedCardItem" />
-
         <variable
             name="hideMoreButton"
             type="Boolean" />
+        <variable
+            name="isVacuumEnable"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="40dp"
+    tools:background="@color/black_4">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/card_image"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+        android:elevation="12dp"
+        android:src="@{card.cardImage}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/petro_points_card" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@{card.cardNumber}"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:translationZ="12dp"
+        app:fontFamily="@font/menlo_regular"
+        app:layout_constraintBottom_toBottomOf="@id/card_image"
+        app:layout_constraintEnd_toEndOf="@id/card_image"
+        app:layout_constraintStart_toStartOf="@id/card_image"
+        app:visibleGone="@{card.cardType == CardType.PPTS}"
+        tools:text="7069 22761 9857 012" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="40dp"
-        tools:background="@color/black_4">
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/savetowallet"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/card_image"
-            android:layout_width="160dp"
-            android:layout_height="100dp"
-            android:elevation="12dp"
-            android:src="@{card.cardImage}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/petro_points_card" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:text="@{card.cardNumber}"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:translationZ="12dp"
-            app:fontFamily="@font/menlo_regular"
-            app:layout_constraintBottom_toBottomOf="@id/card_image"
-            app:layout_constraintEnd_toEndOf="@id/card_image"
-            app:layout_constraintStart_toStartOf="@id/card_image"
-            app:visibleGone="@{card.cardType == CardType.PPTS}"
-            tools:text="7069 22761 9857 012" />
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardview"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/white"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/savetowallet"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/more_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_more"
+                android:tint="@color/black_60"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleGone="@{!hideMoreButton &amp;&amp; card.isRemovable}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="4dp"
+                android:text="@{card.cardName}"
+                android:textAppearance="@style/Title2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Petro-Points" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{card.cardNumber}"
+                android:textAppearance="@style/Body"
+                android:textColor="@color/black_60"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_name"
+                app:visibleGone="@{card.cardType != CardType.RBC}"
+                tools:text="7069 22761 9857 012" />
+
+            <View
+                android:id="@+id/divider"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/horizontal_divider"
+                app:layout_constraintTop_toBottomOf="@id/card_number" />
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/more_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="?selectableItemBackground"
-                    android:src="@drawable/ic_more"
-                    android:tint="@color/black_60"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:visibleGone="@{!hideMoreButton &amp;&amp; card.isRemovable}" />
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toBottomOf="@id/divider3"
+                app:layout_constraintTop_toBottomOf="@id/divider">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/card_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginEnd="16dp"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingBottom="4dp"
-                    android:text="@{card.cardName}"
-                    android:textAppearance="@style/Title2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Petro-Points" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/card_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{card.cardNumber}"
-                    android:textAppearance="@style/Body"
-                    android:textColor="@color/black_60"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card_name"
-                    app:visibleGone="@{card.cardType != CardType.RBC}"
-                    tools:text="7069 22761 9857 012" />
-
-                <View
-                    android:id="@+id/divider"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/horizontal_divider"
-                    app:layout_constraintTop_toBottomOf="@id/card_number" />
+                    android:layout_height="wrap_content">
 
-                <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:fillViewport="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toBottomOf="@id/divider3"
-                    app:layout_constraintTop_toBottomOf="@id/divider">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        >
+                        android:layout_marginTop="@dimen/expanded_card_balance_margin"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.12"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="8dp"
+                        android:text="@{card.balance}"
+                        android:textAppearance="@style/Headline2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:visibleGone="@{card.balance != null &amp; card.cardType == CardType.PPTS }"
+                        tools:text="100,500 points" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_wash"
-                            android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/balance_wash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:paddingTop="5dp"
+                        app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:lineSpacingMultiplier="1.12"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:text="@{card.balance}"
-                            android:visibility="gone"
-                            android:textAppearance="@style/Headline2"
-                            app:layout_constraintEnd_toStartOf="@id/divider_3"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:visibleGone="@{card.balance != null}"
-                            tools:text="15" />
+                            android:layout_weight="1"
+                            android:padding="16dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_wash_left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/washes_left"
-                            android:textColor="@color/black_80"
-                            android:textSize="18sp"
-                            app:fontFamily="@font/gibson_semibold"
-                            app:layout_constraintEnd_toEndOf="@id/balance_wash"
-                            app:layout_constraintStart_toStartOf="@id/balance_wash"
-                            app:layout_constraintTop_toBottomOf="@id/balance_wash"
-                            app:visibleGone="@{card.balance != null}"
-                            tools:text="washes left" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.12"
+                        android:text="@{card.balance}"
+                        android:textAppearance="@style/Headline2"
+                        tools:text="15" />
 
-                        <View
-                            android:id="@+id/divider_3"
-                            android:layout_width="1dp"
-                            android:layout_height="0dp"
-                            android:background="@drawable/horizontal_divider"
-                            app:layout_constraintBottom_toTopOf="@id/divider_2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{card.balanceDetails}"
+                        android:textColor="@color/black_80"
+                        android:textSize="18sp"
+                        app:fontFamily="@font/gibson_semibold"
+                        app:layout_constraintEnd_toEndOf="@id/balance_wash"
+                        app:layout_constraintStart_toStartOf="@id/balance_wash"
+                        app:layout_constraintTop_toBottomOf="@id/balance_wash"
+                        app:visibleGone="@{card.balance != null}"
+                        tools:text="washes left" />
+                        </LinearLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_vaccum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:lineSpacingMultiplier="1.12"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:text="@{card.balance}"
-                            android:textAppearance="@style/Headline2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/divider_3"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:visibleGone="@{card.balance != null}"
-                            tools:text="15" />
+                    <View
+                        android:id="@+id/divider_3"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        app:visibleGone="@{isVacuumEnable}"
+                        android:background="@drawable/horizontal_divider" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_vaccum_left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/vacuum_left"
-                            android:textColor="@color/black_80"
-                            android:textSize="18sp"
-                            app:fontFamily="@font/gibson_semibold"
-                            app:layout_constraintEnd_toEndOf="@id/balance_vaccum"
-                            app:layout_constraintStart_toStartOf="@id/balance_vaccum"
-                            app:layout_constraintTop_toBottomOf="@id/balance_vaccum"
-                            app:visibleGone="@{card.balance != null}"
-                            tools:text="vacuum left" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="16dp"
+                        android:gravity="center"
+                        app:visibleGone="@{isVacuumEnable}"
+                        android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/balance_vacuum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.12"
+                        android:text="@{card.getVacuumRemaining()}"
+                        android:textAppearance="@style/Headline2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/divider_3"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="15" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/balance_vacuum_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/vacuum_left"
+                        android:textColor="@color/black_80"
+                        android:textSize="18sp"
+                        app:fontFamily="@font/gibson_semibold"
+                        app:layout_constraintEnd_toEndOf="@id/balance_vacuum"
+                        app:layout_constraintStart_toStartOf="@id/balance_vacuum"
+                        app:layout_constraintTop_toBottomOf="@id/balance_vacuum"
+                        tools:text="vacuum left" />
+
+                    </LinearLayout>
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/balance_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.12"
+                        android:text="@{card.balanceDetails}"
+                        android:textAppearance="@style/Caption1"
+                        android:textColor="@color/black_60"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/balance"
+                        app:visibleGone="@{(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)||(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)}"
+                        tools:text="or $100 off" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/alert_image"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/ic_alert"
+                        android:tint="@color/black_20"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/balance_wash"
+                        app:visibleGone="@{card.balance == null&amp;&amp;card.balance == null}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/balance_unavailable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/msg_cm004"
+                        android:textAppearance="@style/Caption1"
+                        android:textColor="@color/black_20"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/alert_image"
+                        app:visibleGone="@{card.balance == null&amp;&amp;card.balance == null}" />
 
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_details"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.12"
-                            android:text="@{card.balanceDetails}"
-                            android:textAppearance="@style/Caption1"
-                            android:textColor="@color/black_60"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/balance_wash"
-                            app:visibleGone="@{(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)||(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)}"
-                            tools:text="or $100 off" />
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/balance_barriere"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="bottom"
+                        app:constraint_referenced_ids="balance,balance_wash,balance_wash_left,balance_details,alert_image,balance_unavailable,balance_vaccum,balance_vaccum_left" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/alert_image"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginTop="24dp"
-                            android:src="@drawable/ic_alert"
-                            android:tint="@color/black_20"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/balance_wash"
-                            app:visibleGone="@{card.balance == null&amp;&amp;card.balance == null}" />
+                    <View
+                        android:id="@+id/divider_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/expanded_card_balance_margin"
+                        android:background="@drawable/horizontal_divider"
+                        app:layout_constraintTop_toBottomOf="@id/balance_barriere" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_unavailable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/msg_cm004"
-                            android:textAppearance="@style/Caption1"
-                            android:textColor="@color/black_20"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/alert_image"
-                            app:visibleGone="@{card.balance == null&amp;&amp;card.balance == null}" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/carwash_balance_update_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/cardetail_balance_update_message"
+                        android:textAppearance="@style/Caption1"
+                        android:textColor="@color/black_60"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_2"
+                        app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}" />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/card_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.57"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@{card.cardDescription}"
+                        android:textAppearance="@style/Caption1"
+                        android:textColor="@color/black_60"
+                        app:layout_constraintTop_toBottomOf="@id/carwash_balance_update_message"
+                        tools:text="With Season Pass card you can wash your car every day (one wash per day) for 90 days.\nReload from 30 to 360 daily washes.\n—\nScan your card at the car wash entrance." />
 
-                        <androidx.constraintlayout.widget.Barrier
-                            android:id="@+id/balance_barriere"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:barrierDirection="bottom"
-                            app:constraint_referenced_ids="balance,balance_wash,balance_wash_left,balance_details,alert_image,balance_unavailable,balance_vaccum,balance_vaccum_left" />
+                    <suncor.com.android.ui.common.LinkableTextView
+                        android:id="@+id/card_zero_balance_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.57"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="16dp"
+                        android:text="@string/cards_zero_balance_description"
+                        android:textAppearance="@style/Caption1"
+                        android:textColor="@color/black_60"
+                        app:layout_constraintTop_toBottomOf="@id/card_description"
+                        app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}" />
 
-                        <View
-                            android:id="@+id/divider_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="@dimen/expanded_card_balance_margin"
-                            android:background="@drawable/horizontal_divider"
-                            app:layout_constraintTop_toBottomOf="@id/balance_barriere" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/barcode_image"
+                        android:layout_width="250dp"
+                        android:layout_height="50dp"
+                        android:src="@{card.barCode}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_2"
+                        app:visibleGone="@{card.cardType==CardType.PPTS}" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/carwash_balance_update_message"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
-                            android:text="@string/cardetail_balance_update_message"
-                            android:textAppearance="@style/Caption1"
-                            android:textColor="@color/black_60"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/divider_2"
-                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/card_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:lineSpacingMultiplier="1.57"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:layout_marginTop="5dp"
-                            android:text="@{card.cardDescription}"
-                            android:textAppearance="@style/Caption1"
-                            android:textColor="@color/black_60"
-                            app:layout_constraintTop_toBottomOf="@id/carwash_balance_update_message"
-                            tools:text="With Season Pass card you can wash your car every day (one wash per day) for 90 days.\nReload from 30 to 360 daily washes.\n—\nScan your card at the car wash entrance." />
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toTopOf="@id/card_reload_button" />
 
-                        <suncor.com.android.ui.common.LinkableTextView
-                            android:id="@+id/card_zero_balance_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:lineSpacingMultiplier="1.57"
-                            android:paddingStart="16dp"
-                            android:paddingTop="8dp"
-                            android:paddingEnd="16dp"
-                            android:paddingBottom="16dp"
-                            android:text="@string/cards_zero_balance_description"
-                            android:textAppearance="@style/Caption1"
-                            android:textColor="@color/black_60"
-                            app:layout_constraintTop_toBottomOf="@id/card_description"
-                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/card_reload_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/red"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/active_wash_button"
+                app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/barcode_image"
-                            android:layout_width="250dp"
-                            android:layout_height="50dp"
-                            android:src="@{card.barCode}"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/divider_2"
-                            app:visibleGone="@{card.cardType==CardType.PPTS}" />
+            <LinearLayout
+                android:id="@+id/active_wash_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/card_number"
+                app:layout_constraintEnd_toStartOf="@id/vacuum_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.core.widget.NestedScrollView>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_icon_grey"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_wash_car" />
 
-                <View
-                    android:id="@+id/divider3"
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="24dp"
-                    app:layout_constraintBottom_toTopOf="@id/card_reload_button" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/card_reload_button"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:textColor="@color/red"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@id/active_wash_button"
-                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}" />
+                    android:text="@string/wash_heading"
+                    android:paddingTop="8dp"
+                    android:textColor="@color/black_80"
+                    android:textSize="12sp"
+                    app:fontFamily="@font/gibson_semibold" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/vacuum_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/active_wash_button"
+                app:visibleGone="@{isVacuumEnable &amp; (card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST)}">
 
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_icon_grey"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_fuel_up" />
 
-                <LinearLayout
-                    android:id="@+id/active_wash_button"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/card_number"
-                    app:layout_constraintEnd_toStartOf="@id/vacuum_button"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}">
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/vacuum_heading"
+                    android:paddingTop="8dp"
+                    android:textColor="@color/black_80"
+                    android:textSize="12sp"
+                    app:fontFamily="@font/gibson_semibold" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/round_icon_grey"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_wash_car" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/wash_heading"
-                        android:paddingTop="8dp"
-                        android:textColor="@color/black_80"
-                        android:textSize="12sp"
-                        app:fontFamily="@font/gibson_semibold" />
-                </LinearLayout>
+    <ImageButton
+        android:id="@+id/savetowallet"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:adjustViewBounds="true"
+        android:background="#0000"
+        android:clickable="true"
+        android:longClickable="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_buttons_save_to_phone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:visibleGone="@{card.cardType==CardType.PPTS}" />
 
-                <LinearLayout
-                    android:id="@+id/vacuum_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/active_wash_button">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/round_icon_grey"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_fuel_up" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/vacuum_heading"
-                        android:paddingTop="8dp"
-                        android:textColor="@color/black_80"
-                        android:textSize="12sp"
-                        app:fontFamily="@font/gibson_semibold" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
-        <ImageButton
-            android:id="@+id/savetowallet"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:adjustViewBounds="true"
-            android:background="#0000"
-            android:clickable="true"
-            android:longClickable="false"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_buttons_save_to_phone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:visibleGone="@{card.cardType==CardType.PPTS}" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
