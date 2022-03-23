@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.pap.receipt;
 
 
-
 import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
 
 import android.content.Intent;
@@ -126,7 +125,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
-                binding.appBar.setOnClickListener((view)-> goBack());
+                binding.appBar.setOnClickListener((view) -> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 Transaction transaction = result.data;
@@ -216,8 +215,16 @@ public class ReceiptFragment extends MainActivityFragment {
                         showPartialRedemptionPopup();
                     }
                 }
+
+                //in-case of CLPE UP, Update petro points in profile. In case of CLPE down profile points will remain the same.
+                if (transaction.getBasePoints() > 0)
+                    sessionManager.getProfile().setPointsBalance(transaction.getNewBalance());
+
+
             }
         });
+
+
     }
 
 
@@ -229,7 +236,7 @@ public class ReceiptFragment extends MainActivityFragment {
     /*
      *Partial Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/Partial Redemption.
      */
-    private void showPartialRedemptionPopup(){
+    private void showPartialRedemptionPopup() {
         AlertDialog.Builder dialog = createAlert(R.string.member_lock_partial_redemption_message, R.string.member_lock_partial_redemption_title);
         dialog.setCancelable(true);
         dialog.show();
@@ -238,7 +245,7 @@ public class ReceiptFragment extends MainActivityFragment {
     /*
      *No Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/No Redemption.
      */
-    private void showNoRedemptionPopup(){
+    private void showNoRedemptionPopup() {
         AlertDialog.Builder dialog = createAlert(R.string.redemption_unavailable_description, R.string.redemption_unavailable_title);
         dialog.setCancelable(true);
         dialog.show();
