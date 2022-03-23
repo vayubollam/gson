@@ -27,7 +27,6 @@ public class SettingsApiImpl implements SettingsApi {
     @Override
     public LiveData<Resource<SettingsResponse>> retrieveSettings() {
         Timber.d("Retrieving MFP settings");
-
         MutableLiveData<Resource<SettingsResponse>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {

@@ -688,6 +688,7 @@
     <string name="no_redemption">No Redemption</string>
     <string name="redeem_x_points">Redeem %s points</string>
     <string name="redeem_petro_points">Redeem Petro-Points</string>
+    <string name="warning_for_beyond_limit_redemption">You cannot redeem more than %s points</string>
 
     <string name="pump">PUMP</string>
     <string name="payment">PAYMENT</string>

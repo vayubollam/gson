@@ -12,9 +12,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableDouble;
+import androidx.databinding.ObservableInt;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -37,8 +41,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     public final HashMap<String, String> redeemPoints;
     private final Context mContext;
     private final int petroPoints;
-    public static final double MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION = 100000;
-    private final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+    private  int maximumPointsAllowedForRedemption ;
+    private DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.getDefault());
     private final NumberFormat numberInstance = NumberFormat.getNumberInstance(Locale.getDefault());
     private final RedeemPointsCallback redeemPointsCallback;
     private ChildViewListener listener;
@@ -55,6 +59,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
     private double amountInDouble;
     private boolean isPreAuthChanges;
     private EditText otherAmountEditText;
+    private ObservableBoolean isGoingBeyondLimit = new ObservableBoolean(false);
+    private ObservableInt availablePoints = new ObservableInt();
     private double zeroInDouble = 0.0;
     private boolean selectedAmountOtherThanZero;
 
@@ -64,7 +70,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         this.redeemPoints = redeemPoints;
         this.petroPoints = petroPoints;
         this.redeemPointsCallback = redeemPointsCallback;
+
+        DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.getDefault());
+        symbol.setCurrencySymbol("$");
+
         formatter.setMinimumFractionDigits(0);
+        formatter.setDecimalFormatSymbols(symbol);
     }
 
     @Override
@@ -126,6 +137,10 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         this.preAuthValue = preAuthValue;
     }
 
+    public void setMaxRedeemValue(int maximumPointsAllowedForRedemption){
+        this.maximumPointsAllowedForRedemption = maximumPointsAllowedForRedemption;
+    }
+
 
     private String getDollarOffValue(double amount) {
         return getLocaleDollarOffText(getAmount(amount) / 1000);
@@ -178,6 +193,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
     public void collapseIfPreAuthChanges(int selectedPos) {
         isPreAuthChanges = true;
+        isGoingBeyondLimit.set(false);
         this.selectedPos = selectedPos;
         listener.onSelectValue(formatter.format(0), formatter.format(0) + points, true, false);
     }
@@ -190,6 +206,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
         if (position != redeemPoints.size() - 1) {
             ((ChildDropDownViewHolder) holder).setDataOnView(redeemPoints.get(String.valueOf(position + 1)));
         } else {
+            ((OtherAmountViewHolder) holder).binding.setIsGoingBeyondLimit(isGoingBeyondLimit);
+            ((OtherAmountViewHolder) holder).binding.setAvailablePoints(availablePoints);
             ((OtherAmountViewHolder) holder).setDataOnView();
         }
     }
@@ -248,8 +266,8 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
             resultantValue = CardFormatUtils.formatBalance(petroPoints);
         }
         roundOffValue = numberInstance.parse(resultantValue).doubleValue();
-        if(roundOffValue > MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION){
-            roundOffValue = MAXIMUM_POINTS_ALLOWED_FOR_REDEMPTION;
+        if(roundOffValue > maximumPointsAllowedForRedemption){
+            roundOffValue = maximumPointsAllowedForRedemption;
         }
     }
 
@@ -366,8 +384,12 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                                     selectedAmountOtherThanZero = true;
                                 }
                                 getRoundOffValue();
+                                availablePoints.set((int) roundOffValue);
                                 if (amountInDouble > roundOffValue) {
+                                    isGoingBeyondLimit.set(true);
                                     amountInDouble = roundOffValue;
+                                }else{
+                                    isGoingBeyondLimit.set(false);
                                 }
                                 isPreAuthChanges = false;
                                 listener.onSelectValue(getDollarOffValue(amountInDouble), getAmount(amountInDouble) + points, false, true);

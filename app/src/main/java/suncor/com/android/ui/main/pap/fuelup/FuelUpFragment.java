@@ -102,6 +102,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private String preAuth;
     private boolean isRedeemable;
     private int petroPoints;
+    private int maximumAllowedRedemption = 0;
     private String userPaymentId;
     private String preAuthRedeemPoints = "0";
     private String selectedRadioButton = "No Redemption";
@@ -259,6 +260,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 mPapData = result.data.getSettings().getPap();
+                maximumAllowedRedemption = result.data.getSettings().getRedemptions().getRedemptionPointsMaxLimit();
+                redeemPointsDropDownAdapter.setMaxRedeemValue(maximumAllowedRedemption);
                 mPapData.getPreAuthLimits().put(String.valueOf(mPapData.getPreAuthLimits().size() + 1), getString(R.string.other_amount));
                 initializeFuelUpLimit();
             }
