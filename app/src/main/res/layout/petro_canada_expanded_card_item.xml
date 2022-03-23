@@ -12,6 +12,10 @@
         <variable
             name="hideMoreButton"
             type="Boolean" />
+
+        <variable
+            name="isVacuumEnable"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -133,28 +137,54 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
+                        android:layout_height="wrap_content">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_wash"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/balance"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="@dimen/expanded_card_balance_margin"
+                            android:gravity="center"
                             android:lineSpacingMultiplier="1.12"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
                             android:text="@{card.balance}"
-                            android:visibility="gone"
                             android:textAppearance="@style/Headline2"
-                            app:layout_constraintEnd_toStartOf="@id/divider_3"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:visibleGone="@{card.balance != null}"
+                            app:visibleGone="@{card.balance != null &amp; card.cardType == CardType.PPTS }"
+                            tools:text="100,500 points" />
+
+                        <LinearLayout
+                            android:id="@+id/balance_wash"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_horizontal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:paddingTop="5dp"
+                            app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG}">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="16dp"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingMultiplier="1.12"
+                            android:text="@{card.balance}"
+                            android:textAppearance="@style/Headline2"
                             tools:text="15" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_wash_left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -168,33 +198,38 @@
                             app:visibleGone="@{card.balance != null}"
                             tools:text="washes left" />
 
+                            </LinearLayout>
+
                         <View
                             android:id="@+id/divider_3"
                             android:layout_width="1dp"
-                            android:layout_height="0dp"
-                            android:background="@drawable/horizontal_divider"
-                            app:layout_constraintBottom_toTopOf="@id/divider_2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            android:layout_height="match_parent"
+                            app:visibleGone="@{isVacuumEnable}"
+                            android:background="@drawable/horizontal_divider" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="16dp"
+                            android:gravity="center"
+                            app:visibleGone="@{isVacuumEnable}"
+                            android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_vaccum"
+                            android:id="@+id/balance_vacuum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:lineSpacingMultiplier="1.12"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
                             android:text="@{card.balance}"
                             android:textAppearance="@style/Headline2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/divider_3"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:visibleGone="@{card.balance != null}"
                             tools:text="15" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/balance_vaccum_left"
+                            android:id="@+id/balance_vacuum_left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -202,11 +237,14 @@
                             android:textColor="@color/black_80"
                             android:textSize="18sp"
                             app:fontFamily="@font/gibson_semibold"
-                            app:layout_constraintEnd_toEndOf="@id/balance_vaccum"
-                            app:layout_constraintStart_toStartOf="@id/balance_vaccum"
-                            app:layout_constraintTop_toBottomOf="@id/balance_vaccum"
-                            app:visibleGone="@{card.balance != null}"
+                            app:layout_constraintEnd_toEndOf="@id/balance_vacuum"
+                            app:layout_constraintStart_toStartOf="@id/balance_vacuum"
+                            app:layout_constraintTop_toBottomOf="@id/balance_vacuum"
                             tools:text="vacuum left" />
+
+                        </LinearLayout>
+
+                        </LinearLayout>
 
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -219,7 +257,7 @@
                             android:textColor="@color/black_60"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/balance_wash"
+                            app:layout_constraintTop_toBottomOf="@id/balance"
                             app:visibleGone="@{(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)||(card.balance != null &amp;&amp; card.isBalanceDetailsVisible)}"
                             tools:text="or $100 off" />
 
@@ -388,7 +426,8 @@
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/active_wash_button">
+                    app:layout_constraintStart_toEndOf="@id/active_wash_button"
+                    app:visibleGone="@{isVacuumEnable &amp; (card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST)}">
 
                     <ImageView
                         android:layout_width="40dp"
