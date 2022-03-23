@@ -167,6 +167,4 @@ public class CardFormatUtils {
         // increment the first decimal digit of our 12-digit code by 1 to get rid of any leading zeroes
        return Long.toString(encryptedCardData + 100_000_000_000L);
     }
-
-
 }
