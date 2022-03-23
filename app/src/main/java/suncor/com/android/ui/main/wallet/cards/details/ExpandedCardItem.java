@@ -231,8 +231,8 @@ public class ExpandedCardItem {
         return isRemovable;
     }
 
-    public int getVacuumRemaining() {
-        return vacuumRemaining;
+    public String getVacuumRemaining() {
+        return String.valueOf(vacuumRemaining);
     }
 
     public void setVacuumRemaining(int vacuumRemaining) {
