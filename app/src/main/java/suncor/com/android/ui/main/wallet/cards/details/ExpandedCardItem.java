@@ -33,11 +33,13 @@ public class ExpandedCardItem {
     private boolean isRemovable = true;
     private int width = 0;
     private int height = 0;
+    private int vacuumRemaining;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
         this.cardType = cardDetail.getCardType();
         this.cardCategory = cardDetail.getCardCategory();
+        this.vacuumRemaining = cardDetail.getVacuumRemaining();
         if (cardDetail.getCardCategory() == CardDetail.CardCategory.PARTNER) {
             balance = context.getString(R.string.cards_partners_balance_template, context.getString(R.string.cards_partners_balance_value));
             isBalanceDetailsVisible = false;
@@ -106,6 +108,9 @@ public class ExpandedCardItem {
                     balance = balanceValue != -1 ?
                              CardFormatUtils.formatBalance(balanceValue)
                             : null;
+                    balanceDetails =  balanceValue != -1 ?
+                            context.getResources().getQuantityString(R.plurals.cards_days_left_expanded, balanceValue)
+                            : null;
                     cardDescription = context.getString(R.string.cards_sp_description);
                     isBalanceDetailsVisible = false;
                     break;
@@ -115,6 +120,9 @@ public class ExpandedCardItem {
                     cardName = context.getString(R.string.cards_wag_expanded_label);
                     balance = balanceValue != -1 ?
                              CardFormatUtils.formatBalance(balanceValue)
+                            : null;
+                    balanceDetails =  balanceValue != -1 ?
+                            context.getResources().getQuantityString(R.plurals.cards_wash_left_expanded, balanceValue)
                             : null;
                     cardDescription = context.getString(R.string.cards_wag_description);
                     isBalanceDetailsVisible = false;
@@ -221,5 +229,13 @@ public class ExpandedCardItem {
 
     public boolean isRemovable() {
         return isRemovable;
+    }
+
+    public int getVacuumRemaining() {
+        return vacuumRemaining;
+    }
+
+    public void setVacuumRemaining(int vacuumRemaining) {
+        this.vacuumRemaining = vacuumRemaining;
     }
 }

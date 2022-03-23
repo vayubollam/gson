@@ -260,16 +260,13 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     private View.OnClickListener vacuumListener = view -> {
         CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
-        if(cardDetail.isSuspendedCard()){
-            CardsUtil.showSuspendedCardAlert(getContext());
-        } else {
-            ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
-                    action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
-            action.setCardNumber(cardItem.getCardNumber());
-            Navigation.findNavController(getView()).navigate(action);
+        ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+        CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
+                action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
+        action.setCardNumber(cardItem.getCardNumber());
+        Navigation.findNavController(getView()).navigate(action);
 
-        }
+
     };
 
 
