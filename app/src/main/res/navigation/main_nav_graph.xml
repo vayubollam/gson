@@ -315,10 +315,21 @@
             app:destination="@id/carWashPurchaseFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="cardNumber"
+                android:defaultValue="null"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_cardsDetailsFragment_to_carWashTransactionFragment"
             app:destination="@id/carWashTransactionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_cardsDetailsFragment_to_vacuumBarcodeFragment"
+            app:destination="@id/vacuumBarcodeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"/>
@@ -855,6 +866,17 @@
         android:id="@+id/tutorialFragment"
         android:name="suncor.com.android.ui.tutorial.TutorialFragment"
         android:label="TutorialFragment">
+    </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/vacuumBarcodeFragment"
+        android:name="suncor.com.android.ui.main.vacuum.VacuumBarcodeFragment"
+        android:label="VacuumBarcodeFragment" >
+        <argument
+            android:name="cardNumber"
+            android:defaultValue="null"
+            app:nullable="false"
+            app:argType="string" />
     </keep_state_fragment>
 
 
