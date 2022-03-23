@@ -63,6 +63,7 @@ public class Transaction {
     private double pointsRedeemed = 0;
     private int currentBalance;
     private int newBalance = 0;
+    private boolean isCLPEDown = false;
 
     public Address getAddress() {
         return address;
@@ -162,6 +163,10 @@ public class Transaction {
             sb.append(" (Google Pay)");
         }
         return sb.toString();
+    }
+
+    public boolean getIsCLPEDown(){
+        return isCLPEDown;
     }
 
     public double getOtherDiscount() {
@@ -268,11 +273,13 @@ public class Transaction {
                     pointsRedeemed += loyaltyPointsMessages.burnedRewardSummary;
                 }
 
+                isCLPEDown = false;
                 this.pointsRedeemed = pointsRedeemed;
                 this.bonusPoints = (int) bonusPoints;
                 this.basePoints = (int) basePoints;
                 newBalance = (int) (currentBalance + basePoints + bonusPoints - pointsRedeemed);
             } else {
+                isCLPEDown = true;
                 this.pointsRedeemed = 0;
                 this.bonusPoints = 0;
                 this.basePoints = 0;

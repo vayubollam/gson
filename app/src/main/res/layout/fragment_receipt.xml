@@ -179,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="visible"
-                        visibleGone="@{transaction.getBasePoints()> 0}"
+                        visibleGone="@{!transaction.getIsCLPEDown}"
                         tools:visibility="visible">
 
                         <androidx.appcompat.widget.AppCompatTextView
