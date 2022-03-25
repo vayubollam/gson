@@ -196,7 +196,7 @@
                         android:id="@+id/divider_3"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        app:visibleGone="@{isVacuumEnable}"
+                        app:visibleGone="@{isVacuumEnable &amp; card.cardType == CardType.WAG}"
                         android:background="@drawable/horizontal_divider" />
 
                     <LinearLayout
@@ -205,7 +205,7 @@
                         android:layout_weight="1"
                         android:padding="16dp"
                         android:gravity="center"
-                        app:visibleGone="@{isVacuumEnable}"
+                        app:visibleGone="@{isVacuumEnable &amp; card.cardType == CardType.WAG}"
                         android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
