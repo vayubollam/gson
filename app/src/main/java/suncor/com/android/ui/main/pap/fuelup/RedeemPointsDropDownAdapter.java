@@ -384,7 +384,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                                     selectedAmountOtherThanZero = true;
                                 }
                                 getRoundOffValue();
-                                availablePoints.set((int) roundOffValue);
+                                availablePoints.set((int) getAmount(roundOffValue));
                                 if (amountInDouble > roundOffValue) {
                                     isGoingBeyondLimit.set(true);
                                     amountInDouble = roundOffValue;
