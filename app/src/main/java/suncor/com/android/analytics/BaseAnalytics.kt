@@ -4,52 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import suncor.com.android.analytics.BaseAnalytics.BaseParams.ERROR_MESSAGE
-import suncor.com.android.analytics.BaseAnalytics.BaseParams.ERROR_MESSAGE_DETAIL
-import suncor.com.android.analytics.BaseAnalytics.BaseParams.FORM_NAME
+import suncor.com.android.analytics.BaseParams.ERROR_MESSAGE
+import suncor.com.android.analytics.BaseParams.ERROR_MESSAGE_DETAIL
+import suncor.com.android.analytics.BaseParams.FORM_NAME
 
 
 open class BaseAnalytics {
 
-    object BaseEvents {
-        const val BUTTON_TAP = "button_tap"
-        const val INFO_TAP = "info_tap"
-        const val INTER_SITE = "intersite"
-        const val ERROR_LOG = "error_log"
-
-        /* Forms */
-        const val FORM_START = "form_start"
-        const val FORM_COMPLETE = "form_complete"
-        const val FORM_STEP = "form_step"
-
-        const val PAYMENT_PREAUTHORIZE = "payment_preauthorize"
 
 
-        /* Alerts */
-        const val ALERT = "alert"
-        const val ALERT_INTERACTION = "alert_interaction"
 
-    }
-
-    object BaseParams {
-        const val BUTTON_TEXT = "buttonText"
-
-        const val FORM_NAME = "formName"
-        const val FORM_SELECTION = "formSelection"
-
-        const val INFO_TEXT = "infoText"
-
-        const val ALERT_TITLE = "alertTitle"
-        const val ALERT_SELECTION = "alertSelection"
-
-        const val INTER_SITE_URL = "intersiteURL"
-        const val ERROR_MESSAGE = "errorMessage"
-        const val ERROR_MESSAGE_DETAIL = "detailErrorMessage"
-
-        const val PAYMENT_METHOD = "paymentMethod"
-        const val FUEL_AMOUNT_SELECTION = "fuelAmountSelection"
-
-    }
 
     fun logUserProperty() {
 

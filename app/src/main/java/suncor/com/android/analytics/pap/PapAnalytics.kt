@@ -3,8 +3,9 @@ package suncor.com.android.analytics.pap
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import com.google.errorprone.annotations.FormatMethod
 import suncor.com.android.analytics.BaseAnalytics
+import suncor.com.android.analytics.BaseEvents
+import suncor.com.android.analytics.BaseParams
 import suncor.com.android.analytics.Errors
 
 private const val FORM_NAME_PAP = "Pay at Pump"
