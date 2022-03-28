@@ -71,7 +71,6 @@ object Constants {
     const val VIDEO_THRESHOLD_75 = "video_threshold_75"
     const val VIDEO_COMPLETE = "video_complete"
     const val FORM_COMPLETE = "form_complete"
-    const val FORM_ERROR = "form_error"
     const val NAVIGATION = "navigation"
     const val PAYMENT_PREAUTHORIZE = "payment_preauthorize"
     const val PAYMENT_COMPLETE = "payment_complete"

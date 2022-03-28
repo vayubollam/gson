@@ -10,6 +10,8 @@ object BaseEvents {
         const val FORM_START = "form_start"
         const val FORM_COMPLETE = "form_complete"
         const val FORM_STEP = "form_step"
+        const val FORM_ERROR = "form_error"
+
 
         const val PAYMENT_PREAUTHORIZE = "payment_preauthorize"
 
