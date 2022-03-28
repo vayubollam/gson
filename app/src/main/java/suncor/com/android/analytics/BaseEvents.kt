@@ -20,5 +20,9 @@ object BaseEvents {
 
         /*Station Location*/
         const val LOCATION_SEARCH="Location_search"
+        const val STATION_ADD_TO_FAVOURITE="station_add_to_favourite"
+
+        /*Common*/
+        const val TAP_TO_CALL = "tap_to_call"
 
     }

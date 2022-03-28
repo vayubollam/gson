@@ -8,11 +8,9 @@ import suncor.com.android.analytics.BaseEvents
 import suncor.com.android.analytics.BaseParams
 
 
-
-
 const val FORM_NAME_GAS_STATION_LOCATIONS = "Gas Station Locations"
 
-object StationsAnalytics : BaseAnalytics(){
+object StationsAnalytics : BaseAnalytics() {
     private const val SCREEN_NAME_LOCATION_FILTER = "my-petro-points-gas-station-locations-filter"
     private const val SCREEN_NAME_LOCATION_LOADING = "gas-station-locations-loading"
 
@@ -26,7 +24,7 @@ object StationsAnalytics : BaseAnalytics(){
         val bundle = Bundle()
         bundle.putString(BaseParams.LOCATION, location)
         bundle.putString(BaseParams.FILTERS_APPLIED, filterList)
-        logEvent(context, BaseEvents.LOCATION_SEARCH,bundle = bundle)
+        logEvent(context, BaseEvents.LOCATION_SEARCH, bundle = bundle)
     }
 
     @JvmStatic
@@ -36,17 +34,37 @@ object StationsAnalytics : BaseAnalytics(){
     }
 
     @JvmStatic
-    fun logLocationAccessAlertShown(context: Context,title:String) {
-        logAlertShown(context,title, FORM_NAME_GAS_STATION_LOCATIONS)
+    fun logLocationAccessAlertShown(context: Context, title: String) {
+        logAlertShown(context, title, FORM_NAME_GAS_STATION_LOCATIONS)
     }
 
     @JvmStatic
     fun logAlertInteraction(context: Context, title: String, buttonText: String) {
-        logAlertDialogInteraction(context,
+        logAlertDialogInteraction(
+            context,
             title,
             buttonText,
             FORM_NAME_GAS_STATION_LOCATIONS
         )
     }
+
+}
+
+
+object StationDetailsAnalytics : BaseAnalytics() {
+    private const val SCREEN_NAME_STATION_DETAIL_HOME = "station-details-home"
+
+    @JvmStatic
+    fun logScreenName(activity: Activity) {
+        logScreenNameClass(activity, screenName = SCREEN_NAME_STATION_DETAIL_HOME)
+    }
+
+    @JvmStatic
+    fun logAddToFav(context: Context, location: String) {
+        val bundle = Bundle()
+        bundle.putString(BaseParams.LOCATION, location)
+        logEvent(context, BaseEvents.STATION_ADD_TO_FAVOURITE, bundle = bundle)
+    }
+
 
 }

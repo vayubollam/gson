@@ -4,15 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import suncor.com.android.analytics.BaseEvents.TAP_TO_CALL
 import suncor.com.android.analytics.BaseParams.ERROR_MESSAGE
 import suncor.com.android.analytics.BaseParams.ERROR_MESSAGE_DETAIL
 import suncor.com.android.analytics.BaseParams.FORM_NAME
+import suncor.com.android.analytics.BaseParams.PHONE_NUMBER_TAPPED
 
 
 open class BaseAnalytics {
-
-
-
 
 
     fun logUserProperty() {
@@ -63,6 +62,15 @@ open class BaseAnalytics {
 //        FirebaseAnalytics.getInstance(context)
 //            .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
 //    }
+
+    companion object{
+        @JvmStatic
+        fun logTapToCall(context: Context,phoneNumber:String){
+            val bundle = Bundle()
+            bundle.putString(PHONE_NUMBER_TAPPED, phoneNumber)
+            FirebaseAnalytics.getInstance(context).logEvent(TAP_TO_CALL,bundle)
+        }
+    }
 
 
 }

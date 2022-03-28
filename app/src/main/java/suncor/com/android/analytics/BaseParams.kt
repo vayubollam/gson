@@ -23,5 +23,8 @@ object BaseParams {
         const val FILTERS_APPLIED = "filtersApplied"
 
 
+        const val PHONE_NUMBER_TAPPED = "phoneNumberTapped"
+
+
 
     }
