@@ -68,7 +68,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
         this.mContext = context;
         this.redeemPoints = redeemPoints;
-        this.petroPoints = 507;
+        this.petroPoints = petroPoints;
         this.redeemPointsCallback = redeemPointsCallback;
 
         DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.getDefault());
