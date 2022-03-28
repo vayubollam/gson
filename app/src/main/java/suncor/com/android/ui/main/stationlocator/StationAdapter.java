@@ -1,23 +1,22 @@
 package suncor.com.android.ui.main.stationlocator;
 
 import android.annotation.SuppressLint;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.data.DistanceApi;
 import suncor.com.android.databinding.CardStationItemBinding;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.station.Station;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.NavigationAppsHelper;
 
 public class StationAdapter extends RecyclerView.Adapter<StationAdapter.StationViewHolder> {

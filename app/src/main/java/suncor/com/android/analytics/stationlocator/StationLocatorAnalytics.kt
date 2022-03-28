@@ -68,3 +68,34 @@ object StationDetailsAnalytics : BaseAnalytics() {
 
 
 }
+
+
+object NearestStationAnalytics : BaseAnalytics(){
+    private const val SCREEN_NAME_NEAREST_STATION_LOADING = "offsite-nearest-station-loading"
+    private const val SCREEN_NAME_NEAREST_STATION = "offsite-nearest-station"
+    private const val FORM_NAME_NEAREST_STATION = "Nearest Station"
+
+
+    @JvmStatic
+    fun logLoadingScreenName(activity: Activity) {
+        logScreenNameClass(activity, SCREEN_NAME_NEAREST_STATION_LOADING)
+    }
+
+    @JvmStatic
+    fun logAlertShown(context: Context, alertTitle: String) {
+        logAlertShown(context,alertTitle, FORM_NAME_NEAREST_STATION)
+    }
+
+
+    @JvmStatic
+    fun logAlertInteraction(context: Context, title: String, buttonText: String) {
+        logAlertDialogInteraction(context,title,buttonText, FORM_NAME_NEAREST_STATION)
+    }
+
+    @JvmStatic
+    fun logNearestStationScreenName(activity: Activity) {
+        logScreenNameClass(activity, SCREEN_NAME_NEAREST_STATION)
+    }
+
+
+}
