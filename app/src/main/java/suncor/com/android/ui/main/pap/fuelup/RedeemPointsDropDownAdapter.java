@@ -68,7 +68,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
 
         this.mContext = context;
         this.redeemPoints = redeemPoints;
-        this.petroPoints = petroPoints;
+        this.petroPoints = 507;
         this.redeemPointsCallback = redeemPointsCallback;
 
         DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.getDefault());
@@ -384,7 +384,7 @@ public class RedeemPointsDropDownAdapter extends DropDownAdapter {
                                     selectedAmountOtherThanZero = true;
                                 }
                                 getRoundOffValue();
-                                availablePoints.set((int) roundOffValue);
+                                availablePoints.set((int) getAmount(roundOffValue));
                                 if (amountInDouble > roundOffValue) {
                                     isGoingBeyondLimit.set(true);
                                     amountInDouble = roundOffValue;
