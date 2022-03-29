@@ -4,6 +4,7 @@ package suncor.com.android.analytics
 object Errors{
     const val SOMETHING_WRONG = "Something went wrong on our side"
     const val INVALID_PASSWORD = "Invalid password (Your new password can\\'t be the same as your temporary password.)"
+    const val THE_EMAIL_HAS_ACCOUNT = "This email already has an account."
 
 
 

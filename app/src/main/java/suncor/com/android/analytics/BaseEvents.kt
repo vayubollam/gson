@@ -26,6 +26,7 @@ object BaseEvents {
 
     /*Common*/
     const val TAP_TO_CALL = "tap_to_call"
+    const val SCROLL = "scroll"
 
     /*Login*/
     const val PASSWORD_RESET = "password_reset"

@@ -5,6 +5,7 @@ object BaseParams {
 
     const val FORM_NAME = "formName"
     const val FORM_SELECTION = "formSelection"
+    const val STEP_NAME = "stepName"
 
     const val INFO_TEXT = "infoText"
 
@@ -22,8 +23,10 @@ object BaseParams {
     const val LOCATION = "location"
     const val FILTERS_APPLIED = "filtersApplied"
 
-
+    /*Common*/
     const val PHONE_NUMBER_TAPPED = "phoneNumberTapped"
+    const val SCROLL_DEPTH_THRESHOLD = "scrollDepthThreshold"
+
 
     /*User*/
     const val USER_ID = "user_id"

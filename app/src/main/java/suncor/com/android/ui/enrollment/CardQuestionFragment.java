@@ -26,13 +26,14 @@ import androidx.navigation.Navigation;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
+
 
 public class CardQuestionFragment extends BaseFragment {
 
@@ -103,9 +104,8 @@ public class CardQuestionFragment extends BaseFragment {
                     animateCard();
                     break;
                 case ERROR:
-                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage, "Something Went Wrong"),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Petro Points Sign Up Activate"));
+                    CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
+
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> getActivity().finish());
@@ -118,7 +118,7 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "petro-points-sign-up-activate");
+        CardQuestionsAnalytics.logScreenName(requireActivity());
     }
 
     private void animateCard() {

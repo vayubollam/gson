@@ -4,11 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import suncor.com.android.analytics.BaseEvents.FORM_STEP
+import suncor.com.android.analytics.BaseEvents.SCROLL
 import suncor.com.android.analytics.BaseEvents.TAP_TO_CALL
 import suncor.com.android.analytics.BaseParams.ERROR_MESSAGE
 import suncor.com.android.analytics.BaseParams.ERROR_MESSAGE_DETAIL
 import suncor.com.android.analytics.BaseParams.FORM_NAME
+import suncor.com.android.analytics.BaseParams.FORM_SELECTION
 import suncor.com.android.analytics.BaseParams.PHONE_NUMBER_TAPPED
+import suncor.com.android.analytics.BaseParams.SCROLL_DEPTH_THRESHOLD
+import suncor.com.android.analytics.pap.FuelUpAnalytics
 
 
 open class BaseAnalytics {
@@ -79,6 +84,24 @@ open class BaseAnalytics {
             bundle.putString(PHONE_NUMBER_TAPPED, phoneNumber)
             FirebaseAnalytics.getInstance(context).logEvent(TAP_TO_CALL,bundle)
         }
+
+        @JvmStatic
+        fun logScrollDepth(context: Context,depth:String){
+            val bundle = Bundle()
+            bundle.putString(SCROLL_DEPTH_THRESHOLD, depth)
+            FirebaseAnalytics.getInstance(context).logEvent(SCROLL,bundle)
+        }
+
+        @JvmStatic
+        fun logFormStep(context: Context, formName: String,selection: String = "", stepName:String = "") {
+            val bundle = Bundle()
+            bundle.putString(FORM_SELECTION, selection)
+            bundle.putString(FORM_NAME, formName)
+            bundle.putString(FORM_STEP, stepName)
+            FuelUpAnalytics.logEvent(context, FORM_STEP, bundle)
+        }
+
+
     }
 
 

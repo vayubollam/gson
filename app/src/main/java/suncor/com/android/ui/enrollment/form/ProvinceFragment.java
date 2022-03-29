@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -15,11 +13,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
 import suncor.com.android.R;
+import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class ProvinceFragment extends DialogFragment {
     private EnrollmentFormViewModel enrollmentFormViewModel;
@@ -65,7 +66,7 @@ public class ProvinceFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "province-security-help");
+        EnrollmentAnalytics.logSecurityQuesScreenName(requireActivity());
     }
 
     public void provinceSelected(int selectedProvince) {
