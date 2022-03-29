@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="suncor.com.android.model.cards.CardType" />
         <variable
@@ -12,9 +14,7 @@
             name="isVacuumEnable"
             type="androidx.databinding.ObservableBoolean" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="40dp"
@@ -380,6 +380,8 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="vertical"
+                android:clickable="@{!card.washBalanceZero}"
+                android:enabled="@{!card.washBalanceZero}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/card_number"
                 app:layout_constraintEnd_toStartOf="@id/vacuum_button"
@@ -390,6 +392,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:alpha="@{card.washBalanceZero?0.5f:1.0f}"
                     android:background="@drawable/round_icon_grey"
                     android:padding="10dp"
                     android:src="@drawable/ic_wash_car" />
@@ -412,6 +415,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:orientation="vertical"
+                android:clickable="@{!card.vacuumZero}"
+                android:enabled="@{!card.vacuumZero}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/active_wash_button"
@@ -421,9 +426,10 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:alpha="@{card.vacuumZero?0.5f:1.0f}"
                     android:background="@drawable/round_icon_grey"
                     android:padding="10dp"
-                    android:src="@drawable/ic_fuel_up" />
+                    android:src="@drawable/ic_vaccum" />
 
                 <TextView
                     android:layout_width="wrap_content"
