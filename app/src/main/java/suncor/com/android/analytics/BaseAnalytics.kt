@@ -27,7 +27,7 @@ open class BaseAnalytics {
         FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
     }
 
-    fun logAlertShown(context: Context,alertTitle: String, formName : String){
+    fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
         val bundle = Bundle()
         bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
         bundle.putString(FORM_NAME,formName)

@@ -35,7 +35,7 @@ object StationsAnalytics : BaseAnalytics() {
 
     @JvmStatic
     fun logLocationAccessAlertShown(context: Context, title: String) {
-        logAlertShown(context, title, FORM_NAME_GAS_STATION_LOCATIONS)
+        logAlertDialogShown(context, title, FORM_NAME_GAS_STATION_LOCATIONS)
     }
 
     @JvmStatic
@@ -83,7 +83,7 @@ object NearestStationAnalytics : BaseAnalytics() {
 
     @JvmStatic
     fun logAlertShown(context: Context, alertTitle: String) {
-        logAlertShown(context, alertTitle, FORM_NAME_NEAREST_STATION)
+        logAlertDialogShown(context, alertTitle, FORM_NAME_NEAREST_STATION)
     }
 
 

@@ -212,7 +212,7 @@ object FuelUpAnalytics: BaseAnalytics(){
 
     @JvmStatic
     fun logAlert(context: Context, title: String) {
-        logAlertShown(context,title, FORM_NAME_PAP)
+        logAlertDialogShown(context,title, FORM_NAME_PAP)
     }
 
     @JvmStatic

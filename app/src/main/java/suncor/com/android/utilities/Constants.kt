@@ -33,8 +33,6 @@ object Constants {
     const val PARAMETERS = "parameters"
     const val SCROLL = "scroll"
     const val SCROLL_DEPTH_THRESHOLD = "scrollDepthThreshold"
-    const val LOGIN_FORCE_NEW_PASSWORD = "Login Force New Password"
-    const val LOGIN = "Login"
     const val HOME = "Home"
     const val AUTHORIZED = "Authorized"
     const val NEW = "New"
