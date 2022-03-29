@@ -262,7 +262,7 @@ public class Transaction {
             double bonusPoints = 0;
             if (loyaltyPointsMessages != null && loyaltyPointsMessages.size() > 0 && loyaltyPointsMessages.get(0).programId != null) {
                 for (LoyaltyPointsMessages loyaltyPointsMessages : loyaltyPointsMessages) {
-                    if (loyaltyPointsMessages.programId != null && loyaltyPointsMessages.programId.equals("Base Points")) {
+                    if (loyaltyPointsMessages.programId != null && loyaltyPointsMessages.programId.equals("Base")) {
                         basePoints += loyaltyPointsMessages.earnedRewardSummary;
                     }
 
