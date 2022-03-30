@@ -13,10 +13,12 @@ import suncor.com.android.analytics.BaseParams.FORM_NAME
 import suncor.com.android.analytics.BaseParams.FORM_SELECTION
 import suncor.com.android.analytics.BaseParams.PHONE_NUMBER_TAPPED
 import suncor.com.android.analytics.BaseParams.SCROLL_DEPTH_THRESHOLD
+import suncor.com.android.analytics.BaseParams.STEP_NAME
 import suncor.com.android.analytics.pap.FuelUpAnalytics
+import suncor.com.android.analytics.pap.ReceiptAnalytics
 
 
-open class BaseAnalytics {
+abstract class BaseAnalytics {
 
 
     fun logUserProperty() {
@@ -60,13 +62,7 @@ open class BaseAnalytics {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle)
     }
 
-    open fun logScreenNameClass(activity: Activity, screenName: String?) {
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.componentName.className)
-        FirebaseAnalytics.getInstance(activity)
-            .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
-    }
+
 
     //    // TODO: This is how it should be done(Screen class is not related to the activity)
 //    fun logScreenName(context: Context, className: String, screenName: String?) {
@@ -97,10 +93,25 @@ open class BaseAnalytics {
             val bundle = Bundle()
             bundle.putString(FORM_SELECTION, selection)
             bundle.putString(FORM_NAME, formName)
-            bundle.putString(FORM_STEP, stepName)
+            bundle.putString(STEP_NAME, stepName)
             FuelUpAnalytics.logEvent(context, FORM_STEP, bundle)
         }
 
+        @JvmStatic
+        fun logScreenNameClass(activity: Activity, screenName: String?) {
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.componentName.className)
+            FirebaseAnalytics.getInstance(activity)
+                .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        }
+
+        @JvmStatic
+        fun logFormStart(context: Context, formName: String) {
+            val bundle = Bundle()
+            bundle.putString(FORM_NAME, formName)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_START, bundle)
+        }
 
     }
 

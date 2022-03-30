@@ -1,12 +1,15 @@
 package suncor.com.android.ui.enrollment.cardform;
 
 
+import static suncor.com.android.analytics.enrollment.CardFormAnalytics.SCREEN_NAME_ACTIVATE_MATCH_CARD;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_ACTIVATE_PETRO_POINTS_CARD;
+import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_SIGN_UP;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +24,8 @@ import androidx.navigation.Navigation;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
+import suncor.com.android.analytics.enrollment.CardFormAnalytics;
 import suncor.com.android.databinding.FragmentCardFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
@@ -35,11 +38,7 @@ import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.common.input.CardNumberFormattingTextWatcher;
 import suncor.com.android.ui.common.input.PostalCodeFormattingTextWatcher;
 import suncor.com.android.ui.login.LoginActivity;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.Timber;
-
-import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_CARD;
-import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_SIGN_UP;
 
 
 /**
@@ -77,8 +76,8 @@ public class CardFormFragment extends BaseFragment {
                 if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_INVALID_CARD_ERROR_CODE) || cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_USER_INFO_NOT_MATCHED)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_invalid_card_dialog_title)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_PETRO_POINTS_CARD));
+
+                    CardFormAnalytics.logInvalidCardError(requireContext());
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_invalid_card_dialog_message))
@@ -95,8 +94,8 @@ public class CardFormFragment extends BaseFragment {
                 } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.enrollment_cardform_existing_card_dialog_title)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_PETRO_POINTS_CARD));
+
+                    CardFormAnalytics.logCardAlreadyUsedError(requireContext());
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
@@ -160,8 +159,8 @@ public class CardFormFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "activate-match-card");
-        AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", ACTIVATE_PETRO_POINTS_CARD));
+        CardFormAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_ACTIVATE_MATCH_CARD);
+        CardFormAnalytics.logFormStart(requireContext(),FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
     }
 
     private void hideKeyBoard() {
@@ -178,7 +177,6 @@ public class CardFormFragment extends BaseFragment {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
-
-        AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", phoneNumber));
+        CardFormAnalytics.logTapToCall(requireContext(),phoneNumber);
     }
 }

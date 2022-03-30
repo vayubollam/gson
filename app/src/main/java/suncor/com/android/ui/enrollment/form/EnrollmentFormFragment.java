@@ -1,24 +1,21 @@
 package suncor.com.android.ui.enrollment.form;
 
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_HAVE_CARD;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_SUCCESS;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_SIGNUP_SUCCESS;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.STEP_NAME_ADDRESS;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.STEP_NAME_COMPLETE_SIGNUP;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.STEP_NAME_PERSONAL_INFORMATION;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_ACTIVATE_PETRO_POINTS_CARD;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_JOIN_PETRO_POINTS;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_100;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_20;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_40;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_60;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_80;
-import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_CARD;
-import static suncor.com.android.utilities.Constants.ACTIVATE_SUCCESS;
-import static suncor.com.android.utilities.Constants.ALERT;
-import static suncor.com.android.utilities.Constants.ALERT_TITLE;
-import static suncor.com.android.utilities.Constants.ERROR_LOG;
-import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
-import static suncor.com.android.utilities.Constants.FORM_NAME;
-import static suncor.com.android.utilities.Constants.FORM_START;
-import static suncor.com.android.utilities.Constants.FORM_STEP;
 import static suncor.com.android.utilities.Constants.METHOD_ACTIVATION;
 import static suncor.com.android.utilities.Constants.METHOD_SIGN_UP;
-import static suncor.com.android.utilities.Constants.SIGNUP_SUCCESS;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +65,6 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.uicomponents.ExtendedNestedScrollView;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
 
 public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
@@ -114,11 +109,11 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
         boolean joinWithCard = viewModel.getCardStatus() != null;
         if (joinWithCard) {
-            screenName = "activate-i-have-a-card";
-            formName = ACTIVATE_PETRO_POINTS_CARD;
+            screenName = SCREEN_NAME_ACTIVATE_I_HAVE_CARD;
+            formName = FORM_NAME_ACTIVATE_PETRO_POINTS_CARD;
         } else {
-            screenName = "sign-up-i-dont-have-a-card";
-            formName = "Join Petro-Points";
+            screenName = SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD;
+            formName = FORM_NAME_JOIN_PETRO_POINTS;
         }
 
         isLoadedFirstTime = true;
@@ -126,12 +121,12 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         viewModel.getShowDuplicateEmailEvent().observe(this, (r) -> {
             showDuplicateEmailAlert();
         });
+        EnrollmentAnalytics.logScreenName(requireActivity(),screenName);
 
-        AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
         if (viewModel.getCardStatus() == null) {
-            AnalyticsUtils.logEvent(getContext(), FORM_START, new Pair<>(FORM_NAME, formName));
+            EnrollmentAnalytics.logFormStart(requireContext(),formName);
         } else {
-            AnalyticsUtils.logEvent(getContext(), FORM_STEP, new Pair<>(FORM_NAME, formName), new Pair<>("stepName", "Personal Information"));
+            EnrollmentAnalytics.logFormStep(requireContext(),formName,"",STEP_NAME_PERSONAL_INFORMATION);
         }
 
         //enrollments api call result
@@ -140,11 +135,11 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 //Log success events
                 String screenName;
                 if (viewModel.getCardStatus() != null) {
-                    screenName = ACTIVATE_SUCCESS;
+                    screenName = SCREEN_NAME_ACTIVATE_SUCCESS;
                 } else {
-                    screenName = SIGNUP_SUCCESS;
+                    screenName = SCREEN_NAME_SIGNUP_SUCCESS;
                 }
-                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+                EnrollmentAnalytics.logScreenNameClass(requireActivity(),screenName);
 
                 String optionsChecked = "";
                 if (binding.emailOffersCheckbox.isChecked()) {
@@ -155,27 +150,22 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 }
 
                 binding.emailAddress.setText(viewModel.getEmailInputField().getText());
-                AnalyticsUtils.logEvent(
-                        getContext(),
-                        FORM_STEP,
-                        new Pair<>("stepName", "Complete Signup"),
-                        new Pair<>(FORM_NAME, formName),
-                        new Pair<>("formSelection", optionsChecked)
-                );
 
+                EnrollmentAnalytics.logFormStep(requireContext(),formName,optionsChecked,STEP_NAME_COMPLETE_SIGNUP);
                 // Log method of signup to Analytics
-                AnalyticsUtils.logEvent(
-                        getContext(),
-                        "sign_up",
-                        new Pair<>("method", sign_up_method));
+                EnrollmentAnalytics.logSignupEvent(requireContext(),sign_up_method);
 
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, getString(R.string.enrollment_email_restricted_alert_title)), new Pair<>(FORM_NAME, formName));
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT, new Pair<>(ALERT_TITLE, getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
-                            new Pair<>(FORM_NAME, formName));
+
+                    EnrollmentAnalytics.logDiffEmailError(requireContext(),formName);
+                    EnrollmentAnalytics.logAlertShown(requireContext(),
+                            getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")",
+                            formName
+                    );
+
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setNegativeButton(R.string.cancel, (d, w) -> {
@@ -208,7 +198,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
                     dialog.show();
                 } else {
-                    Alerts.prepareGeneralErrorDialog(getActivity(), ACTIVATE_PETRO_POINTS_CARD).show();
+                    Alerts.prepareGeneralErrorDialog(getActivity(), FORM_NAME_ACTIVATE_PETRO_POINTS_CARD).show();
                 }
             }
         });
@@ -270,6 +260,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
             EnrollmentAnalytics.logAlertShown(requireContext(),
                     getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"
+                    ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
             );
 
 
@@ -442,7 +433,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         } else if (viewModel.isOneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             EnrollmentAnalytics.logAlertShown(requireContext(),
-                    getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"
+                    getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")",
+                    FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
             );
 
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
