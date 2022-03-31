@@ -34,6 +34,7 @@ public class ExpandedCardItem {
     private int width = 0;
     private int height = 0;
     private int vacuumRemaining;
+    private int balanceRemaining;
 
     public ExpandedCardItem(Context context, CardDetail cardDetail) {
         this.cardDetail = cardDetail;
@@ -80,6 +81,7 @@ public class ExpandedCardItem {
             }
         } else {
             int balanceValue = cardDetail.getBalance();
+            this.balanceRemaining = cardDetail.getBalance();
             switch (cardType) {
                 case PPTS:
                     cardImage = context.getDrawable(R.drawable.petro_points_card);
@@ -235,7 +237,15 @@ public class ExpandedCardItem {
         return String.valueOf(vacuumRemaining);
     }
 
+    public boolean isVacuumZero() {
+        return vacuumRemaining == 0;
+    }
+
     public void setVacuumRemaining(int vacuumRemaining) {
         this.vacuumRemaining = vacuumRemaining;
+    }
+
+    public boolean isWashBalanceZero() {
+        return balanceRemaining == 0;
     }
 }
