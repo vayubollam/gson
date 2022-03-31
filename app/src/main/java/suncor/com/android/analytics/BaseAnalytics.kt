@@ -25,21 +25,9 @@ abstract class BaseAnalytics {
 
     }
 
-    fun logAlertDialogInteraction(context: Context,alertTitle: String, alertSelection: String,formName : String){
-        val bundle = Bundle()
-        bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
-        bundle.putString(BaseParams.ALERT_SELECTION,alertSelection)
-        bundle.putString(FORM_NAME,formName)
 
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
-    }
 
-    fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
-        val bundle = Bundle()
-        bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
-        bundle.putString(FORM_NAME,formName)
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
-    }
+
 
     fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
         val bundle = Bundle()
@@ -74,6 +62,17 @@ abstract class BaseAnalytics {
 //    }
 
     companion object{
+
+        @JvmStatic
+        fun logAlertDialogInteraction(context: Context,alertTitle: String, alertSelection: String,formName : String){
+            val bundle = Bundle()
+            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+            bundle.putString(BaseParams.ALERT_SELECTION,alertSelection)
+            bundle.putString(FORM_NAME,formName)
+
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
+        }
+
         @JvmStatic
         fun logTapToCall(context: Context,phoneNumber:String){
             val bundle = Bundle()
@@ -112,6 +111,22 @@ abstract class BaseAnalytics {
             bundle.putString(FORM_NAME, formName)
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_START, bundle)
         }
+
+        @JvmStatic
+        fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
+            val bundle = Bundle()
+            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+            bundle.putString(FORM_NAME,formName)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
+        }
+
+        @JvmStatic
+        fun logInterSiteURL(context: Context, url: String) {
+            val bundle = Bundle()
+            bundle.putString(BaseParams.INTER_SITE_URL, url)
+            FuelUpAnalytics.logEvent(context, BaseEvents.INTER_SITE, bundle)
+        }
+
 
     }
 

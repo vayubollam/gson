@@ -134,12 +134,6 @@ object FuelUpAnalytics: BaseAnalytics(){
     fun logPapPreAuthLoadingScreenName(activity: Activity) {
         logScreenNameClass(activity, screenName = SCREEN_NAME_PAP_PRE_AUTH_LOADING)
     }
-    @JvmStatic
-    fun logInterSitePrivacyURL(context: Context, url: String) {
-        val bundle = Bundle()
-        bundle.putString(BaseParams.INTER_SITE_URL, url)
-        logEvent(context,BaseEvents.INTER_SITE,bundle)
-    }
 
     @JvmStatic
     fun logPumpSelectionFormStep(context: Context, pumpNumber: String) {

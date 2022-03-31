@@ -251,7 +251,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         });
 
         binding.termsAgreement.setOnClickListener((v) -> {
-            FuelUpAnalytics.logInterSitePrivacyURL(requireContext(),getString(R.string.privacy_policy_url));
+            FuelUpAnalytics.logInterSiteURL(requireContext(),getString(R.string.privacy_policy_url));
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)));
             startActivity(browserIntent);
 

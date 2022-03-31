@@ -32,4 +32,7 @@ object BaseEvents {
     const val PASSWORD_RESET = "password_reset"
     const val LOGIN = "Login"
 
+    const val NAVIGATION = "navigation"
+
+
 }

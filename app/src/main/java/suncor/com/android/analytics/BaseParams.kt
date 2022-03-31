@@ -2,6 +2,7 @@ package suncor.com.android.analytics
 
 object BaseParams {
     const val BUTTON_TEXT = "buttonText"
+    const val ACTIONBAR_TAP = "actionBarTap"
 
     const val FORM_NAME = "formName"
     const val FORM_SELECTION = "formSelection"
