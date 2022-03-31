@@ -829,5 +829,8 @@
     <string name="vacuum_barcode_header">Scan to start your vacuum</string>
     <string name="vacuum_heading">VACUUM</string>
     <string name="wash_heading">WASH</string>
-    <string name="vacuum_left">vacuum left</string>
+    <plurals name="vacuum_left">
+        <item quantity="one">vacuum left</item>
+        <item quantity="other">vacuums left</item>
+    </plurals>
 </resources>
