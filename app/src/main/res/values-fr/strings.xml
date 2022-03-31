@@ -792,6 +792,9 @@
     <string name="vacuum_barcode_header">Scannez le code à barres pour activer votre aspirateur</string>
     <string name="vacuum_heading">Aspirateur</string>
     <string name="wash_heading">lavage</string>
-    <string name="vacuum_left">utilisations restantes de l\'aspirateur</string>
+    <plurals name="vacuum_left">
+        <item quantity="one">utilisation restante de l'aspirateur</item>
+        <item quantity="other">utilisations restantes de l'aspirateur</item>
+    </plurals>
 
 </resources>

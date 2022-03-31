@@ -237,6 +237,10 @@ public class ExpandedCardItem {
         return String.valueOf(vacuumRemaining);
     }
 
+    public int getVacuumRemainingQuantity(){
+        return vacuumRemaining;
+    }
+
     public boolean isVacuumZero() {
         return vacuumRemaining == 0;
     }
