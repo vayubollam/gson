@@ -80,7 +80,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@{transaction.getBasePoints() > 0 ? @string/transaction_copy_receipt_send_mail : @string/transaction_copy_receipt_send_mail_clpe_down}"
+                                android:text="@{!transaction.getIsCLPEDown() ? @string/transaction_copy_receipt_send_mail : @string/transaction_copy_receipt_send_mail_clpe_down}"
                                 android:textAlignment="center"
                                 android:layout_gravity="center"
                                 style="@style/Body2"
