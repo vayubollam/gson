@@ -101,8 +101,8 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     private FragmentFuelUpBinding binding;
     private FuelUpViewModel viewModel;
     private SelectPumpViewModel selectPumpViewModel;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
-    private ObservableBoolean isRedemptionRestricted = new ObservableBoolean(false);
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
+    private final ObservableBoolean isRedemptionRestricted = new ObservableBoolean(false);
     private Double lastTransactionFuelUpLimit;
     SettingsResponse.Pap mPapData;
     PaymentDropDownAdapter paymentDropDownAdapter;
@@ -142,9 +142,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
 
         LocationLiveData locationLiveData = new LocationLiveData(requireContext().getApplicationContext());
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
-            locationLiveData.observe(this, result -> {
-                viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
-            });
+            locationLiveData.observe(this, result -> viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude())));
         }
 
         DecimalFormatSymbols symbol = new DecimalFormatSymbols(Locale.getDefault());
@@ -500,7 +498,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                                 new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
 
 
-                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, CardFormatUtils.formatBalance(petroPoints));
+                        FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, String.valueOf(preAuthPrices) ,CardFormatUtils.formatBalance(petroPoints));
 
                         Navigation.findNavController(requireView()).popBackStack();
                         Navigation.findNavController(requireView()).navigate(action);
@@ -629,7 +627,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                         new Pair<>(AnalyticsUtils.Param.checkBoxInput, selectedRadioButton),
                         new Pair<>(AnalyticsUtils.Param.fuelAmountSelection, String.valueOf(preAuthPrices)));
 
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, CardFormatUtils.formatBalance(petroPoints));
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(pumpNumber, preAuthRedeemPoints, String.valueOf(preAuthPrices),CardFormatUtils.formatBalance(petroPoints));
                 Navigation.findNavController(requireView()).popBackStack();
                 Navigation.findNavController(requireView()).navigate(action);
             }

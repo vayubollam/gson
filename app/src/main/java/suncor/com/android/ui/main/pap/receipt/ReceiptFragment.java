@@ -51,9 +51,9 @@ public class ReceiptFragment extends MainActivityFragment {
     ViewModelFactory viewModelFactory;
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
-    private String transactionId;
     private boolean isGooglePay;
     private String preAuthRedeemPoints;
+    private String preAuthFuelAmount;
     private String availablePoints;
     private int updatedPoints;
     private boolean isReceiptValid = false;
@@ -79,10 +79,12 @@ public class ReceiptFragment extends MainActivityFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
+        String transactionId = ReceiptFragmentArgs.fromBundle(getArguments()).getTransactionId();
         preAuthRedeemPoints = ReceiptFragmentArgs.fromBundle(getArguments()).getPreAuthRedeemPoints();
+        preAuthFuelAmount = ReceiptFragmentArgs.fromBundle(getArguments()).getPreAuthFuelAmount();
         isGooglePay = ReceiptFragmentArgs.fromBundle(getArguments()).getIsGooglePay();
         availablePoints = ReceiptFragmentArgs.fromBundle(getArguments()).getAvailablePoints();
+
 
         observeTransactionData(transactionId);
 
@@ -205,20 +207,21 @@ public class ReceiptFragment extends MainActivityFragment {
 
                 AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
 
-
-                // Member locking /Partial and No redemption check
-                if (Integer.parseInt(preAuthRedeemPoints) > 0 && burnedPoints < Integer.parseInt(preAuthRedeemPoints) && transaction.getBasePoints() > 0) {
-                    if (transaction.getPointsRedeemed() == 0) {
+                // Handle NO_REDEMPTION, PARTIAL_REDEMPTION in case of under pump or Member locking
+                switch (transaction.getTransactionStatus(preAuthRedeemPoints,preAuthFuelAmount)){
+                    case NORMAL:
+                        break;
+                    case NO_REDEMPTION:
                         showNoRedemptionPopup();
-                    } else {
+                        break;
+                    case PARTIAL_REDEMPTION:
                         showPartialRedemptionPopup();
-                    }
+                        break;
                 }
 
-                //in-case of CLPE UP, Update petro points in profile. In case of CLPE down profile points will remain the same.
-                if (transaction.getBasePoints() > 0)
+                //Update Profile Points: in-case of CLPE UP, Update petro points in profile. OtherWise profile points will remain the same.
+                if (!transaction.getIsCLPEDown())
                     sessionManager.getProfile().setPointsBalance(transaction.getNewBalance());
-
 
             }
         });
@@ -284,9 +287,7 @@ public class ReceiptFragment extends MainActivityFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setMessage(message)
                 .setTitle(title);
-        builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> {
-            dialog.dismiss();
-        }));
+        builder.setPositiveButton(R.string.dismiss, ((dialog, which) -> dialog.dismiss()));
         return builder;
     }
 }

@@ -2,6 +2,7 @@ package suncor.com.android.model.pap.transaction;
 
 import android.content.Context;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.MutableLiveData;
 
 import java.text.DateFormat;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 import suncor.com.android.R;
+import suncor.com.android.utilities.Timber;
 
 public class Transaction {
 
@@ -137,6 +139,7 @@ public class Transaction {
         return basketPaymentState;
     }
 
+
     public String getReceiptFormatted() {
         StringBuilder sb = new StringBuilder();
         receiptData.forEach(data -> sb.append(data).append("\n"));
@@ -165,7 +168,7 @@ public class Transaction {
         return sb.toString();
     }
 
-    public boolean getIsCLPEDown(){
+    public boolean getIsCLPEDown() {
         return isCLPEDown;
     }
 
@@ -344,5 +347,47 @@ public class Transaction {
         public double amount;
         public String description;
     }
+
+    public enum TransactionStatus {
+        NORMAL,
+        PARTIAL_REDEMPTION,
+        NO_REDEMPTION
+    }
+
+
+    public TransactionStatus getTransactionStatus(String preAuthRedeemPoints, String preAuthFuelAmount) {
+       try {
+           double requestedFuelUpAmount = Double.parseDouble(preAuthFuelAmount);
+           boolean isUnderPump = subtotal < requestedFuelUpAmount;
+
+           int requestedRedeemPoints = Integer.parseInt(preAuthRedeemPoints);
+
+           if (isCLPEDown || requestedRedeemPoints == 0 || getPointsRedeemed() == requestedRedeemPoints)
+               return TransactionStatus.NORMAL;
+
+           if (getPointsRedeemed() == 0)
+               return TransactionStatus.NO_REDEMPTION;
+
+           // Under-pump and points redeemed == actual Fuel-up Amount in points
+           if (isUnderPump && getPointsRedeemed() == subtotal * 1000) {
+               return TransactionStatus.NORMAL;
+           } else {
+               return TransactionStatus.PARTIAL_REDEMPTION;
+           }
+       }catch (Exception e){
+           Timber.e(e.getMessage());
+           return TransactionStatus.NORMAL;
+       }
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public void setTestValues(double pumped,boolean isCLPEDown, double pointsRedeemed ){
+        this.subtotal = pumped;
+        this.isCLPEDown = isCLPEDown;
+        this.pointsRedeemed = pointsRedeemed;
+
+    }
+
+
 
 }
