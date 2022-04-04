@@ -1,5 +1,10 @@
 package suncor.com.android.ui.main.actionmenu;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.utilities.Constants.ACTIVE_SESSION;
+import static suncor.com.android.utilities.Constants.AUTHORIZED;
+import static suncor.com.android.utilities.Constants.NEW;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -36,11 +41,6 @@ import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
-
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static suncor.com.android.utilities.Constants.ACTIVE_SESSION;
-import static suncor.com.android.utilities.Constants.AUTHORIZED;
-import static suncor.com.android.utilities.Constants.NEW;
 
 public class ActionMenuFragment extends BottomSheetDialogFragment {
     private FragmentActionButtonMenuBinding binding;
@@ -104,7 +104,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding.actionFuelUpButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_fuel_up)));
             if (activeSession) {
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("", "0", homeViewModel.getPetroPointsBalance());
+                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("", "0", "0",homeViewModel.getPetroPointsBalance());
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                 dismiss();
             }

@@ -796,6 +796,12 @@
             app:nullable="true"/>
 
         <argument
+            android:name="preAuthFuelAmount"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+
+        <argument
             android:name="availablePoints"
             android:defaultValue="null"
             app:argType="string"
@@ -818,6 +824,10 @@
 
             <argument
                 android:name="preAuthRedeemPoints"
+                app:argType="string"/>
+
+            <argument
+                android:name="preAuthFuelAmount"
                 app:argType="string"/>
 
             <argument
@@ -878,6 +888,10 @@
                 app:argType="string"/>
 
             <argument
+                android:name="preAuthFuelAmount"
+                app:argType="string"/>
+
+            <argument
                 android:name="availablePoints"
                 app:argType="string"/>
         </action>
@@ -901,6 +915,12 @@
 
         <argument
             android:name="preAuthRedeemPoints"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true"/>
+
+        <argument
+            android:name="preAuthFuelAmount"
             android:defaultValue="null"
             app:argType="string"
             app:nullable="true"/>
