@@ -263,7 +263,8 @@ public class HomeFragment extends BottomNavigationFragment {
             }
         });
 
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
+        mViewModel.getDateDifference();
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true, mViewModel.isExpired);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -324,7 +325,8 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         nearestCard = binding.nearestCard;
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false);
+        mViewModel.getDateDifference();
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false, mViewModel.isExpired);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -417,6 +419,13 @@ public class HomeFragment extends BottomNavigationFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.getDateDifference();
+        offersAdapter.setExpiry(mViewModel.isExpired);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         int flags = getActivity().getWindow().getDecorView().getSystemUiVisibility();
@@ -455,7 +464,6 @@ public class HomeFragment extends BottomNavigationFragment {
                     .commit();
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

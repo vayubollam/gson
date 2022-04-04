@@ -3,22 +3,21 @@ package suncor.com.android.ui.main.home;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.ObservableBoolean;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
-import suncor.com.android.BuildConfig;
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
 import suncor.com.android.databinding.OffersCardItemBinding;
-import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.YoutubePlayerActivity;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.login.LoginActivity;
@@ -26,6 +25,8 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
+
 import static suncor.com.android.utilities.Constants.*;
 
 
@@ -33,11 +34,17 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
     private ArrayList<OfferCard> offerCards;
 
+    private int optionalImagePosition = 1 ;
+    private ObservableBoolean isEnglishLocale = new ObservableBoolean();
+    private ObservableBoolean isExpired = new ObservableBoolean();
+
     YoutubePlayerActivity youtubePlayerActivity ;
 
-    public OffersAdapter(MainActivity activity, boolean isSignedIn) {
+    public OffersAdapter(MainActivity activity, boolean isSignedIn, ObservableBoolean isExpired) {
         offerCards = new ArrayList<>();
+        this.isExpired = isExpired;
         if (!isSignedIn) {
+            optionalImagePosition = 2;
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
                     activity.getDrawable(R.drawable.banner_8_signin_summer),
                     new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
@@ -57,7 +64,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 "1"
                         );
                         activity.startActivity(new Intent(activity, LoginActivity.class));
-                    }));
+                    }), false , SIGN_IN_BANNER);
             offerCards.add(banner1);
         }
 
@@ -76,7 +83,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     (isSignedIn? "1":"2")
                             );
                         }
-                ));
+                ), false, CONTACTLESS_PAYMENT_BANNER);
         offerCards.add(banner2);
 
         OfferCard banner3 = new OfferCard(activity.getString(!isSignedIn ? R.string.offers_banner_3a_text : R.string.offers_banner_3b_text),
@@ -101,7 +108,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     (isSignedIn? "1":"2")
                             );
                         }
-                ));
+                ), false, REDEEM_FOR_FREE_GAS_BANNER);
         offerCards.add(banner3);
 
 
@@ -122,7 +129,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             action.setRoot(false);
                             activity.getNavController().navigate(action);
                         }
-                ));
+                ), false, CARWASH_ACTIVATION_BANNER);
         offerCards.add(banner4);
 
         OfferCard banner5 = new OfferCard(activity.getString(R.string.offers_banner_5_text),
@@ -162,8 +169,30 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     })
                                     .show();
                         }
-                ));
+                ), false, SAVE_AMOUNT_WITH_RBC_BANNER);
         offerCards.add(banner5);
+
+        OfferCard optionalBanner = new OfferCard(activity.getString(R.string.offers_banner_optional_text),
+                activity.getDrawable(R.drawable.banner_black_man_with_phone),
+                new OfferCard.OfferButton(
+                        activity.getString(R.string.offers_banner_optional_button),
+                        () -> {
+
+                            activity.getNavController().navigate(R.id.action_to_TutorialFragment);
+
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
+                                    (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_optional_text),
+                                    activity.getString(R.string.offers_banner_optional_text),
+                                    activity.getString(R.string.offers_banner_optional_text),
+                                    (isSignedIn? "1":"2")
+                            );
+                        }
+                ), true, POINTS_CONTEST_BANNER);
+
+        if(!isExpired.get()){
+
+            offerCards.add(optionalImagePosition, optionalBanner);
+        }
 
     }
 
@@ -171,31 +200,50 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
     @Override
     public OffersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         OffersCardItemBinding binding = OffersCardItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-
+        checkForLocale();
         return new OffersViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OffersViewHolder holder, int position) {
         OffersCardItemBinding binding = holder.binding;
+        binding.setIsEnglish(isEnglishLocale);
         OfferCard card = offerCards.get(position);
-        binding.setItem(card);
-        binding.executePendingBindings();
-        binding.bannerImage.post(() -> {
-            //Apply a matrix to simulate center_top
-            Matrix matrix = binding.bannerImage.getImageMatrix();
-            float scaleXFactor = binding.bannerImage.getWidth() / (float) card.getImage().getIntrinsicWidth();
-            float scaleYFactor = binding.bannerImage.getHeight() / (float) card.getImage().getIntrinsicHeight();
-            float scaleFactor = Math.max(scaleXFactor, scaleYFactor);
-            float pivotPoint = 2 * (card.getImage().getIntrinsicWidth() * scaleFactor - binding.bannerImage.getWidth());
-            matrix.setScale(scaleFactor, scaleFactor, pivotPoint, 0);
-            binding.bannerImage.setImageMatrix(matrix);
-        });
+        if(isExpired.get()){
+            if(!card.getBannerTag().equalsIgnoreCase(POINTS_CONTEST_BANNER)){
+                binding.setItem(card);
+                binding.executePendingBindings();
+                binding.bannerImage.post(() -> {
+                    //Apply a matrix to simulate center_top
+                    Matrix matrix = binding.bannerImage.getImageMatrix();
+                    float scaleXFactor = binding.bannerImage.getWidth() / (float) card.getImage().getIntrinsicWidth();
+                    float scaleYFactor = binding.bannerImage.getHeight() / (float) card.getImage().getIntrinsicHeight();
+                    float scaleFactor = Math.max(scaleXFactor, scaleYFactor);
+                    float pivotPoint = 2 * (card.getImage().getIntrinsicWidth() * scaleFactor - binding.bannerImage.getWidth());
+                    matrix.setScale(scaleFactor, scaleFactor, pivotPoint, 0);
+                    binding.bannerImage.setImageMatrix(matrix);
+                });
+            }
+        }else{
+            binding.setItem(card);
+            binding.executePendingBindings();
+            binding.bannerImage.post(() -> {
+                //Apply a matrix to simulate center_top
+                Matrix matrix = binding.bannerImage.getImageMatrix();
+                float scaleXFactor = binding.bannerImage.getWidth() / (float) card.getImage().getIntrinsicWidth();
+                float scaleYFactor = binding.bannerImage.getHeight() / (float) card.getImage().getIntrinsicHeight();
+                float scaleFactor = Math.max(scaleXFactor, scaleYFactor);
+                float pivotPoint = 2 * (card.getImage().getIntrinsicWidth() * scaleFactor - binding.bannerImage.getWidth());
+                matrix.setScale(scaleFactor, scaleFactor, pivotPoint, 0);
+                binding.bannerImage.setImageMatrix(matrix);
+            });
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return offerCards.size();
+        return  offerCards.size();
     }
 
     public OfferCard getOffer(int position) {
@@ -214,6 +262,13 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public void setExpiry(ObservableBoolean isExpired){
+        isExpired.set(isExpired.get());
+    }
+    private void checkForLocale(){
+        isEnglishLocale.set(!Locale.getDefault().getLanguage().equalsIgnoreCase("fr"));
     }
 
 }

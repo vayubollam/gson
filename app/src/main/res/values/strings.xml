@@ -379,7 +379,9 @@
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
     <string name="offers_banner_2_text">Contactless payment now in-app.</string>
+    <string name="offers_banner_optional_text">Thousands of Prizes. Millions of Petro-points.</string>
     <string name="offers_banner_2_button">Launch feature tour</string>
+    <string name="offers_banner_optional_button">Find out How</string>
     <string name="offers_banner_3a_text">Petro\u2011Points™ = Free gas.</string>
     <string name="offers_banner_3a_button">Explore Petro-Points</string>
     <string name="offers_banner_3b_text">Redeem for free gas, eGift cards and more.</string>

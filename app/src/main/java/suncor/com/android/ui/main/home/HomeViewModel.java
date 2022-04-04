@@ -1,6 +1,9 @@
 package suncor.com.android.ui.main.home;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
+import android.util.Log;
+
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableChar;
 import androidx.databinding.ObservableField;
@@ -14,8 +17,11 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.inject.Inject;
@@ -38,8 +44,10 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.stationlocator.StationItem;
+import suncor.com.android.utilities.Constants;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
+import suncor.com.android.utilities.Timber;
 
 @Singleton
 public class HomeViewModel extends ViewModel {
@@ -74,6 +82,8 @@ public class HomeViewModel extends ViewModel {
 
     public ObservableBoolean activeFuellingSession = new ObservableBoolean(false);
     public ObservableField<String> fuellingStateMessage = new ObservableField<>();
+
+    public ObservableBoolean isExpired = new ObservableBoolean(false);
 
     @Inject
     public HomeViewModel(SessionManager sessionManager, StationsApi stationsApi,
@@ -141,6 +151,7 @@ public class HomeViewModel extends ViewModel {
     }
 
     private void initGreetings() {
+        getDateDifference();
         Calendar now = GregorianCalendar.getInstance();
         Calendar noon = GregorianCalendar.getInstance();
         noon.set(Calendar.HOUR_OF_DAY, 12);
@@ -158,6 +169,31 @@ public class HomeViewModel extends ViewModel {
         } else {
             greetingsMessage.set(R.string.home_signedin_greetings_evening);
             headerImage.set(R.drawable.home_backdrop_evening);
+        }
+    }
+
+    public void getDateDifference(){
+        Date date = Calendar.getInstance().getTime();;
+        SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+        String formattedDate = format.format(date);
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(formattedDate);
+            d2 = format.parse(Constants.IMAGE_EXPIRY_DATE);
+        } catch (ParseException e){
+            e.getLocalizedMessage();
+            Timber.d("Error", e.getLocalizedMessage());
+        }
+
+        assert d2 != null;
+        assert d1 != null;
+        long diff = d2.getTime() - d1.getTime();
+        Timber.d("Time Difference", String.valueOf(diff));
+
+        if(diff < 0){
+            isExpired.set(true);
         }
     }
 

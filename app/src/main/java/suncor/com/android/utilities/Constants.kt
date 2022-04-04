@@ -116,4 +116,15 @@ object Constants {
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
+
+    //Image expiry time
+    const val IMAGE_EXPIRY_DATE = "2022/04/04 17:55:00"
+
+    //Home page banners
+    const val SIGN_IN_BANNER = "sign_in_banner"
+    const val CONTACTLESS_PAYMENT_BANNER = "contactless_payment_banner"
+    const val POINTS_CONTEST_BANNER = "points_contest_banner"
+    const val REDEEM_FOR_FREE_GAS_BANNER = "redeem_for_free_gas_banner"
+    const val SAVE_AMOUNT_WITH_RBC_BANNER = "save_amount_with_rbc_banner"
+    const val CARWASH_ACTIVATION_BANNER = "carwash_activation_banner"
 }
