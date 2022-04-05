@@ -219,7 +219,7 @@
     <string name="cards_ppts_balance_template">%s points</string>
     <string name="cards_ppts_monetary_balance_template">ou %s $ de rabais</string>
     <string name="cards_rbc_label">RBC</string>
-    <string name="cards_sp_label">Carte accès</string>
+    <string name="cards_sp_label">Carte accès lave-auto</string>
     <string name="cards_wag_label">Lavez Partez</string>
     <string name="cards_wag_expanded_label">Carte Lavez Partez</string>
 
