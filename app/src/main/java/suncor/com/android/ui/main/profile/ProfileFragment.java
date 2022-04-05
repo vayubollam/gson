@@ -3,7 +3,6 @@ package suncor.com.android.ui.main.profile;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,19 +24,14 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorToast;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.profile.address.AddressFragment;
-import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
@@ -163,39 +157,18 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             builder.create().show();
 
         });
+
         binding.getHelpButton.setOnClickListener(v -> {
             if(Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.profile_tab) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
             }
-        });
+  
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
-        binding.personalInformationsButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
-            } else {
-                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
-                Navigation.findNavController(getView()).navigate(action);
-            }
-        });
-        binding.preferencesButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Change Preferences"));
-            Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
-        });
-        binding.aboutButton.setOnClickListener(v -> {
-            if(Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.profile_tab) {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment);
-            }
-        });
-        binding.addressButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Address"));
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment);
-            } else {
-                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT);
-                Navigation.findNavController(getView()).navigate(action);
-            }
-        });
+
+        binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_accountDetailsFragment));
+
+        binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
+
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
 

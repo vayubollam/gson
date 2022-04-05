@@ -237,23 +237,82 @@
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@+id/profile_tab" />
         <action
-            android:id="@+id/action_profile_tab_to_preferencesFragment"
+            android:id="@+id/action_profile_tab_to_accountDetailsFragment"
+            app:destination="@id/accountDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/profile_tab"/>
+
+
+    </keep_state_fragment>
+
+    <keep_state_fragment
+        android:id="@+id/accountDetailsFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDetailsFragment"
+        android:label="AccountDetailsFragment"
+        tools:layout="@layout/fragment_account_details">
+        <action
+            android:id="@+id/action_account_details_to_preferencesFragment"
             app:destination="@id/preferencesFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_profile_tab_to_personalInfoFragment"
+            android:id="@+id/action_account_details_to_personalInfoFragment"
             app:destination="@id/personalInfoFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_profile_tab_to_addressFragment"
+            android:id="@+id/action_account_details_to_addressFragment"
             app:destination="@id/addressFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_account_details_to_securityQuestionValidationFragment2"
+            app:destination="@id/securityQuestionValidationFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/dummy"
+            app:launchSingleTop="false"
+            app:popExitAnim="@anim/fade_out"/>
+
+        <action
+            android:id="@+id/action_account_details_to_accountDeleteNotesFragment"
+            app:destination="@id/accountDeleteNotesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/deleteAccountFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDeleteFragment"
+        android:label="DeleteAccountFragment"
+        tools:layout="@layout/fragment_delete_account">
+
+        <action
+            android:id="@+id/action_account_delete_to_accountDeleteSubmitFragment"
+            app:destination="@id/accountDeleteSubmitFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/home_tab" />
+
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/accountDeleteSubmitFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDeleteSubmitFragment"
+        android:label="AccountDeleteSubmitFragment"
+        tools:layout="@layout/fragment_account_delete_submit">
+    </keep_state_fragment>
+    <keep_state_fragment
+        android:id="@+id/accountDeleteNotesFragment"
+        android:name="suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment"
+        android:label="AccountDeleteNotesFragment"
+        tools:layout="@layout/fragment_account_delete_notes">
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/filtersFragment"
@@ -456,7 +515,7 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/profile_tab" />
+            app:popUpTo="@+id/accountDetailsFragment" />
         <argument
             android:name="destinationFragment"
             app:argType="string" />
@@ -466,7 +525,14 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/dummy"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/profile_tab" />
+            app:popUpTo="@+id/accountDetailsFragment" />
+        <action
+            android:id="@+id/action_securityQuestionValidationFragment_to_deleteAccountFragment"
+            app:destination="@id/deleteAccountFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/dummy"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/accountDetailsFragment" />
     </keep_state_fragment>
     <keep_state_fragment
         android:id="@+id/addressFragment"

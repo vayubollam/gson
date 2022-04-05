@@ -156,6 +156,12 @@ public class PersonalInfoFragment extends MainActivityFragment {
                 callCostumerSupport(getString(customerCareStringRes));
             }
         });
+
+        viewModel.focusWithError.observe(this, event -> {
+            if (event.getContentIfNotHandled() != null){
+                binding.emailInput.setError(true);
+            }
+        });
     }
 
     @Override
