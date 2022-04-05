@@ -45,6 +45,7 @@ import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.pap.selectpump.SelectPumpViewModel;
 import suncor.com.android.ui.main.stationlocator.StationItem;
 import suncor.com.android.utilities.Constants;
+import suncor.com.android.utilities.DateUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 import suncor.com.android.utilities.Timber;
@@ -173,24 +174,8 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void getDateDifference(){
-        Date date = Calendar.getInstance().getTime();;
-        SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
-        String formattedDate = format.format(date);
 
-        Date d1 = null;
-        Date d2 = null;
-        try {
-            d1 = format.parse(formattedDate);
-            d2 = format.parse(Constants.IMAGE_EXPIRY_DATE);
-        } catch (ParseException e){
-            e.getLocalizedMessage();
-            Timber.d("Error", e.getLocalizedMessage());
-        }
-
-        assert d2 != null;
-        assert d1 != null;
-        long diff = d2.getTime() - d1.getTime();
-        Timber.d("Time Difference", String.valueOf(diff));
+        long diff = DateUtils.getDateTimeDifference(DateUtils.getCurrentDate(), Constants.IMAGE_EXPIRY_DATE);
 
         if(diff < 0){
             isExpired.set(true);

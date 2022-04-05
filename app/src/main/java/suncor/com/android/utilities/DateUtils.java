@@ -12,6 +12,7 @@ import java.util.Locale;
 public class DateUtils {
     private static final String ENGLISH_DATE_FORMAT = "MMM dd, yyyy 'at' hh:mma";
     private static final String FRENCH_DATE_FORMAT = "dd MMM yyyy 'à' HH:mm";
+    private static final String DATE_TIME_FORMAT = "yy/MM/dd HH:mm:ss";
 
     public static String getFormattedDate(String inputDate) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -47,6 +48,34 @@ public class DateUtils {
     public static int getTodayDate(){
         Calendar calender = Calendar.getInstance();
         return calender.get(Calendar.DATE);
+    }
+
+    public static long getDateTimeDifference(String startDate , String endDate){
+
+        SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(startDate);
+            d2 = format.parse(endDate);
+        } catch (ParseException e){
+            e.getLocalizedMessage();
+            Timber.d("Exception", e.getLocalizedMessage());
+        }
+
+        assert d2 != null;
+        assert d1 != null;
+        long diff = d2.getTime() - d1.getTime();
+        Timber.d("Time Difference", String.valueOf(diff));
+
+        return diff;
+    }
+
+    public static String getCurrentDate(){
+        Date date = Calendar.getInstance().getTime();;
+        SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
+        return format.format(date);
     }
 
 }

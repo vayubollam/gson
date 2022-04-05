@@ -25,20 +25,28 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
-import suncor.com.android.utilities.Constants;
+import suncor.com.android.utilities.DateUtils;
 
-import static suncor.com.android.utilities.Constants.*;
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.CARWASH_ACTIVATION_BANNER;
+import static suncor.com.android.utilities.Constants.CONTACTLESS_PAYMENT_BANNER;
+import static suncor.com.android.utilities.Constants.IMAGE_EXPIRY_DATE;
+import static suncor.com.android.utilities.Constants.POINTS_CONTEST_BANNER;
+import static suncor.com.android.utilities.Constants.REDEEM_FOR_FREE_GAS_BANNER;
+import static suncor.com.android.utilities.Constants.SAVE_AMOUNT_WITH_RBC_BANNER;
+import static suncor.com.android.utilities.Constants.SIGN_IN_BANNER;
 
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
 
+    YoutubePlayerActivity youtubePlayerActivity;
     private ArrayList<OfferCard> offerCards;
-
-    private int optionalImagePosition = 1 ;
+    private int optionalImagePosition = 1;
     private ObservableBoolean isEnglishLocale = new ObservableBoolean();
     private ObservableBoolean isExpired = new ObservableBoolean();
-
-    YoutubePlayerActivity youtubePlayerActivity ;
 
     public OffersAdapter(MainActivity activity, boolean isSignedIn, ObservableBoolean isExpired) {
         offerCards = new ArrayList<>();
@@ -49,7 +57,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                     activity.getDrawable(R.drawable.banner_8_signin_summer),
                     new OfferCard.OfferButton(activity.getString(R.string.join), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                "1|"+activity.getString(R.string.offers_banner_1_text),
+                                "1|" + activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
@@ -58,13 +66,13 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                "1|"+activity.getString(R.string.offers_banner_1_text),
+                                "1|" + activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
                         );
                         activity.startActivity(new Intent(activity, LoginActivity.class));
-                    }), false , SIGN_IN_BANNER);
+                    }), false, SIGN_IN_BANNER);
             offerCards.add(banner1);
         }
 
@@ -77,10 +85,10 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                             activity.getNavController().navigate(R.id.action_to_TutorialFragment);
 
                             AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                    (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
+                                    (isSignedIn ? "1" : "2") + "|" + activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
-                                    (isSignedIn? "1":"2")
+                                    (isSignedIn ? "1" : "2")
                             );
                         }
                 ), false, CONTACTLESS_PAYMENT_BANNER);
@@ -91,21 +99,18 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(!isSignedIn ? R.string.offers_banner_3a_button : R.string.offers_banner_3b_button),
                         () -> {
-                            if (isSignedIn)
-                            {
+                            if (isSignedIn) {
                                 HomeNavigationDirections.ActionToCardsDetailsFragment action = HomeNavigationDirections.actionToCardsDetailsFragment();
                                 action.setLoadType(CardsLoadType.PETRO_POINT_ONLY);
                                 activity.getNavController().navigate(action);
-                            }
-                            else
-                            {
+                            } else {
                                 activity.getNavController().navigate(R.id.rewards_tab);
                             }
                             AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                    (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_2_text),
+                                    (isSignedIn ? "1" : "2") + "|" + activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
                                     activity.getString(R.string.offers_banner_2_text),
-                                    (isSignedIn? "1":"2")
+                                    (isSignedIn ? "1" : "2")
                             );
                         }
                 ), false, REDEEM_FOR_FREE_GAS_BANNER);
@@ -118,10 +123,10 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_4_button),
                         () -> {
                             AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                    (isSignedIn? "3":"4") +"|"+activity.getString(R.string.offers_banner_4_text),
+                                    (isSignedIn ? "3" : "4") + "|" + activity.getString(R.string.offers_banner_4_text),
                                     activity.getString(R.string.offers_banner_4_text),
                                     activity.getString(R.string.offers_banner_4_text),
-                                    (isSignedIn? "3":"4")
+                                    (isSignedIn ? "3" : "4")
                             );
 
                             HomeNavigationDirections.ActionToStationsFragment action = HomeNavigationDirections.actionToStationsFragment();
@@ -138,21 +143,21 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_5_button),
                         () -> {
                             AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                    (isSignedIn? "4":"5") +"|"+activity.getString(R.string.offers_banner_5_text),
+                                    (isSignedIn ? "4" : "5") + "|" + activity.getString(R.string.offers_banner_5_text),
                                     activity.getString(R.string.offers_banner_5_text),
                                     activity.getString(R.string.offers_banner_5_text),
-                                    (isSignedIn? "4":"5")
+                                    (isSignedIn ? "4" : "5")
                             );
                             AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT,
-                                    new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")")
+                                    new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title) + "(" + activity.getString(R.string.offers_leaving_app_alert_message) + ")")
                             );
                             new AlertDialog.Builder(activity)
                                     .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
                                     .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
                                     .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
                                         AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT_INTERACTION,
-                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
-                                                new Pair<>(ALERT_SELECTION,activity.getString(R.string.offers_leaving_app_alert_button))
+                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title) + "(" + activity.getString(R.string.offers_leaving_app_alert_message) + ")"),
+                                                new Pair<>(ALERT_SELECTION, activity.getString(R.string.offers_leaving_app_alert_button))
                                         );
                                         String url = activity.getString(R.string.rbc_url);
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -163,8 +168,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                     })
                                     .setNegativeButton(R.string.cancel, (dialog, which) -> {
                                         AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT_INTERACTION,
-                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title)+"("+activity.getString(R.string.offers_leaving_app_alert_message)+")"),
-                                                new Pair<>(ALERT_SELECTION,activity.getString(R.string.cancel))
+                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title) + "(" + activity.getString(R.string.offers_leaving_app_alert_message) + ")"),
+                                                new Pair<>(ALERT_SELECTION, activity.getString(R.string.cancel))
                                         );
                                     })
                                     .show();
@@ -177,19 +182,25 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_optional_button),
                         () -> {
+                            long diff = DateUtils.getDateTimeDifference(DateUtils.getCurrentDate(), IMAGE_EXPIRY_DATE);
+                            if (diff > 0) {
+                                String url = activity.getString(R.string.petro_points_contest_url);
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse(url));
+                                activity.startActivity(intent);
 
-                            activity.getNavController().navigate(R.id.action_to_TutorialFragment);
 
-                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                    (isSignedIn? "1":"2") +"|"+activity.getString(R.string.offers_banner_optional_text),
-                                    activity.getString(R.string.offers_banner_optional_text),
-                                    activity.getString(R.string.offers_banner_optional_text),
-                                    (isSignedIn? "1":"2")
-                            );
+                                AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
+                                        (isSignedIn ? "1" : "2") + "|" + activity.getString(R.string.offers_banner_optional_text),
+                                        activity.getString(R.string.offers_banner_optional_text),
+                                        activity.getString(R.string.offers_banner_optional_text),
+                                        (isSignedIn ? "1" : "2")
+                                );
+                            }
                         }
                 ), true, POINTS_CONTEST_BANNER);
 
-        if(!isExpired.get()){
+        if (!isExpired.get()) {
 
             offerCards.add(optionalImagePosition, optionalBanner);
         }
@@ -209,8 +220,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         OffersCardItemBinding binding = holder.binding;
         binding.setIsEnglish(isEnglishLocale);
         OfferCard card = offerCards.get(position);
-        if(isExpired.get()){
-            if(!card.getBannerTag().equalsIgnoreCase(POINTS_CONTEST_BANNER)){
+        if (isExpired.get()) {
+            if (!card.getBannerTag().equalsIgnoreCase(POINTS_CONTEST_BANNER)) {
                 binding.setItem(card);
                 binding.executePendingBindings();
                 binding.bannerImage.post(() -> {
@@ -224,7 +235,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                     binding.bannerImage.setImageMatrix(matrix);
                 });
             }
-        }else{
+        } else {
             binding.setItem(card);
             binding.executePendingBindings();
             binding.bannerImage.post(() -> {
@@ -243,7 +254,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
     @Override
     public int getItemCount() {
-        return  offerCards.size();
+        return offerCards.size();
     }
 
     public OfferCard getOffer(int position) {
@@ -254,6 +265,14 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         }
     }
 
+    public void setExpiry(ObservableBoolean isExpired) {
+        isExpired.set(isExpired.get());
+    }
+
+    private void checkForLocale() {
+        isEnglishLocale.set(!Locale.getDefault().getLanguage().equalsIgnoreCase("fr"));
+    }
+
     public class OffersViewHolder extends RecyclerView.ViewHolder {
 
         OffersCardItemBinding binding;
@@ -262,13 +281,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             super(binding.getRoot());
             this.binding = binding;
         }
-    }
-
-    public void setExpiry(ObservableBoolean isExpired){
-        isExpired.set(isExpired.get());
-    }
-    private void checkForLocale(){
-        isEnglishLocale.set(!Locale.getDefault().getLanguage().equalsIgnoreCase("fr"));
     }
 
 }

@@ -399,9 +399,9 @@
     <string name="home_enrollment_greeting_dismiss">Fermer</string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
     <string name="offers_banner_2_text">Paiement sans contact maintenant disponible dans l\'application.</string>
-    <string name="offers_banner_optional_text">Thousands of Prizes. Millions of Petro-points.</string>
+    <string name="offers_banner_optional_text">Des milliers de prix.Des millions de Petro-Points.</string>
     <string name="offers_banner_2_button">Lancer la visite des fonctionnalités</string>
-    <string name="offers_banner_optional_button">Find out How</string>
+    <string name="offers_banner_optional_button">TROUVER COMMENT</string>
     <string name="offers_banner_3a_text">Petro\u2011Points🅪 = articles gratuits.</string>
     <string name="offers_banner_3a_button">Découvrez les Petro-Points</string>
     <string name="offers_banner_3b_text">Échangez des points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
@@ -414,6 +414,7 @@
     <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
     <string name="offers_leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
+    <string name="petro_points_contest_url">https://www.petro-canada.ca/fr/personnel/a-propos-petro-points/concours-pleinde-ponts-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp </string>
     <string name="transaction_type_pp">Petro Points</string>
     <string name="rewards_guest_join_button">Inscrivez-vous et commencez à économiser</string>
     <string name="navigation_rewards_tab">Petro-Points</string>

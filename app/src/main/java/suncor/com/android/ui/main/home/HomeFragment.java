@@ -417,13 +417,13 @@ public class HomeFragment extends BottomNavigationFragment {
             });
         }
     }
-
+/*
     @Override
     public void onResume() {
         super.onResume();
         mViewModel.getDateDifference();
         offersAdapter.setExpiry(mViewModel.isExpired);
-    }
+    }*/
 
     @Override
     public void onStop() {
