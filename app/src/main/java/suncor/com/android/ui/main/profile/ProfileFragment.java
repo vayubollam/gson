@@ -157,8 +157,12 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             builder.create().show();
 
         });
-        binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
 
+        binding.getHelpButton.setOnClickListener(v -> {
+            if(Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.profile_tab) {
+                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
+            }
+  
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
 
         binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_accountDetailsFragment));
@@ -167,6 +171,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
+
 
     @Override
     protected String getScreenName() {
