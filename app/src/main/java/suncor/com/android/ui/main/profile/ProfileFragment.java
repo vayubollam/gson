@@ -162,6 +162,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
             if(Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.profile_tab) {
                 Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
             }
+        });
   
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
 
