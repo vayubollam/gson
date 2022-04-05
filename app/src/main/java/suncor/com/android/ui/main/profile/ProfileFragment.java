@@ -3,7 +3,6 @@ package suncor.com.android.ui.main.profile;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,19 +24,14 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
-import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentProfileBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
-import suncor.com.android.ui.SplashActivity;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorToast;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.profile.address.AddressFragment;
-import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
@@ -139,24 +133,24 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
         binding.signoutButton.setOnClickListener((v) -> {
             AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
-                    new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
-                    new Pair<>("formName","My petro points Account Navigation List")
+                    new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title) + "()"),
+                    new Pair<>("formName", "My petro points Account Navigation List")
             );
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
                     .setPositiveButton(getString(R.string.profil_sign_out_dialog_positive_button), (dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
-                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_positive_button)),
-                                new Pair<>("formName","My petro points Account Navigation List")
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title) + "()"),
+                                new Pair<>("alertSelection", getString(R.string.profil_sign_out_dialog_positive_button)),
+                                new Pair<>("formName", "My petro points Account Navigation List")
                         );
                         signUserOut();
                     })
                     .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> {
                         AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
-                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title)+"()"),
-                                new Pair<>("alertSelection",getString(R.string.profil_sign_out_dialog_negative_button)),
-                                new Pair<>("formName","My petro points Account Navigation List")
+                                new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title) + "()"),
+                                new Pair<>("alertSelection", getString(R.string.profil_sign_out_dialog_negative_button)),
+                                new Pair<>("formName", "My petro points Account Navigation List")
                         );
                         dialog.dismiss();
                     }));
@@ -164,30 +158,13 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
         });
         binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment));
+
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
-        binding.personalInformationsButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
-            } else {
-                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
-                Navigation.findNavController(getView()).navigate(action);
-            }
-        });
-        binding.preferencesButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Change Preferences"));
-            Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
-        });
+
+        binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_accountDetailsFragment));
+
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
-        binding.addressButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update Address"));
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_addressFragment);
-            } else {
-                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT);
-                Navigation.findNavController(getView()).navigate(action);
-            }
-        });
+
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
 
@@ -198,7 +175,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
     private void signUserOut() {
         binding.signOutPB.setVisibility(View.VISIBLE);
-        sessionManager.logout().observe(this, (result) -> {
+        sessionManager.logout().observe(getViewLifecycleOwner(), (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 binding.signOutPB.setVisibility(View.GONE);
                 Navigation.findNavController(getView()).navigate(R.id.home_tab);

@@ -116,4 +116,13 @@ object Constants {
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
+
+    //account
+    const val UPDATE_PERSONAL_INFORMATION = "Update Personal Information"
+    const val CHANGES_PREFERENCES = "Change Preferences"
+    const val UPDATE_ADDRESS = "Update Address"
+    const val DELETE_ACCOUNT = "Delete Account"
+    const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
+    const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
+    const val ANSWER_SECURITY_QUESTION= "Answer security question"
 }
