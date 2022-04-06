@@ -207,8 +207,10 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void openNavigationForNearestStation() {
-        Station nearestStation = _nearestStation.getValue().data.getStation();
-        _openNavigationApps.setValue(Event.newEvent(nearestStation));
+        if(_nearestStation.getValue().data != null){
+            Station nearestStation = _nearestStation.getValue().data.getStation();
+            _openNavigationApps.setValue(Event.newEvent(nearestStation));
+        }
     }
 
     public String getUserFirstName() {

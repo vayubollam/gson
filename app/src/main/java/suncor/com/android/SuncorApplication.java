@@ -1,10 +1,6 @@
 package suncor.com.android;
 
-import android.provider.Settings;
-
-import com.google.android.gms.wallet.WalletConstants;
 import com.kount.api.analytics.AnalyticsCollector;
-import com.mazenrashed.logdnaandroidclient.LogDna;
 import com.worklight.common.Logger;
 import com.worklight.wlclient.HttpClientManager;
 import com.worklight.wlclient.api.WLAuthorizationManager;

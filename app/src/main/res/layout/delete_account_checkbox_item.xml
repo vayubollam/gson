@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/check_ack_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:button="@drawable/custom_checkbox"
+            android:checked="false"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textAppearance="@style/Caption1"
+            android:lineSpacingMultiplier="1.28"
+            android:textColor="@color/black_60"
+            tools:text="Petro-canada locations are not convenient for me" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/bottom_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/black_8"
+            android:src="@drawable/horizontal_divider" />
+    </LinearLayout>
+</layout>

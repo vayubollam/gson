@@ -45,4 +45,15 @@
         <item>Yukon;YT;Y</item>
 
     </string-array>
+
+    <string-array name="acknowledgment_list">
+        <item>Je reconnais que je perdrai tous les points inutilisés si je ne les échange pas ou si je nen fais pas don avant la suppression du compte.</item>
+        <item>Je reconnais que cette mesure me retirera du programme Petro-Points et que je ne pourrai plus accumuler de points.</item>
+    </string-array>
+
+    <string-array name="before_leaving_list">
+        <item>Les établissements Petro-Canada ne sont pas pratiques pour moi.</item>
+        <item>Je préfère un autre programme de fidélisation.</item>
+        <item>Je peux obtenir plus de valeur ailleurs.</item>
+    </string-array>
 </resources>
