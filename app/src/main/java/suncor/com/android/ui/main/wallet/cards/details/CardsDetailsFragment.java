@@ -263,6 +263,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
                 action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
         action.setCardNumber(cardItem.getCardNumber());
+        viewModel.refreshCards();
         Navigation.findNavController(getView()).navigate(action);
 
 
