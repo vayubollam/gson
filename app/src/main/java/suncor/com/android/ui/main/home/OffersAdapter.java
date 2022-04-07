@@ -182,21 +182,38 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_optional_button),
                         () -> {
-                            long diff = DateUtils.getDateTimeDifference(DateUtils.getCurrentDate(), IMAGE_EXPIRY_DATE);
-                            if (diff > 0) {
-                                String url = activity.getString(R.string.petro_points_contest_url);
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setData(Uri.parse(url));
-                                activity.startActivity(intent);
+                            AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
+                                    (isSignedIn ? "4" : "5") + "|" + activity.getString(R.string.offers_banner_5_text),
+                                    activity.getString(R.string.offers_banner_optional_text),
+                                    activity.getString(R.string.offers_banner_optional_text),
+                                    (isSignedIn ? "4" : "5")
+                            );
+                            AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT,
+                                    new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title) + "(" + activity.getString(R.string.offers_leaving_app_alert_message) + ")")
+                            );
+                            new AlertDialog.Builder(activity)
+                                    .setTitle(activity.getString(R.string.offers_leaving_app_alert_title))
+                                    .setMessage(activity.getString(R.string.offers_leaving_app_alert_message))
+                                    .setPositiveButton(activity.getString(R.string.offers_leaving_app_alert_button), (dialog, which) -> {
+                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT_INTERACTION,
+                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title) + "(" + activity.getString(R.string.offers_leaving_app_alert_message) + ")"),
+                                                new Pair<>(ALERT_SELECTION, activity.getString(R.string.offers_leaving_app_alert_button))
+                                        );
+                                        String url = activity.getString(R.string.petro_points_contest_url);
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setData(Uri.parse(url));
+                                        activity.startActivity(intent);
 
+                                        AnalyticsUtils.logEvent(activity, "intersite", new Pair<>("intersiteURL", url));
+                                    })
+                                    .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                                        AnalyticsUtils.logEvent(activity.getApplicationContext(), ALERT_INTERACTION,
+                                                new Pair<>(ALERT_TITLE, activity.getString(R.string.offers_leaving_app_alert_title) + "(" + activity.getString(R.string.offers_leaving_app_alert_message) + ")"),
+                                                new Pair<>(ALERT_SELECTION, activity.getString(R.string.cancel))
+                                        );
+                                    })
+                                    .show();
 
-                                AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                        (isSignedIn ? "1" : "2") + "|" + activity.getString(R.string.offers_banner_optional_text),
-                                        activity.getString(R.string.offers_banner_optional_text),
-                                        activity.getString(R.string.offers_banner_optional_text),
-                                        (isSignedIn ? "1" : "2")
-                                );
-                            }
                         }
                 ), true, POINTS_CONTEST_BANNER);
 
@@ -263,10 +280,6 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         } else {
             return offerCards.get(0);
         }
-    }
-
-    public void setExpiry(ObservableBoolean isExpired) {
-        isExpired.set(isExpired.get());
     }
 
     private void checkForLocale() {
