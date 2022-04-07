@@ -53,6 +53,7 @@ import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
+import suncor.com.android.utilities.Constants;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 import suncor.com.android.utilities.Timber;
@@ -270,7 +271,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                                 return;
                             }
                            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
-
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.WALLETTYPE.name(), new Pair<>(AnalyticsUtils.Param.ADDPPTSTOWALLET.toString(), Constants.GPAY_ANALYTICS));
                         });
                     }
                 }).start();

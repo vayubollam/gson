@@ -90,6 +90,7 @@ object Constants {
     const val INTERSITE = "intersite"
     const val INFO_TAP = "info_tap"
     const val MENU_TAP = "menu_tap"
+    const val WALLET_TYPE = "walletType"
 
     const val ITEM_ID = "item_id"
     const val ITEM_NAME = "item_name"
@@ -107,6 +108,7 @@ object Constants {
     const val INTERSITE_URL = "intersiteURL"
     const val INFO_TEXT = "infoText"
     const val MENU_SELECTION = "menuSelection"
+    const val ADD_PPTS_TO_WALLET = "add_ppts_to_wallet"
 
     const val INTERNAL_PROMOTIONS = "Internal Promotions"
     const val ACTIVATE_WNG = "Activate Wash by Wash & Go card"
@@ -125,4 +127,5 @@ object Constants {
     const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
     const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
     const val ANSWER_SECURITY_QUESTION= "Answer security question"
+    const val GPAY_ANALYTICS = "GPay"
 }
