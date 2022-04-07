@@ -1,5 +1,16 @@
 package suncor.com.android.ui.main.home;
 
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.CARWASH_ACTIVATION_BANNER;
+import static suncor.com.android.utilities.Constants.CONTACTLESS_PAYMENT_BANNER;
+import static suncor.com.android.utilities.Constants.POINTS_CONTEST_BANNER;
+import static suncor.com.android.utilities.Constants.REDEEM_FOR_FREE_GAS_BANNER;
+import static suncor.com.android.utilities.Constants.SAVE_AMOUNT_WITH_RBC_BANNER;
+import static suncor.com.android.utilities.Constants.SIGN_IN_BANNER;
+
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.net.Uri;
@@ -25,19 +36,6 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
-import suncor.com.android.utilities.DateUtils;
-
-import static suncor.com.android.utilities.Constants.ALERT;
-import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
-import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
-import static suncor.com.android.utilities.Constants.ALERT_TITLE;
-import static suncor.com.android.utilities.Constants.CARWASH_ACTIVATION_BANNER;
-import static suncor.com.android.utilities.Constants.CONTACTLESS_PAYMENT_BANNER;
-import static suncor.com.android.utilities.Constants.IMAGE_EXPIRY_DATE;
-import static suncor.com.android.utilities.Constants.POINTS_CONTEST_BANNER;
-import static suncor.com.android.utilities.Constants.REDEEM_FOR_FREE_GAS_BANNER;
-import static suncor.com.android.utilities.Constants.SAVE_AMOUNT_WITH_RBC_BANNER;
-import static suncor.com.android.utilities.Constants.SIGN_IN_BANNER;
 
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersViewHolder> {
@@ -51,6 +49,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
     public OffersAdapter(MainActivity activity, boolean isSignedIn, ObservableBoolean isExpired) {
         offerCards = new ArrayList<>();
         this.isExpired = isExpired;
+        checkForLocale();
         if (!isSignedIn) {
             optionalImagePosition = 2;
             OfferCard banner1 = new OfferCard(activity.getString(R.string.offers_banner_1_text),
@@ -178,7 +177,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         offerCards.add(banner5);
 
         OfferCard optionalBanner = new OfferCard(activity.getString(R.string.offers_banner_optional_text),
-                activity.getDrawable(R.drawable.banner_black_man_with_phone),
+
+                activity.getDrawable( isEnglishLocale.get() ? R.drawable.banner_black_man_en : R.drawable.banner_black_man_fr),
+
                 new OfferCard.OfferButton(
                         activity.getString(R.string.offers_banner_optional_button),
                         () -> {

@@ -43,18 +43,9 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
                     tools:layout_editor_absoluteX="30dp"
-                    tools:src="@drawable/banner_black_man_with_phone" />
+                    tools:src="@drawable/banner_black_man_fr" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    visibleGone="@{item.imageLogoVisible}"
-                    android:layout_width="130dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="242dp"
-                    android:layout_marginTop="22dp"
-                    android:src="@{isEnglish ?@drawable/pump_up_the_points_logo_en_1 : @drawable/pump_up_the_points_logo_fr_1}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:src = "@drawable/pump_up_the_points_logo_en"
-                    app:layout_constraintTop_toTopOf="@+id/banner_image" />
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/card_welcome"
