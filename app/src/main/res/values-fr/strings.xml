@@ -221,7 +221,7 @@
     <string name="cards_rbc_label">RBC</string>
     <string name="cards_sp_label">Carte accès lave-auto</string>
     <string name="cards_wag_label">Lavez Partez</string>
-    <string name="cards_wag_expanded_label">Carte Lavez Partez</string>
+    <string name="cards_wag_expanded_label">Lavez Partez</string>
 
     <string name="customer_support_email">servicealaclientele@petro-canada.ca</string>
     <string name="profile_get_help_call">Appeler</string>
@@ -298,12 +298,12 @@
 
     <plurals name="cards_days_left_expanded">
         <item quantity="one">jour restant</item>
-        <item quantity="other">jours restant</item>
+        <item quantity="other">jours restants</item>
     </plurals>
 
     <plurals name="cards_wash_left_expanded">
         <item quantity="one">lavage restant</item>
-        <item quantity="other">lavages restant</item>
+        <item quantity="other">lavages restants</item>
     </plurals>
 
     <plurals name="cards_washes_balance">
