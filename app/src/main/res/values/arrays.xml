@@ -73,7 +73,7 @@
 
     <string-array name="acknowledgment_list">
         <item>I acknowledge that I will forfeit all unused points if I do not redeem them prior to deletion.</item>
-        <item>I acknowledge that this action will remove from the PetroPointsTM program and I will no longer have the ability to earn points.</item>
+        <item>I acknowledge that this action will remove me from the PetroPointsTM program and I will no longer have the ability to earn points.</item>
     </string-array>
 
     <string-array name="before_leaving_list">

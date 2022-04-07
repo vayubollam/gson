@@ -848,7 +848,7 @@
     <string name="account_deletion_subtitle_acknowledgement">Acknowledgement </string>
     <string name="account_deletion_subtitle_acknowledgement_required">(required)</string>
     <string name="account_deletion_subtitle_acknowledgement_checkbox1">I acknowledge that I will forfeit all unused points if I do not redeem them prior to deletion.</string>
-    <string name="account_deletion_subtitle_acknowledgement_checkbox2">I acknowledge that this action will remove from the PetroPointsTM program and I will no longer have the ability to earn points.</string>
+    <string name="account_deletion_subtitle_acknowledgement_checkbox2">I acknowledge that this action will remove me from the PetroPointsTM program and I will no longer have the ability to earn points.</string>
     <string name="account_deletion_subtitle_leaving"> Before you leave, do you mind telling us why you\'re leaving?</string>
     <string name="account_deletion_acknowledgment_validation">You have to agree to all the acknowledgements to begin the account deletion process.</string>
     <string name="account_deletion_different_reason_validation">This field cannot be left blank if selected !</string>
