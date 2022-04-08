@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableChar;
 import androidx.databinding.ObservableField;
@@ -322,6 +323,11 @@ public LiveData<Resource<FuelUp>> isPAPAvailable() {
     public LiveData<Resource<Integer>> getGeoFenceLiveData() {
         return Transformations.map(settingsApi.retrieveSettings(), result ->
                 new Resource<>(result.status, result.data != null ? result.data.getSettings().getPap().getGeofenceDistanceMeters() : 0, result.message));
+    }
+
+    @VisibleForTesting
+    public long getDateTimeDifference(String startDate, String endDate){
+        return DateUtils.getDateTimeDifference(startDate, endDate);
     }
 
 }

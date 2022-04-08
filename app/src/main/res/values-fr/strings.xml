@@ -399,7 +399,7 @@
     <string name="home_enrollment_greeting_dismiss">Fermer</string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
     <string name="offers_banner_2_text">Paiement sans contact maintenant disponible dans l\'application.</string>
-    <string name="offers_banner_optional_text">Des milliers de prix.\n Des millions de Petro-Points.</string>
+    <string name="offers_banner_optional_text">Des milliers de prix.\nDes millions de Petro-Points.</string>
     <string name="offers_banner_2_button">Lancer la visite des fonctionnalités</string>
     <string name="offers_banner_optional_button">TROUVER COMMENT</string>
     <string name="offers_banner_3a_text">Petro\u2011Points🅪 = articles gratuits.</string>

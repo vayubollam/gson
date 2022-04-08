@@ -1,18 +1,23 @@
 package suncor.com.android.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateUtils {
     private static final String ENGLISH_DATE_FORMAT = "MMM dd, yyyy 'at' hh:mma";
     private static final String FRENCH_DATE_FORMAT = "dd MMM yyyy 'à' HH:mm";
-    private static final String DATE_TIME_FORMAT = "yy/MM/dd HH:mm:ss";
+    private static final String DATE_TIME_FORMAT = "yyyy/MM/dd HH:mm:ss";
 
     public static String getFormattedDate(String inputDate) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -54,6 +59,7 @@ public class DateUtils {
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
 
+
         Date d1 = null;
         Date d2 = null;
         try {
@@ -73,9 +79,15 @@ public class DateUtils {
     }
 
     public static String getCurrentDate(){
-        Date date = Calendar.getInstance().getTime();;
-        SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
-        return format.format(date);
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat etDf = new SimpleDateFormat(DATE_TIME_FORMAT);
+        TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
+        etDf.setTimeZone( etTimeZone );
+
+        Date currentDate = new Date();
+        //In ET Time
+        return etDf.format(currentDate.getTime());
+
     }
 
 }
