@@ -22,6 +22,8 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -141,8 +143,8 @@ public class FuellingFragment extends MainActivityFragment {
                             new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                        if (result.data.lastStatus.equalsIgnoreCase(CANCELLED) ||
-                                result.data.lastStatus.equalsIgnoreCase(CANCELED)) {
+                        if (Objects.equals(result.data.lastStatus, CANCELLED) ||
+                                Objects.equals(result.data.lastStatus, CANCELED)) {
                             Alerts.prepareCustomDialog(
                                      getString(R.string.cancellation_alert_title),
                                     getString(R.string.cancellation_alert_body),
