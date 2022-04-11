@@ -141,7 +141,6 @@ public class FuellingFragment extends MainActivityFragment {
                             new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                    if(!result.data.activeSession){
                         if (result.data.lastStatus.equalsIgnoreCase(CANCELLED) ||
                                 result.data.lastStatus.equalsIgnoreCase(CANCELED)) {
                             Alerts.prepareCustomDialog(
@@ -159,49 +158,48 @@ public class FuellingFragment extends MainActivityFragment {
                                         dialogInterface.dismiss();
                                         goBack();
                                     }, PAY_AT_PUMP).show();
-                        } else {
+                        } else  if(!result.data.activeSession) {
                             observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
                             AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_FUELING_ALMOST_COMPLETE );
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMCOMPLETE,
                                     new Pair<>(AnalyticsUtils.Param.FORMSELECTION, PAY_AT_PAUMP_FUELING_COMPLETE),
                                     new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
-                        }
-                    } else if (result.data.status != null) {
-                        transactionId = result.data.transId;
-                        binding.cancelButton.setVisibility(View.VISIBLE);
-                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
+                        } else if (result.data.status != null) {
+                            transactionId = result.data.transId;
+                            binding.cancelButton.setVisibility(View.VISIBLE);
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
                                 new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fueling_up)),
                                 new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
 
-                        AnalyticsUtils.setCurrentScreenName(getActivity(), result.data.status.equalsIgnoreCase(NEW)
+                            AnalyticsUtils.setCurrentScreenName(getActivity(), result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED) ? PAY_AT_PAUMP_FUELING_BEGIN : PAY_AT_PAUMP_FUELING_BEGUN );
 
-                        binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase(NEW)
+                            binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)?
                                 getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));
-                        binding.pumpAuthorizedSubheader.setText(result.data.status.equalsIgnoreCase(NEW)
+                            binding.pumpAuthorizedSubheader.setText(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)?
                                 R.string.pump_authorized_subheader : R.string.fueling_up_subheader);
-                        binding.pumpNumberText.setText(result.data.pumpNumber);
+                            binding.pumpNumberText.setText(result.data.pumpNumber);
 
-                        binding.cancelButton.setText(result.data.status.equalsIgnoreCase(NEW)
+                            binding.cancelButton.setText(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)? R.string.cancel : R.string.hide);
-                        binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equalsIgnoreCase(NEW)
+                            binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)?
                                 R.drawable.circle_dash_border : R.drawable.circle_border));
 
-                        isLoading.set(false);
+                            isLoading.set(false);
 
-                        if (!result.data.status.equalsIgnoreCase(NEW) && !result.data.status.equalsIgnoreCase(AUTHORIZED)) {
-                            binding.borderImageView.clearAnimation();
-                            binding.fuelImageContainer.setVisibility(View.GONE);
+                            if (!result.data.status.equalsIgnoreCase(NEW) && !result.data.status.equalsIgnoreCase(AUTHORIZED)) {
+                                binding.borderImageView.clearAnimation();
+                                binding.fuelImageContainer.setVisibility(View.GONE);
 
-                            binding.fuelAnimationGif.setVisibility(View.VISIBLE);
-                        }
+                                binding.fuelAnimationGif.setVisibility(View.VISIBLE);
+                            }
 
-                        if(pingActiveSessionStarted) {
-                            observerFuellingActiveSession();
-                        }
+                            if(pingActiveSessionStarted) {
+                                observerFuellingActiveSession();
+                            }
                     } else {
                         goBack();
                     }
