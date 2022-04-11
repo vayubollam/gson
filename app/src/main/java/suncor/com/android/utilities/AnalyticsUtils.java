@@ -38,7 +38,8 @@ public class AnalyticsUtils {
         intersite(INTERSITE),
         infoTap(INFO_TAP),
         menuTap(MENU_TAP),
-        WALLETTYPE(WALLET_TYPE);
+        ADDPPTSTOWALLET(ADD_PPTS_TO_WALLET),
+        ADDPPTSTOWALLETERROR(ADD_PPTS_TO_WALLET_ERROR);
 
 
         private final String name;
@@ -76,7 +77,8 @@ public class AnalyticsUtils {
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
         menuSelection(MENU_SELECTION),
-        ADDPPTSTOWALLET(ADD_PPTS_TO_WALLET);
+        WALLETTYPE(WALLET_TYPE);
+
 
         private final String name;
 
