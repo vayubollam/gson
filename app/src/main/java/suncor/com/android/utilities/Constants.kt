@@ -110,6 +110,7 @@ object Constants {
     const val MENU_SELECTION = "menuSelection"
     const val ADD_PPTS_TO_WALLET = "add_ppts_to_wallet"
     const val ADD_PPTS_TO_WALLET_ERROR = "add_ppts_to_wallet_error"
+    const val APP_RATING_PROMPT = "app_rating_prompt"
 
     const val INTERNAL_PROMOTIONS = "Internal Promotions"
     const val ACTIVATE_WNG = "Activate Wash by Wash & Go card"
