@@ -6,9 +6,6 @@ import android.content.res.Resources;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -32,14 +29,14 @@ public class DateUtils {
 
     public static String getFormattedDate(Date inputDate) {
         Locale local = Resources.getSystem().getConfiguration().getLocales().get(0);
+        SimpleDateFormat localDateFormat;
         if (local.equals(Locale.CANADA_FRENCH) ||
                 local.equals(Locale.FRENCH) || local.equals(Locale.FRANCE)) {
-            SimpleDateFormat localDateFormat = new SimpleDateFormat(FRENCH_DATE_FORMAT, local);
-            return localDateFormat.format(inputDate);
+            localDateFormat = new SimpleDateFormat(FRENCH_DATE_FORMAT, local);
         } else {
-            SimpleDateFormat localDateFormat = new SimpleDateFormat(ENGLISH_DATE_FORMAT, local);
-            return localDateFormat.format(inputDate);
+            localDateFormat = new SimpleDateFormat(ENGLISH_DATE_FORMAT, local);
         }
+        return localDateFormat.format(inputDate);
     }
 
     public static long getTodayTimestamp(){
@@ -57,7 +54,7 @@ public class DateUtils {
 
     public static long getDateTimeDifference(String startDate , String endDate){
 
-        SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
 
 
         Date d1 = null;

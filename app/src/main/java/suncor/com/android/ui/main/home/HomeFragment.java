@@ -142,7 +142,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
             if (fuelUp != null && fuelUp.fuelUpAvailable()) {
                 HomeNavigationDirections.ActionToSelectPumpFragment action =
-                        SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                        HomeNavigationDirections.actionToSelectPumpFragment(
                                 station.getId(),
                                 getString(R.string.action_location, station.getAddress().getAddressLine())
                         );
@@ -417,13 +417,6 @@ public class HomeFragment extends BottomNavigationFragment {
             });
         }
     }
-/*
-    @Override
-    public void onResume() {
-        super.onResume();
-        mViewModel.getDateDifference();
-        offersAdapter.setExpiry(mViewModel.isExpired);
-    }*/
 
     @Override
     public void onStop() {
