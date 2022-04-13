@@ -142,7 +142,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
             if (fuelUp != null && fuelUp.fuelUpAvailable()) {
                 HomeNavigationDirections.ActionToSelectPumpFragment action =
-                        SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                        HomeNavigationDirections.actionToSelectPumpFragment(
                                 station.getId(),
                                 getString(R.string.action_location, station.getAddress().getAddressLine())
                         );
@@ -150,7 +150,6 @@ public class HomeFragment extends BottomNavigationFragment {
             } else if (station != null) {
                 NavigationAppsHelper.openNavigationApps(getActivity(), station);
             }
-
         });
 
         mViewModel.dismissEnrollmentRewardsCardEvent.observe(this, event -> {
@@ -168,6 +167,7 @@ public class HomeFragment extends BottomNavigationFragment {
                 constraintSet.applyTo(mainLayout);
             }
         });
+
         mViewModel.navigateToPetroPoints.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
                 HomeFragmentDirections.ActionHomeTabToCardsDetailsFragment action = HomeFragmentDirections.actionHomeTabToCardsDetailsFragment();

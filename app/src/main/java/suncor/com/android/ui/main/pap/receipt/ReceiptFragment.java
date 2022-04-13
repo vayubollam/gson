@@ -174,7 +174,6 @@ public class ReceiptFragment extends MainActivityFragment {
                     dialog.show();
                 }
 
-
                 binding.shareButton.setOnClickListener(v -> {
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, "Share receipt"));
                     File pdfFile = PdfUtil.createPdf(getContext(), result.data.receiptData, transactionId);
@@ -222,13 +221,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 //Update Profile Points: in-case of CLPE UP, Update petro points in profile. OtherWise profile points will remain the same.
                 if (!transaction.getIsCLPEDown())
                     sessionManager.getProfile().setPointsBalance(transaction.getNewBalance());
-
             }
         });
-
-
     }
-
 
     private void goBack() {
         NavController navController = Navigation.findNavController(requireView());
