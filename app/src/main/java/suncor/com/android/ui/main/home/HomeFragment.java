@@ -68,6 +68,7 @@ import suncor.com.android.utilities.NavigationAppsHelper;
 import suncor.com.android.utilities.PermissionManager;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static suncor.com.android.analytics.BaseEvents.ALERT_INTERACTION;
 import static suncor.com.android.utilities.Constants.*;
 
 public class HomeFragment extends BottomNavigationFragment {

@@ -1,14 +1,15 @@
 package suncor.com.android.utilities;
 
-import static suncor.com.android.utilities.Constants.ACTIONBAR_TAP;
+import static suncor.com.android.analytics.BaseEvents.ALERT_INTERACTION;
+import static suncor.com.android.analytics.BaseEvents.BUTTON_TAP;
+import static suncor.com.android.analytics.BaseEvents.FORM_ERROR;
+import static suncor.com.android.analytics.BaseEvents.NAVIGATION;
 import static suncor.com.android.utilities.Constants.ACTIVATE_SP;
 import static suncor.com.android.utilities.Constants.ACTIVATE_WNG;
 import static suncor.com.android.utilities.Constants.ALERT;
-import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
 import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
 import static suncor.com.android.utilities.Constants.ALERT_TITLE;
 import static suncor.com.android.utilities.Constants.BUILD_NUMBER;
-import static suncor.com.android.utilities.Constants.BUTTON_TAP;
 import static suncor.com.android.utilities.Constants.BUTTON_TEXT;
 import static suncor.com.android.utilities.Constants.CARD_TYPE;
 import static suncor.com.android.utilities.Constants.CONTENT_TYPE;
@@ -20,12 +21,10 @@ import static suncor.com.android.utilities.Constants.ERROR_LOG;
 import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
 import static suncor.com.android.utilities.Constants.FALSE;
 import static suncor.com.android.utilities.Constants.FORM_COMPLETE;
-import static suncor.com.android.utilities.Constants.FORM_ERROR;
 import static suncor.com.android.utilities.Constants.FORM_NAME;
 import static suncor.com.android.utilities.Constants.FORM_SELECTION;
 import static suncor.com.android.utilities.Constants.FORM_START;
 import static suncor.com.android.utilities.Constants.FORM_STEP;
-import static suncor.com.android.utilities.Constants.FUEL_AMOUNT_SELECTION;
 import static suncor.com.android.utilities.Constants.INFO_TAP;
 import static suncor.com.android.utilities.Constants.INFO_TEXT;
 import static suncor.com.android.utilities.Constants.INTERNAL_PROMOTIONS;
@@ -36,14 +35,11 @@ import static suncor.com.android.utilities.Constants.ITEM_ID;
 import static suncor.com.android.utilities.Constants.ITEM_NAME;
 import static suncor.com.android.utilities.Constants.MENU_SELECTION;
 import static suncor.com.android.utilities.Constants.MENU_TAP;
-import static suncor.com.android.utilities.Constants.NAVIGATION;
 import static suncor.com.android.utilities.Constants.NONE;
 import static suncor.com.android.utilities.Constants.PAYMENT_COMPLETE;
 import static suncor.com.android.utilities.Constants.PAYMENT_METHOD;
-import static suncor.com.android.utilities.Constants.PAYMENT_PREAUTHORIZE;
 import static suncor.com.android.utilities.Constants.PROMOTIONS;
 import static suncor.com.android.utilities.Constants.SELECT_CONTENT;
-import static suncor.com.android.utilities.Constants.STEP_NAME;
 import static suncor.com.android.utilities.Constants.TRUE;
 import static suncor.com.android.utilities.Constants.USER_ID;
 import static suncor.com.android.utilities.Constants.USER_ID_1;
@@ -114,9 +110,7 @@ public class AnalyticsUtils {
         PROMOTIONS_ENUM(PROMOTIONS),
         VIDEOTITLE(VIDEO_TITLE),
         FORMNAME(FORM_NAME),
-        STEPNAME(STEP_NAME),
         FORMSELECTION(FORM_SELECTION),
-        ACTIONBARTAP(ACTIONBAR_TAP),
         buttonText(BUTTON_TEXT),
         alertTitle(ALERT_TITLE),
         alertSelection(ALERT_SELECTION),
@@ -124,7 +118,6 @@ public class AnalyticsUtils {
         errorMessage(ERROR_MESSAGE),
         detailMessage(DETAIL_ERROR_MESSAGE),
         paymentMethod(PAYMENT_METHOD),
-        fuelAmountSelection(FUEL_AMOUNT_SELECTION),
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
         menuSelection(MENU_SELECTION);
@@ -219,18 +212,20 @@ public class AnalyticsUtils {
     }
 
     public static void logCarwashActivationEvent(Context context, Event event, String stepName) {
-        if (currentCardType == CardType.WAG) {
-            logEvent(context, event,
-                    new Pair<>(Param.FORMNAME, ACTIVATE_WNG),
-                    new Pair<>(Param.STEPNAME, stepName)
-            );
-        } else if (currentCardType == CardType.SP) {
-            logEvent(context, event,
-                    new Pair<>(Param.FORMNAME, ACTIVATE_SP),
-                    new Pair<>(Param.STEPNAME, stepName)
-            );
-        }
+//        if (currentCardType == CardType.WAG) {
+//            logEvent(context, event,
+//                    new Pair<>(Param.FORMNAME, ACTIVATE_WNG),
+//                    new Pair<>(BaseParams.STEP_NAME, stepName)
+//            );
+//        } else if (currentCardType == CardType.SP) {
+//            logEvent(context, event,
+//                    new Pair<>(Param.FORMNAME, ACTIVATE_SP),
+//                    new Pair<>(BaseParams.STEP_NAME, stepName)
+//            );
+//        }
     }
+
+
 
     public static String getCardFormName() {
         if (currentCardType == CardType.WAG) {

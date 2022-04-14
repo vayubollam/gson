@@ -111,7 +111,7 @@ public class TutorialFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new BaseAnalytics().logScreenNameClass(requireActivity(),SCREEN_NAME);
+         BaseAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME);
     }
 
 }

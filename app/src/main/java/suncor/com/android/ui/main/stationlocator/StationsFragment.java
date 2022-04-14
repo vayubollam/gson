@@ -602,7 +602,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         StationsAnalytics.logLocationAccessAlertShown(requireContext()
-                ,getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"));
+                ,getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")");
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(requireContext());
