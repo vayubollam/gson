@@ -184,7 +184,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                         activity.getString(R.string.offers_banner_optional_button),
                         () -> {
                             AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
-                                    (isSignedIn ? "4" : "5") + "|" + activity.getString(R.string.offers_banner_5_text),
+                                    (isSignedIn ? "4" : "5") + "|" + activity.getString(R.string.offers_banner_optional_text),
                                     activity.getString(R.string.offers_banner_optional_text),
                                     activity.getString(R.string.offers_banner_optional_text),
                                     (isSignedIn ? "4" : "5")
