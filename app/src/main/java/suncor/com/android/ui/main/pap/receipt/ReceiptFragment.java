@@ -113,15 +113,13 @@ public class ReceiptFragment extends MainActivityFragment {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
-            } else if (result.status == Resource.Status.ERROR) {
+            } else if (result.status == Resource.Status.SUCCESS) {
                 isLoading.set(false);
                 if (sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 }
-                binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
-                binding.appBar.setOnClickListener((view)-> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
 

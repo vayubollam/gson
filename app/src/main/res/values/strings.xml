@@ -712,7 +712,7 @@
     <string name="view_receipt">View Receipt</string>
     <string name="email_receipt_subject">Petro-Canada fuel receipt: %1$s</string>
     <string name="email_receipt_body">Here\'s your fuel receipt for %1$s:\n</string>
-    <string name="your_transaction_availble_in_your_account">Your purchase info will be available from your account. Or, grab your receipt from the pump or in-store.</string>
+    <string name="your_transaction_availble_in_your_account">Your transaction was completed but we were unable to generate your receipt at this time.\nPlease check transactions history within 24 hours for your receipt details or ask for one in-store.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Pump is unavailable</string>
