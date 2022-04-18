@@ -113,7 +113,7 @@ public class ReceiptFragment extends MainActivityFragment {
             if (result.status == Resource.Status.LOADING) {
                 isLoading.set(true);
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
-            } else if (result.status == Resource.Status.SUCCESS) {
+            } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
                 if (sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
