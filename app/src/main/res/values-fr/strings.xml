@@ -705,7 +705,7 @@
     <string name="view_receipt">Voir le reçu</string>
     <string name="email_receipt_subject">Reçu d\'essence de Petro-Canada: %1$s</string>
     <string name="email_receipt_body">Voici votre reçu d\'essence pour %1$s:\n</string>
-    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. Vous pouvez également obtenir votre reçu au distributeur ou au dépanneur.</string>
+    <string name="your_transaction_availble_in_your_account">Votre transaction a bien été traitée, mais nous ne pouvons pas générer de reçu pour le moment.\nDans 24 heures, vous pourrez consulter l\'historique de transactions pour retrouver votre reçu ou demander une copie du reçu dans un dépanneur.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Distributeur non disponible</string>
