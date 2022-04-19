@@ -118,7 +118,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 }
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
-            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+            } else if (result.status == Resource.Status.ERROR && result.data != null) {
                 isLoading.set(false);
 
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt");
