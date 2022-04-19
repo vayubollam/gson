@@ -118,7 +118,8 @@ object Constants {
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
 
     //Image expiry time
-    const val IMAGE_EXPIRY_DATE = "2022/05/23 23:59:00"
+ //   const val IMAGE_EXPIRY_DATE = "2022/05/23 23:59:00"
+    const val IMAGE_EXPIRY_DATE = "2022/04/19 11:55:00"
 
     //Home page banners
     const val SIGN_IN_BANNER = "sign_in_banner"
