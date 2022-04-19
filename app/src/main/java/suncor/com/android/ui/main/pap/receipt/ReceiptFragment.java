@@ -130,7 +130,9 @@ public class ReceiptFragment extends MainActivityFragment {
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
-                    binding.transactionTotal.setVisibility(View.GONE);
+                    if(result.data.getTotalAmount() <= 0) {
+                        binding.transactionTotal.setVisibility(View.GONE);
+                    }
                     binding.transactionTaxInclusive.setVisibility(View.GONE);
                     binding.transactionSeparator.setVisibility(View.GONE);
                 } else {
