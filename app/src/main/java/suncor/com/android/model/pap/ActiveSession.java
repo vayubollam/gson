@@ -14,6 +14,9 @@ public class ActiveSession {
 
     public Double lastFuelUpAmount;
 
+    public String preAuthPoints;
+    public String fuelUpAmount;
+
     @SerializedName("LastStatus")
     public String lastStatus;
     public String lastPaymentSourceId;

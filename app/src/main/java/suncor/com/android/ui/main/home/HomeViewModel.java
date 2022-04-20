@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -73,6 +74,7 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt headerImage = new ObservableInt();
 
     public ObservableBoolean activeFuellingSession = new ObservableBoolean();
+    public ActiveSession activeSession;
     public ObservableField<String> fuellingStateMessage = new ObservableField<>();
 
     @Inject
