@@ -142,7 +142,7 @@ public class HomeFragment extends BottomNavigationFragment {
 
             if (fuelUp != null && fuelUp.fuelUpAvailable()) {
                 HomeNavigationDirections.ActionToSelectPumpFragment action =
-                        SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                        HomeNavigationDirections.actionToSelectPumpFragment(
                                 station.getId(),
                                 getString(R.string.action_location, station.getAddress().getAddressLine())
                         );
@@ -263,7 +263,8 @@ public class HomeFragment extends BottomNavigationFragment {
             }
         });
 
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
+        mViewModel.getDateDifference();
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true, mViewModel.isExpired);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -324,7 +325,8 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         nearestCard = binding.nearestCard;
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false);
+        mViewModel.getDateDifference();
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false, mViewModel.isExpired);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -455,7 +457,6 @@ public class HomeFragment extends BottomNavigationFragment {
                     .commit();
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
