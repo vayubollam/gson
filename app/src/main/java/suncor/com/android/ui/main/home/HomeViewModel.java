@@ -176,7 +176,7 @@ public class HomeViewModel extends ViewModel {
 
     public void getDateDifference(){
 
-        long diff = DateUtils.getDateTimeDifference(DateUtils.getCurrentDate(), Constants.IMAGE_EXPIRY_DATE);
+        long diff = DateUtils.getDateTimeDifference(DateUtils.getCurrentDateInEST(), Constants.IMAGE_EXPIRY_DATE);
 
         if(diff < 0){
             isExpired.set(true);

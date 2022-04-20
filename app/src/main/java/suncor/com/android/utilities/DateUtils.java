@@ -75,7 +75,7 @@ public class DateUtils {
         return diff;
     }
 
-    public static String getCurrentDate(){
+    public static String getCurrentDateInEST(){
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat etDf = new SimpleDateFormat(DATE_TIME_FORMAT);
         TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
