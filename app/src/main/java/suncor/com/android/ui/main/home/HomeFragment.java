@@ -309,7 +309,7 @@ public class HomeFragment extends BottomNavigationFragment {
         binding.setLifecycleOwner(this);
         binding.mainLayout.post(() -> {
             ConstraintLayout.LayoutParams privacyButtonParams = (ConstraintLayout.LayoutParams) binding.privacyPolicy.getLayoutParams();
-            int _8dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+            int _8dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,    requireContext().getResources().getDisplayMetrics());
             binding.mainLayout.getLayoutParams().height = binding.scrollView.getHeight() + binding.privacyPolicy.getHeight() + privacyButtonParams.bottomMargin + _8dp;
             binding.mainLayout.requestLayout();
         });

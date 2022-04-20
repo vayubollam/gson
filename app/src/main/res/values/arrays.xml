@@ -70,4 +70,15 @@
         <item>Saskatchewan;SK;S</item>
         <item>Yukon;YT;Y</item>
     </string-array>
+
+    <string-array name="acknowledgment_list">
+        <item>I acknowledge that I will forfeit all unused points if I do not redeem them prior to deletion.</item>
+        <item>I acknowledge that this action will remove me from the PetroPointsTM program and I will no longer have the ability to earn points.</item>
+    </string-array>
+
+    <string-array name="before_leaving_list">
+        <item>Petro-Canada locations are not convenient for me</item>
+        <item>I prefer a different loyalty program</item>
+        <item>I can get better value elsewhere</item>
+    </string-array>
 </resources>

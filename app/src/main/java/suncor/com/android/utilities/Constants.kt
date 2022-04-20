@@ -127,4 +127,14 @@ object Constants {
     const val REDEEM_FOR_FREE_GAS_BANNER = "redeem_for_free_gas_banner"
     const val SAVE_AMOUNT_WITH_RBC_BANNER = "save_amount_with_rbc_banner"
     const val CARWASH_ACTIVATION_BANNER = "carwash_activation_banner"
+  
+    //account
+    const val UPDATE_PERSONAL_INFORMATION = "Update Personal Information"
+    const val CHANGES_PREFERENCES = "Change Preferences"
+    const val UPDATE_ADDRESS = "Update Address"
+    const val DELETE_ACCOUNT = "Delete Account"
+    const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
+    const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
+    const val ANSWER_SECURITY_QUESTION= "Answer security question"
+
 }

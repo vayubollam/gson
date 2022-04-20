@@ -21,6 +21,7 @@ import java.util.Locale;
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.account.DeleteAccountRequest;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.account.ProfileRequest;
 import suncor.com.android.model.account.SecurityQuestion;
@@ -33,6 +34,7 @@ public class ProfilesApiImpl implements ProfilesApi {
     private static final String EDIT_PROFILES_ADAPTER_PATH = "/adapters/suncor/v9/rfmp-secure/profiles";
     private static final String GET_SECURITY_QUESTION_ON_PROFILES_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/profiles/security-question";
     private static final String SECURITY_ANSWER_VERIFICATION_ON_PROFILES_ADAPTER_PATH = "/adapters/suncor/v7/rfmp-secure/profiles/security-answer-verification";
+    private static final String DELETE_ACCOUNT_ADAPTER_PATH = "/adapters/suncor/v1/rfmp-secure/deleteAccount";
     private final Gson gson;
 
     public ProfilesApiImpl(Gson gson) {
@@ -160,6 +162,38 @@ public class ProfilesApiImpl implements ProfilesApi {
         } catch (URISyntaxException e) {
             result.postValue(Resource.error(e.getMessage()));
             e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<Boolean>> deleteAccount(DeleteAccountRequest deleteAccountRequest) {
+        Timber.d("Delete account: " + deleteAccountRequest.getEmail());
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(DELETE_ACCOUNT_ADAPTER_PATH);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT);
+            JSONObject body = new JSONObject(gson.toJson(deleteAccountRequest));
+            Timber.d("Sending request\n" + body.toString());
+            request.send(body, new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    Timber.d("delete account successfully");
+                    result.postValue(Resource.success(true));
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("delete account failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException | JSONException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
         }
 
         return result;
