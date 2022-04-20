@@ -54,6 +54,7 @@ public class DateUtils {
         calender.set(Calendar.SECOND, 0);
         return calender.getTimeInMillis();
     }
+
     public static String getTodayFormattedDate(){
         Calendar calender = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
