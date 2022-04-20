@@ -92,30 +92,31 @@ public class DateUtils {
         return diff;
     }
 
-    public static String getCurrentDateInEST(){
+    public static String getCurrentDateInEST() {
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat etDf = new SimpleDateFormat(DATE_TIME_FORMAT);
         TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
-        etDf.setTimeZone( etTimeZone );
+        etDf.setTimeZone(etTimeZone);
 
         Date currentDate = new Date();
         //In ET Time
         return etDf.format(currentDate.getTime());
-
-    public static long findDateDifference(String startDate, String endDate) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        Date date = dateFormat.parse(startDate);
-        Date dateD = dateFormat.parse(endDate);
-
-        Long difference_In_Time = dateD.getTime() - date.getTime();
-
-        long difference_In_Days = ((difference_In_Time
-                / (1000 * 60 * 60 * 24))
-                % 365);
-
-        Timber.d("Date Difference Log :", difference_In_Days);
-        return difference_In_Days;
     }
+
+        public static long findDateDifference (String startDate, String endDate) throws ParseException {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            Date date = dateFormat.parse(startDate);
+            Date dateD = dateFormat.parse(endDate);
+
+            Long difference_In_Time = dateD.getTime() - date.getTime();
+
+            long difference_In_Days = ((difference_In_Time
+                    / (1000 * 60 * 60 * 24))
+                    % 365);
+
+            Timber.d("Date Difference Log :", difference_In_Days);
+            return difference_In_Days;
+        }
 
 }

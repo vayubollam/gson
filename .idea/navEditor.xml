@@ -53,6 +53,30 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="accountDeleteNotesFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1132" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="accountDeleteSubmitFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="accountDetailsFragment">
                     <value>
                       <LayoutPositions>
@@ -64,12 +88,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_account_details_to_addressFragment">
+                            <entry key="action_account_details_to_accountDeleteNotesFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_account_details_to_deleteAccountFragment">
+                            <entry key="action_account_details_to_addressFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -411,6 +435,15 @@
                             <option name="x" value="256" />
                             <option name="y" value="12" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_account_delete_to_accountDeleteSubmitFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -805,6 +838,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_securityQuestionValidationFragment_to_addressFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_securityQuestionValidationFragment_to_deleteAccountFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
