@@ -57,6 +57,7 @@ public class DateUtils {
         calender.set(Calendar.SECOND, 0);
         return calender.getTimeInMillis();
     }
+
     public static String getTodayFormattedDate(){
         Calendar calender = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -117,5 +118,21 @@ public class DateUtils {
         //In ET Time
         return etDf.format(currentDate.getTime());
     }
+
+        public static long findDateDifference (String startDate, String endDate) throws ParseException {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            Date date = dateFormat.parse(startDate);
+            Date dateD = dateFormat.parse(endDate);
+
+            Long difference_In_Time = dateD.getTime() - date.getTime();
+
+            long difference_In_Days = ((difference_In_Time
+                    / (1000 * 60 * 60 * 24))
+                    % 365);
+
+            Timber.d("Date Difference Log :", difference_In_Days);
+            return difference_In_Days;
+        }
 
 }
