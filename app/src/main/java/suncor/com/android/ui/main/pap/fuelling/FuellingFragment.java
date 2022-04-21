@@ -235,6 +235,6 @@ public class FuellingFragment extends MainActivityFragment {
 
     private void goBack() {
         NavController navController = Navigation.findNavController(getView());
-        navController.popBackStack();
+        navController.popBackStack(R.id.home_tab, false);
     }
 }
