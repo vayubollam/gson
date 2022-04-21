@@ -123,13 +123,13 @@ class AccountDetailsFragment : MainActivityFragment(), OnBackPressedListener {
             }
         }
         binding.deleteAccountButton.setOnClickListener { v ->
-            if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
-                AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTEP, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT_NOTES))
-                Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_accountDeleteNotesFragment)
-            } else {
+           // if(sessionManager.profile != null && sessionManager.profile.accountDeleteDateTime != null){
+           //     AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTEP, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT_NOTES))
+           //     Navigation.findNavController(requireView()).navigate(R.id.action_account_details_to_accountDeleteNotesFragment)
+          //  } else {
                 AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.FORMSTART, Pair(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT))
                 Navigation.findNavController(requireView()).navigate(AccountDetailsFragmentDirections.actionAccountDetailsToSecurityQuestionValidationFragment2(AccountDeleteFragment.DELETE_ACCOUNT_FRAGMENT))
-            }
+        //    }
         }
         binding.appBar.setNavigationOnClickListener { v -> goBack() }
     }
