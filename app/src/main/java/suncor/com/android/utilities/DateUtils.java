@@ -91,15 +91,16 @@ public class DateUtils {
         return diff;
     }
 
-    public static String getCurrentDateInEST(){
+    public static String getCurrentDateInEST() {
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat etDf = new SimpleDateFormat(DATE_TIME_FORMAT);
         TimeZone etTimeZone = TimeZone.getTimeZone("America/New_York");
-        etDf.setTimeZone( etTimeZone );
+        etDf.setTimeZone(etTimeZone);
 
         Date currentDate = new Date();
         //In ET Time
         return etDf.format(currentDate.getTime());
+    }
 
     public static long findDateDifference(String startDate, String endDate) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
