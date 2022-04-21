@@ -113,6 +113,7 @@ public class FuellingFragment extends MainActivityFragment {
                                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                                 } else if (result.status == Resource.Status.SUCCESS) {
                                     //Do-nothing
+                                    goBack();
                                 }
                             });
                         },  PAY_AT_PUMP).show();

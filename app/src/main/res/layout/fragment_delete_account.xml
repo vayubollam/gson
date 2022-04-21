@@ -169,7 +169,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
                     android:hint="@string/account_deletion_address_label"
+                    android:inputType="textMultiLine"
                     android:enabled="false"
                     app:layout_constraintTop_toBottomOf="@id/phone_no_input" />
 

@@ -176,7 +176,7 @@ public class HomeViewModel extends ViewModel {
 
     public void getDateDifference(){
 
-        long diff = DateUtils.getDateTimeDifference(DateUtils.getCurrentDateInEST(), Constants.IMAGE_EXPIRY_DATE);
+        long diff = DateUtils.getDateTimeDifference(DateUtils.getCurrentDateInEST(), Constants.IMAGE_EXPIRY_DATE, false);
 
         if(diff < 0){
             isExpired.set(true);
@@ -329,7 +329,7 @@ public LiveData<Resource<FuelUp>> isPAPAvailable() {
 
     @VisibleForTesting
     public long getDateTimeDifference(String startDate, String endDate){
-        return DateUtils.getDateTimeDifference(startDate, endDate);
+        return DateUtils.getDateTimeDifference(startDate, endDate, false);
     }
 
 }

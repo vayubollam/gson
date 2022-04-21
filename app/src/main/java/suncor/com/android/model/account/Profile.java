@@ -152,8 +152,8 @@ public class Profile {
     public long getAccountDeleteDaysLeft()  {
         try {
             int accountDeletionDays = Integer.parseInt(BuildConfig.ACCOUNT_DELETION_PERIOD_IN_DAYS);
-           return accountDeletionDays - DateUtils.findDateDifference( accountDeleteDateTime, DateUtils.getTodayFormattedDate());
-        }catch (ParseException ex){
+           return accountDeletionDays - DateUtils.getDateTimeDifference( accountDeleteDateTime, DateUtils.getTodayFormattedDate(), true);
+        }catch (Exception ex){
             Timber.e("Error on parse date", ex.getMessage());
         }
         return 0;

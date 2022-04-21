@@ -69,9 +69,16 @@ public class DateUtils {
         return calender.get(Calendar.DATE);
     }
 
-    public static long getDateTimeDifference(String startDate , String endDate){
+    @SuppressLint("SimpleDateFormat")
+    public static long getDateTimeDifference(String startDate , String endDate, boolean isDifferenceInDays){
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat(DATE_TIME_FORMAT);
+        SimpleDateFormat format;
+
+        if(isDifferenceInDays){
+            format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }else{
+            format = new SimpleDateFormat(DATE_TIME_FORMAT);
+        }
 
 
         Date d1 = null;
@@ -87,9 +94,18 @@ public class DateUtils {
         assert d2 != null;
         assert d1 != null;
         long diff = d2.getTime() - d1.getTime();
-        Timber.d("Time Difference", String.valueOf(diff));
 
-        return diff;
+        if(!isDifferenceInDays){
+            Timber.d("Time Difference Log", String.valueOf(diff));
+            return diff;
+        }else{
+            long difference_In_Days = ((diff
+                    / (1000 * 60 * 60 * 24))
+                    % 365);
+
+            Timber.d("Date Difference Log :", difference_In_Days);
+            return difference_In_Days;
+        }
     }
 
     public static String getCurrentDateInEST() {
@@ -101,7 +117,6 @@ public class DateUtils {
         Date currentDate = new Date();
         //In ET Time
         return etDf.format(currentDate.getTime());
-
     }
 
         public static long findDateDifference (String startDate, String endDate) throws ParseException {
