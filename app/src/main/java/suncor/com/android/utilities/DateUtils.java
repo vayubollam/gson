@@ -101,6 +101,7 @@ public class DateUtils {
         Date currentDate = new Date();
         //In ET Time
         return etDf.format(currentDate.getTime());
+
     }
 
         public static long findDateDifference (String startDate, String endDate) throws ParseException {
