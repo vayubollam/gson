@@ -64,6 +64,8 @@ public class Station {
             FULL_AMENITIES.put(washAmenitiesEnum.get(i), washAmenitiesValues.get(i));
             ANALYTICS_ABBREVIATIONS_MAP.put(washAmenitiesEnum.get(i),washAbbreviations.get(i));
         }
+
+        ANALYTICS_ABBREVIATIONS_MAP.put("carWashAllWashes","AW");
     }
 
     public String getId() {

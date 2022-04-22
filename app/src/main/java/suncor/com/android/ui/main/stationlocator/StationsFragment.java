@@ -339,6 +339,12 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             }
         }));
         mViewModel.filters.observe(getViewLifecycleOwner(), v -> {
+
+                    if (v.isEmpty()) {
+                        filtersListString="";
+                        return;
+                    }
+
                     StringBuilder servicesList = new StringBuilder();
                     StringBuilder fuelList = new StringBuilder();
                     StringBuilder washList = new StringBuilder();
@@ -355,9 +361,12 @@ public class StationsFragment extends BottomNavigationFragment implements Google
                         }
                     }
 
-                    filtersListString =  removeLastComma(servicesList) + " | "
-                            +  removeLastComma(fuelList) + " | "
-                            +  removeLastComma(washList)  ;
+                    filtersListString = (removeLastCommaAddPipe(servicesList, true)
+                            + removeLastCommaAddPipe(fuelList, true)
+                            + removeLastCommaAddPipe(washList, false)).trim();
+
+                    filtersListString = removeFirstLastPipe(filtersListString);
+
                 }
         );
 
@@ -367,15 +376,28 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             StationsAnalytics.logFilterLocationScreenName(requireActivity());
             StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
 
-
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });
     }
 
-    private String removeLastComma(StringBuilder builder){
-        if(builder.length()<=0) return  "";
-        builder.deleteCharAt(builder.length()-1);
-        return String.valueOf(builder.deleteCharAt(builder.length()-1));
+    private String removeFirstLastPipe(String filtersListString) {
+        if(filtersListString.charAt(0) == '|') {
+            filtersListString = filtersListString.substring(1);
+        }
+        if(filtersListString.charAt(filtersListString.length()-1) == '|'){
+            filtersListString = filtersListString.substring(0,filtersListString.length()-2);
+        }
+        return filtersListString;
+    }
+
+    private String removeLastCommaAddPipe(StringBuilder builder, boolean addPipe) {
+        if (builder.length() <= 0) return "";
+        builder.deleteCharAt(builder.length() - 1);
+        if (addPipe)
+            return String.valueOf(builder.deleteCharAt(builder.length() - 1).append(" | "));
+        else
+            return String.valueOf(builder.deleteCharAt(builder.length() - 1));
+
     }
 
     @Override
