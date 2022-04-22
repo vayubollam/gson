@@ -13,6 +13,7 @@ const val FORM_NAME_GAS_STATION_LOCATIONS = "Gas Station Locations"
 object StationsAnalytics : BaseAnalytics() {
     private const val SCREEN_NAME_LOCATION_FILTER = "my-petro-points-gas-station-locations-filter"
     private const val SCREEN_NAME_LOCATION_LOADING = "gas-station-locations-loading"
+    private const val NOT_SET = "(not-set)"
 
     @JvmStatic
     fun logFilterLocationScreenName(activity: Activity) {
@@ -22,8 +23,15 @@ object StationsAnalytics : BaseAnalytics() {
     @JvmStatic
     fun logFiltersApplied(context: Context, location: String, filterList: String) {
         val bundle = Bundle()
-        bundle.putString(BaseParams.LOCATION, location)
-        bundle.putString(BaseParams.FILTERS_APPLIED, filterList)
+
+        var locationValue = location
+        if(location.isBlank()) locationValue = NOT_SET
+
+        var filterValue = filterList
+        if(filterValue.isBlank()) filterValue = NOT_SET
+
+        bundle.putString(BaseParams.LOCATION, locationValue)
+        bundle.putString(BaseParams.FILTERS_APPLIED, filterValue)
         logEvent(context, BaseEvents.LOCATION_SEARCH, bundle = bundle)
     }
 

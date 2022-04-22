@@ -1,5 +1,8 @@
 package suncor.com.android.ui.main.stationlocator;
 
+import static android.Manifest.permission;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +13,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,9 +74,6 @@ import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.PermissionManager;
 
-import static android.Manifest.permission;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-
 
 public class StationsFragment extends BottomNavigationFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener
         , OnMapReadyCallback {
@@ -82,7 +81,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private static final int PERMISSION_REQUEST_CODE = 124;
     private static final int REQUEST_CHECK_SETTINGS = 125;
-    String listString = " ";
+    static String listString = "";
     @Inject
     PermissionManager permissionManager;
     @Inject
@@ -356,7 +355,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         {
             binding.addressSearchText.setText(text);
             StationsAnalytics.logFilterLocationScreenName(requireActivity());
-            StationsAnalytics.logFiltersApplied(requireContext(),text,listString);
+            StationsAnalytics.logFiltersApplied(requireContext(), text, listString);
 
 
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
@@ -510,6 +509,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             clearFiltersChip.setElevation(8);
             clearFiltersChip.setOnClickListener((v) -> {
                 mViewModel.clearFilters();
+                StationsAnalytics.logFiltersApplied(requireContext(), binding.addressSearchText.getText().toString(), "");
+
             });
             binding.filtersChipgroup.addView(clearFiltersChip);
         }
@@ -602,7 +603,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private void showRequestLocationDialog(boolean previouselyDeniedWithNeverASk) {
         StationsAnalytics.logLocationAccessAlertShown(requireContext()
-                ,getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")");
+                , getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")");
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(requireContext());
@@ -611,15 +612,15 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         adb.setNegativeButton(R.string.cancel, (dialog, which) -> {
 
             StationsAnalytics.logAlertInteraction(requireContext()
-                    ,getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"
-            ,getString(R.string.cancel));
+                    , getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"
+                    , getString(R.string.cancel));
 
         });
         adb.setPositiveButton(R.string.ok, (dialog, which) -> {
 
             StationsAnalytics.logAlertInteraction(requireContext()
-                    ,getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"
-                    ,getString(R.string.ok)
+                    , getString(R.string.enable_location_dialog_title) + "(" + getString(R.string.enable_location_dialog_message) + ")"
+                    , getString(R.string.ok)
             );
 
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && !LocationUtils.isLocationEnabled(requireContext())) {
