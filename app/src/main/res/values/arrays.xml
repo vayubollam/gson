@@ -96,5 +96,9 @@
     <string-array name="wash_abbreviations">
         <item>TO</item>
         <item>AW</item>
+        <item>AW</item>
+        <item>AW</item>
+        <item>AW</item>
+        <item>AW</item>
     </string-array>
 </resources>

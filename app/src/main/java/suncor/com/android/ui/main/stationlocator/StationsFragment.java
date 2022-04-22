@@ -81,7 +81,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private static final int PERMISSION_REQUEST_CODE = 124;
     private static final int REQUEST_CHECK_SETTINGS = 125;
-    static String listString = "";
+    static String filtersListString = "";
     @Inject
     PermissionManager permissionManager;
     @Inject
@@ -339,15 +339,25 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             }
         }));
         mViewModel.filters.observe(getViewLifecycleOwner(), v -> {
-                    listString = "";
+                    StringBuilder servicesList = new StringBuilder();
+                    StringBuilder fuelList = new StringBuilder();
+                    StringBuilder washList = new StringBuilder();
+
                     for (int i = 0; i < v.size(); i++) {
-                        if (i == v.size() - 1) {
-                            listString += v.get(i);
+                        String filterApplied = v.get(i);
+
+                        if (Station.SERVICE_AMENITIES.containsKey(filterApplied)) {
+                            servicesList.append(Station.ANALYTICS_ABBREVIATIONS_MAP.get(filterApplied)).append(", ");
+                        } else if (Station.FUEL_AMENITIES.containsKey(filterApplied)) {
+                            fuelList.append(Station.ANALYTICS_ABBREVIATIONS_MAP.get(filterApplied)).append(", ");
                         } else {
-                            listString += v.get(i) + " | ";
+                            washList.append(Station.ANALYTICS_ABBREVIATIONS_MAP.get(filterApplied)).append(", ");
                         }
                     }
 
+                    filtersListString =  removeLastComma(servicesList) + " | "
+                            +  removeLastComma(fuelList) + " | "
+                            +  removeLastComma(washList)  ;
                 }
         );
 
@@ -355,11 +365,17 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         {
             binding.addressSearchText.setText(text);
             StationsAnalytics.logFilterLocationScreenName(requireActivity());
-            StationsAnalytics.logFiltersApplied(requireContext(), text, listString);
+            StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
 
 
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });
+    }
+
+    private String removeLastComma(StringBuilder builder){
+        if(builder.length()<=0) return  "";
+        builder.deleteCharAt(builder.length()-1);
+        return String.valueOf(builder.deleteCharAt(builder.length()-1));
     }
 
     @Override
