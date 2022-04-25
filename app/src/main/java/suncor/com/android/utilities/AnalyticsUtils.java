@@ -10,6 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
 import suncor.com.android.model.cards.CardType;
 
 import static suncor.com.android.utilities.Constants.*;
@@ -37,12 +38,13 @@ public class AnalyticsUtils {
         paymentComplete(PAYMENT_COMPLETE),
         intersite(INTERSITE),
         infoTap(INFO_TAP),
-        menuTap(MENU_TAP);
+        menuTap(MENU_TAP),
+        cwConfirmPin(CW_CONFIRM_PIN);
 
 
         private final String name;
 
-        Event(final String name){
+        Event(final String name) {
             this.name = name;
         }
 
@@ -74,11 +76,12 @@ public class AnalyticsUtils {
         fuelAmountSelection(FUEL_AMOUNT_SELECTION),
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
-        menuSelection(MENU_SELECTION);
+        menuSelection(MENU_SELECTION),
+        carWashCardType(CAR_WASH_CARD_TYPE);
 
         private final String name;
 
-        Param(final String name){
+        Param(final String name) {
             this.name = name;
         }
 
@@ -100,8 +103,8 @@ public class AnalyticsUtils {
         buildNumber = buildNumber;
     }
 
-    public static void setUserId(String userId){
-         userID = userId;
+    public static void setUserId(String userId) {
+        userID = userId;
     }
 
     @SafeVarargs
@@ -119,16 +122,16 @@ public class AnalyticsUtils {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle);
     }
 
-    public static void setUserProperty(Context context, String userID, boolean rbcLinked ){
+    public static void setUserProperty(Context context, String userID, boolean rbcLinked) {
         FirebaseAnalytics.getInstance(context).setUserId(userID);
         FirebaseAnalytics.getInstance(context).setUserProperty(USER_ID_1, userID);
         FirebaseAnalytics.getInstance(context).setUserProperty(IS_RBC_LINKED, rbcLinked ? TRUE : FALSE);
     }
 
     @SafeVarargs
-    public static void logEvent(Context context, Event event, Pair<Param,String>... parameters) {
+    public static void logEvent(Context context, Event event, Pair<Param, String>... parameters) {
         ArrayList<Pair<String, String>> params = new ArrayList();
-        for (Pair<Param, String> param: parameters) {
+        for (Pair<Param, String> param : parameters) {
             params.add(new Pair<>(param.first.toString(), param.second));
         }
         logEvent(context, event.toString(), params.toArray(new Pair[params.size()]));
@@ -145,7 +148,7 @@ public class AnalyticsUtils {
 
         Bundle ecommerceBundle = new Bundle();
         ecommerceBundle.putParcelableArrayList(Param.PROMOTIONS_ENUM.toString(), promotions);
-        if (event.equals(Event.SELECTCONTENT)){
+        if (event.equals(Event.SELECTCONTENT)) {
             ecommerceBundle.putString(Param.CONTENTTYPE.toString(), contentType);
             ecommerceBundle.putString(Param.ITEMID.toString(), itemId);
         }
@@ -153,7 +156,7 @@ public class AnalyticsUtils {
         FirebaseAnalytics.getInstance(context).logEvent(event.toString(), ecommerceBundle);
     }
 
-    public static void logPromotionEvent(Context context, Event event, String itemId, String itemName, String creativeName, String creativeSlot){
+    public static void logPromotionEvent(Context context, Event event, String itemId, String itemName, String creativeName, String creativeSlot) {
         logPromotionEvent(context, event, itemId, itemName, creativeName, creativeSlot, INTERNAL_PROMOTIONS);
     }
 
@@ -189,7 +192,7 @@ public class AnalyticsUtils {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getComponentName().getClassName());
-       // bundle.putString(MyAppAnalyticsConstants.Param.TOPIC, topic);
+        // bundle.putString(MyAppAnalyticsConstants.Param.TOPIC, topic);
         FirebaseAnalytics.getInstance(activity).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
 
@@ -199,7 +202,7 @@ public class AnalyticsUtils {
 
         private final String name;
 
-        ErrorMessages(final String name){
+        ErrorMessages(final String name) {
             this.name = name;
         }
 
