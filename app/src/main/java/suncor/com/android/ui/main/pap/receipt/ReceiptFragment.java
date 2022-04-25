@@ -230,14 +230,6 @@ public class ReceiptFragment extends MainActivityFragment {
         navController.popBackStack();
     }
 
-    /*
-     *Partial Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/Partial Redemption.
-     */
-    private void showPartialRedemptionPopup() {
-        AlertDialog.Builder dialog = createAlert(R.string.member_lock_partial_redemption_message, R.string.member_lock_partial_redemption_title);
-        dialog.setCancelable(true);
-        dialog.show();
-    }
 
     /*
      *No Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/No Redemption.
