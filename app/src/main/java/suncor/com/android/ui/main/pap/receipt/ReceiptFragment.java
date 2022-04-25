@@ -213,9 +213,6 @@ public class ReceiptFragment extends MainActivityFragment {
                     case NO_REDEMPTION:
                         showNoRedemptionPopup();
                         break;
-                    case PARTIAL_REDEMPTION:
-                        showPartialRedemptionPopup();
-                        break;
                 }
 
                 //Update Profile Points: in-case of CLPE UP, Update petro points in profile. OtherWise profile points will remain the same.
