@@ -37,7 +37,8 @@ public class AnalyticsUtils {
         paymentComplete(PAYMENT_COMPLETE),
         intersite(INTERSITE),
         infoTap(INFO_TAP),
-        menuTap(MENU_TAP);
+        menuTap(MENU_TAP),
+        activateCarWashClick(ACTIVATE_CAR_WASH_CLICK);
 
 
         private final String name;
@@ -74,7 +75,8 @@ public class AnalyticsUtils {
         fuelAmountSelection(FUEL_AMOUNT_SELECTION),
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
-        menuSelection(MENU_SELECTION);
+        menuSelection(MENU_SELECTION),
+        carWashCardType(CAR_WASH_CARD_TYPE);
 
         private final String name;
 
