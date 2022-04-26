@@ -111,7 +111,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
                 //track screen name
                 String screenName;
-                if (clickedCardIndex <= 0 || clickedCardIndex > viewModel.cards.getValue().size() ) {
+                if (clickedCardIndex <= 0 || clickedCardIndex > viewModel.cards.getValue().size()) {
                     //need to check
                     screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
@@ -126,7 +126,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -220,6 +220,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                     action.setCardIndex(clickedCardIndex);
+                    action.setCardType(viewModel.cards.getValue().get(clickedCardIndex).getCardType().name());
                     action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                     Navigation.findNavController(getView()).navigate(action);
                 }
@@ -229,22 +230,22 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener cardReloadListener = view -> {
-                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
-                if(cardDetail.isSuspendedCard()){
-                    CardsUtil.showSuspendedCardAlert(getContext());
-                } else {
-                    ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-                    //open Reload Transaction form
-                    CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
-                            action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
-                    action.setCardNumber(cardItem.getCardNumber());
-                    action.setCardName(cardItem.getCardName());
-                    action.setCardType(cardItem.getCardType().name());
-                    action.setCardIndex(clickedCardIndex);
-                    action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
-                    Navigation.findNavController(getView()).navigate(action);
-                }
-        };
+        CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+        if (cardDetail.isSuspendedCard()) {
+            CardsUtil.showSuspendedCardAlert(getContext());
+        } else {
+            ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+            //open Reload Transaction form
+            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
+                    action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
+            action.setCardNumber(cardItem.getCardNumber());
+            action.setCardName(cardItem.getCardName());
+            action.setCardType(cardItem.getCardType().name());
+            action.setCardIndex(clickedCardIndex);
+            action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+            Navigation.findNavController(getView()).navigate(action);
+        }
+    };
 
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {
@@ -262,7 +263,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     GooglePassesApiGateway gateway = new GooglePassesApiGateway();
                     String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig);
                     Timber.i("GOOGLE PASSES: card Token " + cardAuthToken);
-                    if(getActivity() != null){
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             hideAddCardProgress();
                             if(cardAuthToken == null){

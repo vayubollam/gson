@@ -97,8 +97,10 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         if (getArguments() != null) {
             int clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
             String cardNumber = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardNumber();
+            String cardType = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardType();
             viewModel.setClickedCardIndex(clickedCardIndex);
             viewModel.setCardNumber(cardNumber);
+            viewModel.setCardType(cardType);
         }
         FragmentCarwashSecurityBinding binding = FragmentCarwashSecurityBinding.inflate(inflater, container, false);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
@@ -159,6 +161,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
                         handleActivationErrors(resource.message);
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarwashSuccess,
+                                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.getCardType())
+                        );
                         if (!resource.data.getResultCode().equals("ok")) {
                             handleActivationErrors(resource.data.getResultSubcode());
                         } else {
@@ -173,8 +178,8 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
             confirmButton.setEnabled(false);
             String analyticsTitle = getContext().getString(R.string.carwash_activation_pin_error_title) + "(" + getContext().getString(R.string.carwash_activation_pin_error_message) + ")";
             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
-                    new Pair<>(AnalyticsUtils.Param.alertTitle,analyticsTitle),
-                    new Pair<>(AnalyticsUtils.Param.FORMNAME,"Activate Wash by Wash & Go card")
+                    new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, "Activate Wash by Wash & Go card")
             );
             AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
@@ -183,7 +188,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
-                                new Pair<>(AnalyticsUtils.Param.FORMNAME,"Activate Wash by Wash & Go card")
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, "Activate Wash by Wash & Go card")
                         );
                         dialog.dismiss();
                         confirmButton.setEnabled(true);
@@ -223,7 +228,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                         })
                         .setPositiveButton(R.string.carwash_zero_alert_buy, (dialog, which) -> {
                             dialog.dismiss();
-                            
+
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                                     Uri.parse(Locale.getDefault().getLanguage().equalsIgnoreCase("fr")
                                             ? "https://www.petro-canada.ca/fr/personnel/lave-auto"
