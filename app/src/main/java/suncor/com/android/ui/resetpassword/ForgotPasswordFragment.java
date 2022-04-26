@@ -1,32 +1,32 @@
 package suncor.com.android.ui.resetpassword;
 
+import static suncor.com.android.mfp.ErrorCodes.ERR_ACCOUNT_SOFT_LOCK;
+import static suncor.com.android.mfp.ErrorCodes.ERR_PROFILE_NOT_FOUND;
+import static suncor.com.android.mfp.ErrorCodes.ERR_RESTRICTED_DOMAIN;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
+import suncor.com.android.analytics.resetpassword.ForgotPasswordAnalytics;
 import suncor.com.android.databinding.FragmentForgotPasswordBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
-
-import static suncor.com.android.mfp.ErrorCodes.ERR_ACCOUNT_SOFT_LOCK;
-import static suncor.com.android.mfp.ErrorCodes.ERR_PROFILE_NOT_FOUND;
-import static suncor.com.android.mfp.ErrorCodes.ERR_RESTRICTED_DOMAIN;
 
 public class ForgotPasswordFragment extends MainActivityFragment {
 
@@ -57,9 +57,7 @@ public class ForgotPasswordFragment extends MainActivityFragment {
                     SuncorToast.makeText(getActivity(), R.string.forgot_password_toast_msg, Toast.LENGTH_LONG).show();
                     break;
                 case ERROR:
-                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage,getString(R.string.msg_e001_title)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Forgot Password"));
+                    ForgotPasswordAnalytics.logError(requireContext());
 
                     try {
                         String[] arrayResponse = resource.message.split(";");

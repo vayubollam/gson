@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.login.LoginAnalytics;
 import suncor.com.android.databinding.FragmentLoginBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
@@ -32,12 +33,9 @@ import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.ui.resetpassword.ForgotPasswordFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.BiometricListener;
 import suncor.com.android.utilities.FingerprintManager;
 import suncor.com.android.utilities.KeyStoreStorage;
-
-import static suncor.com.android.utilities.Constants.LOGIN;
 
 public class LoginFragment extends BaseFragment {
 
@@ -109,8 +107,9 @@ public class LoginFragment extends BaseFragment {
                             getActivity().finish();
                         }
                         fingerPrintManager.activateAutoLogin();
-                        AnalyticsUtils.logEvent(getContext(), LOGIN);
-                        AnalyticsUtils.setCurrentScreenName(getActivity(), LOGIN);
+                        LoginAnalytics.logLoginEvent(requireContext(),"","");
+                        LoginAnalytics.logLoginScreenName(requireActivity());
+
                     }
                 }
         );
@@ -140,7 +139,7 @@ public class LoginFragment extends BaseFragment {
                 intent.setData(Uri.parse("tel:" + customerSupportNumber));
                 startActivity(intent);
 
-                AnalyticsUtils.logEvent(getContext(), "tap_to_call", new Pair<>("phoneNumberTapped", customerSupportNumber));
+                LoginAnalytics.logTapToCall(requireContext(),customerSupportNumber);
             }
         });
 
@@ -218,26 +217,23 @@ public class LoginFragment extends BaseFragment {
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String message;
-        AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage, getString(response.title)),
-                new Pair<>(AnalyticsUtils.Param.FORMNAME, LOGIN));
+        LoginAnalytics.logError(requireContext(),getString(response.title));
+
+
         if (response.message.args != null) {
             message = getString(response.message.content, response.message.args);
         } else {
             message = getString(response.message.content);
         }
         String analyticName = getString(response.title) + "("+message+")";
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
-                new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                new Pair<>(AnalyticsUtils.Param.FORMNAME, LOGIN)
-        );
+
+        LoginAnalytics.logAlert(requireContext(),analyticName);
+
+
         builder.setMessage(message)
                 .setTitle(response.title);
         builder.setPositiveButton(response.positiveButtonTitle, ((dialog, which) -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
-                    new Pair<>(AnalyticsUtils.Param.alertTitle, analyticName),
-                    new Pair<>(AnalyticsUtils.Param.alertSelection, getString(response.positiveButtonTitle)),
-                    new Pair<>(AnalyticsUtils.Param.FORMNAME, LOGIN)
-            );
+            LoginAnalytics.logAlertInteraction(requireContext(),analyticName,getString(R.string.ok));
             if (response.positiveButtonCallback != null) {
                 response.positiveButtonCallback.call();
             }
@@ -246,6 +242,7 @@ public class LoginFragment extends BaseFragment {
 
         if (response.negativeButtonTitle != 0) {
             builder.setNegativeButton(response.negativeButtonTitle, (i, w) -> {
+
                 if (response.negativeButtonCallBack != null) {
                     response.negativeButtonCallBack.call();
                 }

@@ -2,7 +2,6 @@ package suncor.com.android.ui.main.pap.selectpump;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import javax.inject.Inject;
 
 import suncor.com.android.HomeNavigationDirections;
 import suncor.com.android.R;
+import suncor.com.android.analytics.pap.SelectPumpAnalytics;
 import suncor.com.android.databinding.FragmentSelectPumpBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
@@ -28,10 +28,6 @@ import suncor.com.android.model.pap.P97StoreDetailsResponse;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.home.HomeViewModel;
-import suncor.com.android.ui.main.pap.fuelling.FuellingFragmentDirections;
-import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
-import suncor.com.android.ui.main.stationlocator.StationItem;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class SelectPumpFragment extends MainActivityFragment implements SelectPumpListener {
 
@@ -50,7 +46,8 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel.class);
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTART, new Pair<>(AnalyticsUtils.Param.FORMNAME, "Pay at Pump"));
+
+        SelectPumpAnalytics.logFormStart(requireContext());
     }
 
     @Nullable
@@ -62,8 +59,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
         binding.helpButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.infoTap,
-                    new Pair<>(AnalyticsUtils.Param.infoText, "select pump number info"));
+            SelectPumpAnalytics.logSelectPumpInfoTap(requireContext());
             showHelp();
         });
 
@@ -78,7 +74,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
         super.onViewCreated(view, savedInstanceState);
 
         isLoading.set(true);
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump-loading");
+        SelectPumpAnalytics.logLoadingScreenName(requireActivity());
         storeId = SelectPumpFragmentArgs.fromBundle(getArguments()).getStoreId();
         String location = SelectPumpFragmentArgs.fromBundle(getArguments()).getLocation();
         if(Objects.nonNull(location)) {
@@ -105,10 +101,7 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
                             getContext(),
                             (dialogInterface, i) -> {
                                 dialogInterface.dismiss();
-                                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
-                                        new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.pap_not_available_header)+"("+getString(R.string.pap_not_available_description)+")"),
-                                        new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cancel)),
-                                        new Pair<>(AnalyticsUtils.Param.FORMNAME, "Pay at Pump"));
+                                SelectPumpAnalytics.logInAppPaymentUnAvailableAlert(requireContext());
                                 goBack();
                             }, "Pay at Pump").show();
 
@@ -167,6 +160,6 @@ public class SelectPumpFragment extends MainActivityFragment implements SelectPu
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "pay-at-pump-select-pump");
+        SelectPumpAnalytics.logScreenName(requireActivity());
     }
 }

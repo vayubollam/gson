@@ -448,7 +448,7 @@
     <string name="enrollment_sms_offers_hint">You can unsubscribe at any time.</string>
     <string name="rewards_details_close">CLose</string>
     <string name="station_filters_all_washes">Any wash</string>
-    <string name="station_filter_touchless_only">Touchless only</string>
+    <string name="station_filter_touchless_only">Touchless</string>
     <string name="update_required_dialog_title">Newer version required</string>
     <string name="update_required_dialog_message">Please update the app to continue using.</string>
     <string name="update_required_dialog_button">Update</string>

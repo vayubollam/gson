@@ -6,10 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,12 +13,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerFragment;
 import suncor.com.android.R;
+import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 
 /**
@@ -78,7 +79,9 @@ public class SecurityQuestionFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "province-security-help");
+        EnrollmentAnalytics.logSecurityQuesScreenName(requireActivity());
+
+
     }
 
     public void onSecurityQuestionSelected(int selectedQuestion) {

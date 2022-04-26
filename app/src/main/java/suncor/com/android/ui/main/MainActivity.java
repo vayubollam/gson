@@ -1,13 +1,18 @@
 package suncor.com.android.ui.main;
 
+import static suncor.com.android.analytics.misc.MainActivityAnalytics.FORM_NAME_HOME;
+import static suncor.com.android.utilities.Constants.ACTION_MENU;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.HOME;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +42,7 @@ import javax.inject.Inject;
 import suncor.com.android.BuildConfig;
 import suncor.com.android.R;
 import suncor.com.android.SuncorApplication;
+import suncor.com.android.analytics.misc.MainActivityAnalytics;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.SplashActivity;
@@ -50,17 +56,6 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.common.SessionAwareActivity;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
 import suncor.com.android.utilities.AnalyticsUtils;
-
-import static suncor.com.android.utilities.Constants.ACTION_MENU;
-import static suncor.com.android.utilities.Constants.ALERT;
-import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
-import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
-import static suncor.com.android.utilities.Constants.ALERT_TITLE;
-import static suncor.com.android.utilities.Constants.BUILD_NUMBER;
-import static suncor.com.android.utilities.Constants.ERROR_LOG;
-import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
-import static suncor.com.android.utilities.Constants.FORM_NAME;
-import static suncor.com.android.utilities.Constants.HOME;
 
 public class MainActivity extends SessionAwareActivity implements OnBackPressedListener {
     public static final String LOGGED_OUT_DUE_CONFLICTING_LOGIN = "logged_out_conflict";
@@ -90,25 +85,29 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         @Override
         public void onReceive(Context context, Intent intent) {
             if (LOGGED_OUT_DUE_CONFLICTING_LOGIN.equals(intent.getAction())) {
+
                 AnalyticsUtils.logEvent(application.getApplicationContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, LOGGED_OUT_DUE_CONFLICTING_LOGIN),
-                        new Pair<>(FORM_NAME,HOME));
+                        new Pair<>(FORM_NAME, HOME));
+
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT_INTERACTION,
-                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")"),
-                        new Pair<>(ALERT_SELECTION,getString(R.string.login_conflict_alert_positive_button)),
-                            new Pair<>(FORM_NAME, HOME)
+
+                    MainActivityAnalytics.logAlertDialogInteraction(application.getApplicationContext(),
+                            getString(R.string.password_change_re_login_alert_title) + "(" + getResources().getString(R.string.alert_signed_out_conflicting_login) + ")",
+                            getString(R.string.login_conflict_alert_positive_button),
+                            FORM_NAME_HOME
                     );
+
+
                     Intent homeActivityIntent = new Intent(application, MainActivity.class);
                     homeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     application.startActivity(homeActivityIntent);
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
                 adb.setMessage(getResources().getString(R.string.alert_signed_out_conflicting_login));
-                AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT,
-                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.alert_signed_out_conflicting_login)+")"),
-                        new Pair<>(FORM_NAME, HOME)
-                );
+                MainActivityAnalytics.logAlertDialogShown(application.getApplicationContext(),
+                        getString(R.string.password_change_re_login_alert_title) + "(" + getResources().getString(R.string.alert_signed_out_conflicting_login) + ")",
+                        FORM_NAME_HOME);
                 adb.show();
             }
         }
@@ -120,22 +119,27 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             if (LOGGED_OUT_DUE_PASSWORD_CHANGE.equals(intent.getAction()) && !autoLoginFailed) {
                 navController.navigate(R.id.action_global_home_tab);
                 AnalyticsUtils.logEvent(application.getApplicationContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, LOGGED_OUT_DUE_PASSWORD_CHANGE));
+
+                MainActivityAnalytics.logAlertDialogShown(application.getApplicationContext(),
+                        getString(R.string.password_change_re_login_alert_title) + "(" + getResources().getString(R.string.pawword_change_re_login_alert_body) + ")",
+                        FORM_NAME_HOME);
+
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setPositiveButton(R.string.login_conflict_alert_positive_button, (dialog, which) -> {
-                    AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT_INTERACTION,
-                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")"),
-                        new Pair<>(ALERT_SELECTION,getString(R.string.login_conflict_alert_positive_button)),
-                            new Pair<>(FORM_NAME,HOME)
+
+                    MainActivityAnalytics.logAlertDialogInteraction(application.getApplicationContext(),
+                            getString(R.string.password_change_re_login_alert_title) + "(" + getResources().getString(R.string.pawword_change_re_login_alert_body) + ")",
+                            getString(R.string.login_conflict_alert_positive_button),
+                            FORM_NAME_HOME
                     );
+
                     Intent loginActivityIntent = new Intent(MainActivity.this, LoginActivity.class);
                     MainActivity.this.startActivity(loginActivityIntent);
                 });
                 adb.setTitle(getResources().getString(R.string.password_change_re_login_alert_title));
                 adb.setMessage(getResources().getString(R.string.pawword_change_re_login_alert_body));
-                AnalyticsUtils.logEvent(application.getApplicationContext(), ALERT,
-                        new Pair<>(ALERT_TITLE, getString(R.string.password_change_re_login_alert_title)+"("+getResources().getString(R.string.pawword_change_re_login_alert_body)+")"),
-                        new Pair<>(FORM_NAME,HOME)
-                );
+
+
                 adb.show();
             }
             autoLoginFailed = false;
@@ -154,8 +158,8 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         getWindow().getDecorView().setSystemUiVisibility(flags);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-        if(BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")) {
-              getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        if (BuildConfig.APPLICATION_ID.equalsIgnoreCase("com.petrocanada.my_petro_canada")) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         }
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel.class);
@@ -167,8 +171,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         actionButton = findViewById(R.id.action_float_button);
         actionButton.setVisibility(isLoggedIn() ? View.VISIBLE : View.GONE);
         actionButton.setOnClickListener(view -> {
-            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event._NAVIGATION, new Pair<>(AnalyticsUtils.Param.ACTIONBARTAP, ACTION_MENU));
-
+            MainActivityAnalytics.logNavigation(MainActivity.this, ACTION_MENU);
             if (getSupportFragmentManager().findFragmentByTag(ACTION_MENU) == null)
                 actionMenuFragment.show(getSupportFragmentManager(), ACTION_MENU);
         });
@@ -199,7 +202,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
             isProfileTabSelected = false;
         });
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            AnalyticsUtils.logEvent(MainActivity.this, AnalyticsUtils.Event._NAVIGATION, new Pair<>(AnalyticsUtils.Param.ACTIONBARTAP, item.getTitle().toString()));
+            MainActivityAnalytics.logNavigation(MainActivity.this, item.getTitle().toString());
             if (item.getItemId() == R.id.profile_tab) {
                 isProfileTabSelected = true;
             }
@@ -215,7 +218,7 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
 
         if (getIntent().hasExtra(SplashActivity.LOGINFAILED) && getIntent().getExtras().getBoolean(SplashActivity.LOGINFAILED, false)) {
             autoLoginFailed = true;
-            Alerts.prepareGeneralErrorDialog(this,"Home").show();
+            Alerts.prepareGeneralErrorDialog(this, "Home").show();
         }
         String[] provincesArray = getResources().getStringArray(R.array.province_names);
 
@@ -315,8 +318,8 @@ public class MainActivity extends SessionAwareActivity implements OnBackPressedL
         super.onActivityResult(requestCode, resultCode, data);
         //check
         Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
-        if(fragment != null){
-            fragment.onActivityResult(requestCode,resultCode, data );
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
