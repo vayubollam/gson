@@ -34,17 +34,10 @@
                 android:background="@color/black_4"
                 android:orientation="vertical">
 
-                <suncor.com.android.uicomponents.SuncorAppBarLayout
-                    android:id="@+id/app_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="16dp">
-
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
@@ -122,7 +115,6 @@
 
                     </androidx.cardview.widget.CardView>
 
-
                 </RelativeLayout>
 
                 <LinearLayout
@@ -135,8 +127,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -417,12 +407,14 @@
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/transaction_separator"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
                         android:background="@color/black_8" />
 
                     <LinearLayout
+                        android:id="@+id/transaction_total"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -449,6 +441,7 @@
                     </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/transaction_tax_inclusive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -462,7 +455,6 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
                         android:background="@color/black_8" />
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -506,7 +498,6 @@
                     style="@style/LinkButton.Red.L"
                     android:visibility="visible" />
 
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/receipt_layout"
                     android:layout_width="match_parent"
@@ -531,9 +522,8 @@
                         android:textColor="@color/black_80"
                         android:textSize="16sp"
                         android:visibility="visible" />
-
-
                 </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
                 <Button
                     android:id="@+id/button_done"
@@ -543,8 +533,6 @@
                     android:layout_margin="20dp"
                     android:text="@string/redeem_done"
                     android:textAllCaps="true" />
-
-            </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

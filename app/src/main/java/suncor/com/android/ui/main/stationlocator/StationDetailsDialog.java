@@ -143,17 +143,15 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         int padding = getResources().getDimensionPixelOffset(R.dimen.cards_padding_expanded);
         verticalPadding = 2 * padding;
         binding.getRoot().setPadding(padding, padding, padding, padding);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            DisplayMetrics dp = new DisplayMetrics();
-            requireActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
-            WindowInsets insets = requireActivity().getWindow().getDecorView().getRootWindowInsets();
+        DisplayMetrics dp = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getRealMetrics(dp);
+        WindowInsets insets = requireActivity().getWindow().getDecorView().getRootWindowInsets();
+        if (insets !=null) {
             fullHeight = dp.heightPixels - insets.getSystemWindowInsetTop() - insets.getStableInsetBottom();
-        } else {
-            DisplayMetrics dp = new DisplayMetrics();
-            requireActivity().getWindowManager().getDefaultDisplay().getMetrics(dp);
+        } else{
             fullHeight = dp.heightPixels - getStatusBarHeight();
         }
+
 
         binding.getRoot().setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, fullHeight));
         binding.cardView.getLayoutParams().height = initialHeight;
@@ -306,7 +304,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public void onResume() {
         super.onResume();
         binding.setIsLoggedIn(sessionManager.isUserLoggedIn());
-        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+        if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             getDialog().getWindow().setDimAmount(DIM_AMOUNT);
         }
     }

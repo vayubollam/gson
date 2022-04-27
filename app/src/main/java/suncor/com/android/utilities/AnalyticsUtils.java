@@ -50,6 +50,7 @@ import static suncor.com.android.utilities.Constants.VIDEO_THRESHOLD_50;
 import static suncor.com.android.utilities.Constants.VIDEO_THRESHOLD_75;
 import static suncor.com.android.utilities.Constants.VIDEO_TITLE;
 import static suncor.com.android.utilities.Constants.VIEW_ITEM;
+import static suncor.com.android.utilities.Constants.STEP_NAME;
 
 import android.app.Activity;
 import android.content.Context;
@@ -120,7 +121,8 @@ public class AnalyticsUtils {
         paymentMethod(PAYMENT_METHOD),
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
-        menuSelection(MENU_SELECTION);
+        menuSelection(MENU_SELECTION),
+        STEPNAME(STEP_NAME);
 
 
 

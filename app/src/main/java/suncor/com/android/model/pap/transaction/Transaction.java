@@ -92,6 +92,14 @@ public class Transaction {
         return formatter.format(totalAmount);
     }
 
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     public List<LineItem> getLineItems() {
         return lineItems;
     }
@@ -111,6 +119,8 @@ public class Transaction {
     public String getBasketPaymentState() {
         return basketPaymentState;
     }
+
+
 
     public String getReceiptFormatted() {
         StringBuilder sb = new StringBuilder();

@@ -112,23 +112,26 @@ public class ReceiptFragment extends MainActivityFragment {
                 ReceiptAnalytics.logLoadingScreenName(requireActivity());
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
-                if (sessionManager.getProfile().getFirstName() != null) {
+                if (sessionManager.getProfile() != null && sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 }
-                binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
-                binding.appBar.setOnClickListener((view)-> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 ReceiptAnalytics.logScreenName(requireActivity());
                 ReceiptAnalytics.logPaymentComplete(requireContext(),isGooglePay ? "Google Pay" : "Credit Card");
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
-                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
+                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you),  sessionManager.getProfile() != null ? sessionManager.getProfile().getFirstName() : ""));
                 if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
+                    if(result.data.getTotalAmount() <= 0) {
+                        binding.transactionTotal.setVisibility(View.GONE);
+                    }
+                    binding.transactionTaxInclusive.setVisibility(View.GONE);
+                    binding.transactionSeparator.setVisibility(View.GONE);
                 } else {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());

@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.profile.securityquestion;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -26,13 +25,14 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
-import suncor.com.android.ui.login.LoginActivity;
-import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.profile.ProfileSharedViewModel;
+import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
+import suncor.com.android.ui.main.profile.account.AccountDeleteNotesFragment;
 import suncor.com.android.ui.main.profile.address.AddressFragment;
 import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
 
 import static androidx.navigation.Navigation.findNavController;
 
@@ -74,17 +74,23 @@ public class SecurityQuestionValidationFragment extends MainActivityFragment {
                 case SUCCESS:
                     sharedViewModel.setEcryptedSecurityAnswer(stringResource.data);
                     if (PersonalInfoFragment.PERSONAL_INFO_FRAGMENT.equalsIgnoreCase(destination)) {
-                        AnalyticsUtils.logEvent(getContext(),"form_step",
-                            new Pair<>("formName","Update Personal Information"),
-                            new Pair<>("stepName","Answer security question")
+                        AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.FORMSTEP,
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, Constants.UPDATE_PERSONAL_INFORMATION),
+                                new Pair<>(AnalyticsUtils.Param.STEPNAME, Constants.ANSWER_SECURITY_QUESTION)
                         );
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_personalInfoFragment);
                     } else if (AddressFragment.ADDRESS_FRAGMENT.equalsIgnoreCase(destination)) {
-                        AnalyticsUtils.logEvent(getContext(),"form_step",
-                                new Pair<>("formName","Update Address"),
-                                new Pair<>("stepName","Answer security question")
+                        AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.FORMSTEP,
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, Constants.UPDATE_ADDRESS),
+                                new Pair<>(AnalyticsUtils.Param.STEPNAME, Constants.ANSWER_SECURITY_QUESTION)
                         );
                         Navigation.findNavController(getView()).navigate(R.id.action_securityQuestionValidationFragment_to_addressFragment);
+                    } else if (AccountDeleteFragment.DELETE_ACCOUNT_FRAGMENT.equalsIgnoreCase(destination)){
+                        AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.FORMSTEP,
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, Constants.DELETE_ACCOUNT),
+                                new Pair<>(AnalyticsUtils.Param.STEPNAME, Constants.ANSWER_SECURITY_QUESTION)
+                        );
+                        Navigation.findNavController(requireView()).navigate(R.id.action_securityQuestionValidationFragment_to_deleteAccountFragment);
                     }
                     break;
                 case ERROR:

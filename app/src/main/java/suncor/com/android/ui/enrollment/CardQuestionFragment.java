@@ -3,7 +3,6 @@ package suncor.com.android.ui.enrollment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -52,12 +53,12 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        securityQuestionViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
+        securityQuestionViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
         securityQuestionViewModel.fetchQuestion();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCardQuestionBinding.inflate(inflater, container, false);
         binding.setVm(securityQuestionViewModel);
@@ -68,9 +69,9 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-        cardImg = getView().findViewById(R.id.cardImage);
-        cardShadow = getView().findViewById(R.id.cardShadow);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        cardImg = requireView().findViewById(R.id.cardImage);
+        cardShadow = requireView().findViewById(R.id.cardShadow);
 
         cardImg.post(() -> {
             float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();
@@ -85,20 +86,20 @@ public class CardQuestionFragment extends BaseFragment {
             cardShadow.requestLayout();
         });
 
-        SuncorAppBarLayout appBarLayout = getView().findViewById(R.id.app_bar);
-        appBarLayout.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+        SuncorAppBarLayout appBarLayout = requireView().findViewById(R.id.app_bar);
+        appBarLayout.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
 
-        getView().findViewById(R.id.no_card_button).setOnClickListener(v -> {
+        requireView().findViewById(R.id.no_card_button).setOnClickListener(v -> {
 
             //bus logic
             Navigation.findNavController(v).navigate(R.id.action_cardQuestion_to_enrollmentFormFragment);
         });
 
-        getView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
+        requireView().findViewById(R.id.with_card_button).setOnClickListener((v) -> {
             Navigation.findNavController(v).navigate(R.id.action_card_question_to_card_form_fragment);
         });
 
-        securityQuestionViewModel.securityQuestions.observe(this, arrayListResource -> {
+        securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
             switch (arrayListResource.status) {
                 case SUCCESS:
                     animateCard();
@@ -108,7 +109,7 @@ public class CardQuestionFragment extends BaseFragment {
 
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
                     dialog.setCanceledOnTouchOutside(false);
-                    dialog.setOnDismissListener((listener) -> getActivity().finish());
+                    dialog.setOnDismissListener((listener) -> requireActivity().finish());
                     dialog.show();
 
             }
@@ -143,7 +144,7 @@ public class CardQuestionFragment extends BaseFragment {
             @Override
             public void onAnimationEnd(Animation animation) {
                 cardImg.animate()
-                        .translationY(-pxFromDp(getContext(), 8))
+                        .translationY(-pxFromDp(requireContext(), 8))
                         .setDuration(150)
                         .setInterpolator(new DecelerateInterpolator())
                         .start();

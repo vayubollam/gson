@@ -18,12 +18,14 @@ import static suncor.com.android.utilities.Constants.METHOD_ACTIVATION;
 import static suncor.com.android.utilities.Constants.METHOD_SIGN_UP;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +67,25 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.uicomponents.ExtendedNestedScrollView;
 import suncor.com.android.uicomponents.SuncorSelectInputLayout;
 import suncor.com.android.uicomponents.SuncorTextInputLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.SuncorPhoneNumberTextWatcher;
+
+import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_CARD;
+import static suncor.com.android.utilities.Constants.ACTIVATE_SUCCESS;
+import static suncor.com.android.utilities.Constants.ADDRESS;
+import static suncor.com.android.utilities.Constants.ALERT;
+import static suncor.com.android.utilities.Constants.ALERT_INTERACTION;
+import static suncor.com.android.utilities.Constants.ALERT_SELECTION;
+import static suncor.com.android.utilities.Constants.ALERT_TITLE;
+import static suncor.com.android.utilities.Constants.ERROR_LOG;
+import static suncor.com.android.utilities.Constants.ERROR_MESSAGE;
+import static suncor.com.android.utilities.Constants.FORM_NAME;
+import static suncor.com.android.utilities.Constants.FORM_START;
+import static suncor.com.android.utilities.Constants.FORM_STEP;
+import static suncor.com.android.utilities.Constants.PERSONAL_INFORMATION;
+import static suncor.com.android.utilities.Constants.SCROLL;
+import static suncor.com.android.utilities.Constants.SCROLL_DEPTH_THRESHOLD;
+import static suncor.com.android.utilities.Constants.SIGNUP_SUCCESS;
 
 public class EnrollmentFormFragment extends BaseFragment implements OnBackPressedListener {
 
@@ -80,6 +100,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private String formName;
     private String screenName;
     private boolean isLoadedFirstTime = false;
+    private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
 
     // By Default it remain JOIN_NO_CARD will check if the card is provided i.e JOIN_YES_CARD.
@@ -194,6 +215,15 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
 
                     dialog.setNegativeButton(R.string.sign_enable_fb_negative_button, (d, w) -> {
+                        d.dismiss();
+                    });
+                    dialog.show();
+                } else if(ErrorCodes.ERR_EMAIL_VALIDATION_INVALID_PUBWEB.equals(r.message)){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    dialog.setTitle(R.string.enrollment_email_restricted_error);
+                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                        focusOnItem(binding.emailInput);
+                        binding.emailInput.setError(true);
                         d.dismiss();
                     });
                     dialog.show();

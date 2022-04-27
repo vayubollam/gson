@@ -10,12 +10,14 @@ import static suncor.com.android.utilities.Constants.PAY_AT_PUMP;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +29,8 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -36,7 +40,11 @@ import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.common.MainActivityFragment;
+import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpViewModel;
+import suncor.com.android.utilities.AnalyticsUtils;
+
+import static suncor.com.android.utilities.Constants.*;
 
 public class FuellingFragment extends MainActivityFragment {
 
@@ -109,6 +117,7 @@ public class FuellingFragment extends MainActivityFragment {
                                     binding.cancelLayout.setVisibility(View.GONE);
                                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                                 } else if (result.status == Resource.Status.SUCCESS) {
+                                    //Do-nothing
                                     goBack();
                                 }
                             });
@@ -138,9 +147,8 @@ public class FuellingFragment extends MainActivityFragment {
                     FuellingAnalytics.logSomethingWentWrongMessage(requireContext());
                     Alerts.prepareGeneralErrorDialog(getContext(), PAY_AT_PUMP).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
-                    if(!result.data.activeSession){
-                        if (result.data.lastStatus.equalsIgnoreCase(CANCELLED) ||
-                                result.data.lastStatus.equalsIgnoreCase(CANCELED)) {
+                        if (Objects.equals(result.data.lastStatus, CANCELLED) ||
+                                Objects.equals(result.data.lastStatus, CANCELED)) {
                             Alerts.prepareCustomDialog(
                                      getString(R.string.cancellation_alert_title),
                                     getString(R.string.cancellation_alert_body),
@@ -154,8 +162,18 @@ public class FuellingFragment extends MainActivityFragment {
                                         dialogInterface.dismiss();
                                         goBack();
                                     }, PAY_AT_PUMP).show();
-                        } else {
+                        } else  if(!result.data.activeSession) {
                             observeTransactionData(result.data.lastTransId, result.data.lastPaymentProviderName);
+                            AnalyticsUtils.setCurrentScreenName(getActivity(), PAY_AT_PAUMP_FUELING_ALMOST_COMPLETE );
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMCOMPLETE,
+                                    new Pair<>(AnalyticsUtils.Param.FORMSELECTION, PAY_AT_PAUMP_FUELING_COMPLETE),
+                                    new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
+                        } else if (result.data.status != null) {
+                            transactionId = result.data.transId;
+                            binding.cancelButton.setVisibility(View.VISIBLE);
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,
+                                new Pair<>(AnalyticsUtils.Param.FORMSELECTION, getString(R.string.fueling_up)),
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, PAY_AT_PUMP));
                             FuellingAnalytics.logPapAlmostComplete(getActivity());
                             FuellingAnalytics.logFuellingFormComplete(requireContext());
                         }
@@ -172,38 +190,38 @@ public class FuellingFragment extends MainActivityFragment {
                         }
 
 
-                        binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase(NEW)
+                            binding.pumpAuthorizedText.setText(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)?
                                 getString(R.string.pump_authorized, result.data.pumpNumber) : getString(R.string.fueling_up));
-                        binding.pumpAuthorizedSubheader.setText(result.data.status.equalsIgnoreCase(NEW)
+                            binding.pumpAuthorizedSubheader.setText(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)?
                                 R.string.pump_authorized_subheader : R.string.fueling_up_subheader);
-                        binding.pumpNumberText.setText(result.data.pumpNumber);
+                            binding.pumpNumberText.setText(result.data.pumpNumber);
 
-                        binding.cancelButton.setText(result.data.status.equalsIgnoreCase(NEW)
+                            binding.cancelButton.setText(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)? R.string.cancel : R.string.hide);
-                        binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equalsIgnoreCase(NEW)
+                            binding.borderImageView.setImageDrawable(getContext().getDrawable(result.data.status.equalsIgnoreCase(NEW)
                                 || result.data.status.equalsIgnoreCase(AUTHORIZED)?
                                 R.drawable.circle_dash_border : R.drawable.circle_border));
 
-                        isLoading.set(false);
+                            isLoading.set(false);
 
-                        if (!result.data.status.equalsIgnoreCase(NEW) && !result.data.status.equalsIgnoreCase(AUTHORIZED)) {
-                            binding.borderImageView.clearAnimation();
-                            binding.fuelImageContainer.setVisibility(View.GONE);
+                            if (!result.data.status.equalsIgnoreCase(NEW) && !result.data.status.equalsIgnoreCase(AUTHORIZED)) {
+                                binding.borderImageView.clearAnimation();
+                                binding.fuelImageContainer.setVisibility(View.GONE);
 
-                            binding.fuelAnimationGif.setVisibility(View.VISIBLE);
-                        }
+                                binding.fuelAnimationGif.setVisibility(View.VISIBLE);
+                            }
 
-                        if(pingActiveSessionStarted) {
-                            observerFuellingActiveSession();
-                        }
+                            if(pingActiveSessionStarted) {
+                                observerFuellingActiveSession();
+                            }
                     } else {
                         goBack();
                     }
-                }
             });
         }
+
     };
 
     private void observeTransactionData(String transactionId, String lastPaymentProvider){
@@ -230,6 +248,6 @@ public class FuellingFragment extends MainActivityFragment {
 
     private void goBack() {
         NavController navController = Navigation.findNavController(getView());
-        navController.popBackStack();
+        navController.popBackStack(R.id.home_tab, false);
     }
 }
