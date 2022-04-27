@@ -227,7 +227,7 @@
     <string name="cards_wag_expanded_label">Carte Lavez Partez</string>
 
     <string name="customer_support_email">servicealaclientele@petro-canada.ca</string>
-    <string name="profile_get_help_call">Appel</string>
+    <string name="profile_get_help_call">Appeler</string>
     <string name="profile_get_help_email">Courriel</string>
     <string name="enrollment_phone_field_invalid_format">Veuillez entrer un numéro de téléphone valide (p. ex., 514-123-4567)</string>
     <string name="cards_fsr_description">Notre carte Économie sur l\'essence en prime vous permet d\'économiser %d ¢ le litre sur 200 litres d\'essence.\n\u2014\nRechargez votre carte à petro-points.com.</string>
@@ -403,7 +403,9 @@
     <string name="dismiss">Rejeter </string>
     <string name="offers_banner_1_text">"Bienvenue, commençons votre inscription. "</string>
     <string name="offers_banner_2_text">Paiement sans contact maintenant disponible dans l\'application.</string>
+    <string name="offers_banner_optional_text">Des milliers de prix.\nDes millions de Petro-Points.</string>
     <string name="offers_banner_2_button">Lancer la visite des fonctionnalités</string>
+    <string name="offers_banner_optional_button">TROUVER COMMENT</string>
     <string name="offers_banner_3a_text">Petro\u2011Points🅪 = articles gratuits.</string>
     <string name="offers_banner_3a_button">Découvrez les Petro-Points</string>
     <string name="offers_banner_3b_text">Échangez des points pour obtenir de l\'essence gratuite, des cartes-cadeaux électroniques et plus encore.</string>
@@ -416,6 +418,7 @@
     <string name="offers_leaving_app_alert_message">Nous ouvrons votre navigateur web.</string>
     <string name="offers_leaving_app_alert_button">Continuer</string>
     <string name="rbc_url">https://www.rbcbanqueroyale.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
+    <string name="petro_points_contest_url">https://www.petro-canada.ca/fr/personnel/a-propos-petro-points/concours-pleinde-ponts-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp </string>
     <string name="transaction_type_pp">Petro Points</string>
     <string name="rewards_guest_join_button">Inscrivez-vous et commencez à économiser</string>
     <string name="navigation_rewards_tab">Petro-Points</string>
@@ -462,7 +465,7 @@
     <string name="profile_personnal_informations_password">Mot de passe</string>
     <string name="update_password_progress">Mise à jour…</string>
     <string name="profile_security_question_header">Question de sécurité</string>
-    <string name="profile_security_question_content">Nous voulons vous aider à protéger vos renseignements. Répondez à la question de sécurité pour continuer.</string>
+    <string name="profile_security_question_content">Nous ne voulons pas vous ralentir. Nous voulons juste nous assurer qu\'il s\'agit bien de vous avant de poursuivre.</string>
     <string name="profile_security_question_error">Une réponse est exigée.</string>
     <string name="profile_security_question_continue">Continuer</string>
     <string name="profile_security_question_checking_answer">Vérification de la réponse…</string>
@@ -730,7 +733,7 @@
     <string name="view_receipt">Voir le reçu</string>
     <string name="email_receipt_subject">Reçu d\'essence de Petro-Canada: %1$s</string>
     <string name="email_receipt_body">Voici votre reçu d\'essence pour %1$s:\n</string>
-    <string name="your_transaction_availble_in_your_account">Les renseignements relatifs à votre achat seront disponibles à partir de votre compte. Vous pouvez également obtenir votre reçu au distributeur ou au dépanneur.</string>
+    <string name="your_transaction_availble_in_your_account">Votre transaction a bien été traitée, mais nous ne pouvons pas générer de reçu pour le moment.\nDans 24 heures, vous pourrez consulter l\'historique de transactions pour retrouver votre reçu ou demander une copie du reçu dans un dépanneur.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Distributeur non disponible</string>
@@ -818,4 +821,45 @@
 
     <string name="redemption_unavailable_title">L\'échange n\'est pas disponible </string>
     <string name="redemption_unavailable_description">L\'échange de Petro–Points n\'est pas disponible pour le moment. Veuillez communiquer avec nous au 1-800-688-0222 pour obtenir plus de renseignements. </string>
+    <!-- account details  -->
+    <string name="account_details_page_header">Détails du compte</string>
+    <string name="account_details_delete_button">Supprimer le compte</string>
+    <string name="account_details_delete_alert_title">Votre compte sera supprimé dans %1$s jours.</string>
+
+    <!--account deletion    -->
+
+    <string name="account_delete_page_header">Supprimer le compte</string>
+    <string name="account_deletion_title">Nous sommes désolés de vous voir quitter, %s</string>
+    <string name="account_deletion_subtitle">Voici ce à quoi vous pouvez vous attendre:</string>
+    <string name="account_delete_point_one">Ce processus peut prendre jusqu\'à 30 jours. Votre compte restera actif jusqu\'à ce qu\'il soit supprimé.</string>
+    <string name="account_delete_point_two">Nous vous recommandons d\'exporter les copies de vos transactions, car vous n\'y aurez plus accès dans l\'application mobile ou sur le site Petro-Canada.ca.</string>
+    <string name="account_delete_point_three">Vous perdrez tous les points inutilisés si vous ne les échangez pas ou n\'en faites pas don avant la suppression du compte. Vous pouvez faire don de vos points en accédant à votre compte sur le site de Petro-Canada.</string>
+    <string name="account_deletion_phone_label">Numéro de téléphone (requis)</string>
+    <string name="account_deletion_button">COMMENCER LA SUPPRESSION DU COMPTE</string>
+    <string name="account_deletion_request_submitted">Demande soumise</string>
+    <string name="account_deletion_account_deletion_begun">Nous avons commencé le processus de suppression de votre compte.</string>
+    <string name="account_deletion_account_unused_points">Vous avez <font color='#EB182C'>%s </font>points non utilisés. </string>
+    <string name="account_deletion_account_redeem_donate">N\'oubliez pas d\'échanger vos points ou d\'en faire don avant la suppression de votre compte.</string>
+
+    <!-- Notes Screen -->
+    <string name="account_deletion_submitted_header">Supprimer le compte </string>
+    <string name="account_deletion_requested">Vous avez fait une demande de suppression de compte le %1$s. a suppression de votre compte peut prendre jusqu\'à %2$s jours. </string>
+    <string name="account_deletion_contact_customer_service">Si cette demande n\'a pas été soumise par vous, veuillez communiquer avec le <a href="https://www.petro-canada.ca/fr/personnel/communiquer-avec-le-service-a-la-clientele">Service à la clientèle</a> </string>
+    <string name="account_deletion_notes_title">Bonjour, %1$s</string>
+    <string name="customer_service_url">https://www.petro-canada.ca/fr/personnel/communiquer-avec-le-service-a-la-clientele </string>
+
+    <string name="account_deletion_subtitle_review">Veuillez passer en revue l\'information ci-dessous</string>
+    <string name="account_deletion_address_label">Adresse postale complète </string>
+    <string name="account_deletion_petro_points_label">No Petro-Points</string>
+    <string name="account_deletion_subtitle_acknowledgement">Reconnaissance</string>
+    <string name="account_deletion_subtitle_acknowledgement_required">(requis)</string>
+    <string name="account_deletion_subtitle_acknowledgement_checkbox1">Je reconnais que je perdrai tous les points inutilisés si je ne les échange pas ou si je n\'en fais pas don avant la suppression du compte.</string>
+    <string name="account_deletion_subtitle_acknowledgement_checkbox2">Je reconnais que cette mesure me retirera du programme Petro-Points et que je ne pourrai plus accumuler de points.</string>
+    <string name="account_deletion_subtitle_leaving"> Avant de quitter, pourriez-vous nous donner la raison de ce départ?</string>
+    <string name="account_deletion_acknowledgment_validation">Vous devez accepter toutes les reconnaissances pour commencer le processus de suppression du compte.</string>
+    <string name="account_deletion_different_reason_validation">Ce champ ne peut rester vide! </string>
+    <string name="account_deletion_phone_field_required">Ce champ est requis!</string>
+    <string name="account_deletion_submitted">Soumettre</string>
+    <string name="different_reason">Une autre raison : </string>
+
 </resources>

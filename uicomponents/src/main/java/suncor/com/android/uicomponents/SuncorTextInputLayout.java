@@ -84,6 +84,7 @@ public class SuncorTextInputLayout extends LinearLayout {
     private final AppCompatCheckBox passwordToggle;
     private final AppCompatImageView errorImage;
     private boolean shouldShowError;
+    private boolean shouldUpdateBackground = true;
 
     private float collapsedHintTextSize;
 
@@ -209,6 +210,10 @@ public class SuncorTextInputLayout extends LinearLayout {
         updateError();
     }
 
+    public void setShouldUpdateBackground(Boolean shouldUpdateBackground) {
+        this.shouldUpdateBackground = shouldUpdateBackground;
+    }
+
     public void setError(boolean shouldShowError) {
         this.shouldShowError = shouldShowError;
         updateError();
@@ -260,7 +265,7 @@ public class SuncorTextInputLayout extends LinearLayout {
         return String.valueOf(editText.getText());
     }
 
-    protected ConstraintLayout getInputLayout() {
+    public ConstraintLayout getInputLayout() {
         return inputFrame;
     }
 
@@ -272,7 +277,9 @@ public class SuncorTextInputLayout extends LinearLayout {
     }
 
     private void updateBackground() {
-        if (shouldShowError) {
+        if(!shouldUpdateBackground){
+            inputFrame.setBackground(null);
+        } else if (shouldShowError) {
             Drawable errorBackground = getResources().getDrawable(R.drawable.textfield_activated);
             errorBackground.setTint(errorColor);
             inputFrame.setBackground(errorBackground);

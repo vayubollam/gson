@@ -1,7 +1,6 @@
 package suncor.com.android.ui.enrollment.form;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -96,8 +95,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
-        viewModel.setProvincesList(((EnrollmentActivity) getActivity()).getProvinces());
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(EnrollmentFormViewModel.class);
+        viewModel.setProvincesList(((EnrollmentActivity) requireActivity()).getProvinces());
 
         addressAutocompleteAdapter = new AddressAutocompleteAdapter(viewModel::addressSuggestionClicked);
 
@@ -120,7 +119,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             showDuplicateEmailAlert();
         });
 
-        AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+        AnalyticsUtils.setCurrentScreenName(requireActivity(), screenName);
         if (viewModel.getCardStatus() == null) {
             AnalyticsUtils.logEvent(getContext(), FORM_START, new Pair<>(FORM_NAME, formName));
         } else {
@@ -137,7 +136,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else {
                     screenName = SIGNUP_SUCCESS;
                 }
-                AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
+                AnalyticsUtils.setCurrentScreenName(requireActivity(), screenName);
 
                 String optionsChecked = "";
                 if (binding.emailOffersCheckbox.isChecked()) {
@@ -161,16 +160,16 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
-                    AnalyticsUtils.logEvent(getContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>(FORM_NAME,  formName));
-                    AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT, new Pair<>(ALERT_TITLE, getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
+                    AnalyticsUtils.logEvent(requireContext(), ERROR_LOG, new Pair<>(ERROR_MESSAGE, getString(R.string.enrollment_email_restricted_alert_title)),new Pair<>(FORM_NAME,  formName));
+                    AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT, new Pair<>(ALERT_TITLE, getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
                             new Pair<>(FORM_NAME,  formName));
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setNegativeButton(R.string.cancel, (d, w) -> {
                         d.dismiss();
                     });
                     dialog.setPositiveButton(R.string.profile_get_help_call, (d, w) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT_INTERACTION,
                                 new Pair<>(ALERT_TITLE, getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")"),
                                 new Pair<>(ALERT_SELECTION, getString(R.string.ok)),
                                 new Pair<>(FORM_NAME,  formName)
@@ -182,7 +181,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
                     dialog.show();
                 } else if(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION.equals(r.message)){
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
                     dialog.setTitle(R.string.verify_your_email_address_title);
                     dialog.setMessage(R.string.verify_your_email_address_description);
                     dialog.setPositiveButton(R.string.verify_your_email_address_call_us, (d, w) -> {
@@ -191,6 +190,15 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
 
                     dialog.setNegativeButton(R.string.sign_enable_fb_negative_button, (d, w) -> {
+                        d.dismiss();
+                    });
+                    dialog.show();
+                } else if(ErrorCodes.ERR_EMAIL_VALIDATION_INVALID_PUBWEB.equals(r.message)){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
+                    dialog.setTitle(R.string.enrollment_email_restricted_error);
+                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
+                        focusOnItem(binding.emailInput);
+                        binding.emailInput.setError(true);
                         d.dismiss();
                     });
                     dialog.show();
@@ -217,7 +225,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 binding.streetAutocompleteOverlay.setIsVisible(true);
                 ViewCompat.setElevation(binding.appBar, 0);
                 binding.scrollView.setScrollEnabled(false);
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
+                requireActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.black_40_transparent));
             } else {
                 binding.appBar.setOnClickListener(null);
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.white));
@@ -225,7 +233,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 binding.streetAutocompleteOverlay.setIsVisible(false);
                 ViewCompat.setElevation(binding.appBar, 8);
                 binding.scrollView.setScrollEnabled(true);
-                getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+                requireActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.white));
             }
         });
 
@@ -250,19 +258,19 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.putExtra(LoginActivity.LOGIN_FROM_ENROLLMENT_EXTRA, true);
                 startActivity(intent);
-                getActivity().finish();
+                requireActivity().finish();
             }
         });
         viewModel.showBiometricAlert.observe(this, booleanEvent -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT,
+            AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT,
                     new Pair<>(ALERT_TITLE, getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
                     new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
             );
-            new AlertDialog.Builder(getContext())
+            new AlertDialog.Builder(requireContext())
                     .setTitle(R.string.sign_enable_fp_title)
                     .setMessage(R.string.sign_enable_fb_message)
                     .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT_INTERACTION,
                                 new Pair<>(ALERT_TITLE, getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
                                 new Pair<>(ALERT_SELECTION, getString(R.string.sign_enable_fb_possitive_button)),
                                 new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
@@ -270,7 +278,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         viewModel.proccedToJoin(true);
                     })
                     .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT_INTERACTION,
                                 new Pair<>(ALERT_TITLE, getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"),
                                 new Pair<>(ALERT_SELECTION, getString(R.string.sign_enable_fb_negative_button)),
                                 new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
@@ -293,7 +301,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
-                    getActivity().finish();
+                    requireActivity().finish();
                 })
                 .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
                     binding.emailInput.setText("");
@@ -351,8 +359,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         });
 
         binding.streetAutocompleteOverlay.autocompleteList.setAdapter(addressAutocompleteAdapter);
-        binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        DividerItemDecoration dividerDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        binding.streetAutocompleteOverlay.autocompleteList.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
+        DividerItemDecoration dividerDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         dividerDecoration.setDrawable(getResources().getDrawable(R.drawable.horizontal_divider));
         binding.streetAutocompleteOverlay.autocompleteList.addItemDecoration(dividerDecoration);
         return binding.getRoot();
@@ -372,7 +380,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         ExtendedNestedScrollView scroller = binding.scrollView;
 
         if (scroller != null) {
@@ -415,7 +423,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     public void onBackPressed() {
         hideKeyBoard();
         if(viewModel.isUserCameToValidationScreen()){
-            getActivity().finish();
+            requireActivity().finish();
 
             Intent intent = new Intent(requireActivity(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -425,23 +433,23 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         if (viewModel.showAutocompleteLayout.getValue() != null && viewModel.showAutocompleteLayout.getValue()) {
             viewModel.hideAutoCompleteLayout();
         } else if (viewModel.isOneItemFilled()) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT,
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext());
+            AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT,
                     new Pair<>(ALERT_TITLE, getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
                     new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
             );
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
             alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
-                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT_INTERACTION,
                         new Pair<>(ALERT_TITLE, getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
                         new Pair<>(ALERT_SELECTION, getString(R.string.ok)),
                         new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
                 );
-                getActivity().finish();
+                requireActivity().finish();
             });
             alertDialog.setNegativeButton(R.string.cancel, (d, w) -> {
-                AnalyticsUtils.logEvent(getActivity().getApplicationContext(), ALERT_INTERACTION,
+                AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), ALERT_INTERACTION,
                         new Pair<>(ALERT_TITLE, getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"),
                         new Pair<>(ALERT_SELECTION, getString(R.string.cancel)),
                         new Pair<>(FORM_NAME,  ACTIVATE_PETRO_POINTS_CARD)
@@ -449,13 +457,13 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             });
             alertDialog.show();
         } else {
-            Navigation.findNavController(getView()).navigateUp();
+            Navigation.findNavController(requireView()).navigateUp();
         }
     }
 
     private void hideKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
     }
 
     public void joinButtonClicked() {
@@ -547,7 +555,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             input.getEditText().requestFocus();
         }
         if (!(input instanceof SuncorSelectInputLayout)) {
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(input.getEditText(), InputMethodManager.SHOW_IMPLICIT);
         }
     }
