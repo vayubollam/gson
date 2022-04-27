@@ -39,7 +39,8 @@ public class AnalyticsUtils {
         infoTap(INFO_TAP),
         menuTap(MENU_TAP),
         ADDPPTSTOWALLET(ADD_PPTS_TO_WALLET),
-        ADDPPTSTOWALLETERROR(ADD_PPTS_TO_WALLET_ERROR);
+        ADDPPTSTOWALLETERROR(ADD_PPTS_TO_WALLET_ERROR),
+        APPRATINGPROMPT(APP_RATING_PROMPT);
 
 
         private final String name;
