@@ -183,7 +183,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 // We can get the ReviewInfo object
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow(requireActivity(), reviewInfo);
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.APPRATINGPROMPT.name());
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.APPRATINGPROMPT.toString());
 
                 flow.addOnCompleteListener(reviewed -> {
                     // The flow has finished. The API does not indicate whether the user

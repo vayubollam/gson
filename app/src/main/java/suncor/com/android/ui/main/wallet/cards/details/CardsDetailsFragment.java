@@ -267,13 +267,13 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         getActivity().runOnUiThread(() -> {
                             hideAddCardProgress();
                             if(cardAuthToken == null){
-                                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLETERROR.name(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS),
+                                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLETERROR.toString(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS),
                                         new Pair<>(AnalyticsUtils.Param.errorMessage.toString(), Constants.SOMETHING_WRONG));
                                 Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                                 return;
                             }
                            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
-                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLET.name(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLET.toString(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS));
                         });
                     }
                 }).start();
