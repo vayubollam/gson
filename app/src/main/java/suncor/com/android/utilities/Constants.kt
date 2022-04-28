@@ -90,6 +90,8 @@ object Constants {
     const val INTERSITE = "intersite"
     const val INFO_TAP = "info_tap"
     const val MENU_TAP = "menu_tap"
+    const val ACTIVATE_CAR_WASH_SUCCESS = "activate_car_wash_success"
+    const val CW_CONFIRM_PIN = "cw_confirm_PIN"
 
     const val ITEM_ID = "item_id"
     const val ITEM_NAME = "item_name"
@@ -107,12 +109,14 @@ object Constants {
     const val INTERSITE_URL = "intersiteURL"
     const val INFO_TEXT = "infoText"
     const val MENU_SELECTION = "menuSelection"
+    const val CAR_WASH_CARD_TYPE = "carWashCardType"
 
     const val INTERNAL_PROMOTIONS = "Internal Promotions"
     const val ACTIVATE_WNG = "Activate Wash by Wash & Go card"
     const val ACTIVATE_SP = "Activate Wash by Season Pass card"
     const val NONE = "None"
     const val DEFAULT_ERROR_SUNCORXXXX = "SUNCORXXXX"
+    const val ACTIVATE_CAR_WASH_CLICK = "activate_car_wash_click"
 
     // Carwash Security Switch Case
     const val INCORRECT_PIN = "incorrectPin"
@@ -140,6 +144,6 @@ object Constants {
     const val DELETE_ACCOUNT = "Delete Account"
     const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
     const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
-    const val ANSWER_SECURITY_QUESTION= "Answer security question"
+    const val ANSWER_SECURITY_QUESTION = "Answer security question"
 
 }
