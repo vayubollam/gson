@@ -136,6 +136,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     }
 
     private View.OnClickListener confirmListener = v -> {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.cwConfirmPin,
+                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.getCardType())
+        );
         String pin = isPinEntered();
         if (pin != null && pin.length() == VERIFICATION_PIN_LENGTH) {
             getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,

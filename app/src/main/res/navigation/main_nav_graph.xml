@@ -689,7 +689,9 @@
         <argument
             android:name="cardType"
             android:defaultValue="null"
-            app:argType="string"></argument>
+            app:argType="string"/>
+           
+
         <action
             android:id="@+id/action_carWashActivationSecurityFragment_to_carWashBarCodeFragment"
             app:destination="@id/carWashBarCodeFragment"
