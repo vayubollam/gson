@@ -120,8 +120,8 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
                 () -> {
                     carWashCardViewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
                     AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong"),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Carwash Cards"));
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.msg_sl005_title)),
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, String.valueOf(R.string.carwash_cards)));
                 }));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -201,7 +201,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "car-wash-card-list");
+        AnalyticsUtils.setCurrentScreenName(getActivity(), String.valueOf(R.string.car_wash_card_list));
     }
 
     @Override
@@ -267,6 +267,9 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         Resource<StationItem> resource = carWashCardViewModel.getNearestStation().getValue();
         if (resource != null && resource.data != null && !carWashCardViewModel.getIsLoading().get()) {
             StationDetailsDialog.showCard(this, resource.data, nearestCardBinding.getRoot(), false);
+        } else {
+            AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, resource.message));
         }
     };
 
