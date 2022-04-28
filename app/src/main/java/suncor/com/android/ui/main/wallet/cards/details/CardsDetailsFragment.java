@@ -194,6 +194,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener activeCarWashListener = view -> {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarWashClick,
+                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.cards.getValue().get(clickedCardIndex).getLongName())
+        );
+
         if (isUserAtIndependentStation()) {
             StationsUtil.showIndependentStationAlert(getContext());
         } else {
