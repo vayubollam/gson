@@ -90,6 +90,7 @@ object Constants {
     const val INTERSITE = "intersite"
     const val INFO_TAP = "info_tap"
     const val MENU_TAP = "menu_tap"
+    const val CW_CONFIRM_PIN = "cw_confirm_PIN"
 
     const val ITEM_ID = "item_id"
     const val ITEM_NAME = "item_name"
