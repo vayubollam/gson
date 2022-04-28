@@ -39,6 +39,7 @@ public class AnalyticsUtils {
         intersite(INTERSITE),
         infoTap(INFO_TAP),
         menuTap(MENU_TAP),
+        activateCarwashSuccess(ACTIVATE_CAR_WASH_SUCCESS),
         cwConfirmPin(CW_CONFIRM_PIN),
         activateCarWashClick(ACTIVATE_CAR_WASH_CLICK);
 

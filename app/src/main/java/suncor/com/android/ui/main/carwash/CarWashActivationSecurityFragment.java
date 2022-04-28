@@ -164,6 +164,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
 
                         handleActivationErrors(resource.message);
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarwashSuccess,
+                                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.getCardType())
+                        );
                         if (!resource.data.getResultCode().equals("ok")) {
                             handleActivationErrors(resource.data.getResultSubcode());
                         } else {
