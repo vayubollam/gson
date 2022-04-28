@@ -114,6 +114,11 @@ object Constants {
     const val NONE = "None"
     const val DEFAULT_ERROR_SUNCORXXXX = "SUNCORXXXX"
 
+    // Carwash Security Switch Case
+    const val INCORRECT_PIN = "incorrectPin"
+    const val WASH_REJECTED = "washRejected"
+    const val POE_BUSY = "poeBusy"
+
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
 
