@@ -21,6 +21,7 @@ import suncor.com.android.ui.common.cards.CardFormatUtils;
 public class CarWashSharedViewModel extends ViewModel {
     public String cardNumber;
     public String securityKey;
+    public String cardType;
     private MutableLiveData<String> encryptedCarWashCode = new MutableLiveData<>();
     private MutableLiveData<Boolean> reEnter = new MutableLiveData<>();
     private MutableLiveData<Integer> clickedCardIndex = new MutableLiveData<>();
@@ -75,6 +76,14 @@ public class CarWashSharedViewModel extends ViewModel {
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
     }
 
     public MutableLiveData<String> getEncryptedCarWashCode() {

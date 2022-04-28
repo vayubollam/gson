@@ -24,8 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -37,17 +35,12 @@ import javax.inject.Inject;
 import suncor.com.android.R;
 import suncor.com.android.data.settings.SettingsApi;
 import suncor.com.android.databinding.FragmentCarwashSecurityBinding;
-import suncor.com.android.databinding.FragmentFuelUpBinding;
-import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.SettingsResponse;
-import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.carwash.ActivateCarwashResponse;
-import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorButton;
-import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 public class CarWashActivationSecurityFragment extends CarwashLocation implements OnBackPressedListener {
@@ -56,8 +49,6 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     private AppCompatEditText pinText1, pinText2, pinText3;
     private InputMethodManager inputMethodManager;
     private CarWashSharedViewModel viewModel;
-
-    private CardDetail cardDetail;
     private SuncorButton confirmButton;
     private View progressBar;
 
@@ -102,8 +93,10 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         if (getArguments() != null) {
             int clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
             String cardNumber = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardNumber();
+            String cardType = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardType();
             viewModel.setClickedCardIndex(clickedCardIndex);
             viewModel.setCardNumber(cardNumber);
+            viewModel.setCardType(cardType);
         }
         FragmentCarwashSecurityBinding binding = FragmentCarwashSecurityBinding.inflate(inflater, container, false);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
@@ -139,6 +132,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     }
 
     private View.OnClickListener confirmListener = v -> {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.cwConfirmPin,
+                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.getCardType())
+        );
         String pin = isPinEntered();
         if (pin != null && pin.length() == VERIFICATION_PIN_LENGTH) {
             getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -161,9 +157,13 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                     if (resource.status == Resource.Status.LOADING) {
                         progressBar.setVisibility(View.VISIBLE);
                     } else if (resource.status == Resource.Status.ERROR) {
-
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                                new Pair<>(AnalyticsUtils.Param.errorMessage, resource.message));
                         handleActivationErrors(resource.message);
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarwashSuccess,
+                                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.getCardType())
+                        );
                         if (!resource.data.getResultCode().equals("ok")) {
                             handleActivationErrors(resource.data.getResultSubcode());
                         } else {
