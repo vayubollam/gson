@@ -115,6 +115,7 @@ object Constants {
     const val ACTIVATE_SP = "Activate Wash by Season Pass card"
     const val NONE = "None"
     const val DEFAULT_ERROR_SUNCORXXXX = "SUNCORXXXX"
+    const val ACTIVATE_CAR_WASH_CLICK = "activate_car_wash_click"
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
