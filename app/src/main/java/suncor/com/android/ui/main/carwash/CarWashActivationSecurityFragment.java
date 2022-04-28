@@ -181,6 +181,10 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                     new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
                     new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
             );
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMERROR,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_activation_pin_error_message)),
+                    new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
+            );
             AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                     .setTitle(R.string.carwash_activation_pin_error_title)
                     .setMessage(R.string.carwash_activation_pin_error_message)
@@ -188,7 +192,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
-new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
                         );
                         dialog.dismiss();
                         confirmButton.setEnabled(true);
@@ -205,6 +209,10 @@ new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
 
         switch (resultSubcode) {
             case INCORRECT_PIN:
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMERROR,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_activation_pin_error_message)),
+                        new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
+                );
                 progressBar.setVisibility(View.GONE);
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.carwash_activation_pin_error_title)
