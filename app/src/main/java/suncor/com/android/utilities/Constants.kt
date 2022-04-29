@@ -117,7 +117,7 @@ object Constants {
     const val NONE = "None"
     const val DEFAULT_ERROR_SUNCORXXXX = "SUNCORXXXX"
     const val ACTIVATE_CAR_WASH_CLICK = "activate_car_wash_click"
-
+    //
     const val INCORRECT_PIN = "incorrectPin"
     const val WASH_REJECTED = "washRejected"
     const val POE_BUSY = "poeBusy"
