@@ -93,8 +93,10 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         if (getArguments() != null) {
             int clickedCardIndex = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardIndex();
             String cardNumber = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardNumber();
+            String cardType = CarWashActivationSecurityFragmentArgs.fromBundle(getArguments()).getCardType();
             viewModel.setClickedCardIndex(clickedCardIndex);
             viewModel.setCardNumber(cardNumber);
+            viewModel.setCardType(cardType);
         }
         FragmentCarwashSecurityBinding binding = FragmentCarwashSecurityBinding.inflate(inflater, container, false);
         binding.appBar.setNavigationOnClickListener(v -> goBack());
@@ -130,6 +132,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
     }
 
     private View.OnClickListener confirmListener = v -> {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.cwConfirmPin,
+                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.getCardType())
+        );
         String pin = isPinEntered();
         if (pin != null && pin.length() == VERIFICATION_PIN_LENGTH) {
             getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -156,6 +161,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                                 new Pair<>(AnalyticsUtils.Param.errorMessage, resource.message));
                         handleActivationErrors(resource.message);
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarwashSuccess,
+                                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.getCardType())
+                        );
                         if (!resource.data.getResultCode().equals("ok")) {
                             handleActivationErrors(resource.data.getResultSubcode());
                         } else {
@@ -180,7 +188,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsTitle),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getContext().getString(R.string.ok)),
-                                new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
+new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
                         );
                         dialog.dismiss();
                         confirmButton.setEnabled(true);
