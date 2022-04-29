@@ -18,6 +18,7 @@ import suncor.com.android.analytics.pap.FuelUpAnalytics
 import suncor.com.android.analytics.pap.ReceiptAnalytics
 
 
+
 abstract class BaseAnalytics {
 
 
@@ -44,6 +45,13 @@ abstract class BaseAnalytics {
         bundle.putString(FORM_NAME,formName)
         bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
         FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
+    }
+
+    fun logErrorEvent(context: Context, errorMessage: String){
+        val bundle = Bundle()
+        bundle.putString(ERROR_MESSAGE,errorMessage)
+        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
+
     }
 
     fun logEvent(context: Context, eventName: String, bundle: Bundle) {

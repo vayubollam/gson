@@ -1,8 +1,6 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import java.util.Calendar;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.giftcard.RedeemReceiptAnalytics;
 import suncor.com.android.databinding.FragmentRedeemReceiptBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.SessionManager;
@@ -29,7 +28,6 @@ import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.MainViewModel;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.DateUtils;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.MerchantsUtil;
 
 public class RedeemReceiptFragment extends MainActivityFragment implements OnBackPressedListener {
@@ -49,7 +47,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
+        mainViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(MainViewModel.class);
     }
 
     @Nullable
@@ -74,7 +72,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             sessionManager.getProfile().setPointsBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining());
             binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining())));
             binding.pointsRedeemedValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRedeemed())));
-            imageId = getContext().getResources().getIdentifier(MerchantsUtil.getMerchantSmallImage(orderResponse.getShoppingCart().geteGift().getMerchantId()), "drawable", getContext().getPackageName());
+            imageId = requireContext().getResources().getIdentifier(MerchantsUtil.getMerchantSmallImage(orderResponse.getShoppingCart().geteGift().getMerchantId()), "drawable", requireContext().getPackageName());
             binding.valueTitle.setText(R.string.egift_card_value_title);
             binding.subtitle.setText(R.string.redeem_receipt_body);
             binding.cardValue.setText(getString(R.string.egift_card_value_in_dollar_generic, orderResponse.getShoppingCart().geteGift().getValue()));
@@ -85,20 +83,20 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             sessionManager.getProfile().setPointsBalance(remainingPoints);
             binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(remainingPoints)));
             binding.pointsRedeemedValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(product.getPointsPrice())));
-            imageId = getContext().getResources().getIdentifier(MerchantsUtil.getRewardSmallImage(product.getCategory()), "drawable", getContext().getPackageName());
+            imageId = requireContext().getResources().getIdentifier(MerchantsUtil.getRewardSmallImage(product.getCategory()), "drawable", requireContext().getPackageName());
             binding.valueTitle.setText(getString(R.string.single_ticket_receipt_quantity_title));
             binding.subtitle.setText(getString(R.string.single_ticket_receipt_subtitle));
-            binding.cardValue.setText(getContext().getResources().getQuantityString(R.plurals.single_ticket_receipt_quantity,
+            binding.cardValue.setText(requireContext().getResources().getQuantityString(R.plurals.single_ticket_receipt_quantity,
                     product.getUnits(), product.getUnits()));
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
             binding.dateValue.setText(DateUtils.getFormattedDate(Calendar.getInstance().getTime()));
         }
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
-        AnalyticsUtils.logEvent(this.getContext(),"form_complete",
-                new Pair<>("formName", "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card"),
-                new Pair<>("formSelection","$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card")
-        );
-        binding.setImage(getContext().getDrawable(imageId));
+        RedeemReceiptAnalytics.logMerchantDetailsScreenName(requireActivity(), MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
+
+        RedeemReceiptAnalytics.logRedeemReceiptFormComplete(requireContext(),
+                "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card",
+                "$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card" );
+        binding.setImage(requireContext().getDrawable(imageId));
         binding.redeemReceiptCardviewTitle.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
         return binding.getRoot();
     }
@@ -114,7 +112,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             mainViewModel.setLinkedToAccount(true);
             mainViewModel.setSingleTicketNumber(Sets.newHashSet(orderResponse.getProductsDelivered()));
         }
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
 }

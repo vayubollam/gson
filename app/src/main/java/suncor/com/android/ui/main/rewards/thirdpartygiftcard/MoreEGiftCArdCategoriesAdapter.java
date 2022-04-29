@@ -26,7 +26,6 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
         this.context = context;
         this.categoriesList = categoriesList;
         MoreEGiftCArdCategoriesAdapter.clickListener = clickListener;
-
     }
 
     @NonNull
@@ -69,8 +68,6 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
                 }
             });
             binding.childRecycler.setAdapter(adapter);
-
-
 
             binding.executePendingBindings();
 

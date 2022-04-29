@@ -15,6 +15,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.giftcard.MerchantDetailsAnalytics;
 import suncor.com.android.databinding.FragmentMerchantDetailsBinding;
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
@@ -36,17 +37,17 @@ public class MerchantDetailsFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMerchantDetailsBinding.inflate(inflater, container, false);
         genericEGiftCard = MerchantDetailsFragmentArgs.fromBundle(getArguments()).getGenericGiftCard();
-        int imageId = getContext().getResources().getIdentifier(genericEGiftCard.getSmallImage(), "drawable", getContext().getPackageName());
-        binding.setImage(getContext().getDrawable(imageId));
+        int imageId = requireContext().getResources().getIdentifier(genericEGiftCard.getSmallImage(), "drawable", requireContext().getPackageName());
+        binding.setImage(requireContext().getDrawable(imageId));
         binding.setGenericGiftCard(genericEGiftCard);
         binding.executePendingBindings();
         binding.closeButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
         binding.points.setText(getString(R.string.rewards_signedin_header_balance, Objects.nonNull(sessionManager.getProfile()) ? CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance()) : 0));
-        AnalyticsUtils.setCurrentScreenName(this.getActivity(), "my-petro-points-redeem-info-"+genericEGiftCard.getScreenName());
+        MerchantDetailsAnalytics.logMerchantDetailsScreenName(requireActivity(),genericEGiftCard.getScreenName());
         binding.buyButton.setOnClickListener(v -> {
             MerchantDetailsFragmentDirections.ActionMerchantDetailsFragmentToGiftCardValueConfirmation action = MerchantDetailsFragmentDirections.actionMerchantDetailsFragmentToGiftCardValueConfirmation(genericEGiftCard);
-            AnalyticsUtils.logEvent(this.getContext(),"form_start",new Pair<>("formName", "Redeem for "+genericEGiftCard.getShortName()+" eGift card"));
-            Navigation.findNavController(getView()).navigate(action);
+            MerchantDetailsAnalytics.logFormStart(requireContext(), "Redeem for "+genericEGiftCard.getShortName()+" eGift card");
+            Navigation.findNavController(requireView()).navigate(action);
         });
         return binding.getRoot();
     }
