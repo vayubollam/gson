@@ -226,6 +226,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 break;
             case WASH_REJECTED:
                 progressBar.setVisibility(View.GONE);
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_zero_error_alert_message))
+                );
                 AlertDialog alertWashDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.carwash_zero_error_alert_title)
                         .setMessage(R.string.carwash_zero_error_alert_message)
@@ -251,6 +254,9 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                 break;
             case POE_BUSY:
                 progressBar.setVisibility(View.GONE);
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_error_alert_copy))
+                );
                 AlertDialog alertErrorDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.carwash_error_alert_title)
                         .setMessage(R.string.carwash_error_alert_copy)

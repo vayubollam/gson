@@ -217,6 +217,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
                 } else if (cardDetail.isSuspendedCard()) {
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_zero_error_alert_message))
+                    );
                     CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
                     AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, "Enter 3 digits", cardDetail.getCardType());
@@ -236,6 +239,9 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private View.OnClickListener cardReloadListener = view -> {
         CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
         if (cardDetail.isSuspendedCard()) {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.reload_card_alert_description))
+            );
             CardsUtil.showSuspendedCardAlert(getContext());
         } else {
             ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
