@@ -358,7 +358,6 @@ public class Transaction {
 
     public enum TransactionStatus {
         NORMAL,
-        PARTIAL_REDEMPTION,
         NO_REDEMPTION
     }
 
@@ -379,9 +378,9 @@ public class Transaction {
            // Under-pump and points redeemed == actual Fuel-up Amount in points
            if (isUnderPump && getPointsRedeemed() == subtotal * 1000) {
                return TransactionStatus.NORMAL;
-           } else {
-               return TransactionStatus.PARTIAL_REDEMPTION;
            }
+
+           return TransactionStatus.NORMAL;
        }catch (Exception e){
            Timber.e(e.getMessage());
            return TransactionStatus.NORMAL;

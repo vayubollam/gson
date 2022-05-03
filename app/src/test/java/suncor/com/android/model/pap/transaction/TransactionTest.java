@@ -1,9 +1,7 @@
 package suncor.com.android.model.pap.transaction;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class TransactionTest {
@@ -22,16 +20,7 @@ public class TransactionTest {
        assertEquals( transaction.getTransactionStatus("0","100"), Transaction.TransactionStatus.NORMAL );
     }
 
-    @Test
-    public void getTransactionStatus_redeem100_000_get60_000_returns_Partial_Redemption() {
-        Transaction transaction = new Transaction();
-        transaction.setTestValues(
-                100,
-                false,
-                60_000
-        );
-       assertEquals( transaction.getTransactionStatus("100000","100"), Transaction.TransactionStatus.PARTIAL_REDEMPTION );
-    }
+
 
 
     @Test
@@ -78,16 +67,7 @@ public class TransactionTest {
     }
 
     /*Under Pump Test Cases*/
-    @Test
-    public void getTransactionStatus_UnderPump_fuel_100_pump_60_redeem_100_000_get_50_000_returns_Partial_Redemption() {
-        Transaction transaction = new Transaction();
-        transaction.setTestValues(
-                60,
-                false,
-                50_000
-        );
-        assertEquals( transaction.getTransactionStatus("100000","100"), Transaction.TransactionStatus.PARTIAL_REDEMPTION );
-    }
+
 
     @Test
     public void getTransactionStatus_UnderPump_fuel_100_pump_60_redeem_100_000_get_0_returns_No_Redemption() {
