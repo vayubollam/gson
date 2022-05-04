@@ -93,8 +93,9 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
         }
         RedeemReceiptAnalytics.logMerchantDetailsScreenName(requireActivity(), MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
 
+
         RedeemReceiptAnalytics.logRedeemReceiptFormComplete(requireContext(),
-                "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card",
+                MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId()),
                 "$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card" );
         binding.setImage(requireContext().getDrawable(imageId));
         binding.redeemReceiptCardviewTitle.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));

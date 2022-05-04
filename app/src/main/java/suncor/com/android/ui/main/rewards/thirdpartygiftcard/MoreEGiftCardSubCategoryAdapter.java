@@ -3,14 +3,10 @@ package suncor.com.android.ui.main.rewards.thirdpartygiftcard;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
 
@@ -72,5 +68,4 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
             });
         }
     }
-
 }

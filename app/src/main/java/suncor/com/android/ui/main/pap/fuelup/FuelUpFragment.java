@@ -118,7 +118,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
         selectPumpViewModel = ViewModelProviders.of(this, viewModelFactory).get(SelectPumpViewModel.class);
         paymentsClient = GooglePayUtils.createPaymentsClient(getContext());
         LocationLiveData locationLiveData = new LocationLiveData(getContext().getApplicationContext());
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED) {
             locationLiveData.observe(this, result -> {
                 viewModel.setUserLocation(new LatLng(result.getLatitude(), result.getLongitude()));
             });
@@ -130,7 +130,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentFuelUpBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         binding.setIsLoading(isLoading);
         binding.setVm(viewModel);
 
@@ -263,9 +263,9 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 .getSavedStateHandle()
                 .getLiveData(TEMP_PAYMENT);
 
-        liveData.observe(getActivity(), paymentDetail -> {
+        liveData.observe(requireActivity(), paymentDetail -> {
             // Do something with the result.
-            paymentDropDownAdapter.addPayment(new PaymentListItem(getContext(), paymentDetail), true);
+            paymentDropDownAdapter.addPayment(new PaymentListItem(requireContext(), paymentDetail), true);
             this.userPaymentId = paymentDetail.getId();
         });
 
@@ -328,7 +328,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override
@@ -379,7 +379,7 @@ public class FuelUpFragment extends MainActivityFragment implements ExpandableVi
                 viewModel.payByWalletRequest(storeId, Integer.parseInt(pumpNumber), preAuthPrices, Integer.parseInt(userPaymentId), kountSessionId).observe(getViewLifecycleOwner(), result -> {
                     if (result.status == Resource.Status.LOADING) {
                         isLoading.set(true);
-                        FuelUpAnalytics.logPapPreAuthLoadingScreenName(getActivity());
+                        FuelUpAnalytics.logPapPreAuthLoadingScreenName(requireActivity());
                     } else if (result.status == Resource.Status.ERROR) {
                         isLoading.set(false);
                         handleAuthorizationFail(result.message);

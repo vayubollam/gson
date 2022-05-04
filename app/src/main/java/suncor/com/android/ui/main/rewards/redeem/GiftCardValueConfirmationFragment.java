@@ -100,14 +100,14 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     GiftCardValueConfirmationAnalytics.logGiftCardConfirmationErrorMessage(
                             requireActivity(),
                             orderResponseResource.message,
-                            "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"
+                             viewModel.getGiftCardItem().getShortName()
                     );
 
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
                         GiftCardValueConfirmationAnalytics.logAlertShown(
                                 requireActivity(),
                                 getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")",
-                                "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card");
+                                 viewModel.getGiftCardItem().getShortName());
 
 
                         new AlertDialog.Builder(requireContext())
@@ -119,7 +119,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                                             requireActivity(),
                                             getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")",
                                             getString(R.string.ok),
-                                            "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"
+                                             viewModel.getGiftCardItem().getShortName()
                                     );
 
                                     dialog.dismiss();

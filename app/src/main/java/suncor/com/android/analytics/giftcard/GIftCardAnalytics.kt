@@ -6,6 +6,10 @@ import android.os.Bundle
 import suncor.com.android.analytics.BaseAnalytics
 import suncor.com.android.analytics.BaseEvents
 import suncor.com.android.analytics.BaseParams
+import suncor.com.android.model.merchants.EGift
+
+private const val REDEEM_FOR = "Redeem for "
+private const val E_GIFT_CARD = "eGift card"
 
 object RewardsSignedInAnalytics : BaseAnalytics()
 
@@ -35,7 +39,7 @@ object RedeemReceiptAnalytics : BaseAnalytics() {
     fun logRedeemReceiptFormComplete(context: Context, formName: String, formSelection: String) {
         val bundle = Bundle()
         bundle.putString(BaseParams.FORM_SELECTION, formSelection)
-        bundle.putString(BaseParams.FORM_NAME, formName)
+        bundle.putString(BaseParams.FORM_NAME, REDEEM_FOR + formName + E_GIFT_CARD)
         logEvent(context, BaseEvents.FORM_COMPLETE, bundle)
     }
 }
@@ -88,6 +92,7 @@ object GiftCardValueConfirmationAnalytics : BaseAnalytics() {
 
     private const val SCREEN_NAME_GIFT_CARD_CONFIRMATION = "my-petro-points-redeem-info-"
 
+
     @JvmStatic
     fun logGiftCardValueConfirmationScreenName(activity: Activity, cardName: String) {
         logScreenNameClass(
@@ -102,12 +107,12 @@ object GiftCardValueConfirmationAnalytics : BaseAnalytics() {
         errorMessage: String,
         formName: String
     ) {
-        logFormErrorEvent(context, errorMessage, formName)
+        logFormErrorEvent(context, errorMessage, REDEEM_FOR + formName + E_GIFT_CARD)
     }
 
     @JvmStatic
     fun logAlertShown(context: Context, title: String, formName: String) {
-        logAlertDialogShown(context, title, formName)
+        logAlertDialogShown(context, title, REDEEM_FOR + formName + E_GIFT_CARD)
     }
 
     @JvmStatic
@@ -117,7 +122,7 @@ object GiftCardValueConfirmationAnalytics : BaseAnalytics() {
         alertSelection: String,
         formName: String
     ) {
-        logAlertDialogInteraction(context, alertTitle, alertSelection, formName)
+        logAlertDialogInteraction(context, alertTitle, alertSelection, REDEEM_FOR + formName + E_GIFT_CARD)
     }
 
     @JvmStatic

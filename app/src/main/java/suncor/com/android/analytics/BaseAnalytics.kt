@@ -134,9 +134,5 @@ abstract class BaseAnalytics {
             bundle.putString(BaseParams.INTER_SITE_URL, url)
             FuelUpAnalytics.logEvent(context, BaseEvents.INTER_SITE, bundle)
         }
-
-
     }
-
-
 }
