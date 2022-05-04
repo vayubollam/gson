@@ -23,7 +23,7 @@ object EnrollmentAnalytics : BaseAnalytics() {
     private const val EVENT_SIGNUP = "sign_up"
     private const val PARAM_SIGNUP_METHOD = "method"
 
-    private const val SCREEN_NAME_PROVINCE_SECURITY_HELP = "province-security-help"
+    const val SCREEN_NAME_PROVINCE_SECURITY_HELP = "province-security-help"
     const val SCREEN_NAME_ACTIVATE_SUCCESS = "activate-success"
     const val SCREEN_NAME_SIGNUP_SUCCESS = "sign-up-success"
     const val SCREEN_NAME_ACTIVATE_I_HAVE_CARD = "activate-i-have-a-card"
@@ -37,10 +37,6 @@ object EnrollmentAnalytics : BaseAnalytics() {
     const val  STEP_NAME_COMPLETE_SIGNUP = "Complete Signup"
 
 
-    @JvmStatic
-    fun logSecurityQuesScreenName(activity: Activity) {
-        logScreenNameClass(activity, SCREEN_NAME_PROVINCE_SECURITY_HELP)
-    }
 
     @JvmStatic
     fun logInvalidEmailError(context: Context) {

@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -24,6 +26,7 @@ import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 
 /**
@@ -34,13 +37,27 @@ public class SecurityQuestionFragment extends DaggerFragment {
     private ArrayList<String> questions;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private EnrollmentFormViewModel enrollmentFormViewModel;
-
+    private Timer timer;
 
     @Inject
     ViewModelFactory viewModelFactory;
 
     public SecurityQuestionFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                AnalyticsUtils.logEvent(getContext(), "timer30");
+            }
+        };
+        timer = new Timer();
+        timer.schedule(timerTask, 30000);
+        //AnalyticsUtils.logEvent(getContext(), "screen_view");
     }
 
     @Override
@@ -79,14 +96,17 @@ public class SecurityQuestionFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        EnrollmentAnalytics.logSecurityQuesScreenName(requireActivity());
-
-
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_SECURITY_HELP);
     }
 
     public void onSecurityQuestionSelected(int selectedQuestion) {
         enrollmentFormViewModel.setSelectedQuestion(securityQuestionViewModel.questionArrayList.get(selectedQuestion));
         securityQuestionViewModel.setSelectedItem(selectedQuestion);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        timer.cancel();
     }
 }

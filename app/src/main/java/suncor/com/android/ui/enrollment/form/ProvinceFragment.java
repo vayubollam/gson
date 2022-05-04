@@ -15,22 +15,39 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import suncor.com.android.R;
 import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.AnalyticsUtils;
 
 public class ProvinceFragment extends DialogFragment {
     private EnrollmentFormViewModel enrollmentFormViewModel;
     private ArrayList<String> provinceNames = new ArrayList<>();
+    private Timer timer;
 
 
     public ProvinceFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                AnalyticsUtils.logEvent(getContext(), "timer30");
+            }
+        };
+        timer = new Timer();
+        timer.schedule(timerTask, 30000);
+        //AnalyticsUtils.logEvent(getContext(), "screen_view");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,11 +83,17 @@ public class ProvinceFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        EnrollmentAnalytics.logSecurityQuesScreenName(requireActivity());
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_SECURITY_HELP);
     }
 
     public void provinceSelected(int selectedProvince) {
         enrollmentFormViewModel.setSelectedProvince(((EnrollmentActivity) getActivity()).getProvinces().get(selectedProvince));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        timer.cancel();
     }
 
 }
