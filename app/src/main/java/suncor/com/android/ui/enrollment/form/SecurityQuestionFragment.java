@@ -26,7 +26,6 @@ import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.account.SecurityQuestion;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 
 /**
@@ -52,7 +51,7 @@ public class SecurityQuestionFragment extends DaggerFragment {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                AnalyticsUtils.logEvent(getContext(), "timer30");
+                EnrollmentAnalytics.logTimer30Event(getContext());
             }
         };
         timer = new Timer();

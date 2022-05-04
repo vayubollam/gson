@@ -122,7 +122,12 @@ abstract class BaseAnalytics {
         fun logInterSiteURL(context: Context, url: String) {
             val bundle = Bundle()
             bundle.putString(BaseParams.INTER_SITE_URL, url)
-            FuelUpAnalytics.logEvent(context, BaseEvents.INTER_SITE, bundle)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.INTER_SITE, bundle)
+        }
+
+        @JvmStatic
+        fun logTimer30Event(context: Context) {
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.TIMER_30, Bundle());
         }
 
 

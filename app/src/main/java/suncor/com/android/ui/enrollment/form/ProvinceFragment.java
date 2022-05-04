@@ -23,7 +23,6 @@ import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.model.account.Province;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 public class ProvinceFragment extends DialogFragment {
     private EnrollmentFormViewModel enrollmentFormViewModel;
@@ -41,12 +40,11 @@ public class ProvinceFragment extends DialogFragment {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                AnalyticsUtils.logEvent(getContext(), "timer30");
+                EnrollmentAnalytics.logTimer30Event(getContext());
             }
         };
         timer = new Timer();
         timer.schedule(timerTask, 30000);
-        //AnalyticsUtils.logEvent(getContext(), "screen_view");
     }
 
     @Override
