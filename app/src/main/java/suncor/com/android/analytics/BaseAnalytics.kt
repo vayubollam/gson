@@ -26,9 +26,6 @@ abstract class BaseAnalytics {
     }
 
 
-
-
-
     fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
         val bundle = Bundle()
         bundle.putString(ERROR_MESSAGE,errorMessage)
@@ -62,6 +59,14 @@ abstract class BaseAnalytics {
 //    }
 
     companion object{
+
+        @JvmStatic
+        fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
+            val bundle = Bundle()
+            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+            bundle.putString(FORM_NAME,formName)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
+        }
 
         @JvmStatic
         fun logAlertDialogInteraction(context: Context,alertTitle: String, alertSelection: String,formName : String){
@@ -112,13 +117,6 @@ abstract class BaseAnalytics {
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_START, bundle)
         }
 
-        @JvmStatic
-        fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
-            val bundle = Bundle()
-            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
-            bundle.putString(FORM_NAME,formName)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
-        }
 
         @JvmStatic
         fun logInterSiteURL(context: Context, url: String) {
