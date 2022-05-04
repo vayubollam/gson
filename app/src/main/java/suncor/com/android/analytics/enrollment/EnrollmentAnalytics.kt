@@ -62,10 +62,6 @@ object EnrollmentAnalytics : BaseAnalytics() {
         logScreenNameClass(activity, SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME)
     }
 
-    @JvmStatic
-    fun logScreenName(activity: Activity, screenName: String) {
-        logScreenName(activity,screenName);
-    }
 
     @JvmStatic
     fun logDiffEmailError(context: Context, formName: String) {
@@ -83,13 +79,8 @@ object EnrollmentAnalytics : BaseAnalytics() {
 
 
 object CardQuestionsAnalytics : BaseAnalytics() {
-    private const val SCREEN_NAME_SIGNUP_ACTIVATE = "petro-points-sign-up-activate"
-    private const val FORM_NAME_SIGNUP_ACTIVATE = "Petro Points Sign Up Activate"
-
-    @JvmStatic
-    fun logScreenName(activity: Activity) {
-        logScreenNameClass(activity, SCREEN_NAME_SIGNUP_ACTIVATE)
-    }
+     const val SCREEN_NAME_SIGNUP_ACTIVATE = "petro-points-sign-up-activate"
+     const val FORM_NAME_SIGNUP_ACTIVATE = "Petro Points Sign Up Activate"
 
     @JvmStatic
     fun logSomethingWentFormError(context: Context) {

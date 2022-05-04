@@ -107,7 +107,7 @@ public class CardQuestionFragment extends BaseFragment {
                 case ERROR:
                     CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
 
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), CardQuestionsAnalytics.FORM_NAME_SIGNUP_ACTIVATE);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> requireActivity().finish());
                     dialog.show();
@@ -119,7 +119,7 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        CardQuestionsAnalytics.logScreenName(requireActivity());
+        CardQuestionsAnalytics.logScreenNameClass(requireActivity(),CardQuestionsAnalytics.SCREEN_NAME_SIGNUP_ACTIVATE);
     }
 
     private void animateCard() {
