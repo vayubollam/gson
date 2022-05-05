@@ -38,6 +38,7 @@ import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class CardQuestionFragment extends BaseFragment {
 
+    private static final String SCREE_CLASS_NAME = "CardQuestionFragment";
     private AppCompatImageView cardImg, cardShadow;
     private int cardAnimationDuration = 400;
     private SecurityQuestionViewModel securityQuestionViewModel;
@@ -119,7 +120,7 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        CardQuestionsAnalytics.logScreenNameClass(requireActivity(),CardQuestionsAnalytics.SCREEN_NAME_SIGNUP_ACTIVATE);
+        CardQuestionsAnalytics.logScreenNameClass(requireActivity(),CardQuestionsAnalytics.SCREEN_NAME_SIGNUP_ACTIVATE,SCREE_CLASS_NAME);
     }
 
     private void animateCard() {

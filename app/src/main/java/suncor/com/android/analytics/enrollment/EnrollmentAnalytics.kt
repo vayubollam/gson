@@ -30,7 +30,7 @@ object EnrollmentAnalytics : BaseAnalytics() {
     const val SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD = "sign-up-i-dont-have-a-card"
 
 
-    private const val SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address"
+    const val SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address"
 
     const val STEP_NAME_ADDRESS = "Address"
     const val  STEP_NAME_PERSONAL_INFORMATION = "Personal Information"
@@ -51,11 +51,6 @@ object EnrollmentAnalytics : BaseAnalytics() {
     @JvmStatic
     fun logAlertShown(context: Context, title: String, formName: String = FORM_NAME_ACTIVATE_PETRO_POINTS_CARD ) {
         logAlertDialogShown(context,title, formName)
-    }
-
-    @JvmStatic
-    fun logCanadaPostScreenName(activity: Activity) {
-        logScreenNameClass(activity, SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME)
     }
 
 

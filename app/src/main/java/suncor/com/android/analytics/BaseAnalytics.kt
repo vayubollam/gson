@@ -49,14 +49,7 @@ abstract class BaseAnalytics {
 
 
 
-    //    // TODO: This is how it should be done(Screen class is not related to the activity)
-//    fun logScreenName(context: Context, className: String, screenName: String?) {
-//        val bundle = Bundle()
-//        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-//        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS,className)
-//        FirebaseAnalytics.getInstance(context)
-//            .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
-//    }
+
 
     companion object{
 
@@ -102,11 +95,11 @@ abstract class BaseAnalytics {
         }
 
         @JvmStatic
-        fun logScreenNameClass(activity: Activity, screenName: String?) {
+        fun logScreenNameClass(context: Context, screenName: String?, className : String) {
             val bundle = Bundle()
             bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.componentName.className)
-            FirebaseAnalytics.getInstance(activity)
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, className)
+            FirebaseAnalytics.getInstance(context)
                 .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
         }
 
@@ -128,6 +121,13 @@ abstract class BaseAnalytics {
         @JvmStatic
         fun logTimer30Event(context: Context) {
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.TIMER_30, Bundle());
+        }
+
+        @JvmStatic
+        fun logButtonTap(context: Context, buttonText: String) {
+            val bundle = Bundle()
+            bundle.putString(BaseParams.BUTTON_TEXT, buttonText)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.BUTTON_TAP, bundle);
         }
 
 

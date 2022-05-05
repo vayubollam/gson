@@ -108,7 +108,7 @@ public class LoginFragment extends BaseFragment {
                         }
                         fingerPrintManager.activateAutoLogin();
                         LoginAnalytics.logLoginEvent(requireContext(),"","");
-                        LoginAnalytics.logLoginScreenName(requireActivity());
+                        LoginAnalytics.logScreenNameClass(requireContext(),LoginAnalytics.SCREEN_NAME_LOGIN,this.getClass().getSimpleName());
 
                     }
                 }

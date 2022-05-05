@@ -33,6 +33,7 @@ import suncor.com.android.uicomponents.SuncorAppBarLayout;
  */
 public class SecurityQuestionFragment extends DaggerFragment {
 
+    private static final String SCREEN_CLASS_NAME = "SecurityQuestionFragment";
     private ArrayList<String> questions;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private EnrollmentFormViewModel enrollmentFormViewModel;
@@ -95,7 +96,7 @@ public class SecurityQuestionFragment extends DaggerFragment {
     @Override
     public void onResume() {
         super.onResume();
-        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_SECURITY_HELP);
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_SECURITY_HELP,SCREEN_CLASS_NAME);
     }
 
     public void onSecurityQuestionSelected(int selectedQuestion) {

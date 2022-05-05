@@ -47,6 +47,7 @@ import suncor.com.android.utilities.Timber;
 public class CardFormFragment extends BaseFragment {
 
 
+    private static final String SCREEN_CLASS_NAME = "CardFormFragment";
     private CardFormViewModel viewModel;
     @Inject
     ViewModelFactory viewModelFactory;
@@ -126,7 +127,6 @@ public class CardFormFragment extends BaseFragment {
                             .show(getFragmentManager(), ModalDialog.TAG);
                 }else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), ACTIVATE_PETRO_POINTS_SIGN_UP);
-
                     dialog.show();
                 }
             }
@@ -159,7 +159,7 @@ public class CardFormFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        CardFormAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_ACTIVATE_MATCH_CARD);
+        CardFormAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_ACTIVATE_MATCH_CARD,SCREEN_CLASS_NAME);
         CardFormAnalytics.logFormStart(requireContext(),FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
     }
 

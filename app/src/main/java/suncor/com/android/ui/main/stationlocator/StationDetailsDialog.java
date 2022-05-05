@@ -58,6 +58,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
     public static final String TAG = StationDetailsDialog.class.getSimpleName();
 
     private final static float DIM_AMOUNT = 0.6f;
+    private final static String SCREEN_CLASS_NAME = "StationDetailsDialog";
     private int initialHeight;
     private int initialPosition;
     private int fullHeight;
@@ -114,7 +115,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
         windowParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(windowParams);
 
-        StationDetailsAnalytics.logScreenName(requireActivity());
+        StationDetailsAnalytics.logScreenNameClass(requireContext(),StationDetailsAnalytics.SCREEN_NAME_STATION_DETAIL_HOME,SCREEN_CLASS_NAME);
 
     }
 

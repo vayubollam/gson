@@ -101,8 +101,8 @@ public class SelectPumpHelpDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        SelectPumpAnalytics.logSelectPumpHelpScreenName(requireActivity());
+        SelectPumpAnalytics.logScreenNameClass(requireContext()
+                ,SelectPumpAnalytics.SCREEN_NAME_SELECT_PUMP_HELP,this.getClass().getSimpleName());
 
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;

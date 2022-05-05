@@ -11,7 +11,7 @@ import suncor.com.android.analytics.Errors
 
 
 object LoginAnalytics : BaseAnalytics() {
-    private const val SCREEN_NAME_LOGIN = "Login"
+     const val SCREEN_NAME_LOGIN = "Login"
     private const val FORM_NAME_LOGIN = "Login"
 
     @JvmStatic
@@ -22,10 +22,6 @@ object LoginAnalytics : BaseAnalytics() {
         logEvent(context, LOGIN, bundle)
     }
 
-    @JvmStatic
-    fun logLoginScreenName(activity: Activity) {
-        logScreenNameClass(activity,SCREEN_NAME_LOGIN)
-    }
 
     @JvmStatic
     fun logError(context: Context, title: String) {
@@ -49,12 +45,9 @@ object LoginAnalytics : BaseAnalytics() {
 const val FORM_NAME_LOGIN_FORCE_NEW_PASSWORD = "Login Force New Password"
 
 object CreatePasswordAnalytics : BaseAnalytics() {
-    private const val SCREEN_NAME_FORCE_PASSWORD_CHANGE = "login-force-new-password"
+     const val SCREEN_NAME_FORCE_PASSWORD_CHANGE = "login-force-new-password"
 
-    @JvmStatic
-    fun logScreenName(activity: Activity) {
-        logScreenNameClass(activity, SCREEN_NAME_FORCE_PASSWORD_CHANGE)
-    }
+
 
     @JvmStatic
     fun logAlertInteraction(context: Context, title: String, buttonText: String) {

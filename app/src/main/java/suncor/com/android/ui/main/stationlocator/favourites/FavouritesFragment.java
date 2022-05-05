@@ -44,6 +44,7 @@ import suncor.com.android.utilities.UserLocalSettings;
 public class FavouritesFragment extends MainActivityFragment {
 
     private static final String SHOW_FAVS_HINT = "show_favs_hint";
+    private static final String SCREEN_CLASS_NAME = "FavouritesFragment";
     private FavouritesViewModel mViewModel;
     private FavouritesAdapter favouritesAdapter;
     private FragmentFavouritesBinding binding;
@@ -110,7 +111,8 @@ public class FavouritesFragment extends MainActivityFragment {
         mViewModel.stations.observe(this, stations -> {
             isLoading.set(stations.status == Resource.Status.LOADING);
             if(stations.status == Resource.Status.LOADING){
-                FavouritesAnalytics.logLoadingScreenName(requireActivity());
+
+                FavouritesAnalytics.logScreenNameClass(requireContext(),FavouritesAnalytics.SCREEN_NAME_FAV_LOADING,SCREEN_CLASS_NAME);
             }
             if (stations.status == Resource.Status.SUCCESS && !stations.data.isEmpty()) {
                 favouritesAdapter.setStationItems(stations.data);

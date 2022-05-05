@@ -98,7 +98,7 @@ public class CreatePasswordFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        CreatePasswordAnalytics.logScreenName(requireActivity());
+        CreatePasswordAnalytics.logScreenNameClass(requireContext(),CreatePasswordAnalytics.SCREEN_NAME_FORCE_PASSWORD_CHANGE,this.getClass().getSimpleName());
     }
 
     private void hideKeyboard() {

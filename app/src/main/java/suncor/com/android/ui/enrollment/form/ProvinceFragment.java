@@ -25,6 +25,7 @@ import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
 
 public class ProvinceFragment extends DialogFragment {
+    private static final String SCREEN_CLASS_NAME = "ProvinceFragment";
     private EnrollmentFormViewModel enrollmentFormViewModel;
     private ArrayList<String> provinceNames = new ArrayList<>();
     private Timer timer;
@@ -81,7 +82,7 @@ public class ProvinceFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_SECURITY_HELP);
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_SECURITY_HELP,SCREEN_CLASS_NAME);
     }
 
     public void provinceSelected(int selectedProvince) {

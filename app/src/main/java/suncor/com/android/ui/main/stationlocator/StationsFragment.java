@@ -81,6 +81,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
 
     private static final int PERMISSION_REQUEST_CODE = 124;
     private static final int REQUEST_CHECK_SETTINGS = 125;
+    private static final String SCREEN_CLASS_NAME = "StationsFragment";
+
     static String filtersListString = "";
     @Inject
     PermissionManager permissionManager;
@@ -373,7 +375,9 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         mViewModel.queryText.observe(getViewLifecycleOwner(), (text) ->
         {
             binding.addressSearchText.setText(text);
-            StationsAnalytics.logFilterLocationScreenName(requireActivity());
+
+            StationsAnalytics.logScreenNameClass(requireContext(),StationsAnalytics.SCREEN_NAME_LOCATION_FILTER,SCREEN_CLASS_NAME);
+
             StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
 
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
@@ -468,7 +472,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         binding.bottomSheet.requestLayout();
         if (result.status == Resource.Status.LOADING) {
             isLoading.set(true);
-            StationsAnalytics.logLoadingGasStationScreenName(requireActivity());
+            StationsAnalytics.logScreenNameClass(requireContext(),StationsAnalytics.SCREEN_NAME_LOCATION_LOADING,SCREEN_CLASS_NAME);
             isErrorCardVisible.set(false);
         } else {
             isLoading.set(false);

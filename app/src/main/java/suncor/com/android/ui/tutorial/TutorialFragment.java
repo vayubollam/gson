@@ -26,6 +26,8 @@ import suncor.com.android.ui.SplashActivity;
 
 public class TutorialFragment extends Fragment {
 
+    private static final String SCREEN_CLASS_NAME = "TutorialFragment";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -111,7 +113,7 @@ public class TutorialFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-         BaseAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME);
+         BaseAnalytics.logScreenNameClass(requireContext(),SCREEN_NAME,SCREEN_CLASS_NAME);
     }
 
 }

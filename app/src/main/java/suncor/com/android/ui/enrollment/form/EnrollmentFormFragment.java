@@ -124,9 +124,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         });
 
         if (viewModel.getCardStatus() == null) {
-            EnrollmentAnalytics.logFormStart(requireContext(),formName);
+            EnrollmentAnalytics.logFormStart(requireContext(), formName);
         } else {
-            EnrollmentAnalytics.logFormStep(requireContext(),formName,"",STEP_NAME_PERSONAL_INFORMATION);
+            EnrollmentAnalytics.logFormStep(requireContext(), formName, "", STEP_NAME_PERSONAL_INFORMATION);
         }
 
         //enrollments api call result
@@ -139,7 +139,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else {
                     screenName = SCREEN_NAME_SIGNUP_SUCCESS;
                 }
-                EnrollmentAnalytics.logScreenNameClass(requireActivity(),screenName);
+                EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName,this.getClass().getSimpleName());
 
                 String optionsChecked = "";
                 if (binding.emailOffersCheckbox.isChecked()) {
@@ -151,16 +151,16 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                 binding.emailAddress.setText(viewModel.getEmailInputField().getText());
 
-                EnrollmentAnalytics.logFormStep(requireContext(),formName,optionsChecked,STEP_NAME_COMPLETE_SIGNUP);
+                EnrollmentAnalytics.logFormStep(requireContext(), formName, optionsChecked, STEP_NAME_COMPLETE_SIGNUP);
                 // Log method of signup to Analytics
-                EnrollmentAnalytics.logSignupEvent(requireContext(),sign_up_method);
+                EnrollmentAnalytics.logSignupEvent(requireContext(), sign_up_method);
 
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
-                    EnrollmentAnalytics.logDiffEmailError(requireContext(),formName);
+                    EnrollmentAnalytics.logDiffEmailError(requireContext(), formName);
                     EnrollmentAnalytics.logAlertShown(requireContext(),
                             getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")",
                             formName
@@ -197,7 +197,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         d.dismiss();
                     });
                     dialog.show();
-                } else if(ErrorCodes.ERR_EMAIL_VALIDATION_INVALID_PUBWEB.equals(r.message)){
+                } else if (ErrorCodes.ERR_EMAIL_VALIDATION_INVALID_PUBWEB.equals(r.message)) {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_error);
                     dialog.setPositiveButton(R.string.ok, (d, w) -> {
@@ -220,7 +220,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             }
             if (show) {
                 if (isLoadedFirstTime) {
-                    EnrollmentAnalytics.logCanadaPostScreenName(requireActivity());
+                    EnrollmentAnalytics.logScreenNameClass(requireContext()
+                            , EnrollmentAnalytics.SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME, this.getClass().getSimpleName());
                     isLoadedFirstTime = false;
                 }
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
@@ -269,7 +270,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
             EnrollmentAnalytics.logAlertShown(requireContext(),
                     getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"
-                    ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                    , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
             );
 
 
@@ -377,7 +378,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onResume() {
         super.onResume();
-        EnrollmentAnalytics.logScreenNameClass(requireActivity(),screenName);
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName,this.getClass().getSimpleName());
     }
 
     @Override

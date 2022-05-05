@@ -2,12 +2,12 @@ package suncor.com.android.ui.common;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Pair;
+
+import androidx.annotation.Nullable;
 
 import com.google.android.material.button.MaterialButton;
 
-import androidx.annotation.Nullable;
-import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.analytics.BaseAnalytics;
 
 
 public class SuncorButton extends MaterialButton {
@@ -25,7 +25,7 @@ public class SuncorButton extends MaterialButton {
 
     @Override
     public boolean performClick() {
-        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.BUTTONTAP, new Pair<>(AnalyticsUtils.Param.buttonText, getText().toString().toLowerCase()));
+        BaseAnalytics.logButtonTap(getContext(), getText().toString().toLowerCase());
         return super.performClick();
     }
 }
