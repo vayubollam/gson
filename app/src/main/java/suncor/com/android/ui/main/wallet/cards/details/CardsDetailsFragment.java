@@ -197,6 +197,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener activeCarWashListener = view -> {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarWashClick,
+                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.cards.getValue().get(clickedCardIndex).getLongName())
+        );
+
         if (isUserAtIndependentStation()) {
             StationsUtil.showIndependentStationAlert(getContext());
         } else {
@@ -223,6 +227,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                     action.setCardIndex(clickedCardIndex);
+                    action.setCardType(viewModel.cards.getValue().get(clickedCardIndex).getLongName());
                     action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                     Navigation.findNavController(getView()).navigate(action);
                 }
@@ -232,22 +237,25 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener cardReloadListener = view -> {
-                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
-                if(cardDetail.isSuspendedCard()){
-                    CardsUtil.showSuspendedCardAlert(getContext());
-                } else {
-                    ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-                    //open Reload Transaction form
-                    CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
-                            action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
-                    action.setCardNumber(cardItem.getCardNumber());
-                    action.setCardName(cardItem.getCardName());
-                    action.setCardType(cardItem.getCardType().name());
-                    action.setCardIndex(clickedCardIndex);
-                    action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
-                    Navigation.findNavController(getView()).navigate(action);
-                }
-        };
+        CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+        if (cardDetail.isSuspendedCard()) {
+            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.reload_card_alert_description))
+            );
+            CardsUtil.showSuspendedCardAlert(getContext());
+        } else {
+            ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+            //open Reload Transaction form
+            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
+                    action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
+            action.setCardNumber(cardItem.getCardNumber());
+            action.setCardName(cardItem.getCardName());
+            action.setCardType(cardItem.getCardType().name());
+            action.setCardIndex(clickedCardIndex);
+            action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+            Navigation.findNavController(getView()).navigate(action);
+        }
+    };
 
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {
@@ -272,15 +280,16 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         }
                     });
                     Timber.i("GOOGLE PASSES: card Token " + cardAuthToken);
-                    if(getActivity() != null){
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             hideAddCardProgress();
-                            if(cardAuthToken == null){
+                            if (cardAuthToken == null) {
                                 Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                                 return;
                             }
-                           getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
                             AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLET.toString(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS));
+                            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
+
                         });
                     }
                 }).start();

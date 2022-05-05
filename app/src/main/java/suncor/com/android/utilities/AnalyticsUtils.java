@@ -10,6 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
 import suncor.com.android.model.cards.CardType;
 
 import static suncor.com.android.utilities.Constants.*;
@@ -38,6 +39,9 @@ public class AnalyticsUtils {
         intersite(INTERSITE),
         infoTap(INFO_TAP),
         menuTap(MENU_TAP),
+        activateCarwashSuccess(ACTIVATE_CAR_WASH_SUCCESS),
+        cwConfirmPin(CW_CONFIRM_PIN),
+        activateCarWashClick(ACTIVATE_CAR_WASH_CLICK),
         ADDPPTSTOWALLET(ADD_PPTS_TO_WALLET),
         ADDPPTSTOWALLETERROR(ADD_PPTS_TO_WALLET_ERROR),
         APPRATINGPROMPT(APP_RATING_PROMPT);
@@ -78,6 +82,7 @@ public class AnalyticsUtils {
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
         menuSelection(MENU_SELECTION),
+        carWashCardType(CAR_WASH_CARD_TYPE),
         WALLETTYPE(WALLET_TYPE);
 
 
