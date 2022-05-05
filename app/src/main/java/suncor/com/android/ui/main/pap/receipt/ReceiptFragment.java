@@ -36,6 +36,7 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
 import suncor.com.android.utilities.PdfUtil;
 
 import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
@@ -184,6 +185,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 // We can get the ReviewInfo object
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow(requireActivity(), reviewInfo);
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.APPRATINGPROMPT.toString());
 
                 flow.addOnCompleteListener(reviewed -> {
                     // The flow has finished. The API does not indicate whether the user

@@ -37,7 +37,10 @@ public class AnalyticsUtils {
         paymentComplete(PAYMENT_COMPLETE),
         intersite(INTERSITE),
         infoTap(INFO_TAP),
-        menuTap(MENU_TAP);
+        menuTap(MENU_TAP),
+        ADDPPTSTOWALLET(ADD_PPTS_TO_WALLET),
+        ADDPPTSTOWALLETERROR(ADD_PPTS_TO_WALLET_ERROR),
+        APPRATINGPROMPT(APP_RATING_PROMPT);
 
 
         private final String name;
@@ -74,7 +77,9 @@ public class AnalyticsUtils {
         fuelAmountSelection(FUEL_AMOUNT_SELECTION),
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
-        menuSelection(MENU_SELECTION);
+        menuSelection(MENU_SELECTION),
+        WALLETTYPE(WALLET_TYPE);
+
 
         private final String name;
 
