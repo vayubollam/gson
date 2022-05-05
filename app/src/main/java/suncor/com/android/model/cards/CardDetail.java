@@ -127,7 +127,7 @@ public class CardDetail {
             case SP:
                 return "Season Pass";
             case WAG:
-                return "Wash & Go Card";
+                return "Wash & Go";
             case MORE:
                 return "More Rewards Partner Card";
             case CAA:
