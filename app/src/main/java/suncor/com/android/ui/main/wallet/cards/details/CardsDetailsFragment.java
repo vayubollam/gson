@@ -34,6 +34,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
@@ -261,14 +263,19 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
                 new Thread(() -> {
                     GooglePassesApiGateway gateway = new GooglePassesApiGateway();
-                    String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig);
+                    String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig, new Function1<Exception, Unit>() {
+                        @Override
+                        public Unit invoke(Exception e) {
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLETERROR.toString(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS),
+                                    new Pair<>(AnalyticsUtils.Param.errorMessage.toString(), Constants.SOMETHING_WRONG));
+                            return null;
+                        }
+                    });
                     Timber.i("GOOGLE PASSES: card Token " + cardAuthToken);
                     if(getActivity() != null){
                         getActivity().runOnUiThread(() -> {
                             hideAddCardProgress();
                             if(cardAuthToken == null){
-                                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLETERROR.toString(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS),
-                                        new Pair<>(AnalyticsUtils.Param.errorMessage.toString(), Constants.SOMETHING_WRONG));
                                 Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                                 return;
                             }
