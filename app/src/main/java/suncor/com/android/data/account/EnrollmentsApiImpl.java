@@ -34,6 +34,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
     private final static String ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/enrollments";
     private final static String GET_SECURITY_QUESTIONS_FOR_ENROLLMENT_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/enrollments/security-questions";
     private final static String GET_CARD_STATUS_ADAPTER_PATH = "/adapters/suncor/v5/rfmp-secure/enrollments/card-status";
+    public final int ENROLLMENT_TIMEOUT = 60_000;
     private Gson gson;
 
     public EnrollmentsApiImpl(Gson gson) {
@@ -47,7 +48,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ENROLLMENT_ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, ENROLLMENT_TIMEOUT, SuncorApplication.DEFAULT_PROTECTED_SCOPE);
             if (Locale.getDefault().getLanguage().equalsIgnoreCase("fr")) {
                 request.addHeader(ACCEPT_LANGUAGE, "fr-CA");
             } else {
