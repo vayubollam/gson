@@ -11,7 +11,19 @@ import suncor.com.android.model.merchants.EGift
 private const val REDEEM_FOR = "Redeem for "
 private const val E_GIFT_CARD = "eGift card"
 
-object RewardsSignedInAnalytics : BaseAnalytics()
+object RewardsSignedInAnalytics : BaseAnalytics(){
+
+    const val REWARDS_SIGNED_IN_SCREEN_NAME = "my-petro-points-redeem-info-general"
+
+
+    @JvmStatic
+    fun logRewardsSignedInScreenName(activity: Activity) {
+        logScreenNameClass(
+            activity,
+            screenName = REWARDS_SIGNED_IN_SCREEN_NAME
+        )
+    }
+}
 
 object MerchantDetailsAnalytics : BaseAnalytics() {
 

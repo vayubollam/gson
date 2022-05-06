@@ -25,6 +25,16 @@ public class EnrollmentActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enrollment);
         mNavHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+        boolean isCome = getIntent().getBooleanExtra("some_argument", false);
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("some_argument", isCome);
+
+        Navigation.findNavController(this, R.id.nav_host_fragment).setGraph(R.navigation.enrollment_navigation, bundle);
+
+
+
         String[] provincesArray = getResources().getStringArray(R.array.province_names);
 
         for (String provinceCodeName : provincesArray) {

@@ -70,7 +70,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
                         );
-                        activity.startActivity(new Intent(activity, EnrollmentActivity.class));
+                        activity.startActivity(new Intent(activity, EnrollmentActivity.class).putExtra("some_argument", false));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,

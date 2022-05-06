@@ -24,6 +24,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics;
 import suncor.com.android.analytics.giftcard.RewardsSignedInAnalytics;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -66,6 +67,9 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RewardsSignedInAnalytics.logRewardsSignedInScreenName(requireActivity());
+
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {
                 for (Merchant m : merchants) {

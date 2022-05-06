@@ -49,6 +49,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
         binding.joinButton.bringToFront();
         binding.joinButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
+            intent.putExtra("some_argument", true);
             requireActivity().startActivity(intent);
         });
 

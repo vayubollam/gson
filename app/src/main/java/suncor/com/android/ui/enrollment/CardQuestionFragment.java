@@ -63,6 +63,7 @@ public class CardQuestionFragment extends BaseFragment {
         binding = FragmentCardQuestionBinding.inflate(inflater, container, false);
         binding.setVm(securityQuestionViewModel);
         binding.setLifecycleOwner(this);
+
         return binding.getRoot();
     }
 
@@ -72,6 +73,12 @@ public class CardQuestionFragment extends BaseFragment {
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         cardImg = requireView().findViewById(R.id.cardImage);
         cardShadow = requireView().findViewById(R.id.cardShadow);
+        assert getArguments() != null;
+        boolean isCome = getArguments().getBoolean("some_argument", false);
+
+        if(isCome){
+
+        }
 
         cardImg.post(() -> {
             float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();
