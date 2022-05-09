@@ -20,6 +20,7 @@ import suncor.com.android.databinding.FragmentRewardsBinding;
 import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.Constants;
 
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
@@ -49,7 +50,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
         binding.joinButton.bringToFront();
         binding.joinButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
-            intent.putExtra("some_argument", true);
+            intent.putExtra(Constants.IS_COME_FROM_REWARDS_GUEST_SCREEN, true);
             requireActivity().startActivity(intent);
         });
 

@@ -138,4 +138,8 @@ object Constants {
     const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
     const val ANSWER_SECURITY_QUESTION= "Answer security question"
 
+    //navigation constants
+    const val IS_COME_FROM_REWARDS_GUEST_SCREEN = "is_come_from_rewards_guest_screen"
+    const val RESULTANT_VALUE = "resultant_value"
+
 }

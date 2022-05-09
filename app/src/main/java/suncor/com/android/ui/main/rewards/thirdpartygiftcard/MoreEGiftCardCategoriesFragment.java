@@ -86,6 +86,8 @@ public class MoreEGiftCardCategoriesFragment extends MainActivityFragment implem
                 genericEGiftCard.setHowToRedeem(subCategory.getHowToRedeem());
                 genericEGiftCard.setHowToUse(subCategory.getHowToUse());
                 genericEGiftCard.setPoints(getResources().getString(R.string.rewards_e_gift_card_starting_points));
+                genericEGiftCard.setShortName(subCategory.getShortName());
+                genericEGiftCard.setScreenName(subCategory.getScreenName());
 
                 MoreEGiftCardCategoriesFragmentDirections.ActionMoreEGiftCardCategoriesToMerchantDetailsFragment action = MoreEGiftCardCategoriesFragmentDirections.actionMoreEGiftCardCategoriesToMerchantDetailsFragment(genericEGiftCard);
                 Navigation.findNavController(requireView()).navigate(action);

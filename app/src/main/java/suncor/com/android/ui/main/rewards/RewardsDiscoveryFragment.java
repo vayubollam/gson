@@ -2,7 +2,6 @@ package suncor.com.android.ui.main.rewards;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import androidx.databinding.ObservableBoolean;
 import androidx.navigation.Navigation;
 
 import java.util.Locale;
-
 import suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics;
 import suncor.com.android.databinding.FragmentRewardsDiscoveryBinding;
 import suncor.com.android.ui.main.common.MainActivityFragment;

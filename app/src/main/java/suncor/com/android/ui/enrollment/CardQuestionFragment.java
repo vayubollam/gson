@@ -34,6 +34,7 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.Constants;
 
 
 public class CardQuestionFragment extends BaseFragment {
@@ -74,9 +75,9 @@ public class CardQuestionFragment extends BaseFragment {
         cardImg = requireView().findViewById(R.id.cardImage);
         cardShadow = requireView().findViewById(R.id.cardShadow);
         assert getArguments() != null;
-        boolean isCome = getArguments().getBoolean("some_argument", false);
+        boolean isNavigatedFromRewardsGuestScreen = getArguments().getBoolean(Constants.RESULTANT_VALUE, false);
 
-        if(isCome){
+        if(isNavigatedFromRewardsGuestScreen){
 
         }
 

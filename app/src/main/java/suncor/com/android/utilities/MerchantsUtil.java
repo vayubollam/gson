@@ -62,10 +62,10 @@ public class MerchantsUtil {
                 return "Gap";
             case MerchantsIds.TIM_HORTONS_EN:
             case MerchantsIds.TIM_HORTONS_FR:
-                return "TIm Hortons";
+                return "THC";
             case MerchantsIds.BEST_BUY_EN:
             case MerchantsIds.BEST_BUY_FR:
-                return "Best Buy";
+                return "BBC";
             case MerchantsIds.WALMART_EN:
             case MerchantsIds.WALMART_FR:
                 return "Walmart";
@@ -74,7 +74,7 @@ public class MerchantsUtil {
                 return "HBC";
             case MerchantsIds.PETRO_CANADA_EN:
             case MerchantsIds.PETRO_CANADA_FR:
-                return "Petro_Canada";
+                return "PCC";
             case MerchantsIds.WINNERS_HOMESENSE_MARSHALLS_EN:
             case MerchantsIds.WINNERS_HOMESENSE_MARSHALLS_FR:
                 return "TJX";
@@ -101,16 +101,16 @@ public class MerchantsUtil {
                 return "homesense-marshalls-winners-egift-card";
             case MerchantsIds.GAP_EN:
             case MerchantsIds.GAP_FR:
-                return "Gap_egift_card";
+                return "gap_egift_card";
             case MerchantsIds.TIM_HORTONS_EN:
             case MerchantsIds.TIM_HORTONS_FR:
-                return "TIm Hortons_egift_card";
+                return "tim-hortons_egift_card";
             case MerchantsIds.BEST_BUY_EN:
             case MerchantsIds.BEST_BUY_FR:
-                return "Best Buy_egift_card";
+                return "best-buy_egift_card";
             case MerchantsIds.WALMART_EN:
             case MerchantsIds.WALMART_FR:
-                return "Walmart_egift_card";
+                return "walmart-egift-card";
         }
         return null;
     }
