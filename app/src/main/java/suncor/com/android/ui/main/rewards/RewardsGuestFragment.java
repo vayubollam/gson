@@ -1,6 +1,7 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,13 +13,18 @@ import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.ViewModelProviders;
 
 import java.util.Locale;
 
+import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.analytics.giftcard.RewardsGuestAnalytics;
 import suncor.com.android.databinding.FragmentRewardsBinding;
+import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
+import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.utilities.Constants;
 
@@ -28,13 +34,26 @@ import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_75;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_95;
 
+import javax.inject.Inject;
+
 public class RewardsGuestFragment extends BottomNavigationFragment {
 
     private FragmentRewardsBinding binding;
     private final ObservableBoolean isWebViewLoading = new ObservableBoolean();
     private ObservableWebView webView;
+    private SecurityQuestionViewModel securityQuestionViewModel;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     private boolean scroll5 = false, scroll25 = false, scroll50 = false, scroll75 = false, scroll95 = false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        securityQuestionViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
+        securityQuestionViewModel.fetchQuestion();
+    }
 
     @Nullable
     @Override
@@ -47,11 +66,12 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             binding.layout.removeView(binding.webview);
             binding.layout.addView(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
+
+
+
         binding.joinButton.bringToFront();
         binding.joinButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
-            intent.putExtra(Constants.IS_COME_FROM_REWARDS_GUEST_SCREEN, true);
-            requireActivity().startActivity(intent);
+           checkForApiResponse();
         });
 
         return binding.getRoot();
@@ -117,5 +137,28 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
     @Override
     protected String getScreenName() {
         return "rewards-content";
+    }
+
+    private void navigateToEnrollmentScreen(){
+        Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
+        intent.putExtra(Constants.IS_COME_FROM_REWARDS_GUEST_SCREEN, true);
+        requireActivity().startActivity(intent);
+    }
+
+    private void checkForApiResponse(){
+        securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
+            switch (arrayListResource.status) {
+                case SUCCESS:
+                   navigateToEnrollmentScreen();
+                    break;
+                case ERROR:
+                    CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
+
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.setOnDismissListener((listener) -> requireActivity().finish());
+                    dialog.show();
+            }
+        });
     }
 }

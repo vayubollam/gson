@@ -24,7 +24,6 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics;
 import suncor.com.android.analytics.giftcard.RewardsSignedInAnalytics;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -82,7 +81,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                         eGiftCard.setPoints(merchantItem.getPointsMerchantName());
                         eGiftCard.setSubtitle(merchantItem.getSubtitleMerchantName());
                         eGiftCard.setHowToRedeem(merchantItem.getRedeemingDescription());
-                        eGiftCard.setHowToUse(getContext().getString(R.string.how_to_use_petrocanada));
+                        eGiftCard.setHowToUse(requireContext().getString(R.string.how_to_use_petrocanada));
                         eGiftCard.setDataDynamic(true);
                         eGiftCard.setMoreGIftCard(false);
                         eGiftCard.seteGifts(m.geteGifts());

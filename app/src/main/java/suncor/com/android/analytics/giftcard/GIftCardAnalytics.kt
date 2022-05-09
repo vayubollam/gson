@@ -43,7 +43,7 @@ object RedeemReceiptAnalytics : BaseAnalytics() {
     fun logMerchantDetailsScreenName(activity: Activity, cardName: String) {
         logScreenNameClass(
             activity,
-            screenName = SCREEN_NAME_REDEEM_RECEIPT + cardName
+            screenName =  cardName + SCREEN_NAME_REDEEM_RECEIPT
         )
     }
 

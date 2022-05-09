@@ -40,7 +40,6 @@ import suncor.com.android.utilities.Constants;
 public class CardQuestionFragment extends BaseFragment {
 
     private AppCompatImageView cardImg, cardShadow;
-    private int cardAnimationDuration = 400;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private FragmentCardQuestionBinding binding;
 
@@ -77,10 +76,6 @@ public class CardQuestionFragment extends BaseFragment {
         assert getArguments() != null;
         boolean isNavigatedFromRewardsGuestScreen = getArguments().getBoolean(Constants.RESULTANT_VALUE, false);
 
-        if(isNavigatedFromRewardsGuestScreen){
-
-        }
-
         cardImg.post(() -> {
             float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();
             float shadowRatio = (float) cardShadow.getDrawable().getIntrinsicHeight() / cardShadow.getDrawable().getIntrinsicWidth();
@@ -107,21 +102,25 @@ public class CardQuestionFragment extends BaseFragment {
             Navigation.findNavController(v).navigate(R.id.action_card_question_to_card_form_fragment);
         });
 
-        securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
-            switch (arrayListResource.status) {
-                case SUCCESS:
-                    animateCard();
-                    break;
-                case ERROR:
-                    CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
+        if(isNavigatedFromRewardsGuestScreen){
+            animateCard();
+        }else{
+            securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
+                switch (arrayListResource.status) {
+                    case SUCCESS:
+                        animateCard();
+                        break;
+                    case ERROR:
+                        CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
 
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.setOnDismissListener((listener) -> requireActivity().finish());
-                    dialog.show();
+                        Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setOnDismissListener((listener) -> requireActivity().finish());
+                        dialog.show();
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
@@ -133,6 +132,7 @@ public class CardQuestionFragment extends BaseFragment {
     private void animateCard() {
         AnimationSet set = new AnimationSet(true);
         Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0f);
+        int cardAnimationDuration = 400;
         trAnimation.setDuration(cardAnimationDuration);
         set.addAnimation(trAnimation);
         Animation alphaAnim = new AlphaAnimation(0.0f, 1.0f);

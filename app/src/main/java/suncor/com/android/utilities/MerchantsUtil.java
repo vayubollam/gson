@@ -101,13 +101,13 @@ public class MerchantsUtil {
                 return "homesense-marshalls-winners-egift-card";
             case MerchantsIds.GAP_EN:
             case MerchantsIds.GAP_FR:
-                return "gap_egift_card";
+                return "gap-egift-card";
             case MerchantsIds.TIM_HORTONS_EN:
             case MerchantsIds.TIM_HORTONS_FR:
-                return "tim-hortons_egift_card";
+                return "tim-hortons-egift-card";
             case MerchantsIds.BEST_BUY_EN:
             case MerchantsIds.BEST_BUY_FR:
-                return "best-buy_egift_card";
+                return "best-buy-egift-card";
             case MerchantsIds.WALMART_EN:
             case MerchantsIds.WALMART_FR:
                 return "walmart-egift-card";
