@@ -1,5 +1,9 @@
 package suncor.com.android.ui.enrollment.form;
 
+import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_CANCEL;
+import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_OK;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_ACTIVATION;
+import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_SIGN_UP;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_HAVE_CARD;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_SUCCESS;
@@ -14,8 +18,6 @@ import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCRO
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_40;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_60;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_80;
-import static suncor.com.android.utilities.Constants.METHOD_ACTIVATION;
-import static suncor.com.android.utilities.Constants.METHOD_SIGN_UP;
 
 import android.content.Context;
 import android.content.Intent;
@@ -48,6 +50,8 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.BaseAnalytics;
+import suncor.com.android.analytics.Errors;
 import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -161,21 +165,24 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
                     EnrollmentAnalytics.logDiffEmailError(requireContext(), formName);
-                    EnrollmentAnalytics.logAlertShown(requireContext(),
-                            getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")",
+                    EnrollmentAnalytics.logAlertDialogShown(requireContext(),
+                            Errors.ENTER_DIFFERENT_EMAIL_OR_CALL + "(" + ")",
                             formName
                     );
 
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setNegativeButton(R.string.cancel, (d, w) -> {
+                        EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
+                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL+ "(" + ")",
+                                BaseAnalytics.BUTTON_TEXT_CANCEL,formName);
                         d.dismiss();
                     });
                     dialog.setPositiveButton(R.string.profile_get_help_call, (d, w) -> {
 
-                        EnrollmentAnalytics.logAlertInteraction(requireContext(),
-                                getString(R.string.enrollment_email_restricted_alert_title) + "(" + ")",
-                                getString(R.string.ok)
+                        EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
+                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL+ "(" + ")",
+                                BUTTON_TEXT_OK,formName
                         );
 
                         callCostumerSupport(getString(R.string.customer_support_number));
@@ -268,8 +275,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         });
         viewModel.showBiometricAlert.observe(this, booleanEvent -> {
 
-            EnrollmentAnalytics.logAlertShown(requireContext(),
-                    getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")"
+            EnrollmentAnalytics.logAlertDialogShown(requireContext(),
+                    EnrollmentAnalytics.ALERT_TITLE_ENABLE_FINGERPRINT
                     , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
             );
 
@@ -278,18 +285,20 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     .setTitle(R.string.sign_enable_fp_title)
                     .setMessage(R.string.sign_enable_fb_message)
                     .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
-                        EnrollmentAnalytics.logAlertInteraction(requireContext(),
-                                getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")",
-                                getString(R.string.sign_enable_fb_possitive_button)
+                        EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
+                                EnrollmentAnalytics.ALERT_TITLE_ENABLE_FINGERPRINT,
+                                getString(R.string.sign_enable_fb_possitive_button),
+                                FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                         );
 
                         viewModel.proccedToJoin(true);
                     })
                     .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
 
-                        EnrollmentAnalytics.logAlertInteraction(requireContext(),
-                                getString(R.string.sign_enable_fp_title) + "(" + getString(R.string.sign_enable_fb_message) + ")",
-                                getString(R.string.sign_enable_fb_negative_button)
+                        EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
+                                EnrollmentAnalytics.ALERT_TITLE_ENABLE_FINGERPRINT,
+                                BUTTON_TEXT_CANCEL,
+                                FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                         );
 
                         viewModel.proccedToJoin(false);
@@ -443,8 +452,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             viewModel.hideAutoCompleteLayout();
         } else if (viewModel.isOneItemFilled()) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-            EnrollmentAnalytics.logAlertShown(requireContext(),
-                    getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")",
+            EnrollmentAnalytics.logAlertDialogShown(requireContext(),
+                    EnrollmentAnalytics.ALERT_TITLE_LEAVE_SIGNUP,
                     FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
             );
 
@@ -452,17 +461,19 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             alertDialog.setMessage(R.string.enrollment_leave_alert_message);
             alertDialog.setPositiveButton(R.string.ok, (dialog, which) -> {
 
-                EnrollmentAnalytics.logAlertInteraction(requireContext(),
-                        getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")",
-                        getString(R.string.ok)
+                EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
+                        EnrollmentAnalytics.ALERT_TITLE_LEAVE_SIGNUP,
+                        BUTTON_TEXT_OK,
+                        FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                 );
                 getActivity().finish();
             });
             alertDialog.setNegativeButton(R.string.cancel, (d, w) -> {
 
-                EnrollmentAnalytics.logAlertInteraction(requireContext(),
-                        getString(R.string.enrollment_leave_alert_title) + "(" + getString(R.string.enrollment_leave_alert_message) + ")"
-                        , getString(R.string.cancel)
+                EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
+                        EnrollmentAnalytics.ALERT_TITLE_LEAVE_SIGNUP,
+                        BUTTON_TEXT_CANCEL,
+                        FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                 );
 
             });

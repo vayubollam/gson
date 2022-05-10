@@ -17,7 +17,6 @@ import suncor.com.android.analytics.BaseParams.STEP_NAME
 import suncor.com.android.analytics.pap.FuelUpAnalytics
 import suncor.com.android.analytics.pap.ReceiptAnalytics
 
-
 abstract class BaseAnalytics {
 
 
@@ -25,21 +24,39 @@ abstract class BaseAnalytics {
 
     }
 
+    /*
+    error_log
 
-    fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
+    errorMessage
+    detailErrorMessage
+    formName
+    *
+    * */
+
+    fun logErrorEvent(
+        context: Context,
+        errorMessage: String,
+        formName: String,
+        detailErrorMessage: String = ""
+    ) {
         val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage)
-        bundle.putString(FORM_NAME,formName)
-        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
+        bundle.putString(ERROR_MESSAGE, errorMessage)
+        bundle.putString(FORM_NAME, formName)
+        bundle.putString(ERROR_MESSAGE_DETAIL, detailErrorMessage)
         FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
     }
 
 
-    fun logFormErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
+    fun logFormErrorEvent(
+        context: Context,
+        errorMessage: String,
+        formName: String,
+        detailErrorMessage: String = ""
+    ) {
         val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage)
-        bundle.putString(FORM_NAME,formName)
-        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
+        bundle.putString(ERROR_MESSAGE, errorMessage)
+        bundle.putString(FORM_NAME, formName)
+        bundle.putString(ERROR_MESSAGE_DETAIL, detailErrorMessage)
         FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
     }
 
@@ -48,45 +65,86 @@ abstract class BaseAnalytics {
     }
 
 
+    companion object {
 
 
+        const val BUTTON_TEXT_OK = "ok"
+        const val BUTTON_TEXT_CANCEL = "cancel"
+        const val BUTTON_TEXT_ENABLE = "Enable"
 
-    companion object{
 
+        /*
+                alert
+                1. alertTitle
+                2. formName
+        * */
         @JvmStatic
-        fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
+        fun logAlertDialogShown(context: Context, alertTitle: String, formName: String) {
             val bundle = Bundle()
-            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
-            bundle.putString(FORM_NAME,formName)
+            bundle.putString(BaseParams.ALERT_TITLE, alertTitle)
+            bundle.putString(FORM_NAME, formName)
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
         }
 
+        /*
+        alert_interaction
+         1. alertTitle
+         2. alertSelection
+         3. formName
+        * */
         @JvmStatic
-        fun logAlertDialogInteraction(context: Context,alertTitle: String, alertSelection: String,formName : String){
+        fun logAlertDialogInteraction(
+            context: Context,
+            alertTitle: String,
+            alertSelection: String,
+            formName: String
+        ) {
             val bundle = Bundle()
-            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
-            bundle.putString(BaseParams.ALERT_SELECTION,alertSelection)
-            bundle.putString(FORM_NAME,formName)
+            bundle.putString(BaseParams.ALERT_TITLE, alertTitle)
+            bundle.putString(BaseParams.ALERT_SELECTION, alertSelection)
+            bundle.putString(FORM_NAME, formName)
 
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
         }
 
+        /*
+        tap_to_call
+        1. phoneNumberTapped
+
+        * */
+
         @JvmStatic
-        fun logTapToCall(context: Context,phoneNumber:String){
+        fun logTapToCall(context: Context, phoneNumber: String) {
             val bundle = Bundle()
             bundle.putString(PHONE_NUMBER_TAPPED, phoneNumber)
-            FirebaseAnalytics.getInstance(context).logEvent(TAP_TO_CALL,bundle)
+            FirebaseAnalytics.getInstance(context).logEvent(TAP_TO_CALL, bundle)
         }
 
+        /*
+        scroll
+        1.scrollDepthThreshold
+        * */
         @JvmStatic
-        fun logScrollDepth(context: Context,depth:String){
+        fun logScrollDepth(context: Context, depth: String) {
             val bundle = Bundle()
             bundle.putString(SCROLL_DEPTH_THRESHOLD, depth)
-            FirebaseAnalytics.getInstance(context).logEvent(SCROLL,bundle)
+            FirebaseAnalytics.getInstance(context).logEvent(SCROLL, bundle)
         }
 
+        /*
+        form_step
+
+         stepName
+         formSelection
+         formName
+        * */
         @JvmStatic
-        fun logFormStep(context: Context, formName: String,selection: String = "", stepName:String = "") {
+        fun logFormStep(
+            context: Context,
+            formName: String,
+            selection: String = "",
+            stepName: String = ""
+        ) {
             val bundle = Bundle()
             bundle.putString(FORM_SELECTION, selection)
             bundle.putString(FORM_NAME, formName)
@@ -94,8 +152,13 @@ abstract class BaseAnalytics {
             FuelUpAnalytics.logEvent(context, FORM_STEP, bundle)
         }
 
+        /*
+        screen_view
+        1. screen_name
+        2. screen_class
+        * */
         @JvmStatic
-        fun logScreenNameClass(context: Context, screenName: String?, className : String) {
+        fun logScreenNameClass(context: Context, screenName: String?, className: String) {
             val bundle = Bundle()
             bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
             bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, className)
@@ -103,6 +166,10 @@ abstract class BaseAnalytics {
                 .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
         }
 
+        /*
+        form_start
+        1. formName
+        * */
         @JvmStatic
         fun logFormStart(context: Context, formName: String) {
             val bundle = Bundle()
@@ -110,7 +177,11 @@ abstract class BaseAnalytics {
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_START, bundle)
         }
 
+        /*
+               intersite
+               1. intersiteURL
 
+               * */
         @JvmStatic
         fun logInterSiteURL(context: Context, url: String) {
             val bundle = Bundle()
@@ -118,16 +189,23 @@ abstract class BaseAnalytics {
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.INTER_SITE, bundle)
         }
 
+        /*
+        timer30
+        * */
         @JvmStatic
         fun logTimer30Event(context: Context) {
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.TIMER_30, Bundle());
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.TIMER_30, Bundle())
         }
 
+        /*
+        button_tap
+        1. buttonText
+        * */
         @JvmStatic
         fun logButtonTap(context: Context, buttonText: String) {
             val bundle = Bundle()
             bundle.putString(BaseParams.BUTTON_TEXT, buttonText)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.BUTTON_TAP, bundle);
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.BUTTON_TAP, bundle)
         }
 
 

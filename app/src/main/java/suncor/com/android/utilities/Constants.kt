@@ -114,9 +114,7 @@ object Constants {
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
 
-    //Signup methods
-    const val METHOD_SIGN_UP = "Sign-Up"
-    const val METHOD_ACTIVATION = "Activation"
+
 
     //Image expiry time
     const val IMAGE_EXPIRY_DATE = "2022/05/23 23:59:00"
