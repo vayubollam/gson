@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -15,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import java.util.Locale;
 import suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics;
+import suncor.com.android.analytics.giftcard.RewardsGuestAnalytics;
 import suncor.com.android.databinding.FragmentRewardsDiscoveryBinding;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
@@ -23,6 +26,8 @@ import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_75;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_95;
+import static suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics.SCREEN_NAME_REWARDS_DISCOVERY;
+import static suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics.SCREEN_NAME_REWARDS_DISCOVERY_LOADING;
 
 public class RewardsDiscoveryFragment extends MainActivityFragment {
 
@@ -43,14 +48,19 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        RewardsDiscoveryAnalytics.logRewardDiscoveryScreenName(requireActivity());
+
+        RewardsDiscoveryAnalytics.logScreenNameClass(requireActivity(), SCREEN_NAME_REWARDS_DISCOVERY_LOADING,
+                this.getClass().getSimpleName());
+
 
         String language = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr" : "en";
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-" + language + ".html");
         isWebViewLoading.set(true);
 
-        RewardsDiscoveryAnalytics.logRewardDiscoveryLoadingScreenName(requireActivity());
+        RewardsDiscoveryAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_REWARDS_DISCOVERY,
+                this.getClass().getSimpleName());
+
         binding.webview.setOnScrollChangedCallback((l, t, oldl, oldt) -> {
             float contentHeight = binding.webview.getContentHeight() * binding.webview.getScaleY();
             requireView();
@@ -83,6 +93,14 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 binding.webview.postDelayed(() -> isWebViewLoading.set(false), 50);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+
+                RewardsDiscoveryAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
+                        String.valueOf(error.getDescription()), "");
             }
         });
     }

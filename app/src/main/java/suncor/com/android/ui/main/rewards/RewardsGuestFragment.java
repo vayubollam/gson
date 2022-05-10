@@ -4,19 +4,24 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 
 import java.util.Locale;
 
+import suncor.com.android.R;
 import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.analytics.giftcard.RewardsGuestAnalytics;
 import suncor.com.android.databinding.FragmentRewardsBinding;
@@ -26,6 +31,8 @@ import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.main.BottomNavigationFragment;
+import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Constants;
 
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
@@ -33,6 +40,8 @@ import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_75;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_95;
+import static suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics.SCREEN_NAME_REWARDS_DISCOVERY;
+import static suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics.SCREEN_NAME_REWARDS_DISCOVERY_LOADING;
 
 import javax.inject.Inject;
 
@@ -80,13 +89,15 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         String language = Locale.getDefault().getLanguage().equalsIgnoreCase("fr") ? "fr" : "en";
-        RewardsGuestAnalytics.logRewardGuestScreenName(requireActivity());
 
+        RewardsGuestAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_REWARDS_DISCOVERY_LOADING,
+                this.getClass().getSimpleName());
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-guest-" + language + ".html");
         isWebViewLoading.set(true);
 
-        RewardsGuestAnalytics.logRewardGuestLoadingScreenName(requireActivity());
+        RewardsGuestAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_REWARDS_DISCOVERY,
+                this.getClass().getSimpleName());
         binding.webview.setOnScrollChangedCallback(new ObservableWebView.OnScrollChangedCallback(){
             public void onScroll(int l, int t, int oldl, int oldt){
                 if(t> oldt){
@@ -119,6 +130,15 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                 super.onPageFinished(view, url);
                 binding.webview.postDelayed(() -> isWebViewLoading.set(false), 50);
             }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+
+
+                RewardsGuestAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
+                        String.valueOf(error.getDescription()), "");
+            }
         });
         webView = binding.webview;
     }
@@ -140,9 +160,14 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
     }
 
     private void navigateToEnrollmentScreen(){
-        Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
-        intent.putExtra(Constants.IS_COME_FROM_REWARDS_GUEST_SCREEN, true);
-        requireActivity().startActivity(intent);
+        try{
+            Intent intent = new Intent(getActivity(), EnrollmentActivity.class);
+            intent.putExtra(Constants.IS_COME_FROM_REWARDS_GUEST_SCREEN, true);
+            requireActivity().startActivity(intent);
+        }catch (Exception e){
+            showErrorAlertPopup().show();
+        }
+
     }
 
     private void checkForApiResponse(){
@@ -152,7 +177,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                    navigateToEnrollmentScreen();
                     break;
                 case ERROR:
-                    CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
 
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
                     dialog.setCanceledOnTouchOutside(false);
@@ -160,5 +184,29 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                     dialog.show();
             }
         });
+    }
+
+    private AlertDialog showErrorAlertPopup(){
+        boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(requireContext());
+
+        String analyticsName = requireActivity().getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                + "(" + requireActivity().getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
+
+        RewardsGuestAnalytics.logAlertDialogShown(requireActivity(),
+                analyticsName, "");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
+                .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                .setMessage(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message)
+
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+
+                    RewardsGuestAnalytics.logAlertDialogInteraction(requireActivity(),
+                            analyticsName,
+                            requireContext().getString(R.string.ok),
+                            "");
+                    dialog.dismiss();
+                });
+        return builder.create();
     }
 }

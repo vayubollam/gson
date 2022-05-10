@@ -1,5 +1,8 @@
 package suncor.com.android.ui.main.rewards.redeem;
 
+import static suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics.CLICK_TO_REDEEM;
+import static suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics.SCREEN_NAME_GIFT_CARD_CONFIRMATION;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
@@ -144,7 +147,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                              @Nullable Bundle savedInstanceState) {
         GenericEGiftCard genericGiftCard = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getGenericGiftCard();
         viewModel.setGenericCardItem(genericGiftCard);
-        GiftCardValueConfirmationAnalytics.logGiftCardValueConfirmationScreenName(requireActivity(), viewModel.getGiftCardItem().getScreenName() + "-value");
+        GiftCardValueConfirmationAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_GIFT_CARD_CONFIRMATION+ viewModel.getGiftCardItem().getScreenName()+ "-value", this.getClass().getSimpleName());
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_gift_card_value_confirmation, container, false);
         binding.setEventHandler(this);
@@ -310,19 +313,16 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     }
 
     public void redeemConfirmButtonClicked() {
-
-
         GiftCardValueConfirmationAnalytics.logFormStep(
                 requireActivity(),
-                "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card",
-                "",
-                "Click to redeem"
+                GiftCardValueConfirmationAnalytics.REDEEM_FOR + viewModel.getGiftCardItem().getShortName() + GiftCardValueConfirmationAnalytics.E_GIFT_CARD,
+                CLICK_TO_REDEEM
         );
 
-        GiftCardValueConfirmationAnalytics.logGiftCardValueConfirmationScreenName(
-                requireActivity(),
-                viewModel.getGiftCardItem().getScreenName() + "-redeeming"
-        );
+        GiftCardValueConfirmationAnalytics.logScreenNameClass(requireActivity(),
+                SCREEN_NAME_GIFT_CARD_CONFIRMATION + viewModel.getGiftCardItem().getScreenName() + "-redeeming",
+                this.getClass().getSimpleName());
+
         viewModel.sendRedeemData();
     }
 }

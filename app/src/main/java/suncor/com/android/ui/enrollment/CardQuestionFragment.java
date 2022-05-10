@@ -3,6 +3,7 @@ package suncor.com.android.ui.enrollment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -42,6 +47,9 @@ public class CardQuestionFragment extends BaseFragment {
     private AppCompatImageView cardImg, cardShadow;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private FragmentCardQuestionBinding binding;
+    private ObservableBoolean isLoading = new ObservableBoolean(false);
+    private Handler mhandler = new Handler();
+    boolean makeItVisible = false;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -62,10 +70,11 @@ public class CardQuestionFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         binding = FragmentCardQuestionBinding.inflate(inflater, container, false);
         binding.setVm(securityQuestionViewModel);
+        binding.setIsLoading(isLoading);
         binding.setLifecycleOwner(this);
 
         return binding.getRoot();
-    }
+    };
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -73,9 +82,10 @@ public class CardQuestionFragment extends BaseFragment {
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         cardImg = requireView().findViewById(R.id.cardImage);
         cardShadow = requireView().findViewById(R.id.cardShadow);
+
         assert getArguments() != null;
         boolean isNavigatedFromRewardsGuestScreen = getArguments().getBoolean(Constants.RESULTANT_VALUE, false);
-
+        isLoading.set(true);
         cardImg.post(() -> {
             float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();
             float shadowRatio = (float) cardShadow.getDrawable().getIntrinsicHeight() / cardShadow.getDrawable().getIntrinsicWidth();
@@ -103,14 +113,20 @@ public class CardQuestionFragment extends BaseFragment {
         });
 
         if(isNavigatedFromRewardsGuestScreen){
+            isLoading.set(false);
             animateCard();
         }else{
             securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
                 switch (arrayListResource.status) {
+                    case LOADING:
+                        isLoading.set(true);
+                        break;
                     case SUCCESS:
+                        isLoading.set(false);
                         animateCard();
                         break;
                     case ERROR:
+                        isLoading.set(false);
                         CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
 
                         Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");

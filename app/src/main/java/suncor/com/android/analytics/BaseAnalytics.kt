@@ -96,9 +96,8 @@ abstract class BaseAnalytics {
         }
 
         @JvmStatic
-        fun logFormStep(context: Context, formName: String,selection: String = "", stepName:String = "") {
+        fun logFormStep(context: Context, formName: String, stepName:String = "") {
             val bundle = Bundle()
-            bundle.putString(FORM_SELECTION, selection)
             bundle.putString(FORM_NAME, formName)
             bundle.putString(STEP_NAME, stepName)
             FuelUpAnalytics.logEvent(context, FORM_STEP, bundle)
@@ -112,6 +111,17 @@ abstract class BaseAnalytics {
             FirebaseAnalytics.getInstance(activity)
                 .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
         }
+
+        @JvmStatic
+        fun logScreenNameClass(context: Context, screenName: String?, className : String) {
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, className)
+            FirebaseAnalytics.getInstance(context)
+                .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        }
+
+
 
         @JvmStatic
         fun logFormStart(context: Context, formName: String) {

@@ -24,6 +24,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.analytics.giftcard.RewardsSignedInAnalytics;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -36,6 +37,7 @@ import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_75;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_95;
+import static suncor.com.android.analytics.giftcard.RewardsSignedInAnalytics.REWARDS_SIGNED_IN_SCREEN_NAME;
 
 public class RewardsSignedInFragment extends BottomNavigationFragment {
 
@@ -67,7 +69,7 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RewardsSignedInAnalytics.logRewardsSignedInScreenName(requireActivity());
+        RewardsSignedInAnalytics.logScreenNameClass(requireActivity(), REWARDS_SIGNED_IN_SCREEN_NAME,this.getClass().getSimpleName());
 
         viewModel.merchantsLiveData.observe(getViewLifecycleOwner(), merchants -> {
             if (merchants != null) {

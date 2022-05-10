@@ -8,36 +8,24 @@ import suncor.com.android.analytics.BaseEvents
 import suncor.com.android.analytics.BaseParams
 import suncor.com.android.model.merchants.EGift
 
-private const val REDEEM_FOR = "Redeem for "
-private const val E_GIFT_CARD = "eGift card"
+
 
 object RewardsSignedInAnalytics : BaseAnalytics(){
 
     const val REWARDS_SIGNED_IN_SCREEN_NAME = "my-petro-points-redeem-info-general"
 
-
-    @JvmStatic
-    fun logRewardsSignedInScreenName(activity: Activity) {
-        logScreenNameClass(
-            activity,
-            screenName = REWARDS_SIGNED_IN_SCREEN_NAME
-        )
-    }
 }
 
 object MerchantDetailsAnalytics : BaseAnalytics() {
 
-    private const val SCREEN_NAME_MERCHANT_DETAILS = "my-petro-points-redeem-info-"
-
-    @JvmStatic
-    fun logMerchantDetailsScreenName(activity: Activity, cardName: String) {
-        logScreenNameClass(activity, screenName = SCREEN_NAME_MERCHANT_DETAILS + cardName)
-    }
+     const val SCREEN_NAME_MERCHANT_DETAILS = "my-petro-points-redeem-info-"
 }
 
 object RedeemReceiptAnalytics : BaseAnalytics() {
 
     private const val SCREEN_NAME_REDEEM_RECEIPT = "my-petro-points-redeem-info-"
+    private const val REDEEM_FOR = "Redeem for "
+    private const val E_GIFT_CARD = "eGift card"
 
     @JvmStatic
     fun logMerchantDetailsScreenName(activity: Activity, cardName: String) {
@@ -58,60 +46,39 @@ object RedeemReceiptAnalytics : BaseAnalytics() {
 
 object RewardsDiscoveryAnalytics : BaseAnalytics() {
 
-    private const val SCREEN_NAME_REWARDS_DISCOVERY = "discover-petro-points"
-    private const val SCREEN_NAME_REWARDS_DISCOVERY_LOADING = "discover-petro-points-loading"
+    const val SCREEN_NAME_REWARDS_DISCOVERY = "discover-petro-points"
+    const val SCREEN_NAME_REWARDS_DISCOVERY_LOADING = "discover-petro-points-loading"
 
     @JvmStatic
-    fun logRewardDiscoveryScreenName(activity: Activity) {
-        logScreenNameClass(
-            activity,
-            screenName = SCREEN_NAME_REWARDS_DISCOVERY
-        )
+    fun logRewardsGuestFormErrorErrorMessage(
+        context: Context,
+        errorMessage: String,
+        formName: String
+    ) {
+        logFormErrorEvent(context, errorMessage, GiftCardValueConfirmationAnalytics.REDEEM_FOR + formName + GiftCardValueConfirmationAnalytics.E_GIFT_CARD)
     }
 
-    @JvmStatic
-    fun logRewardDiscoveryLoadingScreenName(activity: Activity) {
-        logScreenNameClass(
-            activity,
-            screenName = SCREEN_NAME_REWARDS_DISCOVERY_LOADING
-        )
-    }
 }
 
 object RewardsGuestAnalytics : BaseAnalytics() {
 
-    private const val SCREEN_NAME_REWARDS_GUEST = "discover-petro-points"
-    private const val SCREEN_NAME_REWARDS_DISCOVERY_LOADING = "discover-petro-points-loading"
-
     @JvmStatic
-    fun logRewardGuestScreenName(activity: Activity) {
-        logScreenNameClass(
-            activity,
-            screenName = SCREEN_NAME_REWARDS_GUEST
-        )
-    }
-
-    @JvmStatic
-    fun logRewardGuestLoadingScreenName(activity: Activity) {
-        logScreenNameClass(
-            activity,
-            screenName = SCREEN_NAME_REWARDS_DISCOVERY_LOADING
-        )
+    fun logRewardsGuestFormErrorErrorMessage(
+        context: Context,
+        errorMessage: String,
+        formName: String
+    ) {
+        logFormErrorEvent(context, errorMessage, GiftCardValueConfirmationAnalytics.REDEEM_FOR + formName + GiftCardValueConfirmationAnalytics.E_GIFT_CARD)
     }
 }
 
 object GiftCardValueConfirmationAnalytics : BaseAnalytics() {
 
-    private const val SCREEN_NAME_GIFT_CARD_CONFIRMATION = "my-petro-points-redeem-info-"
+    const val SCREEN_NAME_GIFT_CARD_CONFIRMATION = "my-petro-points-redeem-info-"
+     const val REDEEM_FOR = "Redeem for "
+     const val E_GIFT_CARD = "eGift card"
+     const val CLICK_TO_REDEEM = "Click to redeem"
 
-
-    @JvmStatic
-    fun logGiftCardValueConfirmationScreenName(activity: Activity, cardName: String) {
-        logScreenNameClass(
-            activity,
-            screenName = SCREEN_NAME_GIFT_CARD_CONFIRMATION + cardName
-        )
-    }
 
     @JvmStatic
     fun logGiftCardConfirmationErrorMessage(

@@ -97,7 +97,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private String formName;
     private String screenName;
     private boolean isLoadedFirstTime = false;
-    private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
     private boolean scroll5 = false, scroll25 = false, scroll50 = false, scroll75 = false, scroll95 = false;
 
     // By Default it remain JOIN_NO_CARD will check if the card is provided i.e JOIN_YES_CARD.
@@ -139,12 +138,11 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         viewModel.getShowDuplicateEmailEvent().observe(this, (r) -> {
             showDuplicateEmailAlert();
         });
-        EnrollmentAnalytics.logScreenName(requireActivity(),screenName);
 
         if (viewModel.getCardStatus() == null) {
             EnrollmentAnalytics.logFormStart(requireContext(),formName);
         } else {
-            EnrollmentAnalytics.logFormStep(requireContext(),formName,"",STEP_NAME_PERSONAL_INFORMATION);
+            EnrollmentAnalytics.logFormStep(requireContext(),formName,STEP_NAME_PERSONAL_INFORMATION);
         }
 
         //enrollments api call result
@@ -157,7 +155,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else {
                     screenName = SCREEN_NAME_SIGNUP_SUCCESS;
                 }
-                EnrollmentAnalytics.logScreenNameClass(requireActivity(),screenName);
+                EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName,this.getClass().getSimpleName());
 
                 String optionsChecked = "";
                 if (binding.emailOffersCheckbox.isChecked()) {
@@ -169,7 +167,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                 binding.emailAddress.setText(viewModel.getEmailInputField().getText());
 
-                EnrollmentAnalytics.logFormStep(requireContext(),formName,optionsChecked,STEP_NAME_COMPLETE_SIGNUP);
+                EnrollmentAnalytics.logFormStep(requireContext(),formName,STEP_NAME_COMPLETE_SIGNUP);
                 // Log method of signup to Analytics
                 EnrollmentAnalytics.logSignupEvent(requireContext(),sign_up_method);
 
@@ -238,7 +236,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             }
             if (show) {
                 if (isLoadedFirstTime) {
-                    EnrollmentAnalytics.logCanadaPostScreenName(requireActivity());
+                    EnrollmentAnalytics.logScreenNameClass(requireContext(),
+                            EnrollmentAnalytics.SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME, this.getClass().getSimpleName());
                     isLoadedFirstTime = false;
                 }
                 binding.appBar.setBackgroundColor(getResources().getColor(R.color.black_40));
@@ -395,6 +394,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onResume() {
         super.onResume();
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName,this.getClass().getSimpleName());
     }
 
     @Override
@@ -543,9 +543,9 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         //log form steps
         if (hasFocus) {
             if (view == binding.firstNameInput) {
-                EnrollmentAnalytics.logFormStep(requireContext(), formName, "", STEP_NAME_PERSONAL_INFORMATION);
+                EnrollmentAnalytics.logFormStep(requireContext(), formName,  STEP_NAME_PERSONAL_INFORMATION);
             } else if (view == binding.streetAddressInput) {
-                EnrollmentAnalytics.logFormStep(requireContext(), formName, "", STEP_NAME_ADDRESS);
+                EnrollmentAnalytics.logFormStep(requireContext(), formName,  STEP_NAME_ADDRESS);
             }
         }
     }

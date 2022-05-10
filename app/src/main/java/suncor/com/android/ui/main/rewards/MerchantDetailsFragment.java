@@ -43,7 +43,7 @@ public class MerchantDetailsFragment extends MainActivityFragment {
         binding.executePendingBindings();
         binding.closeButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
         binding.points.setText(getString(R.string.rewards_signedin_header_balance, Objects.nonNull(sessionManager.getProfile()) ? CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance()) : 0));
-        MerchantDetailsAnalytics.logMerchantDetailsScreenName(requireActivity(),genericEGiftCard.getScreenName());
+        MerchantDetailsAnalytics.logScreenNameClass(requireActivity(), MerchantDetailsAnalytics.SCREEN_NAME_MERCHANT_DETAILS + genericEGiftCard.getScreenName(),this.getClass().getSimpleName());
         binding.buyButton.setOnClickListener(v -> {
             MerchantDetailsFragmentDirections.ActionMerchantDetailsFragmentToGiftCardValueConfirmation action = MerchantDetailsFragmentDirections.actionMerchantDetailsFragmentToGiftCardValueConfirmation(genericEGiftCard);
             MerchantDetailsAnalytics.logFormStart(requireContext(), "Redeem for "+genericEGiftCard.getShortName()+" eGift card");
