@@ -47,9 +47,7 @@ public class CardQuestionFragment extends BaseFragment {
     private AppCompatImageView cardImg, cardShadow;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private FragmentCardQuestionBinding binding;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
-    private Handler mhandler = new Handler();
-    boolean makeItVisible = false;
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
     ViewModelFactory viewModelFactory;
