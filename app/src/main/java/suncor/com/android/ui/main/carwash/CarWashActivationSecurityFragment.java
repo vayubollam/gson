@@ -210,7 +210,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         switch (resultSubcode) {
             case INCORRECT_PIN:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMERROR,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_activation_pin_error_message)),
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_activation_pin_error_title)),
                         new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
                 );
                 progressBar.setVisibility(View.GONE);
@@ -227,7 +227,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
             case WASH_REJECTED:
                 progressBar.setVisibility(View.GONE);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_zero_error_alert_message))
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_zero_error_alert_error_message))
                 );
                 AlertDialog alertWashDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.carwash_zero_error_alert_title)
@@ -255,7 +255,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
             case POE_BUSY:
                 progressBar.setVisibility(View.GONE);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_error_alert_copy))
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_error_message))
                 );
                 AlertDialog alertErrorDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.carwash_error_alert_title)

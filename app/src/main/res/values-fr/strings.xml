@@ -763,8 +763,10 @@
     <string name="carwash_zero_days">Vous n\'avez plus de jours. <a href="https://www.petro-canada.ca/fr/personnel/mes-petro-points/recharger/carte-acces-lave-auto/etape-1-numero-carte">Rechargez votre carte à Petro-Canada.ca.</a></string>
     <string name="carwash_error_alert_title">Impossible d\'activer le lavage</string>
     <string name="carwash_error_alert_copy">Mousse alors! Quelque chose a mal tourné. Essayez de nouveau ou communiquez avec le préposé.</string>
+    <string name="carwash_error_message">Mousse alors! Quelque chose a mal tourné.</string>
     <string name="carwash_zero_error_alert_title">Impossible d\'activer le lavage</string>
     <string name="carwash_zero_error_alert_message">Cette carte n\'est plus valide. De nouvelles cartes peuvent être achetées sur notre site Web ou au dépanneur.</string>
+    <string name="carwash_zero_error_alert_error_message">Cette carte n\'est plus valide.</string>
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
 
