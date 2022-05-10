@@ -23,17 +23,9 @@ object MerchantDetailsAnalytics : BaseAnalytics() {
 
 object RedeemReceiptAnalytics : BaseAnalytics() {
 
-    private const val SCREEN_NAME_REDEEM_RECEIPT = "my-petro-points-redeem-info-"
+    const val SCREEN_NAME_REDEEM_RECEIPT = "my-petro-points-redeem-info-"
     private const val REDEEM_FOR = "Redeem for "
     private const val E_GIFT_CARD = "eGift card"
-
-    @JvmStatic
-    fun logMerchantDetailsScreenName(activity: Activity, cardName: String) {
-        logScreenNameClass(
-            activity,
-            screenName =  cardName + SCREEN_NAME_REDEEM_RECEIPT
-        )
-    }
 
     @JvmStatic
     fun logRedeemReceiptFormComplete(context: Context, formName: String, formSelection: String) {

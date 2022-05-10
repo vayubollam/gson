@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.rewards;
 
+import static suncor.com.android.analytics.giftcard.RedeemReceiptAnalytics.SCREEN_NAME_REDEEM_RECEIPT;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,8 +93,10 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
             binding.dateValue.setText(DateUtils.getFormattedDate(Calendar.getInstance().getTime()));
         }
-        RedeemReceiptAnalytics.logMerchantDetailsScreenName(requireActivity(), MerchantsUtil.getMerchantScreenName(orderResponse.getShoppingCart().geteGift().getMerchantId())+"-success");
 
+        RedeemReceiptAnalytics.logScreenNameClass(requireActivity(),
+                SCREEN_NAME_REDEEM_RECEIPT + orderResponse.getShoppingCart().geteGift().getMerchantId() + "success",
+                this.getClass().getSimpleName());
 
         RedeemReceiptAnalytics.logRedeemReceiptFormComplete(requireContext(),
                 MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId()),
