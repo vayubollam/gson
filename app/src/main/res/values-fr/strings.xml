@@ -820,7 +820,7 @@
     <string name="account_deletion_subtitle_leaving"> Avant de quitter, pourriez-vous nous donner la raison de ce départ?</string>
     <string name="account_deletion_acknowledgment_validation">Vous devez accepter toutes les reconnaissances pour commencer le processus de suppression du compte.</string>
     <string name="account_deletion_different_reason_validation">Ce champ ne peut rester vide! </string>
-    <string name="account_deletion_phone_field_required">Ce champ est requis!</string>
+    <string name="account_deletion_phone_field_regitquired">Ce champ est requis!</string>
     <string name="account_deletion_submitted">Soumettre</string>
     <string name="different_reason">Une autre raison : </string>
 

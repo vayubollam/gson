@@ -239,9 +239,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private View.OnClickListener cardReloadListener = view -> {
         CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
         if (cardDetail.isSuspendedCard()) {
-            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                    new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.reload_card_alert_description))
-            );
             CardsUtil.showSuspendedCardAlert(getContext());
         } else {
             ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
