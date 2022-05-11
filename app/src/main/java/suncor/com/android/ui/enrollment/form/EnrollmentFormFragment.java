@@ -142,7 +142,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
         viewModel.getShowDuplicateEmailEvent().observe(this, (r) -> {
             showDuplicateEmailAlert();
         });
-        EnrollmentAnalytics.logScreenName(requireActivity(),screenName);
+//        EnrollmentAnalytics.logScreenName(requireActivity(),screenName);
 
         if (viewModel.getCardStatus() == null) {
             EnrollmentAnalytics.logFormStart(requireContext(),formName);
