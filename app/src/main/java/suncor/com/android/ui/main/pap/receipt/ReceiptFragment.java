@@ -21,7 +21,6 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.review.model.ReviewErrorCode;
-import com.google.android.play.core.review.testing.FakeReviewManager;
 import com.google.android.play.core.tasks.RuntimeExecutionException;
 import com.google.android.play.core.tasks.Task;
 
@@ -179,7 +178,7 @@ public class ReceiptFragment extends MainActivityFragment {
 
     private void checkForReview() {
         //Check for review
-        FakeReviewManager manager = new FakeReviewManager(requireContext());
+        ReviewManager manager = ReviewManagerFactory.create(requireContext());
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -195,9 +194,6 @@ public class ReceiptFragment extends MainActivityFragment {
                     goBack();
                 });
             } else {
-                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_error_message))
-                );
                 // There was some problem, log or handle the error code.
                 // Handle error when launching in app review
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();

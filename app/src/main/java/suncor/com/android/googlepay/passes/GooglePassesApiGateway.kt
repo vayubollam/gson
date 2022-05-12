@@ -50,7 +50,6 @@ class GooglePassesApiGateway {
                     objectResponse = restMethods.insertLoyaltyObject(objectResourcePayload as LoyaltyObject?, context)
                 }
             }
-            throw RuntimeException()
             if (objectResponse?.get("code")?.equals("409") == true) {
                 errorHandler.invoke(GpayException("Gpay exception"))
                 return null
