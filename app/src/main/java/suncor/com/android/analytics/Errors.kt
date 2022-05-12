@@ -8,8 +8,8 @@ object Errors {
     const val THE_EMAIL_HAS_ACCOUNT = "This email already has an account."
     const val PETRO_POINTS_ALREADY_USED = "Petro-Points cards already used"
     const val INVALID_CARD = "Invalid Card"
-    const val ENTER_DIFFERENT_EMAIL_OR_CALL =
-        "Please enter a different email address or Call 1-800-668-0220 if you have any issues."
+    const val PLEASE_ENTER_DIFFERENT_EMAIL =
+        "Please enter a different email account."
     const val NO_INTERNET_CONNECTION = "No internet connection"
 
     //Error Messages Detail

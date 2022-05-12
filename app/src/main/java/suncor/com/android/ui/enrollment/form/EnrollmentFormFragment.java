@@ -2,7 +2,7 @@ package suncor.com.android.ui.enrollment.form;
 
 import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_CANCEL;
 import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_OK;
-import static suncor.com.android.analytics.Errors.ENTER_DIFFERENT_EMAIL_OR_CALL;
+import static suncor.com.android.analytics.Errors.PLEASE_ENTER_DIFFERENT_EMAIL;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_ACTIVATION;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_SIGN_UP;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD;
@@ -165,10 +165,10 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
-                    EnrollmentAnalytics. logErrorEvent(requireContext(), ENTER_DIFFERENT_EMAIL_OR_CALL, formName,"");
+                    EnrollmentAnalytics. logErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName,"");
 
                     EnrollmentAnalytics.logAlertDialogShown(requireContext(),
-                            Errors.ENTER_DIFFERENT_EMAIL_OR_CALL + "(" + ")",
+                            Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
                             formName
                     );
 
@@ -176,14 +176,14 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setNegativeButton(R.string.cancel, (d, w) -> {
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
-                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL + "(" + ")",
+                                Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
                                 BaseAnalytics.BUTTON_TEXT_CANCEL, formName);
                         d.dismiss();
                     });
                     dialog.setPositiveButton(R.string.profile_get_help_call, (d, w) -> {
 
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
-                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL + "(" + ")",
+                                Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
                                 BUTTON_TEXT_OK, formName
                         );
 

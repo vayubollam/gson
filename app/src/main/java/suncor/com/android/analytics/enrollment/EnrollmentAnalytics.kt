@@ -1,11 +1,9 @@
 package suncor.com.android.analytics.enrollment
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import suncor.com.android.analytics.BaseAnalytics
 import suncor.com.android.analytics.Errors
-import suncor.com.android.analytics.Errors.ENTER_DIFFERENT_EMAIL_OR_CALL
 
 
 const val SCROLL_DEPTH_20 = "20"
