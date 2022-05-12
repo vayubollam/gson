@@ -24,28 +24,6 @@ abstract class BaseAnalytics {
 
     }
 
-    /*
-    error_log
-
-    errorMessage
-    detailErrorMessage
-    formName
-    *
-    * */
-
-    fun logErrorEvent(
-        context: Context,
-        errorMessage: String,
-        formName: String,
-        detailErrorMessage: String = ""
-    ) {
-        val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE, errorMessage)
-        bundle.putString(FORM_NAME, formName)
-        bundle.putString(ERROR_MESSAGE_DETAIL, detailErrorMessage)
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
-    }
-
 
     fun logFormErrorEvent(
         context: Context,
@@ -208,7 +186,27 @@ abstract class BaseAnalytics {
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.BUTTON_TAP, bundle)
         }
 
+        /*
+           error_log
 
+           errorMessage
+           detailErrorMessage
+           formName
+           *
+           * */
+        @JvmStatic
+        fun logErrorEvent(
+            context: Context,
+            errorMessage: String,
+            formName: String,
+            detailErrorMessage: String = ""
+        ) {
+            val bundle = Bundle()
+            bundle.putString(ERROR_MESSAGE, errorMessage)
+            bundle.putString(FORM_NAME, formName)
+            bundle.putString(ERROR_MESSAGE_DETAIL, detailErrorMessage)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
+        }
     }
 
 

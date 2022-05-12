@@ -44,17 +44,6 @@ object EnrollmentAnalytics : BaseAnalytics() {
 
 
     @JvmStatic
-    fun logInvalidEmailError(context: Context) {
-        logErrorEvent(context, Errors.THE_EMAIL_HAS_ACCOUNT, FORM_NAME_ACTIVATE_PETRO_POINTS_CARD)
-    }
-
-
-    @JvmStatic
-    fun logDiffEmailError(context: Context, formName: String) {
-        logErrorEvent(context, ENTER_DIFFERENT_EMAIL_OR_CALL, formName)
-    }
-
-    @JvmStatic
     fun logSignupEvent(context: Context, sign_up_method: String) {
         val bundle = Bundle()
         bundle.putString(PARAM_SIGNUP_METHOD, sign_up_method)

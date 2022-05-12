@@ -2,6 +2,7 @@ package suncor.com.android.ui.enrollment.form;
 
 import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_CANCEL;
 import static suncor.com.android.analytics.BaseAnalytics.BUTTON_TEXT_OK;
+import static suncor.com.android.analytics.Errors.ENTER_DIFFERENT_EMAIL_OR_CALL;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_ACTIVATION;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.METHOD_SIGN_UP;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalytics.SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD;
@@ -143,7 +144,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 } else {
                     screenName = SCREEN_NAME_SIGNUP_SUCCESS;
                 }
-                EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName,this.getClass().getSimpleName());
+                EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName, this.getClass().getSimpleName());
 
                 String optionsChecked = "";
                 if (binding.emailOffersCheckbox.isChecked()) {
@@ -164,7 +165,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
-                    EnrollmentAnalytics.logDiffEmailError(requireContext(), formName);
+                    EnrollmentAnalytics. logErrorEvent(requireContext(), ENTER_DIFFERENT_EMAIL_OR_CALL, formName,"");
+
                     EnrollmentAnalytics.logAlertDialogShown(requireContext(),
                             Errors.ENTER_DIFFERENT_EMAIL_OR_CALL + "(" + ")",
                             formName
@@ -174,15 +176,15 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
                     dialog.setNegativeButton(R.string.cancel, (d, w) -> {
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
-                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL+ "(" + ")",
-                                BaseAnalytics.BUTTON_TEXT_CANCEL,formName);
+                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL + "(" + ")",
+                                BaseAnalytics.BUTTON_TEXT_CANCEL, formName);
                         d.dismiss();
                     });
                     dialog.setPositiveButton(R.string.profile_get_help_call, (d, w) -> {
 
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
-                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL+ "(" + ")",
-                                BUTTON_TEXT_OK,formName
+                                Errors.ENTER_DIFFERENT_EMAIL_OR_CALL + "(" + ")",
+                                BUTTON_TEXT_OK, formName
                         );
 
                         callCostumerSupport(getString(R.string.customer_support_number));
@@ -311,16 +313,30 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
-        EnrollmentAnalytics.logInvalidEmailError(requireContext());
+        EnrollmentAnalytics.logErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");
+        EnrollmentAnalytics.logAlertDialogShown(requireContext(), getString(R.string.enrollment_email_already_exists_title)
+                        + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
+                , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
 
         dialog.setTitle(getString(R.string.enrollment_email_already_exists_title))
                 .setMessage(getString(R.string.enrollment_email_already_exists_description))
                 .setRightButton(getString(R.string.enrollment_invalid_email_dialog_sign_in), (v) -> {
+                    EnrollmentAnalytics.logAlertDialogInteraction(requireContext(), getString(R.string.enrollment_email_already_exists_title)
+                                    + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
+                            , getString(R.string.enrollment_invalid_email_dialog_sign_in)
+                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
+
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
                     getActivity().finish();
                 })
                 .setCenterButton(getString(R.string.enrollment_invalid_email_dialog_diff_email), (v) -> {
+
+                    EnrollmentAnalytics.logAlertDialogInteraction(requireContext(), getString(R.string.enrollment_email_already_exists_title)
+                                    + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
+                            , getString(R.string.enrollment_invalid_email_dialog_diff_email)
+                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
+
                     binding.emailInput.setText("");
                     dialog.dismiss();
                     focusOnItem(binding.emailInput);
@@ -387,7 +403,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     @Override
     public void onResume() {
         super.onResume();
-        EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName,this.getClass().getSimpleName());
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(), screenName, this.getClass().getSimpleName());
     }
 
     @Override
