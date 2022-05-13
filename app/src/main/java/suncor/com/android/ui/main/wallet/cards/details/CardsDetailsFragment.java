@@ -39,7 +39,6 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.googleapis.passes.GooglePassesApiGateway;
-import suncor.com.android.googleapis.passes.GooglePassesConfig;
 import suncor.com.android.googlepay.passes.LoyalityData;
 import suncor.com.android.model.DirectionsResult;
 import suncor.com.android.model.Resource;
@@ -68,6 +67,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private float previousBrightness;
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
+    private boolean vacuumToggle = false;
 
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
@@ -120,13 +120,24 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 AnalyticsUtils.setCurrentScreenName(getActivity(), screenName);
             }
         });
+        viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+            } else if (result.status == Resource.Status.ERROR) {
+                Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                vacuumToggle = result.data.getSettings().toggleFeature.isVacuumScanBarcode();
+                if(cardsDetailsAdapter != null){
+                    cardsDetailsAdapter.updateVacuumToggle(vacuumToggle);
+                }
+            }
+        });
         binding = FragmentCardsDetailsBinding.inflate(inflater, container, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         binding.cardDetailRecycler.setLayoutManager(linearLayoutManager);
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener, vacuumToggle);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -245,6 +256,18 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     Navigation.findNavController(getView()).navigate(action);
                 }
         };
+
+    private View.OnClickListener vacuumListener = view -> {
+        CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+        ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+        CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
+                action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
+        action.setCardNumber(cardItem.getCardNumber());
+        viewModel.refreshCards();
+        Navigation.findNavController(getView()).navigate(action);
+
+
+    };
 
 
     private View.OnClickListener gpaySaveToWalletListener = view -> {
@@ -373,6 +396,5 @@ public class CardsDetailsFragment extends MainActivityFragment {
         }
         return false;
     }
-
 
 }
