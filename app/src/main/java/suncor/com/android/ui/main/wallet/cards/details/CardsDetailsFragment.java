@@ -34,6 +34,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import suncor.com.android.LocationLiveData;
 import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentCardsDetailsBinding;
@@ -52,6 +54,7 @@ import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
+import suncor.com.android.utilities.Constants;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 import suncor.com.android.utilities.Timber;
@@ -205,6 +208,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener activeCarWashListener = view -> {
+        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarWashClick,
+                new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.cards.getValue().get(clickedCardIndex).getLongName())
+        );
+
         if (isUserAtIndependentStation()) {
             StationsUtil.showIndependentStationAlert(getContext());
         } else {
@@ -231,6 +238,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                     action.setCardIndex(clickedCardIndex);
+                    action.setCardType(viewModel.cards.getValue().get(clickedCardIndex).getLongName());
                     action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
                     Navigation.findNavController(getView()).navigate(action);
                 }
@@ -240,22 +248,22 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener cardReloadListener = view -> {
-                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
-                if(cardDetail.isSuspendedCard()){
-                    CardsUtil.showSuspendedCardAlert(getContext());
-                } else {
-                    ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-                    //open Reload Transaction form
-                    CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
-                            action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
-                    action.setCardNumber(cardItem.getCardNumber());
-                    action.setCardName(cardItem.getCardName());
-                    action.setCardType(cardItem.getCardType().name());
-                    action.setCardIndex(clickedCardIndex);
-                    action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
-                    Navigation.findNavController(getView()).navigate(action);
-                }
-        };
+        CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+        if (cardDetail.isSuspendedCard()) {
+            CardsUtil.showSuspendedCardAlert(getContext());
+        } else {
+            ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
+            //open Reload Transaction form
+            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashTransactionFragment
+                    action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashTransactionFragment();
+            action.setCardNumber(cardItem.getCardNumber());
+            action.setCardName(cardItem.getCardName());
+            action.setCardType(cardItem.getCardType().name());
+            action.setCardIndex(clickedCardIndex);
+            action.setIsCardFromCarWash(loadType == CardsLoadType.CAR_WASH_PRODUCTS);
+            Navigation.findNavController(getView()).navigate(action);
+        }
+    };
 
     private View.OnClickListener vacuumListener = view -> {
         CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
@@ -283,16 +291,24 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
                 new Thread(() -> {
                     GooglePassesApiGateway gateway = new GooglePassesApiGateway();
-                    String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig);
+                    String cardAuthToken = gateway.insertLoyalityCard(getContext(), loyalityData, googlePassesConfig, new Function1<Exception, Unit>() {
+                        @Override
+                        public Unit invoke(Exception e) {
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLETERROR.toString(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS),
+                                    new Pair<>(AnalyticsUtils.Param.errorMessage.toString(), Constants.SOMETHING_WRONG));
+                            return null;
+                        }
+                    });
                     Timber.i("GOOGLE PASSES: card Token " + cardAuthToken);
-                    if(getActivity() != null){
+                    if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             hideAddCardProgress();
-                            if(cardAuthToken == null){
+                            if (cardAuthToken == null) {
                                 Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
                                 return;
                             }
-                           getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
+                            AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.ADDPPTSTOWALLET.toString(), new Pair<>(AnalyticsUtils.Param.WALLETTYPE.toString(), Constants.GPAY_ANALYTICS));
+                            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(cardAuthToken)));
 
                         });
                     }

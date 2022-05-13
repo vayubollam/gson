@@ -29,6 +29,7 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
 import suncor.com.android.model.station.Station;
+import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.GenericErrorView;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
@@ -74,7 +75,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.REDEEMED_SINGLE_TICKETS);
                     Navigation.findNavController(getView()).navigate((NavDirections) action);
-                } else if (mainViewModel.isNewCardAdded() && (mainViewModel.getNewAddedCard().getCardType() == CardType.WAG ||mainViewModel.getNewAddedCard().getCardType() == CardType.SP )) {
+                } else if (mainViewModel.isNewCardAdded() && (mainViewModel.getNewAddedCard().getCardType() == CardType.WAG || mainViewModel.getNewAddedCard().getCardType() == CardType.SP)) {
                     AnalyticsUtils.setCurrentScreenName(getActivity(), mainViewModel.getNewAddedCard().getFirebaseCarwashScreenName());
                     CarWashCardFragmentDirections.ActionCarWashCardFragmentToCardsDetailsFragment action = CarWashCardFragmentDirections.actionCarWashCardFragmentToCardsDetailsFragment();
                     action.setLoadType(CardsLoadType.NEWLY_ADD_CARD);
@@ -119,9 +120,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         binding.errorLayout.setModel(new GenericErrorView(getContext(), R.string.ok,
                 () -> {
                     carWashCardViewModel.loadData(CarWashCardViewModel.ViewState.LOADING);
-                    AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-                            new Pair<>(AnalyticsUtils.Param.errorMessage,"Something Went Wrong"),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, "Carwash Cards"));
+                    Alerts.prepareGeneralErrorDialog(getContext(), String.valueOf(R.string.carwash_cards)).show();
                 }));
 
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -201,7 +200,7 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
     @Override
     public void onResume() {
         super.onResume();
-        AnalyticsUtils.setCurrentScreenName(getActivity(), "car-wash-card-list");
+        AnalyticsUtils.setCurrentScreenName(getActivity(), String.valueOf(R.string.car_wash_card_list));
     }
 
     @Override
@@ -267,6 +266,9 @@ public class CarWashCardFragment extends CarwashLocation implements OnBackPresse
         Resource<StationItem> resource = carWashCardViewModel.getNearestStation().getValue();
         if (resource != null && resource.data != null && !carWashCardViewModel.getIsLoading().get()) {
             StationDetailsDialog.showCard(this, resource.data, nearestCardBinding.getRoot(), false);
+        } else {
+            AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
+                    new Pair<>(AnalyticsUtils.Param.errorMessage, resource.message));
         }
     };
 
