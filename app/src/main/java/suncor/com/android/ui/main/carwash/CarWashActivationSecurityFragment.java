@@ -157,8 +157,6 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
                     if (resource.status == Resource.Status.LOADING) {
                         progressBar.setVisibility(View.VISIBLE);
                     } else if (resource.status == Resource.Status.ERROR) {
-                        AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                                new Pair<>(AnalyticsUtils.Param.errorMessage, resource.message));
                         handleActivationErrors(resource.message);
                     } else if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarwashSuccess,
@@ -210,7 +208,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
         switch (resultSubcode) {
             case INCORRECT_PIN:
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMERROR,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_activation_pin_error_message)),
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, getContext().getString(R.string.carwash_activation_pin_error_title)),
                         new Pair<>(AnalyticsUtils.Param.FORMNAME, ACTIVATE_WNG)
                 );
                 progressBar.setVisibility(View.GONE);
@@ -227,7 +225,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
             case WASH_REJECTED:
                 progressBar.setVisibility(View.GONE);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_zero_error_alert_message))
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, getContext().getString(R.string.carwash_zero_error_alert_error_message))
                 );
                 AlertDialog alertWashDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.carwash_zero_error_alert_title)
@@ -255,7 +253,7 @@ public class CarWashActivationSecurityFragment extends CarwashLocation implement
             case POE_BUSY:
                 progressBar.setVisibility(View.GONE);
                 AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
-                        new Pair<>(AnalyticsUtils.Param.errorMessage, String.valueOf(R.string.carwash_error_alert_copy))
+                        new Pair<>(AnalyticsUtils.Param.errorMessage,getContext().getString(R.string.carwash_error_message))
                 );
                 AlertDialog alertErrorDialog = new AlertDialog.Builder(getContext())
                         .setTitle(R.string.carwash_error_alert_title)

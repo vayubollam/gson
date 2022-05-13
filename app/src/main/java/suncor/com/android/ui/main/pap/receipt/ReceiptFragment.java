@@ -199,7 +199,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
 
                 if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
-                
+
                 goBack();
             }
         });

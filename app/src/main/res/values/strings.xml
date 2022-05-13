@@ -775,8 +775,10 @@
 
     <string name="carwash_error_alert_title">Can\’t activate wash</string>
     <string name="carwash_error_alert_copy">Suds! Something went wrong. Try again or contact the in-store attendant.</string>
+    <string name="carwash_error_message">Suds! Something went wrong.</string>
     <string name="carwash_zero_error_alert_title">Can\’t activate wash</string>
     <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
+    <string name="carwash_zero_error_alert_error_message">This card is no longer valid.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
     <string name="carwash_generate_barcode">Generate Barcode</string>
