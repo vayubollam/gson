@@ -128,7 +128,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
-                binding.appBar.setOnClickListener((view)-> goBack());
+                binding.appBar.setOnClickListener((view) -> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 Transaction transaction = result.data;
@@ -144,11 +144,11 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.paymentMethod.setText(result.data.getPaymentType(requireContext(), isGooglePay));
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
-                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you),  sessionManager.getProfile() != null ? sessionManager.getProfile().getFirstName() : ""));
-                if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
+                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile() != null ? sessionManager.getProfile().getFirstName() : ""));
+                if (Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()) {
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
-                    if(result.data.getTotalAmount() <= 0) {
+                    if (result.data.getTotalAmount() <= 0) {
                         binding.transactionTotal.setVisibility(View.GONE);
                     }
                     binding.transactionTaxInclusive.setVisibility(View.GONE);
@@ -213,11 +213,14 @@ public class ReceiptFragment extends MainActivityFragment {
                 AnalyticsUtils.setPetroPointsProperty(getActivity(), updatedPoints);
 
                 // Handle NO_REDEMPTION, PARTIAL_REDEMPTION in case of under pump or Member locking
-                switch (transaction.getTransactionStatus(preAuthRedeemPoints,preAuthFuelAmount)){
+                switch (transaction.getTransactionStatus(preAuthRedeemPoints, preAuthFuelAmount)) {
                     case NORMAL:
                         break;
                     case NO_REDEMPTION:
                         showNoRedemptionPopup();
+                        break;
+                    case PARTIAL_REDEMPTION:
+                        showPartialRedemptionPopup();
                         break;
                 }
 

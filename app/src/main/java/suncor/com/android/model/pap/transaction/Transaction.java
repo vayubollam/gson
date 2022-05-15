@@ -358,43 +358,43 @@ public class Transaction {
 
     public enum TransactionStatus {
         NORMAL,
+        PARTIAL_REDEMPTION,
         NO_REDEMPTION
     }
 
 
     public TransactionStatus getTransactionStatus(String preAuthRedeemPoints, String preAuthFuelAmount) {
-       try {
-           double requestedFuelUpAmount = Double.parseDouble(preAuthFuelAmount);
-           boolean isUnderPump = subtotal < requestedFuelUpAmount;
+        try {
+            double requestedFuelUpAmount = Double.parseDouble(preAuthFuelAmount);
+            boolean isUnderPump = subtotal < requestedFuelUpAmount;
 
-           int requestedRedeemPoints = Integer.parseInt(preAuthRedeemPoints);
+            int requestedRedeemPoints = Integer.parseInt(preAuthRedeemPoints);
 
-           if (isCLPEDown || requestedRedeemPoints == 0 || getPointsRedeemed() == requestedRedeemPoints)
-               return TransactionStatus.NORMAL;
+            if (isCLPEDown || requestedRedeemPoints == 0 || getPointsRedeemed() == requestedRedeemPoints)
+                return TransactionStatus.NORMAL;
 
-           if (getPointsRedeemed() == 0)
-               return TransactionStatus.NO_REDEMPTION;
+            if (getPointsRedeemed() == 0)
+                return TransactionStatus.NO_REDEMPTION;
 
-           // Under-pump and points redeemed == actual Fuel-up Amount in points
-           if (isUnderPump && getPointsRedeemed() == subtotal * 1000) {
-               return TransactionStatus.NORMAL;
-           }
-
-           return TransactionStatus.NORMAL;
-       }catch (Exception e){
-           Timber.e(e.getMessage());
-           return TransactionStatus.NORMAL;
-       }
+            // Under-pump and points redeemed == actual Fuel-up Amount in points
+            if (isUnderPump && getPointsRedeemed() == subtotal * 1000) {
+                return TransactionStatus.NORMAL;
+            } else {
+                return TransactionStatus.PARTIAL_REDEMPTION;
+            }
+        } catch (Exception e) {
+            Timber.e(e.getMessage());
+            return TransactionStatus.NORMAL;
+        }
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public void setTestValues(double pumped,boolean isCLPEDown, double pointsRedeemed ){
+    public void setTestValues(double pumped, boolean isCLPEDown, double pointsRedeemed) {
         this.subtotal = pumped;
         this.isCLPEDown = isCLPEDown;
         this.pointsRedeemed = pointsRedeemed;
 
     }
-
 
 
 }
