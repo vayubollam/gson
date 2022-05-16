@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +73,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             sessionManager.getProfile().setPointsBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining());
             binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRemaining())));
             binding.pointsRedeemedValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(orderResponse.getTransaction().getTransactionAmount().getPetroPoints().getPetroPointsRedeemed())));
-            imageId = getContext().getResources().getIdentifier(MerchantsUtil.getMerchantSmallImage(orderResponse.getShoppingCart().geteGift().getMerchantId()), "drawable", getContext().getPackageName());
+            imageId = requireContext().getResources().getIdentifier(MerchantsUtil.getMerchantSmallImage(orderResponse.getShoppingCart().geteGift().getMerchantId()), "drawable", requireContext().getPackageName());
             binding.valueTitle.setText(R.string.egift_card_value_title);
             binding.subtitle.setText(R.string.redeem_receipt_body);
             binding.cardValue.setText(getString(R.string.egift_card_value_in_dollar_generic, orderResponse.getShoppingCart().geteGift().getValue()));
@@ -85,10 +84,10 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
             sessionManager.getProfile().setPointsBalance(remainingPoints);
             binding.newBalanceValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(remainingPoints)));
             binding.pointsRedeemedValue.setText(getString(R.string.points_redeemed_value, CardFormatUtils.formatBalance(product.getPointsPrice())));
-            imageId = getContext().getResources().getIdentifier(MerchantsUtil.getRewardSmallImage(product.getCategory()), "drawable", getContext().getPackageName());
+            imageId = requireContext().getResources().getIdentifier(MerchantsUtil.getRewardSmallImage(product.getCategory()), "drawable", requireContext().getPackageName());
             binding.valueTitle.setText(getString(R.string.single_ticket_receipt_quantity_title));
             binding.subtitle.setText(getString(R.string.single_ticket_receipt_subtitle));
-            binding.cardValue.setText(getContext().getResources().getQuantityString(R.plurals.single_ticket_receipt_quantity,
+            binding.cardValue.setText(requireContext().getResources().getQuantityString(R.plurals.single_ticket_receipt_quantity,
                     product.getUnits(), product.getUnits()));
             binding.emailSentToValue.setText(sessionManager.getProfile().getEmail());
             binding.dateValue.setText(DateUtils.getFormattedDate(Calendar.getInstance().getTime()));
@@ -98,7 +97,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
                 new Pair<>("formName", "Redeem for "+MerchantsUtil.getMerchantShortName(orderResponse.getShoppingCart().geteGift().getMerchantId())+" eGift card"),
                 new Pair<>("formSelection","$"+orderResponse.getShoppingCart().eGift.getValue()+" gift card")
         );
-        binding.setImage(getContext().getDrawable(imageId));
+        binding.setImage(requireContext().getDrawable(imageId));
         binding.redeemReceiptCardviewTitle.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
         return binding.getRoot();
     }

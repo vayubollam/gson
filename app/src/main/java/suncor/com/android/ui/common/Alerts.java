@@ -3,7 +3,6 @@ package suncor.com.android.ui.common;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Pair;
-
 import androidx.appcompat.app.AlertDialog;
 
 import suncor.com.android.R;
