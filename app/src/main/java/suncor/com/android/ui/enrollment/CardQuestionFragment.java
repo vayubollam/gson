@@ -106,7 +106,7 @@ public class CardQuestionFragment extends BaseFragment {
                     animateCard();
                     break;
                 case ERROR:
-                    CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
+
 
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), CardQuestionsAnalytics.FORM_NAME_SIGNUP_ACTIVATE);
                     dialog.setCanceledOnTouchOutside(false);

@@ -55,10 +55,6 @@ object CardQuestionsAnalytics : BaseAnalytics() {
     const val SCREEN_NAME_SIGNUP_ACTIVATE = "petro-points-sign-up-activate"
     const val FORM_NAME_SIGNUP_ACTIVATE = "Petro Points Sign Up Activate"
 
-    @JvmStatic
-    fun logSomethingWentFormError(context: Context) {
-        logFormErrorEvent(context, Errors.SOMETHING_WRONG, FORM_NAME_SIGNUP_ACTIVATE)
-    }
 
 }
 

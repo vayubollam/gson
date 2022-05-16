@@ -16,8 +16,8 @@ public class Alerts {
     public static AlertDialog prepareGeneralErrorDialog(Context context, String formName) {
         boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
 
-        if (hasInternetConnection) AlertsAnalytics.logNoInternetConnection(context, formName);
-        else AlertsAnalytics.logSomethingWentWrong(context, formName);
+        if (hasInternetConnection) AlertsAnalytics.logSomethingWentWrong(context, formName);
+        else AlertsAnalytics.logNoInternetConnection(context, formName);
 
         String analyticsName = (hasInternetConnection ? Errors.SOMETHING_WRONG : Errors.NO_INTERNET_CONNECTION)
                 + "(" + (hasInternetConnection ? Errors.DETAIL_PLEASE_TRY_AGAIN : Errors.DETAIL_GO_ONLINE_TRY_AGAIN) + ")";
