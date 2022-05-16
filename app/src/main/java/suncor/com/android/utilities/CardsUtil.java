@@ -93,6 +93,9 @@ public class CardsUtil {
     }
 
     public static void showSuspendedCardAlert(Context context) {
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error,
+                new Pair<>(AnalyticsUtils.Param.errorMessage,context.getString(R.string.carwash_zero_error_alert_error_message))
+        );
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.reload_card_alet_title)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
                 .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dialog, which) -> {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_canada_reload_url)));
@@ -107,6 +110,9 @@ public class CardsUtil {
     }
 
     public static void ShowSuspendedCardAlertForActivateWash(Context context){
+        AnalyticsUtils.logEvent(context, AnalyticsUtils.Event.error,
+                new Pair<>(AnalyticsUtils.Param.errorMessage,context.getString(R.string.carwash_zero_error_alert_error_message))
+        );
         AlertDialog alertWashDialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.carwash_zero_error_alert_title)
                 .setMessage(R.string.carwash_zero_error_alert_message)
