@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
 import androidx.recyclerview.widget.RecyclerView;
 import suncor.com.android.R;
 import suncor.com.android.databinding.PetroCanadaSmallCardItemBinding;
@@ -22,6 +23,7 @@ public class CardsListAdapter extends RecyclerView.Adapter<CardsListAdapter.Petr
     private Context context;
     private ArrayList<CardListItem> cards = new ArrayList<>();
     Consumer<CardDetail> callback;
+
 
     public CardsListAdapter(Consumer<CardDetail> callback) {
         this.callback = callback;

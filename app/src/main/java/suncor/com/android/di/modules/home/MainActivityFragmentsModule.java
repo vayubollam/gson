@@ -15,6 +15,7 @@ import suncor.com.android.ui.main.profile.account.AccountDetailsFragment;
 import suncor.com.android.ui.main.profile.account.AccountDeleteFragment;
 import suncor.com.android.ui.main.rewards.thirdpartygiftcard.MoreEGiftCardCategoriesFragment;
 import suncor.com.android.ui.main.stationlocator.NearestStationFragment;
+import suncor.com.android.ui.main.vacuum.VacuumBarcodeFragment;
 import suncor.com.android.ui.main.wallet.WalletFragment;
 import suncor.com.android.ui.main.wallet.cards.add.AddCardFragment;
 import suncor.com.android.ui.main.wallet.cards.details.CardsDetailsFragment;
@@ -183,7 +184,10 @@ abstract class MainActivityFragmentsModule {
     abstract CarwashActivatedFragment contributeCarwashActivatedFragment();
 
     @ContributesAndroidInjector
-    abstract MoreEGiftCardCategoriesFragment contributeCMoreEGiftCardCategoriesFragment();
+    abstract MoreEGiftCardCategoriesFragment contributeMoreEGiftCardCategoriesFragment();
+
+    @ContributesAndroidInjector
+    abstract VacuumBarcodeFragment contributeVacuumBarcodeFragment();
 
     @ContributesAndroidInjector
     abstract AccountDetailsFragment contributeAccountDetailsFragment();

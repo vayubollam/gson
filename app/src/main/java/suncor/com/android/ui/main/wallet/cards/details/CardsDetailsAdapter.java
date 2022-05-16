@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableBoolean;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,14 +22,19 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
 
     private View.OnClickListener cardReloadListener;
     private View.OnClickListener gpaySaveToWalletListener;
+    private View.OnClickListener vacuumListener;
+    private ObservableBoolean isVacuumEnabled = new ObservableBoolean(false);
 
 
-    public CardsDetailsAdapter( Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
-                               View.OnClickListener cardReloadListener, View.OnClickListener gpaySaveToWalletListener) {
+    public CardsDetailsAdapter(Consumer<ExpandedCardItem> callBack, View.OnClickListener activeWashListener,
+                               View.OnClickListener cardReloadListener, View.OnClickListener gpaySaveToWalletListener,
+                               View.OnClickListener vacuumListener, boolean isVacuumEnabled) {
         this.callBack = callBack;
         this.activeWashListener = activeWashListener;
         this.cardReloadListener = cardReloadListener;
         this.gpaySaveToWalletListener = gpaySaveToWalletListener;
+        this.vacuumListener = vacuumListener;
+        this.isVacuumEnabled.set(isVacuumEnabled);
     }
 
 
@@ -42,11 +48,13 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     @Override
     public void onBindViewHolder(@NonNull CardsDetailHolder holder, int position) {
         holder.binding.setCard(cardItems.get(position));
+        holder.binding.setIsVacuumEnable(isVacuumEnabled);
         holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
         if(holder.binding.cardReloadButton.isShown()) {
             holder.binding.cardReloadButton.setOnClickListener(cardReloadListener);
         }
         holder.binding.savetowallet.setOnClickListener(gpaySaveToWalletListener);
+        holder.binding.vacuumButton.setOnClickListener(vacuumListener);
     }
 
     public void removeCard(ExpandedCardItem expandedCardItem) {
@@ -67,6 +75,10 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
 
     public void setCardItems(ArrayList<ExpandedCardItem> cardItems) {
         this.cardItems = cardItems;
+    }
+
+    public void updateVacuumToggle(boolean vacuumToggle){
+      isVacuumEnabled.set(vacuumToggle);
     }
 
     public class CardsDetailHolder extends RecyclerView.ViewHolder {
