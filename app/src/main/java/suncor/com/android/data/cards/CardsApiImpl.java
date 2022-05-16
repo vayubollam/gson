@@ -30,6 +30,8 @@ public class CardsApiImpl implements CardsApi {
     private final static String GET_CARDS_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/cards";
     private final static String ADD_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
     private final static String DELETE_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
+    public final int ADD_CARD_TIMEOUT = 60_000;
+
     private Gson gson;
 
     public CardsApiImpl(Gson gson) {
@@ -80,7 +82,7 @@ public class CardsApiImpl implements CardsApi {
         result.postValue(Resource.loading());
         try {
             URI adapterPath = new URI(ADD_CARDS_ADAPTER_PATH);
-            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, ADD_CARD_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             JSONObject body = new JSONObject(gson.toJson(cardRequest));
             request.send(body, new WLResponseListener() {
                 @Override
