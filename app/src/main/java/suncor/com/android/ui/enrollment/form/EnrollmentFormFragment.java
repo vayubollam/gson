@@ -85,7 +85,6 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private String formName;
     private String screenName;
     private boolean isLoadedFirstTime = false;
-    private static final String CANADAPOST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address";
     private boolean scroll20 = false, scroll40 = false, scroll60 = false, scroll80 = false, scroll100 = false;
 
     // By Default it remain JOIN_NO_CARD will check if the card is provided i.e JOIN_YES_CARD.

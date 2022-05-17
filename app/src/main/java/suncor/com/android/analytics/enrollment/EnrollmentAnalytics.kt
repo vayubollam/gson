@@ -38,7 +38,7 @@ object EnrollmentAnalytics : BaseAnalytics() {
     const val ALERT_TITLE_ENABLE_FINGERPRINT =
         "Enable fingerprint?" + "(" + "Sign in faster next time by using your fingerprint."
     const val ALERT_TITLE_LEAVE_SIGNUP =
-        "Leave Create Account?" + "(" + "The details you\\'ve entered won\\'t be saved if you leave. Leave the Create Account form?"
+        "Leave Create Account?" + "(" + "The details you've entered won't be saved if you leave. Leave the Create Account form?"
 
 
     @JvmStatic

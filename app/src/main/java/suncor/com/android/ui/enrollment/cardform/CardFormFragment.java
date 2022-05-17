@@ -3,7 +3,6 @@ package suncor.com.android.ui.enrollment.cardform;
 
 import static suncor.com.android.analytics.enrollment.CardFormAnalytics.SCREEN_NAME_ACTIVATE_MATCH_CARD;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.FORM_NAME_ACTIVATE_PETRO_POINTS_CARD;
-import static suncor.com.android.utilities.Constants.ACTIVATE_PETRO_POINTS_SIGN_UP;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -126,7 +125,7 @@ public class CardFormFragment extends BaseFragment {
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
                 }else {
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), ACTIVATE_PETRO_POINTS_SIGN_UP);
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
                     dialog.show();
                 }
             }

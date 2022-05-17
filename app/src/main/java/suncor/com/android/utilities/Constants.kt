@@ -24,8 +24,6 @@ object Constants {
     const val ALERT_SELECTION = "alertSelection"
     const val FORM_SELECTION = "formSelection"
     const val ALERT_INTERACTION = "alert_interaction"
-    const val ACTIVATE_PETRO_POINTS_CARD = "Activate Petro-Points Card"
-    const val ACTIVATE_PETRO_POINTS_SIGN_UP = "Petro Points Sign Up Activate"
     const val ACTIVE_SESSION = "Active Session"
     const val ACTIVATE_SUCCESS = "activate-success"
     const val SIGNUP_SUCCESS = "sign-up-success"
