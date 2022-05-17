@@ -53,7 +53,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RewardsSignedInViewModel.class);
         viewModel.navigateToDiscovery.observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
+                NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_rewards_signedin_tab_to_rewardsDiscoveryFragment);
+                }
             }
         });
 
