@@ -5,15 +5,12 @@ import android.content.Context;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import suncor.com.android.R;
 import suncor.com.android.databinding.AddPaymentDropDownItemBinding;
 import suncor.com.android.databinding.GooglePayDropDownItemBinding;
@@ -58,7 +55,6 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
         } else {
             return new ChildDropDownViewHolder(PaymentDropDownItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
-
     }
 
     @Override
@@ -187,7 +183,6 @@ public class PaymentDropDownAdapter extends DropDownAdapter {
                         listener.onSelectValue(value.getCardInfo(), value.getExp(), false, false);
                         listener.expandCollapse();
                     }
-
                     callbacks.onPaymentChanged(value.getPaymentDetail().getId());
                 });
 

@@ -68,7 +68,6 @@ public class FuelUpViewModel extends ViewModel {
         return settingsApi.retrieveSettings();
     }
 
-
     public LiveData<Resource<ActiveSession>> getActiveSession() {
         return papRepository.getActiveSession();
     }
@@ -113,7 +112,6 @@ public class FuelUpViewModel extends ViewModel {
         final Optional<JSONObject> isReadyToPayJson = GooglePayUtils.getIsReadyToPayRequest();
         return isReadyToPayJson.map(jsonObject -> IsReadyToPayRequest.fromJson(jsonObject.toString())).orElse(null);
     }
-
 
     public PaymentDataRequest createGooglePayInitiationRequest(Double prices, String gateway, String merchantId) {
         Optional<JSONObject> paymentDataRequestJson = GooglePayUtils.getPaymentDataRequest(prices,gateway, merchantId );
