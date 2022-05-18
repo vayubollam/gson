@@ -21,7 +21,7 @@ jobs:
 
       - name: Add coverage to PR
         id: jacoco
-        uses: actions/jacoco-report@v1.2
+        uses: cicirello/jacoco-report@v1.2
         with:
           paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
