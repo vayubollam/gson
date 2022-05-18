@@ -68,6 +68,15 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
 
+    - name: Set up node
+      uses: actions/setup-node@v1
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm tests
+
     #- name: Build and analyze
     #  env:
     #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
