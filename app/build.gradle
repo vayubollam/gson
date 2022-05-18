@@ -5,6 +5,7 @@ apply from: "./versionCode.gradle"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'org.sonarqube'
 apply from: "../android-sonarqube.gradle"
+apply from: "$project.rootDir/jacoco.gradle"
 
 repositories {
     jcenter()
