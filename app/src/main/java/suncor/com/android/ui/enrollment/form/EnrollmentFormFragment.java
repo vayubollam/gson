@@ -164,7 +164,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     showDuplicateEmailAlert();
                 } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
-                    EnrollmentAnalytics. logErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName,"");
+                    EnrollmentAnalytics.logErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName, "");
 
                     EnrollmentAnalytics.logAlertDialogShown(requireContext(),
                             Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
@@ -183,7 +183,8 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
                                 Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
-                                BUTTON_TEXT_OK, formName
+                                getString(R.string.profile_get_help_call)
+                                , formName
                         );
 
                         callCostumerSupport(getString(R.string.customer_support_number));
