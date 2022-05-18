@@ -72,11 +72,13 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
+            testCoverageEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled true
             shrinkResources true
+            testCoverageEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
