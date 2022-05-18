@@ -5,26 +5,19 @@ on:
     branches: [ master ]
 
 jobs:
-  unit-tests:
+  test:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: "Check out source code"
-        uses: actions/checkout@v2
-      -
-        name: "Set up node"
-        uses: actions/setup-node@v1
-      -
-        name: "use cache"
-        uses: actions/cache@v2
+      - uses: actions/checkout@v1
+
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
         with:
-          key: "${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}"
-          path: |
-            node_modules
-            */*/node_modules
-      -
-        name: "Install dependencies"
-        run: "npm install"
-      -
-        name: "Run unit tests"
-        run: "npm run test:unit"
+          java-version: 1.8
+
+      - name: Unit Test
+        run: ./gradlew testDebugUnitTest
+        continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
+
+      - name: Android Test Report
+        uses: asadmansr/android-test-report-action@v1.2.0
