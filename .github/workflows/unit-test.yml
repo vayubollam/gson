@@ -5,17 +5,26 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-      - uses: actions/checkout@v2
-
-      - name: Set up node
+      -
+        name: "Check out source code"
+        uses: actions/checkout@v2
+      -
+        name: "Set up node"
         uses: actions/setup-node@v1
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
+      -
+        name: "use cache"
+        uses: actions/cache@v2
+        with:
+          key: "${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}"
+          path: |
+            node_modules
+            */*/node_modules
+      -
+        name: "Install dependencies"
+        run: "npm install"
+      -
+        name: "Run unit tests"
+        run: "npm run test:unit"
