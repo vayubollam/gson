@@ -1,4 +1,4 @@
-name: pull-request
+name: Test Coverage
 
 on:
   pull_request:
@@ -16,5 +16,5 @@ jobs:
           java-version: 1.8
 
       - name: Unit Test
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew connectedCheck
         continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
