@@ -68,14 +68,9 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
 
-    - name: Set up node
-      uses: actions/setup-node@v1
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run tests
-      run: npm tests
+    - name: Unit Test Coverage
+      run: ./gradlew testQACarwashDebugUnitTest
+      continue-on-error: true
 
     #- name: Build and analyze
     #  env:
