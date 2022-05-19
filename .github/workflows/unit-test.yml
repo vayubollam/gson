@@ -21,7 +21,7 @@ jobs:
 
       - name: Add coverage to PR
         id: jacoco
-        uses: actions/github-script@v2
+        uses: SonarSource/sonarcloud-github-action@master
         with:
           paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
