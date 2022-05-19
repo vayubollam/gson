@@ -21,8 +21,9 @@ jobs:
 
       - name: Add coverage to PR
         id: jacoco
+        uses: actions/github-script@v2
         with:
-          paths: ${{ github.workspace }}/build/reports/tests/testQACarwashDebugUnitTest/index.html
+          paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60
