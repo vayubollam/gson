@@ -20,10 +20,7 @@ jobs:
         continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
 
       - name: Add coverage to PR
-        id: jacoco
         uses: SonarSource/sonarcloud-github-action@master
-        with:
-          paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
