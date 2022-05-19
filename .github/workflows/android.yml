@@ -1,9 +1,8 @@
 name: Android CI
 
 on:
-  push:
-    tags:
-      - "*"
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -74,7 +73,7 @@ jobs:
     #    SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
     #  run: ./gradlew clean && ./gradlew build sonarqube --info
 
-    - name: Unit Test
+    - name: Unit Test Coverage
       run: ./gradlew testDebugUnitTest
       continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
 
