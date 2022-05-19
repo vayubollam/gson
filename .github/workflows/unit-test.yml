@@ -21,9 +21,8 @@ jobs:
 
       - name: Add coverage to PR
         id: jacoco
-        uses: cicirello/jacoco-report@v1.2
         with:
-          paths: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+          paths: ${{ github.workspace }}/build/reports/tests/testQACarwashDebugUnitTest/index.html
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60
