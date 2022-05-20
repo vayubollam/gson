@@ -119,4 +119,25 @@ object Constants {
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
+
+    //Image expiry time
+    const val IMAGE_EXPIRY_DATE = "2022/05/23 23:59:00"
+
+    //Home page banners
+    const val SIGN_IN_BANNER = "sign_in_banner"
+    const val CONTACTLESS_PAYMENT_BANNER = "contactless_payment_banner"
+    const val POINTS_CONTEST_BANNER = "points_contest_banner"
+    const val REDEEM_FOR_FREE_GAS_BANNER = "redeem_for_free_gas_banner"
+    const val SAVE_AMOUNT_WITH_RBC_BANNER = "save_amount_with_rbc_banner"
+    const val CARWASH_ACTIVATION_BANNER = "carwash_activation_banner"
+  
+    //account
+    const val UPDATE_PERSONAL_INFORMATION = "Update Personal Information"
+    const val CHANGES_PREFERENCES = "Change Preferences"
+    const val UPDATE_ADDRESS = "Update Address"
+    const val DELETE_ACCOUNT = "Delete Account"
+    const val DELETE_ACCOUNT_NOTES = "Delete Account Notes"
+    const val MY_PETRO_POINTS_ACCOUNT_NAVIGATION_LIST = "My petro points Account Navigation List"
+    const val ANSWER_SECURITY_QUESTION= "Answer security question"
+
 }

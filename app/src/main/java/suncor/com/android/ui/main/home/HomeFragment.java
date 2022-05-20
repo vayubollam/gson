@@ -263,7 +263,8 @@ public class HomeFragment extends BottomNavigationFragment {
             }
         });
 
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true);
+        mViewModel.getDateDifference();
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), true, mViewModel.isExpired);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -308,7 +309,7 @@ public class HomeFragment extends BottomNavigationFragment {
         binding.setLifecycleOwner(this);
         binding.mainLayout.post(() -> {
             ConstraintLayout.LayoutParams privacyButtonParams = (ConstraintLayout.LayoutParams) binding.privacyPolicy.getLayoutParams();
-            int _8dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+            int _8dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,    requireContext().getResources().getDisplayMetrics());
             binding.mainLayout.getLayoutParams().height = binding.scrollView.getHeight() + binding.privacyPolicy.getHeight() + privacyButtonParams.bottomMargin + _8dp;
             binding.mainLayout.requestLayout();
         });
@@ -324,7 +325,8 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         nearestCard = binding.nearestCard;
-        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false);
+        mViewModel.getDateDifference();
+        offersAdapter = new OffersAdapter((MainActivity) getActivity(), false, mViewModel.isExpired);
         binding.offersRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(binding.offersRecyclerview);
@@ -455,7 +457,6 @@ public class HomeFragment extends BottomNavigationFragment {
                     .commit();
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

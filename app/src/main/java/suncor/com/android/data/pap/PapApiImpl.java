@@ -155,6 +155,11 @@ public class PapApiImpl implements PapApi {
         try {
             URI adapterPath = new URI("/adapters/suncorpayatpump/v2/rfmp-secure/payatpump/fuelup/PreAuth/PayByWallet");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.POST, PAYMENT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            if (userLocation == null) {
+                Timber.e("user location is null");
+                result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+                return result;
+            }
             request.addHeader("latitude", Double.toString(userLocation.latitude));
             request.addHeader("longitude", Double.toString(userLocation.longitude));
             request.addHeader("deviceOS", "Android");

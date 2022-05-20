@@ -474,12 +474,14 @@
 
                     <View
                         android:visibility="gone"
+                        android:id="@+id/transaction_separator"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
                         android:background="@color/black_8" />
 
                     <LinearLayout
+                        android:id="@+id/transaction_total"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -506,6 +508,7 @@
                     </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/transaction_tax_inclusive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -609,7 +612,6 @@
                     style="@style/LinkButton.Red.L"
                     android:visibility="visible" />
 
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/receipt_layout"
                     android:layout_width="match_parent"
@@ -648,7 +650,6 @@
                     android:textAllCaps="true" />
 
             </LinearLayout>
-
             </LinearLayout>
         </ScrollView>
 

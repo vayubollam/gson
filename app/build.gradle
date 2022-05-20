@@ -22,7 +22,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode getDate()
-        versionName "3.5.3"
+        versionName "3.6.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_API_KEY", MAP_API_KEY
         resValue "string", "MAP_API_KEY", MAP_API_KEY
@@ -31,6 +31,7 @@ android {
         buildConfigField "String", "PASSES_JWT_TYPE", PASSES_JWT_TYPE
         buildConfigField "String", "PASSES_SERVICE_ACCOUNT_FILE", PASSES_SERVICE_ACCOUNT_FILE
         buildConfigField "String", "KOUNT_MERCHANT_ID", KOUNT_MERCHANT_ID
+        buildConfigField "String", 'ACCOUNT_DELETION_PERIOD_IN_DAYS', ACCOUNT_DELETION_PERIOD_IN_DAYS
     }
 
     dataBinding {

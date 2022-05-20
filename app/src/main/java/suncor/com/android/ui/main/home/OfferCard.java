@@ -9,18 +9,24 @@ public class OfferCard {
     private Drawable image;
     private OfferButton leftButton;
     private OfferButton rightButton;
+    private boolean isImageLogoVisible;
+    private String bannerTag;
 
-    public OfferCard(String text, Drawable image, OfferButton leftButton, OfferButton rightButton) {
+    public OfferCard(String text, Drawable image, OfferButton leftButton, OfferButton rightButton, boolean isImageLogoVisible, String bannerTag) {
         this.text = text;
         this.image = image;
         this.leftButton = leftButton;
         this.rightButton = rightButton;
+        this.isImageLogoVisible = isImageLogoVisible;
+        this.bannerTag = bannerTag;
     }
 
-    public OfferCard(String text, Drawable image, OfferButton button) {
+    public OfferCard(String text, Drawable image, OfferButton button, boolean isImageLogoVisible, String bannerTag) {
         this.text = text;
         this.image = image;
         this.leftButton = button;
+        this.isImageLogoVisible = isImageLogoVisible;
+        this.bannerTag = bannerTag;
     }
 
     public boolean hasRightButton() {
@@ -41,6 +47,22 @@ public class OfferCard {
 
     public OfferButton getRightButton() {
         return rightButton;
+    }
+
+    public boolean isImageLogoVisible() {
+        return isImageLogoVisible;
+    }
+
+    public String getBannerTag() {
+        return bannerTag;
+    }
+
+    public void setBannerTag(String bannerTag) {
+        this.bannerTag = bannerTag;
+    }
+
+    public void setImageLogoVisible(boolean imageLogoVisible) {
+        isImageLogoVisible = imageLogoVisible;
     }
 
     public static class OfferButton {

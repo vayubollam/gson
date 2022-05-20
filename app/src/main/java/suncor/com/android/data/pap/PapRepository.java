@@ -1,19 +1,12 @@
 package suncor.com.android.data.pap;
 
-import android.text.format.DateUtils;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.ActiveSession;
@@ -23,7 +16,6 @@ import suncor.com.android.model.pap.PayByGooglePayRequest;
 import suncor.com.android.model.pap.PayResponse;
 import suncor.com.android.model.pap.PayByWalletRequest;
 import suncor.com.android.model.pap.transaction.Transaction;
-import suncor.com.android.utilities.UserLocalSettings;
 
 @Singleton
 public class PapRepository {

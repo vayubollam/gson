@@ -383,7 +383,9 @@
     <string name="home_signedin_petropoints_balance">You have %s points or $%d off.</string>
     <string name="offers_banner_1_text">Welcome, let\'s get you signed in.</string>
     <string name="offers_banner_2_text">Contactless payment now in-app.</string>
+    <string name="offers_banner_optional_text">Thousands of Prizes.\nMillions of Petro-Points.</string>
     <string name="offers_banner_2_button">Launch feature tour</string>
+    <string name="offers_banner_optional_button">Find out how</string>
     <string name="offers_banner_3a_text">Petro\u2011Points™ = Free gas.</string>
     <string name="offers_banner_3a_button">Explore Petro-Points</string>
     <string name="offers_banner_3b_text">Redeem for free gas, eGift cards and more.</string>
@@ -396,6 +398,7 @@
     <string name="offers_leaving_app_alert_message">We will open your browser.</string>
     <string name="offers_leaving_app_alert_button">Open</string>
     <string name="rbc_url">https://www.rbcroyalbank.com/petro-canada/index.html?suncor&amp;utm_source=suncor&amp;utm_medium=3pb&amp;utm_campaign=petrocanada_3cpl&amp;utm_content=pc_app_link</string>
+    <string name="petro_points_contest_url">https://www.petro-canada.ca/en/personal/discover-petro-points/pump-up-the-points-contest-2022?utm_source=pc_app&amp;utm_medium=app_banner&amp;utm_campaign=putp</string>
 
     <string name="transaction_type_ppt">Transfer</string>
     <string name="transaction_type_bonus">Bonus</string>
@@ -477,7 +480,7 @@
     <string name="msg_001_dialog_try_again">Try again</string>
     <string name="msg_001_dialog_cancel">Cancel</string>
     <string name="profile_security_question_header">Security question</string>
-    <string name="profile_security_question_content">We want to help keep your information safe. Answer your security question to continue.</string>
+    <string name="profile_security_question_content">We don’t mean to slow you down. We just want to ensure it’s you before we proceed.</string>
     <string name="profile_security_question_continue">Continue</string>
     <string name="profile_security_question_checking_answer">Checking your answer…</string>
     <string name="profile_security_question_wrong_answer_alert_title">Incorrect answer.</string>
@@ -740,7 +743,7 @@
     <string name="view_receipt">View Receipt</string>
     <string name="email_receipt_subject">Petro-Canada fuel receipt: %1$s</string>
     <string name="email_receipt_body">Here\'s your fuel receipt for %1$s:\n</string>
-    <string name="your_transaction_availble_in_your_account">Your purchase info will be available from your account. Or, grab your receipt from the pump or in-store.</string>
+    <string name="your_transaction_availble_in_your_account">Your transaction was completed but we were unable to generate your receipt at this time.\nPlease check transactions history within 24 hours for your receipt details or ask for one in-store.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Pump is unavailable</string>
@@ -848,11 +851,48 @@
     <string name="google_passes_termcondition_value_fr">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
 
     <!--Receipt Section-->
-    <string name="member_lock_partial_redemption_title">"Partial points redemption"</string>
-    <string name="member_lock_partial_redemption_message">"Looks like you ran out of points while fuelling. No worries, we still completed the transaction."</string>
     <string name="member_lock_partial_redemption_button">"Dismiss"</string>
 
     <string name="redemption_unavailable_title">Redemption is unavailable </string>
     <string name="redemption_unavailable_description">Petro–Points redemption is unavailable at this time. Please, contact us at 1(800) 688–0220 for more information. </string>
+    <!-- account details-->
+    <string name="account_details_page_header">Account Details</string>
+    <string name="account_details_delete_button">Delete Account</string>
+    <string name="account_details_delete_alert_title">Your account will be deleted within %1$s days. </string>
 
+    <!--account deletion    -->
+
+    <string name="account_delete_page_header">Delete Account</string>
+    <string name="account_deletion_title">We\'re sorry to see you \n leave, %s</string>
+    <string name="account_deletion_subtitle">Here\'s what to expect:</string>
+    <string name="account_delete_point_one">This process may take 30 days to complete. Your account will remain active until it is deleted.</string>
+    <string name="account_delete_point_two">We highly recommend that you export copies of your transactions as you will no longer have access to them via the mobile app or on Petro-Canada.ca.</string>
+    <string name="account_delete_point_three">You will forfeit all unused points if you do not redeem or donate them prior to deletion. You can donate your points by accessing your account on Petro-Canada.ca.</string>
+    <string name="account_deletion_phone_label">Phone (required)</string>
+    <string name="account_deletion_button">START ACCOUNT DELETION</string>
+    <string name="account_deletion_request_submitted">Request Submitted</string>
+    <string name="account_deletion_account_deletion_begun">We\'ve begun your account deletion process.</string>
+    <string name="account_deletion_account_unused_points">You have <font color='#EB182C'>%s </font>unused points.</string>
+    <string name="account_deletion_account_redeem_donate">Don\'t forgot to redeem or donate them\n before your account is deleted.</string>
+
+    <!-- Notes Screen -->
+    <string name="account_deletion_submitted_header">Delete Account</string>
+    <string name="account_deletion_requested">You made an account deletion request on %1$s. It may take up to %2$s days to delete your account. </string>
+    <string name="account_deletion_contact_customer_service">If this request was not made by you, please contact <a href="https://www.petro-canada.ca/en/personal/contact-customer-service">Customer Service.</a> </string>
+    <string name="account_deletion_notes_title">Hi, %1$s</string>
+    <string name="customer_service_url">https://www.petro-canada.ca/en/personal/contact-customer-service</string>
+
+    <string name="account_deletion_subtitle_review">Please review the Information below</string>
+    <string name="account_deletion_address_label">Full Mailing Address</string>
+    <string name="account_deletion_petro_points_label">Petro-Points No.</string>
+    <string name="account_deletion_subtitle_acknowledgement">Acknowledgement </string>
+    <string name="account_deletion_subtitle_acknowledgement_required">(required)</string>
+    <string name="account_deletion_subtitle_acknowledgement_checkbox1">I acknowledge that I will forfeit all unused points if I do not redeem them prior to deletion.</string>
+    <string name="account_deletion_subtitle_acknowledgement_checkbox2">I acknowledge that this action will remove me from the PetroPointsTM program and I will no longer have the ability to earn points.</string>
+    <string name="account_deletion_subtitle_leaving"> Before you leave, do you mind telling us why you\'re leaving?</string>
+    <string name="account_deletion_acknowledgment_validation">You have to agree to all the acknowledgements to begin the account deletion process.</string>
+    <string name="account_deletion_different_reason_validation">This field cannot be left blank if selected !</string>
+    <string name="account_deletion_phone_field_required">This field is required!</string>
+    <string name="account_deletion_submitted">Submitting</string>
+    <string name="different_reason">A different reason:</string>
 </resources>

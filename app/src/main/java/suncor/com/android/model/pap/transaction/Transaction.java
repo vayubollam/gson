@@ -119,6 +119,14 @@ public class Transaction {
         return formatter.format(totalAmount);
     }
 
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     public List<LineItem> getLineItems() {
         return lineItems;
     }
@@ -212,7 +220,6 @@ public class Transaction {
     public double getRbcAlongWithRedemptionSavings() {
         getCalculatedFieldValues();
         return otherDiscount + pointsRedeemed / 1000.0;
-
     }
 
     public MutableLiveData<Integer> getNewBalanceMutableData() {
@@ -288,7 +295,6 @@ public class Transaction {
                 this.basePoints = 0;
                 newBalance = 0;
             }
-
             isFirstTym = false;
         }
     }
@@ -339,7 +345,6 @@ public class Transaction {
 
             return (int) burnedRewardSummary;
         }
-
     }
 
     public static class PetroRedeemedRewards {
@@ -350,7 +355,6 @@ public class Transaction {
 
     public enum TransactionStatus {
         NORMAL,
-        PARTIAL_REDEMPTION,
         NO_REDEMPTION
     }
 
@@ -371,9 +375,9 @@ public class Transaction {
            // Under-pump and points redeemed == actual Fuel-up Amount in points
            if (isUnderPump && getPointsRedeemed() == subtotal * 1000) {
                return TransactionStatus.NORMAL;
-           } else {
-               return TransactionStatus.PARTIAL_REDEMPTION;
            }
+
+           return TransactionStatus.NORMAL;
        }catch (Exception e){
            Timber.e(e.getMessage());
            return TransactionStatus.NORMAL;
@@ -385,9 +389,5 @@ public class Transaction {
         this.subtotal = pumped;
         this.isCLPEDown = isCLPEDown;
         this.pointsRedeemed = pointsRedeemed;
-
     }
-
-
-
 }

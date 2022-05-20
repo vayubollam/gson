@@ -32,8 +32,6 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.SuncorToast;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.ui.main.profile.address.AddressFragment;
-import suncor.com.android.ui.main.profile.info.PersonalInfoFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 
 
@@ -157,35 +155,23 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                         dialog.dismiss();
                     }));
             builder.create().show();
+        });
 
+        binding.getHelpButton.setOnClickListener(v -> {
+            if(Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.profile_tab) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_FAQFragment);
+            }
         });
-        binding.getHelpButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_FAQFragment));
+
         binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
-        binding.personalInformationsButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(), "form_start", new Pair<>("formName", "Update Personal Information"));
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_personalInfoFragment);
-            } else {
-                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(PersonalInfoFragment.PERSONAL_INFO_FRAGMENT);
-                Navigation.findNavController(requireView()).navigate(action);
-            }
-        });
-        binding.preferencesButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Change Preferences"));
-            Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_preferencesFragment);
-        });
+
+        binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_accountDetailsFragment));
+
         binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_aboutFragment));
-        binding.addressButton.setOnClickListener(v -> {
-            AnalyticsUtils.logEvent(getContext(),"form_start", new Pair<>("formName","Update Address"));
-            if (profileSharedViewModel.getEcryptedSecurityAnswer() != null) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_addressFragment);
-            } else {
-                ProfileFragmentDirections.ActionProfileTabToSecurityQuestionValidationFragment2 action = ProfileFragmentDirections.actionProfileTabToSecurityQuestionValidationFragment2(AddressFragment.ADDRESS_FRAGMENT);
-                Navigation.findNavController(requireView()).navigate(action);
-            }
-        });
+
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
+
 
     @Override
     protected String getScreenName() {

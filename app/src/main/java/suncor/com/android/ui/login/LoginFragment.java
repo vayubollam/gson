@@ -183,10 +183,10 @@ public class LoginFragment extends BaseFragment {
             if (fingerPrintManager.isFingerPrintExistAndEnrolled() && fingerPrintManager.isFingerprintActivated()) {
 
                 BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                        .setTitle(getResources().getString(R.string.login_fingerprint_alert_title))
+                        .setTitle(getString(R.string.login_fingerprint_alert_title))
                         .setSubtitle(email)
-                        .setDescription(getResources().getString(R.string.login_fingerprint_alert_desc))
-                        .setNegativeButtonText(getResources().getString(R.string.login_fingerprint_alert_negative_button)).build();
+                        .setDescription(getString(R.string.login_fingerprint_alert_desc))
+                        .setNegativeButtonText(getString(R.string.login_fingerprint_alert_negative_button)).build();
 
                 keyStoreStorage.retrieveWithBiometric(CREDENTIALS_KEY, getActivity(), promptInfo, new BiometricListener() {
                     @Override

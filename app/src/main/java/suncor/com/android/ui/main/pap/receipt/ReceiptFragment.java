@@ -25,11 +25,13 @@ import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.review.model.ReviewErrorCode;
+import com.google.android.play.core.review.testing.FakeReviewManager;
 import com.google.android.play.core.tasks.RuntimeExecutionException;
 import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -43,6 +45,8 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.PdfUtil;
 
+import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
+
 public class ReceiptFragment extends MainActivityFragment {
 
     @Inject
@@ -51,6 +55,7 @@ public class ReceiptFragment extends MainActivityFragment {
     ViewModelFactory viewModelFactory;
     private ReceiptViewModel viewModel;
     private FragmentReceiptBinding binding;
+    private String transactionId;
     private boolean isGooglePay;
     private String preAuthRedeemPoints;
     private String preAuthFuelAmount;
@@ -121,13 +126,13 @@ public class ReceiptFragment extends MainActivityFragment {
                 AnalyticsUtils.setCurrentScreenName(requireActivity(), "pay-at-pump-receipt-loading");
             } else if (result.status == Resource.Status.ERROR) {
                 isLoading.set(false);
-                if (sessionManager.getProfile().getFirstName() != null) {
+                if (sessionManager.getProfile() != null && sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 }
                 binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
-                binding.appBar.setOnClickListener((view) -> goBack());
+                binding.appBar.setOnClickListener((view)-> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 Transaction transaction = result.data;
@@ -143,10 +148,15 @@ public class ReceiptFragment extends MainActivityFragment {
                 binding.paymentMethod.setText(result.data.getPaymentType(requireContext(), isGooglePay));
 
                 binding.paymentType.setText(result.data.getPaymentType(requireContext(), isGooglePay));
-                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
-                if (Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()) {
+                binding.transactionGreetings.setText(String.format(getString(R.string.thank_you),  sessionManager.getProfile() != null ? sessionManager.getProfile().getFirstName() : ""));
+                if(Objects.isNull(result.data.receiptData) || result.data.receiptData.isEmpty()){
                     binding.shareButton.setVisibility(View.GONE);
                     binding.viewReceiptBtn.setVisibility(View.GONE);
+                    if(result.data.getTotalAmount() <= 0) {
+                        binding.transactionTotal.setVisibility(View.GONE);
+                    }
+                    binding.transactionTaxInclusive.setVisibility(View.GONE);
+                    binding.transactionSeparator.setVisibility(View.GONE);
                 } else {
                     isReceiptValid = true;
                     binding.receiptDetails.setText(result.data.getReceiptFormatted());
@@ -213,9 +223,6 @@ public class ReceiptFragment extends MainActivityFragment {
                     case NO_REDEMPTION:
                         showNoRedemptionPopup();
                         break;
-                    case PARTIAL_REDEMPTION:
-                        showPartialRedemptionPopup();
-                        break;
                 }
 
                 //Update Profile Points: in-case of CLPE UP, Update petro points in profile. OtherWise profile points will remain the same.
@@ -230,14 +237,6 @@ public class ReceiptFragment extends MainActivityFragment {
         navController.popBackStack();
     }
 
-    /*
-     *Partial Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/Partial Redemption.
-     */
-    private void showPartialRedemptionPopup() {
-        AlertDialog.Builder dialog = createAlert(R.string.member_lock_partial_redemption_message, R.string.member_lock_partial_redemption_title);
-        dialog.setCancelable(true);
-        dialog.show();
-    }
 
     /*
      *No Redemption: Alert dialog in order to let the user know that their operation could not be completed due to Member locking/No Redemption.

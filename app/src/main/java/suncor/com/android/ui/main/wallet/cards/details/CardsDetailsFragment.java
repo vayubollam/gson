@@ -111,7 +111,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
                 //track screen name
                 String screenName;
-                if (clickedCardIndex == 0) {
+                if (clickedCardIndex <= 0 || clickedCardIndex > viewModel.cards.getValue().size() ) {
                     //need to check
                     screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
