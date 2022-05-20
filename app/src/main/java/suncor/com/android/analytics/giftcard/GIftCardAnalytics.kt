@@ -1,14 +1,10 @@
 package suncor.com.android.analytics.giftcard
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import suncor.com.android.analytics.BaseAnalytics
 import suncor.com.android.analytics.BaseEvents
 import suncor.com.android.analytics.BaseParams
-import suncor.com.android.model.merchants.EGift
-
-
 
 object RewardsSignedInAnalytics : BaseAnalytics(){
 
@@ -42,12 +38,12 @@ object RewardsDiscoveryAnalytics : BaseAnalytics() {
     const val SCREEN_NAME_REWARDS_DISCOVERY_LOADING = "discover-petro-points-loading"
 
     @JvmStatic
-    fun logRewardsGuestFormErrorErrorMessage(
+    fun logRewardsDiscoveryFormErrorErrorMessage(
         context: Context,
         errorMessage: String,
         formName: String
     ) {
-        logFormErrorEvent(context, errorMessage, GiftCardValueConfirmationAnalytics.REDEEM_FOR + formName + GiftCardValueConfirmationAnalytics.E_GIFT_CARD)
+        logFormErrorEvent(context, errorMessage,  formName )
     }
 
 }
@@ -60,7 +56,7 @@ object RewardsGuestAnalytics : BaseAnalytics() {
         errorMessage: String,
         formName: String
     ) {
-        logFormErrorEvent(context, errorMessage, GiftCardValueConfirmationAnalytics.REDEEM_FOR + formName + GiftCardValueConfirmationAnalytics.E_GIFT_CARD)
+        logFormErrorEvent(context, errorMessage,  formName )
     }
 }
 

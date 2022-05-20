@@ -8,4 +8,7 @@ object AnalyticsConstants {
     const val SCROLL_DEPTH_50 = "50"
     const val SCROLL_DEPTH_75 = "75"
     const val SCROLL_DEPTH_95 = "95"
+
+    const val REWARDS_GUEST_FORM_NAME = "Discover Petro-Points Guest"
+    const val REWARDS_DISCOVERY_FORM_NAME = "Discover Petro-Points"
 }

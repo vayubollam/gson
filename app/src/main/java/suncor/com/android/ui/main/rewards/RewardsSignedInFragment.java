@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -15,16 +14,11 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javax.inject.Inject;
-
 import suncor.com.android.R;
-import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.analytics.giftcard.RewardsSignedInAnalytics;
 import suncor.com.android.databinding.FragmentRewardsSignedinBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -158,10 +152,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 } else if (percentage > 50 && !scroll50) {
                     scroll50 = true;
                     RewardsSignedInAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_50);
-                } else if (percentage > 80 && !scroll75) {
+                } else if (percentage > 75 && !scroll75) {
                     scroll75 = true;
                     RewardsSignedInAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_75);
-                } else if (percentage > 100 && !scroll95) {
+                } else if (percentage > 95 && !scroll95) {
                     scroll95 = true;
                     RewardsSignedInAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_95);
                 }

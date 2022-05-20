@@ -5,6 +5,7 @@ import static suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAna
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -41,6 +42,7 @@ import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.ConnectionUtil;
 
 
 public class GiftCardValueConfirmationFragment extends MainActivityFragment implements OnBackPressedListener {
@@ -107,6 +109,15 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     );
 
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
+                        String errorDescription;
+                        if(ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message)){
+                            errorDescription = "Petro-Points card locked";
+                        }else {
+                            errorDescription = "Failed to complete order";
+                        }
+                        GiftCardValueConfirmationAnalytics.logGiftCardConfirmationErrorMessage(requireActivity(),
+                                errorDescription,
+                                viewModel.getGiftCardItem().getShortName());
                         GiftCardValueConfirmationAnalytics.logAlertShown(
                                 requireActivity(),
                                 getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")",
@@ -132,10 +143,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     } else {
 
                         GiftCardValueConfirmationAnalytics.logError(requireActivity(), getString(R.string.msg_e001_title));
-//                        AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-//                                new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)),
-//                                new Pair<>(AnalyticsUtils.Param.FORMNAME, "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"));
-                        Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card").show();
+
+                        prepareErrorDialog(getActivity(), "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card").show();
                     }
                     break;
             }
@@ -324,5 +333,35 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 this.getClass().getSimpleName());
 
         viewModel.sendRedeemData();
+    }
+
+    public  AlertDialog prepareErrorDialog(Context context, String formName ) {
+        boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
+        String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
+
+        GiftCardValueConfirmationAnalytics.logGiftCardConfirmationErrorMessage(requireActivity(),
+                analyticsName,
+                formName);
+
+
+        GiftCardValueConfirmationAnalytics.logAlertShown(requireActivity(),
+                analyticsName,
+                formName);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                .setMessage(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message)
+
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+
+                    GiftCardValueConfirmationAnalytics.logAlertInteraction(requireActivity(),
+                            analyticsName,
+                            context.getString(R.string.ok),
+                            formName);
+
+                    dialog.dismiss();
+                });
+        return builder.create();
     }
 }

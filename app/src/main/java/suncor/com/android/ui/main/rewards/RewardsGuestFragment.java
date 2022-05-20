@@ -35,6 +35,7 @@ import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Constants;
 
+import static suncor.com.android.analytics.AnalyticsConstants.REWARDS_GUEST_FORM_NAME;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
@@ -76,8 +77,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             binding.layout.addView(webView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
 
-
-
         binding.joinButton.bringToFront();
         binding.joinButton.setOnClickListener(v -> {
            checkForApiResponse();
@@ -114,10 +113,10 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                     } else if (percentage > 50 && !scroll50) {
                         scroll50 = true;
                         RewardsGuestAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_50);
-                    } else if (percentage > 80 && !scroll75) {
+                    } else if (percentage > 75 && !scroll75) {
                         scroll75 = true;
                         RewardsGuestAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_75);
-                    } else if (percentage > 100 && !scroll95) {
+                    } else if (percentage > 95 && !scroll95) {
                         scroll95 = true;
                         RewardsGuestAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_95);
                     }
@@ -135,9 +134,8 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
 
-
                 RewardsGuestAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
-                        String.valueOf(error.getDescription()), "");
+                        String.valueOf(error.getDescription()), REWARDS_GUEST_FORM_NAME);
             }
         });
         webView = binding.webview;
@@ -178,7 +176,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                     break;
                 case ERROR:
 
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
+                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), REWARDS_GUEST_FORM_NAME);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> requireActivity().finish());
                     dialog.show();
@@ -193,7 +191,8 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                 + "(" + requireActivity().getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
 
         RewardsGuestAnalytics.logAlertDialogShown(requireActivity(),
-                analyticsName, "");
+                analyticsName,
+                REWARDS_GUEST_FORM_NAME);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
                 .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
@@ -204,7 +203,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                     RewardsGuestAnalytics.logAlertDialogInteraction(requireActivity(),
                             analyticsName,
                             requireContext().getString(R.string.ok),
-                            "");
+                            REWARDS_GUEST_FORM_NAME);
                     dialog.dismiss();
                 });
         return builder.create();

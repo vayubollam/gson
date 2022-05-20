@@ -74,7 +74,7 @@ abstract class BaseAnalytics {
         @JvmStatic
         fun logAlertDialogInteraction(context: Context,alertTitle: String, alertSelection: String,formName : String){
             val bundle = Bundle()
-            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+            bundle.putString(BaseParams.ALERT_TITLE,alertTitle.take(100))
             bundle.putString(BaseParams.ALERT_SELECTION,alertSelection)
             bundle.putString(FORM_NAME,formName)
 
@@ -133,7 +133,7 @@ abstract class BaseAnalytics {
         @JvmStatic
         fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
             val bundle = Bundle()
-            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+            bundle.putString(BaseParams.ALERT_TITLE,alertTitle.take(100))
             bundle.putString(FORM_NAME,formName)
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
         }

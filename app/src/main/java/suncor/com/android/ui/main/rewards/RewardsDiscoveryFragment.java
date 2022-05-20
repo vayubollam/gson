@@ -9,18 +9,16 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableBoolean;
 import androidx.navigation.Navigation;
-
 import java.util.Locale;
 import suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics;
-import suncor.com.android.analytics.giftcard.RewardsGuestAnalytics;
 import suncor.com.android.databinding.FragmentRewardsDiscoveryBinding;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
+import static suncor.com.android.analytics.AnalyticsConstants.REWARDS_DISCOVERY_FORM_NAME;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
@@ -78,10 +76,10 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
                 } else if (percentage > 50 && !scroll50) {
                     scroll50 = true;
                     RewardsDiscoveryAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_50);
-                } else if (percentage > 80 && !scroll75) {
+                } else if (percentage > 75 && !scroll75) {
                     scroll75 = true;
                     RewardsDiscoveryAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_75);
-                } else if (percentage > 100 && !scroll95) {
+                } else if (percentage > 95 && !scroll95) {
                     scroll95 = true;
                     RewardsDiscoveryAnalytics.logScrollDepth(requireContext(), SCROLL_DEPTH_95);
                 }
@@ -99,8 +97,8 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
 
-                RewardsDiscoveryAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
-                        String.valueOf(error.getDescription()), "");
+                RewardsDiscoveryAnalytics.logRewardsDiscoveryFormErrorErrorMessage(requireActivity(),
+                        String.valueOf(error.getDescription()), REWARDS_DISCOVERY_FORM_NAME);
             }
         });
     }
