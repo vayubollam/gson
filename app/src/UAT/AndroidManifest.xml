@@ -4,8 +4,8 @@
 
 
     <application
-        android:icon="@mipmap/ic_launcher_uat"
-        android:roundIcon="@mipmap/ic_launcher_round_uat"
+        android:icon="@mipmap/ic_pride"
+        android:roundIcon="@mipmap/ic_pride_round"
         tools:replace="android:icon,android:roundIcon">
 
     </application>
