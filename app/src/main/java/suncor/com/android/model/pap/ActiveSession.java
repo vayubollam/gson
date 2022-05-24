@@ -16,12 +16,14 @@ public class ActiveSession {
 
     public String preAuthPoints;
     public String fuelUpAmount;
+    public int pointsToRedeem;
 
     @SerializedName("LastStatus")
     public String lastStatus;
     public String lastPaymentSourceId;
     public String lastPaymentProviderName;
     public String lastStatusUpdated;
+    public int lastPointsToRedeem;
     public String lastTransId;
 
     public String status;

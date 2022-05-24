@@ -109,7 +109,7 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
             if (activeSession) {
                 ActiveSession session = homeViewModel.getCachedActiveSession();
                 if(session!= null){
-                    FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(session.pumpNumber, session.preAuthPoints, session.fuelUpAmount,homeViewModel.getPetroPointsBalance());
+                    FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(session.pumpNumber, String.valueOf(session.pointsToRedeem), session.fuelUpAmount,homeViewModel.getPetroPointsBalance());
                     Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                     dismiss();
                 }

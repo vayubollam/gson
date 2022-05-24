@@ -297,7 +297,7 @@ public class HomeFragment extends BottomNavigationFragment {
             ActiveSession session = mViewModel.getCachedActiveSession();
             FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(
                     session != null ? session.pumpNumber : "",
-                    session != null? session.preAuthPoints: "",
+                    session != null? String.valueOf(session.pointsToRedeem): "",
                     session != null ? session.fuelUpAmount: "",
                     mViewModel.getPetroPointsBalance());
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
