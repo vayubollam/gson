@@ -324,6 +324,10 @@ public LiveData<Resource<FuelUp>> isPAPAvailable() {
         return  papRepository.getActiveSession();
     }
 
+    public ActiveSession getCachedActiveSession(){
+        return papRepository.getCachedActiveSession();
+    }
+
     public LiveData<Resource<Integer>> getGeoFenceLiveData() {
         return Transformations.map(settingsApi.retrieveSettings(), result ->
                 new Resource<>(result.status, result.data != null ? result.data.getSettings().getPap().getGeofenceDistanceMeters() : 0, result.message));

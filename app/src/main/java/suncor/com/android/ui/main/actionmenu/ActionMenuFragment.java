@@ -92,7 +92,6 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 }
             }
         }));
-
     }
 
     @Override
@@ -108,9 +107,9 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding.actionFuelUpButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_fuel_up)));
             if (activeSession) {
-                ActiveSession data = Objects.requireNonNull(homeViewModel.getActiveSession().getValue()).data;
-                if(data!= null){
-                    FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(data.pumpNumber, data.preAuthPoints, data.fuelUpAmount,homeViewModel.getPetroPointsBalance());
+                ActiveSession session = homeViewModel.getCachedActiveSession();
+                if(session!= null){
+                    FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(session.pumpNumber, session.preAuthPoints, session.fuelUpAmount,homeViewModel.getPetroPointsBalance());
                     Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                     dismiss();
                 }
