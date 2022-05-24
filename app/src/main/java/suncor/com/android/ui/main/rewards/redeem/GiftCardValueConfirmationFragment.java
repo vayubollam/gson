@@ -32,6 +32,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
+import suncor.com.android.analytics.AnalyticsConstants;
 import suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
@@ -111,27 +112,27 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
                         String errorDescription;
                         if(ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message)){
-                            errorDescription = "Petro-Points card locked";
+                            errorDescription = AnalyticsConstants.SUNCOR_030_DESCRIPTION;
                         }else {
-                            errorDescription = "Failed to complete order";
+                            errorDescription = AnalyticsConstants.SUNCOR_026_DESCRIPTION;
                         }
                         GiftCardValueConfirmationAnalytics.logGiftCardConfirmationErrorMessage(requireActivity(),
                                 errorDescription,
                                 viewModel.getGiftCardItem().getShortName());
                         GiftCardValueConfirmationAnalytics.logAlertShown(
                                 requireActivity(),
-                                getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")",
+                                getString(R.string.redemption_unavailable_title) + "(" + getString(R.string.redemption_unavailable_message) + ")",
                                  viewModel.getGiftCardItem().getShortName());
 
 
                         new AlertDialog.Builder(requireContext())
-                                .setTitle(R.string.msg_e030_title)
-                                .setMessage(R.string.msg_e030_message)
+                                .setTitle(R.string.redemption_unavailable_title)
+                                .setMessage(R.string.redemption_unavailable_message)
                                 .setPositiveButton(R.string.ok, (dialog, which) -> {
 
                                     GiftCardValueConfirmationAnalytics.logAlertInteraction(
                                             requireActivity(),
-                                            getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")",
+                                            getString(R.string.redemption_unavailable_title) + "(" + getString(R.string.redemption_unavailable_message) + ")",
                                             getString(R.string.ok),
                                              viewModel.getGiftCardItem().getShortName()
                                     );

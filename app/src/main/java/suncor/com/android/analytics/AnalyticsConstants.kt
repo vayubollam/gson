@@ -11,4 +11,7 @@ object AnalyticsConstants {
 
     const val REWARDS_GUEST_FORM_NAME = "Discover Petro-Points Guest"
     const val REWARDS_DISCOVERY_FORM_NAME = "Discover Petro-Points"
+
+    const val SUNCOR_030_DESCRIPTION = "Petro-Points card locked"
+    const val SUNCOR_026_DESCRIPTION = "Failed to complete order"
 }

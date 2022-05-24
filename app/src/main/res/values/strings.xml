@@ -765,6 +765,8 @@
     <string name="select_value">Value</string>
     <string name="authorization_petropoints_balance">You\'re starting at %s points</string>
 
+    <string name="redemption_unavailable_title">Redemption is unavailable.</string>
+    <string name="redemption_unavailable_message">Petro-Points redemption is  unavailable currently. Please try again later.</string>
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Thanks, %1$s!
         Squeaky-clean is coming right up.</string>

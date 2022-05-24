@@ -754,6 +754,9 @@
     <string name="select_value">Valeur</string>
     <string name="authorization_petropoints_balance">Vous commencez à %s points</string>
 
+    <string name="redemption_unavailable_title">L\'échange n\'est pas disponible.</string>
+    <string name="redemption_unavailable_message">L\'échange de Petro-Points n\'est pas disponible pour le moment. Veuillez réessayer plus tard.</string>
+
     <!-- Carwash POE -->
     <string name="thank_you_carwash">Merci, %1$s!
         La propreté, droit devant.</string>
