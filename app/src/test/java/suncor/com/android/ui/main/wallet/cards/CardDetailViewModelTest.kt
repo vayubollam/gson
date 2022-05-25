@@ -216,11 +216,13 @@ class CardDetailViewModelTest {
             androidx.lifecycle.Observer { event: Resource<SettingsResponse> -> }
         apiResponse.observeForever(dummyObserver)
             val gateway = GooglePassesApiGateway()
-//        Assert.assertEquals(loyalityData,
-//            cardDetailsViewModel.settings.value?.data?.settings?.let {
-//                gateway.insertLoyalityCard(context,loyalityData,
-//                    it?.googlePass)
-//            })
+        Assert.assertEquals(loyalityData,
+            cardDetailsViewModel.settings.value?.data?.settings?.let {
+                gateway.insertLoyalityCard(
+                    context, loyalityData,
+                    it?.googlePass, error("")
+                )
+            })
     }
 
 
