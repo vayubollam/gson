@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -24,6 +25,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -33,6 +36,7 @@ import suncor.com.android.R;
 import suncor.com.android.databinding.FragmentActionButtonMenuBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.main.home.HomeViewModel;
 import suncor.com.android.ui.main.pap.fuelup.FuelUpFragmentDirections;
@@ -88,7 +92,6 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
                 }
             }
         }));
-
     }
 
     @Override
@@ -104,9 +107,13 @@ public class ActionMenuFragment extends BottomSheetDialogFragment {
         binding.actionFuelUpButton.setOnClickListener(view -> {
             AnalyticsUtils.logEvent(getActivity(), AnalyticsUtils.Event.menuTap, new Pair<>(AnalyticsUtils.Param.menuSelection, getString(R.string.action_fuel_up)));
             if (activeSession) {
-                FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("", "0", "0",homeViewModel.getPetroPointsBalance());
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
-                dismiss();
+                ActiveSession session = homeViewModel.getCachedActiveSession();
+                if(session!= null){
+                    FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(session.pumpNumber, String.valueOf(session.pointsToRedeem), session.fuelUpAmount,homeViewModel.getPetroPointsBalance());
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+                    dismiss();
+                }
+
             }
             else if (!inProximity) {
                 // Handle Offsite navigation

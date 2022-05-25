@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -83,6 +84,7 @@ public class HomeViewModel extends ViewModel {
     public ObservableInt headerImage = new ObservableInt();
 
     public ObservableBoolean activeFuellingSession = new ObservableBoolean();
+    public ActiveSession activeSession;
     public ObservableField<String> fuellingStateMessage = new ObservableField<>();
 
     public ObservableBoolean isExpired = new ObservableBoolean(false);
@@ -320,6 +322,10 @@ public LiveData<Resource<FuelUp>> isPAPAvailable() {
 
     public LiveData<Resource<ActiveSession>> getActiveSession() {
         return  papRepository.getActiveSession();
+    }
+
+    public ActiveSession getCachedActiveSession(){
+        return papRepository.getCachedActiveSession();
     }
 
     public LiveData<Resource<Integer>> getGeoFenceLiveData() {

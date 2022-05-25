@@ -42,7 +42,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<ActiveSession>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/session");
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v2/rfmp-secure/payatpump/fuelup/session");
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send(new WLResponseListener() {

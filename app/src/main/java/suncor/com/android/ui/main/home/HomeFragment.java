@@ -50,6 +50,7 @@ import suncor.com.android.databinding.FragmentHomeSignedinBinding;
 import suncor.com.android.databinding.HomeNearestCardBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.model.Resource;
+import suncor.com.android.model.pap.ActiveSession;
 import suncor.com.android.model.pap.FuelUp;
 import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.common.Alerts;
@@ -293,7 +294,12 @@ public class HomeFragment extends BottomNavigationFragment {
         });
 
         binding.fuellingSessionCard.setOnClickListener((view) -> {
-            FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment("", "0","0",mViewModel.getPetroPointsBalance() );
+            ActiveSession session = mViewModel.getCachedActiveSession();
+            FuelUpFragmentDirections.ActionFuelUpToFuellingFragment action = FuelUpFragmentDirections.actionFuelUpToFuellingFragment(
+                    session != null ? session.pumpNumber : "",
+                    session != null? String.valueOf(session.pointsToRedeem): "",
+                    session != null ? session.fuelUpAmount: "",
+                    mViewModel.getPetroPointsBalance());
             Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         });
         binding.fuellingSessionCard.setLoading(true);
