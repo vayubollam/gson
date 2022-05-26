@@ -50,6 +50,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
 
     private FragmentRewardsBinding binding;
     private final ObservableBoolean isWebViewLoading = new ObservableBoolean();
+    private final ObservableBoolean isButtonVisible = new ObservableBoolean();
     private ObservableWebView webView;
     private SecurityQuestionViewModel securityQuestionViewModel;
 
@@ -70,6 +71,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRewardsBinding.inflate(inflater, container, false);
         binding.setIsWebviewLoading(isWebViewLoading);
+        binding.setIsButtonVisible(isButtonVisible);
         if (webView == null || isWebViewLoading.get()) {
             initWebView();
         } else {
@@ -94,6 +96,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
         binding.webview.getSettings().setJavaScriptEnabled(true);
         binding.webview.loadUrl("file:///android_asset/rewards/index-guest-" + language + ".html");
         isWebViewLoading.set(true);
+        isButtonVisible.set(true);
 
         RewardsGuestAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_REWARDS_DISCOVERY,
                 this.getClass().getSimpleName());
@@ -136,6 +139,8 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
 
                 RewardsGuestAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
                         String.valueOf(error.getDescription()), REWARDS_GUEST_FORM_NAME);
+
+                isButtonVisible.set(false);
             }
         });
         webView = binding.webview;
@@ -175,7 +180,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                    navigateToEnrollmentScreen();
                     break;
                 case ERROR:
-
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), REWARDS_GUEST_FORM_NAME);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> requireActivity().finish());

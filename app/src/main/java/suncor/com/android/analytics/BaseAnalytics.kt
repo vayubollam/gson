@@ -41,9 +41,9 @@ abstract class BaseAnalytics {
 
     fun logFormErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
         val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage)
-        bundle.putString(FORM_NAME,formName)
-        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
+        bundle.putString(ERROR_MESSAGE,errorMessage.take(100))
+        bundle.putString(FORM_NAME,formName.take(100))
+        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage.take(100))
         FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
     }
 
