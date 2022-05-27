@@ -776,7 +776,8 @@
     <string name="carwash_zero_error_alert_error_message">Cette carte n\'est plus valide.</string>
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
-
+    <string name="carwash_daily_wash_used_alert">Lavage quotidien utilisé</string>
+    <string name="carwash_daily_vacuum_used_alert">Utilisation quotidienne de l\'aspirateur effectuée</string>
     <string name="cards_days">%1$s jours</string>
     <string name="cards_washes">%1$s lavages</string>
 

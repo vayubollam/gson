@@ -95,6 +95,8 @@
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
 
+        <receiver android:name=".ui.main.carwash.TimerReceiver"/>
+
 
     </application>
 

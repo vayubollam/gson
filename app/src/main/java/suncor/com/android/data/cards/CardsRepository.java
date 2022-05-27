@@ -120,6 +120,19 @@ public class CardsRepository {
         });
     }
 
+    public LiveData<Resource<CardDetail>> getSPCardDetails(String cardNumber){
+        return Transformations.map(cardsApi.retrieveSPCardDetail(cardNumber), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                for (int i = cachedCards.size() - 1; i >= 0; i--) {
+                    if (result.data.getCardNumber()==cachedCards.get(i).getCardNumber()) {
+                         cachedCards.add(result.data);
+                    }
+                }
+            }
+            return result;
+        });
+    }
+
     public Calendar getTimeOfLastUpdate() {
         return timeOfLastUpdate;
     }

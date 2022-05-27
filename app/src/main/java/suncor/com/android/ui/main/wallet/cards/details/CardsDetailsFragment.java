@@ -82,6 +82,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         mainViewModel.setLinkedToAccount(false);
         mainViewModel.setNewCardAdded(false);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
+        viewModel.setTimerManager(getContext());
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         locationLiveData.observe(this, location -> {
             currentLocation = (new LatLng(location.getLatitude(), location.getLongitude()));
@@ -93,8 +95,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
         loadType = CardsDetailsFragmentArgs.fromBundle(getArguments()).getLoadType();
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setLoadType(loadType);
+        viewModel.startPeriodicService(getContext());
         if (loadType == CardsLoadType.REDEEMED_SINGLE_TICKETS)
             viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
         if (loadType == CardsLoadType.NEWLY_ADD_CARD)
@@ -149,6 +151,8 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
+                    Timber.d("VISIBLECARD-: "+viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+
                 }
             }
 
@@ -184,6 +188,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         attributes.screenBrightness = previousBrightness;
         getActivity().getWindow().setAttributes(attributes);
+        viewModel.cancelPeriodicService(getContext());
     }
 
     @Override
@@ -230,7 +235,11 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
-                } else if(cardDetail.isSuspendedCard()) {
+                }
+                else if(viewModel.getIsVacuumProgress().getValue()){
+
+                }
+                else if (cardDetail.isSuspendedCard()) {
                     CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
                     AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,"Enter 3 digits", cardDetail.getCardType());

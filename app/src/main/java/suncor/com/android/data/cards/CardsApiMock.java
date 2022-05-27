@@ -75,4 +75,9 @@ public class CardsApiMock implements CardsApi {
         thread.start();
         return result;
     }
+
+    @Override
+    public LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber) {
+        return null;
+    }
 }

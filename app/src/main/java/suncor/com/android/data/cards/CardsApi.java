@@ -14,4 +14,9 @@ public interface CardsApi {
     LiveData<Resource<CardDetail>> addCard(AddCardRequest request);
 
     LiveData<Resource<CardDetail>> removeCard(CardDetail cardDetail);
+
+    LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber);
+
+
+
 }

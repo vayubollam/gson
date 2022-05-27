@@ -791,6 +791,8 @@
     <string name="carwash_zero_error_alert_error_message">This card is no longer valid.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
+    <string name="carwash_daily_wash_used_alert">Daily wash used</string>
+    <string name="carwash_daily_vacuum_used_alert">Daily vacuum used</string>
     <string name="carwash_generate_barcode">Generate Barcode</string>
     <string name="carwash_activate_carwash">Activate Carwash</string>
     <string name="carwash_security_code">car-wash-security-code</string>

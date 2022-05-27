@@ -30,6 +30,8 @@ public class CardsApiImpl implements CardsApi {
     private final static String GET_CARDS_ADAPTER_PATH = "/adapters/suncor/v6/rfmp-secure/cards";
     private final static String ADD_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
     private final static String DELETE_CARDS_ADAPTER_PATH = "/adapters/suncor/v4/rfmp-secure/cards";
+    private final static String GET_SP_CARD_DETAIL_ADAPTER_PATH = "/mfp/api/adapters/suncor/v6/rfmp-secure/cards/SP/";
+
     public final int ADD_CARD_TIMEOUT = 60_000;
 
     private Gson gson;
@@ -74,6 +76,7 @@ public class CardsApiImpl implements CardsApi {
 
         return result;
     }
+
 
     @Override
     public LiveData<Resource<CardDetail>> addCard(AddCardRequest cardRequest) {
@@ -143,4 +146,42 @@ public class CardsApiImpl implements CardsApi {
 
         return result;
     }
+
+
+    @Override
+    public LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber) {
+        Timber.d("fetching SP card details: " + cardNumber);
+        MutableLiveData<Resource<CardDetail>> result = new MutableLiveData<>();
+        result.postValue(Resource.loading());
+        try {
+            URI adapterPath = new URI(GET_SP_CARD_DETAIL_ADAPTER_PATH+cardNumber);
+            WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            request.send(new WLResponseListener() {
+                @Override
+                public void onSuccess(WLResponse wlResponse) {
+                    String jsonText = wlResponse.getResponseText();
+                    Timber.d("SP Card API success, response:\n" + jsonText);
+
+                    CardDetail cards = gson.fromJson(jsonText, CardDetail.class);
+                    if(Objects.nonNull(cards)){
+                        result.postValue(Resource.success(cards));
+                    }
+                }
+
+                @Override
+                public void onFailure(WLFailResponse wlFailResponse) {
+                    Timber.d("Cards API failed, " + wlFailResponse.toString());
+                    Timber.e(wlFailResponse.toString());
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                }
+            });
+        } catch (URISyntaxException e) {
+            Timber.e(e.toString());
+            result.postValue(Resource.error(ErrorCodes.GENERAL_ERROR));
+        }
+
+        return result;
+    }
+
+
 }

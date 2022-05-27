@@ -17,6 +17,15 @@ public class CardDetail {
     private int unitsRemaining = INVALID_BALANCE;
     private int daysRemaining = INVALID_BALANCE;
     private int vacuumRemaining = INVALID_BALANCE;
+    private boolean canWash;
+    private boolean canVacuum;
+    private boolean lastWashStoreId;
+    private boolean lastVacuumSiteId;
+    private boolean washInProgress;
+    private boolean vacuumInProgress;
+    private String  lastWashDt;
+    private String  lastVacuumDt;
+
 
     //Defaulting to 5cent if the balance service is down
     private float cpl = 0.05f;
@@ -110,11 +119,11 @@ public class CardDetail {
     }
 
     public String getFirebaseScreenName() {
-        return "my-petro-points-wallet-view-"+getCardName();
+        return "my-petro-points-wallet-view-" + getCardName();
     }
 
     public String getFirebaseCarwashScreenName() {
-        return "car-wash-card-view-"+getCardName();
+        return "car-wash-card-view-" + getCardName();
     }
 
     public String getLongName() {
@@ -168,9 +177,9 @@ public class CardDetail {
         PPTS, PETRO_CANADA, PARTNER
     }
 
-   public boolean isSuspendedCard(){
+    public boolean isSuspendedCard() {
         return (status != null && status.equals("Suspended"));
-   }
+    }
 
     public int getVacuumRemaining() {
         return vacuumRemaining;
@@ -178,5 +187,69 @@ public class CardDetail {
 
     public void setVacuumRemaining(int vacuumRemaining) {
         this.vacuumRemaining = vacuumRemaining;
+    }
+
+    public boolean isCanWash() {
+        return canWash;
+    }
+
+    public void setCanWash(boolean canWash) {
+        this.canWash = canWash;
+    }
+
+    public boolean isCanVacuum() {
+        return canVacuum;
+    }
+
+    public void setCanVacuum(boolean canVacuum) {
+        this.canVacuum = canVacuum;
+    }
+
+    public boolean isLastWashStoreId() {
+        return lastWashStoreId;
+    }
+
+    public void setLastWashStoreId(boolean lastWashStoreId) {
+        this.lastWashStoreId = lastWashStoreId;
+    }
+
+    public boolean isLastVacuumSiteId() {
+        return lastVacuumSiteId;
+    }
+
+    public void setLastVacuumSiteId(boolean lastVacuumSiteId) {
+        this.lastVacuumSiteId = lastVacuumSiteId;
+    }
+
+    public boolean isWashInProgress() {
+        return washInProgress;
+    }
+
+    public void setWashInProgress(boolean washInProgress) {
+        this.washInProgress = washInProgress;
+    }
+
+    public boolean isVacuumInProgress() {
+        return vacuumInProgress;
+    }
+
+    public void setVacuumInProgress(boolean vacuumInProgress) {
+        this.vacuumInProgress = vacuumInProgress;
+    }
+
+    public String getLastWashDt() {
+        return lastWashDt;
+    }
+
+    public void setLastWashDt(String lastWashDt) {
+        this.lastWashDt = lastWashDt;
+    }
+
+    public String getLastVacuumDt() {
+        return lastVacuumDt;
+    }
+
+    public void setLastVacuumDt(String lastVacuumDt) {
+        this.lastVacuumDt = lastVacuumDt;
     }
 }

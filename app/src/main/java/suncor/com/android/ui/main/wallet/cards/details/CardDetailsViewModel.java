@@ -1,6 +1,10 @@
 package suncor.com.android.ui.main.wallet.cards.details;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -8,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +29,9 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
+import suncor.com.android.ui.main.carwash.TimerReceiver;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
+import suncor.com.android.utilities.Timber;
 
 public class CardDetailsViewModel extends ViewModel {
 
@@ -35,8 +42,12 @@ public class CardDetailsViewModel extends ViewModel {
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isVacuumProgress = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isWashProgress = new MutableLiveData<>();
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
+    PendingIntent pendingIntent;
+    final int interval = 360000;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, SettingsApi settingsApi) {
@@ -114,8 +125,9 @@ public class CardDetailsViewModel extends ViewModel {
     }
 
     private List<CardDetail> findNewlyAddedCard(List<CardDetail> petroCanadaCards) {
-        for(CardDetail card : petroCanadaCards){
-            if(card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber)) return Collections.singletonList(card);
+        for (CardDetail card : petroCanadaCards) {
+            if (card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber))
+                return Collections.singletonList(card);
         }
         return petroCanadaCards;
     }
@@ -133,26 +145,54 @@ public class CardDetailsViewModel extends ViewModel {
         this.isCarWashBalanceZero.setValue(isBalanceZero);
     }
 
+    private void getVaccumProgress(List<CardDetail> cards) {
+        boolean vacuumProgress = false;
+        for (CardDetail card : cards) {
+            if (((card.getCardType() == CardType.SP) && card.isVacuumInProgress() == true))
+            {
+                cardsRepository.getSPCardDetails("");
+            }
+
+        }
+        this.isVacuumProgress.setValue(vacuumProgress);
+    }
+
+    private void getWashProgress(List<CardDetail> cards) {
+        boolean washProgress = false;
+        for (CardDetail card : cards) {
+            if (((card.getCardType() == CardType.SP)
+                    && card.isVacuumInProgress() == true)) washProgress = true;
+        }
+        this.isWashProgress.setValue(washProgress);
+    }
+
     public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
         return isCarWashBalanceZero;
     }
 
+    public MutableLiveData<Boolean> getIsVacuumProgress() {
+        return isVacuumProgress;
+    }
 
-    protected Profile getUserProfile(){
+    public MutableLiveData<Boolean> getIsWashProgress() {
+        return isWashProgress;
+    }
+
+    protected Profile getUserProfile() {
         return sessionManager.getProfile();
     }
 
-    protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex ){
+    protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex) {
         LoyalityData loyalityData = new LoyalityData();
         loyalityData.setBarcode(cards.getValue().get(clickedCardIndex).getCardNumber().replace(" ", ""));
         ExpandedCardItem expandedCardItem = new ExpandedCardItem(context, cards.getValue().get(clickedCardIndex));
         loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
         loyalityData.setNameLabel(context.getString(R.string.google_passes_name_label));
         loyalityData.setNameLocalizedLabel(context.getString(R.string.google_passes_name_label_fr));
-        loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName() );
+        loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName());
         loyalityData.setEmailLabel(context.getString(R.string.google_passes_email_label));
         loyalityData.setEmailLocalizedLabel(context.getString(R.string.google_passes_email_label_fr));
-        loyalityData.setEmailValue(getUserProfile().getEmail() );
+        loyalityData.setEmailValue(getUserProfile().getEmail());
         loyalityData.setDetailsLabel(context.getString(R.string.google_passes_detail_label));
         loyalityData.setDetailsLocalizedLabel(context.getString(R.string.google_passes_detail_label_fr));
         loyalityData.setDetailsValue(context.getString(R.string.google_passes_detail_value));
@@ -172,16 +212,41 @@ public class CardDetailsViewModel extends ViewModel {
         return loyalityData;
     }
 
-    public LiveData<Resource<SettingsResponse>> getSettings(){
+    public LiveData<Resource<SettingsResponse>> getSettings() {
         return settingsApi.retrieveSettings();
     }
 
-    public void refreshCards(){
+    public void refreshCards() {
         _cards.addSource(cardsRepository.getCards(true), result -> {
             if (result.status == Resource.Status.SUCCESS) {
                 _cards.setValue(result.data);
                 updateCarWashBalance(_cards.getValue());
             }
         });
+        Timber.d("Refreshed Cards");
     }
+
+
+    protected void setTimerManager(Context context) {
+        Intent alarmIntent = new Intent(context, TimerReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+    }
+
+    protected void startPeriodicService(Context context) {
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        /* Repeating on every 6 minutes interval */
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                interval, pendingIntent);
+
+    }
+
+    protected void cancelPeriodicService(Context context) {
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+        Toast.makeText(context, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+    }
+
+
 }
