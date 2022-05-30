@@ -118,7 +118,7 @@ public class EnrollmentsApiImpl implements EnrollmentsApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.e("Retrieving security questions failed due to:" + wlFailResponse.toString());
-                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                    result.postValue(Resource.error(wlFailResponse.getResponseJSON().optString("errorMessage")));
                 }
             });
 

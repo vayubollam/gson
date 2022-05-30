@@ -180,10 +180,12 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                    navigateToEnrollmentScreen();
                     break;
                 case ERROR:
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), REWARDS_GUEST_FORM_NAME);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.setOnDismissListener((listener) -> requireActivity().finish());
-                    dialog.show();
+                    assert arrayListResource.message != null;
+                    RewardsGuestAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
+                            arrayListResource.message,
+                            REWARDS_GUEST_FORM_NAME);
+
+                    showErrorAlertPopup().show();
             }
         });
     }
@@ -212,4 +214,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                 });
         return builder.create();
     }
+
+
 }

@@ -60,7 +60,7 @@ public class CardQuestionFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         securityQuestionViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
-        securityQuestionViewModel.fetchQuestion();
+
     }
 
     @Override
@@ -83,6 +83,7 @@ public class CardQuestionFragment extends BaseFragment {
 
         assert getArguments() != null;
         boolean isNavigatedFromRewardsGuestScreen = getArguments().getBoolean(Constants.RESULTANT_VALUE, false);
+        if(!isNavigatedFromRewardsGuestScreen) securityQuestionViewModel.fetchQuestion();
         isLoading.set(true);
         cardImg.post(() -> {
             float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();

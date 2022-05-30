@@ -64,7 +64,7 @@ object GiftCardValueConfirmationAnalytics : BaseAnalytics() {
 
     const val SCREEN_NAME_GIFT_CARD_CONFIRMATION = "my-petro-points-redeem-info-"
      const val REDEEM_FOR = "Redeem for "
-     const val E_GIFT_CARD = "eGift card"
+     const val E_GIFT_CARD = " eGift card"
      const val CLICK_TO_REDEEM = "Click to redeem"
 
 
