@@ -1,19 +1,14 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
-
 import java.util.Objects;
-
 import javax.inject.Inject;
-
 import suncor.com.android.R;
 import suncor.com.android.analytics.giftcard.MerchantDetailsAnalytics;
 import suncor.com.android.databinding.FragmentMerchantDetailsBinding;
@@ -21,7 +16,6 @@ import suncor.com.android.mfp.SessionManager;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.ui.main.rewards.redeem.GenericEGiftCard;
-import suncor.com.android.utilities.AnalyticsUtils;
 
 
 public class MerchantDetailsFragment extends MainActivityFragment {

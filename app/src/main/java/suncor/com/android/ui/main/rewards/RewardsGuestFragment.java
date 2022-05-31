@@ -1,10 +1,8 @@
 package suncor.com.android.ui.main.rewards;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +10,20 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
-
 import java.util.Locale;
-
 import suncor.com.android.R;
-import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.analytics.giftcard.RewardsGuestAnalytics;
 import suncor.com.android.databinding.FragmentRewardsBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
-import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.webview.ObservableWebView;
 import suncor.com.android.ui.enrollment.EnrollmentActivity;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.ui.main.BottomNavigationFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Constants;
 
