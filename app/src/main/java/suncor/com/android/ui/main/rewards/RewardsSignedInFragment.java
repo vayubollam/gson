@@ -244,7 +244,10 @@ public class RewardsSignedInFragment extends BottomNavigationFragment {
                 }
             } else {
                 RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToMerchantDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToMerchantDetailsFragment(genericEGiftCard);
-                Navigation.findNavController(requireView()).navigate(action);
+                NavDestination navDestination = Navigation.findNavController(requireView()).getCurrentDestination();
+                if (navDestination != null && navDestination.getId() == R.id.rewards_signedin_tab) {
+                    Navigation.findNavController(requireView()).navigate(action);
+                }
             }
         } else {
             RewardsSignedInFragmentDirections.ActionRewardsSignedinTabToRewardsDetailsFragment action = RewardsSignedInFragmentDirections.actionRewardsSignedinTabToRewardsDetailsFragment(genericEGiftCard);
