@@ -21,7 +21,7 @@ object BaseEvents {
     const val ALERT_INTERACTION = "alert_interaction"
 
     /*Station Location*/
-    const val LOCATION_SEARCH = "Location_search"
+    const val LOCATION_SEARCH = "location_search"
     const val STATION_ADD_TO_FAVOURITE = "station_add_to_favourite"
 
     /*Common*/

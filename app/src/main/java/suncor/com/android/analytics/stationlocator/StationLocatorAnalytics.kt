@@ -22,7 +22,8 @@ object StationsAnalytics : BaseAnalytics() {
 
     @JvmStatic
     fun logFiltersApplied(context: Context, location: String, filterList: String) {
-        val bundle = Bundle()
+
+        if(location.isBlank() && filterList.isBlank()) return
 
         var locationValue = location
         if(location.isBlank()) locationValue = NOT_SET
@@ -30,6 +31,7 @@ object StationsAnalytics : BaseAnalytics() {
         var filterValue = filterList
         if(filterValue.isBlank()) filterValue = NOT_SET
 
+        val bundle = Bundle()
         bundle.putString(BaseParams.LOCATION, locationValue)
         bundle.putString(BaseParams.FILTERS_APPLIED, filterValue)
         logEvent(context, BaseEvents.LOCATION_SEARCH, bundle = bundle)
