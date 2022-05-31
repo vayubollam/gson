@@ -19,8 +19,8 @@ public class CardDetail {
     private int vacuumRemaining = INVALID_BALANCE;
     private boolean canWash;
     private boolean canVacuum;
-    private boolean lastWashStoreId;
-    private boolean lastVacuumSiteId;
+    private String lastWashStoreId;
+    private String lastVacuumSiteId;
     private boolean washInProgress;
     private boolean vacuumInProgress;
     private String  lastWashDt;
@@ -205,22 +205,6 @@ public class CardDetail {
         this.canVacuum = canVacuum;
     }
 
-    public boolean isLastWashStoreId() {
-        return lastWashStoreId;
-    }
-
-    public void setLastWashStoreId(boolean lastWashStoreId) {
-        this.lastWashStoreId = lastWashStoreId;
-    }
-
-    public boolean isLastVacuumSiteId() {
-        return lastVacuumSiteId;
-    }
-
-    public void setLastVacuumSiteId(boolean lastVacuumSiteId) {
-        this.lastVacuumSiteId = lastVacuumSiteId;
-    }
-
     public boolean isWashInProgress() {
         return washInProgress;
     }
@@ -251,5 +235,21 @@ public class CardDetail {
 
     public void setLastVacuumDt(String lastVacuumDt) {
         this.lastVacuumDt = lastVacuumDt;
+    }
+
+    public String getLastWashStoreId() {
+        return lastWashStoreId;
+    }
+
+    public void setLastWashStoreId(String lastWashStoreId) {
+        this.lastWashStoreId = lastWashStoreId;
+    }
+
+    public String getLastVacuumSiteId() {
+        return lastVacuumSiteId;
+    }
+
+    public void setLastVacuumSiteId(String lastVacuumSiteId) {
+        this.lastVacuumSiteId = lastVacuumSiteId;
     }
 }

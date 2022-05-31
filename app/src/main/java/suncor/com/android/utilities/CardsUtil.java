@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Pair;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -130,37 +133,40 @@ public class CardsUtil {
         alertWashDialog.show();
     }
 
-    public static void showDailyWashUsedAlert(Context context,String time,String address,String type) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
+    public static void showDailyWashUsedAlert(Context context, String time, String address) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_wash_used_message,time,address))
                 .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
-                  dialog.dismiss();
+                    dialog.dismiss();
                 });
         builder.show();
     }
+    public static void showDailyVacuumUsedAlert(Context context, String time, String address) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_vacuum_used_message,time,address))
+                .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                    dialog.dismiss();
+                });
+        builder.show();
+    }
+
     public static void showWashInprogressAlert(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.reload_card_alet_title)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
-                .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dialog, which) -> {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_canada_reload_url)));
-                    context.startActivity(browserIntent);
-                }).setNegativeButton(context.getResources().getString(R.string.reload_card_alert_cancel), (dialog, which) -> {
-                    AnalyticsUtils.logEvent(context,AnalyticsUtils.Event.alertInteraction,
-                            new Pair<>(AnalyticsUtils.Param.alertTitle, context.getString(R.string.reload_card_alet_title)),
-                            new Pair<>(AnalyticsUtils.Param.alertSelection,context.getString(R.string.reload_card_alert_description)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.session_in_progress_title)).setMessage(context.getResources().getString(R.string.session_wash_in_progress_message))
+                .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
                 });
         builder.show();
+        final Button positiveButton = builder.show().getButton(AlertDialog.BUTTON_NEGATIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        positiveButtonLL.gravity = Gravity.CENTER;
+        positiveButton.setLayoutParams(positiveButtonLL);
     }
+
     public static void showVacuumInprogressAlert(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.reload_card_alet_title)).setMessage(context.getResources().getString(R.string.reload_card_alert_description))
-                .setPositiveButton(context.getResources().getString(R.string.reload_card_alert_visit_web), (dialog, which) -> {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.petro_canada_reload_url)));
-                    context.startActivity(browserIntent);
-                }).setNegativeButton(context.getResources().getString(R.string.reload_card_alert_cancel), (dialog, which) -> {
-                    AnalyticsUtils.logEvent(context,AnalyticsUtils.Event.alertInteraction,
-                            new Pair<>(AnalyticsUtils.Param.alertTitle, context.getString(R.string.reload_card_alet_title)),
-                            new Pair<>(AnalyticsUtils.Param.alertSelection,context.getString(R.string.reload_card_alert_description)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.session_in_progress_title)).setMessage(context.getResources().getString(R.string.session_vacuum_in_progress_message))
+                .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
                 });
         builder.show();
+        final Button positiveButton = builder.show().getButton(AlertDialog.BUTTON_NEGATIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        positiveButtonLL.gravity = Gravity.CENTER;
+        positiveButton.setLayoutParams(positiveButtonLL);
     }
 }

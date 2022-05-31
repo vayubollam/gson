@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.station.Station;
 
 public interface CardsApi {
     LiveData<Resource<ArrayList<CardDetail>>> retrieveCards();
@@ -17,6 +18,7 @@ public interface CardsApi {
 
     LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber);
 
+    LiveData<Resource<Station>> retrieveStoreDetails(String storeId);
 
 
 }

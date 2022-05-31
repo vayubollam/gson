@@ -49,6 +49,14 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public void onBindViewHolder(@NonNull CardsDetailHolder holder, int position) {
         holder.binding.setCard(cardItems.get(position));
         holder.binding.setIsVacuumEnable(isVacuumEnabled);
+        if (cardItems.get(position).isVacuumInProgress()||!cardItems.get(position).isCanVacuum())
+        {
+            holder.binding.imvVacuum.setImageResource(R.drawable.ic_local_vacuum_black);
+        }
+        if (cardItems.get(position).isWashInProgress()||!cardItems.get(position).isCanWash())
+        {
+            holder.binding.imvWash.setImageResource(R.drawable.ic_local_car_wash_black);
+        }
         holder.binding.moreButton.setOnClickListener(v -> callBack.accept(cardItems.get(position)));
         if(holder.binding.cardReloadButton.isShown()) {
             holder.binding.cardReloadButton.setOnClickListener(cardReloadListener);

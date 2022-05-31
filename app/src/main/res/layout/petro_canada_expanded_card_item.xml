@@ -391,6 +391,7 @@
                 app:visibleGone="@{card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST}">
 
                 <ImageView
+                    android:id="@+id/imvWash"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -425,6 +426,7 @@
                 app:visibleGone="@{isVacuumEnable &amp; (card.cardType == CardType.SP || card.cardType == CardType.WAG || card.cardType == CardType.ST)}">
 
                 <ImageView
+                    android:id="@+id/imvVacuum"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"

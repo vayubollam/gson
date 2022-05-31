@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -16,6 +17,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -29,7 +32,7 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
-import suncor.com.android.ui.main.carwash.TimerReceiver;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.Timber;
 
@@ -44,10 +47,11 @@ public class CardDetailsViewModel extends ViewModel {
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
     private MutableLiveData<Boolean> isVacuumProgress = new MutableLiveData<>();
     private MutableLiveData<Boolean> isWashProgress = new MutableLiveData<>();
+    protected MutableLiveData<Boolean> isServiceRunning = new MutableLiveData<>();
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
-    PendingIntent pendingIntent;
     final int interval = 360000;
+    private Timer carousalTimer;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, SettingsApi settingsApi) {
@@ -145,29 +149,38 @@ public class CardDetailsViewModel extends ViewModel {
         this.isCarWashBalanceZero.setValue(isBalanceZero);
     }
 
-    private void getVaccumProgress(List<CardDetail> cards) {
-        boolean vacuumProgress = false;
+    private void updateSPStatus(List<CardDetail> cards) {
+        boolean isVacuumprogress = false;
+        boolean isWashProgress = false;
         for (CardDetail card : cards) {
-            if (((card.getCardType() == CardType.SP) && card.isVacuumInProgress() == true))
-            {
-                cardsRepository.getSPCardDetails("");
+            if (card.getCardType() == CardType.SP && card.isVacuumInProgress()) {
+                isVacuumprogress = true;
+            }
+            if (card.getCardType() == CardType.SP && card.isWashInProgress()) {
+                isWashProgress = true;
             }
 
         }
-        this.isVacuumProgress.setValue(vacuumProgress);
+        this.isVacuumProgress.setValue(isVacuumprogress);
+        this.isWashProgress.setValue(isWashProgress);
     }
 
-    private void getWashProgress(List<CardDetail> cards) {
-        boolean washProgress = false;
-        for (CardDetail card : cards) {
-            if (((card.getCardType() == CardType.SP)
-                    && card.isVacuumInProgress() == true)) washProgress = true;
-        }
-        this.isWashProgress.setValue(washProgress);
+    public LiveData<Resource<CardDetail>> getProgressDetails(String cardNum) {
+        return cardsRepository.getSPCardDetails(cardNum);
+    }
+
+
+    public LiveData<Resource<Station>> getStoreDetails(String storeId) {
+        return cardsRepository.getStoreDetails(storeId);
+
     }
 
     public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
         return isCarWashBalanceZero;
+    }
+
+    public MutableLiveData<Boolean> getIsServiceRunning() {
+        return isServiceRunning;
     }
 
     public MutableLiveData<Boolean> getIsVacuumProgress() {
@@ -221,31 +234,29 @@ public class CardDetailsViewModel extends ViewModel {
             if (result.status == Resource.Status.SUCCESS) {
                 _cards.setValue(result.data);
                 updateCarWashBalance(_cards.getValue());
+                updateSPStatus(_cards.getValue());
             }
         });
         Timber.d("Refreshed Cards");
     }
 
 
-    protected void setTimerManager(Context context) {
-        Intent alarmIntent = new Intent(context, TimerReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+    protected void setRecurringService(String cardNumber) {
+        carousalTimer = new Timer(); // At this line a new Thread will be created
+        carousalTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                getProgressDetails(cardNumber);
+                isServiceRunning.postValue(true);
+                Timber.d("--SERVICE STARTED--");
+            }
+        }, interval, interval); // delay
     }
 
-    protected void startPeriodicService(Context context) {
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        /* Repeating on every 6 minutes interval */
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                interval, pendingIntent);
-
-    }
-
-    protected void cancelPeriodicService(Context context) {
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        manager.cancel(pendingIntent);
-        Toast.makeText(context, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+    void stopRecurringService() {
+        carousalTimer.cancel();
+        Timber.d("--SERVICE STOP--");
+        isServiceRunning.postValue(false);
     }
 
 
