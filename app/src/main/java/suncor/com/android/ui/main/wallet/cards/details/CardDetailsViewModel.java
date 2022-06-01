@@ -1,19 +1,13 @@
 package suncor.com.android.ui.main.wallet.cards.details;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
-import android.widget.Toast;
 
+import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -45,13 +39,16 @@ public class CardDetailsViewModel extends ViewModel {
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isVacuumProgress = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isWashProgress = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isVacuumProgress = new MutableLiveData<>(false);
+    private MutableLiveData<Boolean> isWashProgress = new MutableLiveData<>(false);
+    private MutableLiveData<Boolean> isCanVacuum = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isCanWash = new MutableLiveData<>();
+
     protected MutableLiveData<Boolean> isServiceRunning = new MutableLiveData<>();
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
     final int interval = 360000;
-    private Timer carousalTimer;
+    private Timer carousalTimer=new Timer();
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, SettingsApi settingsApi) {
@@ -149,18 +146,33 @@ public class CardDetailsViewModel extends ViewModel {
         this.isCarWashBalanceZero.setValue(isBalanceZero);
     }
 
-    private void updateSPStatus(List<CardDetail> cards) {
+    public void updateSPStatus(CardDetail card) {
+        Timber.d("SP STATUS CALLED" + card.getCardNumber() + getIsVacuumProgress());
         boolean isVacuumprogress = false;
         boolean isWashProgress = false;
-        for (CardDetail card : cards) {
-            if (card.getCardType() == CardType.SP && card.isVacuumInProgress()) {
-                isVacuumprogress = true;
-            }
-            if (card.getCardType() == CardType.SP && card.isWashInProgress()) {
-                isWashProgress = true;
-            }
+        boolean isCanWash = false;
+        boolean isCanVacuum = false;
 
+
+        if (card.getCardType() == CardType.SP && card.isVacuumInProgress()) {
+            isVacuumprogress = true;
         }
+        if (card.getCardType() == CardType.SP && card.isWashInProgress()) {
+            Timber.d("CHECKED AND CHANGED");
+            isWashProgress = true;
+        }
+        if (card.getCardType() == CardType.SP && card.isCanWash()) {
+            Timber.d("CHECKED AND CHANGED");
+            isCanWash = true;
+        }
+        if (card.getCardType() == CardType.SP && card.isCanVacuum()) {
+            Timber.d("CHECKED AND CHANGED");
+            isCanVacuum = true;
+        }
+
+
+        this.isCanWash.setValue(isCanWash);
+        this.isCanVacuum.setValue(isCanVacuum);
         this.isVacuumProgress.setValue(isVacuumprogress);
         this.isWashProgress.setValue(isWashProgress);
     }
@@ -189,6 +201,14 @@ public class CardDetailsViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getIsWashProgress() {
         return isWashProgress;
+    }
+
+    public MutableLiveData<Boolean> getIsCanVacuum() {
+        return isCanVacuum;
+    }
+
+    public MutableLiveData<Boolean> getIsCanWash() {
+        return isCanWash;
     }
 
     protected Profile getUserProfile() {
@@ -234,7 +254,6 @@ public class CardDetailsViewModel extends ViewModel {
             if (result.status == Resource.Status.SUCCESS) {
                 _cards.setValue(result.data);
                 updateCarWashBalance(_cards.getValue());
-                updateSPStatus(_cards.getValue());
             }
         });
         Timber.d("Refreshed Cards");
@@ -242,7 +261,6 @@ public class CardDetailsViewModel extends ViewModel {
 
 
     protected void setRecurringService(String cardNumber) {
-        carousalTimer = new Timer(); // At this line a new Thread will be created
         carousalTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
