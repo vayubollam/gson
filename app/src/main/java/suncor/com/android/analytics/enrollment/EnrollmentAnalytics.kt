@@ -23,6 +23,7 @@ object EnrollmentAnalytics : BaseAnalytics() {
     const val METHOD_SIGN_UP = "Sign-Up"
     const val METHOD_ACTIVATION = "Activation"
     const val SCREEN_NAME_PROVINCE_SECURITY_HELP = "province-security-help"
+    const val SCREEN_NAME_PROVINCE_LIST = "province-list"
     const val SCREEN_NAME_ACTIVATE_SUCCESS = "activate-success"
     const val SCREEN_NAME_SIGNUP_SUCCESS = "sign-up-success"
     const val SCREEN_NAME_ACTIVATE_I_HAVE_CARD = "activate-i-have-a-card"

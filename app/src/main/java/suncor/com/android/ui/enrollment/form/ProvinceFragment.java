@@ -82,7 +82,7 @@ public class ProvinceFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_SECURITY_HELP,SCREEN_CLASS_NAME);
+        EnrollmentAnalytics.logScreenNameClass(requireActivity(),EnrollmentAnalytics.SCREEN_NAME_PROVINCE_LIST,SCREEN_CLASS_NAME);
     }
 
     public void provinceSelected(int selectedProvince) {
