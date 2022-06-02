@@ -81,6 +81,13 @@ public class CardsDetailsAdapter extends RecyclerView.Adapter<CardsDetailsAdapte
     public void updateVacuumToggle(boolean vacuumToggle){
       isVacuumEnabled.set(vacuumToggle);
     }
+    public void replaceItem(ExpandedCardItem card, final int pos) {
+        cardItems.remove(pos);
+        cardItems.add(pos,card);
+
+        notifyItemChanged(pos);
+        notifyDataSetChanged();
+    }
 
     public class CardsDetailHolder extends RecyclerView.ViewHolder {
         PetroCanadaExpandedCardItemBinding binding;

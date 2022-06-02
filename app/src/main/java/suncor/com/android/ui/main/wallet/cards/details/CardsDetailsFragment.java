@@ -72,7 +72,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
     private boolean vacuumToggle = false;
-    ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
 
@@ -83,7 +82,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
         mainViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainViewModel.class);
         mainViewModel.setLinkedToAccount(false);
         mainViewModel.setNewCardAdded(false);
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         locationLiveData = new LocationLiveData(getContext().getApplicationContext());
         locationLiveData.observe(this, location -> {
             currentLocation = (new LatLng(location.getLatitude(), location.getLongitude()));
@@ -95,6 +93,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         clickedCardIndex = CardsDetailsFragmentArgs.fromBundle(getArguments()).getCardIndex();
         loadType = CardsDetailsFragmentArgs.fromBundle(getArguments()).getLoadType();
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CardDetailsViewModel.class);
         viewModel.setLoadType(loadType);
         if (loadType == CardsLoadType.REDEEMED_SINGLE_TICKETS)
             viewModel.setRedeemedTicketNumbers(mainViewModel.getSingleTicketNumber());
@@ -102,7 +101,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
             viewModel.setNewlyAddedCardNumber(mainViewModel.getNewAddedCard().getCardNumber());
         viewModel.retrieveCards();
         viewModel.cards.observe(getViewLifecycleOwner(), arrayListResource -> {
-
+            ArrayList<ExpandedCardItem> expandedCardItems = new ArrayList<>();
             for (CardDetail cardDetail : arrayListResource) {
                 expandedCardItems.add(new ExpandedCardItem(getContext(), cardDetail));
             }
@@ -110,11 +109,25 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 cardsDetailsAdapter.setCardItems(expandedCardItems);
                 cardsDetailsAdapter.notifyDataSetChanged();
                 binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
-
-
                 binding.setNumCards(expandedCardItems.size());
                 binding.executePendingBindings();
-                viewModel.updateSPStatus(expandedCardItems.get(clickedCardIndex).getCardDetail());
+                if (expandedCardItems.get(clickedCardIndex).getCardType() == CardType.SP) {
+                    viewModel.getProgressDetails(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber()).observe(getViewLifecycleOwner(), result -> {
+                        if (result.status == Resource.Status.LOADING) {
+                            showAddCardProgress();
+                        } else if (result.status == Resource.Status.ERROR) {
+                            hideAddCardProgress();
+                        } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                            hideAddCardProgress();
+                            if (cardsDetailsAdapter != null) {
+                                if (result.data.isWashInProgress() || result.data.isVacuumInProgress() || !result.data.isCanWash() || !result.data.isCanVacuum()) {
+                                    ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result.data);
+                                    cardsDetailsAdapter.replaceItem(updatedItem, clickedCardIndex);
+                                }
+                            }
+                        }
+                    });
+                }
                 if ((expandedCardItems.get(clickedCardIndex).getCardType() == CardType.SP) && (!expandedCardItems.get(clickedCardIndex).getCardDetail().isCanWash() || expandedCardItems.get(clickedCardIndex).getCardDetail().isWashInProgress() || !expandedCardItems.get(clickedCardIndex).getCardDetail().isCanVacuum() || expandedCardItems.get(clickedCardIndex).getCardDetail().isVacuumInProgress())) {
                     viewModel.setRecurringService(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                 }
@@ -157,14 +170,17 @@ public class CardsDetailsFragment extends MainActivityFragment {
                     clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
                     Timber.d("VISIBLECARD-: " + viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
                     if (viewModel.cards.getValue().get(clickedCardIndex).getCardType().equals(CardType.SP)) {
-                        if (viewModel.cards.getValue().get(clickedCardIndex).isVacuumInProgress()||viewModel.cards.getValue().get(clickedCardIndex).isWashInProgress()||!viewModel.cards.getValue().get(clickedCardIndex).isCanVacuum()||!viewModel.cards.getValue().get(clickedCardIndex).isCanWash()) {
+                        if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail().isVacuumInProgress() || cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isWashInProgress() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isCanVacuum() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isCanWash()) {
                             viewModel.getProgressDetails(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber()).observe(getViewLifecycleOwner(), result -> {
                                 if (result.status == Resource.Status.LOADING) {
+                                    showAddCardProgress();
                                 } else if (result.status == Resource.Status.ERROR) {
+                                    hideAddCardProgress();
                                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                                    hideAddCardProgress();
                                     if (cardsDetailsAdapter != null) {
-                                        Timber.d("ADAPTER BLOCK");
-                                        viewModel.updateSPStatus(result.data);
+                                        ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result.data);
+                                        cardsDetailsAdapter.replaceItem(updatedItem, clickedCardIndex);
                                     }
                                 }
                             });
@@ -188,6 +204,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                hideAddCardProgress();
                 clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
                 if (viewModel.getIsServiceRunning().getValue() != null && viewModel.getIsServiceRunning().getValue()) {
                     viewModel.stopRecurringService();
@@ -249,6 +266,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener activeCarWashListener = view -> {
+       CardDetail cardDetail= cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail();
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarWashClick,
                 new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.cards.getValue().get(clickedCardIndex).getLongName())
         );
@@ -265,15 +283,14 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
                 Navigation.findNavController(getView()).navigate(action);
             } else {
-                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
                 if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
                         viewModel.getIsCarWashBalanceZero().getValue()) {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
-                } else if (viewModel.getIsWashProgress().getValue() && cardDetail.getCardType() == CardType.SP) {
+                } else if (cardDetail.isWashInProgress() && cardDetail.getCardType() == CardType.SP) {
                     CardsUtil.showWashInprogressAlert(getContext());
-                } else if (!viewModel.getIsCanWash().getValue() && cardDetail.getCardType() == CardType.SP) {
+                } else if (!cardDetail.isCanWash() && cardDetail.getCardType() == CardType.SP) {
                     if (cardDetail.getLastWashStoreId() != null && cardDetail.getCardType() == CardType.SP) {
                         showStoreAddressAlert(cardDetail.getLastWashStoreId(), Constants.TYPE_WASH, cardDetail.getLastWashDt());
                     }
@@ -313,16 +330,14 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener vacuumListener = view -> {
-        CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+        CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail();
         ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-        if (cardDetail.getCardType() == CardType.SP) {
-            if (!viewModel.getIsCanVacuum().getValue()) {
-                if (cardDetail.getLastVacuumSiteId() != null && cardDetail.getCardType() == CardType.SP) {
-                    showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
-                }
-            } else if (viewModel.getIsVacuumProgress().getValue()) {
-                CardsUtil.showVacuumInprogressAlert(getContext());
+        if (!cardDetail.isCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            if (cardDetail.getLastVacuumSiteId() != null) {
+                showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
             }
+        } else if (cardDetail.isVacuumInProgress() && cardDetail.getCardType() == CardType.SP) {
+            CardsUtil.showVacuumInprogressAlert(getContext());
         } else {
             CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
                     action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();

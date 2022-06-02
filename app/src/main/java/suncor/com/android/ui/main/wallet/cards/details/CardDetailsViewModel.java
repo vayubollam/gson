@@ -39,10 +39,6 @@ public class CardDetailsViewModel extends ViewModel {
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isVacuumProgress = new MutableLiveData<>(false);
-    private MutableLiveData<Boolean> isWashProgress = new MutableLiveData<>(false);
-    private MutableLiveData<Boolean> isCanVacuum = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isCanWash = new MutableLiveData<>();
 
     protected MutableLiveData<Boolean> isServiceRunning = new MutableLiveData<>();
     private String newlyAddedCardNumber;
@@ -146,36 +142,7 @@ public class CardDetailsViewModel extends ViewModel {
         this.isCarWashBalanceZero.setValue(isBalanceZero);
     }
 
-    public void updateSPStatus(CardDetail card) {
-        Timber.d("SP STATUS CALLED" + card.getCardNumber() + getIsVacuumProgress());
-        boolean isVacuumprogress = false;
-        boolean isWashProgress = false;
-        boolean isCanWash = false;
-        boolean isCanVacuum = false;
 
-
-        if (card.getCardType() == CardType.SP && card.isVacuumInProgress()) {
-            isVacuumprogress = true;
-        }
-        if (card.getCardType() == CardType.SP && card.isWashInProgress()) {
-            Timber.d("CHECKED AND CHANGED");
-            isWashProgress = true;
-        }
-        if (card.getCardType() == CardType.SP && card.isCanWash()) {
-            Timber.d("CHECKED AND CHANGED");
-            isCanWash = true;
-        }
-        if (card.getCardType() == CardType.SP && card.isCanVacuum()) {
-            Timber.d("CHECKED AND CHANGED");
-            isCanVacuum = true;
-        }
-
-
-        this.isCanWash.setValue(isCanWash);
-        this.isCanVacuum.setValue(isCanVacuum);
-        this.isVacuumProgress.setValue(isVacuumprogress);
-        this.isWashProgress.setValue(isWashProgress);
-    }
 
     public LiveData<Resource<CardDetail>> getProgressDetails(String cardNum) {
         return cardsRepository.getSPCardDetails(cardNum);
@@ -195,23 +162,7 @@ public class CardDetailsViewModel extends ViewModel {
         return isServiceRunning;
     }
 
-    public MutableLiveData<Boolean> getIsVacuumProgress() {
-        return isVacuumProgress;
-    }
-
-    public MutableLiveData<Boolean> getIsWashProgress() {
-        return isWashProgress;
-    }
-
-    public MutableLiveData<Boolean> getIsCanVacuum() {
-        return isCanVacuum;
-    }
-
-    public MutableLiveData<Boolean> getIsCanWash() {
-        return isCanWash;
-    }
-
-    protected Profile getUserProfile() {
+    protected Profile getUserProfile(){
         return sessionManager.getProfile();
     }
 
@@ -256,7 +207,6 @@ public class CardDetailsViewModel extends ViewModel {
                 updateCarWashBalance(_cards.getValue());
             }
         });
-        Timber.d("Refreshed Cards");
     }
 
 
