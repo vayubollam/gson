@@ -107,6 +107,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     private ObservableBoolean isErrorCardVisible = new ObservableBoolean(false);
     private boolean userScrolledMap;
     private boolean systemMarginsAlreadyApplied;
+    private boolean analyticsIsClearingText;
 
     //convert vector images to bitmap in order to use as lastSelectedMarker icons
     private static BitmapDescriptor getBitmapFromVector(@NonNull Context context,
@@ -376,9 +377,11 @@ public class StationsFragment extends BottomNavigationFragment implements Google
         {
             binding.addressSearchText.setText(text);
 
-            StationsAnalytics.logScreenNameClass(requireContext(),StationsAnalytics.SCREEN_NAME_LOCATION_FILTER,SCREEN_CLASS_NAME);
-
-            StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
+            if(!analyticsIsClearingText) {
+                StationsAnalytics.logFilterLocationScreenName(requireActivity());
+                StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
+            }
+            analyticsIsClearingText = false;
 
             binding.clearSearchButton.setVisibility(text == null || text.isEmpty() ? View.GONE : View.VISIBLE);
         });
@@ -551,7 +554,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             clearFiltersChip.setElevation(8);
             clearFiltersChip.setOnClickListener((v) -> {
                 mViewModel.clearFilters();
-                StationsAnalytics.logFiltersApplied(requireContext(), binding.addressSearchText.getText().toString(), "");
+//              StationsAnalytics.logFiltersApplied(requireContext(), binding.addressSearchText.getText().toString(), "");
 
             });
             binding.filtersChipgroup.addView(clearFiltersChip);
@@ -608,6 +611,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
     }
 
     public void clearSearchText() {
+        analyticsIsClearingText = true;
         mViewModel.setTextQuery("");
         permissionManager.checkPermission(getContext(), permission.ACCESS_FINE_LOCATION, new PermissionManager.PermissionAskListener() {
             @Override
