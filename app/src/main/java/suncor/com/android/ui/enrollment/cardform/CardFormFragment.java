@@ -106,7 +106,8 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
+                }
+                else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
 
@@ -141,9 +142,15 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                } else if(cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION)){
+                }
+                else if(cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION)){
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
+
+                    CardFormAnalytics.logErrorEvent(
+                            requireContext(),
+                            Errors.VERIFY_EMAIL_ADDRESS,
+                            FORM_NAME_ACTIVATE_PETRO_POINTS_CARD,"");
 
                     dialog.setTitle(getString(R.string.verify_your_email_address_title))
                             .setMessage(getString(R.string.verify_your_email_address_description))
@@ -167,7 +174,8 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                }else {
+                }
+                else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
                     dialog.show();
                 }
