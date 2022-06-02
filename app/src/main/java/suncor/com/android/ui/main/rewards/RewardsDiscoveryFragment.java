@@ -97,8 +97,6 @@ public class RewardsDiscoveryFragment extends MainActivityFragment {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
 
-                RewardsDiscoveryAnalytics.logRewardsDiscoveryFormErrorErrorMessage(requireActivity(),
-                        String.valueOf(error.getDescription()), REWARDS_DISCOVERY_FORM_NAME);
             }
         });
     }

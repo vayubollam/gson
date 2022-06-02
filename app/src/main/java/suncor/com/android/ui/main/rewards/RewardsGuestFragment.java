@@ -129,9 +129,6 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
 
-                RewardsGuestAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
-                        String.valueOf(error.getDescription()), REWARDS_GUEST_FORM_NAME);
-
                 isButtonVisible.set(false);
             }
         });
