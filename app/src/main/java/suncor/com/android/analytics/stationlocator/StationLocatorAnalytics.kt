@@ -23,7 +23,7 @@ object StationsAnalytics : BaseAnalytics() {
     @JvmStatic
     fun logFiltersApplied(context: Context, location: String, filterList: String) {
 
-        if(location.isBlank() && filterList.isBlank()) return
+        if(location.isBlank()) return
 
         var locationValue = location
         if(location.isBlank()) locationValue = NOT_SET
