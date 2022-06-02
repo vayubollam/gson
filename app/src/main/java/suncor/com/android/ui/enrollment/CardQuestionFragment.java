@@ -30,6 +30,7 @@ import suncor.com.android.R;
 import suncor.com.android.analytics.enrollment.CardQuestionsAnalytics;
 import suncor.com.android.databinding.FragmentCardQuestionBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
+import suncor.com.android.model.Resource;
 import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
@@ -106,13 +107,10 @@ public class CardQuestionFragment extends BaseFragment {
                     animateCard();
                     break;
                 case ERROR:
-
-
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), CardQuestionsAnalytics.FORM_NAME_SIGNUP_ACTIVATE);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setOnDismissListener((listener) -> requireActivity().finish());
                     dialog.show();
-
             }
         });
     }
@@ -120,7 +118,7 @@ public class CardQuestionFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        CardQuestionsAnalytics.logScreenNameClass(requireActivity(),CardQuestionsAnalytics.SCREEN_NAME_SIGNUP_ACTIVATE,SCREE_CLASS_NAME);
+        CardQuestionsAnalytics.logScreenNameClass(requireActivity(), CardQuestionsAnalytics.SCREEN_NAME_SIGNUP_ACTIVATE, SCREE_CLASS_NAME);
     }
 
     private void animateCard() {
