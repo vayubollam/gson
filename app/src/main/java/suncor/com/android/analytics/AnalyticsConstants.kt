@@ -14,4 +14,12 @@ object AnalyticsConstants {
 
     const val SUNCOR_030_DESCRIPTION = "Petro-Points card locked"
     const val SUNCOR_026_DESCRIPTION = "Failed to complete order"
+
+    const val REDEEM_FOR = "Redeem for "
+    const val E_GIFT_CARD = " eGift card"
+    const val CLICK_TO_REDEEM = "Click to redeem"
+
+    const val PETRO_POINTS_REDEEM_INFO = "my-petro-points-redeem-info-"
+
+
 }

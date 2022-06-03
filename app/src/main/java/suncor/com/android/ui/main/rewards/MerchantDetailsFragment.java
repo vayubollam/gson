@@ -1,5 +1,7 @@
 package suncor.com.android.ui.main.rewards;
 
+import static suncor.com.android.analytics.AnalyticsConstants.PETRO_POINTS_REDEEM_INFO;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +39,7 @@ public class MerchantDetailsFragment extends MainActivityFragment {
         binding.executePendingBindings();
         binding.closeButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
         binding.points.setText(getString(R.string.rewards_signedin_header_balance, Objects.nonNull(sessionManager.getProfile()) ? CardFormatUtils.formatBalance(sessionManager.getProfile().getPointsBalance()) : 0));
-        MerchantDetailsAnalytics.logScreenNameClass(requireActivity(), MerchantDetailsAnalytics.SCREEN_NAME_MERCHANT_DETAILS + genericEGiftCard.getScreenName(),this.getClass().getSimpleName());
+        MerchantDetailsAnalytics.logScreenNameClass(requireActivity(),PETRO_POINTS_REDEEM_INFO + genericEGiftCard.getScreenName(),this.getClass().getSimpleName());
         binding.buyButton.setOnClickListener(v -> {
             MerchantDetailsFragmentDirections.ActionMerchantDetailsFragmentToGiftCardValueConfirmation action = MerchantDetailsFragmentDirections.actionMerchantDetailsFragmentToGiftCardValueConfirmation(genericEGiftCard);
             MerchantDetailsAnalytics.logFormStart(requireContext(), "Redeem for "+genericEGiftCard.getShortName()+" eGift card");

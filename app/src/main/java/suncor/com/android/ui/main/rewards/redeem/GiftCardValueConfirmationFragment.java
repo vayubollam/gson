@@ -1,7 +1,9 @@
 package suncor.com.android.ui.main.rewards.redeem;
 
-import static suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics.CLICK_TO_REDEEM;
-import static suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics.SCREEN_NAME_GIFT_CARD_CONFIRMATION;
+import static suncor.com.android.analytics.AnalyticsConstants.CLICK_TO_REDEEM;
+import static suncor.com.android.analytics.AnalyticsConstants.E_GIFT_CARD;
+import static suncor.com.android.analytics.AnalyticsConstants.PETRO_POINTS_REDEEM_INFO;
+import static suncor.com.android.analytics.AnalyticsConstants.REDEEM_FOR;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -100,10 +102,11 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                 case ERROR:
                     assert orderResponseResource.message != null;
                     assert orderResponseResource.data != null;
-                    GiftCardValueConfirmationAnalytics.logGiftCardConfirmationErrorMessage(
+                    GiftCardValueConfirmationAnalytics.logFormErrorEvent(
                             requireActivity(),
                             orderResponseResource.data.getErrorDescription(),
-                            viewModel.getGiftCardItem().getShortName()
+                            REDEEM_FOR +  viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD
+
                     );
 
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
@@ -114,25 +117,25 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                             errorDescription = AnalyticsConstants.SUNCOR_026_DESCRIPTION;
                         }
 
-                        GiftCardValueConfirmationAnalytics.logGiftCardConfirmationErrorMessage(requireActivity(),
+                        GiftCardValueConfirmationAnalytics.logFormErrorEvent(requireActivity(),
                                 errorDescription,
-                                viewModel.getGiftCardItem().getShortName());
+                                REDEEM_FOR +  viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD);
 
-                        GiftCardValueConfirmationAnalytics.logAlertShown(
+                        GiftCardValueConfirmationAnalytics.logAlertDialogShown(
                                 requireActivity(),
                                 getString(R.string.redemption_unavailable_title) + "(" + getString(R.string.redemption_unavailable_message) + ")",
-                                 viewModel.getGiftCardItem().getShortName());
+                                 REDEEM_FOR + viewModel.getGiftCardItem().getShortName()+ E_GIFT_CARD);
 
                         new AlertDialog.Builder(requireContext())
                                 .setTitle(R.string.redemption_unavailable_title)
                                 .setMessage(R.string.redemption_unavailable_message)
                                 .setPositiveButton(R.string.ok, (dialog, which) -> {
 
-                                    GiftCardValueConfirmationAnalytics.logAlertInteraction(
+                                    GiftCardValueConfirmationAnalytics.logAlertDialogInteraction(
                                             requireActivity(),
                                             getString(R.string.redemption_unavailable_title) + "(" + getString(R.string.redemption_unavailable_message) + ")",
                                             getString(R.string.ok),
-                                             viewModel.getGiftCardItem().getShortName()
+                                             REDEEM_FOR + viewModel.getGiftCardItem().getShortName()+ E_GIFT_CARD
                                     );
                                     dialog.dismiss();
                                 })
@@ -140,7 +143,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                                 .show();
                     } else {
 
-                        GiftCardValueConfirmationAnalytics.logError(requireActivity(), getString(R.string.msg_e001_title));
+                        GiftCardValueConfirmationAnalytics.logErrorEvent(requireActivity(), getString(R.string.msg_e001_title), viewModel.getGiftCardItem().getShortName(), "");
 
                         prepareErrorDialog(getActivity(),  viewModel.getGiftCardItem().getShortName() ).show();
                     }
@@ -154,7 +157,7 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                              @Nullable Bundle savedInstanceState) {
         GenericEGiftCard genericGiftCard = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getGenericGiftCard();
         viewModel.setGenericCardItem(genericGiftCard);
-        GiftCardValueConfirmationAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_GIFT_CARD_CONFIRMATION+ viewModel.getGiftCardItem().getScreenName()+ "-value", this.getClass().getSimpleName());
+        GiftCardValueConfirmationAnalytics.logScreenNameClass(requireActivity(),PETRO_POINTS_REDEEM_INFO+ viewModel.getGiftCardItem().getScreenName()+ "-value", this.getClass().getSimpleName());
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_gift_card_value_confirmation, container, false);
         binding.setEventHandler(this);
@@ -322,12 +325,12 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     public void redeemConfirmButtonClicked() {
         GiftCardValueConfirmationAnalytics.logFormStep(
                 requireActivity(),
-                GiftCardValueConfirmationAnalytics.REDEEM_FOR + viewModel.getGiftCardItem().getShortName() + GiftCardValueConfirmationAnalytics.E_GIFT_CARD,
+                REDEEM_FOR + viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD,
                 CLICK_TO_REDEEM
         );
 
         GiftCardValueConfirmationAnalytics.logScreenNameClass(requireActivity(),
-                SCREEN_NAME_GIFT_CARD_CONFIRMATION + viewModel.getGiftCardItem().getScreenName() + "-redeeming",
+                PETRO_POINTS_REDEEM_INFO + viewModel.getGiftCardItem().getScreenName() + "-redeeming",
                 this.getClass().getSimpleName());
 
         viewModel.sendRedeemData();
@@ -338,14 +341,14 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
         String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
                 + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
 
-        GiftCardValueConfirmationAnalytics.logGiftCardConfirmationErrorMessage(requireActivity(),
+        GiftCardValueConfirmationAnalytics.logFormErrorEvent(requireActivity(),
                 analyticsName,
-                formName);
+                REDEEM_FOR + formName + E_GIFT_CARD);
 
 
-        GiftCardValueConfirmationAnalytics.logAlertShown(requireActivity(),
+        GiftCardValueConfirmationAnalytics.logAlertDialogShown(requireActivity(),
                 analyticsName,
-                formName);
+                REDEEM_FOR + formName + E_GIFT_CARD);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
@@ -353,10 +356,10 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
 
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
 
-                    GiftCardValueConfirmationAnalytics.logAlertInteraction(requireActivity(),
+                    GiftCardValueConfirmationAnalytics.logAlertDialogInteraction(requireActivity(),
                             analyticsName,
                             context.getString(R.string.ok),
-                            formName);
+                            REDEEM_FOR + formName+ E_GIFT_CARD);
 
                     dialog.dismiss();
                 });

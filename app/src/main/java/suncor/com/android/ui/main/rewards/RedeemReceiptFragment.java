@@ -1,7 +1,6 @@
 package suncor.com.android.ui.main.rewards;
 
-import static suncor.com.android.analytics.giftcard.RedeemReceiptAnalytics.SCREEN_NAME_REDEEM_RECEIPT;
-
+import static suncor.com.android.analytics.AnalyticsConstants.PETRO_POINTS_REDEEM_INFO;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,7 +94,7 @@ public class RedeemReceiptFragment extends MainActivityFragment implements OnBac
         }
 
         RedeemReceiptAnalytics.logScreenNameClass(requireActivity(),
-                SCREEN_NAME_REDEEM_RECEIPT + orderResponse.getShoppingCart().geteGift().getMerchantId() + "success",
+                PETRO_POINTS_REDEEM_INFO + orderResponse.getShoppingCart().geteGift().getMerchantId() + "success",
                 this.getClass().getSimpleName());
 
         RedeemReceiptAnalytics.logRedeemReceiptFormComplete(requireContext(),

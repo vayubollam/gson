@@ -2,6 +2,8 @@ package suncor.com.android.analytics.giftcard
 
 import android.content.Context
 import android.os.Bundle
+import suncor.com.android.analytics.AnalyticsConstants.E_GIFT_CARD
+import suncor.com.android.analytics.AnalyticsConstants.REDEEM_FOR
 import suncor.com.android.analytics.BaseAnalytics
 import suncor.com.android.analytics.BaseEvents
 import suncor.com.android.analytics.BaseParams
@@ -12,16 +14,9 @@ object RewardsSignedInAnalytics : BaseAnalytics(){
 
 }
 
-object MerchantDetailsAnalytics : BaseAnalytics() {
-
-     const val SCREEN_NAME_MERCHANT_DETAILS = "my-petro-points-redeem-info-"
-}
+object MerchantDetailsAnalytics : BaseAnalytics()
 
 object RedeemReceiptAnalytics : BaseAnalytics() {
-
-    const val SCREEN_NAME_REDEEM_RECEIPT = "my-petro-points-redeem-info-"
-    private const val REDEEM_FOR = "Redeem for "
-    private const val E_GIFT_CARD = "eGift card"
 
     @JvmStatic
     fun logRedeemReceiptFormComplete(context: Context, formName: String, formSelection: String) {
@@ -37,63 +32,8 @@ object RewardsDiscoveryAnalytics : BaseAnalytics() {
     const val SCREEN_NAME_REWARDS_DISCOVERY = "discover-petro-points"
     const val SCREEN_NAME_REWARDS_DISCOVERY_LOADING = "discover-petro-points-loading"
 
-    @JvmStatic
-    fun logRewardsDiscoveryFormErrorErrorMessage(
-        context: Context,
-        errorMessage: String,
-        formName: String
-    ) {
-        logFormErrorEvent(context, errorMessage,  formName )
-    }
-
 }
 
-object RewardsGuestAnalytics : BaseAnalytics() {
+object RewardsGuestAnalytics : BaseAnalytics()
 
-    @JvmStatic
-    fun logRewardsGuestFormErrorErrorMessage(
-        context: Context,
-        errorMessage: String,
-        formName: String
-    ) {
-        logFormErrorEvent(context, errorMessage,  formName )
-    }
-}
-
-object GiftCardValueConfirmationAnalytics : BaseAnalytics() {
-
-    const val SCREEN_NAME_GIFT_CARD_CONFIRMATION = "my-petro-points-redeem-info-"
-     const val REDEEM_FOR = "Redeem for "
-     const val E_GIFT_CARD = " eGift card"
-     const val CLICK_TO_REDEEM = "Click to redeem"
-
-
-    @JvmStatic
-    fun logGiftCardConfirmationErrorMessage(
-        context: Context,
-        errorMessage: String,
-        formName: String
-    ) {
-        logFormErrorEvent(context, errorMessage, REDEEM_FOR + formName + E_GIFT_CARD)
-    }
-
-    @JvmStatic
-    fun logAlertShown(context: Context, title: String, formName: String) {
-        logAlertDialogShown(context, title, REDEEM_FOR + formName + E_GIFT_CARD)
-    }
-
-    @JvmStatic
-    fun logAlertInteraction(
-        context: Context,
-        alertTitle: String,
-        alertSelection: String,
-        formName: String
-    ) {
-        logAlertDialogInteraction(context, alertTitle, alertSelection, REDEEM_FOR + formName + E_GIFT_CARD)
-    }
-
-    @JvmStatic
-    fun logError(context: Context, errorMessage: String) {
-        logErrorEvent(context, errorMessage)
-    }
-}
+object GiftCardValueConfirmationAnalytics : BaseAnalytics()

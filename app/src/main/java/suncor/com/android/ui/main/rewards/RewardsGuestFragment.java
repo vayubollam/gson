@@ -170,9 +170,11 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                     break;
                 case ERROR:
                     assert arrayListResource.message != null;
-                    RewardsGuestAnalytics.logRewardsGuestFormErrorErrorMessage(requireActivity(),
+                    RewardsGuestAnalytics.logFormErrorEvent(requireActivity(),
                             arrayListResource.message,
-                            REWARDS_GUEST_FORM_NAME);
+                            REWARDS_GUEST_FORM_NAME,
+                            ""
+                            );
 
                     showErrorAlertPopup().show();
             }

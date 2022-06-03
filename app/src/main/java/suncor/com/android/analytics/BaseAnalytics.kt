@@ -29,31 +29,6 @@ abstract class BaseAnalytics {
 
 
 
-
-    fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
-        val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage)
-        bundle.putString(FORM_NAME,formName)
-        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
-    }
-
-
-    fun logFormErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
-        val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage.take(100))
-        bundle.putString(FORM_NAME,formName.take(100))
-        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage.take(100))
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
-    }
-
-    fun logErrorEvent(context: Context, errorMessage: String){
-        val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage)
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
-
-    }
-
     fun logEvent(context: Context, eventName: String, bundle: Bundle) {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle)
     }
@@ -79,6 +54,24 @@ abstract class BaseAnalytics {
             bundle.putString(FORM_NAME,formName)
 
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
+        }
+
+
+        @JvmStatic
+        fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
+            val bundle = Bundle()
+            bundle.putString(ERROR_MESSAGE,errorMessage)
+            bundle.putString(FORM_NAME,formName)
+            bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
+        }
+
+        @JvmStatic
+        fun logFormErrorEvent(context: Context,errorMessage: String,formName: String){
+            val bundle = Bundle()
+            bundle.putString(ERROR_MESSAGE,errorMessage.take(100))
+            bundle.putString(FORM_NAME,formName)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
         }
 
         @JvmStatic
