@@ -110,16 +110,6 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     );
 
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
-                        String errorDescription;
-                        if(ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message)){
-                            errorDescription = AnalyticsConstants.SUNCOR_030_DESCRIPTION;
-                        }else {
-                            errorDescription = AnalyticsConstants.SUNCOR_026_DESCRIPTION;
-                        }
-
-                        GiftCardValueConfirmationAnalytics.logFormErrorEvent(requireActivity(),
-                                errorDescription,
-                                REDEEM_FOR +  viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD);
 
                         GiftCardValueConfirmationAnalytics.logAlertDialogShown(
                                 requireActivity(),
