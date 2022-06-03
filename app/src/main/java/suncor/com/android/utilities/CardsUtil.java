@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Pair;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -128,5 +131,42 @@ public class CardsUtil {
                 }).create();
         alertWashDialog.setCanceledOnTouchOutside(false);
         alertWashDialog.show();
+    }
+
+    public static void showDailyWashUsedAlert(Context context, String time, String address) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_wash_used_message,time,address))
+                .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                    dialog.dismiss();
+                });
+        builder.show();
+    }
+    public static void showDailyVacuumUsedAlert(Context context, String time, String address) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_vacuum_used_message,time,address))
+                .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                    dialog.dismiss();
+                });
+        builder.show();
+    }
+
+    public static void showWashInprogressAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.session_in_progress_title)).setMessage(context.getResources().getString(R.string.session_wash_in_progress_message))
+                .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                });
+        builder.show();
+        final Button positiveButton = builder.show().getButton(AlertDialog.BUTTON_NEGATIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        positiveButtonLL.gravity = Gravity.CENTER;
+        positiveButton.setLayoutParams(positiveButtonLL);
+    }
+
+    public static void showVacuumInprogressAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.session_in_progress_title)).setMessage(context.getResources().getString(R.string.session_vacuum_in_progress_message))
+                .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
+                });
+        builder.show();
+        final Button positiveButton = builder.show().getButton(AlertDialog.BUTTON_NEGATIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        positiveButtonLL.gravity = Gravity.CENTER;
+        positiveButton.setLayoutParams(positiveButtonLL);
     }
 }

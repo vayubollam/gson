@@ -1,7 +1,7 @@
 package suncor.com.android.ui.main.wallet.cards.details;
 
-import android.content.Context;
 
+import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -24,7 +26,9 @@ import suncor.com.android.model.SettingsResponse;
 import suncor.com.android.model.account.Profile;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
+import suncor.com.android.model.station.Station;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
+import suncor.com.android.utilities.Timber;
 
 public class CardDetailsViewModel extends ViewModel {
 
@@ -35,8 +39,12 @@ public class CardDetailsViewModel extends ViewModel {
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
+
+    protected MutableLiveData<Boolean> isServiceRunning = new MutableLiveData<>();
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
+    final int interval = 360000;
+    private Timer carousalTimer=new Timer();
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, SettingsApi settingsApi) {
@@ -114,8 +122,9 @@ public class CardDetailsViewModel extends ViewModel {
     }
 
     private List<CardDetail> findNewlyAddedCard(List<CardDetail> petroCanadaCards) {
-        for(CardDetail card : petroCanadaCards){
-            if(card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber)) return Collections.singletonList(card);
+        for (CardDetail card : petroCanadaCards) {
+            if (card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber))
+                return Collections.singletonList(card);
         }
         return petroCanadaCards;
     }
@@ -133,26 +142,41 @@ public class CardDetailsViewModel extends ViewModel {
         this.isCarWashBalanceZero.setValue(isBalanceZero);
     }
 
+
+
+    public LiveData<Resource<CardDetail>> getProgressDetails(String cardNum) {
+        return cardsRepository.getSPCardDetails(cardNum);
+    }
+
+
+    public LiveData<Resource<Station>> getStoreDetails(String storeId) {
+        return cardsRepository.getStoreDetails(storeId);
+
+    }
+
     public MutableLiveData<Boolean> getIsCarWashBalanceZero() {
         return isCarWashBalanceZero;
     }
 
+    public MutableLiveData<Boolean> getIsServiceRunning() {
+        return isServiceRunning;
+    }
 
     protected Profile getUserProfile(){
         return sessionManager.getProfile();
     }
 
-    protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex ){
+    protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex) {
         LoyalityData loyalityData = new LoyalityData();
         loyalityData.setBarcode(cards.getValue().get(clickedCardIndex).getCardNumber().replace(" ", ""));
         ExpandedCardItem expandedCardItem = new ExpandedCardItem(context, cards.getValue().get(clickedCardIndex));
         loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
         loyalityData.setNameLabel(context.getString(R.string.google_passes_name_label));
         loyalityData.setNameLocalizedLabel(context.getString(R.string.google_passes_name_label_fr));
-        loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName() );
+        loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName());
         loyalityData.setEmailLabel(context.getString(R.string.google_passes_email_label));
         loyalityData.setEmailLocalizedLabel(context.getString(R.string.google_passes_email_label_fr));
-        loyalityData.setEmailValue(getUserProfile().getEmail() );
+        loyalityData.setEmailValue(getUserProfile().getEmail());
         loyalityData.setDetailsLabel(context.getString(R.string.google_passes_detail_label));
         loyalityData.setDetailsLocalizedLabel(context.getString(R.string.google_passes_detail_label_fr));
         loyalityData.setDetailsValue(context.getString(R.string.google_passes_detail_value));
@@ -172,11 +196,11 @@ public class CardDetailsViewModel extends ViewModel {
         return loyalityData;
     }
 
-    public LiveData<Resource<SettingsResponse>> getSettings(){
+    public LiveData<Resource<SettingsResponse>> getSettings() {
         return settingsApi.retrieveSettings();
     }
 
-    public void refreshCards(){
+    public void refreshCards() {
         _cards.addSource(cardsRepository.getCards(true), result -> {
             if (result.status == Resource.Status.SUCCESS) {
                 _cards.setValue(result.data);
@@ -184,4 +208,24 @@ public class CardDetailsViewModel extends ViewModel {
             }
         });
     }
+
+
+    protected void setRecurringService(String cardNumber) {
+        carousalTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                getProgressDetails(cardNumber);
+                isServiceRunning.postValue(true);
+                Timber.d("--SERVICE STARTED--");
+            }
+        }, interval, interval); // delay
+    }
+
+    void stopRecurringService() {
+        carousalTimer.cancel();
+        Timber.d("--SERVICE STOP--");
+        isServiceRunning.postValue(false);
+    }
+
+
 }

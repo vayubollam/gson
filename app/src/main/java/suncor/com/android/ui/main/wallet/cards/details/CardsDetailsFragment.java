@@ -55,6 +55,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.CardsUtil;
 import suncor.com.android.utilities.Constants;
+import suncor.com.android.utilities.DateUtils;
 import suncor.com.android.utilities.LocationUtils;
 import suncor.com.android.utilities.StationsUtil;
 import suncor.com.android.utilities.Timber;
@@ -71,7 +72,6 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
     private boolean vacuumToggle = false;
-
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
 
@@ -111,10 +111,29 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 binding.cardDetailRecycler.scrollToPosition(clickedCardIndex);
                 binding.setNumCards(expandedCardItems.size());
                 binding.executePendingBindings();
-
+                if (expandedCardItems.get(clickedCardIndex).getCardType() == CardType.SP) {
+                    viewModel.getProgressDetails(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber()).observe(getViewLifecycleOwner(), result -> {
+                        if (result.status == Resource.Status.LOADING) {
+                            showAddCardProgress();
+                        } else if (result.status == Resource.Status.ERROR) {
+                            hideAddCardProgress();
+                        } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                            hideAddCardProgress();
+                            if (cardsDetailsAdapter != null) {
+                                if (result.data.isWashInProgress() || result.data.isVacuumInProgress() || !result.data.isCanWash() || !result.data.isCanVacuum()) {
+                                    ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result.data);
+                                    cardsDetailsAdapter.replaceItem(updatedItem, clickedCardIndex);
+                                }
+                            }
+                        }
+                    });
+                }
+                if ((expandedCardItems.get(clickedCardIndex).getCardType() == CardType.SP) && (!expandedCardItems.get(clickedCardIndex).getCardDetail().isCanWash() || expandedCardItems.get(clickedCardIndex).getCardDetail().isWashInProgress() || !expandedCardItems.get(clickedCardIndex).getCardDetail().isCanVacuum() || expandedCardItems.get(clickedCardIndex).getCardDetail().isVacuumInProgress())) {
+                    viewModel.setRecurringService(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+                }
                 //track screen name
                 String screenName;
-                if (clickedCardIndex <= 0 || clickedCardIndex > viewModel.cards.getValue().size() ) {
+                if (clickedCardIndex <= 0 || clickedCardIndex > viewModel.cards.getValue().size()) {
                     //need to check
                     screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
@@ -129,7 +148,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 vacuumToggle = result.data.getSettings().toggleFeature.isVacuumScanBarcode();
-                if(cardsDetailsAdapter != null){
+                if (cardsDetailsAdapter != null) {
                     cardsDetailsAdapter.updateVacuumToggle(vacuumToggle);
                 }
             }
@@ -140,7 +159,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener, vacuumToggle);
+        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener, vacuumToggle);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -149,13 +168,48 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
+                    Timber.d("VISIBLECARD-: " + viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+                    if (viewModel.cards.getValue().get(clickedCardIndex).getCardType().equals(CardType.SP)) {
+                        if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail().isVacuumInProgress() || cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isWashInProgress() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isCanVacuum() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isCanWash()) {
+                            viewModel.getProgressDetails(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber()).observe(getViewLifecycleOwner(), result -> {
+                                if (result.status == Resource.Status.LOADING) {
+                                    showAddCardProgress();
+                                } else if (result.status == Resource.Status.ERROR) {
+                                    hideAddCardProgress();
+                                } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                                    hideAddCardProgress();
+                                    if (cardsDetailsAdapter != null) {
+                                        ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result.data);
+                                        cardsDetailsAdapter.replaceItem(updatedItem, clickedCardIndex);
+                                    }
+                                }
+                            });
+                            if (viewModel.getIsServiceRunning().getValue() != null && viewModel.getIsServiceRunning().getValue()) {
+                                viewModel.stopRecurringService();
+                                viewModel.setRecurringService(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
+
+                            }
+
+                        } else {
+                            if (viewModel.getIsServiceRunning().getValue() != null && viewModel.getIsServiceRunning().getValue()) {
+                                viewModel.stopRecurringService();
+                            }
+                        }
+
+                    }
+
                 }
             }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                hideAddCardProgress();
                 clickedCardIndex = linearLayoutManager.findFirstVisibleItemPosition();
+                if (viewModel.getIsServiceRunning().getValue() != null && viewModel.getIsServiceRunning().getValue()) {
+                    viewModel.stopRecurringService();
+                }
+
             }
         });
         binding.pageIndicator.attachToRecyclerView(binding.cardDetailRecycler, pagerSnapHelper);
@@ -184,6 +238,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
         WindowManager.LayoutParams attributes = getActivity().getWindow().getAttributes();
         attributes.screenBrightness = previousBrightness;
         getActivity().getWindow().setAttributes(attributes);
+        if (viewModel.getIsServiceRunning().getValue() != null && viewModel.getIsServiceRunning().getValue()) {
+            viewModel.stopRecurringService();
+        }
+
     }
 
     @Override
@@ -208,6 +266,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener activeCarWashListener = view -> {
+       CardDetail cardDetail= cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail();
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.activateCarWashClick,
                 new Pair<>(AnalyticsUtils.Param.carWashCardType, viewModel.cards.getValue().get(clickedCardIndex).getLongName())
         );
@@ -224,16 +283,21 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 action.setSingleTicketNumber(viewModel.cards.getValue().get(clickedCardIndex).getTicketNumber());
                 Navigation.findNavController(getView()).navigate(action);
             } else {
-                CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
                 if (viewModel.getIsCarWashBalanceZero().getValue() != null &&
                         viewModel.getIsCarWashBalanceZero().getValue()) {
                     CardsUtil.showZeroBalanceAlert(getActivity(), buySingleTicketListener, null);
                 } else if (cardDetail.getBalance() <= 0) {
                     CardsUtil.showOtherCardAvailableAlert(getContext());
-                } else if(cardDetail.isSuspendedCard()) {
+                } else if (cardDetail.isWashInProgress() && cardDetail.getCardType() == CardType.SP) {
+                    CardsUtil.showWashInprogressAlert(getContext());
+                } else if (!cardDetail.isCanWash() && cardDetail.getCardType() == CardType.SP) {
+                    if (cardDetail.getLastWashStoreId() != null && cardDetail.getCardType() == CardType.SP) {
+                        showStoreAddressAlert(cardDetail.getLastWashStoreId(), Constants.TYPE_WASH, cardDetail.getLastWashDt());
+                    }
+                } else if (cardDetail.isSuspendedCard()) {
                     CardsUtil.ShowSuspendedCardAlertForActivateWash(getContext());
                 } else {
-                    AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP,"Enter 3 digits", cardDetail.getCardType());
+                    AnalyticsUtils.logCarwashActivationEvent(getContext(), AnalyticsUtils.Event.FORMSTEP, "Enter 3 digits", cardDetail.getCardType());
                     CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToCarWashActivationSecurityFragment action
                             = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToCarWashActivationSecurityFragment();
                     action.setCardNumber(viewModel.cards.getValue().get(clickedCardIndex).getCardNumber());
@@ -266,13 +330,21 @@ public class CardsDetailsFragment extends MainActivityFragment {
     };
 
     private View.OnClickListener vacuumListener = view -> {
-        CardDetail cardDetail = viewModel.cards.getValue().get(clickedCardIndex);
+        CardDetail cardDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail();
         ExpandedCardItem cardItem = new ExpandedCardItem(getContext(), cardDetail);
-        CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
-                action   = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
-        action.setCardNumber(cardItem.getCardNumber());
-        viewModel.refreshCards();
-        Navigation.findNavController(getView()).navigate(action);
+        if (!cardDetail.isCanVacuum() && cardDetail.getCardType() == CardType.SP) {
+            if (cardDetail.getLastVacuumSiteId() != null) {
+                showStoreAddressAlert(cardDetail.getLastVacuumSiteId(), Constants.TYPE_VACUUM, cardDetail.getLastVacuumDt());
+            }
+        } else if (cardDetail.isVacuumInProgress() && cardDetail.getCardType() == CardType.SP) {
+            CardsUtil.showVacuumInprogressAlert(getContext());
+        } else {
+            CardsDetailsFragmentDirections.ActionCardsDetailsFragmentToVacuumBarcodeFragment
+                    action = CardsDetailsFragmentDirections.actionCardsDetailsFragmentToVacuumBarcodeFragment();
+            action.setCardNumber(cardItem.getCardNumber());
+            viewModel.refreshCards();
+            Navigation.findNavController(getView()).navigate(action);
+        }
 
 
     };
@@ -318,13 +390,13 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     };
 
-    private void showAddCardProgress(){
+    private void showAddCardProgress() {
         binding.loadingProgressBar.setVisibility(View.VISIBLE);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    private void hideAddCardProgress(){
+    private void hideAddCardProgress() {
         binding.loadingProgressBar.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
@@ -336,10 +408,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
     }
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
-        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
+        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "(" + getResources().getString(R.string.cards_remove_card_alert_message) + ")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName())
+                new Pair<>(AnalyticsUtils.Param.FORMNAME, AnalyticsUtils.getCardFormName())
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
@@ -347,7 +419,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
-                                new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName())
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME, AnalyticsUtils.getCardFormName())
                         );
                         if (cardDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
@@ -366,10 +438,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         }
                     });
                 }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {
-                    AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.alertInteraction,
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cards_remove_card_alert_title)),
-                            new Pair<>(AnalyticsUtils.Param.alertSelection,getString(R.string.cards_remove_card_alert_cancel)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName()));
+                            new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cards_remove_card_alert_cancel)),
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME, AnalyticsUtils.getCardFormName()));
                 });
         builder.show();
     }
@@ -413,4 +485,20 @@ public class CardsDetailsFragment extends MainActivityFragment {
         return false;
     }
 
+    private void showStoreAddressAlert(String storId, String type, String date) {
+        viewModel.getStoreDetails(storId).observe(getViewLifecycleOwner(), result -> {
+            if (result.status == Resource.Status.LOADING) {
+                showAddCardProgress();
+            } else if (result.status == Resource.Status.ERROR) {
+                hideAddCardProgress();
+            } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
+                hideAddCardProgress();
+                if (type.equals(Constants.TYPE_WASH)) {
+                    CardsUtil.showDailyWashUsedAlert(getContext(), DateUtils.getInputFormattedTime(date), result.data.getAddress().getAddressLine() + "," + result.data.getAddress().getPrimaryCity());
+                } else if (type.equals(Constants.TYPE_VACUUM)) {
+                    CardsUtil.showDailyVacuumUsedAlert(getContext(), DateUtils.getInputFormattedTime(date), result.data.getAddress().getAddressLine() + "," + result.data.getAddress().getPrimaryCity());
+                }
+            }
+        });
+    }
 }
