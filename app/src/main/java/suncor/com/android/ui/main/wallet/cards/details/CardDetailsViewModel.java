@@ -143,9 +143,17 @@ public class CardDetailsViewModel extends ViewModel {
     }
 
 
+    public LiveData<Resource<CardDetail>> getProgressDetails(String cardNum, CardType cardType) {
+        LiveData<Resource<CardDetail>> cardDetails =null;
+        if (cardType==CardType.SP) {
+            cardDetails = cardsRepository.getSPCardDetails(cardNum);
+        } else if (cardType==(CardType.WAG)) {
+            cardDetails=  cardsRepository.getWAGCardDetails(cardNum);
+        }
 
-    public LiveData<Resource<CardDetail>> getProgressDetails(String cardNum) {
-        return cardsRepository.getSPCardDetails(cardNum);
+
+        return cardDetails;
+
     }
 
 
@@ -210,11 +218,11 @@ public class CardDetailsViewModel extends ViewModel {
     }
 
 
-    protected void setRecurringService(String cardNumber) {
+    protected void setRecurringService(String cardNumber, CardType cardType) {
         carousalTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                getProgressDetails(cardNumber);
+                getProgressDetails(cardNumber, cardType);
                 isServiceRunning.postValue(true);
                 Timber.d("--SERVICE STARTED--");
             }

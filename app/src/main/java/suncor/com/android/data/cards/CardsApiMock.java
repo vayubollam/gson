@@ -83,6 +83,11 @@ public class CardsApiMock implements CardsApi {
     }
 
     @Override
+    public LiveData<Resource<CardDetail>> retrieveWAGCardDetail(String cardNumber) {
+        return null;
+    }
+
+    @Override
     public LiveData<Resource<Station>> retrieveStoreDetails(String storeId) {
         return null;
     }

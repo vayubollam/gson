@@ -18,6 +18,8 @@ public interface CardsApi {
 
     LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber);
 
+    LiveData<Resource<CardDetail>> retrieveWAGCardDetail(String cardNumber);
+
     LiveData<Resource<Station>> retrieveStoreDetails(String storeId);
 
 
