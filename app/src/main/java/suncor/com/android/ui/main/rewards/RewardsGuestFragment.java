@@ -157,9 +157,12 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
             intent.putExtra(Constants.IS_COME_FROM_REWARDS_GUEST_SCREEN, true);
             requireActivity().startActivity(intent);
         }catch (Exception e){
+            RewardsGuestAnalytics.logFormErrorEvent(requireActivity(),
+                    getString(R.string.msg_e001_title),
+                    REWARDS_GUEST_FORM_NAME
+            );
             showErrorAlertPopup().show();
         }
-
     }
 
     private void checkForApiResponse(){
@@ -172,8 +175,7 @@ public class RewardsGuestFragment extends BottomNavigationFragment {
                     assert arrayListResource.message != null;
                     RewardsGuestAnalytics.logFormErrorEvent(requireActivity(),
                             arrayListResource.message,
-                            REWARDS_GUEST_FORM_NAME,
-                            ""
+                            REWARDS_GUEST_FORM_NAME
                             );
 
                     showErrorAlertPopup().show();
