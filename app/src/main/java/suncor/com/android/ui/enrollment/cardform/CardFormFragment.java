@@ -79,16 +79,16 @@ public class CardFormFragment extends BaseFragment {
                     dialog.setCancelable(false);
 
                     CardFormAnalytics.logErrorEvent(requireContext()
-                            , Errors.INVALID_CARD, FORM_NAME_ACTIVATE_PETRO_POINTS_CARD,"");
+                            , Errors.INVALID_CARD, FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_invalid_card_dialog_message))
                             .setFormName(FORM_NAME_ACTIVATE_PETRO_POINTS_CARD)
                             .setRightButton(getString(R.string.enrollment_cardform_invalid_card_dialog_try_again), (v) -> {
                                 CardFormAnalytics.logAlertDialogInteraction(requireContext()
-                                        ,dialog.getAnalyticsTitle()
-                                        ,getString(R.string.enrollment_cardform_invalid_card_dialog_try_again)
-                                        ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                        , dialog.getAnalyticsTitle()
+                                        , getString(R.string.enrollment_cardform_invalid_card_dialog_try_again)
+                                        , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                                 );
 
                                 binding.cardInput.getEditText().requestFocus();
@@ -97,33 +97,32 @@ public class CardFormFragment extends BaseFragment {
                             })
                             .setCenterButton(getString(R.string.enrollment_cardform_invalid_card_dialog_callus), (v) -> {
                                 CardFormAnalytics.logAlertDialogInteraction(requireContext()
-                                        ,dialog.getAnalyticsTitle()
-                                        ,getString(R.string.enrollment_cardform_invalid_card_dialog_callus)
-                                        ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                        , dialog.getAnalyticsTitle()
+                                        , getString(R.string.enrollment_cardform_invalid_card_dialog_callus)
+                                        , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                                 );
 
                                 callCostumerSupport(getString(R.string.customer_support_number));
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                }
-                else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
+                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
 
                     CardFormAnalytics.logErrorEvent(
                             requireContext(),
                             Errors.PETRO_POINTS_ALREADY_USED,
-                            FORM_NAME_ACTIVATE_PETRO_POINTS_CARD,"");
+                            FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_existing_card_dialog_title))
                             .setMessage(getString(R.string.enrollment_cardform_existing_card_dialog_message))
                             .setFormName(FORM_NAME_ACTIVATE_PETRO_POINTS_CARD)
                             .setRightButton(getString(R.string.enrollment_cardform_existing_card_dialog_sign_in), (v) -> {
                                 CardFormAnalytics.logAlertDialogInteraction(requireContext()
-                                        ,dialog.getAnalyticsTitle()
-                                        ,getString(R.string.enrollment_cardform_existing_card_dialog_sign_in)
-                                        ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                        , dialog.getAnalyticsTitle()
+                                        , getString(R.string.enrollment_cardform_existing_card_dialog_sign_in)
+                                        , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                                 );
 
                                 getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
@@ -132,9 +131,9 @@ public class CardFormFragment extends BaseFragment {
                             })
                             .setCenterButton(getString(R.string.enrollment_cardform_existing_card_use_different_card), (v) -> {
                                 CardFormAnalytics.logAlertDialogInteraction(requireContext()
-                                        ,dialog.getAnalyticsTitle()
-                                        ,getString(R.string.enrollment_cardform_existing_card_use_different_card)
-                                        ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                        , dialog.getAnalyticsTitle()
+                                        , getString(R.string.enrollment_cardform_existing_card_use_different_card)
+                                        , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                                 );
 
                                 binding.cardInput.getEditText().requestFocus();
@@ -142,40 +141,38 @@ public class CardFormFragment extends BaseFragment {
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                }
-                else if(cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION)){
+                } else if (cardStatusResource.message.equalsIgnoreCase(ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION)) {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
 
                     CardFormAnalytics.logErrorEvent(
                             requireContext(),
                             Errors.VERIFY_EMAIL_ADDRESS,
-                            FORM_NAME_ACTIVATE_PETRO_POINTS_CARD,"");
+                            FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");
 
                     dialog.setTitle(getString(R.string.verify_your_email_address_title))
                             .setMessage(getString(R.string.verify_your_email_address_description))
                             .setFormName(FORM_NAME_ACTIVATE_PETRO_POINTS_CARD)
                             .setRightButton(getString(R.string.verify_your_email_address_call_us), (v) -> {
                                 CardFormAnalytics.logAlertDialogInteraction(requireContext()
-                                        ,dialog.getAnalyticsTitle()
-                                        ,getString(R.string.verify_your_email_address_call_us)
-                                        ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
-                                        );
+                                        , dialog.getAnalyticsTitle()
+                                        , getString(R.string.verify_your_email_address_call_us)
+                                        , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                );
 
                                 callCostumerSupport(getString(R.string.customer_support_number));
                                 dialog.dismiss();
                             })
                             .setCenterButton(getString(R.string.sign_enable_fb_negative_button), (v) -> {
                                 CardFormAnalytics.logAlertDialogInteraction(requireContext()
-                                        ,dialog.getAnalyticsTitle()
-                                        ,getString(R.string.sign_enable_fb_negative_button)
-                                        ,FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                        , dialog.getAnalyticsTitle()
+                                        , getString(R.string.sign_enable_fb_negative_button)
+                                        , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
                                 );
                                 dialog.dismiss();
                             })
                             .show(getFragmentManager(), ModalDialog.TAG);
-                }
-                else {
+                } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
                     dialog.show();
                 }
@@ -209,8 +206,8 @@ public class CardFormFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        CardFormAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_ACTIVATE_MATCH_CARD,SCREEN_CLASS_NAME);
-        CardFormAnalytics.logFormStart(requireContext(),FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
+        CardFormAnalytics.logScreenNameClass(requireActivity(), SCREEN_NAME_ACTIVATE_MATCH_CARD, SCREEN_CLASS_NAME);
+        CardFormAnalytics.logFormStart(requireContext(), FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
     }
 
     private void hideKeyBoard() {
@@ -227,6 +224,6 @@ public class CardFormFragment extends BaseFragment {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         startActivity(intent);
-        CardFormAnalytics.logTapToCall(requireContext(),phoneNumber);
+        CardFormAnalytics.logTapToCall(requireContext(), phoneNumber);
     }
 }

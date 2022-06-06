@@ -216,7 +216,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     });
                     dialog.show();
                 } else {
-                    Alerts.prepareGeneralErrorDialog(getActivity(), FORM_NAME_ACTIVATE_PETRO_POINTS_CARD).show();
+                    Alerts.prepareGeneralErrorDialog(getActivity(), formName).show();
                 }
             }
         });
@@ -279,7 +279,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
             EnrollmentAnalytics.logAlertDialogShown(requireContext(),
                     EnrollmentAnalytics.ALERT_TITLE_ENABLE_FINGERPRINT
-                    , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                    , formName
             );
 
 
@@ -290,7 +290,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
                                 EnrollmentAnalytics.ALERT_TITLE_ENABLE_FINGERPRINT,
                                 getString(R.string.sign_enable_fb_possitive_button),
-                                FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                formName
                         );
 
                         viewModel.proccedToJoin(true);
@@ -300,7 +300,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
                                 EnrollmentAnalytics.ALERT_TITLE_ENABLE_FINGERPRINT,
                                 BUTTON_TEXT_CANCEL,
-                                FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                                formName
                         );
 
                         viewModel.proccedToJoin(false);
@@ -313,10 +313,10 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
-        EnrollmentAnalytics.logErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");
+        EnrollmentAnalytics.logErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, formName, "");
         EnrollmentAnalytics.logAlertDialogShown(requireContext(), getString(R.string.enrollment_email_already_exists_title)
                         + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
-                , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
+                , formName);
 
         dialog.setTitle(getString(R.string.enrollment_email_already_exists_title))
                 .setMessage(getString(R.string.enrollment_email_already_exists_description))
@@ -324,7 +324,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     EnrollmentAnalytics.logAlertDialogInteraction(requireContext(), getString(R.string.enrollment_email_already_exists_title)
                                     + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
                             , getString(R.string.enrollment_invalid_email_dialog_sign_in)
-                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
+                            , formName);
 
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
@@ -335,7 +335,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     EnrollmentAnalytics.logAlertDialogInteraction(requireContext(), getString(R.string.enrollment_email_already_exists_title)
                                     + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
                             , getString(R.string.enrollment_invalid_email_dialog_diff_email)
-                            , FORM_NAME_ACTIVATE_PETRO_POINTS_CARD);
+                            , formName);
 
                     binding.emailInput.setText("");
                     dialog.dismiss();
@@ -470,7 +470,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
             EnrollmentAnalytics.logAlertDialogShown(requireContext(),
                     EnrollmentAnalytics.ALERT_TITLE_LEAVE_SIGNUP,
-                    FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                    formName
             );
 
             alertDialog.setTitle(R.string.enrollment_leave_alert_title);
@@ -480,7 +480,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
                         EnrollmentAnalytics.ALERT_TITLE_LEAVE_SIGNUP,
                         BUTTON_TEXT_OK,
-                        FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                        formName
                 );
                 getActivity().finish();
             });
@@ -489,7 +489,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
                         EnrollmentAnalytics.ALERT_TITLE_LEAVE_SIGNUP,
                         BUTTON_TEXT_CANCEL,
-                        FORM_NAME_ACTIVATE_PETRO_POINTS_CARD
+                        formName
                 );
 
             });

@@ -1,11 +1,14 @@
 package suncor.com.android.ui.enrollment.cardform;
 
-import javax.inject.Inject;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
+
+import java.text.Normalizer;
+
+import javax.inject.Inject;
+
 import suncor.com.android.R;
 import suncor.com.android.data.account.EnrollmentsApi;
 import suncor.com.android.model.Resource;
@@ -17,11 +20,9 @@ import suncor.com.android.ui.common.Event;
 import suncor.com.android.ui.common.input.CardNumberInputField;
 import suncor.com.android.ui.common.input.InputField;
 import suncor.com.android.ui.common.input.PostalCodeField;
-import java.text.Normalizer;
 
 
 public class CardFormViewModel extends ViewModel {
-
 
     private EnrollmentsApi enrollmentsApi;
     private MutableLiveData<Event<Boolean>> verify = new MutableLiveData<>();
@@ -83,7 +84,6 @@ public class CardFormViewModel extends ViewModel {
         if (!cardNumberField.isValid()) {
             cardNumberField.setShowError(true);
             allGood = false;
-
         }
 
         if (!postalCodeField.isValid()) {
@@ -95,10 +95,9 @@ public class CardFormViewModel extends ViewModel {
             lastNameField.setShowError(true);
             allGood = false;
         }
+
         if (allGood) {
             verify.postValue(Event.newEvent(true));
         }
-
-
     }
 }
