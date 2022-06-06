@@ -777,6 +777,14 @@
     <string name="carwash_zero_alert_close">Annuler</string>
     <string name="carwash_zero_alert_buy">Visiter le site Web</string>
 
+    <string name="carwash_daily_vacuum_used_alert">Utilisation quotidienne de l\'aspirateur effectuée</string>
+    <string name="carwash_daily_vacuum_used_message">Votre utilisation de l\'aspirateur pour la journée a été faite à %s à %s.</string>
+    <string name="carwash_daily_wash_used_alert">Lavage quotidien utilisé</string>
+    <string name="carwash_daily_wash_used_message">Votre lavage du jour a été utilisé à %s à %s.</string>
+    <string name="session_in_progress_title">Séance en cours</string>
+    <string name="session_vacuum_in_progress_message">Vous ne pouvez pas utiliser un aspirateur pour le moment. Veuillez attendre quelques minutes et essayer de nouveau.</string>
+    <string name="session_wash_in_progress_message">Vous ne pouvez pas commencer un lavage pour le moment. Veuillez attendre quelques minutes et essayer de nouveau.</string>
+
     <string name="cards_days">%1$s jours</string>
     <string name="cards_washes">%1$s lavages</string>
 

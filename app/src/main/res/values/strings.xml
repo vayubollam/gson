@@ -797,6 +797,13 @@
     <string name="carwash_cards">Carwash Cards</string>
     <string name="car_wash_card_list">car-wash-card-list</string>
 
+    <string name="carwash_daily_vacuum_used_alert">Daily vacuum used</string>
+    <string name="carwash_daily_vacuum_used_message">Your vacuum for the day was used at %s at %s.</string>
+    <string name="carwash_daily_wash_used_alert">Daily wash used</string>
+    <string name="carwash_daily_wash_used_message">Your wash for the day was used at %s at %s.</string>
+    <string name="session_in_progress_title">Session in progress</string>
+    <string name="session_vacuum_in_progress_message">You cannot start a vacuum at this time. Please wait a few minutes and try again.</string>
+    <string name="session_wash_in_progress_message">You cannot start a wash at this time. Please wait a few minutes and try again.</string>
 
     <string name="cards_days">%1$s days</string>
     <string name="cards_washes">%1$s washes</string>

@@ -126,6 +126,9 @@ object Constants {
     const val WASH_REJECTED = "washRejected"
     const val POE_BUSY = "poeBusy"
 
+    const val TYPE_WASH="wash";
+    const val TYPE_VACUUM="vacuum";
+
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
 

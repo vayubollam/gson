@@ -18,6 +18,8 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
 import suncor.com.android.model.cards.CardType;
+import suncor.com.android.model.station.Station;
+import suncor.com.android.utilities.Timber;
 
 @Singleton
 public class CardsRepository {
@@ -120,6 +122,22 @@ public class CardsRepository {
         });
     }
 
+    public LiveData<Resource<CardDetail>> getSPCardDetails(String cardNumber){
+        return Transformations.map(cardsApi.retrieveSPCardDetail(cardNumber), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                Timber.d("SP CARD DETAILS:"+result.data);
+            }
+            return result;
+        });
+    }
+    public LiveData<Resource<Station>> getStoreDetails(String storeId){
+        return Transformations.map(cardsApi.retrieveStoreDetails(storeId), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                Timber.d("STORE DETAILS ARE:"+result.data.getAddress());
+            }
+            return result;
+        });
+    }
     public Calendar getTimeOfLastUpdate() {
         return timeOfLastUpdate;
     }

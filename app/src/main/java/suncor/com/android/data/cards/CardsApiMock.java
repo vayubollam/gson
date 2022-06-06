@@ -11,6 +11,7 @@ import java.util.Arrays;
 import suncor.com.android.model.Resource;
 import suncor.com.android.model.cards.AddCardRequest;
 import suncor.com.android.model.cards.CardDetail;
+import suncor.com.android.model.station.Station;
 
 import static suncor.com.android.utilities.CommonUtils.getMockResponse;
 
@@ -74,5 +75,15 @@ public class CardsApiMock implements CardsApi {
         });
         thread.start();
         return result;
+    }
+
+    @Override
+    public LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber) {
+        return null;
+    }
+
+    @Override
+    public LiveData<Resource<Station>> retrieveStoreDetails(String storeId) {
+        return null;
     }
 }
