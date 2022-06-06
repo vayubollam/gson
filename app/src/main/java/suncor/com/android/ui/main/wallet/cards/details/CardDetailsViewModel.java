@@ -158,7 +158,7 @@ public class CardDetailsViewModel extends ViewModel {
         return isCarWashBalanceZero;
     }
 
-    public MutableLiveData<Boolean> getIsServiceRunning() {
+    public LiveData<Boolean> getIsServiceRunning() {
         return isServiceRunning;
     }
 
@@ -209,7 +209,6 @@ public class CardDetailsViewModel extends ViewModel {
         });
     }
 
-
     protected void setRecurringService(String cardNumber) {
         carousalTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -226,6 +225,5 @@ public class CardDetailsViewModel extends ViewModel {
         Timber.d("--SERVICE STOP--");
         isServiceRunning.postValue(false);
     }
-
 
 }

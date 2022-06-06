@@ -82,7 +82,7 @@ abstract class CarwashLocation: MainActivityFragment() {
 
         carWashCardViewModel.nearestStation.observeForever { resource: Resource<StationItem?> ->
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                mainViewModel.setNearestStation(resource.data!!.station)
+                mainViewModel.setNearestStation(resource.data?.station)
             }
         }
 
