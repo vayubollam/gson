@@ -19,6 +19,7 @@ import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCRO
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_40;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_60;
 import static suncor.com.android.analytics.enrollment.EnrollmentAnalyticsKt.SCROLL_DEPTH_80;
+import static suncor.com.android.mfp.ErrorCodes.ERR_RESTRICTED_DOMAIN;
 
 import android.content.Context;
 import android.content.Intent;
@@ -160,9 +161,10 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                 EnrollmentAnalytics.logSignupEvent(requireContext(), sign_up_method);
 
             } else if (r.status == Resource.Status.ERROR && !EnrollmentFormViewModel.LOGIN_FAILED.equals(r.message)) {
+
                 if (ErrorCodes.ERR_ACCOUNT_ALREDY_REGISTERED_ERROR_CODE.equals(r.message)) {
                     showDuplicateEmailAlert();
-                } else if (ErrorCodes.ERR_RESTRICTED_DOMAIN.equals(r.message)) {
+                } else if (ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
                     EnrollmentAnalytics.logErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName, "");
 
@@ -173,25 +175,14 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setTitle(R.string.enrollment_email_restricted_alert_title);
-                    dialog.setNegativeButton(R.string.cancel, (d, w) -> {
+                    dialog.setPositiveButton(R.string.ok, (d, w) -> {
                         EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
                                 Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
-                                BaseAnalytics.BUTTON_TEXT_CANCEL, formName);
-                        d.dismiss();
-                    });
-                    dialog.setPositiveButton(R.string.profile_get_help_call, (d, w) -> {
-
-                        EnrollmentAnalytics.logAlertDialogInteraction(requireContext(),
-                                Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
-                                getString(R.string.profile_get_help_call)
-                                , formName
-                        );
-
-                        callCostumerSupport(getString(R.string.customer_support_number));
-                        binding.emailInput.setText("");
+                                BUTTON_TEXT_OK, formName);
                         d.dismiss();
                         focusOnItem(binding.emailInput);
                     });
+
                     dialog.show();
                 } else if (ErrorCodes.ERR_CARD_PENDING_EMAIL_VALIDATION.equals(r.message)) {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
