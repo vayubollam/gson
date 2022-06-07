@@ -175,4 +175,13 @@ public class CardDetailsViewModel extends ViewModel {
     public LiveData<Resource<SettingsResponse>> getSettings(){
         return settingsApi.retrieveSettings();
     }
+
+    public void refreshCards(){
+        _cards.addSource(cardsRepository.getCards(true), result -> {
+            if (result.status == Resource.Status.SUCCESS) {
+                _cards.setValue(result.data);
+                updateCarWashBalance(_cards.getValue());
+            }
+        });
+    }
 }

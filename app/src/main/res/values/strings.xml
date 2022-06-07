@@ -244,6 +244,16 @@
         <item quantity="other">%s days left</item>
     </plurals>
 
+    <plurals name="cards_days_left_expanded">
+        <item quantity="one">day left</item>
+        <item quantity="other">days left</item>
+    </plurals>
+
+    <plurals name="cards_wash_left_expanded">
+        <item quantity="one">wash left</item>
+        <item quantity="other">washes left</item>
+    </plurals>
+
     <plurals name="cards_washes_balance">
         <item quantity="one">%s wash</item>
         <item quantity="other">%s washes</item>
@@ -475,7 +485,7 @@
     <string name="msg_001_dialog_try_again">Try again</string>
     <string name="msg_001_dialog_cancel">Cancel</string>
     <string name="profile_security_question_header">Security question</string>
-    <string name="profile_security_question_content">We don’t mean to slow you down. We just want to ensure it’s you before we proceed.</string>
+    <string name="profile_security_question_content">We want to help keep your information safe. Answer your security question to continue.</string>
     <string name="profile_security_question_continue">Continue</string>
     <string name="profile_security_question_checking_answer">Checking your answer…</string>
     <string name="profile_security_question_wrong_answer_alert_title">Incorrect answer.</string>
@@ -541,14 +551,14 @@
 
     <string name="action_menu_what_would_you_like_to_do">What would you \nlike to do?</string>
     <string name="action_menu_scan_card">Scan my points card</string>
-    <string name="action_menu_wash_car">Wash my vehicle</string>
+    <string name="action_menu_wash_car">Clean my vehicle</string>
     <string name="action_menu_account">Go to my account</string>
-    <string name="cardetail_balance_update_message">Balance may take up to 24 hours to update</string>
+    <string name="cardetail_balance_update_message">Balance may take up to 24 hours to update. </string>
     <string name="carddetail_active_wash">ACTIVATE WASH</string>
 
     <string name="carwash_header">Let\'s clean your vehicle</string>
     <string name="carwash_getwash_header">Get your wash</string>
-    <string name="carwash_getwash_message_card_only">Select your car wash card to get started.</string>
+    <string name="carwash_getwash_message_card_only">Select a card to get started.</string>
     <string name="carwash_getwash_message_ticket_only">Select your car wash ticket to get started.</string>
     <string name="carwash_getwash_message_card_and_ticket">Select your car wash card or ticket to get started.</string>
     <string name="carwash_no_card_get_ticket_header">Get a car wash</string>
@@ -717,7 +727,7 @@
     <string name="view_receipt">View Receipt</string>
     <string name="email_receipt_subject">Petro-Canada fuel receipt: %1$s</string>
     <string name="email_receipt_body">Here\'s your fuel receipt for %1$s:\n</string>
-    <string name="your_transaction_availble_in_your_account">Your transaction was completed but we were unable to generate your receipt at this time.\nPlease check transactions history within 24 hours for your receipt details or ask for one in-store.</string>
+    <string name="your_transaction_availble_in_your_account">Your purchase info will be available from your account. Or, grab your receipt from the pump or in-store.</string>
 
     <!-- Payment  -->
     <string name="pump_unavailable_title">Pump is unavailable</string>
@@ -775,10 +785,18 @@
 
     <string name="carwash_error_alert_title">Can\’t activate wash</string>
     <string name="carwash_error_alert_copy">Suds! Something went wrong. Try again or contact the in-store attendant.</string>
+    <string name="carwash_error_message">Suds! Something went wrong.</string>
     <string name="carwash_zero_error_alert_title">Can\’t activate wash</string>
     <string name="carwash_zero_error_alert_message">This card is no longer valid. New cards can be purchased on our website or in-store.</string>
+    <string name="carwash_zero_error_alert_error_message">This card is no longer valid.</string>
     <string name="carwash_zero_alert_close">Cancel</string>
     <string name="carwash_zero_alert_buy">Visit web</string>
+    <string name="carwash_generate_barcode">Generate Barcode</string>
+    <string name="carwash_activate_carwash">Activate Carwash</string>
+    <string name="carwash_security_code">car-wash-security-code</string>
+    <string name="carwash_cards">Carwash Cards</string>
+    <string name="car_wash_card_list">car-wash-card-list</string>
+
 
     <string name="cards_days">%1$s days</string>
     <string name="cards_washes">%1$s washes</string>
@@ -817,6 +835,15 @@
     <string name="google_passes_howtouse_value_fr">Scannez votre carte au dépanneur pour obtenir ou échanger des points. Ou téléchargez notre application pour obtenir des points directement à la pompe.</string>
     <string name="google_passes_termcondition_label_fr">Conditions</string>
     <string name="google_passes_termcondition_value_fr">En utilisant cette carte, vous acceptez les conditions de Petro-Points. Consultez-les sur notre site Web.</string>
+
+    <!-- vacuum   -->
+    <string name="vacuum_barcode_header">Scan to start your vacuum</string>
+    <string name="vacuum_heading">VACUUM</string>
+    <string name="wash_heading">WASH</string>
+    <plurals name="vacuum_left">
+        <item quantity="one">vacuum left</item>
+        <item quantity="other">vacuums left</item>
+    </plurals>
 
     <!-- account details-->
     <string name="account_details_page_header">Account Details</string>

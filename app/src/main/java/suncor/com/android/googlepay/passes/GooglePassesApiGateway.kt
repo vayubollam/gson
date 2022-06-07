@@ -12,6 +12,8 @@ import suncor.com.android.utilities.Timber
 import java.math.BigDecimal
 import java.util.*
 
+class GpayException(message: String) : Exception(message)
+
 class GooglePassesApiGateway {
     enum class VerticalType {
         LOYALTY
@@ -27,7 +29,14 @@ class GooglePassesApiGateway {
      *
      * See https://developers.google.com/pay/passes/reference/v1/
      */
-    fun makeSkinnyJwt(context: Context, verticalType: VerticalType?, passesConfig: SettingsResponse.GooglePassConfig, objectId: String?, loyalityData: LoyalityData): String? {
+    fun makeSkinnyJwt(
+        context: Context,
+        verticalType: VerticalType?,
+        passesConfig: SettingsResponse.GooglePassConfig,
+        objectId: String?,
+        loyalityData: LoyalityData,
+        errorHandler: (Exception?) -> Unit
+    ): String? {
         var signedJwt: String? = null
         val resourceDefinitions = GooglePassesResourceDefination
         val restMethods: GooglePassesRestClient = GooglePassesRestClient.instance!!
@@ -41,7 +50,8 @@ class GooglePassesApiGateway {
                     objectResponse = restMethods.insertLoyaltyObject(objectResourcePayload as LoyaltyObject?, context)
                 }
             }
-            if (objectResponse!!["code"]!!.equals("200") && objectResponse["code"]!!.equals("409")) {
+            if (objectResponse?.get("code")?.equals("409") == true) {
+                errorHandler.invoke(GpayException("Gpay exception"))
                 return null
             }
             Timber.e("GOOGLE PASSES: insert loyality Object")
@@ -59,6 +69,7 @@ class GooglePassesApiGateway {
             // sign JSON to make signed JWT
             signedJwt = googlePassJwt.generateSignedJwt(context, passesConfig.googlePassesAccountEmailAddress)
         } catch (e: Exception) {
+            errorHandler.invoke(e)
             e?.let {
                 Timber.e("Error on creating the loyality token" + e.message)
             }
@@ -68,26 +79,42 @@ class GooglePassesApiGateway {
         return signedJwt
     }
 
-    fun demoSkinnyJwt(context: Context, passesConfig: SettingsResponse.GooglePassConfig , objectId: String?, loyalityData: LoyalityData): String? {
+    fun demoSkinnyJwt(
+        context: Context,
+        passesConfig: SettingsResponse.GooglePassConfig,
+        objectId: String?,
+        loyalityData: LoyalityData,
+        errorHandler: (Exception?) -> Unit
+    ): String? {
         Timber.d("Generates a signed")
-        val skinnyJwt = makeSkinnyJwt(context, VerticalType.LOYALTY, passesConfig, objectId, loyalityData)
+        val skinnyJwt =
+            makeSkinnyJwt(context, VerticalType.LOYALTY, passesConfig, objectId, loyalityData,errorHandler)
         if (skinnyJwt != null) {
             return GooglePassesConfig.SAVE_LINK + skinnyJwt
         }
         return null
     }
 
-    fun insertLoyalityCard(context: Context, loyalityData: LoyalityData, passesConfig: SettingsResponse.GooglePassConfig): String? {
+    fun insertLoyalityCard(
+        context: Context,
+        loyalityData: LoyalityData,
+        passesConfig: SettingsResponse.GooglePassConfig,
+        errorHandler: (Exception?) -> Unit
+    ): String? {
         val verticalType = VerticalType.LOYALTY
         val uuidString = "petro_card_loyality_pass_$loyalityData.barcode"
 
 
         // your objectUid should be a hash based off of pass metadata, for the demo we will use pass-type_object_uniqueid
-        val objectUid = String.format("%s_OBJECT_%s", verticalType.toString(), UUID.nameUUIDFromBytes(uuidString?.toByteArray()).toString())
+        val objectUid = String.format(
+            "%s_OBJECT_%s",
+            verticalType.toString(),
+            UUID.nameUUIDFromBytes(uuidString?.toByteArray()).toString()
+        )
 
         // check Reference API for format of "id", for example offer:(https://developers.google.com/pay/passes/reference/v1/offerobject/insert).
         // Must be alphanumeric characters, ".", "_", or "-".
         val objectId = String.format("%s.%s", passesConfig.googlePassesIssuerId, objectUid)
-        return demoSkinnyJwt(context, passesConfig, objectId, loyalityData )
+        return demoSkinnyJwt(context, passesConfig, objectId, loyalityData, errorHandler)
     }
 }
