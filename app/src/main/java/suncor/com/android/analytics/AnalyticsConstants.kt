@@ -1,5 +1,6 @@
 package suncor.com.android.analytics
 
+// Contains the constant common to the different Analytics modules
 object AnalyticsConstants {
 
     //Scroll Depth
@@ -9,17 +10,8 @@ object AnalyticsConstants {
     const val SCROLL_DEPTH_75 = "75"
     const val SCROLL_DEPTH_95 = "95"
 
-    const val REWARDS_GUEST_FORM_NAME = "Discover Petro-Points Guest"
-    const val REWARDS_DISCOVERY_FORM_NAME = "Discover Petro-Points"
+    const val PETRO_POINTS_REDEEM_INFO = "my-petro-points-redeem-info-"
 
     const val SUNCOR_030_DESCRIPTION = "Petro-Points card locked"
     const val SUNCOR_026_DESCRIPTION = "Failed to complete order"
-
-    const val REDEEM_FOR = "Redeem for "
-    const val E_GIFT_CARD = " eGift card"
-    const val CLICK_TO_REDEEM = "Click to redeem"
-
-    const val PETRO_POINTS_REDEEM_INFO = "my-petro-points-redeem-info-"
-
-
 }

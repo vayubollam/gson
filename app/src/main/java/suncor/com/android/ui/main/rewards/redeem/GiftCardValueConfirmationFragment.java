@@ -1,9 +1,9 @@
 package suncor.com.android.ui.main.rewards.redeem;
 
-import static suncor.com.android.analytics.AnalyticsConstants.CLICK_TO_REDEEM;
-import static suncor.com.android.analytics.AnalyticsConstants.E_GIFT_CARD;
 import static suncor.com.android.analytics.AnalyticsConstants.PETRO_POINTS_REDEEM_INFO;
-import static suncor.com.android.analytics.AnalyticsConstants.REDEEM_FOR;
+import static suncor.com.android.analytics.giftcard.GIftCardAnalyticsKt.E_GIFT_CARD;
+import static suncor.com.android.analytics.giftcard.GIftCardAnalyticsKt.REDEEM_FOR;
+import static suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics.CLICK_TO_REDEEM;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

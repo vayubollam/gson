@@ -18,7 +18,7 @@ import suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics;
 import suncor.com.android.databinding.FragmentRewardsDiscoveryBinding;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 
-import static suncor.com.android.analytics.AnalyticsConstants.REWARDS_DISCOVERY_FORM_NAME;
+
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;

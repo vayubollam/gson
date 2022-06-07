@@ -27,7 +27,6 @@ import suncor.com.android.ui.main.BottomNavigationFragment;
 import suncor.com.android.utilities.ConnectionUtil;
 import suncor.com.android.utilities.Constants;
 
-import static suncor.com.android.analytics.AnalyticsConstants.REWARDS_GUEST_FORM_NAME;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_25;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_5;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_50;
@@ -35,6 +34,7 @@ import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_75;
 import static suncor.com.android.analytics.AnalyticsConstants.SCROLL_DEPTH_95;
 import static suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics.SCREEN_NAME_REWARDS_DISCOVERY;
 import static suncor.com.android.analytics.giftcard.RewardsDiscoveryAnalytics.SCREEN_NAME_REWARDS_DISCOVERY_LOADING;
+import static suncor.com.android.analytics.giftcard.RewardsGuestAnalytics.REWARDS_GUEST_FORM_NAME;
 
 import javax.inject.Inject;
 

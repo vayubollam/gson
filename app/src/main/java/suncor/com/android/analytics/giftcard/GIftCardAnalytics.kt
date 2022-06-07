@@ -2,16 +2,16 @@ package suncor.com.android.analytics.giftcard
 
 import android.content.Context
 import android.os.Bundle
-import suncor.com.android.analytics.AnalyticsConstants.E_GIFT_CARD
-import suncor.com.android.analytics.AnalyticsConstants.REDEEM_FOR
 import suncor.com.android.analytics.BaseAnalytics
 import suncor.com.android.analytics.BaseEvents
 import suncor.com.android.analytics.BaseParams
 
+// Common Constant of the module goes into file level
+const val REDEEM_FOR = "Redeem for "
+const val E_GIFT_CARD = " eGift card"
+
 object RewardsSignedInAnalytics : BaseAnalytics(){
-
     const val REWARDS_SIGNED_IN_SCREEN_NAME = "my-petro-points-redeem-info-general"
-
 }
 
 object MerchantDetailsAnalytics : BaseAnalytics()
@@ -28,12 +28,14 @@ object RedeemReceiptAnalytics : BaseAnalytics() {
 }
 
 object RewardsDiscoveryAnalytics : BaseAnalytics() {
-
     const val SCREEN_NAME_REWARDS_DISCOVERY = "discover-petro-points"
     const val SCREEN_NAME_REWARDS_DISCOVERY_LOADING = "discover-petro-points-loading"
-
 }
 
-object RewardsGuestAnalytics : BaseAnalytics()
+object RewardsGuestAnalytics : BaseAnalytics(){
+    const val REWARDS_GUEST_FORM_NAME = "Discover Petro-Points Guest"
+}
 
-object GiftCardValueConfirmationAnalytics : BaseAnalytics()
+object GiftCardValueConfirmationAnalytics : BaseAnalytics(){
+    const val CLICK_TO_REDEEM = "Click to redeem"
+}
