@@ -87,6 +87,9 @@ object Constants {
     const val INTERSITE = "intersite"
     const val INFO_TAP = "info_tap"
     const val MENU_TAP = "menu_tap"
+    const val WALLET_TYPE = "walletType"
+    const val ACTIVATE_CAR_WASH_SUCCESS = "activate_car_wash_success"
+    const val CW_CONFIRM_PIN = "cw_confirm_PIN"
 
     const val ITEM_ID = "item_id"
     const val ITEM_NAME = "item_name"
@@ -104,12 +107,21 @@ object Constants {
     const val INTERSITE_URL = "intersiteURL"
     const val INFO_TEXT = "infoText"
     const val MENU_SELECTION = "menuSelection"
+    const val ADD_PPTS_TO_WALLET = "add_ppts_to_wallet"
+    const val ADD_PPTS_TO_WALLET_ERROR = "add_ppts_to_wallet_error"
+    const val APP_RATING_PROMPT = "app_rating_prompt"
+    const val CAR_WASH_CARD_TYPE = "carWashCardType"
 
     const val INTERNAL_PROMOTIONS = "Internal Promotions"
     const val ACTIVATE_WNG = "Activate Wash by Wash & Go card"
     const val ACTIVATE_SP = "Activate Wash by Season Pass card"
     const val NONE = "None"
     const val DEFAULT_ERROR_SUNCORXXXX = "SUNCORXXXX"
+    const val ACTIVATE_CAR_WASH_CLICK = "activate_car_wash_click"
+    //
+    const val INCORRECT_PIN = "incorrectPin"
+    const val WASH_REJECTED = "washRejected"
+    const val POE_BUSY = "poeBusy"
 
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
@@ -141,5 +153,7 @@ object Constants {
     //navigation constants
     const val IS_COME_FROM_REWARDS_GUEST_SCREEN = "is_come_from_rewards_guest_screen"
     const val RESULTANT_VALUE = "resultant_value"
+
+    const val GPAY_ANALYTICS = "GPay"
 
 }

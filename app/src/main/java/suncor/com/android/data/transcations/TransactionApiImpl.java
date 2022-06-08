@@ -23,6 +23,7 @@ import suncor.com.android.utilities.Timber;
 
 public class TransactionApiImpl implements TransactionApi {
     private final static String GET_TRANSACTIONS_ADAPTER_PATH = "/adapters/suncor/v3/rfmp-secure/transactions";
+    public final int TRANSACTION_LIST_TIMEOUT = 45_000;
     private Gson gson;
 
     public TransactionApiImpl(Gson gson) {
@@ -37,7 +38,7 @@ public class TransactionApiImpl implements TransactionApi {
 
         try {
             URI adapterUri = new URI(GET_TRANSACTIONS_ADAPTER_PATH + "?startMonth=" + startMonth + "&monthsBack=" + monthsBack);
-            WLResourceRequest request = new WLResourceRequest(adapterUri, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
+            WLResourceRequest request = new WLResourceRequest(adapterUri, WLResourceRequest.GET, TRANSACTION_LIST_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
             request.addHeader("x-petro-card-id", cardId);
             request.send(new WLResponseListener() {
                 @Override

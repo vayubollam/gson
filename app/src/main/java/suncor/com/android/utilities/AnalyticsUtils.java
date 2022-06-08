@@ -64,7 +64,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import suncor.com.android.model.cards.CardType;
-
+import static suncor.com.android.utilities.Constants.*;
 public class AnalyticsUtils {
 
     public enum Event {
@@ -84,10 +84,17 @@ public class AnalyticsUtils {
         _ALERT(ALERT),
         alertInteraction(ALERT_INTERACTION),
         error(ERROR_LOG),
+        paymentPreauthorize(PAYMENT_PREAUTHORIZE),
         paymentComplete(PAYMENT_COMPLETE),
         intersite(INTERSITE),
         infoTap(INFO_TAP),
-        menuTap(MENU_TAP);
+        menuTap(MENU_TAP),
+        activateCarwashSuccess(ACTIVATE_CAR_WASH_SUCCESS),
+        cwConfirmPin(CW_CONFIRM_PIN),
+        activateCarWashClick(ACTIVATE_CAR_WASH_CLICK),
+        ADDPPTSTOWALLET(ADD_PPTS_TO_WALLET),
+        ADDPPTSTOWALLETERROR(ADD_PPTS_TO_WALLET_ERROR),
+        APPRATINGPROMPT(APP_RATING_PROMPT);
 
 
         private final String name;
@@ -111,7 +118,9 @@ public class AnalyticsUtils {
         PROMOTIONS_ENUM(PROMOTIONS),
         VIDEOTITLE(VIDEO_TITLE),
         FORMNAME(FORM_NAME),
+        STEPNAME(STEP_NAME),
         FORMSELECTION(FORM_SELECTION),
+        ACTIONBARTAP(ACTIONBAR_TAP),
         buttonText(BUTTON_TEXT),
         alertTitle(ALERT_TITLE),
         alertSelection(ALERT_SELECTION),
@@ -119,13 +128,12 @@ public class AnalyticsUtils {
         errorMessage(ERROR_MESSAGE),
         detailMessage(DETAIL_ERROR_MESSAGE),
         paymentMethod(PAYMENT_METHOD),
+        fuelAmountSelection(FUEL_AMOUNT_SELECTION),
         intersiteURL(INTERSITE_URL),
         infoText(INFO_TEXT),
         menuSelection(MENU_SELECTION),
-        STEPNAME(STEP_NAME);
-
-
-
+        carWashCardType(CAR_WASH_CARD_TYPE),
+        WALLETTYPE(WALLET_TYPE);
 
         private final String name;
 
@@ -214,17 +222,17 @@ public class AnalyticsUtils {
     }
 
     public static void logCarwashActivationEvent(Context context, Event event, String stepName) {
-//        if (currentCardType == CardType.WAG) {
-//            logEvent(context, event,
-//                    new Pair<>(Param.FORMNAME, ACTIVATE_WNG),
-//                    new Pair<>(BaseParams.STEP_NAME, stepName)
-//            );
-//        } else if (currentCardType == CardType.SP) {
-//            logEvent(context, event,
-//                    new Pair<>(Param.FORMNAME, ACTIVATE_SP),
-//                    new Pair<>(BaseParams.STEP_NAME, stepName)
-//            );
-//        }
+        if (currentCardType == CardType.WAG) {
+            logEvent(context, event,
+                    new Pair<>(Param.FORMNAME, ACTIVATE_WNG),
+                    new Pair<>(Param.STEPNAME, stepName)
+            );
+        } else if (currentCardType == CardType.SP) {
+            logEvent(context, event,
+                    new Pair<>(Param.FORMNAME, ACTIVATE_SP),
+                    new Pair<>(Param.STEPNAME, stepName)
+            );
+        }
     }
 
 
