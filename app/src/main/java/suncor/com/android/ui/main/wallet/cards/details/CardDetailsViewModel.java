@@ -2,6 +2,8 @@ package suncor.com.android.ui.main.wallet.cards.details;
 
 
 import android.content.Context;
+import android.os.Handler;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -39,12 +41,11 @@ public class CardDetailsViewModel extends ViewModel {
     private CardsLoadType loadType;
     private Set<String> redeemedTicketNumbers;
     private MutableLiveData<Boolean> isCarWashBalanceZero = new MutableLiveData<>();
-
-    protected MutableLiveData<Boolean> isServiceRunning = new MutableLiveData<>();
     private String newlyAddedCardNumber;
     private final SettingsApi settingsApi;
     final int interval = 360000;
-    private Timer carousalTimer=new Timer();
+    Handler handler = new Handler();
+    Runnable runnableCode;
 
     @Inject
     public CardDetailsViewModel(CardsRepository cardsRepository, SessionManager sessionManager, SettingsApi settingsApi) {
@@ -142,20 +143,16 @@ public class CardDetailsViewModel extends ViewModel {
         this.isCarWashBalanceZero.setValue(isBalanceZero);
     }
 
-
     public LiveData<Resource<CardDetail>> getProgressDetails(String cardNum, CardType cardType) {
-        LiveData<Resource<CardDetail>> cardDetails =null;
-        if (cardType==CardType.SP) {
-            cardDetails = cardsRepository.getSPCardDetails(cardNum);
-        } else if (cardType==(CardType.WAG)) {
-            cardDetails=  cardsRepository.getWAGCardDetails(cardNum);
+        String cardString = cardNum.replaceAll("\\s", "");
+        LiveData<Resource<CardDetail>> cardDetails = null;
+        if (cardType == CardType.SP) {
+            cardDetails = cardsRepository.getSPCardDetails(cardString);
+        } else if (cardType == (CardType.WAG)) {
+            cardDetails = cardsRepository.getWAGCardDetails(cardString);
         }
-
-
         return cardDetails;
-
     }
-
 
     public LiveData<Resource<Station>> getStoreDetails(String storeId) {
         return cardsRepository.getStoreDetails(storeId);
@@ -166,11 +163,7 @@ public class CardDetailsViewModel extends ViewModel {
         return isCarWashBalanceZero;
     }
 
-    public MutableLiveData<Boolean> getIsServiceRunning() {
-        return isServiceRunning;
-    }
-
-    protected Profile getUserProfile(){
+    protected Profile getUserProfile() {
         return sessionManager.getProfile();
     }
 
@@ -219,21 +212,24 @@ public class CardDetailsViewModel extends ViewModel {
 
 
     protected void setRecurringService(String cardNumber, CardType cardType) {
-        carousalTimer.scheduleAtFixedRate(new TimerTask() {
+        runnableCode = new Runnable() {
             @Override
             public void run() {
+                Timber.d("UPDATE-CARD-CALLED-Timer-Method");
                 getProgressDetails(cardNumber, cardType);
-                isServiceRunning.postValue(true);
                 Timber.d("--SERVICE STARTED--");
+                handler.postDelayed(this, interval);
             }
-        }, interval, interval); // delay
+        };
+        handler.post(runnableCode);
+
     }
 
-    void stopRecurringService() {
-        carousalTimer.cancel();
-        Timber.d("--SERVICE STOP--");
-        isServiceRunning.postValue(false);
+    protected void stopRecurringService() {
+        if (handler != null) {
+            handler.removeCallbacks(runnableCode);
+            Timber.d("--SERVICE STOPPED--");
+        }
     }
-
 
 }

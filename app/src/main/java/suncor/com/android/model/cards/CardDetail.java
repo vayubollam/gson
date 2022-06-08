@@ -25,6 +25,7 @@ public class CardDetail {
     private boolean vacuumInProgress;
     private String  lastWashDt;
     private String  lastVacuumDt;
+    private boolean timerInProgress=false;
 
 
     //Defaulting to 5cent if the balance service is down
@@ -251,5 +252,13 @@ public class CardDetail {
 
     public void setLastVacuumSiteId(String lastVacuumSiteId) {
         this.lastVacuumSiteId = lastVacuumSiteId;
+    }
+
+    public boolean isTimerInProgress() {
+        return timerInProgress;
+    }
+
+    public void setTimerInProgress(boolean timerInProgress) {
+        this.timerInProgress = timerInProgress;
     }
 }
