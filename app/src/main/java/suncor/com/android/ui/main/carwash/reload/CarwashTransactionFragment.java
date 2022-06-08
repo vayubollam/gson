@@ -167,6 +167,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         viewModel.getSettings().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, result.message));
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 papData = result.data.getSettings().getPap();
             }
@@ -176,6 +178,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
             if (result.status == Resource.Status.LOADING) {
                 //hideKeyBoard();
             } else if (result.status == Resource.Status.ERROR) {
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, result.message));
                 List<PaymentListItem> payments = result.data;
                 payments = new ArrayList<>();
                 paymentDropDownAdapter.addPayments(payments);
@@ -240,6 +244,8 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
                 if (result.status == Resource.Status.LOADING) {
                     //hideKeyBoard();
                 } else if (result.status == Resource.Status.ERROR) {
+                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                            new Pair<>(AnalyticsUtils.Param.errorMessage, result.message));
                     Alerts.prepareGeneralErrorDialog(getContext(), PUMP_PRE_AUTHORIZED).show();
                 } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                     viewModel.setTransactionReloadData(result.data);
@@ -265,11 +271,13 @@ public class CarwashTransactionFragment extends MainActivityFragment implements 
         viewModel.getcards().observe(getViewLifecycleOwner(), result -> {
             if (result.status == Resource.Status.LOADING) {
             } else if (result.status == Resource.Status.ERROR) {
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error,
+                        new Pair<>(AnalyticsUtils.Param.errorMessage, result.message));
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 List<CardDetail> cards = result.data;
                 List<ExpandedCardItem> selectCards = new ArrayList<>();
                 cards.forEach(card -> {
-                    if(card.getCardType().name().equals(cardType)){
+                    if (card.getCardType().name().equals(cardType)) {
                         selectCards.add(new ExpandedCardItem(getContext(), card));
                     }
                 });

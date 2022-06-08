@@ -200,7 +200,7 @@ public class PapApiImpl implements PapApi {
         MutableLiveData<Resource<Transaction>> result = new MutableLiveData<>();
         result.postValue(Resource.loading());
         try {
-            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/transactionInfo/" + transactionId + "?isPartnerTransactionId=" + isPartnerTransactionId );
+            URI adapterPath = new URI("/adapters/suncorpayatpump/v1/rfmp-secure/payatpump/fuelup/transactionInfo/" + 0 + "?isPartnerTransactionId=" + isPartnerTransactionId );
             WLResourceRequest request = new WLResourceRequest(adapterPath, WLResourceRequest.GET, SuncorApplication.DEFAULT_TIMEOUT, SuncorApplication.PROTECTED_SCOPE);
 
             request.send( new WLResponseListener() {

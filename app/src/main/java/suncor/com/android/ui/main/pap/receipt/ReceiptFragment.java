@@ -41,7 +41,10 @@ import suncor.com.android.model.Resource;
 import suncor.com.android.model.pap.transaction.Transaction;
 import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
 import suncor.com.android.utilities.PdfUtil;
+
+import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
 
 public class ReceiptFragment extends MainActivityFragment {
 
@@ -125,10 +128,8 @@ public class ReceiptFragment extends MainActivityFragment {
                 if (sessionManager.getProfile() != null && sessionManager.getProfile().getFirstName() != null) {
                     binding.transactionGreetings.setText(String.format(getString(R.string.thank_you), sessionManager.getProfile().getFirstName()));
                 }
-                binding.appBar.setVisibility(View.VISIBLE);
                 binding.receiptTvDescription.setText(R.string.your_transaction_availble_in_your_account);
                 binding.transactionLayout.setVisibility(View.GONE);
-                binding.appBar.setOnClickListener((view) -> goBack());
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 isLoading.set(false);
                 Transaction transaction = result.data;
@@ -231,6 +232,7 @@ public class ReceiptFragment extends MainActivityFragment {
         });
     }
 
+
     private void goBack() {
         NavController navController = Navigation.findNavController(requireView());
         navController.popBackStack();
@@ -263,6 +265,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 // We can get the ReviewInfo object
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow(requireActivity(), reviewInfo);
+                AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.APPRATINGPROMPT.toString());
 
                 flow.addOnCompleteListener(reviewed -> {
                     // The flow has finished. The API does not indicate whether the user
@@ -275,8 +278,7 @@ public class ReceiptFragment extends MainActivityFragment {
                 // TODO: Handle error when launching in app review
                 @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
 
-                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) {
-                }
+                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
 
                 goBack();
             }
