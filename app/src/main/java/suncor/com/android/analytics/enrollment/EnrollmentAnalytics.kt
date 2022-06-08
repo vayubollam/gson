@@ -8,11 +8,7 @@ import suncor.com.android.analytics.Errors
 import suncor.com.android.analytics.Errors.ENTER_DIFFERENT_EMAIL_OR_CALL
 
 
-const val SCROLL_DEPTH_20 = "20"
-const val SCROLL_DEPTH_40 = "40"
-const val SCROLL_DEPTH_60 = "60"
-const val SCROLL_DEPTH_80 = "80"
-const val SCROLL_DEPTH_100 = "100"
+
 
 const val FORM_NAME_ACTIVATE_PETRO_POINTS_CARD = "Activate Petro-Points Card"
 const val FORM_NAME_JOIN_PETRO_POINTS = "Join Petro-Points"
@@ -30,7 +26,7 @@ object EnrollmentAnalytics : BaseAnalytics() {
     const val SCREEN_NAME_ACTIVATE_I_DO_NOT_HAVE_CARD = "sign-up-i-dont-have-a-card"
 
 
-    private const val SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address"
+    const val SCREEN_NAME_CANADA_POST_SEARCH_DESCRIPTIVE_SCREEN_NAME = "canadapost-search-address"
 
     const val STEP_NAME_ADDRESS = "Address"
     const val  STEP_NAME_PERSONAL_INFORMATION = "Personal Information"

@@ -3,6 +3,7 @@ package suncor.com.android.ui.enrollment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -34,14 +39,15 @@ import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.BaseFragment;
 import suncor.com.android.ui.enrollment.form.SecurityQuestionViewModel;
 import suncor.com.android.uicomponents.SuncorAppBarLayout;
+import suncor.com.android.utilities.Constants;
 
 
 public class CardQuestionFragment extends BaseFragment {
 
     private AppCompatImageView cardImg, cardShadow;
-    private int cardAnimationDuration = 400;
     private SecurityQuestionViewModel securityQuestionViewModel;
     private FragmentCardQuestionBinding binding;
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -54,7 +60,7 @@ public class CardQuestionFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         securityQuestionViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SecurityQuestionViewModel.class);
-        securityQuestionViewModel.fetchQuestion();
+
     }
 
     @Override
@@ -62,9 +68,11 @@ public class CardQuestionFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         binding = FragmentCardQuestionBinding.inflate(inflater, container, false);
         binding.setVm(securityQuestionViewModel);
+        binding.setIsLoading(isLoading);
         binding.setLifecycleOwner(this);
+
         return binding.getRoot();
-    }
+    };
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -73,6 +81,10 @@ public class CardQuestionFragment extends BaseFragment {
         cardImg = requireView().findViewById(R.id.cardImage);
         cardShadow = requireView().findViewById(R.id.cardShadow);
 
+        assert getArguments() != null;
+        boolean isNavigatedFromRewardsGuestScreen = getArguments().getBoolean(Constants.RESULTANT_VALUE, false);
+        if(!isNavigatedFromRewardsGuestScreen) securityQuestionViewModel.fetchQuestion();
+        isLoading.set(true);
         cardImg.post(() -> {
             float cardRatio = (float) cardImg.getDrawable().getIntrinsicHeight() / cardImg.getDrawable().getIntrinsicWidth();
             float shadowRatio = (float) cardShadow.getDrawable().getIntrinsicHeight() / cardShadow.getDrawable().getIntrinsicWidth();
@@ -99,21 +111,31 @@ public class CardQuestionFragment extends BaseFragment {
             Navigation.findNavController(v).navigate(R.id.action_card_question_to_card_form_fragment);
         });
 
-        securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
-            switch (arrayListResource.status) {
-                case SUCCESS:
-                    animateCard();
-                    break;
-                case ERROR:
-                    CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
+        if(isNavigatedFromRewardsGuestScreen){
+            isLoading.set(false);
+            animateCard();
+        }else{
+            securityQuestionViewModel.securityQuestions.observe(getViewLifecycleOwner(), arrayListResource -> {
+                switch (arrayListResource.status) {
+                    case LOADING:
+                        isLoading.set(true);
+                        break;
+                    case SUCCESS:
+                        isLoading.set(false);
+                        animateCard();
+                        break;
+                    case ERROR:
+                        isLoading.set(false);
+                        CardQuestionsAnalytics.logSomethingWentFormError(requireContext());
 
-                    Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.setOnDismissListener((listener) -> requireActivity().finish());
-                    dialog.show();
+                        Dialog dialog = Alerts.prepareGeneralErrorDialog(getContext(), "Petro Points Sign Up Activate");
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setOnDismissListener((listener) -> requireActivity().finish());
+                        dialog.show();
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
@@ -125,6 +147,7 @@ public class CardQuestionFragment extends BaseFragment {
     private void animateCard() {
         AnimationSet set = new AnimationSet(true);
         Animation trAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0f);
+        int cardAnimationDuration = 400;
         trAnimation.setDuration(cardAnimationDuration);
         set.addAnimation(trAnimation);
         Animation alphaAnim = new AlphaAnimation(0.0f, 1.0f);

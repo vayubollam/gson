@@ -2,19 +2,15 @@ package suncor.com.android.data.redeem;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.google.gson.Gson;
 import com.worklight.wlclient.api.WLFailResponse;
 import com.worklight.wlclient.api.WLResourceRequest;
 import com.worklight.wlclient.api.WLResponse;
 import com.worklight.wlclient.api.WLResponseListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import suncor.com.android.SuncorApplication;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.Resource;
@@ -54,8 +50,11 @@ public class OrderApiImpl implements OrderApi {
                 @Override
                 public void onFailure(WLFailResponse wlFailResponse) {
                     Timber.d("Order API failed, " + wlFailResponse.toString());
+                    OrderResponse orderResponse = new OrderResponse();
+                    orderResponse.setErrorID(wlFailResponse.getErrorMsg());
+                    orderResponse.setErrorDescription(wlFailResponse.getResponseJSON().optString("errorMessage"));
                     Timber.e(wlFailResponse.toString());
-                    result.postValue(Resource.error(wlFailResponse.getErrorMsg()));
+                    result.postValue(Resource.error(wlFailResponse.getErrorMsg(), orderResponse));
                 }
             });
         } catch (URISyntaxException e) {

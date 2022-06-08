@@ -59,7 +59,7 @@ public class AboutFragment extends MainActivityFragment {
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override

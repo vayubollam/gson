@@ -18,6 +18,7 @@ import suncor.com.android.analytics.pap.FuelUpAnalytics
 import suncor.com.android.analytics.pap.ReceiptAnalytics
 
 
+
 abstract class BaseAnalytics {
 
 
@@ -27,24 +28,6 @@ abstract class BaseAnalytics {
 
 
 
-
-
-    fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
-        val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage)
-        bundle.putString(FORM_NAME,formName)
-        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
-    }
-
-
-    fun logFormErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
-        val bundle = Bundle()
-        bundle.putString(ERROR_MESSAGE,errorMessage)
-        bundle.putString(FORM_NAME,formName)
-        bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
-        FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
-    }
 
     fun logEvent(context: Context, eventName: String, bundle: Bundle) {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle)
@@ -66,11 +49,29 @@ abstract class BaseAnalytics {
         @JvmStatic
         fun logAlertDialogInteraction(context: Context,alertTitle: String, alertSelection: String,formName : String){
             val bundle = Bundle()
-            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+            bundle.putString(BaseParams.ALERT_TITLE,alertTitle.take(100))
             bundle.putString(BaseParams.ALERT_SELECTION,alertSelection)
             bundle.putString(FORM_NAME,formName)
 
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
+        }
+
+
+        @JvmStatic
+        fun logErrorEvent(context: Context,errorMessage: String,formName: String, detailErrorMessage:String = ""){
+            val bundle = Bundle()
+            bundle.putString(ERROR_MESSAGE,errorMessage)
+            bundle.putString(FORM_NAME,formName)
+            bundle.putString(ERROR_MESSAGE_DETAIL,detailErrorMessage)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
+        }
+
+        @JvmStatic
+        fun logFormErrorEvent(context: Context,errorMessage: String,formName: String){
+            val bundle = Bundle()
+            bundle.putString(ERROR_MESSAGE,errorMessage.take(100))
+            bundle.putString(FORM_NAME,formName)
+            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
         }
 
         @JvmStatic
@@ -88,9 +89,8 @@ abstract class BaseAnalytics {
         }
 
         @JvmStatic
-        fun logFormStep(context: Context, formName: String,selection: String = "", stepName:String = "") {
+        fun logFormStep(context: Context, formName: String, stepName:String = "") {
             val bundle = Bundle()
-            bundle.putString(FORM_SELECTION, selection)
             bundle.putString(FORM_NAME, formName)
             bundle.putString(STEP_NAME, stepName)
             FuelUpAnalytics.logEvent(context, FORM_STEP, bundle)
@@ -106,6 +106,17 @@ abstract class BaseAnalytics {
         }
 
         @JvmStatic
+        fun logScreenNameClass(context: Context, screenName: String?, className : String) {
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, className)
+            FirebaseAnalytics.getInstance(context)
+                .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        }
+
+
+
+        @JvmStatic
         fun logFormStart(context: Context, formName: String) {
             val bundle = Bundle()
             bundle.putString(FORM_NAME, formName)
@@ -115,7 +126,7 @@ abstract class BaseAnalytics {
         @JvmStatic
         fun logAlertDialogShown(context: Context, alertTitle: String, formName : String){
             val bundle = Bundle()
-            bundle.putString(BaseParams.ALERT_TITLE,alertTitle)
+            bundle.putString(BaseParams.ALERT_TITLE,alertTitle.take(100))
             bundle.putString(FORM_NAME,formName)
             FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
         }
@@ -126,9 +137,5 @@ abstract class BaseAnalytics {
             bundle.putString(BaseParams.INTER_SITE_URL, url)
             FuelUpAnalytics.logEvent(context, BaseEvents.INTER_SITE, bundle)
         }
-
-
     }
-
-
 }

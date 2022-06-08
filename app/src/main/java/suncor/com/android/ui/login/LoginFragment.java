@@ -19,9 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Objects;
-
 import javax.inject.Inject;
 
 import suncor.com.android.R;
@@ -91,20 +89,20 @@ public class LoginFragment extends BaseFragment {
         viewModel.getLoginSuccessEvent().observe(this, event -> {
                     if (event.getContentIfNotHandled() != null) {
                         if (fingerPrintManager.isFingerPrintExistAndEnrolled() && !fingerPrintManager.isFingerprintActivated()) {
-                            new AlertDialog.Builder(getContext())
+                            new AlertDialog.Builder(requireContext())
                                     .setTitle(R.string.sign_enable_fp_title)
                                     .setMessage(R.string.sign_enable_fb_message)
                                     .setPositiveButton(R.string.sign_enable_fb_possitive_button, (dialog, which) -> {
                                         fingerPrintManager.activateFingerprint();
-                                        getActivity().finish();
+                                        requireActivity().finish();
                                     })
                                     .setNegativeButton(R.string.sign_enable_fb_negative_button, (dialog, which) -> {
-                                        getActivity().finish();
+                                        requireActivity().finish();
                                     })
                                     .create()
                                     .show();
                         } else {
-                            getActivity().finish();
+                            requireActivity().finish();
                         }
                         fingerPrintManager.activateAutoLogin();
                         LoginAnalytics.logLoginEvent(requireContext(),"","");
@@ -118,7 +116,7 @@ public class LoginFragment extends BaseFragment {
             if (isLoading) {
                 binding.emailLayout.getEditText().clearFocus();
                 binding.passwordLayout.getEditText().clearFocus();
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
             }
         });
@@ -155,7 +153,7 @@ public class LoginFragment extends BaseFragment {
 
         viewModel.getNavigateToHomeEvent().observe(this, event -> {
             if (event.getContentIfNotHandled() != null) {
-                getActivity().finish();
+                requireActivity().finish();
             }
         });
 
@@ -215,7 +213,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     private AlertDialog.Builder createAlert(LoginViewModel.LoginFailResponse response) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         String message;
         LoginAnalytics.logError(requireContext(),getString(response.title));
 
@@ -263,7 +261,7 @@ public class LoginFragment extends BaseFragment {
         if(fromResetPassword) {
             binding.appBar.setNavigationOnClickListener((v) -> goToHomeScreen());
         } else
-            binding.appBar.setNavigationOnClickListener((v) -> getActivity().finish());
+            binding.appBar.setNavigationOnClickListener((v) -> requireActivity().finish());
         binding.emailLayout.getEditText().requestFocus();
         return binding.getRoot();
     }
@@ -277,6 +275,7 @@ public class LoginFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        assert getArguments() != null;
         String email = getArguments().getString(PersonalInfoFragment.EMAIL_EXTRA, null);
         if (email != null) {
             binding.getRoot().post(() -> {

@@ -44,6 +44,8 @@ import suncor.com.android.ui.main.MainActivity;
 import suncor.com.android.ui.main.stationlocator.FiltersFragment;
 import suncor.com.android.ui.main.wallet.cards.CardsLoadType;
 import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.Constants;
+
 import static suncor.com.android.utilities.Constants.*;
 
 
@@ -70,7 +72,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
                                 activity.getString(R.string.offers_banner_1_text),
                                 "1"
                         );
-                        activity.startActivity(new Intent(activity, EnrollmentActivity.class));
+                        activity.startActivity(new Intent(activity, EnrollmentActivity.class).putExtra(IS_COME_FROM_REWARDS_GUEST_SCREEN, false));
                     }),
                     new OfferCard.OfferButton(activity.getString(R.string.sign_in), () -> {
                         AnalyticsUtils.logPromotionEvent(activity, AnalyticsUtils.Event.SELECTCONTENT,
