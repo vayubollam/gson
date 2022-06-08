@@ -80,6 +80,7 @@ public class CardsApiImpl implements CardsApi {
         return result;
     }
 
+
     @Override
     public LiveData<Resource<CardDetail>> addCard(AddCardRequest cardRequest) {
         Timber.d("Add Card: " + cardRequest.getCardNumber());
@@ -148,6 +149,7 @@ public class CardsApiImpl implements CardsApi {
 
         return result;
     }
+
 
     @Override
     public LiveData<Resource<CardDetail>> retrieveSPCardDetail(String cardNumber) {
@@ -257,4 +259,6 @@ public class CardsApiImpl implements CardsApi {
 
         return result;
     }
+
+
 }
