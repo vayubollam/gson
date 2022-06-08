@@ -1,6 +1,5 @@
 package suncor.com.android.ui.main.wallet.cards.details;
 
-
 import android.content.Context;
 import android.os.Handler;
 
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -123,9 +120,8 @@ public class CardDetailsViewModel extends ViewModel {
     }
 
     private List<CardDetail> findNewlyAddedCard(List<CardDetail> petroCanadaCards) {
-        for (CardDetail card : petroCanadaCards) {
-            if (card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber))
-                return Collections.singletonList(card);
+        for(CardDetail card : petroCanadaCards){
+            if(card.getCardType() != CardType.ST && card.getCardNumber().equals(newlyAddedCardNumber)) return Collections.singletonList(card);
         }
         return petroCanadaCards;
     }
@@ -163,21 +159,22 @@ public class CardDetailsViewModel extends ViewModel {
         return isCarWashBalanceZero;
     }
 
-    protected Profile getUserProfile() {
+
+    protected Profile getUserProfile(){
         return sessionManager.getProfile();
     }
 
-    protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex) {
+    protected LoyalityData getLoyalityCardDataForGoogleWallet(Context context, int clickedCardIndex ){
         LoyalityData loyalityData = new LoyalityData();
         loyalityData.setBarcode(cards.getValue().get(clickedCardIndex).getCardNumber().replace(" ", ""));
         ExpandedCardItem expandedCardItem = new ExpandedCardItem(context, cards.getValue().get(clickedCardIndex));
         loyalityData.setBarcodeDisplay(expandedCardItem.getCardNumber());
         loyalityData.setNameLabel(context.getString(R.string.google_passes_name_label));
         loyalityData.setNameLocalizedLabel(context.getString(R.string.google_passes_name_label_fr));
-        loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName());
+        loyalityData.setNameValue(getUserProfile().getFirstName() + " " + getUserProfile().getLastName() );
         loyalityData.setEmailLabel(context.getString(R.string.google_passes_email_label));
         loyalityData.setEmailLocalizedLabel(context.getString(R.string.google_passes_email_label_fr));
-        loyalityData.setEmailValue(getUserProfile().getEmail());
+        loyalityData.setEmailValue(getUserProfile().getEmail() );
         loyalityData.setDetailsLabel(context.getString(R.string.google_passes_detail_label));
         loyalityData.setDetailsLocalizedLabel(context.getString(R.string.google_passes_detail_label_fr));
         loyalityData.setDetailsValue(context.getString(R.string.google_passes_detail_value));
@@ -197,11 +194,11 @@ public class CardDetailsViewModel extends ViewModel {
         return loyalityData;
     }
 
-    public LiveData<Resource<SettingsResponse>> getSettings() {
+    public LiveData<Resource<SettingsResponse>> getSettings(){
         return settingsApi.retrieveSettings();
     }
 
-    public void refreshCards() {
+    public void refreshCards(){
         _cards.addSource(cardsRepository.getCards(true), result -> {
             if (result.status == Resource.Status.SUCCESS) {
                 _cards.setValue(result.data);

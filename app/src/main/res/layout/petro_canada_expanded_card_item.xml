@@ -13,9 +13,6 @@
         <variable
             name="isVacuumEnable"
             type="androidx.databinding.ObservableBoolean" />
-        <variable
-            name="cardDetailViewModel"
-            type="suncor.com.android.ui.main.wallet.cards.details.CardDetailsViewModel" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"

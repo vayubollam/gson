@@ -6,9 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Pair;
-import android.view.Gravity;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -153,10 +150,6 @@ public class CardsUtil {
                 .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
                 });
         builder.show();
-        final Button positiveButton = builder.show().getButton(AlertDialog.BUTTON_NEGATIVE);
-        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
-        positiveButtonLL.gravity = Gravity.CENTER;
-        positiveButton.setLayoutParams(positiveButtonLL);
     }
 
     public static void showVacuumInprogressAlert(Context context) {
@@ -164,9 +157,5 @@ public class CardsUtil {
                 .setNegativeButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
                 });
         builder.show();
-        final Button positiveButton = builder.show().getButton(AlertDialog.BUTTON_NEGATIVE);
-        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
-        positiveButtonLL.gravity = Gravity.CENTER;
-        positiveButton.setLayoutParams(positiveButtonLL);
     }
 }

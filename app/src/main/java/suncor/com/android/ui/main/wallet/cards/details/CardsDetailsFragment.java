@@ -72,6 +72,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
     private CardsDetailsAdapter cardsDetailsAdapter;
     private ObservableBoolean isRemoving = new ObservableBoolean(false);
     private boolean vacuumToggle = false;
+
     private LocationLiveData locationLiveData;
     private LatLng currentLocation;
 
@@ -114,7 +115,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
                 //track screen name
                 String screenName;
-                if (clickedCardIndex <= 0 || clickedCardIndex > viewModel.cards.getValue().size()) {
+                if (clickedCardIndex <= 0 || clickedCardIndex > viewModel.cards.getValue().size() ) {
                     //need to check
                     screenName = "my-petro-points-wallet-view-petro-card";
                 } else {
@@ -158,7 +159,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                 Alerts.prepareGeneralErrorDialog(getContext(), AnalyticsUtils.getCardFormName()).show();
             } else if (result.status == Resource.Status.SUCCESS && result.data != null) {
                 vacuumToggle = result.data.getSettings().toggleFeature.isVacuumScanBarcode();
-                if (cardsDetailsAdapter != null) {
+                if(cardsDetailsAdapter != null){
                     cardsDetailsAdapter.updateVacuumToggle(vacuumToggle);
                 }
             }
@@ -169,7 +170,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         binding.cardDetailRecycler.setItemAnimator(new Animator());
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(binding.cardDetailRecycler);
-        cardsDetailsAdapter = new CardsDetailsAdapter(this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener, vacuumToggle);
+        cardsDetailsAdapter = new CardsDetailsAdapter( this::cardViewMoreHandler, activeCarWashListener, cardReloadListener, gpaySaveToWalletListener, vacuumListener, vacuumToggle);
         binding.cardDetailRecycler.setAdapter(cardsDetailsAdapter);
         binding.cardDetailRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -410,13 +411,13 @@ public class CardsDetailsFragment extends MainActivityFragment {
 
     };
 
-    private void showAddCardProgress() {
+    private void showAddCardProgress(){
         binding.loadingProgressBar.setVisibility(View.VISIBLE);
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    private void hideAddCardProgress() {
+    private void hideAddCardProgress(){
         binding.loadingProgressBar.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
@@ -428,10 +429,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
     }
 
     private void showConfirmationAlert(ExpandedCardItem expandedCardItem) {
-        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "(" + getResources().getString(R.string.cards_remove_card_alert_message) + ")";
+        String analyticsName = getResources().getString(R.string.cards_remove_card_alert_title) + "("+getResources().getString(R.string.cards_remove_card_alert_message)+")";
         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event._ALERT,
                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
-                new Pair<>(AnalyticsUtils.Param.FORMNAME, AnalyticsUtils.getCardFormName())
+                new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName())
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
@@ -439,7 +440,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
-                                new Pair<>(AnalyticsUtils.Param.FORMNAME, AnalyticsUtils.getCardFormName())
+                                new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName())
                         );
                         if (cardDetailResource.status == Resource.Status.ERROR) {
                             isRemoving.set(false);
@@ -458,10 +459,10 @@ public class CardsDetailsFragment extends MainActivityFragment {
                         }
                     });
                 }).setNegativeButton(getResources().getString(R.string.cards_remove_card_alert_cancel), (dialog, which) -> {
-                    AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
+                    AnalyticsUtils.logEvent(getContext(),AnalyticsUtils.Event.alertInteraction,
                             new Pair<>(AnalyticsUtils.Param.alertTitle, getString(R.string.cards_remove_card_alert_title)),
-                            new Pair<>(AnalyticsUtils.Param.alertSelection, getString(R.string.cards_remove_card_alert_cancel)),
-                            new Pair<>(AnalyticsUtils.Param.FORMNAME, AnalyticsUtils.getCardFormName()));
+                            new Pair<>(AnalyticsUtils.Param.alertSelection,getString(R.string.cards_remove_card_alert_cancel)),
+                            new Pair<>(AnalyticsUtils.Param.FORMNAME,AnalyticsUtils.getCardFormName()));
                 });
         builder.show();
     }

@@ -129,8 +129,6 @@ object Constants {
     const val TYPE_WASH="wash";
     const val TYPE_VACUUM="vacuum";
 
-
-
     //Paths
     const val GET_LOCATIONS_ADAPTER__PATH = "/adapters/suncor/v3/rfmp-secure/locations"
 
