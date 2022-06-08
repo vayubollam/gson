@@ -162,7 +162,6 @@ public class CardDetailsViewModel extends ViewModel {
         return isCarWashBalanceZero;
     }
 
-
     protected Profile getUserProfile(){
         return sessionManager.getProfile();
     }
@@ -223,12 +222,11 @@ public class CardDetailsViewModel extends ViewModel {
         handler.post(runnableCode);
 
     }
-
+  
     protected void stopRecurringService() {
         if (handler != null) {
             handler.removeCallbacks(runnableCode);
             Timber.d("--SERVICE STOPPED--");
         }
     }
-
 }
