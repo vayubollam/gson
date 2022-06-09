@@ -347,7 +347,7 @@
     <string name="profile_personnal_informations_email_restricted_inline_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_restricted_error">Veuillez utiliser un autre adresse courriel.</string>
     <string name="enrollment_email_format_error">Veuillez entrer une adresse courriel valide.</string>
-    <string name="enrollment_email_restricted_alert_title">Veuillez entrer une autre adresse courriel ou composer le 1-800-668-0222 si vous avez un problème.</string>
+    <string name="enrollment_email_restricted_alert_title">Veuillez entrer une adresse courriel différente.</string>
     <string name="enrollment_street_format_error">Adresse invalide</string>
     <string name="enrollment_city_format_error">Ville invalide</string>
     <string name="profile_preferences_email_header">Courriel</string>
