@@ -136,6 +136,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
         //enrollments api call result
         viewModel.joinLiveData.observe(this, (r) -> {
+
             if (r.status == Resource.Status.SUCCESS) {
                 //Log success events
                 String screenName;

@@ -3,6 +3,8 @@ package suncor.com.android.ui.main.stationlocator;
 import static android.Manifest.permission;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+import static suncor.com.android.analytics.stationlocator.StationsAnalytics.SCREEN_NAME_LOCATION_FILTER;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -378,7 +380,8 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             binding.addressSearchText.setText(text);
 
             if(!analyticsIsClearingText) {
-                StationsAnalytics.logFilterLocationScreenName(requireActivity());
+                StationsAnalytics.logScreenNameClass(requireActivity(),SCREEN_NAME_LOCATION_FILTER
+                        ,this.getClass().getSimpleName());
                 StationsAnalytics.logFiltersApplied(requireContext(), text, filtersListString);
             }
             analyticsIsClearingText = false;
