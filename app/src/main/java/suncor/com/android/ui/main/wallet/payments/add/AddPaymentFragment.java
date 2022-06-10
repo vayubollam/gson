@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -209,9 +210,9 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
                             e.printStackTrace();
                         }
 
-                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("tempPayment", paymentDetail);
+                        Objects.requireNonNull(Navigation.findNavController(requireView()).getPreviousBackStackEntry()).getSavedStateHandle().set("tempPayment", paymentDetail);
                     } else {
-                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("selectedPayment", userPaymentSourceId);
+                        Objects.requireNonNull(Navigation.findNavController(requireView()).getPreviousBackStackEntry()).getSavedStateHandle().set("selectedPayment", userPaymentSourceId);
                     }
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMCOMPLETE,
                             new Pair<>(AnalyticsUtils.Param.FORMSELECTION, "Credit Card"),
@@ -227,8 +228,8 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
     }
 
     private void goBack() {
-        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("fromPayment", true);
-        Navigation.findNavController(getView()).popBackStack();
+        Objects.requireNonNull(Navigation.findNavController(requireView()).getPreviousBackStackEntry()).getSavedStateHandle().set("fromPayment", true);
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override
