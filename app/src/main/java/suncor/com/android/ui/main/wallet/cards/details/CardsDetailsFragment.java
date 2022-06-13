@@ -193,9 +193,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
                                     ExpandedCardItem updatedItem = new ExpandedCardItem(getContext(), result.data);
                                     CardDetail currentDetail = cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail();
                                     CardDetail newCardDetail = result.data;
-                                    if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex - 1) != null && cardsDetailsAdapter.getCardItems().get(clickedCardIndex - 1).isTimer()) {
-                                        viewModel.stopRecurringService();
-                                    }
+
                                     if (currentDetail != newCardDetail) {
                                         cardsDetailsAdapter.updateCardItems(updatedItem, clickedCardIndex);
                                         if (cardsDetailsAdapter.getCardItems().get(clickedCardIndex).getCardDetail().isVacuumInProgress() || cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isWashInProgress() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isCanVacuum() || !cardsDetailsAdapter.getCardItems().get(clickedCardIndex).isCanWash()) {
@@ -203,6 +201,11 @@ public class CardsDetailsFragment extends MainActivityFragment {
                                             cardsDetailsAdapter.getCardItems().get(clickedCardIndex).setTimer(true);
                                         } else {
                                             cardsDetailsAdapter.getCardItems().get(clickedCardIndex).setTimer(false);
+                                            try {
+                                                viewModel.stopRecurringService();
+                                            }catch (Exception e){
+                                                Timber.d("Handler not available !");
+                                            }
                                         }
                                     }
                                 }
@@ -434,7 +437,7 @@ public class CardsDetailsFragment extends MainActivityFragment {
         );
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle(getResources().getString(R.string.cards_remove_card_alert_title)).setMessage(getResources().getString(R.string.cards_remove_card_alert_message))
                 .setPositiveButton(getResources().getString(R.string.cards_remove_card_alert_remove), (dialog, which) -> {
-                    viewModel.deleteCard(expandedCardItem.getCardDetail()).observe(this, cardDetailResource -> {
+                    viewModel.deleteCard(viewModel.cards.getValue().get(clickedCardIndex)).observe(this, cardDetailResource -> {
                         AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.alertInteraction,
                                 new Pair<>(AnalyticsUtils.Param.alertTitle, analyticsName),
                                 new Pair<>(AnalyticsUtils.Param.alertSelection, getResources().getString(R.string.cards_remove_card_alert_remove)),
