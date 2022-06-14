@@ -78,7 +78,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
 
-                    CardFormAnalytics.logErrorEvent(requireContext()
+                    CardFormAnalytics.logFormErrorEvent(requireContext()
                             , Errors.INVALID_CARD, FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");
 
                     dialog.setTitle(getString(R.string.enrollment_cardform_invalid_card_dialog_title))
@@ -110,7 +110,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
 
-                    CardFormAnalytics.logErrorEvent(
+                    CardFormAnalytics.logFormErrorEvent(
                             requireContext(),
                             Errors.PETRO_POINTS_ALREADY_USED,
                             FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");
@@ -145,7 +145,7 @@ public class CardFormFragment extends BaseFragment {
                     ModalDialog dialog = new ModalDialog();
                     dialog.setCancelable(false);
 
-                    CardFormAnalytics.logErrorEvent(
+                    CardFormAnalytics.logFormErrorEvent(
                             requireContext(),
                             Errors.VERIFY_EMAIL_ADDRESS,
                             FORM_NAME_ACTIVATE_PETRO_POINTS_CARD, "");

@@ -52,7 +52,6 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import suncor.com.android.R;
-import suncor.com.android.analytics.BaseAnalytics;
 import suncor.com.android.analytics.Errors;
 import suncor.com.android.analytics.enrollment.EnrollmentAnalytics;
 import suncor.com.android.databinding.FragmentEnrollmentFormBinding;
@@ -167,7 +166,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
                     showDuplicateEmailAlert();
                 } else if (ERR_RESTRICTED_DOMAIN.equals(r.message)) {
 
-                    EnrollmentAnalytics.logErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName, "");
+                    EnrollmentAnalytics.logFormErrorEvent(requireContext(), PLEASE_ENTER_DIFFERENT_EMAIL, formName, "");
 
                     EnrollmentAnalytics.logAlertDialogShown(requireContext(),
                             Errors.PLEASE_ENTER_DIFFERENT_EMAIL,
@@ -305,7 +304,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
         dialog.setCancelable(false);
-        EnrollmentAnalytics.logErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, formName, "");
+        EnrollmentAnalytics.logFormErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, formName, "");
         EnrollmentAnalytics.logAlertDialogShown(requireContext(), getString(R.string.enrollment_email_already_exists_title)
                         + "(" + getString(R.string.enrollment_email_already_exists_description) + ")"
                 , formName);
