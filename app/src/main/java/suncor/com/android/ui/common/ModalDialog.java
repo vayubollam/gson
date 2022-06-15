@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import suncor.com.android.R;
 import suncor.com.android.analytics.BaseAnalytics;
 import suncor.com.android.databinding.ModalDialogBinding;
@@ -56,7 +57,7 @@ public class ModalDialog extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        BaseAnalytics.logAlertDialogShown(requireContext(), analyticsTitle,formName);
+        if(formName!=null) BaseAnalytics.logAlertDialogShown(requireContext(), analyticsTitle,formName);
     }
 
     public ModalDialog setTitle(CharSequence title) {

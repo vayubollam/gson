@@ -303,6 +303,7 @@ public class EnrollmentFormFragment extends BaseFragment implements OnBackPresse
 
     private void showDuplicateEmailAlert() {
         ModalDialog dialog = new ModalDialog();
+        dialog.setFormName(formName);
         dialog.setCancelable(false);
         EnrollmentAnalytics.logFormErrorEvent(requireContext(), Errors.THE_EMAIL_HAS_ACCOUNT, formName, "");
         EnrollmentAnalytics.logAlertDialogShown(requireContext(), getString(R.string.enrollment_email_already_exists_title)

@@ -254,6 +254,7 @@ public class StationDetailsDialog extends BottomSheetDialogFragment {
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))
                     .setMessage(getString(R.string.login_prompt_message))
+                    .setFormName("")
                     .setRightButton(getString(R.string.sign_in), (v) -> {
                         startActivity(new Intent(getContext(), LoginActivity.class));
                         dialog.dismiss();

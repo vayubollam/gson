@@ -3,6 +3,7 @@ package suncor.com.android.ui.main.stationlocator;
 import static android.Manifest.permission;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+import static suncor.com.android.analytics.stationlocator.StationLocatorAnalyticsKt.FORM_NAME_GAS_STATION_LOCATIONS;
 import static suncor.com.android.analytics.stationlocator.StationsAnalytics.SCREEN_NAME_LOCATION_FILTER;
 
 import android.Manifest;
@@ -696,6 +697,7 @@ public class StationsFragment extends BottomNavigationFragment implements Google
             ModalDialog dialog = new ModalDialog();
             dialog.setTitle(getString(R.string.login_prompt_title))
                     .setMessage(getString(R.string.login_prompt_message))
+                    .setFormName(FORM_NAME_GAS_STATION_LOCATIONS)
                     .setRightButton(getString(R.string.sign_in), (v) -> {
                         startActivity(new Intent(requireContext(), LoginActivity.class));
                         dialog.dismiss();

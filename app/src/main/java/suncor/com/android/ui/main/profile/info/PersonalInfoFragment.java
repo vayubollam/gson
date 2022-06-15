@@ -66,6 +66,7 @@ public class PersonalInfoFragment extends MainActivityFragment {
             if (alert != null) {
                 ModalDialog dialog = new ModalDialog();
                 dialog.setCancelable(false);
+                dialog.setFormName("Update Personal Information");
                 AnalyticsUtils.logEvent(getContext(), "error_log", new Pair<>("errorMessage", getString(alert.title)),
                         new Pair<>("formName","Update Personal Information"));
 
