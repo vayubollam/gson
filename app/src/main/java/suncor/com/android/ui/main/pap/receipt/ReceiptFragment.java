@@ -38,6 +38,7 @@ import suncor.com.android.ui.main.common.MainActivityFragment;
 import suncor.com.android.utilities.AnalyticsUtils;
 import suncor.com.android.utilities.Constants;
 import suncor.com.android.utilities.PdfUtil;
+import suncor.com.android.utilities.Timber;
 
 import static com.google.android.play.core.review.model.ReviewErrorCode.PLAY_STORE_NOT_FOUND;
 
@@ -67,7 +68,7 @@ public class ReceiptFragment extends MainActivityFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentReceiptBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(this);
-        binding.setContext(getContext());
+//        binding.setContext(getContext());
         binding.setTransaction(null);
         binding.setIsLoading(isLoading);
         return binding.getRoot();
@@ -196,11 +197,17 @@ public class ReceiptFragment extends MainActivityFragment {
             } else {
                 // There was some problem, log or handle the error code.
                 // Handle error when launching in app review
-                @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) task.getException()).getErrorCode();
+                try{
 
-                if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
+                    @ReviewErrorCode int reviewErrorCode = ((RuntimeExecutionException) Objects.requireNonNull(task.getException())).getErrorCode();
+                    if (reviewErrorCode == PLAY_STORE_NOT_FOUND) { }
 
-                goBack();
+                    goBack();
+                }catch (Exception e){
+                    Timber.d(Objects.requireNonNull(e.getLocalizedMessage()));
+                }
+
+
             }
         });
     }
