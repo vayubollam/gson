@@ -138,7 +138,7 @@ public class CardsUtil {
         builder.show();
     }
     public static void showDailyVacuumUsedAlert(Context context, String time, String address) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_wash_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_vacuum_used_message,time,address))
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(context.getResources().getString(R.string.carwash_daily_vacuum_used_alert)).setMessage(context.getResources().getString(R.string.carwash_daily_vacuum_used_message,time,address))
                 .setPositiveButton(context.getResources().getString(R.string.ok), (dialog, which) -> {
                     dialog.dismiss();
                 });
