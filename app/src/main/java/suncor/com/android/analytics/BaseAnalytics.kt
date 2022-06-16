@@ -19,26 +19,21 @@ import suncor.com.android.analytics.pap.ReceiptAnalytics
 
 abstract class BaseAnalytics {
 
-
     fun logUserProperty() {
 
     }
 
 
-
-
-    fun logEvent(context: Context, eventName: String, bundle: Bundle) {
-        FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle)
-    }
-
-
     companion object {
-
 
         const val BUTTON_TEXT_OK = "ok"
         const val BUTTON_TEXT_CANCEL = "cancel"
         const val BUTTON_TEXT_ENABLE = "Enable"
 
+        @JvmStatic
+        fun logEvent(context: Context, eventName: String, bundle: Bundle) {
+            FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle)
+        }
 
         /*
                 alert
@@ -50,7 +45,7 @@ abstract class BaseAnalytics {
             val bundle = Bundle()
             bundle.putString(BaseParams.ALERT_TITLE, alertTitle.take(100))
             bundle.putString(FORM_NAME, formName)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT, bundle)
+            logEvent(context, BaseEvents.ALERT, bundle)
         }
 
         /*
@@ -71,7 +66,7 @@ abstract class BaseAnalytics {
             bundle.putString(BaseParams.ALERT_SELECTION, alertSelection)
             bundle.putString(FORM_NAME, formName)
 
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ALERT_INTERACTION, bundle)
+            logEvent(context, BaseEvents.ALERT_INTERACTION, bundle)
         }
 
         /*
@@ -84,7 +79,7 @@ abstract class BaseAnalytics {
         fun logTapToCall(context: Context, phoneNumber: String) {
             val bundle = Bundle()
             bundle.putString(PHONE_NUMBER_TAPPED, phoneNumber)
-            FirebaseAnalytics.getInstance(context).logEvent(TAP_TO_CALL, bundle)
+            logEvent(context, TAP_TO_CALL, bundle)
         }
 
         /*
@@ -95,7 +90,7 @@ abstract class BaseAnalytics {
         fun logScrollDepth(context: Context, depth: String) {
             val bundle = Bundle()
             bundle.putString(SCROLL_DEPTH_THRESHOLD, depth)
-            FirebaseAnalytics.getInstance(context).logEvent(SCROLL, bundle)
+            logEvent(context, SCROLL, bundle)
         }
 
         /*
@@ -116,7 +111,7 @@ abstract class BaseAnalytics {
             bundle.putString(FORM_SELECTION, selection)
             bundle.putString(FORM_NAME, formName)
             bundle.putString(STEP_NAME, stepName)
-            FuelUpAnalytics.logEvent(context, FORM_STEP, bundle)
+            logEvent(context, FORM_STEP, bundle)
         }
 
         /*
@@ -129,8 +124,7 @@ abstract class BaseAnalytics {
             val bundle = Bundle()
             bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
             bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, className)
-            FirebaseAnalytics.getInstance(context)
-                .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+            logEvent(context, FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
         }
 
         /*
@@ -141,7 +135,7 @@ abstract class BaseAnalytics {
         fun logFormStart(context: Context, formName: String) {
             val bundle = Bundle()
             bundle.putString(FORM_NAME, formName)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_START, bundle)
+            logEvent(context, BaseEvents.FORM_START, bundle)
         }
 
         /*
@@ -153,7 +147,7 @@ abstract class BaseAnalytics {
         fun logInterSiteURL(context: Context, url: String) {
             val bundle = Bundle()
             bundle.putString(BaseParams.INTER_SITE_URL, url)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.INTER_SITE, bundle)
+            logEvent(context, BaseEvents.INTER_SITE, bundle)
         }
 
         /*
@@ -161,7 +155,7 @@ abstract class BaseAnalytics {
         * */
         @JvmStatic
         fun logTimer30Event(context: Context) {
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.TIMER_30, Bundle())
+            logEvent(context, BaseEvents.TIMER_30, Bundle())
         }
 
         /*
@@ -172,7 +166,7 @@ abstract class BaseAnalytics {
         fun logButtonTap(context: Context, buttonText: String) {
             val bundle = Bundle()
             bundle.putString(BaseParams.BUTTON_TEXT, buttonText)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.BUTTON_TAP, bundle)
+            logEvent(context, BaseEvents.BUTTON_TAP, bundle)
         }
 
         /*
@@ -194,7 +188,7 @@ abstract class BaseAnalytics {
             bundle.putString(ERROR_MESSAGE, errorMessage)
             bundle.putString(FORM_NAME, formName)
             bundle.putString(ERROR_MESSAGE_DETAIL, detailErrorMessage)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.ERROR_LOG, bundle)
+            logEvent(context, BaseEvents.ERROR_LOG, bundle)
         }
 
         /**
@@ -211,7 +205,7 @@ abstract class BaseAnalytics {
             bundle.putString(ERROR_MESSAGE, errorMessage)
             bundle.putString(FORM_NAME, formName)
             bundle.putString(ERROR_MESSAGE_DETAIL, detailErrorMessage)
-            FirebaseAnalytics.getInstance(context).logEvent(BaseEvents.FORM_ERROR, bundle)
+            logEvent(context, BaseEvents.FORM_ERROR, bundle)
         }
 
     }
