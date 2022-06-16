@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 import kotlin.Unit;
