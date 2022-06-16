@@ -210,9 +210,9 @@ public class AddPaymentFragment extends MainActivityFragment implements OnBackPr
                             e.printStackTrace();
                         }
 
-                        Objects.requireNonNull(Navigation.findNavController(requireView()).getPreviousBackStackEntry()).getSavedStateHandle().set("tempPayment", paymentDetail);
+                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("tempPayment", paymentDetail);
                     } else {
-                        Objects.requireNonNull(Navigation.findNavController(requireView()).getPreviousBackStackEntry()).getSavedStateHandle().set("selectedPayment", userPaymentSourceId);
+                        Navigation.findNavController(getView()).getPreviousBackStackEntry().getSavedStateHandle().set("selectedPayment", userPaymentSourceId);
                     }
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.FORMCOMPLETE,
                             new Pair<>(AnalyticsUtils.Param.FORMSELECTION, "Credit Card"),
