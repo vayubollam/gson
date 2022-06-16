@@ -17,9 +17,4 @@ object MainActivityAnalytics : BaseAnalytics() {
     }
 
     const val FORM_NAME_HOME = "Home"
-
-
-
-
-
 }

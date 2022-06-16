@@ -12,6 +12,8 @@ public  class ThirdPartyGiftCardSubCategory{
     private String howToUse;
     private String howToRedeem;
     private String merchantId;
+    private String shortName;
+    private String screenName;
     private List<EGift> eGiftList;
 
     public String getMerchantId() {
@@ -30,6 +32,21 @@ public  class ThirdPartyGiftCardSubCategory{
         subCategoryName = subcategoryName;
     }
 
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
 
     public String getSmallIcon() {
         return smallIcon;

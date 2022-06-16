@@ -19,22 +19,16 @@ import suncor.com.android.analytics.pap.ReceiptAnalytics
 
 abstract class BaseAnalytics {
 
-
     fun logUserProperty() {
 
     }
-
-
-
 
     fun logEvent(context: Context, eventName: String, bundle: Bundle) {
         FirebaseAnalytics.getInstance(context).logEvent(eventName, bundle)
     }
 
-
     companion object {
-
-
+        
         const val BUTTON_TEXT_OK = "ok"
         const val BUTTON_TEXT_CANCEL = "cancel"
         const val BUTTON_TEXT_ENABLE = "Enable"
@@ -215,6 +209,5 @@ abstract class BaseAnalytics {
         }
 
     }
-
-
+    
 }

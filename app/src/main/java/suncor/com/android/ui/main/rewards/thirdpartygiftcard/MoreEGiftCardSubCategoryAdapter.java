@@ -2,16 +2,11 @@ package suncor.com.android.ui.main.rewards.thirdpartygiftcard;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import suncor.com.android.databinding.ItemMoreEGiftCardSubCategoryBinding;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
 
@@ -66,15 +61,11 @@ public class MoreEGiftCardSubCategoryAdapter extends RecyclerView.Adapter<MoreEG
             int imageId = cont.getResources().getIdentifier(subcategory.getSmallIcon(), "drawable", cont.getPackageName());
             binding.setImage(cont.getDrawable(imageId));
 
-            binding.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (clickListener != null) {
-                        clickListener.onCardClicked(subcategory);
-                    }
+            binding.cardView.setOnClickListener(v -> {
+                if (clickListener != null) {
+                    clickListener.onCardClicked(subcategory);
                 }
             });
         }
     }
-
 }

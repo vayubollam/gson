@@ -19,6 +19,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -47,11 +49,11 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appBarElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-        profileSharedViewModel = ViewModelProviders.of(getActivity()).get(ProfileSharedViewModel.class);
-        profileSharedViewModel.alertObservable.observe(getActivity(), event -> {
+        profileSharedViewModel = ViewModelProviders.of(requireActivity()).get(ProfileSharedViewModel.class);
+        profileSharedViewModel.alertObservable.observe(requireActivity(), event -> {
             ProfileSharedViewModel.Alert alert = event.getContentIfNotHandled();
             if (alert != null) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
                 if (alert.title != -1) {
                     dialog.setTitle(alert.title);
                     AnalyticsUtils.logEvent(getContext(), AnalyticsUtils.Event.error, new Pair<>(AnalyticsUtils.Param.errorMessage, getString(alert.title)),
@@ -84,20 +86,20 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         profileSharedViewModel.toastObservable.observe(this, event -> {
             Integer message = event.getContentIfNotHandled();
             if (message != null) {
-                SuncorToast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                SuncorToast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public void onDestroy() {
-        profileSharedViewModel.toastObservable.removeObservers(getActivity());
-        profileSharedViewModel.alertObservable.removeObservers(getActivity());
+        profileSharedViewModel.toastObservable.removeObservers(requireActivity());
+        profileSharedViewModel.alertObservable.removeObservers(requireActivity());
         super.onDestroy();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
         binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -132,14 +134,14 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         initBuild();
 
         binding.signoutButton.setOnClickListener((v) -> {
-            AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert",
+            AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert",
                     new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title) + "()"),
                     new Pair<>("formName", "My petro points Account Navigation List")
             );
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
                     .setTitle(getString(R.string.profil_sign_out_alert_title))
                     .setPositiveButton(getString(R.string.profil_sign_out_dialog_positive_button), (dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title) + "()"),
                                 new Pair<>("alertSelection", getString(R.string.profil_sign_out_dialog_positive_button)),
                                 new Pair<>("formName", "My petro points Account Navigation List")
@@ -147,7 +149,7 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
                         signUserOut();
                     })
                     .setNegativeButton(getString(R.string.profil_sign_out_dialog_negative_button), ((dialog, which) -> {
-                        AnalyticsUtils.logEvent(getActivity().getApplicationContext(), "alert_interaction",
+                        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert_interaction",
                                 new Pair<>("alertTitle", getString(R.string.profil_sign_out_alert_title) + "()"),
                                 new Pair<>("alertSelection", getString(R.string.profil_sign_out_dialog_negative_button)),
                                 new Pair<>("formName", "My petro points Account Navigation List")
@@ -159,16 +161,16 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         });
 
         binding.getHelpButton.setOnClickListener(v -> {
-            if(Navigation.findNavController(getView()).getCurrentDestination().getId() == R.id.profile_tab) {
-                Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_FAQFragment);
+            if(Navigation.findNavController(requireView()).getCurrentDestination().getId() == R.id.profile_tab) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_FAQFragment);
             }
         });
   
-        binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
+        binding.transactionButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_transactionsFragment));
 
-        binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_accountDetailsFragment));
+        binding.accountDetailsButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_accountDetailsFragment));
 
-        binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_profile_tab_to_aboutFragment));
+        binding.aboutButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.action_profile_tab_to_aboutFragment));
 
         binding.appBar.setNavigationOnClickListener(v -> goBack());
     }
@@ -184,11 +186,11 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
         sessionManager.logout().observe(getViewLifecycleOwner(), (result) -> {
             if (result.status == Resource.Status.SUCCESS) {
                 binding.signOutPB.setVisibility(View.GONE);
-                Navigation.findNavController(getView()).navigate(R.id.home_tab);
+                Navigation.findNavController(requireView()).navigate(R.id.home_tab);
 
-                AnalyticsUtils.logEvent(getContext(), "logout");
+                AnalyticsUtils.logEvent(requireContext(), "logout");
             } else if (result.status == Resource.Status.ERROR) {
-                AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.FORMERROR,
+                AnalyticsUtils.logEvent(this.requireContext(), AnalyticsUtils.Event.FORMERROR,
                         new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)),
                         new Pair<>(AnalyticsUtils.Param.FORMNAME, "My petro points Account Navigation List"));
                 binding.signOutPB.setVisibility(View.GONE);
@@ -206,14 +208,14 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
     public void initBuild() {
         try {
             Properties properties = new Properties();
-            AssetManager assetManager = getActivity().getAssets();
+            AssetManager assetManager = requireActivity().getAssets();
             InputStream inputStream = assetManager.open("buildSettings.properties");
             properties.load(inputStream);
             String buildDate = properties.getProperty("buildDate");
             String buildSHA = properties.getProperty("buildSHA");
 
-            TextView lblBuildDate = getView().findViewById(R.id.lblBuildDate);
-            TextView lblBuildSHA = getView().findViewById(R.id.lblBuildSHA);
+            TextView lblBuildDate = requireView().findViewById(R.id.lblBuildDate);
+            TextView lblBuildSHA = requireView().findViewById(R.id.lblBuildSHA);
 
             lblBuildDate.setText("Build Date: " + buildDate);
             lblBuildSHA.setText("Build SHA: " + buildSHA);
@@ -229,6 +231,6 @@ public class ProfileFragment extends MainActivityFragment implements OnBackPress
 
     private void goBack() {
         profileSharedViewModel.setEcryptedSecurityAnswer(null);
-        Navigation.findNavController(getView()).popBackStack();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 }

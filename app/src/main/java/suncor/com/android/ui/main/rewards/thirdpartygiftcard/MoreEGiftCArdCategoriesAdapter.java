@@ -3,14 +3,10 @@ package suncor.com.android.ui.main.rewards.thirdpartygiftcard;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import suncor.com.android.databinding.ItemMoreEGiftCardCategoriesBinding;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardCategory;
 import suncor.com.android.model.thirdpartycard.ThirdPartyGiftCardSubCategory;
@@ -26,14 +22,12 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
         this.context = context;
         this.categoriesList = categoriesList;
         MoreEGiftCArdCategoriesAdapter.clickListener = clickListener;
-
     }
 
     @NonNull
     @NotNull
     @Override
     public MoreEGiftCArdCategoriesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         ItemMoreEGiftCardCategoriesBinding binding = ItemMoreEGiftCardCategoriesBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new MoreEGiftCArdCategoriesViewHolder(binding);
     }
@@ -41,7 +35,6 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
     @Override
     public void onBindViewHolder(@NonNull MoreEGiftCArdCategoriesViewHolder holder, int position) {
         holder.setDataInView(context, categoriesList.get(position));
-        ;
     }
 
     @Override
@@ -69,8 +62,6 @@ public class MoreEGiftCArdCategoriesAdapter extends RecyclerView.Adapter<MoreEGi
                 }
             });
             binding.childRecycler.setAdapter(adapter);
-
-
 
             binding.executePendingBindings();
 

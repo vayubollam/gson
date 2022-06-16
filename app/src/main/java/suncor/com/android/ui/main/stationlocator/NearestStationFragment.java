@@ -149,7 +149,7 @@ public class NearestStationFragment extends MainActivityFragment implements OnBa
             nearestCard.imgMobilePayment.setImageResource(value.data != null && value.data.papAvailable() ? R.drawable.ic_check : R.drawable.ic_close);
 
             if (value.data != null && value.data.fuelUpAvailable()) {
-                    HomeNavigationDirections.ActionToSelectPumpFragment action = SelectPumpFragmentDirections.actionToSelectPumpFragment(
+                    HomeNavigationDirections.ActionToSelectPumpFragment action = HomeNavigationDirections.actionToSelectPumpFragment(
                             value.data.nearestStation.data.getStation().getId(),
                             getString(R.string.action_location, value.data.nearestStation.data.getStation().getAddress().getAddressLine()));
                     Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();

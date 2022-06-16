@@ -74,7 +74,7 @@ public class CreatePasswordFragment extends BaseFragment {
                     CreatePasswordAnalytics.logInvalidPwdError(requireContext());
                     CreatePasswordAnalytics.logInvalidPwdAlertShown(requireContext(),getString(R.string.login_create_password_duplicated_alert_title));
 
-                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(requireActivity());
                     alertBuilder.setTitle(R.string.login_create_password_duplicated_alert_title);
                     alertBuilder.setMessage(R.string.login_create_password_duplicated_alert_message);
                     alertBuilder.setPositiveButton(R.string.ok, ((dialog, which) -> {
@@ -88,7 +88,7 @@ public class CreatePasswordFragment extends BaseFragment {
                     alertBuilder.show();
                 } else {
                     Dialog dialog = Alerts.prepareGeneralErrorDialog(getActivity(), FORM_NAME_LOGIN_FORCE_NEW_PASSWORD);
-                    dialog.setOnDismissListener(dialogInterface -> getActivity().finish());
+                    dialog.setOnDismissListener(dialogInterface -> requireActivity().finish());
                     dialog.show();
                 }
             }
@@ -102,8 +102,8 @@ public class CreatePasswordFragment extends BaseFragment {
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
     }
 
     @Nullable
@@ -119,7 +119,7 @@ public class CreatePasswordFragment extends BaseFragment {
         binding.mainLayout.getLayoutTransition().disableTransitionType(LayoutTransition.CHANGE_APPEARING);
         binding.getRoot().post(() -> {
             binding.passwordInput.getEditText().requestFocus();
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(binding.passwordInput.getEditText(), InputMethodManager.SHOW_IMPLICIT);
         });
 

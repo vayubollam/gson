@@ -1,10 +1,15 @@
 package suncor.com.android.ui.main.rewards.redeem;
 
+import static suncor.com.android.analytics.AnalyticsConstants.PETRO_POINTS_REDEEM_INFO;
+import static suncor.com.android.analytics.giftcard.GIftCardAnalyticsKt.E_GIFT_CARD;
+import static suncor.com.android.analytics.giftcard.GIftCardAnalyticsKt.REDEEM_FOR;
+import static suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics.CLICK_TO_REDEEM;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +27,21 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.Objects;
 
 import javax.inject.Inject;
 
-
-import javax.inject.Inject;
-
 import suncor.com.android.R;
+import suncor.com.android.analytics.AnalyticsConstants;
+import suncor.com.android.analytics.giftcard.GiftCardValueConfirmationAnalytics;
 import suncor.com.android.databinding.FragmentGiftCardValueConfirmationBinding;
 import suncor.com.android.di.viewmodel.ViewModelFactory;
 import suncor.com.android.mfp.ErrorCodes;
 import suncor.com.android.model.redeem.response.OrderResponse;
-import suncor.com.android.ui.common.Alerts;
 import suncor.com.android.ui.common.OnBackPressedListener;
 import suncor.com.android.ui.common.cards.CardFormatUtils;
 import suncor.com.android.ui.main.common.MainActivityFragment;
-import suncor.com.android.utilities.AnalyticsUtils;
+import suncor.com.android.utilities.ConnectionUtil;
 
 
 public class GiftCardValueConfirmationFragment extends MainActivityFragment implements OnBackPressedListener {
@@ -98,32 +100,42 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                     }
                     break;
                 case ERROR:
-                    AnalyticsUtils.logEvent(this.getContext(), "form_error",
-                            new Pair<>("formName", "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"),
-                            new Pair<>("errorMessage", orderResponseResource.message));
+                    assert orderResponseResource.message != null;
+                    assert orderResponseResource.data != null;
+                    GiftCardValueConfirmationAnalytics.logFormErrorEvent(
+                            requireActivity(),
+                            orderResponseResource.data.getErrorDescription(),
+                            REDEEM_FOR +  viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD
+
+                    );
+
                     if (ErrorCodes.ERR_CARD_LOCK.equals(orderResponseResource.message) || ErrorCodes.ERR_SECONDARY_CARD_HOLDER_REDEMPTIONS_DISABLED.equals(orderResponseResource.message)) {
-                        AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert",
-                                new Pair<>("alertTitle", getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")"),
-                                new Pair<>("formName", "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card")
-                        );
+
+                        GiftCardValueConfirmationAnalytics.logAlertDialogShown(
+                                requireActivity(),
+                                getString(R.string.redemption_unavailable_title) + "(" + getString(R.string.redemption_unavailable_message) + ")",
+                                 REDEEM_FOR + viewModel.getGiftCardItem().getShortName()+ E_GIFT_CARD);
+
                         new AlertDialog.Builder(requireContext())
-                                .setTitle(R.string.msg_e030_title)
-                                .setMessage(R.string.msg_e030_message)
+                                .setTitle(R.string.redemption_unavailable_title)
+                                .setMessage(R.string.redemption_unavailable_message)
                                 .setPositiveButton(R.string.ok, (dialog, which) -> {
-                                    AnalyticsUtils.logEvent(requireActivity().getApplicationContext(), "alert_interaction",
-                                            new Pair<>("alertTitle", getString(R.string.msg_e030_title) + "(" + getString(R.string.msg_e030_message) + ")"),
-                                            new Pair<>("alertSelection", getString(R.string.ok)),
-                                            new Pair<>("formName", "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card")
+
+                                    GiftCardValueConfirmationAnalytics.logAlertDialogInteraction(
+                                            requireActivity(),
+                                            getString(R.string.redemption_unavailable_title) + "(" + getString(R.string.redemption_unavailable_message) + ")",
+                                            getString(R.string.ok),
+                                             REDEEM_FOR + viewModel.getGiftCardItem().getShortName()+ E_GIFT_CARD
                                     );
                                     dialog.dismiss();
                                 })
                                 .create()
                                 .show();
                     } else {
-                        AnalyticsUtils.logEvent(this.getContext(), AnalyticsUtils.Event.error,
-                                new Pair<>(AnalyticsUtils.Param.errorMessage, getString(R.string.msg_e001_title)),
-                                new Pair<>(AnalyticsUtils.Param.FORMNAME, "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"));
-                        Alerts.prepareGeneralErrorDialog(getActivity(), "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card").show();
+
+                        GiftCardValueConfirmationAnalytics.logErrorEvent(requireActivity(), getString(R.string.msg_e001_title), viewModel.getGiftCardItem().getShortName(), "");
+
+                        prepareErrorDialog(getActivity(),  viewModel.getGiftCardItem().getShortName() ).show();
                     }
                     break;
             }
@@ -135,7 +147,8 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
                              @Nullable Bundle savedInstanceState) {
         GenericEGiftCard genericGiftCard = GiftCardValueConfirmationFragmentArgs.fromBundle(getArguments()).getGenericGiftCard();
         viewModel.setGenericCardItem(genericGiftCard);
-        AnalyticsUtils.setCurrentScreenName(this.requireActivity(), "my-petro-points-redeem-info-" + viewModel.getGiftCardItem().getScreenName() + "-value");
+        GiftCardValueConfirmationAnalytics.logScreenNameClass(requireActivity(),PETRO_POINTS_REDEEM_INFO+ viewModel.getGiftCardItem().getScreenName()+ "-value", this.getClass().getSimpleName());
+
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_gift_card_value_confirmation, container, false);
         binding.setEventHandler(this);
         binding.setLifecycleOwner(this);
@@ -300,10 +313,46 @@ public class GiftCardValueConfirmationFragment extends MainActivityFragment impl
     }
 
     public void redeemConfirmButtonClicked() {
-        AnalyticsUtils.logEvent(this.getContext(), "form_step",
-                new Pair<>("formName", "Redeem for " + viewModel.getGiftCardItem().getShortName() + " eGift card"),
-                new Pair<>("stepName", "Click to redeem"));
-        AnalyticsUtils.setCurrentScreenName(this.requireActivity(), "my-petro-points-redeem-info-" + viewModel.getGiftCardItem().getScreenName() + "-redeeming");
+        GiftCardValueConfirmationAnalytics.logFormStep(
+                requireActivity(),
+                REDEEM_FOR + viewModel.getGiftCardItem().getShortName() + E_GIFT_CARD,
+                CLICK_TO_REDEEM
+        );
+
+        GiftCardValueConfirmationAnalytics.logScreenNameClass(requireActivity(),
+                PETRO_POINTS_REDEEM_INFO + viewModel.getGiftCardItem().getScreenName() + "-redeeming",
+                this.getClass().getSimpleName());
+
         viewModel.sendRedeemData();
+    }
+
+    public  AlertDialog prepareErrorDialog(Context context, String formName ) {
+        boolean hasInternetConnection = ConnectionUtil.haveNetworkConnection(context);
+        String analyticsName = context.getString(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                + "(" + context.getString(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message) + ")";
+
+        GiftCardValueConfirmationAnalytics.logFormErrorEvent(requireActivity(),
+                analyticsName,
+                REDEEM_FOR + formName + E_GIFT_CARD);
+
+
+        GiftCardValueConfirmationAnalytics.logAlertDialogShown(requireActivity(),
+                analyticsName,
+                REDEEM_FOR + formName + E_GIFT_CARD);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(hasInternetConnection ? R.string.msg_e001_title : R.string.msg_e002_title)
+                .setMessage(hasInternetConnection ? R.string.msg_e001_message : R.string.msg_e002_message)
+
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+
+                    GiftCardValueConfirmationAnalytics.logAlertDialogInteraction(requireActivity(),
+                            analyticsName,
+                            context.getString(R.string.ok),
+                            REDEEM_FOR + formName+ E_GIFT_CARD);
+
+                    dialog.dismiss();
+                });
+        return builder.create();
     }
 }
